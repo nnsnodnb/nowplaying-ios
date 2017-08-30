@@ -17,6 +17,8 @@ class AlbumViewController: UIViewController {
 
     fileprivate var albums = [MPMediaItemCollection]()
 
+    // MARK: - Life cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         createAlbums()
@@ -66,6 +68,9 @@ extension AlbumViewController : UITableViewDataSource {
 extension AlbumViewController : UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let albumDetailViewController = AlbumDetailViewController()
+        albumDetailViewController.album = albums[indexPath.row]
+        navigationController?.pushViewController(albumDetailViewController, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
