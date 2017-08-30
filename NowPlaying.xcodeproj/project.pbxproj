@@ -7,23 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CF615AEE1F56AB3B00315019 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615AED1F56AB3B00315019 /* AppDelegate.swift */; };
-		CF615AF01F56AB3B00315019 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615AEF1F56AB3B00315019 /* ViewController.swift */; };
 		CF615AF31F56AB3B00315019 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF11F56AB3B00315019 /* Main.storyboard */; };
 		CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF41F56AB3B00315019 /* Assets.xcassets */; };
 		CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */; };
 		CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B001F56B04E00315019 /* MediaPlayer.framework */; };
+		CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B061F56E89100315019 /* AVFoundation.framework */; };
+		CF615B091F56EA3900315019 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615AEF1F56AB3B00315019 /* MainViewController.swift */; };
+		CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615AED1F56AB3B00315019 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		CF615AEA1F56AB3B00315019 /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF615AED1F56AB3B00315019 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CF615AEF1F56AB3B00315019 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CF615AEF1F56AB3B00315019 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		CF615AF21F56AB3B00315019 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CF615AF41F56AB3B00315019 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CF615AF71F56AB3B00315019 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CF615AF91F56AB3B00315019 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF615B001F56B04E00315019 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		CF615B061F56E89100315019 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */,
 				CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,12 +61,9 @@
 		CF615AEC1F56AB3B00315019 /* NowPlaying */ = {
 			isa = PBXGroup;
 			children = (
-				CF615AED1F56AB3B00315019 /* AppDelegate.swift */,
-				CF615AEF1F56AB3B00315019 /* ViewController.swift */,
-				CF615AF11F56AB3B00315019 /* Main.storyboard */,
-				CF615AF41F56AB3B00315019 /* Assets.xcassets */,
-				CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */,
-				CF615AF91F56AB3B00315019 /* Info.plist */,
+				CF615B041F56E76A00315019 /* Storyboard */,
+				CF615B021F56E75900315019 /* Scripts */,
+				CF615B051F56E77700315019 /* Resources */,
 			);
 			path = NowPlaying;
 			sourceTree = "<group>";
@@ -71,9 +71,53 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF615B061F56E89100315019 /* AVFoundation.framework */,
 				CF615B001F56B04E00315019 /* MediaPlayer.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CF615B021F56E75900315019 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				CF615B031F56E76200315019 /* ViewController */,
+				CF615AED1F56AB3B00315019 /* AppDelegate.swift */,
+			);
+			path = Scripts;
+			sourceTree = "<group>";
+		};
+		CF615B031F56E76200315019 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CF615AEF1F56AB3B00315019 /* MainViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		CF615B041F56E76A00315019 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				CF615B081F56E8D200315019 /* Main */,
+				CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		CF615B051F56E77700315019 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CF615AF41F56AB3B00315019 /* Assets.xcassets */,
+				CF615AF91F56AB3B00315019 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		CF615B081F56E8D200315019 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				CF615AF11F56AB3B00315019 /* Main.storyboard */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -149,8 +193,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF615AF01F56AB3B00315019 /* ViewController.swift in Sources */,
-				CF615AEE1F56AB3B00315019 /* AppDelegate.swift in Sources */,
+				CF615B091F56EA3900315019 /* MainViewController.swift in Sources */,
+				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,6 +207,7 @@
 				CF615AF21F56AB3B00315019 /* Base */,
 			);
 			name = Main.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */ = {
@@ -171,6 +216,7 @@
 				CF615AF71F56AB3B00315019 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -276,7 +322,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 99649YXF6E;
-				INFOPLIST_FILE = NowPlaying/Info.plist;
+				INFOPLIST_FILE = /Users/nnsnodnb/workspace/ios/NowPlaying/NowPlaying/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
@@ -290,7 +336,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 99649YXF6E;
-				INFOPLIST_FILE = NowPlaying/Info.plist;
+				INFOPLIST_FILE = /Users/nnsnodnb/workspace/ios/NowPlaying/NowPlaying/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
@@ -318,6 +364,7 @@
 				CF615AFE1F56AB3B00315019 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

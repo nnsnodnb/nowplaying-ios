@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainViewController.swift
 //  NowPlaying
 //
 //  Created by Oka Yuya on 2017/08/30.
@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
 
     fileprivate let audioPlayer = AVAudioPlayer()
 
@@ -33,13 +33,13 @@ class ViewController: UIViewController {
 
 // MARK: - MPMediaPickerControllerDelegate
 
-extension ViewController : MPMediaPickerControllerDelegate {
+extension MainViewController : MPMediaPickerControllerDelegate {
 
     func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
         
     }
 
-    func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
+    func MainViewController(_ mediaPicker: MPMediaPickerController) {
         dismiss(animated: true, completion: nil)
     }
 }
