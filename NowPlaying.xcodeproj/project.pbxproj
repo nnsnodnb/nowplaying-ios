@@ -14,6 +14,8 @@
 		CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B061F56E89100315019 /* AVFoundation.framework */; };
 		CF615B091F56EA3900315019 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615AEF1F56AB3B00315019 /* MainViewController.swift */; };
 		CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615AED1F56AB3B00315019 /* AppDelegate.swift */; };
+		CF615B0F1F56EEB200315019 /* AlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B0D1F56EEB200315019 /* AlbumTableViewCell.swift */; };
+		CF615B101F56EEB200315019 /* AlbumTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		CF615AF91F56AB3B00315019 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF615B001F56B04E00315019 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		CF615B061F56E89100315019 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		CF615B0D1F56EEB200315019 /* AlbumTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumTableViewCell.swift; path = View/UITableViewCell/AlbumTableViewCell.swift; sourceTree = "<group>"; };
+		CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AlbumTableViewCell.xib; path = View/UITableViewCell/AlbumTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,7 @@
 		CF615B021F56E75900315019 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				CF615B0B1F56EE7600315019 /* View */,
 				CF615B031F56E76200315019 /* ViewController */,
 				CF615AED1F56AB3B00315019 /* AppDelegate.swift */,
 			);
@@ -118,6 +123,23 @@
 				CF615AF11F56AB3B00315019 /* Main.storyboard */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		CF615B0B1F56EE7600315019 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CF615B0C1F56EE7F00315019 /* UITableViewCell */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		CF615B0C1F56EE7F00315019 /* UITableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				CF615B0D1F56EEB200315019 /* AlbumTableViewCell.swift */,
+				CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */,
+			);
+			name = UITableViewCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,6 +205,7 @@
 				CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */,
 				CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */,
 				CF615AF31F56AB3B00315019 /* Main.storyboard in Resources */,
+				CF615B101F56EEB200315019 /* AlbumTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,6 +218,7 @@
 			files = (
 				CF615B091F56EA3900315019 /* MainViewController.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
+				CF615B0F1F56EEB200315019 /* AlbumTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,7 +347,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 99649YXF6E;
 				INFOPLIST_FILE = /Users/nnsnodnb/workspace/ios/NowPlaying/NowPlaying/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -337,7 +361,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 99649YXF6E;
 				INFOPLIST_FILE = /Users/nnsnodnb/workspace/ios/NowPlaying/NowPlaying/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
 				PRODUCT_NAME = "$(TARGET_NAME)";

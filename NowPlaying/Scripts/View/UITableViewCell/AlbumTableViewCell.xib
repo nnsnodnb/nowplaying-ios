@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="AlbumCell" rowHeight="96" id="KGk-i7-Jjw" customClass="AlbumTableViewCell" customModule="NowPlaying" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="97"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="287" height="97"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="kU5-xI-09n">
+                        <rect key="frame" x="8" y="8" width="304" height="80"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hLk-6X-ND9">
+                                <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="gr1-tW-m4U"/>
+                                    <constraint firstAttribute="width" constant="80" id="w1P-Hn-Y11"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hVa-WA-1A1">
+                                <rect key="frame" x="88" y="0.0" width="216" height="80"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="k27-5c-RuB">
+                                        <rect key="frame" x="0.0" y="31" width="216" height="49"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="タイトル" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fzf-Wd-9wl">
+                                                <rect key="frame" x="0.0" y="0.0" width="216" height="21"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="21" id="1mO-5a-v5O"/>
+                                                    <constraint firstAttribute="width" constant="216" id="pkZ-GP-x6q"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="歌手名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2g6-oU-N9d">
+                                                <rect key="frame" x="0.0" y="29" width="216" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="216" id="Vki-CK-7D2"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="k27-5c-RuB" firstAttribute="leading" secondItem="hVa-WA-1A1" secondAttribute="leading" id="1sx-B0-RIR"/>
+                                    <constraint firstAttribute="trailing" secondItem="k27-5c-RuB" secondAttribute="trailing" id="GB5-5v-Ujw"/>
+                                    <constraint firstItem="k27-5c-RuB" firstAttribute="top" secondItem="hVa-WA-1A1" secondAttribute="top" constant="31" id="IuT-tb-Mlc"/>
+                                    <constraint firstAttribute="bottom" secondItem="k27-5c-RuB" secondAttribute="bottom" id="iKD-gW-bmo"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="kU5-xI-09n" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="eOY-Kw-YFk"/>
+                    <constraint firstItem="kU5-xI-09n" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="hQq-0f-LH7"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="kU5-xI-09n" secondAttribute="bottom" constant="1" id="o9G-lh-Vxb"/>
+                    <constraint firstItem="kU5-xI-09n" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="sbA-vh-gm4"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="albumArtistLabel" destination="2g6-oU-N9d" id="6vM-5X-bPh"/>
+                <outlet property="albumTitleLabel" destination="fzf-Wd-9wl" id="Fa5-E4-IpO"/>
+                <outlet property="jacketImageView" destination="hLk-6X-ND9" id="cTy-x6-1Ni"/>
+            </connections>
+            <point key="canvasLocation" x="35" y="5.5"/>
+        </tableViewCell>
+    </objects>
+</document>

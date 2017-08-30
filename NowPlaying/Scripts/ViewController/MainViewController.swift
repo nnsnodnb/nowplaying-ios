@@ -11,11 +11,16 @@ import MediaPlayer
 
 class MainViewController: UIViewController {
 
+    @IBOutlet weak var tableView: UITableView!
+
     fileprivate let audioPlayer = AVAudioPlayer()
+
+    fileprivate var albums = [MPMediaItemCollection]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        createAlbums()
+        setupTableView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -23,23 +28,44 @@ class MainViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func onTapButton(_ sender: Any) {
-        let pickerViewController = MPMediaPickerController(mediaTypes: .music)
-        pickerViewController.delegate = self
-        pickerViewController.allowsPickingMultipleItems = false
-        present(pickerViewController, animated: true, completion: nil)
+    // MARK: - Private method
+
+    fileprivate func createAlbums() {
+        if let collections = MPMediaQuery.albums().collections {
+            albums = collections
+        }
+    }
+
+    fileprivate func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.estimatedRowHeight = 97
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.register(UINib(nibName: "AlbumTableViewCell", bundle: nil),
+                           forCellReuseIdentifier: "AlbumCell")
     }
 }
 
-// MARK: - MPMediaPickerControllerDelegate
+// MARK: - UITableViewDataSource
 
-extension MainViewController : MPMediaPickerControllerDelegate {
+extension MainViewController : UITableViewDataSource {
 
-    func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
-        
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return albums.count
     }
 
-    func MainViewController(_ mediaPicker: MPMediaPickerController) {
-        dismiss(animated: true, completion: nil)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AlbumCell", for: indexPath) as! AlbumTableViewCell
+        cell.setConfigure(album: albums[indexPath.row])
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension MainViewController : UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
