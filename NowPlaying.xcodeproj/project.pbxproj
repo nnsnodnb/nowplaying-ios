@@ -12,16 +12,16 @@
 		CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */; };
 		CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B001F56B04E00315019 /* MediaPlayer.framework */; };
 		CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B061F56E89100315019 /* AVFoundation.framework */; };
-		CF615B091F56EA3900315019 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615AEF1F56AB3B00315019 /* MainViewController.swift */; };
 		CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615AED1F56AB3B00315019 /* AppDelegate.swift */; };
 		CF615B0F1F56EEB200315019 /* AlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B0D1F56EEB200315019 /* AlbumTableViewCell.swift */; };
 		CF615B101F56EEB200315019 /* AlbumTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */; };
+		CF615B131F56F56100315019 /* Album.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615B121F56F56100315019 /* Album.storyboard */; };
+		CF615B161F56F5A800315019 /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B151F56F5A800315019 /* AlbumViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		CF615AEA1F56AB3B00315019 /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF615AED1F56AB3B00315019 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CF615AEF1F56AB3B00315019 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		CF615AF21F56AB3B00315019 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CF615AF41F56AB3B00315019 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CF615AF71F56AB3B00315019 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -30,6 +30,8 @@
 		CF615B061F56E89100315019 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CF615B0D1F56EEB200315019 /* AlbumTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumTableViewCell.swift; path = View/UITableViewCell/AlbumTableViewCell.swift; sourceTree = "<group>"; };
 		CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AlbumTableViewCell.xib; path = View/UITableViewCell/AlbumTableViewCell.xib; sourceTree = "<group>"; };
+		CF615B121F56F56100315019 /* Album.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Album.storyboard; path = Album/Album.storyboard; sourceTree = "<group>"; };
+		CF615B151F56F5A800315019 /* AlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumViewController.swift; path = Album/AlbumViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,7 +96,7 @@
 		CF615B031F56E76200315019 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				CF615AEF1F56AB3B00315019 /* MainViewController.swift */,
+				CF615B141F56F57A00315019 /* Album */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -102,6 +104,7 @@
 		CF615B041F56E76A00315019 /* Storyboard */ = {
 			isa = PBXGroup;
 			children = (
+				CF615B111F56F54F00315019 /* Album */,
 				CF615B081F56E8D200315019 /* Main */,
 				CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */,
 			);
@@ -140,6 +143,22 @@
 				CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */,
 			);
 			name = UITableViewCell;
+			sourceTree = "<group>";
+		};
+		CF615B111F56F54F00315019 /* Album */ = {
+			isa = PBXGroup;
+			children = (
+				CF615B121F56F56100315019 /* Album.storyboard */,
+			);
+			name = Album;
+			sourceTree = "<group>";
+		};
+		CF615B141F56F57A00315019 /* Album */ = {
+			isa = PBXGroup;
+			children = (
+				CF615B151F56F5A800315019 /* AlbumViewController.swift */,
+			);
+			name = Album;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,6 +225,7 @@
 				CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */,
 				CF615AF31F56AB3B00315019 /* Main.storyboard in Resources */,
 				CF615B101F56EEB200315019 /* AlbumTableViewCell.xib in Resources */,
+				CF615B131F56F56100315019 /* Album.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,7 +236,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF615B091F56EA3900315019 /* MainViewController.swift in Sources */,
+				CF615B161F56F5A800315019 /* AlbumViewController.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
 				CF615B0F1F56EEB200315019 /* AlbumTableViewCell.swift in Sources */,
 			);

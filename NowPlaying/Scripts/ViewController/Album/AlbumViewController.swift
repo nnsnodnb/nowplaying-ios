@@ -1,5 +1,5 @@
 //
-//  MainViewController.swift
+//  AlbumViewController.swift
 //  NowPlaying
 //
 //  Created by Oka Yuya on 2017/08/30.
@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-class MainViewController: UIViewController {
+class AlbumViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -48,7 +48,7 @@ class MainViewController: UIViewController {
 
 // MARK: - UITableViewDataSource
 
-extension MainViewController : UITableViewDataSource {
+extension AlbumViewController : UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return albums.count
@@ -63,7 +63,7 @@ extension MainViewController : UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 
-extension MainViewController : UITableViewDelegate {
+extension AlbumViewController : UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
