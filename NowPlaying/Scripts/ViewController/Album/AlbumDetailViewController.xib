@@ -17,7 +17,7 @@
                 <outlet property="genreLabel" destination="P7X-EY-0Dg" id="VqK-OX-a4V"/>
                 <outlet property="releaseYearLabel" destination="9BZ-if-fTo" id="X4W-H1-uy6"/>
                 <outlet property="tableView" destination="llX-gv-bSZ" id="fif-IO-jFd"/>
-                <outlet property="topMargin" destination="Xma-Ae-UcU" id="yOT-M3-dnt"/>
+                <outlet property="topMargin" destination="qoS-qy-7O2" id="iIa-9n-jup"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -124,12 +124,10 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="QGN-mP-aw7" secondAttribute="bottom" id="3m4-Xf-Gez"/>
-                <constraint firstItem="QGN-mP-aw7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="7kU-Vj-Rgz"/>
-                <constraint firstItem="QGN-mP-aw7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Xma-Ae-UcU"/>
-                <constraint firstItem="QGN-mP-aw7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="ggF-ob-Xap"/>
-                <constraint firstAttribute="trailing" secondItem="QGN-mP-aw7" secondAttribute="trailing" id="pmJ-4w-I0s"/>
-                <constraint firstItem="QGN-mP-aw7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="sIv-Bp-Pmm"/>
+                <constraint firstItem="QGN-mP-aw7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ACI-Dx-dbh"/>
+                <constraint firstAttribute="bottom" secondItem="QGN-mP-aw7" secondAttribute="bottom" id="JoL-Sy-BRb"/>
+                <constraint firstAttribute="trailing" secondItem="QGN-mP-aw7" secondAttribute="trailing" id="QwL-R2-Z6V"/>
+                <constraint firstItem="QGN-mP-aw7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="qoS-qy-7O2"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="54.5"/>
         </view>

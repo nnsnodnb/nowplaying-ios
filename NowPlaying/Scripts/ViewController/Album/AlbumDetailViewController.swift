@@ -48,6 +48,7 @@ class AlbumDetailViewController: UIViewController {
         tableView.delegate = self
         tableView.register(UINib(nibName: "SongTableViewCell", bundle: nil),
                            forCellReuseIdentifier: "SongCell")
+        tableView.tableFooterView = UIView()
     }
 }
 

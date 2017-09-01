@@ -13,8 +13,6 @@ class AlbumViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
-    fileprivate let audioPlayer = AVAudioPlayer()
-
     fileprivate var albums = [MPMediaItemCollection]()
 
     // MARK: - Life cycle
