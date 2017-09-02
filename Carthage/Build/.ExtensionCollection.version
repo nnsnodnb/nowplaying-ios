@@ -1,0 +1,9 @@
+{
+  "commitish" : "0.0.3",
+  "iOS" : [
+    {
+      "hash" : "dd710cad15d2b19cecc6ea2074bd08050dda81766dc5b52096ac6584c8ffc40c",
+      "name" : "ExtensionCollection"
+    }
+  ]
+}
