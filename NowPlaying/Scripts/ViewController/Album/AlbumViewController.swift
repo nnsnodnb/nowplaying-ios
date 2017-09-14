@@ -19,6 +19,7 @@ class AlbumViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "アルバム一覧"
         createAlbums()
         setupTableView()
     }
