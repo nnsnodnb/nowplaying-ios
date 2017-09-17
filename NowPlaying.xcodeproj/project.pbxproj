@@ -24,7 +24,6 @@
 		CF6334891F5AB6EB00D80EB8 /* ExtensionCollection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */; };
 		CF8C85CA1F6EB3CF0051A0C7 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C85C91F6EB3CF0051A0C7 /* AudioManager.swift */; };
 		CF8C85CC1F6EFBE30051A0C7 /* KeychainSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF8C85CB1F6EFBE30051A0C7 /* KeychainSwift.framework */; };
-		CF8C85CE1F6F04C40051A0C7 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF8C85CD1F6F04C40051A0C7 /* OAuthSwift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,7 +46,6 @@
 		CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExtensionCollection.framework; path = Carthage/Build/iOS/ExtensionCollection.framework; sourceTree = "<group>"; };
 		CF8C85C91F6EB3CF0051A0C7 /* AudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioManager.swift; path = Manager/AudioManager.swift; sourceTree = "<group>"; };
 		CF8C85CB1F6EFBE30051A0C7 /* KeychainSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainSwift.framework; path = Carthage/Build/iOS/KeychainSwift.framework; sourceTree = "<group>"; };
-		CF8C85CD1F6F04C40051A0C7 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +53,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF8C85CE1F6F04C40051A0C7 /* OAuthSwift.framework in Frameworks */,
 				CF8C85CC1F6EFBE30051A0C7 /* KeychainSwift.framework in Frameworks */,
 				CF6334891F5AB6EB00D80EB8 /* ExtensionCollection.framework in Frameworks */,
 				CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */,
@@ -96,7 +93,6 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CF8C85CD1F6F04C40051A0C7 /* OAuthSwift.framework */,
 				CF8C85CB1F6EFBE30051A0C7 /* KeychainSwift.framework */,
 				CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */,
 				CF615B061F56E89100315019 /* AVFoundation.framework */,
@@ -278,7 +274,6 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/ExtensionCollection.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/KeychainSwift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/OAuthSwift.framework",
 			);
 			outputPaths = (
 			);

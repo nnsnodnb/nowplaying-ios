@@ -1,3 +1,2 @@
 github "HiyakashiGroupHoldings/ExtensionCollection" "0.0.3"
-github "OAuthSwift/OAuthSwift" "79e1f437ce1e5819e87e0304eb0f7b6e371209fc"
 github "marketplacer/keychain-swift" "8.0.3"
