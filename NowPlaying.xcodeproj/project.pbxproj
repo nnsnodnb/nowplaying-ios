@@ -30,6 +30,7 @@
 		CF8C85D91F6F12550051A0C7 /* TwitterShareExtensionUIResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85D51F6F12550051A0C7 /* TwitterShareExtensionUIResources.bundle */; };
 		CF8C85E01F6F1B610051A0C7 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85DF1F6F1B610051A0C7 /* .env */; };
 		CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85E11F6F1B6F0051A0C7 /* .env.sample */; };
+		CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		CF8C85DE1F6F1AC20051A0C7 /* NowPlaying.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NowPlaying.entitlements; sourceTree = "<group>"; };
 		CF8C85DF1F6F1B610051A0C7 /* .env */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env; sourceTree = "<group>"; };
 		CF8C85E11F6F1B6F0051A0C7 /* .env.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env.sample; sourceTree = "<group>"; };
+		CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthManager.swift; path = Manager/AuthManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				CF8C85C91F6EB3CF0051A0C7 /* AudioManager.swift */,
+				CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF8C85CA1F6EB3CF0051A0C7 /* AudioManager.swift in Sources */,
+				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CF615B161F56F5A800315019 /* AlbumViewController.swift in Sources */,
 				CF615B191F56FF0200315019 /* AlbumDetailViewController.swift in Sources */,
 				CF615B1D1F5707E200315019 /* SongTableViewCell.swift in Sources */,
