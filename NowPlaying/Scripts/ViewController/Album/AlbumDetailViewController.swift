@@ -110,12 +110,8 @@ extension AlbumDetailViewController : UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let url = singles[indexPath.row].value(forProperty: MPMediaItemPropertyAssetURL) as? URL {
-            try! AudioManager.shared.audioPlayer = AVAudioPlayer(contentsOf: url)
-            AudioManager.shared.audioPlayer.delegate = AudioManager.shared
-            try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
-            try! AVAudioSession.sharedInstance().setActive(true)
-            AudioManager.shared.audioPlayer.play()
-        }
+        AudioManager.shared.play(url: singles[indexPath.row].value(forProperty: MPMediaItemPropertyAssetURL) as? URL,
+                                 album: singles,
+                                 number: indexPath.row)
     }
 }

@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        UIApplication.shared.beginReceivingRemoteControlEvents()
         return true
     }
 
@@ -41,6 +42,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    override func remoteControlReceived(with event: UIEvent?) {
+        switch event?.subtype {
+        case .some(.remoteControlPlay):
+            AudioManager.shared.play()
+        case .some(.remoteControlPause):
+            AudioManager.shared.pause()
+        case .some(.remoteControlNextTrack):
+            AudioManager.shared.next()
+        case .some(.remoteControlPreviousTrack):
+            AudioManager.shared.previous()
+        default:
+            break
+        }
+    }
 }
 
