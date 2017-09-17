@@ -233,6 +233,7 @@
 				CF615AE71F56AB3B00315019 /* Frameworks */,
 				CF615AE81F56AB3B00315019 /* Resources */,
 				CF63348A1F5AB6F200D80EB8 /* ShellScript */,
+				CF8C85E31F6F26260051A0C7 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -319,6 +320,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+		CF8C85E31F6F26260051A0C7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFileSource=\"${SRCROOT}/${INFOPLIST_FILE}\"\ninfoPlistFileDestination=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\n. NowPlaying/Resources/.env\n\n$plistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 twitterkit-${TWITTER_CONSUMER_KEY}\" \"${infoPlistFileDestination}\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -467,6 +481,7 @@
 					"$(PROJECT_DIR)/Twitter-Kit",
 				);
 				INFOPLIST_FILE = /Users/nnsnodnb/workspace/ios/NowPlaying/NowPlaying/Resources/Info.plist;
+				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
@@ -487,6 +502,7 @@
 					"$(PROJECT_DIR)/Twitter-Kit",
 				);
 				INFOPLIST_FILE = /Users/nnsnodnb/workspace/ios/NowPlaying/NowPlaying/Resources/Info.plist;
+				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
