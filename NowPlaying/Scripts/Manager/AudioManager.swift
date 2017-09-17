@@ -43,10 +43,14 @@ class AudioManager: NSObject {
     }
 
     func next() {
-        guard let number = currentNumberOfDisc, let album = currentAlbum, number != (album.count - 1) else {
+        guard let number = currentNumberOfDisc, let album = currentAlbum else {
             return
         }
-        currentNumberOfDisc! += 1
+        if number == album.count - 1 {
+            currentNumberOfDisc = 0
+        } else {
+            currentNumberOfDisc! += 1
+        }
         pause()
         play(url: album[currentNumberOfDisc!].value(forProperty: MPMediaItemPropertyAssetURL) as? URL,
              album: album,
@@ -54,11 +58,15 @@ class AudioManager: NSObject {
     }
 
     func previous() {
-        guard let number = currentNumberOfDisc, let album = currentAlbum, number != 0 else {
+        guard let album = currentAlbum, currentNumberOfDisc != nil else {
             return
         }
-        // TODO: - 1秒以内の再生なら曲の始めに戻す
-        currentNumberOfDisc! -= 1
+        if audioPlayer.currentTime < 2.0 {
+            currentNumberOfDisc! -= 1
+        }
+        if currentNumberOfDisc! == -1 {
+            currentNumberOfDisc = album.count - 1
+        }
         pause()
         play(url: album[currentNumberOfDisc!].value(forProperty: MPMediaItemPropertyAssetURL) as? URL,
              album: album,
