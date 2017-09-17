@@ -234,9 +234,9 @@
 			buildPhases = (
 				CF615AE61F56AB3B00315019 /* Sources */,
 				CF615AE71F56AB3B00315019 /* Frameworks */,
+				CF8C85E31F6F26260051A0C7 /* ShellScript */,
 				CF615AE81F56AB3B00315019 /* Resources */,
 				CF63348A1F5AB6F200D80EB8 /* ShellScript */,
-				CF8C85E31F6F26260051A0C7 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -311,7 +311,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		CF63348A1F5AB6F200D80EB8 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -326,7 +326,7 @@
 		};
 		CF8C85E31F6F26260051A0C7 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
