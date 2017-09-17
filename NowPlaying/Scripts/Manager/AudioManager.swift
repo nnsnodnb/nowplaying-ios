@@ -26,11 +26,17 @@ class AudioManager: NSObject {
         guard url != nil else {
             return
         }
-        try! audioPlayer = AVAudioPlayer(contentsOf: url!)
-        audioPlayer.delegate = self
-        try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
-        try! AVAudioSession.sharedInstance().setActive(true)
-        audioPlayer.play()
+        do {
+            try audioPlayer = AVAudioPlayer(contentsOf: url!)
+            audioPlayer.delegate = self
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try AVAudioSession.sharedInstance().setActive(true)
+            try AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker)
+
+            audioPlayer.play()
+        } catch {
+            return
+        }
         if album == nil, number != nil {
             return
         }
