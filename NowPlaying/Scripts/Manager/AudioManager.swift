@@ -126,15 +126,18 @@ class AudioManager: NSObject {
     }
 
     fileprivate func notifyNowPlaying(song: MPMediaItem) {
-        MPNowPlayingInfoCenter.default().nowPlayingInfo  = [
+        var nowPlayingInfo: [String: Any] = [
             MPMediaItemPropertyTitle: song.value(forProperty: MPMediaItemPropertyTitle) ?? "",
             MPMediaItemPropertyAlbumTitle: song.value(forProperty: MPMediaItemPropertyAlbumTitle) ?? "",
             MPMediaItemPropertyArtist: song.value(forProperty: MPMediaItemPropertyArtist) ?? "",
-            MPMediaItemPropertyArtwork: currentAlbum?.representativeItem?.artwork ?? nil,
             MPNowPlayingInfoPropertyPlaybackRate: 1.0,
             MPMediaItemPropertyPlaybackDuration: AudioManager.shared.duration,
             MPNowPlayingInfoPropertyElapsedPlaybackTime: AudioManager.shared.currentTime
         ]
+        if let artwork = currentAlbum?.representativeItem?.artwork {
+            nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
+        }
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
 }
 
