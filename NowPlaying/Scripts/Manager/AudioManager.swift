@@ -145,5 +145,15 @@ class AudioManager: NSObject {
 
 extension AudioManager : AVAudioPlayerDelegate {
 
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        next()
+    }
 
+    func audioPlayerBeginInterruption(_ player: AVAudioPlayer) {
+        pause()
+    }
+
+    func audioPlayerEndInterruption(_ player: AVAudioPlayer, withOptions flags: Int) {
+        play()
+    }
 }
