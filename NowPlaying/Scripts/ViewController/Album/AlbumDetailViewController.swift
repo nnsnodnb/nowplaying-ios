@@ -75,6 +75,7 @@ class AlbumDetailViewController: UIViewController {
             return
         }
         singles = album!.items
+        AudioManager.shared.currentAlbum = album
     }
 
     fileprivate func setupTableView() {

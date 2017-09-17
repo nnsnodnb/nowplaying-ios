@@ -43,18 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     override func remoteControlReceived(with event: UIEvent?) {
-        switch event?.subtype {
-        case .some(.remoteControlPlay):
-            AudioManager.shared.play()
-        case .some(.remoteControlPause):
-            AudioManager.shared.pause()
-        case .some(.remoteControlNextTrack):
-            AudioManager.shared.next()
-        case .some(.remoteControlPreviousTrack):
-            AudioManager.shared.previous()
-        default:
-            break
-        }
+        AudioManager.shared.remoteControlReceived(with: event)
     }
 }
 
