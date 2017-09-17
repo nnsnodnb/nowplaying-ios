@@ -63,9 +63,11 @@ class AudioManager: NSObject {
         }
         if audioPlayer.currentTime < 2.0 {
             currentNumberOfDisc! -= 1
-        }
-        if currentNumberOfDisc! == -1 {
-            currentNumberOfDisc = album.count - 1
+        } else {
+            audioPlayer.stop()
+            audioPlayer.currentTime = 0.0
+            audioPlayer.play()
+            return
         }
         pause()
         play(url: album[currentNumberOfDisc!].value(forProperty: MPMediaItemPropertyAssetURL) as? URL,
