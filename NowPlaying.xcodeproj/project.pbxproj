@@ -22,6 +22,7 @@
 		CF615B1D1F5707E200315019 /* SongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B1B1F5707E200315019 /* SongTableViewCell.swift */; };
 		CF615B1E1F5707E200315019 /* SongTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF615B1C1F5707E200315019 /* SongTableViewCell.xib */; };
 		CF6334891F5AB6EB00D80EB8 /* ExtensionCollection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */; };
+		CF8C85CA1F6EB3CF0051A0C7 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C85C91F6EB3CF0051A0C7 /* AudioManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		CF615B1B1F5707E200315019 /* SongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SongTableViewCell.swift; path = View/UITableViewCell/SongTableViewCell.swift; sourceTree = "<group>"; };
 		CF615B1C1F5707E200315019 /* SongTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SongTableViewCell.xib; path = View/UITableViewCell/SongTableViewCell.xib; sourceTree = "<group>"; };
 		CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExtensionCollection.framework; path = Carthage/Build/iOS/ExtensionCollection.framework; sourceTree = "<group>"; };
+		CF8C85C91F6EB3CF0051A0C7 /* AudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioManager.swift; path = Manager/AudioManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 		CF615B021F56E75900315019 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				CF8C85C81F6EB3AE0051A0C7 /* Manager */,
 				CF615B0B1F56EE7600315019 /* View */,
 				CF615B031F56E76200315019 /* ViewController */,
 				CF615AED1F56AB3B00315019 /* AppDelegate.swift */,
@@ -175,6 +178,14 @@
 				CF615B181F56FF0200315019 /* AlbumDetailViewController.xib */,
 			);
 			name = Album;
+			sourceTree = "<group>";
+		};
+		CF8C85C81F6EB3AE0051A0C7 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				CF8C85C91F6EB3CF0051A0C7 /* AudioManager.swift */,
+			);
+			name = Manager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -272,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF8C85CA1F6EB3CF0051A0C7 /* AudioManager.swift in Sources */,
 				CF615B161F56F5A800315019 /* AlbumViewController.swift in Sources */,
 				CF615B191F56FF0200315019 /* AlbumDetailViewController.swift in Sources */,
 				CF615B1D1F5707E200315019 /* SongTableViewCell.swift in Sources */,
