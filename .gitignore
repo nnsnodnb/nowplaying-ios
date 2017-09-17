@@ -60,3 +60,6 @@ Podfile.lock
 # Carthage
 #Carthage/Build/
 Carthage/Checkouts/
+
+# Other
+.env

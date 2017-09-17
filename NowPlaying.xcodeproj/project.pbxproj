@@ -28,6 +28,8 @@
 		CF8C85D71F6F12550051A0C7 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF8C85D31F6F12550051A0C7 /* TwitterKit.framework */; };
 		CF8C85D81F6F12550051A0C7 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85D41F6F12550051A0C7 /* TwitterKitResources.bundle */; };
 		CF8C85D91F6F12550051A0C7 /* TwitterShareExtensionUIResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85D51F6F12550051A0C7 /* TwitterShareExtensionUIResources.bundle */; };
+		CF8C85E01F6F1B610051A0C7 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85DF1F6F1B610051A0C7 /* .env */; };
+		CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85E11F6F1B6F0051A0C7 /* .env.sample */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +56,9 @@
 		CF8C85D31F6F12550051A0C7 /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterKit.framework; sourceTree = "<group>"; };
 		CF8C85D41F6F12550051A0C7 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TwitterKitResources.bundle; sourceTree = "<group>"; };
 		CF8C85D51F6F12550051A0C7 /* TwitterShareExtensionUIResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TwitterShareExtensionUIResources.bundle; sourceTree = "<group>"; };
+		CF8C85DE1F6F1AC20051A0C7 /* NowPlaying.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NowPlaying.entitlements; sourceTree = "<group>"; };
+		CF8C85DF1F6F1B610051A0C7 /* .env */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env; sourceTree = "<group>"; };
+		CF8C85E11F6F1B6F0051A0C7 /* .env.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env.sample; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +98,7 @@
 		CF615AEC1F56AB3B00315019 /* NowPlaying */ = {
 			isa = PBXGroup;
 			children = (
+				CF8C85DE1F6F1AC20051A0C7 /* NowPlaying.entitlements */,
 				CF615B041F56E76A00315019 /* Storyboard */,
 				CF615B021F56E75900315019 /* Scripts */,
 				CF615B051F56E77700315019 /* Resources */,
@@ -146,6 +152,8 @@
 			children = (
 				CF615AF41F56AB3B00315019 /* Assets.xcassets */,
 				CF615AF91F56AB3B00315019 /* Info.plist */,
+				CF8C85DF1F6F1B610051A0C7 /* .env */,
+				CF8C85E11F6F1B6F0051A0C7 /* .env.sample */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -249,6 +257,11 @@
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 99649YXF6E;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -280,6 +293,8 @@
 				CF8C85D91F6F12550051A0C7 /* TwitterShareExtensionUIResources.bundle in Resources */,
 				CF615B1A1F56FF0200315019 /* AlbumDetailViewController.xib in Resources */,
 				CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */,
+				CF8C85E01F6F1B610051A0C7 /* .env in Resources */,
+				CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */,
 				CF615B1E1F5707E200315019 /* SongTableViewCell.xib in Resources */,
 				CF615AF31F56AB3B00315019 /* Main.storyboard in Resources */,
 				CF615B101F56EEB200315019 /* AlbumTableViewCell.xib in Resources */,
@@ -444,6 +459,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = NowPlaying/NowPlaying.entitlements;
 				DEVELOPMENT_TEAM = 99649YXF6E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -463,6 +479,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = NowPlaying/NowPlaying.entitlements;
 				DEVELOPMENT_TEAM = 99649YXF6E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
