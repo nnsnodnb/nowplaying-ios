@@ -1,0 +1,7 @@
+name: ExtensionCollection, nameSpecified: , owner: HiyakashiGroupHoldings, version: 0.0.3
+
+name: keychain-swift, nameSpecified: , owner: marketplacer, version: 8.0.3
+
+add-version-numbers: true
+
+LicensePlist Version: 1.4.5
