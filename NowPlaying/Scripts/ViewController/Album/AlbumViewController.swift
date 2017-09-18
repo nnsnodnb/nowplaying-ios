@@ -42,8 +42,7 @@ class AlbumViewController: UIViewController {
                     }
                 }
             case .denied:
-                self.tableView.tableFooterView = UIView()
-                // TODO: - 許可にするように促す
+                self.showRequestDeniedAlert()
             case .notDetermined, .restricted:
                 break
             }
@@ -58,6 +57,15 @@ class AlbumViewController: UIViewController {
         tableView.tableFooterView = UIView()
         tableView.register(UINib(nibName: "AlbumTableViewCell", bundle: nil),
                            forCellReuseIdentifier: "AlbumCell")
+    }
+
+    fileprivate func showRequestDeniedAlert() {
+        let alert = UIAlertController(title: "アプリを使用するには\n許可が必要です", message: "設定しますか？", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "設定画面へ", style: .default, handler: { _ in
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+        }))
+        present(alert, animated: true, completion: nil)
     }
 }
 
