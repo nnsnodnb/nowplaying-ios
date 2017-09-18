@@ -1,3 +1,9 @@
+name: TwitterCore, nameSpecified: 
+body: Copyright Twitter, I…
+
+name: TwitterKit, nameSpecified: 
+body: Twitter Kit: Copyrig…
+
 name: ExtensionCollection, nameSpecified: , owner: HiyakashiGroupHoldings, version: 0.0.3
 
 name: keychain-swift, nameSpecified: , owner: marketplacer, version: 8.0.3

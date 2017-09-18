@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "if [ $CONFIGURATION = &quot;Debug&quot; ]; then&#10;cd $SRCROOT&#10;/usr/local/bin/license-plist --add-version-numbers --output-path $PRODUCT_NAME/Resources/Settings.bundle --cartfile-path Cartfile&#10;fi">
+               scriptText = "if [ $CONFIGURATION = &quot;Debug&quot; ]; then&#10;cd $SRCROOT&#10;/usr/local/bin/license-plist --add-version-numbers --output-path $PRODUCT_NAME/Resources/Settings.bundle --cartfile-path Cartfile --pods-path Pods&#10;fi">
             </ActionContent>
          </ExecutionAction>
       </PreActions>
