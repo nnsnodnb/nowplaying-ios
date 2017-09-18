@@ -4,6 +4,18 @@
 
 NowPlaying tweet application for iOS.
 
+## Installation
+
+```bash
+$ brew update
+$ brew install mono0926/license-plist/license-plist
+$ brew install carthage
+$ gem install bundler
+$ bundle install
+$ bundle exec pod install
+$ carthage bootstrap --platform ios
+```
+
 ## LICENSE
 
 [MIT LICENSE](LICENSE)
