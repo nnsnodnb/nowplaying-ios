@@ -32,8 +32,21 @@ class AlbumViewController: UIViewController {
     // MARK: - Private method
 
     fileprivate func createAlbums() {
-        if let collections = MPMediaQuery.albums().collections {
-            albums = collections
+        MPMediaLibrary.requestAuthorization { [unowned self] (status) in
+            switch status {
+            case .authorized:
+                if let collections = MPMediaQuery.albums().collections {
+                    self.albums = collections
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
+            case .denied:
+                self.tableView.tableFooterView = UIView()
+                // TODO: - 許可にするように促す
+            case .notDetermined, .restricted:
+                break
+            }
         }
     }
 
@@ -42,6 +55,7 @@ class AlbumViewController: UIViewController {
         tableView.delegate = self
         tableView.estimatedRowHeight = 97
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableFooterView = UIView()
         tableView.register(UINib(nibName: "AlbumTableViewCell", bundle: nil),
                            forCellReuseIdentifier: "AlbumCell")
     }
