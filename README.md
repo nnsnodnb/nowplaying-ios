@@ -12,6 +12,7 @@ $ brew install mono0926/license-plist/license-plist
 $ brew install carthage
 $ gem install bundler
 $ bundle install
+$ bundle exec pod repo update
 $ bundle exec pod install
 $ carthage bootstrap --platform ios
 ```
