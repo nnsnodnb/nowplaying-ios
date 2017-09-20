@@ -30,13 +30,14 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mog-av-GTN">
                                     <rect key="frame" x="31" y="0.0" width="240" height="303"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hQk-D4-a1j">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hQk-D4-a1j">
                                             <rect key="frame" x="0.0" y="0.0" width="240" height="240"/>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="曲名" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LaS-KO-82c">
                                             <rect key="frame" x="0.0" y="264" width="240" height="39"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="240" id="FeT-RW-gKp"/>
+                                                <constraint firstAttribute="height" constant="39" id="dm4-An-ILj"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>

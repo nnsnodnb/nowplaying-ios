@@ -14,8 +14,17 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var artworkImageView: UIImageView!
     @IBOutlet weak var songNameLabel: UILabel!
 
-    var albumTitle: String!
-    var singles: [MPMediaItem]!
+    var albumTitle: String! {
+        didSet {
+            title = albumTitle
+        }
+    }
+    var song: MPMediaItem? {
+        didSet {
+            artworkImageView.image = song?.artwork?.image(at: artworkImageView.frame.size)
+            songNameLabel.text = song?.title
+        }
+    }
 
     // MARK: - Life cycle
 
@@ -36,6 +45,5 @@ class PlayViewController: UIViewController {
         guard navigationController != nil else {
             return
         }
-        title = albumTitle
     }
 }

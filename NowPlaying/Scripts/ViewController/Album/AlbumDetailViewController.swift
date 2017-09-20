@@ -118,7 +118,7 @@ extension AlbumDetailViewController : UITableViewDelegate {
                                  number: indexPath.row)
         let playViewController = PlayViewController()
         playViewController.albumTitle = title
-        playViewController.singles = singles
+//        playViewController.singles = singles
         navigationController?.pushViewController(playViewController, animated: true)
     }
 }
