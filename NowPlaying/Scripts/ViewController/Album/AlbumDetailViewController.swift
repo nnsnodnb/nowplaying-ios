@@ -50,6 +50,8 @@ class AlbumDetailViewController: UIViewController {
         } else {
             title = "不明なアルバム"
         }
+        let backButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = backButtonItem
     }
 
     fileprivate func setLabel() {
@@ -114,5 +116,9 @@ extension AlbumDetailViewController : UITableViewDelegate {
         AudioManager.shared.play(url: singles[indexPath.row].value(forProperty: MPMediaItemPropertyAssetURL) as? URL,
                                  album: singles,
                                  number: indexPath.row)
+        let playViewController = PlayViewController()
+        playViewController.albumTitle = title
+        playViewController.singles = singles
+        navigationController?.pushViewController(playViewController, animated: true)
     }
 }

@@ -1,0 +1,41 @@
+//
+//  PlayViewController.swift
+//  NowPlaying
+//
+//  Created by Oka Yuya on 2017/09/20.
+//  Copyright © 2017年 Oka Yuya. All rights reserved.
+//
+
+import UIKit
+import MediaPlayer
+
+class PlayViewController: UIViewController {
+
+    @IBOutlet weak var artworkImageView: UIImageView!
+    @IBOutlet weak var songNameLabel: UILabel!
+
+    var albumTitle: String!
+    var singles: [MPMediaItem]!
+
+    // MARK: - Life cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setup()
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
+    fileprivate func setup() {
+        setupNavigation()
+    }
+
+    fileprivate func setupNavigation() {
+        guard navigationController != nil else {
+            return
+        }
+        title = albumTitle
+    }
+}
