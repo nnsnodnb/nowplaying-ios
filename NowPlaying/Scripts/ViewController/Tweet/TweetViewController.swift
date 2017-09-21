@@ -8,6 +8,7 @@
 
 import UIKit
 import TwitterKit
+import SVProgressHUD
 
 class TweetViewController: UIViewController {
 
@@ -71,20 +72,25 @@ class TweetViewController: UIViewController {
     }
 
     func onTapTweetButton(_ sender: UIBarButtonItem) {
+        SVProgressHUD.show()
         if shareImage != nil {
             TwitterClient.shared.client?.sendTweet(withText: textView.text, image: shareImage!, completion: { [unowned self] (tweet, error) in
                 if error != nil {
+                    SVProgressHUD.dismiss()
                     self.showError(error: error!)
                     return
                 }
+                SVProgressHUD.dismiss()
                 self.dismiss(animated: true, completion: nil)
             })
         } else {
             TwitterClient.shared.client?.sendTweet(withText: textView.text, completion: { [unowned self] (tweet, error) in
                 if error != nil {
+                    SVProgressHUD.dismiss()
                     self.showError(error: error!)
                     return
                 }
+                SVProgressHUD.dismiss()
                 self.dismiss(animated: true, completion: nil)
             })
         }

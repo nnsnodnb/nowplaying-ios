@@ -6,5 +6,6 @@ target 'NowPlaying' do
   use_frameworks!
 
   pod 'TwitterKit'
+  pod 'SVProgressHUD'
 
 end
