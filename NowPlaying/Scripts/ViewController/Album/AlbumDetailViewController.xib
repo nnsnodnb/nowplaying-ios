@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -67,27 +68,24 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="R17-pY-Bax">
-                                                            <rect key="frame" x="0.0" y="58" width="198" height="20"/>
+                                                            <rect key="frame" x="0.0" y="58" width="251" height="20"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ジャンル" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P7X-EY-0Dg">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="91" height="20"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="width" constant="91" id="dHG-0r-x5R"/>
-                                                                    </constraints>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="117.5" height="20"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="リリース年" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9BZ-if-fTo">
-                                                                    <rect key="frame" x="107" y="0.0" width="91" height="20"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="width" constant="91" id="7iG-qG-Oxs"/>
-                                                                    </constraints>
+                                                                    <rect key="frame" x="133.5" y="0.0" width="117.5" height="20"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="251" id="0aE-5h-ISs"/>
+                                                            </constraints>
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>
@@ -104,15 +102,17 @@
                                             </constraints>
                                         </view>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="pfz-3e-nnK" firstAttribute="top" secondItem="bwQ-5J-px3" secondAttribute="top" id="cmB-5i-1eo"/>
+                                        <constraint firstItem="pfz-3e-nnK" firstAttribute="leading" secondItem="bwQ-5J-px3" secondAttribute="leading" id="sOV-6b-sTe"/>
+                                    </constraints>
                                 </stackView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="bwQ-5J-px3" firstAttribute="top" secondItem="OIJ-5G-OGc" secondAttribute="topMargin" id="4as-hD-cOJ"/>
                                 <constraint firstAttribute="height" constant="116" id="IAo-mV-5bJ"/>
-                                <constraint firstAttribute="bottom" secondItem="bwQ-5J-px3" secondAttribute="bottom" constant="8" id="ZWD-8m-U3b"/>
                                 <constraint firstItem="bwQ-5J-px3" firstAttribute="leading" secondItem="OIJ-5G-OGc" secondAttribute="leadingMargin" id="dCG-54-lWz"/>
-                                <constraint firstItem="bwQ-5J-px3" firstAttribute="trailing" secondItem="OIJ-5G-OGc" secondAttribute="trailingMargin" id="wCb-ce-Thi"/>
                             </constraints>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="llX-gv-bSZ">

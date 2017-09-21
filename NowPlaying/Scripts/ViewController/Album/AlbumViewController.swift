@@ -32,8 +32,20 @@ class AlbumViewController: UIViewController {
     // MARK: - Private method
 
     fileprivate func createAlbums() {
-        if let collections = MPMediaQuery.albums().collections {
-            albums = collections
+        MPMediaLibrary.requestAuthorization { [unowned self] (status) in
+            switch status {
+            case .authorized:
+                if let collections = MPMediaQuery.albums().collections {
+                    self.albums = collections
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
+            case .denied:
+                self.showRequestDeniedAlert()
+            case .notDetermined, .restricted:
+                break
+            }
         }
     }
 
@@ -42,8 +54,18 @@ class AlbumViewController: UIViewController {
         tableView.delegate = self
         tableView.estimatedRowHeight = 97
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableFooterView = UIView()
         tableView.register(UINib(nibName: "AlbumTableViewCell", bundle: nil),
                            forCellReuseIdentifier: "AlbumCell")
+    }
+
+    fileprivate func showRequestDeniedAlert() {
+        let alert = UIAlertController(title: "アプリを使用するには\n許可が必要です", message: "設定しますか？", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "設定画面へ", style: .default, handler: { _ in
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+        }))
+        present(alert, animated: true, completion: nil)
     }
 }
 

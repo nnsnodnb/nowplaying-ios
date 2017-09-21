@@ -54,12 +54,10 @@ Temporary Items
 
 # CocoaPods
 Pods/
-Podfile.lock
-*.xcworkspace
 
 # Carthage
-#Carthage/Build/
 Carthage/Checkouts/
 
 # Other
 .env
+vendor/
