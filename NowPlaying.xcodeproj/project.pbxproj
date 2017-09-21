@@ -12,6 +12,9 @@
 		CF1611371F726D110027144D /* PlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF1611351F726D110027144D /* PlayViewController.xib */; };
 		CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1611391F727D8C0027144D /* SystemPlayViewController.swift */; };
 		CF16113D1F727DCE0027144D /* SystemPlay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF16113C1F727DCE0027144D /* SystemPlay.storyboard */; };
+		CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */; };
+		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
+		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
 		CF615AF31F56AB3B00315019 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF11F56AB3B00315019 /* Main.storyboard */; };
 		CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF41F56AB3B00315019 /* Assets.xcassets */; };
 		CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */; };
@@ -42,6 +45,9 @@
 		CF1611351F726D110027144D /* PlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlayViewController.xib; path = Play/PlayViewController.xib; sourceTree = "<group>"; };
 		CF1611391F727D8C0027144D /* SystemPlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SystemPlayViewController.swift; path = SystemPlay/SystemPlayViewController.swift; sourceTree = "<group>"; };
 		CF16113C1F727DCE0027144D /* SystemPlay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SystemPlay.storyboard; path = SystemPlay/SystemPlay.storyboard; sourceTree = "<group>"; };
+		CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TweetViewController.swift; path = Tweet/TweetViewController.swift; sourceTree = "<group>"; };
+		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
+		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
 		CF615AEA1F56AB3B00315019 /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF615AED1F56AB3B00315019 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF615AF21F56AB3B00315019 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -110,6 +116,15 @@
 			name = SystemPlay;
 			sourceTree = "<group>";
 		};
+		CF43E7D31F733C1F00A2A49A /* Tweet */ = {
+			isa = PBXGroup;
+			children = (
+				CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */,
+				CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */,
+			);
+			name = Tweet;
+			sourceTree = "<group>";
+		};
 		CF615AE11F56AB3B00315019 = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +183,7 @@
 				CF1611381F727D6E0027144D /* SystemPlay */,
 				CF615B141F56F57A00315019 /* Album */,
 				CF1611331F726CF20027144D /* Play */,
+				CF43E7D31F733C1F00A2A49A /* Tweet */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -245,6 +261,7 @@
 			children = (
 				CF8C85C91F6EB3CF0051A0C7 /* AudioManager.swift */,
 				CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */,
+				CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -336,6 +353,7 @@
 				CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */,
 				CF615B1E1F5707E200315019 /* SongTableViewCell.xib in Resources */,
 				CF16113D1F727DCE0027144D /* SystemPlay.storyboard in Resources */,
+				CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */,
 				CF1611371F726D110027144D /* PlayViewController.xib in Resources */,
 				CF615AF31F56AB3B00315019 /* Main.storyboard in Resources */,
 				CF615B101F56EEB200315019 /* AlbumTableViewCell.xib in Resources */,
@@ -435,6 +453,7 @@
 			files = (
 				CF1611361F726D110027144D /* PlayViewController.swift in Sources */,
 				CF8C85CA1F6EB3CF0051A0C7 /* AudioManager.swift in Sources */,
+				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CF615B161F56F5A800315019 /* AlbumViewController.swift in Sources */,
 				CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */,
@@ -442,6 +461,7 @@
 				CF615B1D1F5707E200315019 /* SongTableViewCell.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
 				CF615B0F1F56EEB200315019 /* AlbumTableViewCell.swift in Sources */,
+				CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

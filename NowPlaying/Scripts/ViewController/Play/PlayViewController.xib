@@ -32,6 +32,12 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hQk-D4-a1j">
                                             <rect key="frame" x="0.0" y="0.0" width="240" height="240"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                            </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="曲名" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LaS-KO-82c">
                                             <rect key="frame" x="0.0" y="264" width="240" height="39"/>
@@ -86,14 +92,30 @@
                         </view>
                     </subviews>
                 </stackView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="es6-R1-NoX">
+                    <rect key="frame" x="309" y="601" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="8I4-IF-Yz7"/>
+                        <constraint firstAttribute="height" constant="50" id="br1-b6-Odf"/>
+                    </constraints>
+                    <state key="normal" image="twitter"/>
+                    <connections>
+                        <action selector="onTapTwitterButton:" destination="-1" eventType="touchUpInside" id="cI8-c8-Xbb"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="es6-R1-NoX" secondAttribute="bottom" constant="16" id="52Q-Mt-D7Q"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="L0B-pi-jFq"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="36" id="btb-Oe-Sz7"/>
+                <constraint firstAttribute="trailing" secondItem="es6-R1-NoX" secondAttribute="trailing" constant="16" id="dXz-by-Rai"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="36" id="qjn-qq-j7c"/>
             </constraints>
             <point key="canvasLocation" x="34.5" y="53.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="twitter" width="128" height="128"/>
+    </resources>
 </document>

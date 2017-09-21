@@ -46,4 +46,12 @@ class PlayViewController: UIViewController {
             return
         }
     }
+
+    @IBAction func onTapTwitterButton(_ sender: Any) {
+        let tweetViewController = TweetViewController()
+        tweetViewController.tweetText = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
+        tweetViewController.shareImage = artworkImageView.image
+        let navi = UINavigationController(rootViewController: tweetViewController)
+        present(navi, animated: true, completion: nil)
+    }
 }
