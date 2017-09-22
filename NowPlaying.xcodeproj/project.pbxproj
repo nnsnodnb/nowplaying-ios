@@ -50,7 +50,6 @@
 		CF16113C1F727DCE0027144D /* SystemPlay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SystemPlay.storyboard; path = SystemPlay/SystemPlay.storyboard; sourceTree = "<group>"; };
 		CF1AAFDE1F7544F200384000 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingViewController.swift; path = Setting/SettingViewController.swift; sourceTree = "<group>"; };
 		CF1AAFDF1F7544F200384000 /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingViewController.xib; path = Setting/SettingViewController.xib; sourceTree = "<group>"; };
-		CF1AAFE21F75458E00384000 /* NowPlaying.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = NowPlaying.xcworkspace; sourceTree = "<group>"; };
 		CF1AAFE41F75459B00384000 /* Eureka.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Eureka.framework; path = Carthage/Build/iOS/Eureka.framework; sourceTree = "<group>"; };
 		CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TweetViewController.swift; path = Tweet/TweetViewController.swift; sourceTree = "<group>"; };
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
@@ -175,7 +174,6 @@
 			isa = PBXGroup;
 			children = (
 				CF1AAFE41F75459B00384000 /* Eureka.framework */,
-				CF1AAFE21F75458E00384000 /* NowPlaying.xcworkspace */,
 				CF8C85CB1F6EFBE30051A0C7 /* KeychainSwift.framework */,
 				CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */,
 				CF615B061F56E89100315019 /* AVFoundation.framework */,
@@ -429,6 +427,7 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/ExtensionCollection.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/KeychainSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Eureka.framework",
 			);
 			outputPaths = (
 			);
