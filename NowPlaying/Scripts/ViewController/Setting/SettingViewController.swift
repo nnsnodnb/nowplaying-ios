@@ -8,6 +8,7 @@
 
 import UIKit
 import Eureka
+import SVProgressHUD
 
 class SettingViewController: FormViewController {
 
@@ -39,7 +40,21 @@ class SettingViewController: FormViewController {
     }
 
     fileprivate func setupForm() {
-
+        form
+            +++ Section()
+            <<< ButtonRow() {
+                $0.title = "ログイン"
+            }.cellUpdate({ (cell, row) in
+                cell.textLabel?.textAlignment = .left
+                cell.textLabel?.textColor = UIColor.black
+                cell.accessoryType = .disclosureIndicator
+            }).onCellSelection({ (cell, row) in
+                row.deselect()
+                SVProgressHUD.show()
+                AuthManager.shared.login() {
+                    SVProgressHUD.showSuccess(withStatus: "ログインしました")
+                }
+            })
     }
 
     // MARK: - UIBarButtonItem target
