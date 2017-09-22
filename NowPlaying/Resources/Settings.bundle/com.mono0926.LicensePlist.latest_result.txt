@@ -1,3 +1,6 @@
+name: SVProgressHUD, nameSpecified: 
+body: Copyright (c) 2011-2…
+
 name: TwitterCore, nameSpecified: 
 body: Copyright Twitter, I…
 
@@ -7,6 +10,8 @@ body: Twitter Kit: Copyrig…
 name: ExtensionCollection, nameSpecified: , owner: HiyakashiGroupHoldings, version: 0.0.3
 
 name: keychain-swift, nameSpecified: , owner: marketplacer, version: 8.0.3
+
+name: Eureka, nameSpecified: , owner: xmartlabs, version: 3.1.0
 
 add-version-numbers: true
 
