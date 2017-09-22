@@ -39,12 +39,18 @@ class PlayViewController: UIViewController {
 
     fileprivate func setup() {
         setupNavigation()
+        setupView()
     }
 
     fileprivate func setupNavigation() {
         guard navigationController != nil else {
             return
         }
+    }
+
+    fileprivate func setupView() {
+        artworkImageView.image = nil
+        songNameLabel.text = nil
     }
 
     @IBAction func onTapTwitterButton(_ sender: Any) {
