@@ -53,6 +53,14 @@ class PlayViewController: UIViewController {
         songNameLabel.text = nil
     }
 
+    // MARK: - IBAction
+
+    @IBAction func onTapGearButton(_ sender: Any) {
+        let settingViewController = SettingViewController()
+        let navi = UINavigationController(rootViewController: settingViewController)
+        present(navi, animated: true, completion: nil)
+    }
+
     @IBAction func onTapTwitterButton(_ sender: Any) {
         let tweetViewController = TweetViewController()
         tweetViewController.tweetText = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"

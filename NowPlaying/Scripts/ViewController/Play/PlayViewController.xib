@@ -103,19 +103,33 @@
                         <action selector="onTapTwitterButton:" destination="-1" eventType="touchUpInside" id="cI8-c8-Xbb"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3aW-hZ-XIr">
+                    <rect key="frame" x="16" y="601" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="0Xe-ks-CEE"/>
+                        <constraint firstAttribute="width" constant="50" id="BlS-2Y-Ftu"/>
+                    </constraints>
+                    <state key="normal" image="gear"/>
+                    <connections>
+                        <action selector="onTapGearButton:" destination="-1" eventType="touchUpInside" id="EKu-nm-Ua3"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="3aW-hZ-XIr" secondAttribute="bottom" constant="16" id="4wc-RA-nQD"/>
                 <constraint firstAttribute="bottom" secondItem="es6-R1-NoX" secondAttribute="bottom" constant="16" id="52Q-Mt-D7Q"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="L0B-pi-jFq"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="36" id="btb-Oe-Sz7"/>
                 <constraint firstAttribute="trailing" secondItem="es6-R1-NoX" secondAttribute="trailing" constant="16" id="dXz-by-Rai"/>
+                <constraint firstItem="3aW-hZ-XIr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="mD1-8t-bao"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="36" id="qjn-qq-j7c"/>
             </constraints>
             <point key="canvasLocation" x="34.5" y="53.5"/>
         </view>
     </objects>
     <resources>
+        <image name="gear" width="128" height="124"/>
         <image name="twitter" width="128" height="128"/>
     </resources>
 </document>
