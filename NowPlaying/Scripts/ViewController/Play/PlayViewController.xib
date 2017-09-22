@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="A5A-pe-FD2">
-                    <rect key="frame" x="36" y="36" width="303" height="396"/>
+                    <rect key="frame" x="36" y="135.5" width="303" height="396"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hGu-bd-Jyz">
                             <rect key="frame" x="0.0" y="0.0" width="303" height="303"/>
@@ -30,8 +30,12 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mog-av-GTN">
                                     <rect key="frame" x="31" y="0.0" width="240" height="303"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hQk-D4-a1j">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="music" translatesAutoresizingMaskIntoConstraints="NO" id="hQk-D4-a1j">
                                             <rect key="frame" x="0.0" y="0.0" width="240" height="240"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="240" id="AJU-l3-93R"/>
+                                                <constraint firstAttribute="height" constant="240" id="frw-HU-hIe"/>
+                                            </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                     <integer key="value" value="10"/>
@@ -120,16 +124,16 @@
                 <constraint firstAttribute="bottom" secondItem="3aW-hZ-XIr" secondAttribute="bottom" constant="16" id="4wc-RA-nQD"/>
                 <constraint firstAttribute="bottom" secondItem="es6-R1-NoX" secondAttribute="bottom" constant="16" id="52Q-Mt-D7Q"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="L0B-pi-jFq"/>
-                <constraint firstItem="A5A-pe-FD2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="36" id="btb-Oe-Sz7"/>
                 <constraint firstAttribute="trailing" secondItem="es6-R1-NoX" secondAttribute="trailing" constant="16" id="dXz-by-Rai"/>
+                <constraint firstItem="A5A-pe-FD2" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="fLm-4y-Gus"/>
                 <constraint firstItem="3aW-hZ-XIr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="mD1-8t-bao"/>
-                <constraint firstItem="A5A-pe-FD2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="36" id="qjn-qq-j7c"/>
             </constraints>
             <point key="canvasLocation" x="34.5" y="53.5"/>
         </view>
     </objects>
     <resources>
         <image name="gear" width="128" height="124"/>
+        <image name="music" width="128" height="128"/>
         <image name="twitter" width="128" height="128"/>
     </resources>
 </document>

@@ -37,6 +37,8 @@ class PlayViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
+    // MARK: - Private method
+
     fileprivate func setup() {
         setupNavigation()
         setupView()
@@ -49,7 +51,6 @@ class PlayViewController: UIViewController {
     }
 
     fileprivate func setupView() {
-        artworkImageView.image = nil
         songNameLabel.text = nil
     }
 
