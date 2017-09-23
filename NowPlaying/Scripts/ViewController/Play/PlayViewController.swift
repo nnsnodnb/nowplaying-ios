@@ -13,6 +13,7 @@ class PlayViewController: UIViewController {
 
     @IBOutlet weak var artworkImageView: UIImageView!
     @IBOutlet weak var songNameLabel: UILabel!
+    @IBOutlet weak var playButton: UIButton!
 
     var albumTitle: String! {
         didSet {
@@ -26,7 +27,11 @@ class PlayViewController: UIViewController {
         }
     }
 
-    fileprivate var isPlay = MPMusicPlayerController.systemMusicPlayer().playbackState == .playing
+    fileprivate var isPlay: Bool = MPMusicPlayerController.systemMusicPlayer().playbackState == .playing {
+        didSet {
+            playButton.setImage(UIImage(named: isPlay ? "pause" : "play"), for: .normal)
+        }
+    }
 
     // MARK: - Life cycle
 
@@ -54,6 +59,7 @@ class PlayViewController: UIViewController {
 
     fileprivate func setupView() {
         songNameLabel.text = nil
+        isPlay = MPMusicPlayerController.systemMusicPlayer().playbackState == .playing
     }
 
     // MARK: - IBAction

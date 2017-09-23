@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlayViewController" customModule="NowPlaying" customModuleProvider="target">
             <connections>
                 <outlet property="artworkImageView" destination="hQk-D4-a1j" id="9Xg-Rq-qYb"/>
+                <outlet property="playButton" destination="qMi-NZ-cvB" id="ckT-BR-BCK"/>
                 <outlet property="songNameLabel" destination="LaS-KO-82c" id="U5e-zW-JkR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -68,25 +69,37 @@
                             <rect key="frame" x="0.0" y="343" width="303" height="53"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cPV-yO-10a">
-                                    <rect key="frame" x="40" y="0.0" width="223" height="53"/>
+                                    <rect key="frame" x="30" y="0.0" width="243" height="53"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-cW-baF">
-                                            <rect key="frame" x="0.0" y="0.0" width="46" height="53"/>
-                                            <state key="normal" title="Button"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-cW-baF">
+                                            <rect key="frame" x="0.0" y="0.0" width="53" height="53"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="53" id="N7v-ad-i5w"/>
+                                                <constraint firstAttribute="width" constant="53" id="c6p-KF-6Gv"/>
+                                            </constraints>
+                                            <state key="normal" image="previous"/>
                                             <connections>
                                                 <action selector="onTapPreviousButton:" destination="-1" eventType="touchUpInside" id="F4v-S7-W4h"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMi-NZ-cvB">
-                                            <rect key="frame" x="88.5" y="0.0" width="46" height="53"/>
-                                            <state key="normal" title="Button"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMi-NZ-cvB">
+                                            <rect key="frame" x="95" y="0.0" width="53" height="53"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="53" id="FK8-eC-lI2"/>
+                                                <constraint firstAttribute="height" constant="53" id="FNN-qS-5UH"/>
+                                            </constraints>
+                                            <state key="normal" title="Button" image="play"/>
                                             <connections>
                                                 <action selector="onTapPlayButton:" destination="-1" eventType="touchUpInside" id="OKT-xd-Vx6"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crR-aX-F7g">
-                                            <rect key="frame" x="177" y="0.0" width="46" height="53"/>
-                                            <state key="normal" title="Button"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crR-aX-F7g">
+                                            <rect key="frame" x="190" y="0.0" width="53" height="53"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="53" id="LGV-m4-DQ9"/>
+                                                <constraint firstAttribute="height" constant="53" id="Rzz-jC-BbP"/>
+                                            </constraints>
+                                            <state key="normal" title="Button" image="next"/>
                                             <connections>
                                                 <action selector="onTapNextButton:" destination="-1" eventType="touchUpInside" id="VW8-i3-aQ0"/>
                                             </connections>
@@ -98,12 +111,15 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="53" id="A0X-hy-b4e"/>
                                 <constraint firstAttribute="bottom" secondItem="cPV-yO-10a" secondAttribute="bottom" id="D31-lt-Ci1"/>
-                                <constraint firstAttribute="trailing" secondItem="cPV-yO-10a" secondAttribute="trailing" constant="40" id="Kkp-8n-vhj"/>
-                                <constraint firstItem="cPV-yO-10a" firstAttribute="leading" secondItem="jpz-Hk-31c" secondAttribute="leading" constant="40" id="a2k-5c-GUd"/>
+                                <constraint firstAttribute="trailing" secondItem="cPV-yO-10a" secondAttribute="trailing" constant="30" id="Kkp-8n-vhj"/>
+                                <constraint firstItem="cPV-yO-10a" firstAttribute="leading" secondItem="jpz-Hk-31c" secondAttribute="leading" constant="30" id="a2k-5c-GUd"/>
                                 <constraint firstItem="cPV-yO-10a" firstAttribute="top" secondItem="jpz-Hk-31c" secondAttribute="top" id="j9Q-3Y-tOv"/>
                             </constraints>
                         </view>
                     </subviews>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="303" id="3bV-0h-i0A"/>
+                    </constraints>
                 </stackView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="es6-R1-NoX">
                     <rect key="frame" x="309" y="601" width="50" height="50"/>
@@ -143,6 +159,9 @@
     <resources>
         <image name="gear" width="128" height="124"/>
         <image name="music" width="128" height="128"/>
+        <image name="next" width="64" height="64"/>
+        <image name="play" width="64" height="64"/>
+        <image name="previous" width="64" height="64"/>
         <image name="twitter" width="128" height="128"/>
     </resources>
 </document>
