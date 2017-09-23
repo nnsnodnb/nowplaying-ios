@@ -23,19 +23,19 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="A5A-pe-FD2">
-                    <rect key="frame" x="36" y="135.5" width="303" height="396"/>
+                    <rect key="frame" x="36" y="105.5" width="303" height="456"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hGu-bd-Jyz">
-                            <rect key="frame" x="0.0" y="0.0" width="303" height="303"/>
+                            <rect key="frame" x="0.0" y="0.0" width="303" height="363"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mog-av-GTN">
-                                    <rect key="frame" x="31" y="0.0" width="240" height="303"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="363"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="music" translatesAutoresizingMaskIntoConstraints="NO" id="hQk-D4-a1j">
-                                            <rect key="frame" x="0.0" y="0.0" width="240" height="240"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="240" id="AJU-l3-93R"/>
-                                                <constraint firstAttribute="height" constant="240" id="frw-HU-hIe"/>
+                                                <constraint firstAttribute="width" constant="300" id="DJd-Tg-zQC"/>
+                                                <constraint firstAttribute="height" constant="300" id="Ldm-jj-gwO"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -45,7 +45,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="曲名" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LaS-KO-82c">
-                                            <rect key="frame" x="0.0" y="264" width="240" height="39"/>
+                                            <rect key="frame" x="30" y="324" width="240" height="39"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="240" id="FeT-RW-gKp"/>
                                                 <constraint firstAttribute="height" constant="39" id="dm4-An-ILj"/>
@@ -55,18 +55,21 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="300" id="AS8-30-QtK"/>
+                                    </constraints>
                                 </stackView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="mog-av-GTN" firstAttribute="top" secondItem="hGu-bd-Jyz" secondAttribute="top" id="40o-co-uwR"/>
-                                <constraint firstAttribute="height" constant="303" id="B9E-GC-pgq"/>
-                                <constraint firstItem="mog-av-GTN" firstAttribute="centerX" secondItem="hGu-bd-Jyz" secondAttribute="centerX" id="Fca-LN-6HS"/>
+                                <constraint firstAttribute="height" constant="363" id="B9E-GC-pgq"/>
+                                <constraint firstItem="mog-av-GTN" firstAttribute="centerX" secondItem="hGu-bd-Jyz" secondAttribute="centerX" constant="-1.5" id="Fca-LN-6HS"/>
                                 <constraint firstItem="mog-av-GTN" firstAttribute="centerY" secondItem="hGu-bd-Jyz" secondAttribute="centerY" id="aQh-JH-88V"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jpz-Hk-31c">
-                            <rect key="frame" x="0.0" y="343" width="303" height="53"/>
+                            <rect key="frame" x="0.0" y="403" width="303" height="53"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cPV-yO-10a">
                                     <rect key="frame" x="30" y="0.0" width="243" height="53"/>
@@ -158,7 +161,7 @@
     </objects>
     <resources>
         <image name="gear" width="128" height="124"/>
-        <image name="music" width="128" height="128"/>
+        <image name="music" width="512" height="512"/>
         <image name="next" width="64" height="64"/>
         <image name="play" width="64" height="64"/>
         <image name="previous" width="64" height="64"/>
