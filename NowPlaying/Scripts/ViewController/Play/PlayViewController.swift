@@ -27,6 +27,8 @@ class PlayViewController: UIViewController {
         }
     }
 
+    fileprivate let userDefaults = UserDefaults.standard
+
     fileprivate var isPlay: Bool = MPMusicPlayerController.systemMusicPlayer().playbackState == .playing {
         didSet {
             playButton.setImage(UIImage(named: isPlay ? "pause" : "play"), for: .normal)
@@ -37,7 +39,8 @@ class PlayViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        setupNavigation()
+        setupView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,11 +48,6 @@ class PlayViewController: UIViewController {
     }
 
     // MARK: - Private method
-
-    fileprivate func setup() {
-        setupNavigation()
-        setupView()
-    }
 
     fileprivate func setupNavigation() {
         guard navigationController != nil else {
@@ -90,7 +88,7 @@ class PlayViewController: UIViewController {
     @IBAction func onTapTwitterButton(_ sender: Any) {
         let tweetViewController = TweetViewController()
         tweetViewController.tweetText = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
-        tweetViewController.shareImage = artworkImageView.image
+        tweetViewController.shareImage = userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue) ? artworkImageView.image : nil
         let navi = UINavigationController(rootViewController: tweetViewController)
         present(navi, animated: true, completion: nil)
     }

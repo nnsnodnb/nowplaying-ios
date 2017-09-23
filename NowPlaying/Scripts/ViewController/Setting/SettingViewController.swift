@@ -12,6 +12,8 @@ import SVProgressHUD
 
 class SettingViewController: FormViewController {
 
+    fileprivate let userDefaults = UserDefaults.standard
+
     // MARK: - Life cycle
 
     override func viewDidLoad() {
@@ -55,6 +57,15 @@ class SettingViewController: FormViewController {
                     SVProgressHUD.showSuccess(withStatus: "ログインしました")
                     SVProgressHUD.dismiss(withDelay: 0.5)
                 }
+            })
+
+            +++ Section()
+            <<< SwitchRow() { [unowned self] in
+                $0.title = "画像つきツイート"
+                $0.value = self.userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue)
+            }.onChange({ (row) in
+                self.userDefaults.set(row.value!, forKey: UserDefaultsKey.isWithImage.rawValue)
+                self.userDefaults.synchronize()
             })
     }
 
