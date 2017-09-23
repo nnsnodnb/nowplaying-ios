@@ -21,12 +21,20 @@ class AuthManager: NSObject {
             guard session != nil else {
                 return
             }
-            self.keychain.set(session!.authToken, forKey: "authToken")
-            self.keychain.set(session!.authTokenSecret, forKey: "authTokenSecret")
+            self.keychain.set(session!.authToken, forKey: KeychainKey.authToken.rawValue)
+            self.keychain.set(session!.authTokenSecret, forKey: KeychainKey.authTokenSecret.rawValue)
             self.keychain.synchronizable = true
             if let completion = completion {
                 completion()
             }
         })
+    }
+
+    func logout(completion: () -> Void) {
+        Twitter.sharedInstance().sessionStore.logOutUserID(Twitter.sharedInstance().sessionStore.session()!.userID)
+        keychain.delete(KeychainKey.authToken.rawValue)
+        keychain.delete(KeychainKey.authTokenSecret.rawValue)
+        keychain.synchronizable = true
+        completion()
     }
 }

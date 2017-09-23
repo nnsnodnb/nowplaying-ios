@@ -13,6 +13,7 @@ class PlayViewController: UIViewController {
 
     @IBOutlet weak var artworkImageView: UIImageView!
     @IBOutlet weak var songNameLabel: UILabel!
+    @IBOutlet weak var playButton: UIButton!
 
     var albumTitle: String! {
         didSet {
@@ -26,20 +27,27 @@ class PlayViewController: UIViewController {
         }
     }
 
+    fileprivate let userDefaults = UserDefaults.standard
+
+    fileprivate var isPlay: Bool = MPMusicPlayerController.systemMusicPlayer().playbackState == .playing {
+        didSet {
+            playButton.setImage(UIImage(named: isPlay ? "pause" : "play"), for: .normal)
+        }
+    }
+
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        setupNavigation()
+        setupView()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    fileprivate func setup() {
-        setupNavigation()
-    }
+    // MARK: - Private method
 
     fileprivate func setupNavigation() {
         guard navigationController != nil else {
@@ -47,10 +55,40 @@ class PlayViewController: UIViewController {
         }
     }
 
+    fileprivate func setupView() {
+        songNameLabel.text = nil
+        isPlay = MPMusicPlayerController.systemMusicPlayer().playbackState == .playing
+    }
+
+    // MARK: - IBAction
+
+    @IBAction func onTapPreviousButton(_ sender: Any) {
+        MPMusicPlayerController.systemMusicPlayer().skipToPreviousItem()
+    }
+
+    @IBAction func onTapPlayButton(_ sender: Any) {
+        if isPlay {
+            MPMusicPlayerController.systemMusicPlayer().pause()
+        } else {
+            MPMusicPlayerController.systemMusicPlayer().play()
+        }
+        isPlay = !isPlay
+    }
+
+    @IBAction func onTapNextButton(_ sender: Any) {
+        MPMusicPlayerController.systemMusicPlayer().skipToNextItem()
+    }
+
+    @IBAction func onTapGearButton(_ sender: Any) {
+        let settingViewController = SettingViewController()
+        let navi = UINavigationController(rootViewController: settingViewController)
+        present(navi, animated: true, completion: nil)
+    }
+
     @IBAction func onTapTwitterButton(_ sender: Any) {
         let tweetViewController = TweetViewController()
         tweetViewController.tweetText = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
-        tweetViewController.shareImage = artworkImageView.image
+        tweetViewController.shareImage = userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue) ? artworkImageView.image : nil
         let navi = UINavigationController(rootViewController: tweetViewController)
         present(navi, animated: true, completion: nil)
     }

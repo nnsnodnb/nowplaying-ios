@@ -11,8 +11,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TweetViewController" customModule="NowPlaying" customModuleProvider="target">
             <connections>
-                <outlet property="textView" destination="nGx-0K-2b5" id="Fyn-gq-MzO"/>
-                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="artworkImageButton" destination="5FN-5l-kq7" id="iIb-WW-tHw"/>
+                <outlet property="artworkImageButtonHeight" destination="aJm-cH-NX2" id="PUR-lv-f3s"/>
+                <outlet property="artworkImageButtonTopMargin" destination="dvl-yV-yg3" id="rM1-lv-NZJ"/>
+                <outlet property="textView" destination="nGx-0K-2b5" id="smC-Qn-hT7"/>
+                <outlet property="textViewHeight" destination="rHh-8c-5xX" id="VvS-40-t0n"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="M3L-c2-ERY"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -21,18 +25,37 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="nGx-0K-2b5">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="350"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="350" id="rHh-8c-5xX"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="21"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                 </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5FN-5l-kq7">
+                    <rect key="frame" x="8" y="358" width="70" height="70"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="70" id="0jt-hp-rMo"/>
+                        <constraint firstAttribute="height" constant="70" id="aJm-cH-NX2"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onTapArtworkImageButton:" destination="-1" eventType="touchUpInside" id="WNh-iU-JV3"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="nGx-0K-2b5" secondAttribute="trailing" id="8eh-bl-cyY"/>
-                <constraint firstItem="nGx-0K-2b5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="9xi-AU-fsw"/>
-                <constraint firstAttribute="bottom" secondItem="nGx-0K-2b5" secondAttribute="bottom" id="Dec-TS-qoV"/>
-                <constraint firstItem="nGx-0K-2b5" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="h0q-wd-yIe"/>
+                <constraint firstItem="5FN-5l-kq7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="BgA-De-VVv"/>
+                <constraint firstAttribute="trailing" secondItem="nGx-0K-2b5" secondAttribute="trailing" id="JLw-9c-lLr"/>
+                <constraint firstItem="5FN-5l-kq7" firstAttribute="top" secondItem="nGx-0K-2b5" secondAttribute="bottom" constant="8" id="dvl-yV-yg3"/>
+                <constraint firstItem="nGx-0K-2b5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="nYI-4y-csK"/>
+                <constraint firstItem="nGx-0K-2b5" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="pOi-OE-yfw"/>
             </constraints>
             <point key="canvasLocation" x="34.5" y="53.5"/>
         </view>

@@ -1,2 +1,3 @@
 github "HiyakashiGroupHoldings/ExtensionCollection" "0.0.3"
 github "marketplacer/keychain-swift" "8.0.3"
+github "xmartlabs/Eureka" "3.1.0"
