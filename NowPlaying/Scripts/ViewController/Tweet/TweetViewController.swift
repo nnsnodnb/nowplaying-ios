@@ -13,39 +13,62 @@ import SVProgressHUD
 class TweetViewController: UIViewController {
 
     @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var textViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var artworkImageButton: UIButton!
+    @IBOutlet weak var artworkImageButtonTopMargin: NSLayoutConstraint!
+    @IBOutlet weak var artworkImageButtonHeight: NSLayoutConstraint!
 
     var tweetText: String?
     var shareImage: UIImage?
+
+    fileprivate var keyboardHeight: CGFloat = 0
 
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        setupTextView()
+        setupArtworkImageButton()
+        setupNavigationBar()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if Twitter.sharedInstance().sessionStore.session()?.userID != nil {
-            return
-        }
-        AuthManager.shared.login()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(showKeyboard(_:)),
+            name: NSNotification.Name.UIKeyboardDidShow,
+            object: nil
+        )
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    // MARK: - Private method
-
-    fileprivate func setup() {
-        setupTextView()
-        setupNavigationBar()
+    deinit {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: NSNotification.Name.UIKeyboardDidShow,
+            object: nil
+        )
     }
+
+    // MARK: - Private method
 
     fileprivate func setupTextView() {
         textView.becomeFirstResponder()
         textView.text = tweetText
+    }
+
+    fileprivate func setupArtworkImageButton() {
+        if shareImage == nil {
+            artworkImageButton.isHidden = true
+            artworkImageButtonHeight.constant = 0
+            return
+        }
+        artworkImageButton.imageView?.backgroundColor = UIColor.clear
+        artworkImageButton.setImage(shareImage, for: .normal)
     }
 
     fileprivate func setupNavigationBar() {
@@ -63,6 +86,10 @@ class TweetViewController: UIViewController {
         let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
+    }
+
+    fileprivate func resizeTextView() {
+        textViewHeight.constant = UIScreen.main.bounds.size.height - keyboardHeight - artworkImageButtonHeight.constant - (artworkImageButtonTopMargin.constant * 2)
     }
 
     // MARK: - UIBarButtonItem target
@@ -96,5 +123,32 @@ class TweetViewController: UIViewController {
                 self.dismiss(animated: true, completion: nil)
             })
         }
+    }
+
+    // MARK: - Notification target
+
+    func showKeyboard(_ notification: Notification) {
+        if let userInfo = notification.userInfo, let keyboard = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            keyboardHeight = keyboard.cgRectValue.size.height
+            resizeTextView()
+        }
+    }
+
+    // MARK: - IBAction
+
+    @IBAction func onTapArtworkImageButton(_ sender: Any) {
+        let sheet = UIAlertController(title: nil, message: "アートワークを削除します", preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        sheet.addAction(UIAlertAction(title: "削除", style: .destructive) { [unowned self] (action) in
+            self.shareImage = nil
+            UIView.animate(withDuration: 0.3, animations: {
+                self.artworkImageButton.alpha = 0.0
+            }, completion: { (completion) in
+                self.artworkImageButton.setImage(nil, for: .normal)
+                self.artworkImageButtonHeight.constant = 0
+                self.resizeTextView()
+            })
+        })
+        present(sheet, animated: true, completion: nil)
     }
 }
