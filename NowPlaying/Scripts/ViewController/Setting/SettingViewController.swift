@@ -53,6 +53,7 @@ class SettingViewController: FormViewController {
                 SVProgressHUD.show()
                 AuthManager.shared.login() {
                     SVProgressHUD.showSuccess(withStatus: "ログインしました")
+                    SVProgressHUD.dismiss(withDelay: 0.5)
                 }
             })
     }
