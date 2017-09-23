@@ -68,6 +68,7 @@ class TweetViewController: UIViewController {
     // MARK: - UIBarButtonItem target
 
     func onTapCancelButton(_ sender: UIBarButtonItem) {
+        textView.resignFirstResponder()
         dismiss(animated: true, completion: nil)
     }
 
@@ -81,6 +82,7 @@ class TweetViewController: UIViewController {
                     return
                 }
                 SVProgressHUD.dismiss()
+                self.textView.resignFirstResponder()
                 self.dismiss(animated: true, completion: nil)
             })
         } else {

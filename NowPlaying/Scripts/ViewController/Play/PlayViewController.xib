@@ -73,14 +73,23 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-cW-baF">
                                             <rect key="frame" x="0.0" y="0.0" width="46" height="53"/>
                                             <state key="normal" title="Button"/>
+                                            <connections>
+                                                <action selector="onTapPreviousButton:" destination="-1" eventType="touchUpInside" id="F4v-S7-W4h"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMi-NZ-cvB">
                                             <rect key="frame" x="88.5" y="0.0" width="46" height="53"/>
                                             <state key="normal" title="Button"/>
+                                            <connections>
+                                                <action selector="onTapPlayButton:" destination="-1" eventType="touchUpInside" id="OKT-xd-Vx6"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crR-aX-F7g">
                                             <rect key="frame" x="177" y="0.0" width="46" height="53"/>
                                             <state key="normal" title="Button"/>
+                                            <connections>
+                                                <action selector="onTapNextButton:" destination="-1" eventType="touchUpInside" id="VW8-i3-aQ0"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                 </stackView>

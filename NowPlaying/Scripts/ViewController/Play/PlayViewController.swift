@@ -26,6 +26,8 @@ class PlayViewController: UIViewController {
         }
     }
 
+    fileprivate var isPlay = MPMusicPlayerController.systemMusicPlayer().playbackState == .playing
+
     // MARK: - Life cycle
 
     override func viewDidLoad() {
@@ -55,6 +57,23 @@ class PlayViewController: UIViewController {
     }
 
     // MARK: - IBAction
+
+    @IBAction func onTapPreviousButton(_ sender: Any) {
+        MPMusicPlayerController.systemMusicPlayer().skipToPreviousItem()
+    }
+
+    @IBAction func onTapPlayButton(_ sender: Any) {
+        if isPlay {
+            MPMusicPlayerController.systemMusicPlayer().pause()
+        } else {
+            MPMusicPlayerController.systemMusicPlayer().play()
+        }
+        isPlay = !isPlay
+    }
+
+    @IBAction func onTapNextButton(_ sender: Any) {
+        MPMusicPlayerController.systemMusicPlayer().skipToNextItem()
+    }
 
     @IBAction func onTapGearButton(_ sender: Any) {
         let settingViewController = SettingViewController()
