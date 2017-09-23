@@ -11,3 +11,8 @@ import Foundation
 enum UserDefaultsKey: String {
     case isWithImage = "is_with_image"
 }
+
+enum KeychainKey: String {
+    case authToken = "authToken"
+    case authTokenSecret = "authTokenSecret"
+}

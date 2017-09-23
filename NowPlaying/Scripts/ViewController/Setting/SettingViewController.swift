@@ -9,10 +9,13 @@
 import UIKit
 import Eureka
 import SVProgressHUD
+import TwitterKit
 
 class SettingViewController: FormViewController {
 
     fileprivate let userDefaults = UserDefaults.standard
+
+    fileprivate var isLogin = false
 
     // MARK: - Life cycle
 
@@ -29,6 +32,7 @@ class SettingViewController: FormViewController {
 
     fileprivate func setup() {
         setupNavigationbar()
+        setupIsLogin()
         setupForm()
     }
 
@@ -41,11 +45,16 @@ class SettingViewController: FormViewController {
         navigationItem.rightBarButtonItem = closeButton
     }
 
+    fileprivate func setupIsLogin() {
+        isLogin = Twitter.sharedInstance().sessionStore.session() != nil
+    }
+
     fileprivate func setupForm() {
         form
             +++ Section()
-            <<< ButtonRow() {
-                $0.title = "ログイン"
+            <<< ButtonRow() { [unowned self] in
+                $0.title = !self.isLogin ? "ログイン" : "ログアウト"
+                $0.tag = "login"
             }.cellUpdate({ (cell, row) in
                 cell.textLabel?.textAlignment = .left
                 cell.textLabel?.textColor = UIColor.black
@@ -53,9 +62,24 @@ class SettingViewController: FormViewController {
             }).onCellSelection({ (cell, row) in
                 row.deselect()
                 SVProgressHUD.show()
-                AuthManager.shared.login() {
-                    SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                    SVProgressHUD.dismiss(withDelay: 0.5)
+                if self.isLogin {
+                    AuthManager.shared.logout {
+                        SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
+                        SVProgressHUD.dismiss(withDelay: 0.5)
+                        self.isLogin = !self.isLogin
+                        DispatchQueue.main.async {
+                            cell.textLabel?.text = "ログイン"
+                        }
+                    }
+                } else {
+                    AuthManager.shared.login() {
+                        SVProgressHUD.showSuccess(withStatus: "ログインしました")
+                        SVProgressHUD.dismiss(withDelay: 0.5)
+                        self.isLogin = !self.isLogin
+                        DispatchQueue.main.async {
+                            cell.textLabel?.text = "ログアウト"
+                        }
+                    }
                 }
             })
 
