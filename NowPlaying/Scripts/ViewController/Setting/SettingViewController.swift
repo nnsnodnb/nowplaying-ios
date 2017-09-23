@@ -61,7 +61,7 @@ class SettingViewController: FormViewController {
 
             +++ Section()
             <<< SwitchRow() { [unowned self] in
-                $0.title = "画像つきツイート"
+                $0.title = "アートワークを添付"
                 $0.value = self.userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue)
             }.onChange({ (row) in
                 self.userDefaults.set(row.value!, forKey: UserDefaultsKey.isWithImage.rawValue)
