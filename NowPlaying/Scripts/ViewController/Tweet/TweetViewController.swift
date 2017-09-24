@@ -62,7 +62,7 @@ class TweetViewController: UIViewController {
     }
 
     fileprivate func setupArtworkImageButton() {
-        if shareImage == nil {
+        if shareImage == nil || tweetText == nil {
             artworkImageButton.isHidden = true
             artworkImageButtonHeight.constant = 0
             return
