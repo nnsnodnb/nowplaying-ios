@@ -67,6 +67,7 @@ class TweetViewController: UIViewController {
             artworkImageButtonHeight.constant = 0
             return
         }
+        artworkImageButton.alpha = 0
         artworkImageButton.imageView?.backgroundColor = UIColor.clear
         artworkImageButton.setImage(shareImage, for: .normal)
     }
@@ -90,6 +91,9 @@ class TweetViewController: UIViewController {
 
     fileprivate func resizeTextView() {
         textViewHeight.constant = UIScreen.main.bounds.size.height - keyboardHeight - artworkImageButtonHeight.constant - (artworkImageButtonTopMargin.constant * 2)
+        UIView.animate(withDuration: 0.5) { [unowned self] in
+            self.artworkImageButton.alpha = 1
+        }
     }
 
     // MARK: - UIBarButtonItem target
