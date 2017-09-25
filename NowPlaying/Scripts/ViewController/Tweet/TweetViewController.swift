@@ -153,6 +153,8 @@ class TweetViewController: UIViewController {
                 self.resizeTextView()
             })
         })
+        sheet.popoverPresentationController?.sourceView = artworkImageButton
+        sheet.popoverPresentationController?.sourceRect = artworkImageButton.frame
         present(sheet, animated: true, completion: nil)
     }
 }
