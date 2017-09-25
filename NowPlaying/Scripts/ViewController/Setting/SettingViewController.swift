@@ -11,6 +11,7 @@ import Eureka
 import SVProgressHUD
 import TwitterKit
 import StoreKit
+import SafariServices
 
 class SettingViewController: FormViewController {
 
@@ -52,7 +53,7 @@ class SettingViewController: FormViewController {
 
     fileprivate func setupForm() {
         form
-            +++ Section()
+            +++ Section("アカウント")
             <<< ButtonRow() { [unowned self] in
                 $0.title = !self.isLogin ? "ログイン" : "ログアウト"
                 $0.tag = "login"
@@ -84,7 +85,7 @@ class SettingViewController: FormViewController {
                 }
             })
 
-            +++ Section()
+            +++ Section("ツイート設定")
             <<< SwitchRow() { [unowned self] in
                 $0.title = "アートワークを添付"
                 $0.value = self.userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue)
@@ -93,7 +94,27 @@ class SettingViewController: FormViewController {
                 self.userDefaults.synchronize()
             })
 
-            +++ Section()
+            +++ Section("アプリについて")
+            <<< ButtonRow() {
+                $0.title = "開発者(Twitter)"
+            }.cellUpdate({ (cell, row) in
+                cell.textLabel?.textAlignment = .left
+                cell.textLabel?.textColor = UIColor.black
+                cell.accessoryType = .disclosureIndicator
+            }).onCellSelection({ [unowned self] (cell, row) in
+                let safariViewController = SFSafariViewController(url: URL(string: "https://twitter.com/nnsnodnb")!)
+                self.navigationController?.present(safariViewController, animated: true, completion: nil)
+            })
+            <<< ButtonRow() {
+                $0.title = "ソースコード(GitHub)"
+            }.cellUpdate({ (cell, row) in
+                cell.textLabel?.textAlignment = .left
+                cell.textLabel?.textColor = UIColor.black
+                cell.accessoryType = .disclosureIndicator
+            }).onCellSelection({ (cell, row) in
+                let safariViewController = SFSafariViewController(url: URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!)
+                self.navigationController?.present(safariViewController, animated: true, completion: nil)
+            })
             <<< ButtonRow() {
                 $0.title = "レビューする"
             }.cellUpdate({ (cell, row) in
