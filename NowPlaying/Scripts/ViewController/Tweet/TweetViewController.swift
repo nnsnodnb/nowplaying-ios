@@ -62,11 +62,12 @@ class TweetViewController: UIViewController {
     }
 
     fileprivate func setupArtworkImageButton() {
-        if shareImage == nil {
+        if shareImage == nil || tweetText == nil {
             artworkImageButton.isHidden = true
             artworkImageButtonHeight.constant = 0
             return
         }
+        artworkImageButton.alpha = 0
         artworkImageButton.imageView?.backgroundColor = UIColor.clear
         artworkImageButton.setImage(shareImage, for: .normal)
     }
@@ -90,6 +91,9 @@ class TweetViewController: UIViewController {
 
     fileprivate func resizeTextView() {
         textViewHeight.constant = UIScreen.main.bounds.size.height - keyboardHeight - artworkImageButtonHeight.constant - (artworkImageButtonTopMargin.constant * 2)
+        UIView.animate(withDuration: 0.5) { [unowned self] in
+            self.artworkImageButton.alpha = 1
+        }
     }
 
     // MARK: - UIBarButtonItem target
@@ -149,6 +153,8 @@ class TweetViewController: UIViewController {
                 self.resizeTextView()
             })
         })
+        sheet.popoverPresentationController?.sourceView = artworkImageButton
+        sheet.popoverPresentationController?.sourceRect = artworkImageButton.frame
         present(sheet, animated: true, completion: nil)
     }
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import MediaPlayer
+import TwitterKit
 
 class PlayViewController: UIViewController {
 
@@ -86,8 +87,14 @@ class PlayViewController: UIViewController {
     }
 
     @IBAction func onTapTwitterButton(_ sender: Any) {
+        if Twitter.sharedInstance().sessionStore.session() == nil {
+            let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return
+        }
         let tweetViewController = TweetViewController()
-        tweetViewController.tweetText = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
+        tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer().nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
         tweetViewController.shareImage = userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue) ? artworkImageView.image : nil
         let navi = UINavigationController(rootViewController: tweetViewController)
         present(navi, animated: true, completion: nil)

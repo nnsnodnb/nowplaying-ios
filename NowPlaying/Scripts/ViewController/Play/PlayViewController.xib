@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -34,8 +35,7 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="music" translatesAutoresizingMaskIntoConstraints="NO" id="hQk-D4-a1j">
                                             <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="300" id="DJd-Tg-zQC"/>
-                                                <constraint firstAttribute="height" constant="300" id="Ldm-jj-gwO"/>
+                                                <constraint firstAttribute="width" secondItem="hQk-D4-a1j" secondAttribute="height" multiplier="1:1" id="zeg-ew-BD1"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -63,8 +63,8 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="mog-av-GTN" firstAttribute="top" secondItem="hGu-bd-Jyz" secondAttribute="top" id="40o-co-uwR"/>
-                                <constraint firstAttribute="height" constant="363" id="B9E-GC-pgq"/>
                                 <constraint firstItem="mog-av-GTN" firstAttribute="centerX" secondItem="hGu-bd-Jyz" secondAttribute="centerX" constant="-1.5" id="Fca-LN-6HS"/>
+                                <constraint firstAttribute="width" secondItem="hGu-bd-Jyz" secondAttribute="height" multiplier="101:121" id="VJ2-MK-wSg"/>
                                 <constraint firstItem="mog-av-GTN" firstAttribute="centerY" secondItem="hGu-bd-Jyz" secondAttribute="centerY" id="aQh-JH-88V"/>
                             </constraints>
                         </view>
@@ -112,10 +112,10 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="53" id="A0X-hy-b4e"/>
                                 <constraint firstAttribute="bottom" secondItem="cPV-yO-10a" secondAttribute="bottom" id="D31-lt-Ci1"/>
                                 <constraint firstAttribute="trailing" secondItem="cPV-yO-10a" secondAttribute="trailing" constant="30" id="Kkp-8n-vhj"/>
                                 <constraint firstItem="cPV-yO-10a" firstAttribute="leading" secondItem="jpz-Hk-31c" secondAttribute="leading" constant="30" id="a2k-5c-GUd"/>
+                                <constraint firstAttribute="width" secondItem="jpz-Hk-31c" secondAttribute="height" multiplier="303:53" id="ha4-yu-bes"/>
                                 <constraint firstItem="cPV-yO-10a" firstAttribute="top" secondItem="jpz-Hk-31c" secondAttribute="top" id="j9Q-3Y-tOv"/>
                             </constraints>
                         </view>
@@ -152,6 +152,7 @@
                 <constraint firstAttribute="bottom" secondItem="3aW-hZ-XIr" secondAttribute="bottom" constant="16" id="4wc-RA-nQD"/>
                 <constraint firstAttribute="bottom" secondItem="es6-R1-NoX" secondAttribute="bottom" constant="16" id="52Q-Mt-D7Q"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="L0B-pi-jFq"/>
+                <constraint firstItem="3aW-hZ-XIr" firstAttribute="top" secondItem="A5A-pe-FD2" secondAttribute="bottom" constant="39.5" id="R0h-cz-o8D"/>
                 <constraint firstAttribute="trailing" secondItem="es6-R1-NoX" secondAttribute="trailing" constant="16" id="dXz-by-Rai"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="fLm-4y-Gus"/>
                 <constraint firstItem="3aW-hZ-XIr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="mD1-8t-bao"/>
