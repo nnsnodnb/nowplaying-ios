@@ -99,12 +99,15 @@ class SettingViewController: FormViewController {
             }.onChange({ (row) in
                 self.userDefaults.set(row.value!, forKey: UserDefaultsKey.isAutoTweet.rawValue)
                 self.userDefaults.synchronize()
-                if !row.value! {
+                if !row.value! || self.userDefaults.bool(forKey: UserDefaultsKey.isShowAutoTweetAlert.rawValue) {
                     return
                 }
                 let alert = UIAlertController(title: nil, message: "起動中のみ自動的にツイートされます", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                self.present(alert, animated: true) {
+                    self.userDefaults.set(true, forKey: UserDefaultsKey.isShowAutoTweetAlert.rawValue)
+                    self.userDefaults.synchronize()
+                }
             })
 
             +++ Section("アプリについて")
