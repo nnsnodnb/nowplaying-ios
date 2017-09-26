@@ -82,7 +82,7 @@ class PlayViewController: UIViewController {
         }
         SVProgressHUD.show()
         let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
-        if let artwork = song?.artwork {
+        if let artwork = song?.artwork, userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
             let image = artwork.image(at: artwork.bounds.size)
             TwitterClient.shared.client?.sendTweet(withText: message, image: image!) { (tweet, error) in
                 SVProgressHUD.dismiss()
