@@ -9,6 +9,7 @@
 import UIKit
 import MediaPlayer
 import TwitterKit
+import SVProgressHUD
 
 class PlayViewController: UIViewController {
 
@@ -25,6 +26,14 @@ class PlayViewController: UIViewController {
         didSet {
             artworkImageView.image = song?.artwork?.image(at: artworkImageView.frame.size)
             songNameLabel.text = song?.title
+        }
+    }
+    var isNotification: Bool = false {
+        didSet {
+            if !isNotification {
+                return
+            }
+            autoTweet()
         }
     }
 
@@ -59,6 +68,36 @@ class PlayViewController: UIViewController {
     fileprivate func setupView() {
         songNameLabel.text = nil
         isPlay = MPMusicPlayerController.systemMusicPlayer().playbackState == .playing
+    }
+
+    fileprivate func showError(error: Error) {
+        let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+
+    fileprivate func autoTweet() {
+        if !userDefaults.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue) {
+            return
+        }
+        SVProgressHUD.show()
+        let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
+        if let artwork = song?.artwork {
+            let image = artwork.image(at: artwork.bounds.size)
+            TwitterClient.shared.client?.sendTweet(withText: message, image: image!) { (tweet, error) in
+                SVProgressHUD.dismiss()
+                if error != nil {
+                    self.showError(error: error!)
+                }
+            }
+        } else {
+            TwitterClient.shared.client?.sendTweet(withText: message) { [unowned self] (tweet, error) in
+                SVProgressHUD.dismiss()
+                if error != nil {
+                    self.showError(error: error!)
+                }
+            }
+        }
     }
 
     // MARK: - IBAction
