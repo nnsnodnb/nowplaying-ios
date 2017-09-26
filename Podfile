@@ -7,5 +7,7 @@ target 'NowPlaying' do
 
   pod 'TwitterKit'
   pod 'SVProgressHUD'
+  pod 'Fabric'
+  pod 'Crashlytics'
 
 end
