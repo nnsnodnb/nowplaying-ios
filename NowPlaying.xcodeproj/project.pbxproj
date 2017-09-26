@@ -318,11 +318,12 @@
 				2B302B8935A65A820A7DC1BE /* [CP] Check Pods Manifest.lock */,
 				CF615AE61F56AB3B00315019 /* Sources */,
 				CF615AE71F56AB3B00315019 /* Frameworks */,
-				CF8C85E31F6F26260051A0C7 /* ShellScript */,
+				CF8C85E31F6F26260051A0C7 /* PlistBuddy */,
 				CF615AE81F56AB3B00315019 /* Resources */,
-				CF63348A1F5AB6F200D80EB8 /* ShellScript */,
+				CF63348A1F5AB6F200D80EB8 /* Carthage */,
 				4B32D40105EBD8E4B3E8BEFD /* [CP] Embed Pods Frameworks */,
 				DC4488FCE3B57E00C3DB2FFC /* [CP] Copy Pods Resources */,
+				CF4D73D31F7A979400E72FBF /* Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -434,7 +435,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CF63348A1F5AB6F200D80EB8 /* ShellScript */ = {
+		CF4D73D31F7A979400E72FBF /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Crashlytics;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = ". NowPlaying/Resources/.env\n\n\"${PODS_ROOT}/Fabric/run\" ${FABRIC_API_KEY} ${FABRIC_BUILD_SECRET}";
+		};
+		CF63348A1F5AB6F200D80EB8 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
 			files = (
@@ -444,24 +459,26 @@
 				"$(SRCROOT)/Carthage/Build/iOS/KeychainSwift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Eureka.framework",
 			);
+			name = Carthage;
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
-		CF8C85E31F6F26260051A0C7 /* ShellScript */ = {
+		CF8C85E31F6F26260051A0C7 /* PlistBuddy */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = PlistBuddy;
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFileSource=\"${SRCROOT}/${INFOPLIST_FILE}\"\ninfoPlistFileDestination=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\n. NowPlaying/Resources/.env\n\n$plistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 twitterkit-${TWITTER_CONSUMER_KEY}\" \"${infoPlistFileDestination}\"";
+			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFileSource=\"${SRCROOT}/${INFOPLIST_FILE}\"\ninfoPlistFileDestination=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\n. NowPlaying/Resources/.env\n\n$plistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 twitterkit-${TWITTER_CONSUMER_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :Fabric:APIKey ${FABRIC_API_KEY}\" \"${infoPlistFileDestination}\"";
 		};
 		DC4488FCE3B57E00C3DB2FFC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

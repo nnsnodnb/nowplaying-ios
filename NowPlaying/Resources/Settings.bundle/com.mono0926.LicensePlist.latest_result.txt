@@ -1,3 +1,9 @@
+name: Crashlytics, nameSpecified: 
+body: Fabric: Copyright 20…
+
+name: Fabric, nameSpecified: 
+body: Fabric: Copyright 20…
+
 name: SVProgressHUD, nameSpecified: 
 body: Copyright (c) 2011-2…
 

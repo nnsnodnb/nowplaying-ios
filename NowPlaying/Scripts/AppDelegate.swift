@@ -8,6 +8,8 @@
 
 import UIKit
 import TwitterKit
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         loadEnvironment()
         let env = ProcessInfo.processInfo.environment
         Twitter.sharedInstance().start(withConsumerKey: env["TWITTER_CONSUMER_KEY"]!, consumerSecret: env["TWITTER_CONSUMER_SECRET"]!)
+        Fabric.with([Crashlytics.self])
         return true
     }
 
