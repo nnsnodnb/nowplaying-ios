@@ -30,7 +30,7 @@
                         <constraint firstAttribute="height" constant="350" id="rHh-8c-5xX"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5FN-5l-kq7">
                     <rect key="frame" x="8" y="358" width="70" height="70"/>
