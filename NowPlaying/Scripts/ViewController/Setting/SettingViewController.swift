@@ -141,8 +141,7 @@ class SettingViewController: FormViewController {
                 if #available(iOS 10.3, *) {
                     SKStoreReviewController.requestReview()
                 } else {
-                    // TODO: - AppStoreのアプリIDの付加
-                    if let url = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=") {
+                    if let url = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1289764391") {
                         let alert = UIAlertController(title: nil, message: "AppStoreを起動します", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
                         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert) in
