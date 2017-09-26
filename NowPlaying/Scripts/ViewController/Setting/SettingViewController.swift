@@ -93,6 +93,13 @@ class SettingViewController: FormViewController {
                 self.userDefaults.set(row.value!, forKey: UserDefaultsKey.isWithImage.rawValue)
                 self.userDefaults.synchronize()
             })
+            <<< SwitchRow() { [unowned self] in
+                $0.title = "自動ツイート"
+                $0.value = self.userDefaults.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue)
+            }.onChange({ (row) in
+                self.userDefaults.set(row.value!, forKey: UserDefaultsKey.isAutoTweet.rawValue)
+                self.userDefaults.synchronize()
+            })
 
             +++ Section("アプリについて")
             <<< ButtonRow() {
