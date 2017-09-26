@@ -77,7 +77,7 @@ class PlayViewController: UIViewController {
     }
 
     fileprivate func autoTweet() {
-        if !userDefaults.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue) {
+        if !userDefaults.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue) || Twitter.sharedInstance().sessionStore.session() == nil {
             return
         }
         SVProgressHUD.show()
