@@ -93,6 +93,19 @@ class SettingViewController: FormViewController {
                 self.userDefaults.set(row.value!, forKey: UserDefaultsKey.isWithImage.rawValue)
                 self.userDefaults.synchronize()
             })
+            <<< SwitchRow() { [unowned self] in
+                $0.title = "自動ツイート"
+                $0.value = self.userDefaults.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue)
+            }.onChange({ (row) in
+                self.userDefaults.set(row.value!, forKey: UserDefaultsKey.isAutoTweet.rawValue)
+                self.userDefaults.synchronize()
+                if !row.value! {
+                    return
+                }
+                let alert = UIAlertController(title: nil, message: "起動中のみ自動的にツイートされます", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            })
 
             +++ Section("アプリについて")
             <<< ButtonRow() {

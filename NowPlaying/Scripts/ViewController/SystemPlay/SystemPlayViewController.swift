@@ -24,17 +24,17 @@ class SystemPlayViewController: UIViewController {
         addChildViewController(playViewController)
         view.addSubview(playViewController.view)
         playViewController.didMove(toParentViewController: self)
+        setupNotification()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupNotification()
         player.beginGeneratingPlaybackNotifications()
-        setupPlayViewControllerItem()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        setupPlayViewControllerItem()
         setupAccessMusicLibrary()
     }
 
@@ -79,9 +79,10 @@ class SystemPlayViewController: UIViewController {
         )
     }
 
-    fileprivate func setupPlayViewControllerItem() {
+    fileprivate func setupPlayViewControllerItem(isNotification: Bool=false) {
         if let item = player.nowPlayingItem {
             playViewController.song = item
+            playViewController.isNotification = isNotification
         }
     }
 
@@ -97,6 +98,6 @@ class SystemPlayViewController: UIViewController {
     // MARK: - Notification target
 
     func musicNotification(_ notification: Notification) {
-        setupPlayViewControllerItem()
+        setupPlayViewControllerItem(isNotification: true)
     }
 }

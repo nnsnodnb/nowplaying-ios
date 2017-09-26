@@ -10,6 +10,7 @@ import Foundation
 
 enum UserDefaultsKey: String {
     case isWithImage = "is_with_image"
+    case isAutoTweet = "is_auto_tweet"
 }
 
 enum KeychainKey: String {

@@ -634,7 +634,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Twitter-Kit",
 				);
 				INFOPLIST_FILE = NowPlaying/Resources/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
@@ -656,7 +655,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Twitter-Kit",
 				);
 				INFOPLIST_FILE = NowPlaying/Resources/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
