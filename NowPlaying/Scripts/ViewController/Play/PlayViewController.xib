@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -75,31 +71,22 @@
                                     <rect key="frame" x="30" y="0.0" width="243" height="53"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-cW-baF">
-                                            <rect key="frame" x="0.0" y="0.0" width="53" height="53"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="zQA-cW-baF" secondAttribute="height" multiplier="1:1" id="auA-xK-LJu"/>
-                                            </constraints>
+                                            <rect key="frame" x="0.0" y="0.0" width="64" height="53"/>
                                             <state key="normal" image="previous"/>
                                             <connections>
                                                 <action selector="onTapPreviousButton:" destination="-1" eventType="touchUpInside" id="F4v-S7-W4h"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMi-NZ-cvB">
-                                            <rect key="frame" x="95" y="0.0" width="53" height="53"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="qMi-NZ-cvB" secondAttribute="height" multiplier="1:1" id="EyC-55-hO5"/>
-                                            </constraints>
-                                            <state key="normal" title="Button" image="play"/>
+                                            <rect key="frame" x="89.5" y="0.0" width="64" height="53"/>
+                                            <state key="normal" image="play"/>
                                             <connections>
                                                 <action selector="onTapPlayButton:" destination="-1" eventType="touchUpInside" id="OKT-xd-Vx6"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crR-aX-F7g">
-                                            <rect key="frame" x="190" y="0.0" width="53" height="53"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="crR-aX-F7g" secondAttribute="height" multiplier="1:1" id="zQm-65-hEM"/>
-                                            </constraints>
-                                            <state key="normal" title="Button" image="next"/>
+                                            <rect key="frame" x="179" y="0.0" width="64" height="53"/>
+                                            <state key="normal" image="next"/>
                                             <connections>
                                                 <action selector="onTapNextButton:" destination="-1" eventType="touchUpInside" id="VW8-i3-aQ0"/>
                                             </connections>

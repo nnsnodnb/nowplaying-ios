@@ -11,6 +11,7 @@ import Foundation
 enum UserDefaultsKey: String {
     case isWithImage = "is_with_image"
     case isAutoTweet = "is_auto_tweet"
+    case isShowAutoTweetAlert = "is_show_auto_tweet_alert"
 }
 
 enum KeychainKey: String {

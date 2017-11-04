@@ -62,9 +62,14 @@ class AlbumViewController: UIViewController {
     fileprivate func showRequestDeniedAlert() {
         let alert = UIAlertController(title: "アプリを使用するには\n許可が必要です", message: "設定しますか？", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-        alert.addAction(UIAlertAction(title: "設定画面へ", style: .default, handler: { _ in
-            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
-        }))
+        let okAction = UIAlertAction(title: "設定画面へ", style: .default, handler: { _ in
+            let url = URL(string: UIApplicationOpenSettingsURLString)!
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.openURL(url)
+            }
+        })
+        alert.addAction(okAction)
+        alert.preferredAction = okAction
         present(alert, animated: true, completion: nil)
     }
 }

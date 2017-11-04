@@ -7,4 +7,5 @@ framework module Eureka {
 
 module Eureka.Swift {
     header "Eureka-Swift.h"
+    requires objc
 }

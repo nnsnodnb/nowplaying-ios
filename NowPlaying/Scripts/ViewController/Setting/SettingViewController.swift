@@ -99,12 +99,17 @@ class SettingViewController: FormViewController {
             }.onChange({ (row) in
                 self.userDefaults.set(row.value!, forKey: UserDefaultsKey.isAutoTweet.rawValue)
                 self.userDefaults.synchronize()
-                if !row.value! {
+                if !row.value! || self.userDefaults.bool(forKey: UserDefaultsKey.isShowAutoTweetAlert.rawValue) {
                     return
                 }
                 let alert = UIAlertController(title: nil, message: "起動中のみ自動的にツイートされます", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    self.present(alert, animated: true) {
+                        self.userDefaults.set(true, forKey: UserDefaultsKey.isShowAutoTweetAlert.rawValue)
+                        self.userDefaults.synchronize()
+                    }
+                }
             })
 
             +++ Section("アプリについて")
@@ -116,7 +121,9 @@ class SettingViewController: FormViewController {
                 cell.accessoryType = .disclosureIndicator
             }).onCellSelection({ [unowned self] (cell, row) in
                 let safariViewController = SFSafariViewController(url: URL(string: "https://twitter.com/nnsnodnb")!)
-                self.navigationController?.present(safariViewController, animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    self.navigationController?.present(safariViewController, animated: true, completion: nil)
+                }
             })
             <<< ButtonRow() {
                 $0.title = "ソースコード(GitHub)"
@@ -126,7 +133,9 @@ class SettingViewController: FormViewController {
                 cell.accessoryType = .disclosureIndicator
             }).onCellSelection({ (cell, row) in
                 let safariViewController = SFSafariViewController(url: URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!)
-                self.navigationController?.present(safariViewController, animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    self.navigationController?.present(safariViewController, animated: true, completion: nil)
+                }
             })
             <<< ButtonRow() {
                 $0.title = "レビューする"
@@ -138,14 +147,16 @@ class SettingViewController: FormViewController {
                 if #available(iOS 10.3, *) {
                     SKStoreReviewController.requestReview()
                 } else {
-                    // TODO: - AppStoreのアプリIDの付加
-                    if let url = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=") {
+                    if let url = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1289764391") {
                         let alert = UIAlertController(title: nil, message: "AppStoreを起動します", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alert) in
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
                             UIApplication.shared.openURL(url)
-                        }))
-                        self.present(alert, animated: true, completion: nil)
+                        })
+                        alert.preferredAction = okAction
+                        DispatchQueue.main.async {
+                            self.present(alert, animated: true, completion: nil)
+                        }
                     }
                 }
             })
@@ -153,7 +164,7 @@ class SettingViewController: FormViewController {
 
     // MARK: - UIBarButtonItem target
 
-    func onTapCloseButton(_ sender: Any) {
+    @objc func onTapCloseButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
 }

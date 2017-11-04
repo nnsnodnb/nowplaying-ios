@@ -42,16 +42,17 @@ class TweetViewController: UIViewController {
         )
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
-    deinit {
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(
             self,
             name: NSNotification.Name.UIKeyboardDidShow,
             object: nil
         )
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
 
     // MARK: - Private method
@@ -98,12 +99,12 @@ class TweetViewController: UIViewController {
 
     // MARK: - UIBarButtonItem target
 
-    func onTapCancelButton(_ sender: UIBarButtonItem) {
+    @objc func onTapCancelButton(_ sender: UIBarButtonItem) {
         textView.resignFirstResponder()
         dismiss(animated: true, completion: nil)
     }
 
-    func onTapTweetButton(_ sender: UIBarButtonItem) {
+    @objc func onTapTweetButton(_ sender: UIBarButtonItem) {
         SVProgressHUD.show()
         if shareImage != nil {
             TwitterClient.shared.client?.sendTweet(withText: textView.text, image: shareImage!, completion: { [unowned self] (tweet, error) in
@@ -131,7 +132,7 @@ class TweetViewController: UIViewController {
 
     // MARK: - Notification target
 
-    func showKeyboard(_ notification: Notification) {
+    @objc func showKeyboard(_ notification: Notification) {
         if let userInfo = notification.userInfo, let keyboard = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
             keyboardHeight = keyboard.cgRectValue.size.height
             resizeTextView()
