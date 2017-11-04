@@ -7,4 +7,5 @@ framework module ExtensionCollection {
 
 module ExtensionCollection.Swift {
     header "ExtensionCollection-Swift.h"
+    requires objc
 }

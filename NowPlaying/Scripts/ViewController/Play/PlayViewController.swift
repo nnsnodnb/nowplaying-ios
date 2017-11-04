@@ -39,7 +39,7 @@ class PlayViewController: UIViewController {
 
     fileprivate let userDefaults = UserDefaults.standard
 
-    fileprivate var isPlay: Bool = MPMusicPlayerController.systemMusicPlayer().playbackState == .playing {
+    fileprivate var isPlay: Bool = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing {
         didSet {
             playButton.setImage(UIImage(named: isPlay ? "pause" : "play"), for: .normal)
         }
@@ -67,7 +67,7 @@ class PlayViewController: UIViewController {
 
     fileprivate func setupView() {
         songNameLabel.text = nil
-        isPlay = MPMusicPlayerController.systemMusicPlayer().playbackState == .playing
+        isPlay = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
     }
 
     fileprivate func showError(error: Error) {
@@ -84,7 +84,7 @@ class PlayViewController: UIViewController {
         let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
         if let artwork = song?.artwork, userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
             let image = artwork.image(at: artwork.bounds.size)
-            TwitterClient.shared.client?.sendTweet(withText: message, image: image!) { (tweet, error) in
+            TwitterClient.shared.client?.sendTweet(withText: message, image: image!) { [unowned self] (tweet, error) in
                 SVProgressHUD.dismiss()
                 if error != nil {
                     self.showError(error: error!)
@@ -103,20 +103,20 @@ class PlayViewController: UIViewController {
     // MARK: - IBAction
 
     @IBAction func onTapPreviousButton(_ sender: Any) {
-        MPMusicPlayerController.systemMusicPlayer().skipToPreviousItem()
+        MPMusicPlayerController.systemMusicPlayer.skipToPreviousItem()
     }
 
     @IBAction func onTapPlayButton(_ sender: Any) {
         if isPlay {
-            MPMusicPlayerController.systemMusicPlayer().pause()
+            MPMusicPlayerController.systemMusicPlayer.pause()
         } else {
-            MPMusicPlayerController.systemMusicPlayer().play()
+            MPMusicPlayerController.systemMusicPlayer.play()
         }
         isPlay = !isPlay
     }
 
     @IBAction func onTapNextButton(_ sender: Any) {
-        MPMusicPlayerController.systemMusicPlayer().skipToNextItem()
+        MPMusicPlayerController.systemMusicPlayer.skipToNextItem()
     }
 
     @IBAction func onTapGearButton(_ sender: Any) {
@@ -133,7 +133,7 @@ class PlayViewController: UIViewController {
             return
         }
         let tweetViewController = TweetViewController()
-        tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer().nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
+        tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
         if let artwork = song?.artwork, userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
             let image = artwork.image(at: artwork.bounds.size)
             tweetViewController.shareImage = image

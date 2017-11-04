@@ -12,7 +12,7 @@ import MediaPlayer
 class SystemPlayViewController: UIViewController {
 
     fileprivate let playViewController = PlayViewController()
-    fileprivate let player = MPMusicPlayerController.systemMusicPlayer()
+    fileprivate let player = MPMusicPlayerController.systemMusicPlayer
 
     // MARK: - Life cycle
 
@@ -97,7 +97,7 @@ class SystemPlayViewController: UIViewController {
 
     // MARK: - Notification target
 
-    func musicNotification(_ notification: Notification) {
+    @objc func musicNotification(_ notification: Notification) {
         setupPlayViewControllerItem(isNotification: true)
     }
 }

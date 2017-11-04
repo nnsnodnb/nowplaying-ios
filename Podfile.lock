@@ -1,11 +1,11 @@
 PODS:
-  - Crashlytics (3.8.6):
-    - Fabric (~> 1.6.3)
-  - Fabric (1.6.13)
-  - SVProgressHUD (2.2.1)
-  - TwitterCore (3.0.0)
-  - TwitterKit (3.1.0):
-    - TwitterCore (>= 3.0.0)
+  - Crashlytics (3.9.3):
+    - Fabric (~> 1.7.2)
+  - Fabric (1.7.2)
+  - SVProgressHUD (2.2.2)
+  - TwitterCore (3.0.2)
+  - TwitterKit (3.2.1):
+    - TwitterCore (>= 3.0.2)
 
 DEPENDENCIES:
   - Crashlytics
@@ -14,11 +14,11 @@ DEPENDENCIES:
   - TwitterKit
 
 SPEC CHECKSUMS:
-  Crashlytics: 95d05f4e4c19a771250c4bd9ce344d996de32bbf
-  Fabric: 2fb5676bc811af011a04513451f463dac6803206
-  SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
-  TwitterCore: 8ce250be1eb34633a0e6acc89520d4165ec52c10
-  TwitterKit: 21d0b22d67cb9a568cd8053972d0da7df2e0e9a0
+  Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
+  Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
+  SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
+  TwitterCore: e0420b01e02e7d20e94690e37f43e75de219ab8d
+  TwitterKit: 205ac89824bbfe9e85a16c420d30bb7bcbedac45
 
 PODFILE CHECKSUM: ebec84f42c3bb9dad62bfceab383fb6864073a52
 
