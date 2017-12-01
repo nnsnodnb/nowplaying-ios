@@ -1,5 +1,6 @@
 github "Alamofire/Alamofire" "4.5.1"
 github "HiyakashiGroupHoldings/ExtensionCollection" "0.0.3"
 github "evgenyneu/keychain-swift" "10.0.0"
+github "kciter/Floaty" "4.0.0"
 github "marketplacer/keychain-swift" "10.0.0"
 github "xmartlabs/Eureka" "4.0.1"

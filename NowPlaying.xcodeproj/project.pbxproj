@@ -19,6 +19,7 @@
 		CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF28A8331FD180AC00E45F12 /* Alamofire.framework */; };
 		CF28A8381FD183D300E45F12 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF28A8361FD183D300E45F12 /* WebViewController.swift */; };
 		CF28A8391FD183D300E45F12 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8371FD183D300E45F12 /* WebViewController.xib */; };
+		CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */; };
 		CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */; };
 		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
 		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
@@ -58,6 +59,8 @@
 		CF28A8331FD180AC00E45F12 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		CF28A8361FD183D300E45F12 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WebViewController.swift; path = WebView/WebViewController.swift; sourceTree = "<group>"; };
 		CF28A8371FD183D300E45F12 /* WebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WebViewController.xib; path = WebView/WebViewController.xib; sourceTree = "<group>"; };
+		CF28A83A1FD1A4BE00E45F12 /* iOS */ = {isa = PBXFileReference; lastKnownFileType = folder; name = iOS; path = Carthage/Build/iOS; sourceTree = "<group>"; };
+		CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Floaty.framework; path = Carthage/Build/iOS/Floaty.framework; sourceTree = "<group>"; };
 		CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TweetViewController.swift; path = Tweet/TweetViewController.swift; sourceTree = "<group>"; };
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
 		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
@@ -92,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */,
 				CF8C85CC1F6EFBE30051A0C7 /* KeychainSwift.framework in Frameworks */,
 				CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */,
 				CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */,
@@ -198,6 +202,8 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */,
+				CF28A83A1FD1A4BE00E45F12 /* iOS */,
 				CF28A8331FD180AC00E45F12 /* Alamofire.framework */,
 				CF4D73D11F791D4300E72FBF /* StoreKit.framework */,
 				CF1AAFE41F75459B00384000 /* Eureka.framework */,
@@ -464,6 +470,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Eureka.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/KeychainSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Floaty.framework",
 			);
 			name = Carthage;
 			outputPaths = (
