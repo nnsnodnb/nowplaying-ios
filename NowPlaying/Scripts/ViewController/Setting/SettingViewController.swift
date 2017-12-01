@@ -169,7 +169,7 @@ class SettingViewController: FormViewController {
                             self.isMastodonLogin = true
                             UserDefaults.standard.set(true, forKey: UserDefaultsKey.isMastodonLogin.rawValue)
                             UserDefaults.standard.synchronize()
-                            DispatchQueue.main.async {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                 SVProgressHUD.showSuccess(withStatus: "ログインしました")
                                 SVProgressHUD.dismiss(withDelay: 0.5)
                                 cell.textLabel?.text = "ログアウト"

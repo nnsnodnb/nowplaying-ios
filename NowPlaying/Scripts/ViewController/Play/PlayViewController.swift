@@ -71,10 +71,14 @@ class PlayViewController: UIViewController {
 
         floaty.hasShadow = false
         floaty.addItem("Twitter", icon: #imageLiteral(resourceName: "twitter")) { [unowned self] item in
-            self.onTapTwitterButton(item)
+            DispatchQueue.main.async {
+                self.onTapTwitterButton(item)
+            }
         }
         floaty.addItem("Mastodon", icon: #imageLiteral(resourceName: "mastodon")) { [unowned self] item in
-            self.onTapMastodonButton(item)
+            DispatchQueue.main.async {
+                self.onTapMastodonButton(item)
+            }
         }
         floaty.paddingX = view.frame.width / 2 - floaty.frame.width / 2
     }

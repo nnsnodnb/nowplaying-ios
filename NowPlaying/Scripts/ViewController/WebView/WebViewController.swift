@@ -17,6 +17,8 @@ class WebViewController: UIViewController {
     var url: URL!
     var handler: ((String?, Error?) -> ())!
 
+    fileprivate var gotToken = false
+
     // MARK: - Life cycle
 
     override func viewDidLoad() {
@@ -89,6 +91,7 @@ extension WebViewController : UIWebViewDelegate {
             let authorizationCode = path.components(separatedBy: "/oauth/authorize/").last!
             UserDefaults.standard.set(authorizationCode, forKey: "authorization_code")
             UserDefaults.standard.synchronize()
+            gotToken = true
             getToken(authorizationCode)
             return false
         }
@@ -96,14 +99,28 @@ extension WebViewController : UIWebViewDelegate {
     }
 
     func webViewDidStartLoad(_ webView: UIWebView) {
+        SVProgressHUD.show()
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
 
     func webViewDidFinishLoad(_ webView: UIWebView) {
+        SVProgressHUD.dismiss()
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+        if gotToken {
+            return
+        }
+        SVProgressHUD.dismiss()
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        let alert = UIAlertController(title: nil, message: "読み込みに失敗しました", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "ログインをキャンセル", style: .cancel, handler: { [unowned self] (_) in
+            self.dismiss(animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "再試行", style: .default, handler: { [unowned self] (_) in
+            self.webView.reload()
+        }))
+        present(alert, animated: true, completion: nil)
     }
 }
