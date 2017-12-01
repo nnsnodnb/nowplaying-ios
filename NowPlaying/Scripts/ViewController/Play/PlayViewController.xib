@@ -14,6 +14,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlayViewController" customModule="NowPlaying" customModuleProvider="target">
             <connections>
                 <outlet property="artworkImageView" destination="hQk-D4-a1j" id="9Xg-Rq-qYb"/>
+                <outlet property="floaty" destination="YGZ-UO-cK2" id="jrX-SF-P7T"/>
                 <outlet property="playButton" destination="qMi-NZ-cvB" id="ckT-BR-BCK"/>
                 <outlet property="songNameLabel" destination="LaS-KO-82c" id="U5e-zW-JkR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -113,17 +114,6 @@
                         <constraint firstAttribute="width" constant="303" id="3bV-0h-i0A"/>
                     </constraints>
                 </stackView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="es6-R1-NoX">
-                    <rect key="frame" x="309" y="601" width="50" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="50" id="8I4-IF-Yz7"/>
-                        <constraint firstAttribute="height" constant="50" id="br1-b6-Odf"/>
-                    </constraints>
-                    <state key="normal" image="twitter"/>
-                    <connections>
-                        <action selector="onTapTwitterButton:" destination="-1" eventType="touchUpInside" id="cI8-c8-Xbb"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3aW-hZ-XIr">
                     <rect key="frame" x="16" y="601" width="50" height="50"/>
                     <constraints>
@@ -135,14 +125,23 @@
                         <action selector="onTapGearButton:" destination="-1" eventType="touchUpInside" id="EKu-nm-Ua3"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YGZ-UO-cK2" customClass="Floaty" customModule="Floaty">
+                    <rect key="frame" x="309" y="601" width="50" height="50"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="8cu-pz-oVo"/>
+                        <constraint firstAttribute="width" constant="50" id="R24-HI-tOE"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="YGZ-UO-cK2" firstAttribute="bottom" secondItem="3aW-hZ-XIr" secondAttribute="bottom" id="07V-4H-dBm"/>
                 <constraint firstAttribute="bottom" secondItem="3aW-hZ-XIr" secondAttribute="bottom" constant="16" id="4wc-RA-nQD"/>
-                <constraint firstAttribute="bottom" secondItem="es6-R1-NoX" secondAttribute="bottom" constant="16" id="52Q-Mt-D7Q"/>
+                <constraint firstItem="GlU-pD-9su" firstAttribute="trailing" secondItem="YGZ-UO-cK2" secondAttribute="trailing" constant="16" id="GKA-gS-i47"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="L0B-pi-jFq"/>
-                <constraint firstItem="3aW-hZ-XIr" firstAttribute="top" secondItem="A5A-pe-FD2" secondAttribute="bottom" constant="39.5" id="R0h-cz-o8D"/>
-                <constraint firstAttribute="trailing" secondItem="es6-R1-NoX" secondAttribute="trailing" constant="16" id="dXz-by-Rai"/>
+                <constraint firstItem="YGZ-UO-cK2" firstAttribute="top" secondItem="3aW-hZ-XIr" secondAttribute="top" id="NTA-QO-X2f"/>
+                <constraint firstItem="GlU-pD-9su" firstAttribute="bottom" secondItem="YGZ-UO-cK2" secondAttribute="bottom" constant="16" id="eks-lk-Zhk"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="fLm-4y-Gus"/>
                 <constraint firstItem="3aW-hZ-XIr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="mD1-8t-bao"/>
             </constraints>
@@ -156,6 +155,5 @@
         <image name="next" width="64" height="64"/>
         <image name="play" width="64" height="64"/>
         <image name="previous" width="64" height="64"/>
-        <image name="twitter" width="128" height="128"/>
     </resources>
 </document>

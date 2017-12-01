@@ -10,12 +10,14 @@ import UIKit
 import MediaPlayer
 import TwitterKit
 import SVProgressHUD
+import Floaty
 
 class PlayViewController: UIViewController {
 
     @IBOutlet weak var artworkImageView: UIImageView!
     @IBOutlet weak var songNameLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var floaty: Floaty!
 
     var albumTitle: String! {
         didSet {
@@ -51,10 +53,30 @@ class PlayViewController: UIViewController {
         super.viewDidLoad()
         setupNavigation()
         setupView()
+        layoutFAB()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+
+    func layoutFAB() {
+        let item = FloatyItem()
+        item.hasShadow = false
+        item.buttonColor = UIColor.blue
+        item.circleShadowColor = UIColor.red
+        item.titleShadowColor = UIColor.blue
+        item.titleLabelPosition = .left
+        item.title = "titlePosition right"
+
+        floaty.hasShadow = false
+        floaty.addItem("Twitter", icon: #imageLiteral(resourceName: "twitter")) { [unowned self] item in
+            self.onTapTwitterButton(item)
+        }
+        floaty.addItem("Mastodon", icon: #imageLiteral(resourceName: "mastodon")) { [unowned self] item in
+            self.onTapMastodonButton(item)
+        }
+        floaty.paddingX = view.frame.width / 2 - floaty.frame.width / 2
     }
 
     // MARK: - Private method
@@ -100,6 +122,32 @@ class PlayViewController: UIViewController {
         }
     }
 
+    func onTapTwitterButton(_ sender: FloatyItem) {
+        if Twitter.sharedInstance().sessionStore.session() == nil {
+            let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return
+        }
+        let tweetViewController = TweetViewController()
+        tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
+        if let artwork = song?.artwork, userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
+            let image = artwork.image(at: artwork.bounds.size)
+            tweetViewController.shareImage = image
+        }
+        let navi = UINavigationController(rootViewController: tweetViewController)
+        present(navi, animated: true, completion: nil)
+    }
+
+    func onTapMastodonButton(_ sender: FloatyItem) {
+        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonLogin.rawValue) {
+            let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            return
+        }
+    }
+
     // MARK: - IBAction
 
     @IBAction func onTapPreviousButton(_ sender: Any) {
@@ -124,21 +172,5 @@ class PlayViewController: UIViewController {
         let navi = UINavigationController(rootViewController: settingViewController)
         present(navi, animated: true, completion: nil)
     }
-
-    @IBAction func onTapTwitterButton(_ sender: Any) {
-        if Twitter.sharedInstance().sessionStore.session() == nil {
-            let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
-            present(alert, animated: true, completion: nil)
-            return
-        }
-        let tweetViewController = TweetViewController()
-        tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
-        if let artwork = song?.artwork, userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
-            let image = artwork.image(at: artwork.bounds.size)
-            tweetViewController.shareImage = image
-        }
-        let navi = UINavigationController(rootViewController: tweetViewController)
-        present(navi, animated: true, completion: nil)
-    }
 }
+
