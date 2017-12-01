@@ -136,7 +136,8 @@ class SettingViewController: FormViewController {
             }).onCellSelection({ (cell, row) in
                 row.deselect()
                 if !self.isMastodonLogin {
-                    guard URL(string: UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)! + "/api/v1/apps") != nil else {
+                    let baseUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)!
+                    guard URL(string: baseUrl + "/api/v1/apps") != nil else {
                         self.showMastodonError()
                         return
                     }
@@ -160,7 +161,7 @@ class SettingViewController: FormViewController {
                         keychain.synchronizable = true
 
                         let webViewController = WebViewController()
-                        webViewController.url = URL(string: UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)! + "/oauth/authorize?client_id=\(clientID)&response_type=code&redirect_uri=urn:ietf:wg:oauth:2.0:oob&scope=write")!
+                        webViewController.url = URL(string: baseUrl + "/oauth/authorize?client_id=\(clientID)&response_type=code&redirect_uri=urn:ietf:wg:oauth:2.0:oob&scope=write")!
                         webViewController.handler = { accessToken, error in
                             if error != nil {
                                 self.showMastodonError()

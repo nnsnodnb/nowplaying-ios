@@ -18,6 +18,15 @@ class MastodonClient: NSObject {
     fileprivate let baseUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)!
 
     func register(handler: @escaping (([String: Any]?, Error?) -> ())) {
+        // 重複登録防止
+        if let clientID = keychain.get(KeychainKey.mastodonClientID.rawValue), let clientSecret = keychain.get(KeychainKey.mastodonClientSecret.rawValue) {
+            let responseJson = [
+                "client_id": clientID,
+                "client_secret": clientSecret
+            ]
+            handler(responseJson, nil)
+            return
+        }
         let parameter: [String: String] = ["client_name": "NowPlayingiOS",
                                            "redirect_uris": "urn:ietf:wg:oauth:2.0:oob",
                                            "scopes": "write",

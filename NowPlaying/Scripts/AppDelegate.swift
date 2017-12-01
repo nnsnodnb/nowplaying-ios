@@ -10,6 +10,7 @@ import UIKit
 import TwitterKit
 import Fabric
 import Crashlytics
+import KeychainSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,8 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.beginReceivingRemoteControlEvents()
         loadEnvironment()
         let env = ProcessInfo.processInfo.environment
-        Twitter.sharedInstance().start(withConsumerKey: env["TWITTER_CONSUMER_KEY"]!, consumerSecret: env["TWITTER_CONSUMER_SECRET"]!)
+        Twitter.sharedInstance().start(withConsumerKey: env[EnvironmentKey.twitterConsumerKey.rawValue]!, consumerSecret: env[EnvironmentKey.twitterConsumerSecret.rawValue]!)
         Fabric.with([Crashlytics.self])
+        #if DEBUG
+//        KeychainSwift().delete(KeychainKey.mastodonClientID.rawValue)
+//        KeychainSwift().delete(KeychainKey.mastodonClientSecret.rawValue)
+//        KeychainSwift().delete(KeychainKey.mastodonAccessToken.rawValue)
+        #endif
         return true
     }
 
