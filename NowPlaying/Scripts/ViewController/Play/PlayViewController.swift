@@ -150,6 +150,15 @@ class PlayViewController: UIViewController {
             present(alert, animated: true, completion: nil)
             return
         }
+        let tweetViewController = TweetViewController()
+        tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
+        if let artwork = song?.artwork, userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
+            let image = artwork.image(at: artwork.bounds.size)
+            tweetViewController.shareImage = image
+        }
+        tweetViewController.isMastodon = true
+        let navi = UINavigationController(rootViewController: tweetViewController)
+        present(navi, animated: true, completion: nil)
     }
 
     // MARK: - IBAction

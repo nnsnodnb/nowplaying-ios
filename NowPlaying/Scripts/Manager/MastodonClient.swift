@@ -6,21 +6,24 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Alamofire
+import KeychainSwift
 
 class MastodonClient: NSObject {
 
     static let shared = MastodonClient()
 
+    fileprivate let keychain = KeychainSwift()
+
     func register(handler: @escaping (([String: Any]?, Error?) -> ())) {
         let parameter: [String: String] = ["client_name": "NowPlayingiOS",
                                            "redirect_uris": "urn:ietf:wg:oauth:2.0:oob",
                                            "scopes": "write",
-                                           "website": UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)!]
+                                           "website": "https://itunes.apple.com/jp/app/nowplaying-%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B%E3%81%A0%E3%81%91%E3%81%A7%E3%83%84%E3%82%A4%E3%83%BC%E3%83%88/id1289764391?mt=8"]
 
         request(UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)! + "/api/v1/apps", method: .post, parameter: parameter) { (response) in
-            guard response.response != nil else {
+            guard response.result.isSuccess else {
                 handler(nil, response.error)
                 return
             }
@@ -38,7 +41,7 @@ class MastodonClient: NSObject {
                                            "password": password]
 
         request(UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)! + "/oauth/token", method: .post, parameter: parameter) { (response) in
-            guard response.error?.localizedDescription == nil else {
+            guard response.result.isSuccess else {
                 handler(nil)
                 return
             }
@@ -49,10 +52,25 @@ class MastodonClient: NSObject {
         }
     }
 
+    func toot(text: String, image: UIImage, handler: @escaping ((Error?) -> ())) {
+
+    }
+
+    func toot(text: String, handler: @escaping ((Error?) -> ())) {
+        let parameter = ["status": text]
+        request(UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)! + "/api/v1/statuses", method: .post, parameter: parameter) { (response) in
+            guard response.result.isSuccess else {
+                handler(response.error)
+                return
+            }
+            handler(nil)
+        }
+    }
+
     func request(_ url: String, method: HTTPMethod, parameter: Dictionary<String, Any>?, handler: @escaping ((DataResponse<Any>) -> ())) {
         var header: [String: String] = ["Content-Type": "application/json"]
 
-        if let accessToken = UserDefaults.standard.string(forKey: "access_token") {
+        if let accessToken = keychain.get(KeychainKey.mastodonAccessToken.rawValue) {
             header["Authorization"] = "Bearer \(accessToken)"
         }
 
