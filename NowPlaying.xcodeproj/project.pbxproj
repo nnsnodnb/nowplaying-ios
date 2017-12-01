@@ -334,6 +334,7 @@
 				4B32D40105EBD8E4B3E8BEFD /* [CP] Embed Pods Frameworks */,
 				DC4488FCE3B57E00C3DB2FFC /* [CP] Copy Pods Resources */,
 				CF4D73D31F7A979400E72FBF /* Crashlytics */,
+				CF28A83E1FD1C87D00E45F12 /* License-Plist */,
 			);
 			buildRules = (
 			);
@@ -444,6 +445,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		CF28A83E1FD1C87D00E45F12 /* License-Plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "License-Plist";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ! -e /usr/local/bin/license-plist ]; then\nexit 0\nfi\nif [ $CONFIGURATION = \"Debug\" ]; then\ncd $SRCROOT\n/usr/local/bin/license-plist --add-version-numbers --output-path $PRODUCT_NAME/Resources/Settings.bundle --cartfile-path Cartfile --pods-path Pods\nfi";
 		};
 		CF4D73D31F7A979400E72FBF /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;

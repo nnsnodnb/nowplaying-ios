@@ -13,12 +13,18 @@ body: Copyright Twitter, I…
 name: TwitterKit, nameSpecified: 
 body: Twitter Kit: Copyrig…
 
+name: Alamofire, nameSpecified: , owner: Alamofire, version: 4.5.1
+
 name: ExtensionCollection, nameSpecified: , owner: HiyakashiGroupHoldings, version: 0.0.3
 
-name: keychain-swift, nameSpecified: , owner: marketplacer, version: 8.0.3
+name: keychain-swift, nameSpecified: , owner: evgenyneu, version: 10.0.0
 
-name: Eureka, nameSpecified: , owner: xmartlabs, version: 3.1.0
+name: Floaty, nameSpecified: , owner: kciter, version: 4.0.0
+
+name: keychain-swift, nameSpecified: , owner: marketplacer, version: 10.0.0
+
+name: Eureka, nameSpecified: , owner: xmartlabs, version: 4.0.1
 
 add-version-numbers: true
 
-LicensePlist Version: 1.4.5
+LicensePlist Version: 1.7.0
