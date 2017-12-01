@@ -36,10 +36,9 @@ class PlayViewController: UIViewController {
                 return
             }
             autoTweet()
+            autoToot()
         }
     }
-
-    fileprivate let userDefaults = UserDefaults.standard
 
     fileprivate var isPlay: Bool = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing {
         didSet {
@@ -103,12 +102,12 @@ class PlayViewController: UIViewController {
     }
 
     fileprivate func autoTweet() {
-        if !userDefaults.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue) || Twitter.sharedInstance().sessionStore.session() == nil {
+        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue) || Twitter.sharedInstance().sessionStore.session() == nil {
             return
         }
         SVProgressHUD.show()
         let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
-        if let artwork = song?.artwork, userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
+        if let artwork = song?.artwork, UserDefaults.standard.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
             let image = artwork.image(at: artwork.bounds.size)
             TwitterClient.shared.client?.sendTweet(withText: message, image: image!) { [unowned self] (tweet, error) in
                 SVProgressHUD.dismiss()
@@ -126,6 +125,30 @@ class PlayViewController: UIViewController {
         }
     }
 
+    fileprivate func autoToot() {
+        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonAutoToot.rawValue) || !UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonLogin.rawValue) {
+            return
+        }
+        SVProgressHUD.show()
+        let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
+        if let artwork = song?.artwork, UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonWithImage.rawValue) {
+            let image = artwork.image(at: artwork.bounds.size)
+            MastodonClient.shared.toot(text: message, image: image, handler: { (error) in
+                SVProgressHUD.dismiss()
+                if error != nil {
+                    self.showError(error: error!)
+                }
+            })
+        } else {
+            MastodonClient.shared.toot(text: message, handler: { (error) in
+                SVProgressHUD.dismiss()
+                if error != nil {
+                    self.showError(error: error!)
+                }
+            })
+        }
+    }
+
     // MARK: - Floaty's items target
 
     func onTapTwitterButton(_ sender: FloatyItem) {
@@ -137,7 +160,7 @@ class PlayViewController: UIViewController {
         }
         let tweetViewController = TweetViewController()
         tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
-        if let artwork = song?.artwork, userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
+        if let artwork = song?.artwork, UserDefaults.standard.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
             let image = artwork.image(at: artwork.bounds.size)
             tweetViewController.shareImage = image
         }
@@ -154,7 +177,7 @@ class PlayViewController: UIViewController {
         }
         let tweetViewController = TweetViewController()
         tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
-        if let artwork = song?.artwork, userDefaults.bool(forKey: UserDefaultsKey.isMastodonWithImage.rawValue) {
+        if let artwork = song?.artwork, UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonWithImage.rawValue) {
             let image = artwork.image(at: artwork.bounds.size)
             tweetViewController.shareImage = image
         }

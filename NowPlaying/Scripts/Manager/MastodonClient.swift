@@ -50,7 +50,7 @@ class MastodonClient: NSObject {
                                            "username": username,
                                            "password": password]
 
-        request(websiteUrl + "/oauth/token", method: .post, parameter: parameter) { (response) in
+        request(baseUrl + "/oauth/token", method: .post, parameter: parameter) { (response) in
             guard response.result.isSuccess else {
                 handler(nil)
                 return
@@ -62,13 +62,13 @@ class MastodonClient: NSObject {
         }
     }
 
-    func toot(text: String, image: UIImage, handler: @escaping ((Error?) -> ())) {
+    func toot(text: String, image: UIImage?, handler: @escaping ((Error?) -> ())) {
 
     }
 
     func toot(text: String, handler: @escaping ((Error?) -> ())) {
         let parameter = ["status": text]
-        request(websiteUrl + "/api/v1/statuses", method: .post, parameter: parameter) { (response) in
+        request(baseUrl + "/api/v1/statuses", method: .post, parameter: parameter) { (response) in
             guard response.result.isSuccess else {
                 handler(response.error)
                 return
