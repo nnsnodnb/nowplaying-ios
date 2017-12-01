@@ -126,6 +126,8 @@ class PlayViewController: UIViewController {
         }
     }
 
+    // MARK: - Floaty's items target
+
     func onTapTwitterButton(_ sender: FloatyItem) {
         if Twitter.sharedInstance().sessionStore.session() == nil {
             let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
@@ -152,7 +154,7 @@ class PlayViewController: UIViewController {
         }
         let tweetViewController = TweetViewController()
         tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
-        if let artwork = song?.artwork, userDefaults.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
+        if let artwork = song?.artwork, userDefaults.bool(forKey: UserDefaultsKey.isMastodonWithImage.rawValue) {
             let image = artwork.image(at: artwork.bounds.size)
             tweetViewController.shareImage = image
         }
