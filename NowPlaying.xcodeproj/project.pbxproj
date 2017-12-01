@@ -29,9 +29,6 @@
 		CF615B0F1F56EEB200315019 /* AlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B0D1F56EEB200315019 /* AlbumTableViewCell.swift */; };
 		CF615B101F56EEB200315019 /* AlbumTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */; };
 		CF615B131F56F56100315019 /* Album.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615B121F56F56100315019 /* Album.storyboard */; };
-		CF615B161F56F5A800315019 /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B151F56F5A800315019 /* AlbumViewController.swift */; };
-		CF615B191F56FF0200315019 /* AlbumDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B171F56FF0200315019 /* AlbumDetailViewController.swift */; };
-		CF615B1A1F56FF0200315019 /* AlbumDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF615B181F56FF0200315019 /* AlbumDetailViewController.xib */; };
 		CF615B1D1F5707E200315019 /* SongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B1B1F5707E200315019 /* SongTableViewCell.swift */; };
 		CF615B1E1F5707E200315019 /* SongTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF615B1C1F5707E200315019 /* SongTableViewCell.xib */; };
 		CF6334891F5AB6EB00D80EB8 /* ExtensionCollection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */; };
@@ -69,9 +66,6 @@
 		CF615B0D1F56EEB200315019 /* AlbumTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumTableViewCell.swift; path = View/UITableViewCell/AlbumTableViewCell.swift; sourceTree = "<group>"; };
 		CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AlbumTableViewCell.xib; path = View/UITableViewCell/AlbumTableViewCell.xib; sourceTree = "<group>"; };
 		CF615B121F56F56100315019 /* Album.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Album.storyboard; path = Album/Album.storyboard; sourceTree = "<group>"; };
-		CF615B151F56F5A800315019 /* AlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumViewController.swift; path = Album/AlbumViewController.swift; sourceTree = "<group>"; };
-		CF615B171F56FF0200315019 /* AlbumDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumDetailViewController.swift; path = Album/AlbumDetailViewController.swift; sourceTree = "<group>"; };
-		CF615B181F56FF0200315019 /* AlbumDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AlbumDetailViewController.xib; path = Album/AlbumDetailViewController.xib; sourceTree = "<group>"; };
 		CF615B1B1F5707E200315019 /* SongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SongTableViewCell.swift; path = View/UITableViewCell/SongTableViewCell.swift; sourceTree = "<group>"; };
 		CF615B1C1F5707E200315019 /* SongTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SongTableViewCell.xib; path = View/UITableViewCell/SongTableViewCell.xib; sourceTree = "<group>"; };
 		CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExtensionCollection.framework; path = Carthage/Build/iOS/ExtensionCollection.framework; sourceTree = "<group>"; };
@@ -213,7 +207,6 @@
 			isa = PBXGroup;
 			children = (
 				CF1611381F727D6E0027144D /* SystemPlay */,
-				CF615B141F56F57A00315019 /* Album */,
 				CF1611331F726CF20027144D /* Play */,
 				CF1AAFDD1F7544D800384000 /* Setting */,
 				CF43E7D31F733C1F00A2A49A /* Tweet */,
@@ -275,16 +268,6 @@
 			isa = PBXGroup;
 			children = (
 				CF615B121F56F56100315019 /* Album.storyboard */,
-			);
-			name = Album;
-			sourceTree = "<group>";
-		};
-		CF615B141F56F57A00315019 /* Album */ = {
-			isa = PBXGroup;
-			children = (
-				CF615B151F56F5A800315019 /* AlbumViewController.swift */,
-				CF615B171F56FF0200315019 /* AlbumDetailViewController.swift */,
-				CF615B181F56FF0200315019 /* AlbumDetailViewController.xib */,
 			);
 			name = Album;
 			sourceTree = "<group>";
@@ -380,7 +363,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */,
-				CF615B1A1F56FF0200315019 /* AlbumDetailViewController.xib in Resources */,
 				CF918D071F7075110005B686 /* Settings.bundle in Resources */,
 				CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */,
 				CF8C85E01F6F1B610051A0C7 /* .env in Resources */,
@@ -511,9 +493,7 @@
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
-				CF615B161F56F5A800315019 /* AlbumViewController.swift in Sources */,
 				CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */,
-				CF615B191F56FF0200315019 /* AlbumDetailViewController.swift in Sources */,
 				CF615B1D1F5707E200315019 /* SongTableViewCell.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
 				CF615B0F1F56EEB200315019 /* AlbumTableViewCell.swift in Sources */,
