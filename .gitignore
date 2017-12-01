@@ -60,6 +60,7 @@ Carthage/Checkouts/
 Carthage/Build/.*.version
 Carthage/Build/iOS/*.dSYM/
 Carthage/Build/iOS/*.bcsymbolmap
+!Carthage/Build/iOS/*.framework/*
 
 # Other
 .env

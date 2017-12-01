@@ -1,0 +1,11 @@
+framework module Floaty {
+  umbrella header "Floaty.h"
+
+  export *
+  module * { export * }
+}
+
+module Floaty.Swift {
+    header "Floaty-Swift.h"
+    requires objc
+}
