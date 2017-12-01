@@ -98,6 +98,17 @@ class TweetViewController: UIViewController {
         }
     }
 
+    fileprivate func treatmentRespones(_ error: Error?) {
+        if error != nil {
+            SVProgressHUD.dismiss()
+            showError(error: error!)
+            return
+        }
+        SVProgressHUD.dismiss()
+        textView.resignFirstResponder()
+        dismiss(animated: true, completion: nil)
+    }
+
     // MARK: - UIBarButtonItem target
 
     @objc func onTapCancelButton(_ sender: UIBarButtonItem) {
@@ -109,39 +120,22 @@ class TweetViewController: UIViewController {
         SVProgressHUD.show()
         if shareImage != nil {
             if isMastodon {
-                // TODO: - 画像つきトゥート
+                MastodonClient.shared.toot(text: textView.text, image: shareImage, handler: { [unowned self] (error) in
+                    self.treatmentRespones(error)
+                })
             } else {
                 TwitterClient.shared.client?.sendTweet(withText: textView.text, image: shareImage!, completion: { [unowned self] (tweet, error) in
-                    if error != nil {
-                        SVProgressHUD.dismiss()
-                        self.showError(error: error!)
-                        return
-                    }
-                    SVProgressHUD.dismiss()
-                    self.textView.resignFirstResponder()
-                    self.dismiss(animated: true, completion: nil)
+                    self.treatmentRespones(error)
                 })
             }
         } else {
             if isMastodon {
                 MastodonClient.shared.toot(text: textView.text, handler: { [unowned self] (error) in
-                    if error != nil {
-                        SVProgressHUD.dismiss()
-                        self.showError(error: error!)
-                        return
-                    }
-                    SVProgressHUD.dismiss()
-                    self.dismiss(animated: true, completion: nil)
+                    self.treatmentRespones(error)
                 })
             } else {
                 TwitterClient.shared.client?.sendTweet(withText: textView.text, completion: { [unowned self] (tweet, error) in
-                    if error != nil {
-                        SVProgressHUD.dismiss()
-                        self.showError(error: error!)
-                        return
-                    }
-                    SVProgressHUD.dismiss()
-                    self.dismiss(animated: true, completion: nil)
+                    self.treatmentRespones(error)
                 })
             }
         }

@@ -63,7 +63,38 @@ class MastodonClient: NSObject {
     }
 
     func toot(text: String, image: UIImage?, handler: @escaping ((Error?) -> ())) {
+        guard let image = image else {
+            toot(text: text) {
+                handler($0)
+            }
+            return
+        }
+        let imageData = UIImagePNGRepresentation(image)!
 
+        upload(imageData: imageData) { (encodingResult) in
+            switch encodingResult {
+            case .success(let upload, _, _):
+                upload.responseJSON() { [unowned self] (response) in
+                    if let json = response.result.value as? [String: Any] {
+                        let mediaId = json["id"] as! String
+                        let paramter = [
+                            "status": text,
+                            "media_ids": [mediaId] as AnyObject,
+                            "visibility": "public"
+                        ] as [String: Any]
+                        self.request(self.baseUrl + "/api/v1/statuses", method: .post, parameter: paramter, handler: { (response) in
+                            guard response.result.isSuccess else {
+                                handler(response.error)
+                                return
+                            }
+                            handler(nil)
+                        })
+                    }
+                }
+            case .failure(let encodingError):
+                handler(encodingError)
+            }
+        }
     }
 
     func toot(text: String, handler: @escaping ((Error?) -> ())) {
@@ -77,9 +108,24 @@ class MastodonClient: NSObject {
         }
     }
 
+    /* 画像アップロード */
+    func upload(imageData: Data, handler: @escaping ((SessionManager.MultipartFormDataEncodingResult) -> ())) {
+        let accessToken = keychain.get(KeychainKey.mastodonAccessToken.rawValue)!
+        let filename = Date().timeIntervalSince1970
+        let headers = [
+            "Content-Type": "application/json; multipart/form-data;",
+            "Authorization": "Bearer \(accessToken)",
+        ]
+
+        Alamofire.upload(multipartFormData: { (multipartFormData) in
+            multipartFormData.append(imageData, withName: "file", fileName: "\(filename).png", mimeType: "image/png")
+        }, to: baseUrl + "/api/v1/media", method: .post, headers: headers) { (encodingResult) in
+            handler(encodingResult)
+        }
+    }
+
     func request(_ url: String, method: HTTPMethod, parameter: Dictionary<String, Any>?, handler: @escaping ((DataResponse<Any>) -> ())) {
         var header: [String: String] = ["Content-Type": "application/json"]
-
         if let accessToken = keychain.get(KeychainKey.mastodonAccessToken.rawValue) {
             header["Authorization"] = "Bearer \(accessToken)"
         }
