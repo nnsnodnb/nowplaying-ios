@@ -37,4 +37,11 @@ class AuthManager: NSObject {
         keychain.synchronizable = true
         completion()
     }
+
+    @discardableResult
+    func mastodonLogout() -> Bool {
+        return keychain.delete(KeychainKey.mastodonClientID.rawValue) &&
+            keychain.delete(KeychainKey.mastodonClientSecret.rawValue) &&
+            keychain.delete(KeychainKey.mastodonAccessToken.rawValue)
+    }
 }
