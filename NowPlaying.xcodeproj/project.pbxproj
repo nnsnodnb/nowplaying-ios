@@ -16,6 +16,10 @@
 		CF1AAFE11F7544F200384000 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF1AAFDF1F7544F200384000 /* SettingViewController.xib */; };
 		CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1AAFE41F75459B00384000 /* Eureka.framework */; };
 		CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1AAFE91F75F2A600384000 /* Common.swift */; };
+		CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF28A8331FD180AC00E45F12 /* Alamofire.framework */; };
+		CF28A8381FD183D300E45F12 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF28A8361FD183D300E45F12 /* WebViewController.swift */; };
+		CF28A8391FD183D300E45F12 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8371FD183D300E45F12 /* WebViewController.xib */; };
+		CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */; };
 		CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */; };
 		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
 		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
@@ -29,9 +33,6 @@
 		CF615B0F1F56EEB200315019 /* AlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B0D1F56EEB200315019 /* AlbumTableViewCell.swift */; };
 		CF615B101F56EEB200315019 /* AlbumTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */; };
 		CF615B131F56F56100315019 /* Album.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615B121F56F56100315019 /* Album.storyboard */; };
-		CF615B161F56F5A800315019 /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B151F56F5A800315019 /* AlbumViewController.swift */; };
-		CF615B191F56FF0200315019 /* AlbumDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B171F56FF0200315019 /* AlbumDetailViewController.swift */; };
-		CF615B1A1F56FF0200315019 /* AlbumDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF615B181F56FF0200315019 /* AlbumDetailViewController.xib */; };
 		CF615B1D1F5707E200315019 /* SongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B1B1F5707E200315019 /* SongTableViewCell.swift */; };
 		CF615B1E1F5707E200315019 /* SongTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF615B1C1F5707E200315019 /* SongTableViewCell.xib */; };
 		CF6334891F5AB6EB00D80EB8 /* ExtensionCollection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */; };
@@ -41,6 +42,7 @@
 		CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85E11F6F1B6F0051A0C7 /* .env.sample */; };
 		CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */; };
 		CF918D071F7075110005B686 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF918D061F7075110005B686 /* Settings.bundle */; };
+		CFB553821FD17163000618FF /* MastodonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB553811FD17163000618FF /* MastodonClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +56,11 @@
 		CF1AAFDF1F7544F200384000 /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingViewController.xib; path = Setting/SettingViewController.xib; sourceTree = "<group>"; };
 		CF1AAFE41F75459B00384000 /* Eureka.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Eureka.framework; path = Carthage/Build/iOS/Eureka.framework; sourceTree = "<group>"; };
 		CF1AAFE91F75F2A600384000 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = Common/Common.swift; sourceTree = "<group>"; };
+		CF28A8331FD180AC00E45F12 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		CF28A8361FD183D300E45F12 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WebViewController.swift; path = WebView/WebViewController.swift; sourceTree = "<group>"; };
+		CF28A8371FD183D300E45F12 /* WebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WebViewController.xib; path = WebView/WebViewController.xib; sourceTree = "<group>"; };
+		CF28A83A1FD1A4BE00E45F12 /* iOS */ = {isa = PBXFileReference; lastKnownFileType = folder; name = iOS; path = Carthage/Build/iOS; sourceTree = "<group>"; };
+		CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Floaty.framework; path = Carthage/Build/iOS/Floaty.framework; sourceTree = "<group>"; };
 		CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TweetViewController.swift; path = Tweet/TweetViewController.swift; sourceTree = "<group>"; };
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
 		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
@@ -69,9 +76,6 @@
 		CF615B0D1F56EEB200315019 /* AlbumTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumTableViewCell.swift; path = View/UITableViewCell/AlbumTableViewCell.swift; sourceTree = "<group>"; };
 		CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AlbumTableViewCell.xib; path = View/UITableViewCell/AlbumTableViewCell.xib; sourceTree = "<group>"; };
 		CF615B121F56F56100315019 /* Album.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Album.storyboard; path = Album/Album.storyboard; sourceTree = "<group>"; };
-		CF615B151F56F5A800315019 /* AlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumViewController.swift; path = Album/AlbumViewController.swift; sourceTree = "<group>"; };
-		CF615B171F56FF0200315019 /* AlbumDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumDetailViewController.swift; path = Album/AlbumDetailViewController.swift; sourceTree = "<group>"; };
-		CF615B181F56FF0200315019 /* AlbumDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AlbumDetailViewController.xib; path = Album/AlbumDetailViewController.xib; sourceTree = "<group>"; };
 		CF615B1B1F5707E200315019 /* SongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SongTableViewCell.swift; path = View/UITableViewCell/SongTableViewCell.swift; sourceTree = "<group>"; };
 		CF615B1C1F5707E200315019 /* SongTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SongTableViewCell.xib; path = View/UITableViewCell/SongTableViewCell.xib; sourceTree = "<group>"; };
 		CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExtensionCollection.framework; path = Carthage/Build/iOS/ExtensionCollection.framework; sourceTree = "<group>"; };
@@ -82,6 +86,7 @@
 		CF8C85E11F6F1B6F0051A0C7 /* .env.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env.sample; sourceTree = "<group>"; };
 		CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthManager.swift; path = Manager/AuthManager.swift; sourceTree = "<group>"; };
 		CF918D061F7075110005B686 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		CFB553811FD17163000618FF /* MastodonClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonClient.swift; path = Manager/MastodonClient.swift; sourceTree = "<group>"; };
 		F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -90,9 +95,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */,
+				CF8C85CC1F6EFBE30051A0C7 /* KeychainSwift.framework in Frameworks */,
+				CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */,
 				CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */,
 				CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */,
-				CF8C85CC1F6EFBE30051A0C7 /* KeychainSwift.framework in Frameworks */,
 				CF6334891F5AB6EB00D80EB8 /* ExtensionCollection.framework in Frameworks */,
 				CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */,
 				CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */,
@@ -145,6 +152,15 @@
 			name = Common;
 			sourceTree = "<group>";
 		};
+		CF28A8351FD183B700E45F12 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				CF28A8361FD183D300E45F12 /* WebViewController.swift */,
+				CF28A8371FD183D300E45F12 /* WebViewController.xib */,
+			);
+			name = WebView;
+			sourceTree = "<group>";
+		};
 		CF43E7D31F733C1F00A2A49A /* Tweet */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +202,9 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */,
+				CF28A83A1FD1A4BE00E45F12 /* iOS */,
+				CF28A8331FD180AC00E45F12 /* Alamofire.framework */,
 				CF4D73D11F791D4300E72FBF /* StoreKit.framework */,
 				CF1AAFE41F75459B00384000 /* Eureka.framework */,
 				CF8C85CB1F6EFBE30051A0C7 /* KeychainSwift.framework */,
@@ -212,8 +231,8 @@
 		CF615B031F56E76200315019 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				CF28A8351FD183B700E45F12 /* WebView */,
 				CF1611381F727D6E0027144D /* SystemPlay */,
-				CF615B141F56F57A00315019 /* Album */,
 				CF1611331F726CF20027144D /* Play */,
 				CF1AAFDD1F7544D800384000 /* Setting */,
 				CF43E7D31F733C1F00A2A49A /* Tweet */,
@@ -279,22 +298,13 @@
 			name = Album;
 			sourceTree = "<group>";
 		};
-		CF615B141F56F57A00315019 /* Album */ = {
-			isa = PBXGroup;
-			children = (
-				CF615B151F56F5A800315019 /* AlbumViewController.swift */,
-				CF615B171F56FF0200315019 /* AlbumDetailViewController.swift */,
-				CF615B181F56FF0200315019 /* AlbumDetailViewController.xib */,
-			);
-			name = Album;
-			sourceTree = "<group>";
-		};
 		CF8C85C81F6EB3AE0051A0C7 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
 				CF8C85C91F6EB3CF0051A0C7 /* AudioManager.swift */,
 				CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */,
 				CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */,
+				CFB553811FD17163000618FF /* MastodonClient.swift */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -324,6 +334,7 @@
 				4B32D40105EBD8E4B3E8BEFD /* [CP] Embed Pods Frameworks */,
 				DC4488FCE3B57E00C3DB2FFC /* [CP] Copy Pods Resources */,
 				CF4D73D31F7A979400E72FBF /* Crashlytics */,
+				CF28A83E1FD1C87D00E45F12 /* License-Plist */,
 			);
 			buildRules = (
 			);
@@ -380,9 +391,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */,
-				CF615B1A1F56FF0200315019 /* AlbumDetailViewController.xib in Resources */,
 				CF918D071F7075110005B686 /* Settings.bundle in Resources */,
 				CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */,
+				CF28A8391FD183D300E45F12 /* WebViewController.xib in Resources */,
 				CF8C85E01F6F1B610051A0C7 /* .env in Resources */,
 				CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */,
 				CF615B1E1F5707E200315019 /* SongTableViewCell.xib in Resources */,
@@ -435,6 +446,20 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CF28A83E1FD1C87D00E45F12 /* License-Plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "License-Plist";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ! -e /usr/local/bin/license-plist ]; then\nexit 0\nfi\nif [ $CONFIGURATION = \"Debug\" ]; then\ncd $SRCROOT\n/usr/local/bin/license-plist --add-version-numbers --output-path $PRODUCT_NAME/Resources/Settings.bundle --cartfile-path Cartfile --pods-path Pods\nfi";
+		};
 		CF4D73D31F7A979400E72FBF /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -458,6 +483,9 @@
 				"$(SRCROOT)/Carthage/Build/iOS/ExtensionCollection.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/KeychainSwift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Eureka.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/KeychainSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Floaty.framework",
 			);
 			name = Carthage;
 			outputPaths = (
@@ -511,14 +539,14 @@
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
-				CF615B161F56F5A800315019 /* AlbumViewController.swift in Sources */,
 				CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */,
-				CF615B191F56FF0200315019 /* AlbumDetailViewController.swift in Sources */,
 				CF615B1D1F5707E200315019 /* SongTableViewCell.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
 				CF615B0F1F56EEB200315019 /* AlbumTableViewCell.swift in Sources */,
 				CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */,
 				CF1AAFE01F7544F200384000 /* SettingViewController.swift in Sources */,
+				CF28A8381FD183D300E45F12 /* WebViewController.swift in Sources */,
+				CFB553821FD17163000618FF /* MastodonClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
