@@ -12,6 +12,7 @@ import TwitterKit
 import SVProgressHUD
 import Floaty
 import FirebaseAnalytics
+import StoreKit
 
 class PlayViewController: UIViewController {
 
@@ -51,22 +52,25 @@ class PlayViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigation()
         setupView()
         layoutFAB()
+        
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Analytics.setScreenName("再生画面", screenClass: "PlayViewController")
         Analytics.logEvent("screen_open", parameters: nil)
+        countUpOpenCount()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    func layoutFAB() {
+    // MARK: - Private method
+
+    fileprivate func layoutFAB() {
         let item = FloatyItem()
         item.hasShadow = false
         item.buttonColor = UIColor.blue
@@ -87,14 +91,6 @@ class PlayViewController: UIViewController {
             }
         }
         floaty.paddingX = view.frame.width / 2 - floaty.frame.width / 2
-    }
-
-    // MARK: - Private method
-
-    fileprivate func setupNavigation() {
-        guard navigationController != nil else {
-            return
-        }
     }
 
     fileprivate func setupView() {
@@ -231,6 +227,16 @@ class PlayViewController: UIViewController {
         tweetViewController.isMastodon = true
         let navi = UINavigationController(rootViewController: tweetViewController)
         present(navi, animated: true, completion: nil)
+    }
+
+    fileprivate func countUpOpenCount() {
+        var count = UserDefaults.standard.integer(forKey: UserDefaultsKey.appOpenCount.rawValue)
+        count += 1
+        UserDefaults.standard.set(count, forKey: UserDefaultsKey.appOpenCount.rawValue)
+        UserDefaults.standard.synchronize()
+        if #available(iOS 10.3, *), count == 15 {
+            SKStoreReviewController.requestReview()
+        }
     }
 
     // MARK: - IBAction
