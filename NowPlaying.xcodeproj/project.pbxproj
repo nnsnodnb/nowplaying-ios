@@ -330,6 +330,7 @@
 			buildPhases = (
 				2B302B8935A65A820A7DC1BE /* [CP] Check Pods Manifest.lock */,
 				CF615AE61F56AB3B00315019 /* Sources */,
+				CF28A8461FD29D6200E45F12 /* Check GoogleService-Info.plist */,
 				CF615AE71F56AB3B00315019 /* Frameworks */,
 				CF8C85E31F6F26260051A0C7 /* PlistBuddy */,
 				CF615AE81F56AB3B00315019 /* Resources */,
@@ -467,6 +468,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ ! -e /usr/local/bin/license-plist ]; then\nexit 0\nfi\nif [ $CONFIGURATION = \"Debug\" ]; then\ncd $SRCROOT\n/usr/local/bin/license-plist --add-version-numbers --output-path $PRODUCT_NAME/Resources/Settings.bundle --cartfile-path Cartfile --pods-path Pods\nfi";
+		};
+		CF28A8461FD29D6200E45F12 /* Check GoogleService-Info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check GoogleService-Info.plist";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ! -e $PRODUCT_NAME/Resources/GoogleService-Info.plist ]; then\nexit 1\nfi";
 		};
 		CF4D73D31F7A979400E72FBF /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
