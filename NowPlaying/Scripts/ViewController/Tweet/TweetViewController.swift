@@ -9,6 +9,7 @@
 import UIKit
 import TwitterKit
 import SVProgressHUD
+import FirebaseAnalytics
 
 class TweetViewController: UIViewController {
 
@@ -20,6 +21,8 @@ class TweetViewController: UIViewController {
 
     var tweetText: String?
     var shareImage: UIImage?
+    var artistName: String!
+    var songName: String!
     var isMastodon = false
 
     fileprivate var keyboardHeight: CGFloat = 0
@@ -40,6 +43,16 @@ class TweetViewController: UIViewController {
             selector: #selector(showKeyboard(_:)),
             name: NSNotification.Name.UIKeyboardDidShow,
             object: nil
+        )
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("投稿画面", screenClass: "TweetViewController")
+        Analytics.logEvent("screen_open", parameters: [
+            "type": isMastodon ? "mastodon" : "twitter",
+            "artist_name": artistName,
+            "song_name": songName]
         )
     }
 
@@ -113,6 +126,10 @@ class TweetViewController: UIViewController {
 
     @objc func onTapCancelButton(_ sender: UIBarButtonItem) {
         textView.resignFirstResponder()
+        Analytics.logEvent("tap", parameters: [
+            "type": isMastodon ? "mastodon" : "twitter",
+            "button": "post_close"]
+        )
         dismiss(animated: true, completion: nil)
     }
 
@@ -120,20 +137,48 @@ class TweetViewController: UIViewController {
         SVProgressHUD.show()
         if shareImage != nil {
             if isMastodon {
+                Analytics.logEvent("post", parameters: [
+                    "type": "mastodon",
+                    "auto_post": false,
+                    "image": shareImage!,
+                    "artist_name": artistName,
+                    "song_name": songName]
+                )
                 MastodonClient.shared.toot(text: textView.text, image: shareImage, handler: { [unowned self] (error) in
                     self.treatmentRespones(error)
                 })
             } else {
+                Analytics.logEvent("post", parameters: [
+                    "type": "twitter",
+                    "auto_post": false,
+                    "image": shareImage!,
+                    "artist_name": artistName,
+                    "song_name": songName]
+                )
                 TwitterClient.shared.client?.sendTweet(withText: textView.text, image: shareImage!, completion: { [unowned self] (tweet, error) in
                     self.treatmentRespones(error)
                 })
             }
         } else {
             if isMastodon {
+                Analytics.logEvent("post", parameters: [
+                    "type": "mastodon",
+                    "auto_post": false,
+                    "image": false,
+                    "artist_name": artistName,
+                    "song_name": songName]
+                )
                 MastodonClient.shared.toot(text: textView.text, handler: { [unowned self] (error) in
                     self.treatmentRespones(error)
                 })
             } else {
+                Analytics.logEvent("post", parameters: [
+                    "type": "twitter",
+                    "auto_post": false,
+                    "image": false,
+                    "artist_name": artistName,
+                    "song_name": songName]
+                )
                 TwitterClient.shared.client?.sendTweet(withText: textView.text, completion: { [unowned self] (tweet, error) in
                     self.treatmentRespones(error)
                 })
@@ -163,6 +208,7 @@ class TweetViewController: UIViewController {
                 self.artworkImageButton.setImage(nil, for: .normal)
                 self.artworkImageButtonHeight.constant = 0
                 self.resizeTextView()
+                Analytics.logEvent("delete_image", parameters: ["type": "action"])
             })
         })
         sheet.popoverPresentationController?.sourceView = artworkImageButton

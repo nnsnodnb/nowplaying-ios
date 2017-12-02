@@ -13,6 +13,7 @@ import TwitterKit
 import StoreKit
 import SafariServices
 import KeychainSwift
+import FirebaseAnalytics
 
 class SettingViewController: FormViewController {
 
@@ -30,6 +31,12 @@ class SettingViewController: FormViewController {
         twitterForm()
         mastodonForm()
         aboutForm()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("設定画面", screenClass: "SettingViewController")
+        Analytics.logEvent("screen_open", parameters: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -73,6 +80,10 @@ class SettingViewController: FormViewController {
                     DispatchQueue.main.async {
                         cell.textLabel?.text = "ログイン"
                     }
+                    Analytics.logEvent("tap", parameters: [
+                        "type": "action",
+                        "button": "twitter_logout"]
+                    )
                 }
             } else {
                 AuthManager.shared.login() {
@@ -82,6 +93,10 @@ class SettingViewController: FormViewController {
                     DispatchQueue.main.async {
                         cell.textLabel?.text = "ログアウト"
                     }
+                    Analytics.logEvent("tap", parameters: [
+                        "type": "action",
+                        "button": "twitter_login"]
+                    )
                 }
             }
         })
@@ -91,6 +106,11 @@ class SettingViewController: FormViewController {
         }.onChange({ (row) in
             UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isWithImage.rawValue)
             UserDefaults.standard.synchronize()
+            Analytics.logEvent("change", parameters: [
+                "type": "action",
+                "button": "twitter_with_artwork",
+                "value": row.value!]
+            )
         })
         <<< SwitchRow() {
             $0.title = "自動ツイート"
@@ -98,6 +118,11 @@ class SettingViewController: FormViewController {
         }.onChange({ (row) in
             UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isAutoTweet.rawValue)
             UserDefaults.standard.synchronize()
+            Analytics.logEvent("change", parameters: [
+                "type": "action",
+                "button": "twitter_auto_tweet",
+                "value": row.value!]
+            )
             if !row.value! || UserDefaults.standard.bool(forKey: UserDefaultsKey.isShowAutoTweetAlert.rawValue) {
                 return
             }
@@ -174,6 +199,10 @@ class SettingViewController: FormViewController {
                         self.isMastodonLogin = true
                         UserDefaults.standard.set(true, forKey: UserDefaultsKey.isMastodonLogin.rawValue)
                         UserDefaults.standard.synchronize()
+                        Analytics.logEvent("tap", parameters: [
+                            "type": "action",
+                            "button": "mastodon_login"]
+                        )
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                             SVProgressHUD.showSuccess(withStatus: "ログインしました")
                             SVProgressHUD.dismiss(withDelay: 0.5)
@@ -194,6 +223,10 @@ class SettingViewController: FormViewController {
                 self.isMastodonLogin = false
                 UserDefaults.standard.set(false, forKey: UserDefaultsKey.isMastodonLogin.rawValue)
                 UserDefaults.standard.synchronize()
+                Analytics.logEvent("tap", parameters: [
+                    "type": "action",
+                    "button": "mastodon_logout"]
+                )
                 DispatchQueue.main.async {
                     SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
                     SVProgressHUD.dismiss(withDelay: 0.5)
@@ -209,6 +242,11 @@ class SettingViewController: FormViewController {
         }.onChange({ (row) in
             UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isMastodonWithImage.rawValue)
             UserDefaults.standard.synchronize()
+            Analytics.logEvent("change", parameters: [
+                "type": "action",
+                "button": "mastodon_with_artwork",
+                "value": row.value!]
+            )
         })
         <<< SwitchRow() {
             $0.title = "自動トゥート"
@@ -219,6 +257,11 @@ class SettingViewController: FormViewController {
             if !row.value! || UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonShowAutoTweetAlert.rawValue) {
                 return
             }
+            Analytics.logEvent("change", parameters: [
+                "type": "action",
+                "button": "mastodon_auto_tweet",
+                "value": row.value!]
+            )
             let alert = UIAlertController(title: nil, message: "起動中のみ自動的にトゥートされます", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             DispatchQueue.main.async {
@@ -241,6 +284,10 @@ class SettingViewController: FormViewController {
             cell.accessoryType = .disclosureIndicator
         }).onCellSelection({ [unowned self] (cell, row) in
             let safariViewController = SFSafariViewController(url: URL(string: "https://twitter.com/nnsnodnb")!)
+            Analytics.logEvent("tap", parameters: [
+                "type": "action",
+                "button": "developer_twitter"]
+            )
             DispatchQueue.main.async {
                 self.navigationController?.present(safariViewController, animated: true, completion: nil)
             }
@@ -253,6 +300,10 @@ class SettingViewController: FormViewController {
             cell.accessoryType = .disclosureIndicator
         }).onCellSelection({ (cell, row) in
             let safariViewController = SFSafariViewController(url: URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!)
+            Analytics.logEvent("tap", parameters: [
+                "type": "action",
+                "button": "github_respository"]
+            )
             DispatchQueue.main.async {
                 self.navigationController?.present(safariViewController, animated: true, completion: nil)
             }
@@ -264,6 +315,11 @@ class SettingViewController: FormViewController {
             cell.textLabel?.textColor = UIColor.black
             cell.accessoryType = .disclosureIndicator
         }).onCellSelection({ [unowned self] (cell, row) in
+            Analytics.logEvent("tap", parameters: [
+                "type": "action",
+                "button": "appstore_review",
+                "os": UIDevice.current.systemVersion]
+            )
             if #available(iOS 10.3, *) {
                 SKStoreReviewController.requestReview()
             } else {

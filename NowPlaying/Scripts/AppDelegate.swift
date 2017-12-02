@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.with([Crashlytics.self])
         FirebaseApp.configure()
         #if DEBUG
+        AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(false)
 //        KeychainSwift().delete(KeychainKey.mastodonClientID.rawValue)
 //        KeychainSwift().delete(KeychainKey.mastodonClientSecret.rawValue)
 //        KeychainSwift().delete(KeychainKey.mastodonAccessToken.rawValue)
