@@ -11,6 +11,7 @@ import TwitterKit
 import Fabric
 import Crashlytics
 import KeychainSwift
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,7 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let env = ProcessInfo.processInfo.environment
         Twitter.sharedInstance().start(withConsumerKey: env[EnvironmentKey.twitterConsumerKey.rawValue]!, consumerSecret: env[EnvironmentKey.twitterConsumerSecret.rawValue]!)
         Fabric.with([Crashlytics.self])
+        FirebaseApp.configure()
         #if DEBUG
+        AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(false)
 //        KeychainSwift().delete(KeychainKey.mastodonClientID.rawValue)
 //        KeychainSwift().delete(KeychainKey.mastodonClientSecret.rawValue)
 //        KeychainSwift().delete(KeychainKey.mastodonAccessToken.rawValue)

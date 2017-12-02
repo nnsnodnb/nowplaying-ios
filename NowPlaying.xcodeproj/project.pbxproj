@@ -20,6 +20,7 @@
 		CF28A8381FD183D300E45F12 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF28A8361FD183D300E45F12 /* WebViewController.swift */; };
 		CF28A8391FD183D300E45F12 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8371FD183D300E45F12 /* WebViewController.xib */; };
 		CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */; };
+		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
 		CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */; };
 		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
 		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
@@ -61,6 +62,7 @@
 		CF28A8371FD183D300E45F12 /* WebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WebViewController.xib; path = WebView/WebViewController.xib; sourceTree = "<group>"; };
 		CF28A83A1FD1A4BE00E45F12 /* iOS */ = {isa = PBXFileReference; lastKnownFileType = folder; name = iOS; path = Carthage/Build/iOS; sourceTree = "<group>"; };
 		CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Floaty.framework; path = Carthage/Build/iOS/Floaty.framework; sourceTree = "<group>"; };
+		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TweetViewController.swift; path = Tweet/TweetViewController.swift; sourceTree = "<group>"; };
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
 		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 				CF615AF91F56AB3B00315019 /* Info.plist */,
 				CF8C85DF1F6F1B610051A0C7 /* .env */,
 				CF8C85E11F6F1B6F0051A0C7 /* .env.sample */,
+				CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */,
 				CF918D061F7075110005B686 /* Settings.bundle */,
 			);
 			path = Resources;
@@ -327,6 +330,7 @@
 			buildPhases = (
 				2B302B8935A65A820A7DC1BE /* [CP] Check Pods Manifest.lock */,
 				CF615AE61F56AB3B00315019 /* Sources */,
+				CF28A8461FD29D6200E45F12 /* Check GoogleService-Info.plist */,
 				CF615AE71F56AB3B00315019 /* Frameworks */,
 				CF8C85E31F6F26260051A0C7 /* PlistBuddy */,
 				CF615AE81F56AB3B00315019 /* Resources */,
@@ -392,6 +396,7 @@
 			files = (
 				CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */,
 				CF918D071F7075110005B686 /* Settings.bundle in Resources */,
+				CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */,
 				CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */,
 				CF28A8391FD183D300E45F12 /* WebViewController.xib in Resources */,
 				CF8C85E01F6F1B610051A0C7 /* .env in Resources */,
@@ -435,11 +440,15 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -448,7 +457,7 @@
 		};
 		CF28A83E1FD1C87D00E45F12 /* License-Plist */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -459,6 +468,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ ! -e /usr/local/bin/license-plist ]; then\nexit 0\nfi\nif [ $CONFIGURATION = \"Debug\" ]; then\ncd $SRCROOT\n/usr/local/bin/license-plist --add-version-numbers --output-path $PRODUCT_NAME/Resources/Settings.bundle --cartfile-path Cartfile --pods-path Pods\nfi";
+		};
+		CF28A8461FD29D6200E45F12 /* Check GoogleService-Info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check GoogleService-Info.plist";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ! -e $PRODUCT_NAME/Resources/GoogleService-Info.plist ]; then\nexit 1\nfi";
 		};
 		CF4D73D31F7A979400E72FBF /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -605,6 +628,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -662,6 +686,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

@@ -9,6 +9,7 @@
 import UIKit
 import KeychainSwift
 import SVProgressHUD
+import FirebaseAnalytics
 
 class WebViewController: UIViewController {
 
@@ -75,6 +76,10 @@ class WebViewController: UIViewController {
     // MARK: - UIBarButtonItem targer
 
     @objc func onTapLeftBarButtonItem(_ sender: UIBarButtonItem) {
+        Analytics.logEvent("tap", parameters: [
+            "type": "action",
+            "button": "mastodon_login_close"]
+        )
         dismiss(animated: true, completion: nil)
     }
 }

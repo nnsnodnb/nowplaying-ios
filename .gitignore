@@ -57,7 +57,6 @@ Pods/
 
 # Carthage
 Carthage/Checkouts/
-Carthage/Build/.*.version
 Carthage/Build/iOS/*.dSYM/
 Carthage/Build/iOS/*.bcsymbolmap
 !Carthage/Build/iOS/*.framework/*
@@ -65,3 +64,4 @@ Carthage/Build/iOS/*.bcsymbolmap
 # Other
 .env
 vendor/
+NowPlaying/Resources/GoogleService-Info.plist
