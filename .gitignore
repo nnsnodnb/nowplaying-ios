@@ -64,3 +64,4 @@ Carthage/Build/iOS/*.bcsymbolmap
 # Other
 .env
 vendor/
+NowPlaying/Resources/GoogleService-Info.plist
