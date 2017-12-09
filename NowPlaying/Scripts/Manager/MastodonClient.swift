@@ -15,7 +15,7 @@ class MastodonClient: NSObject {
     static let shared = MastodonClient()
 
     fileprivate let keychain = KeychainSwift()
-    fileprivate let baseUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)!
+    fileprivate let baseUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue) ?? ""
 
     func register(handler: @escaping (([String: Any]?, Error?) -> ())) {
         // 重複登録防止
