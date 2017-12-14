@@ -115,7 +115,7 @@ class PlayViewController: UIViewController {
             Analytics.logEvent("post", parameters: [
                 "type": "tweet",
                 "auto_post": true,
-                "image": image!,
+                "image": image ?? false,
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
@@ -153,7 +153,7 @@ class PlayViewController: UIViewController {
             Analytics.logEvent("post", parameters: [
                 "type": "mastodon",
                 "auto_post": true,
-                "image": image!,
+                "image": image ?? false,
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
