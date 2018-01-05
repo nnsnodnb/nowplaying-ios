@@ -90,7 +90,6 @@ class PlayViewController: UIViewController {
                 self.onTapMastodonButton(item)
             }
         }
-        floaty.paddingX = view.frame.width / 2 - floaty.frame.width / 2
     }
 
     fileprivate func setupView() {
