@@ -90,7 +90,6 @@ class PlayViewController: UIViewController {
                 self.onTapMastodonButton(item)
             }
         }
-        floaty.paddingX = view.frame.width / 2 - floaty.frame.width / 2
     }
 
     fileprivate func setupView() {
@@ -115,11 +114,11 @@ class PlayViewController: UIViewController {
             Analytics.logEvent("post", parameters: [
                 "type": "tweet",
                 "auto_post": true,
-                "image": image!,
+                "image": image ?? false,
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
-            TwitterClient.shared.client?.sendTweet(withText: message, image: image!) { [unowned self] (tweet, error) in
+            TwitterClient.client.sendTweet(withText: message, image: image!) { [unowned self] (tweet, error) in
                 SVProgressHUD.dismiss()
                 if error != nil {
                     self.showError(error: error!)
@@ -133,7 +132,7 @@ class PlayViewController: UIViewController {
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
-            TwitterClient.shared.client?.sendTweet(withText: message) { [unowned self] (tweet, error) in
+            TwitterClient.shared.tweet(text: message) { [unowned self] (error) in
                 SVProgressHUD.dismiss()
                 if error != nil {
                     self.showError(error: error!)
@@ -148,12 +147,12 @@ class PlayViewController: UIViewController {
         }
         SVProgressHUD.show()
         let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
-        if let artwork = song?.artwork, UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonWithImage.rawValue) {
-            let image = artwork.image(at: artwork.bounds.size)
+        if let artwork = song?.artwork, UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonWithImage.rawValue),
+            let image = artwork.image(at: artwork.bounds.size) {
             Analytics.logEvent("post", parameters: [
                 "type": "mastodon",
                 "auto_post": true,
-                "image": image!,
+                "image": image,
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )

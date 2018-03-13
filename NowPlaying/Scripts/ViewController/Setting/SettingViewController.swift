@@ -73,7 +73,7 @@ class SettingViewController: FormViewController {
             row.deselect()
             SVProgressHUD.show()
             if self.isTwitterLogin {
-                AuthManager.shared.logout {
+                AuthManager.shared.logout(completion: {
                     SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
                     SVProgressHUD.dismiss(withDelay: 0.5)
                     self.isTwitterLogin = !self.isTwitterLogin
@@ -84,9 +84,12 @@ class SettingViewController: FormViewController {
                         "type": "action",
                         "button": "twitter_logout"]
                     )
-                }
+                }, failed: { (error) in
+                    SVProgressHUD.showError(withStatus: "ログアウトに失敗しました")
+                    SVProgressHUD.dismiss(withDelay: 0.5)
+                })
             } else {
-                AuthManager.shared.login() {
+                AuthManager.shared.login(completion: {
                     SVProgressHUD.showSuccess(withStatus: "ログインしました")
                     SVProgressHUD.dismiss(withDelay: 0.5)
                     self.isTwitterLogin = !self.isTwitterLogin
@@ -97,7 +100,10 @@ class SettingViewController: FormViewController {
                         "type": "action",
                         "button": "twitter_login"]
                     )
-                }
+                }, failed: { (error) in
+                    SVProgressHUD.showError(withStatus: "ログインに失敗しました")
+                    SVProgressHUD.dismiss(withDelay: 0.5)
+                })
             }
         })
         <<< SwitchRow() {
