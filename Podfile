@@ -10,5 +10,6 @@ target 'NowPlaying' do
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'Firebase/Core'
+  pod 'Firebase/Auth'
 
 end
