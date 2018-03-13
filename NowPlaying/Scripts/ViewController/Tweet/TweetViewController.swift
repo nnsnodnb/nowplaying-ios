@@ -110,7 +110,7 @@ class TweetViewController: UIViewController {
     private func treatmentRespones(_ error: Error?) {
         if error != nil {
             SVProgressHUD.dismiss()
-            Analytics.logEvent("error", parameters: ["post_error": error?.localizedDescription ?? NSNull()])
+            Analytics.logEvent("error", parameters: ["api_post_error": error?.localizedDescription ?? NSNull()])
             showError(error: error!)
             return
         }
@@ -177,7 +177,10 @@ class TweetViewController: UIViewController {
                     "artist_name": artistName,
                     "song_name": songName]
                 )
-                TwitterClient.shared.tweet(text: textView.text) { [unowned self] (error) in
+                let text = textView.text ?? ""
+                textView.text = TwitterClient.shared.get()
+
+                TwitterClient.shared.tweet(text: text) { [unowned self] (error) in
                     self.treatmentRespones(error)
                 }
             }
