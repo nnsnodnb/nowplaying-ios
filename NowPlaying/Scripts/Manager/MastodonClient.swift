@@ -62,14 +62,8 @@ class MastodonClient: NSObject {
         }
     }
 
-    func toot(text: String, image: UIImage?, handler: @escaping ((Error?) -> ())) {
-        guard let image = image else {
-            toot(text: text) {
-                handler($0)
-            }
-            return
-        }
-        let imageData = UIImagePNGRepresentation(image)!
+    func toot(text: String, image: UIImage, handler: @escaping ((Error?) -> ())) {
+        guard let imageData = UIImagePNGRepresentation(image) else { return }
 
         upload(imageData: imageData) { (encodingResult) in
             switch encodingResult {
