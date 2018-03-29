@@ -60,9 +60,7 @@ name: ExtensionCollection, nameSpecified: , owner: HiyakashiGroupHoldings, versi
 
 name: Floaty, nameSpecified: , owner: kciter, version: 4.0.0
 
-name: keychain-swift, nameSpecified: , owner: evgenyneu, version: 10.0.0
-
-name: keychain-swift, nameSpecified: , owner: marketplacer, version: 10.0.0
+name: KeychainAccess, nameSpecified: , owner: kishikawakatsumi, version: v3.1.0
 
 add-version-numbers: true
 
