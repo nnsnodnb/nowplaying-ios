@@ -135,11 +135,19 @@ class SettingViewController: FormViewController {
             cell.textLabel?.textColor = UIColor.black
             cell.accessoryType = .disclosureIndicator
         }).onCellSelection({ [unowned self] (cell, row) in
-            PaymentManager.shared.buyProduct(self.products.first!)
+            guard let product = self.products.first else {
+                SVProgressHUD.showInfo(withStatus: "少し時間をおいて試してみてください")
+                return
+            }
+            PaymentManager.shared.buyProduct(product)
         })
         <<< SwitchRow() {
             $0.title = "自動ツイート"
             $0.value = UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue)
+            $0.tag = "auto_tweet_switch"
+            $0.hidden = Condition.function(["auto_tweet_purchase"]) { (form) -> Bool in
+                return !form.rowBy(tag: "auto_tweet_purchase")!.isHidden
+            }
         }.onChange({ (row) in
             UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isAutoTweet.rawValue)
             UserDefaults.standard.synchronize()
@@ -370,6 +378,9 @@ class SettingViewController: FormViewController {
     }
 
     private func setupProducts() {
+        if UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue) {
+            return
+        }
         PaymentManager.shared.delegate = self
         let productIds = Set(arrayLiteral: "moe.nnsnodnb.NowPlaying.autoTweet")
         SVProgressHUD.show()
@@ -433,8 +444,13 @@ extension SettingViewController: PaymentManagerProtocol {
                         UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue)
                         UserDefaults.standard.synchronize()
                         DispatchQueue.main.async { [weak self] in
-                            guard let `self` = self else { return }
-                            self.tableView.reloadData()
+                            guard let wself = self else { return }
+                            SVProgressHUD.dismiss()
+                            let purchaseButtonRow: ButtonRow = wself.form.rowBy(tag: "auto_tweet_purchase")!
+                            let autoTweetSwitchRow: SwitchRow = wself.form.rowBy(tag: "auto_tweet_switch")!
+                            purchaseButtonRow.hidden = Condition(booleanLiteral: true)
+                            purchaseButtonRow.evaluateHidden()
+                            autoTweetSwitchRow.evaluateHidden()
                         }
                     } catch {
                         SVProgressHUD.showError(withStatus: "検証に失敗しました")
