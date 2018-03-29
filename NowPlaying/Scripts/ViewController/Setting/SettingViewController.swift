@@ -75,7 +75,9 @@ class SettingViewController: FormViewController {
 
     private func twitterForm() {
         form
-        +++ Section("Twitter")
+        +++ Section("Twitter") {
+            $0.tag = "twitter_section"
+        }
         <<< ButtonRow() { [unowned self] in
             $0.title = !self.isTwitterLogin ? "ログイン" : "ログアウト"
             $0.tag = "twitter_login"
@@ -135,10 +137,15 @@ class SettingViewController: FormViewController {
             cell.textLabel?.textColor = UIColor.black
             cell.accessoryType = .disclosureIndicator
         }).onCellSelection({ [unowned self] (cell, row) in
+            if self.isProcess {
+                SVProgressHUD.showInfo(withStatus: "処理中です")
+                return
+            }
             guard let product = self.products.first else {
                 SVProgressHUD.showInfo(withStatus: "少し時間をおいて試してみてください")
                 return
             }
+            self.isProcess = true
             PaymentManager.shared.buyProduct(product)
         })
         <<< SwitchRow() {
@@ -444,8 +451,9 @@ extension SettingViewController: PaymentManagerProtocol {
                         UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue)
                         UserDefaults.standard.synchronize()
                         DispatchQueue.main.async { [weak self] in
-                            guard let wself = self else { return }
                             SVProgressHUD.dismiss()
+                            guard let wself = self else { return }
+                            wself.isProcess = false
                             let purchaseButtonRow: ButtonRow = wself.form.rowBy(tag: "auto_tweet_purchase")!
                             let autoTweetSwitchRow: SwitchRow = wself.form.rowBy(tag: "auto_tweet_switch")!
                             purchaseButtonRow.hidden = Condition(booleanLiteral: true)
@@ -458,6 +466,7 @@ extension SettingViewController: PaymentManagerProtocol {
                 }
                 task.resume()
             } catch {
+                self.isProcess = false
                 fatalError()
             }
         }
@@ -465,7 +474,7 @@ extension SettingViewController: PaymentManagerProtocol {
 
     func finishPayment(failed paymentTransaction: SKPaymentTransaction) {
         DispatchQueue.main.async {
-            SVProgressHUD.showError(withStatus: "失敗しました")
+            SVProgressHUD.showError(withStatus: "購入に失敗しました")
         }
     }
 
