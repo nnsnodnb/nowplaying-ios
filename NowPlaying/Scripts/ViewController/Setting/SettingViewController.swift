@@ -12,15 +12,15 @@ import SVProgressHUD
 import TwitterKit
 import StoreKit
 import SafariServices
-import KeychainSwift
+import KeychainAccess
 import FirebaseAnalytics
 
 class SettingViewController: FormViewController {
 
-    fileprivate let keychain = KeychainSwift()
+    private let keychain = Keychain(service: keychainServiceKey)
 
-    fileprivate var isTwitterLogin = false
-    fileprivate var isMastodonLogin = false
+    private var isTwitterLogin = false
+    private var isMastodonLogin = false
 
     // MARK: - Life cycle
 
@@ -184,9 +184,8 @@ class SettingViewController: FormViewController {
                     let clientID = responseJson!["client_id"] as! String
                     let clientSecret = responseJson!["client_secret"] as! String
 
-                    self.keychain.set(clientID, forKey: KeychainKey.mastodonClientID.rawValue)
-                    self.keychain.set(clientSecret, forKey: KeychainKey.mastodonClientSecret.rawValue)
-                    self.keychain.synchronizable = true
+                    self.keychain[KeychainKey.mastodonClientID.rawValue] = clientID
+                    self.keychain[KeychainKey.mastodonClientSecret.rawValue] = clientSecret
 
                     /* GUIログイン */
                     let webViewController = WebViewController()
