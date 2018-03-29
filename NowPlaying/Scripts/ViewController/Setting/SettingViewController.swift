@@ -406,9 +406,9 @@ extension SettingViewController: PaymentManagerProtocol {
             do {
                 let receiptData = try Data(contentsOf: receiptUrl, options: .uncached)
                 let requestContents = [
-                    "receipt-data": receiptData.base64EncodedData(options: Data.Base64EncodingOptions(rawValue: 0))
+                    "receipt-data": receiptData.base64EncodedString()
                 ]
-                let requestData = try JSONSerialization.data(withJSONObject: requestContents, options: JSONSerialization.WritingOptions(rawValue: 0))
+                let requestData = try JSONSerialization.data(withJSONObject: requestContents, options: [])
                 let verifyUrl: String!
                 #if DEBUG
                     verifyUrl = "https://sandbox.itunes.apple.com/verifyReceipt"
@@ -432,8 +432,10 @@ extension SettingViewController: PaymentManagerProtocol {
                             status == 0 else { return }
                         UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue)
                         UserDefaults.standard.synchronize()
-                        guard let `self` = self else { return }
-                        self.tableView.reloadData()
+                        DispatchQueue.main.async { [weak self] in
+                            guard let `self` = self else { return }
+                            self.tableView.reloadData()
+                        }
                     } catch {
                         SVProgressHUD.showError(withStatus: "検証に失敗しました")
                     }
