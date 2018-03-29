@@ -323,12 +323,13 @@ class SettingViewController: FormViewController {
             if #available(iOS 10.3, *) {
                 SKStoreReviewController.requestReview()
             } else {
-                if let url = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1289764391") {
+                if let url = URL(string: "https://itunes.apple.com/us/app/itunes-u/id1289764391?action=write-review") {
                     let alert = UIAlertController(title: nil, message: "AppStoreを起動します", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-                    let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                    let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
                         UIApplication.shared.openURL(url)
-                    })
+                    }
+                    alert.addAction(okAction)
                     alert.preferredAction = okAction
                     DispatchQueue.main.async {
                         self.present(alert, animated: true, completion: nil)
