@@ -17,14 +17,6 @@ class TwitterClient: NSObject {
         return TWTRAPIClient(userID: Twitter.sharedInstance().sessionStore.session()?.userID)
     }
 
-    func get() -> String {
-        let url = "https://api.twitter.com/1.1/statuses/update.json"
-        var error: NSError?
-        let client = TwitterClient.client
-        let request = client.urlRequest(withMethod: "POST", url: url, parameters: ["status": "test"], error: &error)
-        return request.allHTTPHeaderFields?.description ?? ""
-    }
-
     func tweet(text: String, handler: ((Error?) -> Void)?) {
         let url = "https://api.twitter.com/1.1/statuses/update.json"
         var error: NSError?
