@@ -19,8 +19,11 @@ class SettingViewController: FormViewController {
 
     private let keychain = Keychain(service: keychainServiceKey)
 
+    private var isProcess = false
     private var isTwitterLogin = false
     private var isMastodonLogin = false
+    private var productRequest: SKProductsRequest?
+    private var products = [SKProduct]()
 
     // MARK: - Life cycle
 
@@ -28,9 +31,20 @@ class SettingViewController: FormViewController {
         super.viewDidLoad()
         setupNavigationbar()
         setupIsLogin()
+        setupProducts()
         twitterForm()
         mastodonForm()
         aboutForm()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if SKPaymentQueue.default().transactions.count <= 0 {
+            return
+        }
+        for transaction in SKPaymentQueue.default().transactions where transaction.transactionState != .purchasing {
+            SKPaymentQueue.default().finishTransaction(transaction)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -45,7 +59,7 @@ class SettingViewController: FormViewController {
 
     // MARK: - Private method
 
-    fileprivate func setupNavigationbar() {
+    private func setupNavigationbar() {
         guard navigationController != nil else {
             return
         }
@@ -54,12 +68,12 @@ class SettingViewController: FormViewController {
         navigationItem.rightBarButtonItem = closeButton
     }
 
-    fileprivate func setupIsLogin() {
+    private func setupIsLogin() {
         isTwitterLogin = Twitter.sharedInstance().sessionStore.session() != nil
         isMastodonLogin = UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonLogin.rawValue)
     }
 
-    fileprivate func twitterForm() {
+    private func twitterForm() {
         form
         +++ Section("Twitter")
         <<< ButtonRow() { [unowned self] in
@@ -112,6 +126,17 @@ class SettingViewController: FormViewController {
                 "value": row.value!]
             )
         })
+        <<< ButtonRow() {
+            $0.title = "自動ツイートを購入"
+            $0.tag = "auto_tweet_purchase"
+            $0.hidden = Condition(booleanLiteral: UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue))
+        }.cellUpdate({ (cell, row) in
+            cell.textLabel?.textAlignment = .left
+            cell.textLabel?.textColor = UIColor.black
+            cell.accessoryType = .disclosureIndicator
+        }).onCellSelection({ [unowned self] (cell, row) in
+            PaymentManager.shared.buyProduct(self.products.first!)
+        })
         <<< SwitchRow() {
             $0.title = "自動ツイート"
             $0.value = UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue)
@@ -137,7 +162,7 @@ class SettingViewController: FormViewController {
         })
     }
 
-    fileprivate func mastodonForm() {
+    private func mastodonForm() {
         form
         +++ Section("Mastodon")
         <<< TextRow() {
@@ -272,7 +297,7 @@ class SettingViewController: FormViewController {
         })
     }
 
-    fileprivate func aboutForm() {
+    private func aboutForm() {
         form
         +++ Section("アプリについて")
         <<< ButtonRow() {
@@ -338,15 +363,99 @@ class SettingViewController: FormViewController {
         })
     }
 
-    fileprivate func showMastodonError() {
+    private func showMastodonError() {
         let alert = UIAlertController(title: "エラー", message: "Mastodonのホストネームを確認してください", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 
+    private func setupProducts() {
+        PaymentManager.shared.delegate = self
+        let productIds = Set(arrayLiteral: "moe.nnsnodnb.NowPlaying.autoTweet")
+        SVProgressHUD.show()
+        productRequest = PaymentManager.shared.startProductRequest(productIds)
+    }
+
     // MARK: - UIBarButtonItem target
 
-    @objc func onTapCloseButton(_ sender: Any) {
+    @objc private func onTapCloseButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - PaymentManagerProtocol
+
+extension SettingViewController: PaymentManagerProtocol {
+
+    func finish(request: SKProductsRequest, products: [SKProduct]) {
+        self.products = products
+        SVProgressHUD.dismiss()
+    }
+
+    func finish(request: SKRequest, didFailWithError: Error) {
+        SVProgressHUD.showError(withStatus: "通信エラーが発生しました")
+    }
+
+    func finish(success paymentTransaction: SKPaymentTransaction) {
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            SVProgressHUD.show()
+            guard let receiptUrl = Bundle.main.appStoreReceiptURL else {
+                return
+            }
+            do {
+                let receiptData = try Data(contentsOf: receiptUrl, options: .uncached)
+                let requestContents = [
+                    "receipt-data": receiptData.base64EncodedData(options: Data.Base64EncodingOptions(rawValue: 0))
+                ]
+                let requestData = try JSONSerialization.data(withJSONObject: requestContents, options: JSONSerialization.WritingOptions(rawValue: 0))
+                let verifyUrl: String!
+                #if DEBUG
+                    verifyUrl = "https://sandbox.itunes.apple.com/verifyReceipt"
+                #else
+                    verifyUrl = "https://buy.itunes.apple.com/verifyReceipt"
+                #endif
+                let storeUrl = URL(string: verifyUrl)!
+                var storeRequest = URLRequest(url: storeUrl)
+                storeRequest.httpMethod = "POST"
+                storeRequest.httpBody = requestData
+
+                let session = URLSession(configuration: URLSessionConfiguration.default)
+                let task = session.dataTask(with: storeRequest) { [weak self] (data, response, error) in
+                    guard let data = data else {
+                        return
+                    }
+                    do {
+                        guard let jsonResponse = try JSONSerialization.jsonObject(with: data,
+                                                                                  options: JSONSerialization.ReadingOptions(rawValue: JSONSerialization.ReadingOptions.RawValue(0))) as? [String: Any],
+                            let status = jsonResponse["status"] as? Int,
+                            status == 0 else { return }
+                        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue)
+                        UserDefaults.standard.synchronize()
+                        guard let `self` = self else { return }
+                        self.tableView.reloadData()
+                    } catch {
+                        SVProgressHUD.showError(withStatus: "検証に失敗しました")
+                    }
+                }
+                task.resume()
+            } catch {
+                fatalError()
+            }
+        }
+    }
+
+    func finishPayment(failed paymentTransaction: SKPaymentTransaction) {
+        DispatchQueue.main.async {
+            SVProgressHUD.showError(withStatus: "失敗しました")
+        }
+    }
+
+    func finishRestore(queue: SKPaymentQueue) {
+
+    }
+
+    func finishRestore(queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError: Error) {
+
     }
 }

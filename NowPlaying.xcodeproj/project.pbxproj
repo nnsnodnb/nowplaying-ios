@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		584E54B8BE9943C10025A548 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B230B4E800D2C82BD7BC8FF /* Pods_NowPlaying.framework */; };
 		CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF0FA219206D3C3200647317 /* KeychainAccess.framework */; };
+		CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0FA21B206D4D5A00647317 /* PaymentManager.swift */; };
+		CF0FA21F206D508900647317 /* PaymentManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0FA21E206D508900647317 /* PaymentManagerProtocol.swift */; };
 		CF1611361F726D110027144D /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1611341F726D110027144D /* PlayViewController.swift */; };
 		CF1611371F726D110027144D /* PlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF1611351F726D110027144D /* PlayViewController.xib */; };
 		CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1611391F727D8C0027144D /* SystemPlayViewController.swift */; };
@@ -50,6 +52,8 @@
 		4B230B4E800D2C82BD7BC8FF /* Pods_NowPlaying.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NowPlaying.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50FC5A8BCC24D752D2A0D1AA /* Pods-NowPlaying.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.debug.xcconfig"; sourceTree = "<group>"; };
 		CF0FA219206D3C3200647317 /* KeychainAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainAccess.framework; path = Carthage/Build/iOS/KeychainAccess.framework; sourceTree = "<group>"; };
+		CF0FA21B206D4D5A00647317 /* PaymentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaymentManager.swift; path = Manager/PaymentManager.swift; sourceTree = "<group>"; };
+		CF0FA21E206D508900647317 /* PaymentManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaymentManagerProtocol.swift; path = Protocol/PaymentManagerProtocol.swift; sourceTree = "<group>"; };
 		CF1611341F726D110027144D /* PlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayViewController.swift; path = Play/PlayViewController.swift; sourceTree = "<group>"; };
 		CF1611351F726D110027144D /* PlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlayViewController.xib; path = Play/PlayViewController.xib; sourceTree = "<group>"; };
 		CF1611391F727D8C0027144D /* SystemPlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SystemPlayViewController.swift; path = SystemPlay/SystemPlayViewController.swift; sourceTree = "<group>"; };
@@ -113,6 +117,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CF0FA21D206D506F00647317 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				CF0FA21E206D508900647317 /* PaymentManagerProtocol.swift */,
+			);
+			name = Protocol;
+			sourceTree = "<group>";
+		};
 		CF1611331F726CF20027144D /* Play */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +235,7 @@
 		CF615B021F56E75900315019 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				CF0FA21D206D506F00647317 /* Protocol */,
 				CF1AAFE61F75F28400384000 /* Common */,
 				CF8C85C81F6EB3AE0051A0C7 /* Manager */,
 				CF615B0B1F56EE7600315019 /* View */,
@@ -310,6 +323,7 @@
 				CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */,
 				CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */,
 				CFB553811FD17163000618FF /* MastodonClient.swift */,
+				CF0FA21B206D4D5A00647317 /* PaymentManager.swift */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -562,8 +576,10 @@
 			files = (
 				CF1611361F726D110027144D /* PlayViewController.swift in Sources */,
 				CF8C85CA1F6EB3CF0051A0C7 /* AudioManager.swift in Sources */,
+				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
+				CF0FA21F206D508900647317 /* PaymentManagerProtocol.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */,
 				CF615B1D1F5707E200315019 /* SongTableViewCell.swift in Sources */,
