@@ -146,7 +146,8 @@ class SettingViewController: FormViewController {
                 return
             }
             self.isProcess = true
-            PaymentManager.shared.buyProduct(product)
+            self.showSelectPurchaseType(product: product)
+
         })
         <<< SwitchRow() {
             $0.title = "自動ツイート"
@@ -392,6 +393,22 @@ class SettingViewController: FormViewController {
         let productIds = Set(arrayLiteral: "moe.nnsnodnb.NowPlaying.autoTweet")
         SVProgressHUD.show()
         productRequest = PaymentManager.shared.startProductRequest(productIds)
+    }
+
+    private func showSelectPurchaseType(product: SKProduct) {
+        let alert = UIAlertController(title: "復元しますか？購入しますか？", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "復元", style: .default) { (_) in
+
+        })
+        let newPurchaseAction = UIAlertAction(title: "購入", style: .default) { (_) in
+            PaymentManager.shared.buyProduct(product)
+        }
+        alert.addAction(newPurchaseAction)
+        alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel) { [unowned self] (_) in
+            self.isProcess = false
+        })
+        alert.preferredAction = newPurchaseAction
+        present(alert, animated: true, completion: nil)
     }
 
     // MARK: - UIBarButtonItem target
