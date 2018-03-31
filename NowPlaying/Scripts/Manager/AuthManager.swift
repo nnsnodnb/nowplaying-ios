@@ -8,51 +8,41 @@
 
 import UIKit
 import TwitterKit
-import KeychainSwift
-import FirebaseAuth
+import KeychainAccess
 
 class AuthManager: NSObject {
 
     static let shared = AuthManager()
 
-    fileprivate let keychain = KeychainSwift()
+    private let keychain = Keychain(service: keychainServiceKey)
 
-    func login(completion: (() -> Void)?, failed: ((Error) -> Void)?) {
-        Twitter.sharedInstance().logIn(completion: { [weak self] (session, error) in
-            guard let wself = self, let session = session else {
-                failed?(error!)
+    func login(completion: (() -> ())?=nil) {
+        Twitter.sharedInstance().logIn(completion: { [unowned self] (session, error) in
+            guard let session = session else {
                 return
             }
-            wself.keychain.set(session.authToken, forKey: KeychainKey.authToken.rawValue)
-            wself.keychain.set(session.authTokenSecret, forKey: KeychainKey.authTokenSecret.rawValue)
-            wself.keychain.synchronizable = true
-            let credential = TwitterAuthProvider.credential(withToken: session.authToken, secret: session.authTokenSecret)
-            Auth.auth().signIn(with: credential, completion: { (user, error) in
-                guard error == nil else {
-                    failed?(error!)
-                    return
-                }
-                completion?()
-            })
+            self.keychain[KeychainKey.authToken.rawValue] = session.authToken
+            self.keychain[KeychainKey.authTokenSecret.rawValue] = session.authTokenSecret
+            if let completion = completion {
+                completion()
+            }
         })
     }
 
-    func logout(completion: () -> Void, failed: ((Error) -> Void)?) {
+    func logout(completion: () -> Void) {
         Twitter.sharedInstance().sessionStore.logOutUserID(Twitter.sharedInstance().sessionStore.session()!.userID)
-        keychain.delete(KeychainKey.authToken.rawValue)
-        keychain.delete(KeychainKey.authTokenSecret.rawValue)
-        keychain.synchronizable = true
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-        } catch let signOutError {
-            failed?(signOutError)
-        }
+        keychain[KeychainKey.authToken.rawValue] = nil
+        keychain[KeychainKey.authTokenSecret.rawValue] = nil
         completion()
     }
 
     @discardableResult
     func mastodonLogout() -> Bool {
-        return keychain.delete(KeychainKey.mastodonAccessToken.rawValue)
+        do {
+            try keychain.remove(KeychainKey.mastodonAccessToken.rawValue)
+            return true
+        } catch {
+            return false
+        }
     }
 }

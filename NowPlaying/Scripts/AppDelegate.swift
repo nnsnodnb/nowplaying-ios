@@ -10,7 +10,7 @@ import UIKit
 import TwitterKit
 import Fabric
 import Crashlytics
-import KeychainSwift
+import KeychainAccess
 import Firebase
 
 @UIApplicationMain
@@ -18,19 +18,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    private let keychain = Keychain()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         UIApplication.shared.beginReceivingRemoteControlEvents()
         loadEnvironment()
         let env = ProcessInfo.processInfo.environment
-        Twitter.sharedInstance().start(withConsumerKey: env[EnvironmentKey.twitterConsumerKey.rawValue]!, consumerSecret: env[EnvironmentKey.twitterConsumerSecret.rawValue]!)
+        Twitter.sharedInstance().start(withConsumerKey: env[EnvironmentKey.twitterConsumerKey.rawValue]!,
+                                       consumerSecret: env[EnvironmentKey.twitterConsumerSecret.rawValue]!)
         Fabric.with([Crashlytics.self])
         FirebaseApp.configure()
+        PaymentManager.shared.startTransactionObserve()
         #if DEBUG
         AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(false)
-//        KeychainSwift().delete(KeychainKey.mastodonClientID.rawValue)
-//        KeychainSwift().delete(KeychainKey.mastodonClientSecret.rawValue)
-//        KeychainSwift().delete(KeychainKey.mastodonAccessToken.rawValue)
+//        keychain.remove(KeychainKey.mastodonClientID.rawValue)
+//        keychain.remove(KeychainKey.mastodonClientSecret.rawValue)
+//        keychain.remove(KeychainKey.mastodonAccessToken.rawValue)
         #endif
         return true
     }

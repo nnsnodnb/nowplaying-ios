@@ -31,7 +31,7 @@ class TweetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        textView.text = tweetText
+        setupTextView()
         setupArtworkImageButton()
         setupNavigationBar()
     }
@@ -48,7 +48,6 @@ class TweetViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        textView.becomeFirstResponder()
         Analytics.setScreenName("投稿画面", screenClass: "TweetViewController")
         Analytics.logEvent("screen_open", parameters: [
             "type": isMastodon ? "mastodon" : "twitter",
@@ -72,7 +71,12 @@ class TweetViewController: UIViewController {
 
     // MARK: - Private method
 
-    private func setupArtworkImageButton() {
+    fileprivate func setupTextView() {
+        textView.becomeFirstResponder()
+        textView.text = tweetText
+    }
+
+    fileprivate func setupArtworkImageButton() {
         if shareImage == nil || tweetText == nil {
             artworkImageButton.isHidden = true
             artworkImageButtonHeight.constant = 0
@@ -83,7 +87,7 @@ class TweetViewController: UIViewController {
         artworkImageButton.setImage(shareImage, for: .normal)
     }
 
-    private func setupNavigationBar() {
+    fileprivate func setupNavigationBar() {
         guard navigationController != nil else {
             return
         }
@@ -94,23 +98,22 @@ class TweetViewController: UIViewController {
         navigationItem.rightBarButtonItem = tweetButton
     }
 
-    private func showError(error: Error) {
+    fileprivate func showError(error: Error) {
         let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 
-    private func resizeTextView() {
+    fileprivate func resizeTextView() {
         textViewHeight.constant = UIScreen.main.bounds.size.height - keyboardHeight - artworkImageButtonHeight.constant - (artworkImageButtonTopMargin.constant * 2)
         UIView.animate(withDuration: 0.5) { [unowned self] in
             self.artworkImageButton.alpha = 1
         }
     }
 
-    private func treatmentRespones(_ error: Error?) {
+    fileprivate func treatmentRespones(_ error: Error?) {
         if error != nil {
             SVProgressHUD.dismiss()
-            Analytics.logEvent("error", parameters: ["post_error": error?.localizedDescription ?? NSNull()])
             showError(error: error!)
             return
         }
@@ -132,28 +135,28 @@ class TweetViewController: UIViewController {
 
     @objc func onTapTweetButton(_ sender: UIBarButtonItem) {
         SVProgressHUD.show()
-        textView.resignFirstResponder()
-        if let image = shareImage {
+        if shareImage != nil {
             if isMastodon {
                 Analytics.logEvent("post", parameters: [
                     "type": "mastodon",
                     "auto_post": false,
-                    "image": image,
+                    "image": shareImage!,
                     "artist_name": artistName,
                     "song_name": songName]
                 )
-                MastodonClient.shared.toot(text: textView.text, image: image, handler: { [unowned self] (error) in
+                MastodonClient.shared.toot(text: textView.text, image: shareImage, handler: { [unowned self] (error) in
                     self.treatmentRespones(error)
                 })
             } else {
                 Analytics.logEvent("post", parameters: [
                     "type": "twitter",
                     "auto_post": false,
-                    "image": image,
+                    "image": shareImage!,
                     "artist_name": artistName,
                     "song_name": songName]
                 )
-                TwitterClient.client.sendTweet(withText: textView.text, image: image, completion: { [unowned self] (tweet, error) in
+                TwitterClient.shared.client?.sendTweet(withText: textView.text, image: shareImage!, completion: { [weak self] (tweet, error) in
+                    guard let `self` = self else { return }
                     self.treatmentRespones(error)
                 })
             }
@@ -177,9 +180,9 @@ class TweetViewController: UIViewController {
                     "artist_name": artistName,
                     "song_name": songName]
                 )
-                TwitterClient.shared.tweet(text: textView.text) { [unowned self] (error) in
+                TwitterClient.shared.client?.sendTweet(withText: textView.text, completion: { [unowned self] (tweet, error) in
                     self.treatmentRespones(error)
-                }
+                })
             }
         }
     }
