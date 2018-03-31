@@ -24,9 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.beginReceivingRemoteControlEvents()
         loadEnvironment()
         let env = ProcessInfo.processInfo.environment
-        Twitter.sharedInstance().start(withConsumerKey: env[EnvironmentKey.twitterConsumerKey.rawValue]!, consumerSecret: env[EnvironmentKey.twitterConsumerSecret.rawValue]!)
+        Twitter.sharedInstance().start(withConsumerKey: env[EnvironmentKey.twitterConsumerKey.rawValue]!,
+                                       consumerSecret: env[EnvironmentKey.twitterConsumerSecret.rawValue]!)
         Fabric.with([Crashlytics.self])
         FirebaseApp.configure()
+        PaymentManager.shared.startTransactionObserve()
         #if DEBUG
         AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(false)
 //        keychain.remove(KeychainKey.mastodonClientID.rawValue)

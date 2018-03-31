@@ -11,6 +11,7 @@ import Foundation
 enum UserDefaultsKey: String {
     case appOpenCount = "app_open_count"
     case isWithImage = "is_with_image"
+    case isAutoTweetPurchase = "is_auto_tweet_purchase"
     case isAutoTweet = "is_auto_tweet"
     case isShowAutoTweetAlert = "is_show_auto_tweet_alert"
     case mastodonHostname = "mastodon_hostname"
