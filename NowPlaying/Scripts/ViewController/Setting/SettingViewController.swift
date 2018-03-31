@@ -398,7 +398,7 @@ class SettingViewController: FormViewController {
     private func showSelectPurchaseType(product: SKProduct) {
         let alert = UIAlertController(title: "復元しますか？購入しますか？", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "復元", style: .default) { (_) in
-
+            PaymentManager.shared.startRestore()
         })
         let newPurchaseAction = UIAlertAction(title: "購入", style: .default) { (_) in
             PaymentManager.shared.buyProduct(product)
@@ -496,10 +496,14 @@ extension SettingViewController: PaymentManagerProtocol {
     }
 
     func finishRestore(queue: SKPaymentQueue) {
-
+        SVProgressHUD.showInfo(withStatus: "復元に成功しました")
+        isProcess = false
     }
 
     func finishRestore(queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError: Error) {
-
+        isProcess = false
+        DispatchQueue.main.async {
+            SVProgressHUD.showError(withStatus: "復元に失敗しました")
+        }
     }
 }
