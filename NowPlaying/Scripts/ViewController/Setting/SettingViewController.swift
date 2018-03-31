@@ -14,6 +14,7 @@ import StoreKit
 import SafariServices
 import KeychainAccess
 import FirebaseAnalytics
+import ExtensionCollection
 
 class SettingViewController: FormViewController {
 
@@ -137,6 +138,14 @@ class SettingViewController: FormViewController {
             cell.textLabel?.textColor = UIColor.black
             cell.accessoryType = .disclosureIndicator
         }).onCellSelection({ [unowned self] (cell, row) in
+            if JailbreakChecker.isJailbreak {
+                let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
+                DispatchQueue.main.async { [unowned self] in
+                    self.present(alert, animated: true, completion: nil)
+                }
+                return
+            }
             if self.isProcess {
                 SVProgressHUD.showInfo(withStatus: "処理中です")
                 return
