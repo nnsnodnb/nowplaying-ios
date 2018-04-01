@@ -62,6 +62,7 @@ class PlayViewController: UIViewController {
         Analytics.setScreenName("再生画面", screenClass: "PlayViewController")
         Analytics.logEvent("screen_open", parameters: nil)
         countUpOpenCount()
+        showPurchaseInfo()
     }
 
     override func didReceiveMemoryWarning() {
@@ -235,6 +236,35 @@ class PlayViewController: UIViewController {
         UserDefaults.standard.synchronize()
         if #available(iOS 10.3, *), count == 15 {
             SKStoreReviewController.requestReview()
+        }
+    }
+
+    /* 2.0.1のみ使用 */
+    private func showPurchaseInfo() {
+        if UserDefaults.standard.bool(forKey: UserDefaultsKey.update2_1_0.rawValue) {
+            return
+        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.calendar = Calendar(identifier: .gregorian)
+        dateFormatter.timeZone = NSTimeZone.system
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let untilFreePurchaseDate = dateFormatter.date(from: "2018-04-20")!
+        if untilFreePurchaseDate < Date() {
+            return
+        }
+        let alert = UIAlertController(title: "自動ツイートについてのお知らせ", message: "自動ツイートの機能のみ課金制になりました。なお2018年4月20日までに設定画面より無料で入手することが可能です。お試しください。", preferredStyle: .alert)
+        let tryAction = UIAlertAction(title: "試す", style: .default) { [unowned self] (_) in
+            self.onTapGearButton(nil)
+        }
+        alert.addAction(tryAction)
+        alert.addAction(UIAlertAction(title: "あとで", style: .cancel, handler: nil))
+        alert.preferredAction = tryAction
+        DispatchQueue.main.async { [unowned self] in
+            self.present(alert, animated: true) {
+                UserDefaults.standard.set(true, forKey: UserDefaultsKey.update2_1_0.rawValue)
+                UserDefaults.standard.synchronize()
+            }
         }
     }
 
