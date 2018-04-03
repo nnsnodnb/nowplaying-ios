@@ -38,3 +38,5 @@ enum EnvironmentKey: String {
 let keychainServiceKey = "moe.nnsnodnb.NowPlaying"
 
 let websiteUrl = "https://itunes.apple.com/jp/app/nowplaying-%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B%E3%81%A0%E3%81%91%E3%81%A7%E3%83%84%E3%82%A4%E3%83%BC%E3%83%88/id1289764391?mt=8"
+
+let appStoreReviewURL = "https://itunes.apple.com/us/app/itunes-u/id1289764391?action=write-review"

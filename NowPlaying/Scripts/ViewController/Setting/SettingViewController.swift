@@ -372,7 +372,7 @@ class SettingViewController: FormViewController {
             if #available(iOS 10.3, *) {
                 SKStoreReviewController.requestReview()
             } else {
-                if let url = URL(string: "https://itunes.apple.com/us/app/itunes-u/id1289764391?action=write-review") {
+                if let url = URL(string: appStoreReviewURL) {
                     let alert = UIAlertController(title: nil, message: "AppStoreを起動します", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
                     let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
