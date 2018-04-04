@@ -19,6 +19,7 @@ enum UserDefaultsKey: String {
     case isMastodonWithImage = "is_mastodon_with_image"
     case isMastodonAutoToot = "is_mastodon_auto_toot"
     case isMastodonShowAutoTweetAlert = "is_mastodon_show_auto_tweet_alert"
+    case update2_1_0 = "update_2_1_0"
 }
 
 enum KeychainKey: String {
