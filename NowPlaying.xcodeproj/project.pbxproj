@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		584E54B8BE9943C10025A548 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B230B4E800D2C82BD7BC8FF /* Pods_NowPlaying.framework */; };
+		CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF0FA219206D3C3200647317 /* KeychainAccess.framework */; };
+		CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0FA21B206D4D5A00647317 /* PaymentManager.swift */; };
+		CF0FA21F206D508900647317 /* PaymentManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0FA21E206D508900647317 /* PaymentManagerProtocol.swift */; };
 		CF1611361F726D110027144D /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1611341F726D110027144D /* PlayViewController.swift */; };
 		CF1611371F726D110027144D /* PlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF1611351F726D110027144D /* PlayViewController.xib */; };
 		CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1611391F727D8C0027144D /* SystemPlayViewController.swift */; };
@@ -31,14 +34,9 @@
 		CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B001F56B04E00315019 /* MediaPlayer.framework */; };
 		CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B061F56E89100315019 /* AVFoundation.framework */; };
 		CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615AED1F56AB3B00315019 /* AppDelegate.swift */; };
-		CF615B0F1F56EEB200315019 /* AlbumTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B0D1F56EEB200315019 /* AlbumTableViewCell.swift */; };
-		CF615B101F56EEB200315019 /* AlbumTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */; };
 		CF615B131F56F56100315019 /* Album.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615B121F56F56100315019 /* Album.storyboard */; };
-		CF615B1D1F5707E200315019 /* SongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615B1B1F5707E200315019 /* SongTableViewCell.swift */; };
-		CF615B1E1F5707E200315019 /* SongTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF615B1C1F5707E200315019 /* SongTableViewCell.xib */; };
 		CF6334891F5AB6EB00D80EB8 /* ExtensionCollection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */; };
 		CF8C85CA1F6EB3CF0051A0C7 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C85C91F6EB3CF0051A0C7 /* AudioManager.swift */; };
-		CF8C85CC1F6EFBE30051A0C7 /* KeychainSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF8C85CB1F6EFBE30051A0C7 /* KeychainSwift.framework */; };
 		CF8C85E01F6F1B610051A0C7 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85DF1F6F1B610051A0C7 /* .env */; };
 		CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85E11F6F1B6F0051A0C7 /* .env.sample */; };
 		CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */; };
@@ -49,6 +47,9 @@
 /* Begin PBXFileReference section */
 		4B230B4E800D2C82BD7BC8FF /* Pods_NowPlaying.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NowPlaying.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50FC5A8BCC24D752D2A0D1AA /* Pods-NowPlaying.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.debug.xcconfig"; sourceTree = "<group>"; };
+		CF0FA219206D3C3200647317 /* KeychainAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainAccess.framework; path = Carthage/Build/iOS/KeychainAccess.framework; sourceTree = "<group>"; };
+		CF0FA21B206D4D5A00647317 /* PaymentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaymentManager.swift; path = Manager/PaymentManager.swift; sourceTree = "<group>"; };
+		CF0FA21E206D508900647317 /* PaymentManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaymentManagerProtocol.swift; path = Protocol/PaymentManagerProtocol.swift; sourceTree = "<group>"; };
 		CF1611341F726D110027144D /* PlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayViewController.swift; path = Play/PlayViewController.swift; sourceTree = "<group>"; };
 		CF1611351F726D110027144D /* PlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlayViewController.xib; path = Play/PlayViewController.xib; sourceTree = "<group>"; };
 		CF1611391F727D8C0027144D /* SystemPlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SystemPlayViewController.swift; path = SystemPlay/SystemPlayViewController.swift; sourceTree = "<group>"; };
@@ -75,11 +76,7 @@
 		CF615AF91F56AB3B00315019 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF615B001F56B04E00315019 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		CF615B061F56E89100315019 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		CF615B0D1F56EEB200315019 /* AlbumTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlbumTableViewCell.swift; path = View/UITableViewCell/AlbumTableViewCell.swift; sourceTree = "<group>"; };
-		CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AlbumTableViewCell.xib; path = View/UITableViewCell/AlbumTableViewCell.xib; sourceTree = "<group>"; };
 		CF615B121F56F56100315019 /* Album.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Album.storyboard; path = Album/Album.storyboard; sourceTree = "<group>"; };
-		CF615B1B1F5707E200315019 /* SongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SongTableViewCell.swift; path = View/UITableViewCell/SongTableViewCell.swift; sourceTree = "<group>"; };
-		CF615B1C1F5707E200315019 /* SongTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SongTableViewCell.xib; path = View/UITableViewCell/SongTableViewCell.xib; sourceTree = "<group>"; };
 		CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExtensionCollection.framework; path = Carthage/Build/iOS/ExtensionCollection.framework; sourceTree = "<group>"; };
 		CF8C85C91F6EB3CF0051A0C7 /* AudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioManager.swift; path = Manager/AudioManager.swift; sourceTree = "<group>"; };
 		CF8C85CB1F6EFBE30051A0C7 /* KeychainSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainSwift.framework; path = Carthage/Build/iOS/KeychainSwift.framework; sourceTree = "<group>"; };
@@ -97,8 +94,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */,
 				CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */,
-				CF8C85CC1F6EFBE30051A0C7 /* KeychainSwift.framework in Frameworks */,
 				CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */,
 				CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */,
 				CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */,
@@ -112,6 +109,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CF0FA21D206D506F00647317 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				CF0FA21E206D508900647317 /* PaymentManagerProtocol.swift */,
+			);
+			name = Protocol;
+			sourceTree = "<group>";
+		};
 		CF1611331F726CF20027144D /* Play */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +209,7 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF0FA219206D3C3200647317 /* KeychainAccess.framework */,
 				CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */,
 				CF28A83A1FD1A4BE00E45F12 /* iOS */,
 				CF28A8331FD180AC00E45F12 /* Alamofire.framework */,
@@ -221,9 +227,9 @@
 		CF615B021F56E75900315019 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				CF0FA21D206D506F00647317 /* Protocol */,
 				CF1AAFE61F75F28400384000 /* Common */,
 				CF8C85C81F6EB3AE0051A0C7 /* Manager */,
-				CF615B0B1F56EE7600315019 /* View */,
 				CF615B031F56E76200315019 /* ViewController */,
 				CF615AED1F56AB3B00315019 /* AppDelegate.swift */,
 			);
@@ -274,25 +280,6 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		CF615B0B1F56EE7600315019 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				CF615B0C1F56EE7F00315019 /* UITableViewCell */,
-			);
-			name = View;
-			sourceTree = "<group>";
-		};
-		CF615B0C1F56EE7F00315019 /* UITableViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				CF615B0D1F56EEB200315019 /* AlbumTableViewCell.swift */,
-				CF615B0E1F56EEB200315019 /* AlbumTableViewCell.xib */,
-				CF615B1B1F5707E200315019 /* SongTableViewCell.swift */,
-				CF615B1C1F5707E200315019 /* SongTableViewCell.xib */,
-			);
-			name = UITableViewCell;
-			sourceTree = "<group>";
-		};
 		CF615B111F56F54F00315019 /* Album */ = {
 			isa = PBXGroup;
 			children = (
@@ -308,6 +295,7 @@
 				CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */,
 				CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */,
 				CFB553811FD17163000618FF /* MastodonClient.swift */,
+				CF0FA21B206D4D5A00647317 /* PaymentManager.swift */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -401,13 +389,11 @@
 				CF28A8391FD183D300E45F12 /* WebViewController.xib in Resources */,
 				CF8C85E01F6F1B610051A0C7 /* .env in Resources */,
 				CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */,
-				CF615B1E1F5707E200315019 /* SongTableViewCell.xib in Resources */,
 				CF1AAFE11F7544F200384000 /* SettingViewController.xib in Resources */,
 				CF16113D1F727DCE0027144D /* SystemPlay.storyboard in Resources */,
 				CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */,
 				CF1611371F726D110027144D /* PlayViewController.xib in Resources */,
 				CF615AF31F56AB3B00315019 /* Main.storyboard in Resources */,
-				CF615B101F56EEB200315019 /* AlbumTableViewCell.xib in Resources */,
 				CF615B131F56F56100315019 /* Album.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -440,12 +426,14 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
@@ -504,10 +492,9 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/ExtensionCollection.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/KeychainSwift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Eureka.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/KeychainSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/KeychainAccess.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Floaty.framework",
 			);
 			name = Carthage;
@@ -559,13 +546,13 @@
 			files = (
 				CF1611361F726D110027144D /* PlayViewController.swift in Sources */,
 				CF8C85CA1F6EB3CF0051A0C7 /* AudioManager.swift in Sources */,
+				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
+				CF0FA21F206D508900647317 /* PaymentManagerProtocol.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */,
-				CF615B1D1F5707E200315019 /* SongTableViewCell.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
-				CF615B0F1F56EEB200315019 /* AlbumTableViewCell.swift in Sources */,
 				CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */,
 				CF1AAFE01F7544F200384000 /* SettingViewController.swift in Sources */,
 				CF28A8381FD183D300E45F12 /* WebViewController.swift in Sources */,
@@ -719,7 +706,7 @@
 				);
 				INFOPLIST_FILE = NowPlaying/Resources/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -741,7 +728,7 @@
 				);
 				INFOPLIST_FILE = NowPlaying/Resources/Info.plist;
 				INFOPLIST_PREPROCESS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
 				PRODUCT_NAME = "$(TARGET_NAME)";

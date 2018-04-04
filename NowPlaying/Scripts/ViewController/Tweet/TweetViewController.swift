@@ -155,7 +155,8 @@ class TweetViewController: UIViewController {
                     "artist_name": artistName,
                     "song_name": songName]
                 )
-                TwitterClient.shared.client?.sendTweet(withText: textView.text, image: shareImage!, completion: { [unowned self] (tweet, error) in
+                TwitterClient.shared.client?.sendTweet(withText: textView.text, image: shareImage!, completion: { [weak self] (tweet, error) in
+                    guard let `self` = self else { return }
                     self.treatmentRespones(error)
                 })
             }

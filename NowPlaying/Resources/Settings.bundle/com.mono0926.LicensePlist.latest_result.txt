@@ -1,49 +1,67 @@
 name: Crashlytics, nameSpecified: 
 body: Fabric: Copyright 20…
+version: 3.10.1
 
 name: Fabric, nameSpecified: 
 body: Fabric: Copyright 20…
+version: 1.7.6
 
 name: Firebase, nameSpecified: 
 body: Copyright 2017 Googl…
+version: 4.6.0
 
 name: FirebaseAnalytics, nameSpecified: 
 body: Copyright 2017 Googl…
+version: 4.0.5
+
+name: FirebaseAuth, nameSpecified: 
+body: Copyright 2017 Googl…
+version: 4.3.2
 
 name: FirebaseCore, nameSpecified: 
 body: Copyright 2017 Googl…
+version: 4.0.11
 
 name: FirebaseInstanceID, nameSpecified: 
 body: Copyright 2017 Googl…
+version: 2.0.6
 
 name: GoogleToolboxForMac, nameSpecified: 
 body: 
                    …
+version: 2.1.3
 
-name: SVProgressHUD, nameSpecified: 
-body: Copyright (c) 2011-2…
-
-name: TwitterCore, nameSpecified: 
-body: Copyright Twitter, I…
-
-name: TwitterKit, nameSpecified: 
-body: Twitter Kit: Copyrig…
+name: GTMSessionFetcher, nameSpecified: 
+body: 
+                   …
+version: 1.1.14
 
 name: nanopb, nameSpecified: 
 body: Copyright (c) 2011 P…
+version: 0.3.8
+
+name: SVProgressHUD, nameSpecified: 
+body: Copyright (c) 2011-2…
+version: 2.2.2
+
+name: TwitterCore, nameSpecified: 
+body: Copyright Twitter, I…
+version: 3.0.2
+
+name: TwitterKit, nameSpecified: 
+body: Twitter Kit: Copyrig…
+version: 3.2.1
 
 name: Alamofire, nameSpecified: , owner: Alamofire, version: 4.5.1
 
-name: ExtensionCollection, nameSpecified: , owner: HiyakashiGroupHoldings, version: 0.0.3
+name: Eureka, nameSpecified: , owner: xmartlabs, version: 4.0.1
 
-name: keychain-swift, nameSpecified: , owner: evgenyneu, version: 10.0.0
+name: ExtensionCollection, nameSpecified: , owner: HiyakashiGroupHoldings, version: 0.0.3
 
 name: Floaty, nameSpecified: , owner: kciter, version: 4.0.0
 
-name: keychain-swift, nameSpecified: , owner: marketplacer, version: 10.0.0
-
-name: Eureka, nameSpecified: , owner: xmartlabs, version: 4.0.1
+name: KeychainAccess, nameSpecified: , owner: kishikawakatsumi, version: v3.1.0
 
 add-version-numbers: true
 
-LicensePlist Version: 1.7.0
+LicensePlist Version: 1.8.3

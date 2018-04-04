@@ -8,22 +8,21 @@
 
 import UIKit
 import TwitterKit
-import KeychainSwift
+import KeychainAccess
 
 class AuthManager: NSObject {
 
     static let shared = AuthManager()
 
-    fileprivate let keychain = KeychainSwift()
+    private let keychain = Keychain(service: keychainServiceKey)
 
     func login(completion: (() -> ())?=nil) {
         Twitter.sharedInstance().logIn(completion: { [unowned self] (session, error) in
-            guard session != nil else {
+            guard let session = session else {
                 return
             }
-            self.keychain.set(session!.authToken, forKey: KeychainKey.authToken.rawValue)
-            self.keychain.set(session!.authTokenSecret, forKey: KeychainKey.authTokenSecret.rawValue)
-            self.keychain.synchronizable = true
+            self.keychain[KeychainKey.authToken.rawValue] = session.authToken
+            self.keychain[KeychainKey.authTokenSecret.rawValue] = session.authTokenSecret
             if let completion = completion {
                 completion()
             }
@@ -32,14 +31,18 @@ class AuthManager: NSObject {
 
     func logout(completion: () -> Void) {
         Twitter.sharedInstance().sessionStore.logOutUserID(Twitter.sharedInstance().sessionStore.session()!.userID)
-        keychain.delete(KeychainKey.authToken.rawValue)
-        keychain.delete(KeychainKey.authTokenSecret.rawValue)
-        keychain.synchronizable = true
+        keychain[KeychainKey.authToken.rawValue] = nil
+        keychain[KeychainKey.authTokenSecret.rawValue] = nil
         completion()
     }
 
     @discardableResult
     func mastodonLogout() -> Bool {
-        return keychain.delete(KeychainKey.mastodonAccessToken.rawValue)
+        do {
+            try keychain.remove(KeychainKey.mastodonAccessToken.rawValue)
+            return true
+        } catch {
+            return false
+        }
     }
 }

@@ -8,38 +8,41 @@
 
 import UIKit
 import Alamofire
-import KeychainSwift
+import KeychainAccess
 
 class MastodonClient: NSObject {
 
     static let shared = MastodonClient()
 
-    fileprivate let keychain = KeychainSwift()
-    fileprivate let baseUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue) ?? ""
+    private let keychain = Keychain(service: keychainServiceKey)
+    private let baseUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue) ?? ""
 
     func register(handler: @escaping (([String: Any]?, Error?) -> ())) {
         // 重複登録防止
-        if let clientID = keychain.get(KeychainKey.mastodonClientID.rawValue), let clientSecret = keychain.get(KeychainKey.mastodonClientSecret.rawValue) {
-            let responseJson = [
-                "client_id": clientID,
-                "client_secret": clientSecret
-            ]
-            handler(responseJson, nil)
-            return
-        }
-        let parameter: [String: String] = ["client_name": "NowPlayingiOS",
-                                           "redirect_uris": "urn:ietf:wg:oauth:2.0:oob",
-                                           "scopes": "write",
-                                           "website": websiteUrl]
-
-        request(baseUrl + "/api/v1/apps", method: .post, parameter: parameter) { (response) in
-            guard response.result.isSuccess else {
-                handler(nil, response.error)
+        do {
+            if let clientID = try keychain.get(KeychainKey.mastodonClientID.rawValue),
+                let clientSecret = try keychain.get(KeychainKey.mastodonClientSecret.rawValue) {
+                let responseJson = [
+                    "client_id": clientID,
+                    "client_secret": clientSecret
+                ]
+                handler(responseJson, nil)
                 return
             }
-            let value = response.result.value as! Dictionary<String, Any>
-            handler(value, nil)
-        }
+            let parameter: [String: String] = ["client_name": "NowPlayingiOS",
+                                               "redirect_uris": "urn:ietf:wg:oauth:2.0:oob",
+                                               "scopes": "write",
+                                               "website": websiteUrl]
+
+            request(baseUrl + "/api/v1/apps", method: .post, parameter: parameter) { (response) in
+                guard response.result.isSuccess else {
+                    handler(nil, response.error)
+                    return
+                }
+                let value = response.result.value as! Dictionary<String, Any>
+                handler(value, nil)
+            }
+        } catch {}
     }
 
     func login(clientID: String, clientSecret: String, username: String, password: String, handler: @escaping ((String?) -> ())) {
@@ -110,25 +113,31 @@ class MastodonClient: NSObject {
 
     /* 画像アップロード */
     func upload(imageData: Data, handler: @escaping ((SessionManager.MultipartFormDataEncodingResult) -> ())) {
-        let accessToken = keychain.get(KeychainKey.mastodonAccessToken.rawValue)!
-        let filename = Date().timeIntervalSince1970
-        let headers = [
-            "Content-Type": "application/json; multipart/form-data;",
-            "Authorization": "Bearer \(accessToken)",
-        ]
+        do {
+            let accessToken = try keychain.get(KeychainKey.mastodonAccessToken.rawValue) ?? ""
+            let filename = Date().timeIntervalSince1970
+            let headers = [
+                "Content-Type": "application/json; multipart/form-data;",
+                "Authorization": "Bearer \(accessToken)",
+            ]
 
-        Alamofire.upload(multipartFormData: { (multipartFormData) in
-            multipartFormData.append(imageData, withName: "file", fileName: "\(filename).png", mimeType: "image/png")
-        }, to: baseUrl + "/api/v1/media", method: .post, headers: headers) { (encodingResult) in
-            handler(encodingResult)
+            Alamofire.upload(multipartFormData: { (multipartFormData) in
+                multipartFormData.append(imageData, withName: "file", fileName: "\(filename).png", mimeType: "image/png")
+            }, to: baseUrl + "/api/v1/media", method: .post, headers: headers) { (encodingResult) in
+                handler(encodingResult)
+            }
+        } catch {
+            let error = NSError(domain: "", code: 401, userInfo: nil) as Error
+            handler(SessionManager.MultipartFormDataEncodingResult.failure(error))
         }
     }
 
     func request(_ url: String, method: HTTPMethod, parameter: Dictionary<String, Any>?, handler: @escaping ((DataResponse<Any>) -> ())) {
         var header: [String: String] = ["Content-Type": "application/json"]
-        if let accessToken = keychain.get(KeychainKey.mastodonAccessToken.rawValue) {
+        do {
+            let accessToken = try keychain.get(KeychainKey.mastodonAccessToken.rawValue) ?? ""
             header["Authorization"] = "Bearer \(accessToken)"
-        }
+        } catch {}
 
         let manager = Alamofire.SessionManager.default
         manager.session.configuration.timeoutIntervalForRequest = 15

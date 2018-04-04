@@ -12,15 +12,19 @@ import SVProgressHUD
 import TwitterKit
 import StoreKit
 import SafariServices
-import KeychainSwift
+import KeychainAccess
 import FirebaseAnalytics
+import ExtensionCollection
 
 class SettingViewController: FormViewController {
 
-    fileprivate let keychain = KeychainSwift()
+    private let keychain = Keychain(service: keychainServiceKey)
 
-    fileprivate var isTwitterLogin = false
-    fileprivate var isMastodonLogin = false
+    private var isProcess = false
+    private var isTwitterLogin = false
+    private var isMastodonLogin = false
+    private var productRequest: SKProductsRequest?
+    private var products = [SKProduct]()
 
     // MARK: - Life cycle
 
@@ -28,9 +32,20 @@ class SettingViewController: FormViewController {
         super.viewDidLoad()
         setupNavigationbar()
         setupIsLogin()
+        setupProducts()
         twitterForm()
         mastodonForm()
         aboutForm()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if SKPaymentQueue.default().transactions.count <= 0 {
+            return
+        }
+        for transaction in SKPaymentQueue.default().transactions where transaction.transactionState != .purchasing {
+            SKPaymentQueue.default().finishTransaction(transaction)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -45,7 +60,7 @@ class SettingViewController: FormViewController {
 
     // MARK: - Private method
 
-    fileprivate func setupNavigationbar() {
+    private func setupNavigationbar() {
         guard navigationController != nil else {
             return
         }
@@ -54,14 +69,16 @@ class SettingViewController: FormViewController {
         navigationItem.rightBarButtonItem = closeButton
     }
 
-    fileprivate func setupIsLogin() {
+    private func setupIsLogin() {
         isTwitterLogin = Twitter.sharedInstance().sessionStore.session() != nil
         isMastodonLogin = UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonLogin.rawValue)
     }
 
-    fileprivate func twitterForm() {
+    private func twitterForm() {
         form
-        +++ Section("Twitter")
+        +++ Section("Twitter") {
+            $0.tag = "twitter_section"
+        }
         <<< ButtonRow() { [unowned self] in
             $0.title = !self.isTwitterLogin ? "ログイン" : "ログアウト"
             $0.tag = "twitter_login"
@@ -112,9 +129,42 @@ class SettingViewController: FormViewController {
                 "value": row.value!]
             )
         })
+        <<< ButtonRow() {
+            $0.title = "自動ツイートを購入"
+            $0.tag = "auto_tweet_purchase"
+            $0.hidden = Condition(booleanLiteral: UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue))
+        }.cellUpdate({ (cell, row) in
+            cell.textLabel?.textAlignment = .left
+            cell.textLabel?.textColor = UIColor.black
+            cell.accessoryType = .disclosureIndicator
+        }).onCellSelection({ [unowned self] (cell, row) in
+            if JailbreakChecker.isJailbreak {
+                let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
+                DispatchQueue.main.async { [unowned self] in
+                    self.present(alert, animated: true, completion: nil)
+                }
+                return
+            }
+            if self.isProcess {
+                SVProgressHUD.showInfo(withStatus: "処理中です")
+                return
+            }
+            guard let product = self.products.first else {
+                SVProgressHUD.showInfo(withStatus: "少し時間をおいて試してみてください")
+                return
+            }
+            self.isProcess = true
+            self.showSelectPurchaseType(product: product)
+
+        })
         <<< SwitchRow() {
             $0.title = "自動ツイート"
             $0.value = UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue)
+            $0.tag = "auto_tweet_switch"
+            $0.hidden = Condition.function(["auto_tweet_purchase"]) { (form) -> Bool in
+                return !form.rowBy(tag: "auto_tweet_purchase")!.isHidden
+            }
         }.onChange({ (row) in
             UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isAutoTweet.rawValue)
             UserDefaults.standard.synchronize()
@@ -137,7 +187,7 @@ class SettingViewController: FormViewController {
         })
     }
 
-    fileprivate func mastodonForm() {
+    private func mastodonForm() {
         form
         +++ Section("Mastodon")
         <<< TextRow() {
@@ -184,9 +234,8 @@ class SettingViewController: FormViewController {
                     let clientID = responseJson!["client_id"] as! String
                     let clientSecret = responseJson!["client_secret"] as! String
 
-                    self.keychain.set(clientID, forKey: KeychainKey.mastodonClientID.rawValue)
-                    self.keychain.set(clientSecret, forKey: KeychainKey.mastodonClientSecret.rawValue)
-                    self.keychain.synchronizable = true
+                    self.keychain[KeychainKey.mastodonClientID.rawValue] = clientID
+                    self.keychain[KeychainKey.mastodonClientSecret.rawValue] = clientSecret
 
                     /* GUIログイン */
                     let webViewController = WebViewController()
@@ -273,7 +322,7 @@ class SettingViewController: FormViewController {
         })
     }
 
-    fileprivate func aboutForm() {
+    private func aboutForm() {
         form
         +++ Section("アプリについて")
         <<< ButtonRow() {
@@ -314,39 +363,141 @@ class SettingViewController: FormViewController {
             cell.textLabel?.textAlignment = .left
             cell.textLabel?.textColor = UIColor.black
             cell.accessoryType = .disclosureIndicator
-        }).onCellSelection({ [unowned self] (cell, row) in
+        }).onCellSelection({ (cell, row) in
             Analytics.logEvent("tap", parameters: [
                 "type": "action",
                 "button": "appstore_review",
                 "os": UIDevice.current.systemVersion]
             )
-            if #available(iOS 10.3, *) {
-                SKStoreReviewController.requestReview()
-            } else {
-                if let url = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1289764391") {
-                    let alert = UIAlertController(title: nil, message: "AppStoreを起動します", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-                    let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-                        UIApplication.shared.openURL(url)
-                    })
-                    alert.preferredAction = okAction
-                    DispatchQueue.main.async {
-                        self.present(alert, animated: true, completion: nil)
-                    }
-                }
-            }
+            SKStoreReviewController.requestReview()
         })
     }
 
-    fileprivate func showMastodonError() {
+    private func showMastodonError() {
         let alert = UIAlertController(title: "エラー", message: "Mastodonのホストネームを確認してください", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 
+    private func setupProducts() {
+        if UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue) {
+            return
+        }
+        PaymentManager.shared.delegate = self
+        let productIds = Set(arrayLiteral: "moe.nnsnodnb.NowPlaying.autoTweet")
+        SVProgressHUD.show()
+        productRequest = PaymentManager.shared.startProductRequest(productIds)
+    }
+
+    private func showSelectPurchaseType(product: SKProduct) {
+        let alert = UIAlertController(title: "復元しますか？購入しますか？", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "復元", style: .default) { (_) in
+            PaymentManager.shared.startRestore()
+        })
+        let newPurchaseAction = UIAlertAction(title: "購入", style: .default) { (_) in
+            PaymentManager.shared.buyProduct(product)
+        }
+        alert.addAction(newPurchaseAction)
+        alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel) { [unowned self] (_) in
+            self.isProcess = false
+        })
+        alert.preferredAction = newPurchaseAction
+        present(alert, animated: true, completion: nil)
+    }
+
     // MARK: - UIBarButtonItem target
 
-    @objc func onTapCloseButton(_ sender: Any) {
+    @objc private func onTapCloseButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - PaymentManagerProtocol
+
+extension SettingViewController: PaymentManagerProtocol {
+
+    func finish(request: SKProductsRequest, products: [SKProduct]) {
+        self.products = products
+        SVProgressHUD.dismiss()
+    }
+
+    func finish(request: SKRequest, didFailWithError: Error) {
+        SVProgressHUD.showError(withStatus: "通信エラーが発生しました")
+    }
+
+    func finish(success paymentTransaction: SKPaymentTransaction) {
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            SVProgressHUD.show()
+            guard let receiptUrl = Bundle.main.appStoreReceiptURL else {
+                return
+            }
+            do {
+                let receiptData = try Data(contentsOf: receiptUrl, options: .uncached)
+                let requestContents = [
+                    "receipt-data": receiptData.base64EncodedString()
+                ]
+                let requestData = try JSONSerialization.data(withJSONObject: requestContents, options: [])
+                let verifyUrl: String!
+                #if DEBUG
+                    verifyUrl = "https://sandbox.itunes.apple.com/verifyReceipt"
+                #else
+                    verifyUrl = "https://buy.itunes.apple.com/verifyReceipt"
+                #endif
+                let storeUrl = URL(string: verifyUrl)!
+                var storeRequest = URLRequest(url: storeUrl)
+                storeRequest.httpMethod = "POST"
+                storeRequest.httpBody = requestData
+
+                let session = URLSession(configuration: URLSessionConfiguration.default)
+                let task = session.dataTask(with: storeRequest) { [weak self] (data, response, error) in
+                    guard let data = data else {
+                        return
+                    }
+                    do {
+                        guard let jsonResponse = try JSONSerialization.jsonObject(with: data,
+                                                                                  options: JSONSerialization.ReadingOptions(rawValue: JSONSerialization.ReadingOptions.RawValue(0))) as? [String: Any],
+                            let status = jsonResponse["status"] as? Int,
+                            status == 0 else { return }
+                        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue)
+                        UserDefaults.standard.synchronize()
+                        DispatchQueue.main.async { [weak self] in
+                            SVProgressHUD.dismiss()
+                            guard let wself = self else { return }
+                            wself.isProcess = false
+                            let purchaseButtonRow: ButtonRow = wself.form.rowBy(tag: "auto_tweet_purchase")!
+                            let autoTweetSwitchRow: SwitchRow = wself.form.rowBy(tag: "auto_tweet_switch")!
+                            purchaseButtonRow.hidden = Condition(booleanLiteral: true)
+                            purchaseButtonRow.evaluateHidden()
+                            autoTweetSwitchRow.evaluateHidden()
+                        }
+                    } catch {
+                        SVProgressHUD.showError(withStatus: "検証に失敗しました")
+                    }
+                }
+                task.resume()
+            } catch {
+                self.isProcess = false
+                fatalError()
+            }
+        }
+    }
+
+    func finishPayment(failed paymentTransaction: SKPaymentTransaction) {
+        DispatchQueue.main.async {
+            SVProgressHUD.showError(withStatus: "購入に失敗しました")
+        }
+    }
+
+    func finishRestore(queue: SKPaymentQueue) {
+        SVProgressHUD.showInfo(withStatus: "復元に成功しました")
+        isProcess = false
+    }
+
+    func finishRestore(queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError: Error) {
+        isProcess = false
+        DispatchQueue.main.async {
+            SVProgressHUD.showError(withStatus: "復元に失敗しました")
+        }
     }
 }
