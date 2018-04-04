@@ -363,7 +363,7 @@ class SettingViewController: FormViewController {
             cell.textLabel?.textAlignment = .left
             cell.textLabel?.textColor = UIColor.black
             cell.accessoryType = .disclosureIndicator
-        }).onCellSelection({ [unowned self] (cell, row) in
+        }).onCellSelection({ (cell, row) in
             Analytics.logEvent("tap", parameters: [
                 "type": "action",
                 "button": "appstore_review",
