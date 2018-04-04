@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import MediaPlayer
 import TwitterKit
@@ -247,17 +248,13 @@ class PlayViewController: UIViewController {
         dateFormatter.timeZone = NSTimeZone.system
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let untilFreePurchaseDate = dateFormatter.date(from: "2018-04-20")!
-        if untilFreePurchaseDate < Date() {
+        if let untilFreePurchaseDate = dateFormatter.date(from: "2018-04-20"), untilFreePurchaseDate < Date() {
             return
         }
-        let alert = UIAlertController(title: "自動ツイートについてのお知らせ", message: "自動ツイートの機能のみ課金制になりました。なお2018年4月20日までに設定画面より無料で入手することが可能です。お試しください。", preferredStyle: .alert)
-        let tryAction = UIAlertAction(title: "試す", style: .default) { [unowned self] (_) in
-            self.onTapGearButton(nil)
-        }
-        alert.addAction(tryAction)
-        alert.addAction(UIAlertAction(title: "あとで", style: .cancel, handler: nil))
-        alert.preferredAction = tryAction
+        let alert = UIAlertController(title: "自動ツイートについてのお知らせ",
+                                      message: "自動ツイートの機能のみ課金制になりました。なお2018年4月20日までに設定画面より無料で入手することが可能です。お試しください。",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         DispatchQueue.main.async { [unowned self] in
             self.present(alert, animated: true) {
                 UserDefaults.standard.set(true, forKey: UserDefaultsKey.update2_1_0.rawValue)
