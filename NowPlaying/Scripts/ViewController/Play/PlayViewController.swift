@@ -235,7 +235,9 @@ class PlayViewController: UIViewController {
         count += 1
         UserDefaults.standard.set(count, forKey: UserDefaultsKey.appOpenCount.rawValue)
         UserDefaults.standard.synchronize()
-        SKStoreReviewController.requestReview()
+        if count == 15 {
+            SKStoreReviewController.requestReview()
+        }
     }
 
     /* 2.0.1のみ使用 */
