@@ -12,7 +12,7 @@ import NotificationCenter
 
 class TodayViewController: UIViewController {
 
-    @IBOutlet weak var artworkImageView: UIImageView!
+    @IBOutlet weak var artworkImageButton: UIButton!
     @IBOutlet weak var songNameLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
     @IBOutlet weak var deniedView: UIView!
@@ -21,7 +21,8 @@ class TodayViewController: UIViewController {
 
     private var nowPlayingItem: MPMediaItem? {
         didSet {
-            artworkImageView.image = nowPlayingItem?.artwork?.image(at: artworkImageView.frame.size)
+            let image = nowPlayingItem?.artwork?.image(at: artworkImageButton.frame.size)
+            artworkImageButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
             songNameLabel.text = nowPlayingItem?.title
             artistNameLabel.text = nowPlayingItem?.artist
         }
@@ -32,7 +33,6 @@ class TodayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNotification()
-        setupNowPlaying()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -67,10 +67,6 @@ class TodayViewController: UIViewController {
                                                name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
     }
 
-    private func setupNowPlaying() {
-        guard MPMusicPlayerController.systemMusicPlayer.playbackState == .playing else { return }
-    }
-
     private func setupPlayViewControllerItem() {
         if let item = player.nowPlayingItem {
             nowPlayingItem = item
@@ -95,6 +91,16 @@ class TodayViewController: UIViewController {
                 }
             }
         }
+    }
+}
+
+// MARK: - IBAction
+
+extension TodayViewController {
+
+    @IBAction func onTapArtworkImageButton(_ sender: Any) {
+        guard let url = URL(string: "nowplaying-ios-nnsnodnb://") else { return }
+        extensionContext?.open(url, completionHandler: nil)
     }
 }
 
