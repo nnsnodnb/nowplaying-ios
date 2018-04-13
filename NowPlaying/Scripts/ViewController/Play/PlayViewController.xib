@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -14,7 +14,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlayViewController" customModule="NowPlaying" customModuleProvider="target">
             <connections>
                 <outlet property="artworkImageView" destination="hQk-D4-a1j" id="9Xg-Rq-qYb"/>
+                <outlet property="bannerView" destination="XmZ-8C-J1H" id="kVj-QU-aB0"/>
                 <outlet property="floaty" destination="YGZ-UO-cK2" id="jrX-SF-P7T"/>
+                <outlet property="floatyBottomMargin" destination="l83-EK-gL0" id="dev-tN-hIk"/>
                 <outlet property="playButton" destination="qMi-NZ-cvB" id="ckT-BR-BCK"/>
                 <outlet property="songNameLabel" destination="LaS-KO-82c" id="U5e-zW-JkR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -26,7 +28,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="A5A-pe-FD2">
-                    <rect key="frame" x="36" y="105.5" width="303" height="456"/>
+                    <rect key="frame" x="36" y="59" width="303" height="456"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hGu-bd-Jyz">
                             <rect key="frame" x="0.0" y="0.0" width="303" height="363"/>
@@ -115,35 +117,44 @@
                     </constraints>
                 </stackView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3aW-hZ-XIr">
-                    <rect key="frame" x="16" y="601" width="50" height="50"/>
+                    <rect key="frame" x="16" y="551" width="50" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="0Xe-ks-CEE"/>
-                        <constraint firstAttribute="width" constant="50" id="BlS-2Y-Ftu"/>
+                        <constraint firstAttribute="height" constant="50" id="MHr-TA-HJ4"/>
+                        <constraint firstAttribute="width" constant="50" id="Ya6-tK-lYk"/>
                     </constraints>
                     <state key="normal" image="gear"/>
                     <connections>
                         <action selector="onTapGearButton:" destination="-1" eventType="touchUpInside" id="EKu-nm-Ua3"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XmZ-8C-J1H" customClass="GADBannerView">
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="4hu-1H-Tu9"/>
+                    </constraints>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YGZ-UO-cK2" customClass="Floaty" customModule="Floaty">
-                    <rect key="frame" x="309" y="601" width="50" height="50"/>
+                    <rect key="frame" x="309" y="551" width="50" height="50"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="8cu-pz-oVo"/>
-                        <constraint firstAttribute="width" constant="50" id="R24-HI-tOE"/>
+                        <constraint firstAttribute="width" constant="50" id="Lyw-NV-45S"/>
+                        <constraint firstAttribute="height" constant="50" id="RsH-XW-veE"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="YGZ-UO-cK2" firstAttribute="bottom" secondItem="3aW-hZ-XIr" secondAttribute="bottom" id="07V-4H-dBm"/>
-                <constraint firstAttribute="bottom" secondItem="3aW-hZ-XIr" secondAttribute="bottom" constant="16" id="4wc-RA-nQD"/>
-                <constraint firstItem="GlU-pD-9su" firstAttribute="trailing" secondItem="YGZ-UO-cK2" secondAttribute="trailing" constant="16" id="GKA-gS-i47"/>
+                <constraint firstItem="XmZ-8C-J1H" firstAttribute="leading" secondItem="GlU-pD-9su" secondAttribute="leading" id="7qX-fA-LNE"/>
+                <constraint firstItem="XmZ-8C-J1H" firstAttribute="trailing" secondItem="GlU-pD-9su" secondAttribute="trailing" id="DTm-Jo-9iT"/>
+                <constraint firstItem="GlU-pD-9su" firstAttribute="trailing" secondItem="YGZ-UO-cK2" secondAttribute="trailing" constant="16" id="FTd-Dx-o8a"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="L0B-pi-jFq"/>
-                <constraint firstItem="YGZ-UO-cK2" firstAttribute="top" secondItem="3aW-hZ-XIr" secondAttribute="top" id="NTA-QO-X2f"/>
-                <constraint firstItem="GlU-pD-9su" firstAttribute="bottom" secondItem="YGZ-UO-cK2" secondAttribute="bottom" constant="16" id="eks-lk-Zhk"/>
-                <constraint firstItem="A5A-pe-FD2" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="fLm-4y-Gus"/>
-                <constraint firstItem="3aW-hZ-XIr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="mD1-8t-bao"/>
+                <constraint firstItem="YGZ-UO-cK2" firstAttribute="top" secondItem="3aW-hZ-XIr" secondAttribute="top" id="OVj-K0-TjF"/>
+                <constraint firstItem="XmZ-8C-J1H" firstAttribute="bottom" secondItem="GlU-pD-9su" secondAttribute="bottom" id="VDC-h9-79L"/>
+                <constraint firstItem="YGZ-UO-cK2" firstAttribute="bottom" secondItem="3aW-hZ-XIr" secondAttribute="bottom" id="fPV-Al-UCk"/>
+                <constraint firstItem="XmZ-8C-J1H" firstAttribute="top" secondItem="YGZ-UO-cK2" secondAttribute="bottom" constant="16" id="l83-EK-gL0"/>
+                <constraint firstItem="3aW-hZ-XIr" firstAttribute="top" secondItem="A5A-pe-FD2" secondAttribute="bottom" constant="36" id="vEv-97-SS6"/>
+                <constraint firstItem="3aW-hZ-XIr" firstAttribute="leading" secondItem="GlU-pD-9su" secondAttribute="leading" constant="16" id="vRs-kj-jNn"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="GlU-pD-9su"/>
             <point key="canvasLocation" x="34.5" y="53.5"/>

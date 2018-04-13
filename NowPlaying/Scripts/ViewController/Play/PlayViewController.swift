@@ -14,6 +14,7 @@ import SVProgressHUD
 import Floaty
 import FirebaseAnalytics
 import StoreKit
+import GoogleMobileAds
 
 class PlayViewController: UIViewController {
 
@@ -21,6 +22,8 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var songNameLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var floaty: Floaty!
+    @IBOutlet weak var floatyBottomMargin: NSLayoutConstraint!
+    @IBOutlet weak var bannerView: GADBannerView!
 
     var albumTitle: String! {
         didSet {
@@ -55,7 +58,7 @@ class PlayViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         layoutFAB()
-        
+        setupBanner()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -64,6 +67,11 @@ class PlayViewController: UIViewController {
         Analytics.logEvent("screen_open", parameters: nil)
         countUpOpenCount()
         showPurchaseInfo()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        floatyBottomMargin.constant = 16
     }
 
     override func didReceiveMemoryWarning() {
@@ -99,6 +107,13 @@ class PlayViewController: UIViewController {
         isPlay = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
     }
 
+    private func setupBanner() {
+        bannerView.adUnitID = ProcessInfo.processInfo.environment[EnvironmentKey.firebaseAdmobBannerId.rawValue]
+        bannerView.adSize = kGADAdSizeBanner
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+    }
+
     fileprivate func showError(error: Error) {
         let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -106,9 +121,7 @@ class PlayViewController: UIViewController {
     }
 
     fileprivate func autoTweet() {
-        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue) || Twitter.sharedInstance().sessionStore.session() == nil {
-            return
-        }
+        guard UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue) || Twitter.sharedInstance().sessionStore.session() != nil else { return }
         SVProgressHUD.show()
         let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
         if let artwork = song?.artwork, UserDefaults.standard.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
@@ -116,7 +129,7 @@ class PlayViewController: UIViewController {
             Analytics.logEvent("post", parameters: [
                 "type": "tweet",
                 "auto_post": true,
-                "image": image ?? false,
+                "image": true,
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
@@ -154,7 +167,7 @@ class PlayViewController: UIViewController {
             Analytics.logEvent("post", parameters: [
                 "type": "mastodon",
                 "auto_post": true,
-                "image": image ?? false,
+                "image": true,
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
