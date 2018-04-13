@@ -11,7 +11,8 @@ import TwitterKit
 import Fabric
 import Crashlytics
 import KeychainAccess
-import Firebase
+import FirebaseCore
+import GoogleMobileAds
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                        consumerSecret: env[EnvironmentKey.twitterConsumerSecret.rawValue]!)
         Fabric.with([Crashlytics.self])
         FirebaseApp.configure()
+        GADMobileAds.configure(withApplicationID: env[EnvironmentKey.firebaseAdmobAppId.rawValue]!)
         PaymentManager.shared.startTransactionObserve()
         #if DEBUG
         AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(false)

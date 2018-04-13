@@ -14,6 +14,7 @@ import SVProgressHUD
 import Floaty
 import FirebaseAnalytics
 import StoreKit
+import GoogleMobileAds
 
 class PlayViewController: UIViewController {
 
@@ -21,6 +22,8 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var songNameLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var floaty: Floaty!
+    @IBOutlet weak var floatyBottomMargin: NSLayoutConstraint!
+    @IBOutlet weak var bannerView: GADBannerView!
 
     var albumTitle: String! {
         didSet {
@@ -55,7 +58,7 @@ class PlayViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         layoutFAB()
-        
+        setupBanner()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -64,6 +67,11 @@ class PlayViewController: UIViewController {
         Analytics.logEvent("screen_open", parameters: nil)
         countUpOpenCount()
         showPurchaseInfo()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        floatyBottomMargin.constant = 16
     }
 
     override func didReceiveMemoryWarning() {
@@ -97,6 +105,13 @@ class PlayViewController: UIViewController {
     fileprivate func setupView() {
         songNameLabel.text = nil
         isPlay = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
+    }
+
+    private func setupBanner() {
+        bannerView.adUnitID = ProcessInfo.processInfo.environment[EnvironmentKey.firebaseAdmobBannerId.rawValue]
+        bannerView.adSize = kGADAdSizeBanner
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
     }
 
     fileprivate func showError(error: Error) {
