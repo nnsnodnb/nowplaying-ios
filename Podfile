@@ -11,5 +11,6 @@ target 'NowPlaying' do
   pod 'Crashlytics'
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
+  pod 'Firebase/AdMob'
 
 end
