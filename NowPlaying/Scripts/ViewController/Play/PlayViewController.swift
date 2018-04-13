@@ -121,9 +121,7 @@ class PlayViewController: UIViewController {
     }
 
     fileprivate func autoTweet() {
-        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue) || Twitter.sharedInstance().sessionStore.session() == nil {
-            return
-        }
+        guard UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue) || Twitter.sharedInstance().sessionStore.session() != nil else { return }
         SVProgressHUD.show()
         let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
         if let artwork = song?.artwork, UserDefaults.standard.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
@@ -131,7 +129,7 @@ class PlayViewController: UIViewController {
             Analytics.logEvent("post", parameters: [
                 "type": "tweet",
                 "auto_post": true,
-                "image": image ?? false,
+                "image": true,
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
@@ -169,7 +167,7 @@ class PlayViewController: UIViewController {
             Analytics.logEvent("post", parameters: [
                 "type": "mastodon",
                 "auto_post": true,
-                "image": image ?? false,
+                "image": true,
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
