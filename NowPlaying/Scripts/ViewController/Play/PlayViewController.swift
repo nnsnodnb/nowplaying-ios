@@ -24,6 +24,7 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var floaty: Floaty!
     @IBOutlet weak var floatyBottomMargin: NSLayoutConstraint!
     @IBOutlet weak var bannerView: GADBannerView!
+    @IBOutlet weak var bannerViewHeight: NSLayoutConstraint!
 
     var albumTitle: String! {
         didSet {
@@ -59,6 +60,13 @@ class PlayViewController: UIViewController {
         setupView()
         layoutFAB()
         setupBanner()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard UserDefaults.standard.bool(forKey: UserDefaultsKey.isPurchasedRemoveAdMob.rawValue) else { return }
+        bannerView.isHidden = true
+        bannerViewHeight.constant = 0
     }
 
     override func viewDidAppear(_ animated: Bool) {
