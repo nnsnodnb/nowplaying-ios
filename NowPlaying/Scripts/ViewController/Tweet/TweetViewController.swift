@@ -25,7 +25,7 @@ class TweetViewController: UIViewController {
     var songName: String!
     var isMastodon = false
 
-    fileprivate var keyboardHeight: CGFloat = 0
+    private var keyboardHeight: CGFloat = 0
 
     // MARK: - Life cycle
 
@@ -41,7 +41,7 @@ class TweetViewController: UIViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(showKeyboard(_:)),
-            name: NSNotification.Name.UIKeyboardDidShow,
+            name: .UIKeyboardDidShow,
             object: nil
         )
     }
@@ -60,7 +60,7 @@ class TweetViewController: UIViewController {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(
             self,
-            name: NSNotification.Name.UIKeyboardDidShow,
+            name: .UIKeyboardDidShow,
             object: nil
         )
     }
@@ -71,12 +71,12 @@ class TweetViewController: UIViewController {
 
     // MARK: - Private method
 
-    fileprivate func setupTextView() {
+    private func setupTextView() {
         textView.becomeFirstResponder()
         textView.text = tweetText
     }
 
-    fileprivate func setupArtworkImageButton() {
+    private func setupArtworkImageButton() {
         if shareImage == nil || tweetText == nil {
             artworkImageButton.isHidden = true
             artworkImageButtonHeight.constant = 0
@@ -87,7 +87,7 @@ class TweetViewController: UIViewController {
         artworkImageButton.setImage(shareImage, for: .normal)
     }
 
-    fileprivate func setupNavigationBar() {
+    private func setupNavigationBar() {
         guard navigationController != nil else {
             return
         }
@@ -98,20 +98,20 @@ class TweetViewController: UIViewController {
         navigationItem.rightBarButtonItem = tweetButton
     }
 
-    fileprivate func showError(error: Error) {
+    private func showError(error: Error) {
         let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 
-    fileprivate func resizeTextView() {
+    private func resizeTextView() {
         textViewHeight.constant = UIScreen.main.bounds.size.height - keyboardHeight - artworkImageButtonHeight.constant - (artworkImageButtonTopMargin.constant * 2)
         UIView.animate(withDuration: 0.5) { [unowned self] in
             self.artworkImageButton.alpha = 1
         }
     }
 
-    fileprivate func treatmentRespones(_ error: Error?) {
+    private func treatmentRespones(_ error: Error?) {
         if error != nil {
             SVProgressHUD.dismiss()
             showError(error: error!)

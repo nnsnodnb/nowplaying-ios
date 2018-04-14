@@ -14,6 +14,7 @@ import SVProgressHUD
 import Floaty
 import FirebaseAnalytics
 import StoreKit
+import GoogleMobileAds
 
 class PlayViewController: UIViewController {
 
@@ -21,6 +22,9 @@ class PlayViewController: UIViewController {
     @IBOutlet weak var songNameLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var floaty: Floaty!
+    @IBOutlet weak var floatyBottomMargin: NSLayoutConstraint!
+    @IBOutlet weak var bannerView: GADBannerView!
+    @IBOutlet weak var bannerViewHeight: NSLayoutConstraint!
 
     var albumTitle: String! {
         didSet {
@@ -43,7 +47,7 @@ class PlayViewController: UIViewController {
         }
     }
 
-    fileprivate var isPlay: Bool = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing {
+    private var isPlay: Bool = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing {
         didSet {
             playButton.setImage(UIImage(named: isPlay ? "pause" : "play"), for: .normal)
         }
@@ -55,7 +59,14 @@ class PlayViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         layoutFAB()
-        
+        setupBanner()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard UserDefaults.bool(forKey: .isPurchasedRemoveAdMob) else { return }
+        bannerView.isHidden = true
+        bannerViewHeight.constant = 0
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -66,13 +77,18 @@ class PlayViewController: UIViewController {
         showPurchaseInfo()
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        floatyBottomMargin.constant = 16
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
     // MARK: - Private method
 
-    fileprivate func layoutFAB() {
+    private func layoutFAB() {
         let item = FloatyItem()
         item.hasShadow = false
         item.buttonColor = UIColor.blue
@@ -94,29 +110,34 @@ class PlayViewController: UIViewController {
         }
     }
 
-    fileprivate func setupView() {
+    private func setupView() {
         songNameLabel.text = nil
         isPlay = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
     }
 
-    fileprivate func showError(error: Error) {
+    private func setupBanner() {
+        bannerView.adUnitID = ProcessInfo.processInfo.get(forKey: .firebaseAdmobBannerId)
+        bannerView.adSize = kGADAdSizeBanner
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+    }
+
+    private func showError(error: Error) {
         let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 
-    fileprivate func autoTweet() {
-        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue) || Twitter.sharedInstance().sessionStore.session() == nil {
-            return
-        }
+    private func autoTweet() {
+        guard UserDefaults.bool(forKey: .isAutoTweet) || Twitter.sharedInstance().sessionStore.session() != nil else { return }
         SVProgressHUD.show()
         let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
-        if let artwork = song?.artwork, UserDefaults.standard.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
+        if let artwork = song?.artwork, UserDefaults.bool(forKey: .isWithImage) {
             let image = artwork.image(at: artwork.bounds.size)
             Analytics.logEvent("post", parameters: [
                 "type": "tweet",
                 "auto_post": true,
-                "image": image ?? false,
+                "image": true,
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
@@ -143,18 +164,18 @@ class PlayViewController: UIViewController {
         }
     }
 
-    fileprivate func autoToot() {
-        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonAutoToot.rawValue) || !UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonLogin.rawValue) {
+    private func autoToot() {
+        if !UserDefaults.bool(forKey: .isMastodonAutoToot) || !UserDefaults.bool(forKey: .isMastodonLogin) {
             return
         }
         SVProgressHUD.show()
         let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
-        if let artwork = song?.artwork, UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonWithImage.rawValue) {
+        if let artwork = song?.artwork, UserDefaults.bool(forKey: .isMastodonWithImage) {
             let image = artwork.image(at: artwork.bounds.size)
             Analytics.logEvent("post", parameters: [
                 "type": "mastodon",
                 "auto_post": true,
-                "image": image ?? false,
+                "image": true,
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
@@ -196,7 +217,7 @@ class PlayViewController: UIViewController {
         )
         let tweetViewController = TweetViewController()
         tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
-        if let artwork = song?.artwork, UserDefaults.standard.bool(forKey: UserDefaultsKey.isWithImage.rawValue) {
+        if let artwork = song?.artwork, UserDefaults.bool(forKey: .isWithImage) {
             let image = artwork.image(at: artwork.bounds.size)
             tweetViewController.shareImage = image
         }
@@ -207,7 +228,7 @@ class PlayViewController: UIViewController {
     }
 
     func onTapMastodonButton(_ sender: FloatyItem) {
-        if !UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonLogin.rawValue) {
+        if !UserDefaults.bool(forKey: .isMastodonLogin) {
             let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
             present(alert, animated: true, completion: nil)
@@ -219,7 +240,7 @@ class PlayViewController: UIViewController {
         )
         let tweetViewController = TweetViewController()
         tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
-        if let artwork = song?.artwork, UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonWithImage.rawValue) {
+        if let artwork = song?.artwork, UserDefaults.bool(forKey: .isMastodonWithImage) {
             let image = artwork.image(at: artwork.bounds.size)
             tweetViewController.shareImage = image
         }
@@ -230,17 +251,18 @@ class PlayViewController: UIViewController {
         present(navi, animated: true, completion: nil)
     }
 
-    fileprivate func countUpOpenCount() {
-        var count = UserDefaults.standard.integer(forKey: UserDefaultsKey.appOpenCount.rawValue)
+    private func countUpOpenCount() {
+        var count = UserDefaults.integer(forKey: .appOpenCount)
         count += 1
-        UserDefaults.standard.set(count, forKey: UserDefaultsKey.appOpenCount.rawValue)
-        UserDefaults.standard.synchronize()
-        SKStoreReviewController.requestReview()
+        UserDefaults.set(count, forKey: .appOpenCount)
+        if count == 15 {
+            SKStoreReviewController.requestReview()
+        }
     }
 
     /* 2.0.1のみ使用 */
     private func showPurchaseInfo() {
-        if UserDefaults.standard.bool(forKey: UserDefaultsKey.update2_1_0.rawValue) {
+        if UserDefaults.bool(forKey: .update2_1_0) {
             return
         }
         let dateFormatter = DateFormatter()
@@ -257,8 +279,7 @@ class PlayViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         DispatchQueue.main.async { [unowned self] in
             self.present(alert, animated: true) {
-                UserDefaults.standard.set(true, forKey: UserDefaultsKey.update2_1_0.rawValue)
-                UserDefaults.standard.synchronize()
+                UserDefaults.set(true, forKey: .update2_1_0)
             }
         }
     }

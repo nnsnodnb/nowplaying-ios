@@ -14,8 +14,8 @@ class AudioManager: NSObject {
     var currentAlbum: MPMediaItemCollection?
     var currentNumberOfDisc: Int?
 
-    fileprivate var audioPlayer: AVAudioPlayer!
-    fileprivate var singles: [MPMediaItem]?
+    private var audioPlayer: AVAudioPlayer!
+    private var singles: [MPMediaItem]?
 
     static let shared = AudioManager()
 
@@ -125,7 +125,7 @@ class AudioManager: NSObject {
         return singles[currentNumberOfDisc!]
     }
 
-    fileprivate func notifyNowPlaying(song: MPMediaItem) {
+    private func notifyNowPlaying(song: MPMediaItem) {
         var nowPlayingInfo: [String: Any] = [
             MPMediaItemPropertyTitle: song.value(forProperty: MPMediaItemPropertyTitle) ?? "",
             MPMediaItemPropertyAlbumTitle: song.value(forProperty: MPMediaItemPropertyAlbumTitle) ?? "",

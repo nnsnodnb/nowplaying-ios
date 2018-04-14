@@ -26,6 +26,10 @@ name: FirebaseInstanceID, nameSpecified:
 body: Copyright 2017 Googl…
 version: 2.0.6
 
+name: Google-Mobile-Ads-SDK, nameSpecified: 
+body: Copyright 2017 Googl…
+version: 7.25.0
+
 name: GoogleToolboxForMac, nameSpecified: 
 body: 
                    …

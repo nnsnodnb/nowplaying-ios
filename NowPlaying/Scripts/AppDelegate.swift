@@ -11,7 +11,8 @@ import TwitterKit
 import Fabric
 import Crashlytics
 import KeychainAccess
-import Firebase
+import FirebaseCore
+import GoogleMobileAds
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,11 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         UIApplication.shared.beginReceivingRemoteControlEvents()
         loadEnvironment()
-        let env = ProcessInfo.processInfo.environment
-        Twitter.sharedInstance().start(withConsumerKey: env[EnvironmentKey.twitterConsumerKey.rawValue]!,
-                                       consumerSecret: env[EnvironmentKey.twitterConsumerSecret.rawValue]!)
+        Twitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
+                                       consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
         Fabric.with([Crashlytics.self])
         FirebaseApp.configure()
+        GADMobileAds.configure(withApplicationID: ProcessInfo.processInfo.get(forKey: .firebaseAdmobAppId))
         PaymentManager.shared.startTransactionObserve()
         #if DEBUG
         AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(false)
@@ -68,7 +69,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AudioManager.shared.remoteControlReceived(with: event)
     }
 
-    fileprivate func loadEnvironment() {
+    private func loadEnvironment() {
+        if ProcessInfo.processInfo.environment["BITRISE_SOURCE_DIR"] != nil { return }
         guard let path = Bundle.main.path(forResource: ".env", ofType: nil) else {
             fatalError("Not found: 'Resources/.env'.\nPlease create .env file reference from .env.sample")
         }
