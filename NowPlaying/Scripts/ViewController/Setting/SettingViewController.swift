@@ -435,6 +435,35 @@ class SettingViewController: FormViewController {
         present(alert, animated: true, completion: nil)
     }
 
+    private func completePuchaseAutoTweet() {
+        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue)
+        UserDefaults.standard.synchronize()
+        DispatchQueue.main.async { [weak self] in
+            SVProgressHUD.dismiss()
+            guard let wself = self else { return }
+            wself.isProcess = false
+            wself.purchasingProduct = nil
+            let purchaseButtonRow: ButtonRow = wself.form.rowBy(tag: "auto_tweet_purchase")!
+            let autoTweetSwitchRow: SwitchRow = wself.form.rowBy(tag: "auto_tweet_switch")!
+            purchaseButtonRow.hidden = Condition(booleanLiteral: true)
+            purchaseButtonRow.evaluateHidden()
+            autoTweetSwitchRow.evaluateHidden()
+        }
+    }
+
+    private func completePurchaseRemoveAdmob() {
+        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isPurchasedRemoveAdMob.rawValue)
+        UserDefaults.standard.synchronize()
+        DispatchQueue.main.async { [weak self] in
+            SVProgressHUD.dismiss()
+            guard let wself = self, let purchaseButtonRow: ButtonRow = wself.form.rowBy(tag: "remove_admob") else { return }
+            wself.isProcess = false
+            wself.purchasingProduct = nil
+            purchaseButtonRow.hidden = Condition(booleanLiteral: true)
+            purchaseButtonRow.evaluateHidden()
+        }
+    }
+
     // MARK: - UIBarButtonItem target
 
     @objc private func onTapCloseButton(_ sender: Any) {
@@ -496,30 +525,9 @@ extension SettingViewController: PaymentManagerProtocol {
                                 return
                         }
                         if purchasingProduct.productIdentifier == "moe.nnsnodnb.NowPlaying.autoTweet" {
-                            UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue)
-                            UserDefaults.standard.synchronize()
-                            DispatchQueue.main.async { [weak self] in
-                                SVProgressHUD.dismiss()
-                                guard let wself = self else { return }
-                                wself.isProcess = false
-                                wself.purchasingProduct = nil
-                                let purchaseButtonRow: ButtonRow = wself.form.rowBy(tag: "auto_tweet_purchase")!
-                                let autoTweetSwitchRow: SwitchRow = wself.form.rowBy(tag: "auto_tweet_switch")!
-                                purchaseButtonRow.hidden = Condition(booleanLiteral: true)
-                                purchaseButtonRow.evaluateHidden()
-                                autoTweetSwitchRow.evaluateHidden()
-                            }
+                            wself.completePuchaseAutoTweet()
                         } else {
-                            UserDefaults.standard.set(true, forKey: UserDefaultsKey.isPurchasedRemoveAdMob.rawValue)
-                            UserDefaults.standard.synchronize()
-                            DispatchQueue.main.async { [weak self] in
-                                SVProgressHUD.dismiss()
-                                guard let wself = self, let purchaseButtonRow: ButtonRow = wself.form.rowBy(tag: "remove_admob") else { return }
-                                wself.isProcess = false
-                                wself.purchasingProduct = nil
-                                purchaseButtonRow.hidden = Condition(booleanLiteral: true)
-                                purchaseButtonRow.evaluateHidden()
-                            }
+                            wself.completePurchaseRemoveAdmob()
                         }
                     } catch {
                         SVProgressHUD.showError(withStatus: "検証に失敗しました")
@@ -547,6 +555,11 @@ extension SettingViewController: PaymentManagerProtocol {
             SVProgressHUD.dismiss {
                 SVProgressHUD.showInfo(withStatus: "復元に成功しました")
             }
+        }
+        if purchasingProduct!.productIdentifier == "moe.nnsnodnb.NowPlaying.autoTweet" {
+            completePuchaseAutoTweet()
+        } else {
+            completePurchaseRemoveAdmob()
         }
         isProcess = false
         purchasingProduct = nil
