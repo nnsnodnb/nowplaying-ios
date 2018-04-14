@@ -72,7 +72,7 @@ class SettingViewController: FormViewController {
 
     private func setupIsLogin() {
         isTwitterLogin = Twitter.sharedInstance().sessionStore.session() != nil
-        isMastodonLogin = UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonLogin.rawValue)
+        isMastodonLogin = UserDefaults.bool(forKey: .isMastodonLogin)
     }
 
     private func twitterForm() {
@@ -120,10 +120,9 @@ class SettingViewController: FormViewController {
         })
         <<< SwitchRow() {
             $0.title = "アートワークを添付"
-            $0.value = UserDefaults.standard.bool(forKey: UserDefaultsKey.isWithImage.rawValue)
+            $0.value = UserDefaults.bool(forKey: .isWithImage)
         }.onChange({ (row) in
-            UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isWithImage.rawValue)
-            UserDefaults.standard.synchronize()
+            UserDefaults.set(row.value!, forKey: .isWithImage)
             Analytics.logEvent("change", parameters: [
                 "type": "action",
                 "button": "twitter_with_artwork",
@@ -133,7 +132,7 @@ class SettingViewController: FormViewController {
         <<< ButtonRow() {
             $0.title = "自動ツイートを購入"
             $0.tag = "auto_tweet_purchase"
-            $0.hidden = Condition(booleanLiteral: UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue))
+            $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isAutoTweetPurchase))
         }.cellUpdate({ (cell, row) in
             cell.textLabel?.textAlignment = .left
             cell.textLabel?.textColor = UIColor.black
@@ -161,28 +160,26 @@ class SettingViewController: FormViewController {
         })
         <<< SwitchRow() {
             $0.title = "自動ツイート"
-            $0.value = UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue)
+            $0.value = UserDefaults.bool(forKey: .isAutoTweet)
             $0.tag = "auto_tweet_switch"
             $0.hidden = Condition.function(["auto_tweet_purchase"]) { (form) -> Bool in
                 return !form.rowBy(tag: "auto_tweet_purchase")!.isHidden
             }
         }.onChange({ (row) in
-            UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isAutoTweet.rawValue)
-            UserDefaults.standard.synchronize()
+            UserDefaults.set(row.value!, forKey: .isAutoTweet)
             Analytics.logEvent("change", parameters: [
                 "type": "action",
                 "button": "twitter_auto_tweet",
                 "value": row.value!]
             )
-            if !row.value! || UserDefaults.standard.bool(forKey: UserDefaultsKey.isShowAutoTweetAlert.rawValue) {
+            if !row.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) {
                 return
             }
             let alert = UIAlertController(title: nil, message: "起動中のみ自動的にツイートされます", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             DispatchQueue.main.async {
                 self.present(alert, animated: true) {
-                    UserDefaults.standard.set(true, forKey: UserDefaultsKey.isShowAutoTweetAlert.rawValue)
-                    UserDefaults.standard.synchronize()
+                    UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
                 }
             }
         })
@@ -194,7 +191,7 @@ class SettingViewController: FormViewController {
         <<< TextRow() {
             $0.title = "ホストネーム"
             $0.placeholder = "https://mstdn.jp"
-            $0.value = UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)
+            $0.value = UserDefaults.string(forKey: .mastodonHostname)
             $0.tag = "mastodon_host"
         }.cellSetup({ [unowned self] (cell, row) in
             cell.textField.keyboardType = .URL
@@ -203,8 +200,7 @@ class SettingViewController: FormViewController {
             guard let value = row.value else {
                 return
             }
-            UserDefaults.standard.set(value, forKey: UserDefaultsKey.mastodonHostname.rawValue)
-            UserDefaults.standard.synchronize()
+            UserDefaults.set(value, forKey: .mastodonHostname)
         })
         <<< ButtonRow() {
             $0.title = !isMastodonLogin ? "ログイン" : "ログアウト"
@@ -219,7 +215,7 @@ class SettingViewController: FormViewController {
         }).onCellSelection({ [unowned self] (cell, row) in
             row.deselect()
             if !self.isMastodonLogin {
-                let baseUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)!
+                let baseUrl = UserDefaults.string(forKey: .mastodonHostname)!
                 guard URL(string: baseUrl + "/api/v1/apps") != nil else {
                     self.showMastodonError()
                     return
@@ -247,8 +243,7 @@ class SettingViewController: FormViewController {
                             return
                         }
                         self.isMastodonLogin = true
-                        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isMastodonLogin.rawValue)
-                        UserDefaults.standard.synchronize()
+                        UserDefaults.set(true, forKey: .isMastodonLogin)
                         Analytics.logEvent("tap", parameters: [
                             "type": "action",
                             "button": "mastodon_login"]
@@ -271,8 +266,7 @@ class SettingViewController: FormViewController {
             } else {
                 AuthManager.shared.mastodonLogout()
                 self.isMastodonLogin = false
-                UserDefaults.standard.set(false, forKey: UserDefaultsKey.isMastodonLogin.rawValue)
-                UserDefaults.standard.synchronize()
+                UserDefaults.set(false, forKey: .isMastodonLogin)
                 Analytics.logEvent("tap", parameters: [
                     "type": "action",
                     "button": "mastodon_logout"]
@@ -288,10 +282,9 @@ class SettingViewController: FormViewController {
         })
         <<< SwitchRow() {
             $0.title = "アートワークを添付"
-            $0.value = UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonWithImage.rawValue)
+            $0.value = UserDefaults.bool(forKey: .isMastodonWithImage)
         }.onChange({ (row) in
-            UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isMastodonWithImage.rawValue)
-            UserDefaults.standard.synchronize()
+            UserDefaults.set(row.value!, forKey: .isMastodonWithImage)
             Analytics.logEvent("change", parameters: [
                 "type": "action",
                 "button": "mastodon_with_artwork",
@@ -300,11 +293,10 @@ class SettingViewController: FormViewController {
         })
         <<< SwitchRow() {
             $0.title = "自動トゥート"
-            $0.value = UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonAutoToot.rawValue)
+            $0.value = UserDefaults.bool(forKey: .isMastodonAutoToot)
         }.onChange({ (row) in
-            UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isMastodonAutoToot.rawValue)
-            UserDefaults.standard.synchronize()
-            if !row.value! || UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonShowAutoTweetAlert.rawValue) {
+            UserDefaults.set(row.value!, forKey: .isMastodonAutoToot)
+            if !row.value! || UserDefaults.bool(forKey: .isMastodonShowAutoTweetAlert) {
                 return
             }
             Analytics.logEvent("change", parameters: [
@@ -316,8 +308,7 @@ class SettingViewController: FormViewController {
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             DispatchQueue.main.async {
                 self.present(alert, animated: true) {
-                    UserDefaults.standard.set(true, forKey: UserDefaultsKey.isMastodonShowAutoTweetAlert.rawValue)
-                    UserDefaults.standard.synchronize()
+                    UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
                 }
             }
         })
@@ -361,7 +352,7 @@ class SettingViewController: FormViewController {
         <<< ButtonRow() {
             $0.title = "アプリ内広告削除(有料)"
             $0.tag = "remove_admob"
-            $0.hidden = Condition(booleanLiteral: UserDefaults.standard.bool(forKey: UserDefaultsKey.isPurchasedRemoveAdMob.rawValue))
+            $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isPurchasedRemoveAdMob))
         }.cellUpdate({ (cell, row) in
             cell.textLabel?.textAlignment = .left
             cell.textLabel?.textColor = UIColor.black
@@ -409,7 +400,7 @@ class SettingViewController: FormViewController {
     }
 
     private func setupProducts() {
-        if UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue) && UserDefaults.standard.bool(forKey: UserDefaultsKey.isPurchasedRemoveAdMob.rawValue) {
+        if UserDefaults.bool(forKey: .isAutoTweetPurchase) && UserDefaults.bool(forKey: .isPurchasedRemoveAdMob) {
             return
         }
         PaymentManager.shared.delegate = self
@@ -436,8 +427,7 @@ class SettingViewController: FormViewController {
     }
 
     private func completePuchaseAutoTweet() {
-        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue)
-        UserDefaults.standard.synchronize()
+        UserDefaults.set(true, forKey: .isAutoTweetPurchase)
         DispatchQueue.main.async { [weak self] in
             SVProgressHUD.dismiss()
             guard let wself = self else { return }
@@ -452,8 +442,7 @@ class SettingViewController: FormViewController {
     }
 
     private func completePurchaseRemoveAdmob() {
-        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isPurchasedRemoveAdMob.rawValue)
-        UserDefaults.standard.synchronize()
+        UserDefaults.set(true, forKey: .isPurchasedRemoveAdMob)
         DispatchQueue.main.async { [weak self] in
             SVProgressHUD.dismiss()
             guard let wself = self, let purchaseButtonRow: ButtonRow = wself.form.rowBy(tag: "remove_admob") else { return }

@@ -24,12 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         UIApplication.shared.beginReceivingRemoteControlEvents()
         loadEnvironment()
-        let env = ProcessInfo.processInfo.environment
-        Twitter.sharedInstance().start(withConsumerKey: env[EnvironmentKey.twitterConsumerKey.rawValue]!,
-                                       consumerSecret: env[EnvironmentKey.twitterConsumerSecret.rawValue]!)
+        Twitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
+                                       consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
         Fabric.with([Crashlytics.self])
         FirebaseApp.configure()
-        GADMobileAds.configure(withApplicationID: env[EnvironmentKey.firebaseAdmobAppId.rawValue]!)
+        GADMobileAds.configure(withApplicationID: ProcessInfo.processInfo.get(forKey: .firebaseAdmobAppId))
         PaymentManager.shared.startTransactionObserve()
         #if DEBUG
         AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(false)
@@ -70,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AudioManager.shared.remoteControlReceived(with: event)
     }
 
-    fileprivate func loadEnvironment() {
+    private func loadEnvironment() {
         guard let path = Bundle.main.path(forResource: ".env", ofType: nil) else {
             fatalError("Not found: 'Resources/.env'.\nPlease create .env file reference from .env.sample")
         }
