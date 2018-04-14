@@ -70,6 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func loadEnvironment() {
+        if ProcessInfo.processInfo.environment["BITRISE_SOURCE_DIR"] != nil { return }
         guard let path = Bundle.main.path(forResource: ".env", ofType: nil) else {
             fatalError("Not found: 'Resources/.env'.\nPlease create .env file reference from .env.sample")
         }
