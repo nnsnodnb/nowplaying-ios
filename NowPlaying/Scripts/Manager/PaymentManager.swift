@@ -106,19 +106,14 @@ extension PaymentManager: SKPaymentTransactionObserver {
         for transaction in transactions {
             switch (transaction.transactionState) {
             case .purchased: // 購入処理完了
-                print("購入処理完了")
                 complete(transaction: transaction)
             case .failed: // 購入処理失敗
-                print("購入処理失敗")
                 failed(transaction: transaction)
             case .restored: // リストア
-                print("リストア")
                 complete(transaction: transaction)
             case .deferred: // 保留中
-                print("保留中")
                 break
             case .purchasing: // 購入処理開始
-                print("購入処理開始")
                 UserDefaults.standard.set(true, forKey: "IsRemainTransaction")
                 UserDefaults.standard.synchronize()
             }
