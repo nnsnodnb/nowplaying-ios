@@ -25,6 +25,7 @@ class SettingViewController: FormViewController {
     private var isMastodonLogin = false
     private var productRequest: SKProductsRequest?
     private var products = [SKProduct]()
+    private var purchasingProduct: SKProduct?
 
     // MARK: - Life cycle
 
@@ -71,7 +72,7 @@ class SettingViewController: FormViewController {
 
     private func setupIsLogin() {
         isTwitterLogin = Twitter.sharedInstance().sessionStore.session() != nil
-        isMastodonLogin = UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonLogin.rawValue)
+        isMastodonLogin = UserDefaults.bool(forKey: .isMastodonLogin)
     }
 
     private func twitterForm() {
@@ -119,10 +120,9 @@ class SettingViewController: FormViewController {
         })
         <<< SwitchRow() {
             $0.title = "アートワークを添付"
-            $0.value = UserDefaults.standard.bool(forKey: UserDefaultsKey.isWithImage.rawValue)
+            $0.value = UserDefaults.bool(forKey: .isWithImage)
         }.onChange({ (row) in
-            UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isWithImage.rawValue)
-            UserDefaults.standard.synchronize()
+            UserDefaults.set(row.value!, forKey: .isWithImage)
             Analytics.logEvent("change", parameters: [
                 "type": "action",
                 "button": "twitter_with_artwork",
@@ -132,7 +132,7 @@ class SettingViewController: FormViewController {
         <<< ButtonRow() {
             $0.title = "自動ツイートを購入"
             $0.tag = "auto_tweet_purchase"
-            $0.hidden = Condition(booleanLiteral: UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue))
+            $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isAutoTweetPurchase))
         }.cellUpdate({ (cell, row) in
             cell.textLabel?.textAlignment = .left
             cell.textLabel?.textColor = UIColor.black
@@ -160,28 +160,26 @@ class SettingViewController: FormViewController {
         })
         <<< SwitchRow() {
             $0.title = "自動ツイート"
-            $0.value = UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweet.rawValue)
+            $0.value = UserDefaults.bool(forKey: .isAutoTweet)
             $0.tag = "auto_tweet_switch"
             $0.hidden = Condition.function(["auto_tweet_purchase"]) { (form) -> Bool in
                 return !form.rowBy(tag: "auto_tweet_purchase")!.isHidden
             }
         }.onChange({ (row) in
-            UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isAutoTweet.rawValue)
-            UserDefaults.standard.synchronize()
+            UserDefaults.set(row.value!, forKey: .isAutoTweet)
             Analytics.logEvent("change", parameters: [
                 "type": "action",
                 "button": "twitter_auto_tweet",
                 "value": row.value!]
             )
-            if !row.value! || UserDefaults.standard.bool(forKey: UserDefaultsKey.isShowAutoTweetAlert.rawValue) {
+            if !row.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) {
                 return
             }
             let alert = UIAlertController(title: nil, message: "起動中のみ自動的にツイートされます", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             DispatchQueue.main.async {
                 self.present(alert, animated: true) {
-                    UserDefaults.standard.set(true, forKey: UserDefaultsKey.isShowAutoTweetAlert.rawValue)
-                    UserDefaults.standard.synchronize()
+                    UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
                 }
             }
         })
@@ -193,7 +191,7 @@ class SettingViewController: FormViewController {
         <<< TextRow() {
             $0.title = "ホストネーム"
             $0.placeholder = "https://mstdn.jp"
-            $0.value = UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)
+            $0.value = UserDefaults.string(forKey: .mastodonHostname)
             $0.tag = "mastodon_host"
         }.cellSetup({ [unowned self] (cell, row) in
             cell.textField.keyboardType = .URL
@@ -202,8 +200,7 @@ class SettingViewController: FormViewController {
             guard let value = row.value else {
                 return
             }
-            UserDefaults.standard.set(value, forKey: UserDefaultsKey.mastodonHostname.rawValue)
-            UserDefaults.standard.synchronize()
+            UserDefaults.set(value, forKey: .mastodonHostname)
         })
         <<< ButtonRow() {
             $0.title = !isMastodonLogin ? "ログイン" : "ログアウト"
@@ -218,7 +215,7 @@ class SettingViewController: FormViewController {
         }).onCellSelection({ [unowned self] (cell, row) in
             row.deselect()
             if !self.isMastodonLogin {
-                let baseUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)!
+                let baseUrl = UserDefaults.string(forKey: .mastodonHostname)!
                 guard URL(string: baseUrl + "/api/v1/apps") != nil else {
                     self.showMastodonError()
                     return
@@ -246,8 +243,7 @@ class SettingViewController: FormViewController {
                             return
                         }
                         self.isMastodonLogin = true
-                        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isMastodonLogin.rawValue)
-                        UserDefaults.standard.synchronize()
+                        UserDefaults.set(true, forKey: .isMastodonLogin)
                         Analytics.logEvent("tap", parameters: [
                             "type": "action",
                             "button": "mastodon_login"]
@@ -270,8 +266,7 @@ class SettingViewController: FormViewController {
             } else {
                 AuthManager.shared.mastodonLogout()
                 self.isMastodonLogin = false
-                UserDefaults.standard.set(false, forKey: UserDefaultsKey.isMastodonLogin.rawValue)
-                UserDefaults.standard.synchronize()
+                UserDefaults.set(false, forKey: .isMastodonLogin)
                 Analytics.logEvent("tap", parameters: [
                     "type": "action",
                     "button": "mastodon_logout"]
@@ -287,10 +282,9 @@ class SettingViewController: FormViewController {
         })
         <<< SwitchRow() {
             $0.title = "アートワークを添付"
-            $0.value = UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonWithImage.rawValue)
+            $0.value = UserDefaults.bool(forKey: .isMastodonWithImage)
         }.onChange({ (row) in
-            UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isMastodonWithImage.rawValue)
-            UserDefaults.standard.synchronize()
+            UserDefaults.set(row.value!, forKey: .isMastodonWithImage)
             Analytics.logEvent("change", parameters: [
                 "type": "action",
                 "button": "mastodon_with_artwork",
@@ -299,11 +293,10 @@ class SettingViewController: FormViewController {
         })
         <<< SwitchRow() {
             $0.title = "自動トゥート"
-            $0.value = UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonAutoToot.rawValue)
+            $0.value = UserDefaults.bool(forKey: .isMastodonAutoToot)
         }.onChange({ (row) in
-            UserDefaults.standard.set(row.value!, forKey: UserDefaultsKey.isMastodonAutoToot.rawValue)
-            UserDefaults.standard.synchronize()
-            if !row.value! || UserDefaults.standard.bool(forKey: UserDefaultsKey.isMastodonShowAutoTweetAlert.rawValue) {
+            UserDefaults.set(row.value!, forKey: .isMastodonAutoToot)
+            if !row.value! || UserDefaults.bool(forKey: .isMastodonShowAutoTweetAlert) {
                 return
             }
             Analytics.logEvent("change", parameters: [
@@ -315,8 +308,7 @@ class SettingViewController: FormViewController {
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             DispatchQueue.main.async {
                 self.present(alert, animated: true) {
-                    UserDefaults.standard.set(true, forKey: UserDefaultsKey.isMastodonShowAutoTweetAlert.rawValue)
-                    UserDefaults.standard.synchronize()
+                    UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
                 }
             }
         })
@@ -358,6 +350,34 @@ class SettingViewController: FormViewController {
             }
         })
         <<< ButtonRow() {
+            $0.title = "アプリ内広告削除(有料)"
+            $0.tag = "remove_admob"
+            $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isPurchasedRemoveAdMob))
+        }.cellUpdate({ (cell, row) in
+            cell.textLabel?.textAlignment = .left
+            cell.textLabel?.textColor = UIColor.black
+            cell.accessoryType = .disclosureIndicator
+        }).onCellSelection({ (cell, row) in
+            if JailbreakChecker.isJailbreak {
+                let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
+                DispatchQueue.main.async { [unowned self] in
+                    self.present(alert, animated: true, completion: nil)
+                }
+                return
+            }
+            if self.isProcess {
+                SVProgressHUD.showInfo(withStatus: "処理中です")
+                return
+            }
+            guard let product = self.products.last else {
+                SVProgressHUD.showInfo(withStatus: "少し時間をおいて試してみてください")
+                return
+            }
+            self.isProcess = true
+            self.showSelectPurchaseType(product: product)
+        })
+        <<< ButtonRow() {
             $0.title = "レビューする"
         }.cellUpdate({ (cell, row) in
             cell.textLabel?.textAlignment = .left
@@ -380,16 +400,17 @@ class SettingViewController: FormViewController {
     }
 
     private func setupProducts() {
-        if UserDefaults.standard.bool(forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue) {
+        if UserDefaults.bool(forKey: .isAutoTweetPurchase) && UserDefaults.bool(forKey: .isPurchasedRemoveAdMob) {
             return
         }
         PaymentManager.shared.delegate = self
-        let productIds = Set(arrayLiteral: "moe.nnsnodnb.NowPlaying.autoTweet")
+        let productIds = Set(arrayLiteral: "moe.nnsnodnb.NowPlaying.autoTweet", "moe.nnsnodnb.NowPlaying.hideAdMob")
         SVProgressHUD.show()
         productRequest = PaymentManager.shared.startProductRequest(productIds)
     }
 
     private func showSelectPurchaseType(product: SKProduct) {
+        purchasingProduct = product
         let alert = UIAlertController(title: "復元しますか？購入しますか？", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "復元", style: .default) { (_) in
             PaymentManager.shared.startRestore()
@@ -405,6 +426,33 @@ class SettingViewController: FormViewController {
         present(alert, animated: true, completion: nil)
     }
 
+    private func completePuchaseAutoTweet() {
+        UserDefaults.set(true, forKey: .isAutoTweetPurchase)
+        DispatchQueue.main.async { [weak self] in
+            SVProgressHUD.dismiss()
+            guard let wself = self else { return }
+            wself.isProcess = false
+            wself.purchasingProduct = nil
+            let purchaseButtonRow: ButtonRow = wself.form.rowBy(tag: "auto_tweet_purchase")!
+            let autoTweetSwitchRow: SwitchRow = wself.form.rowBy(tag: "auto_tweet_switch")!
+            purchaseButtonRow.hidden = Condition(booleanLiteral: true)
+            purchaseButtonRow.evaluateHidden()
+            autoTweetSwitchRow.evaluateHidden()
+        }
+    }
+
+    private func completePurchaseRemoveAdmob() {
+        UserDefaults.set(true, forKey: .isPurchasedRemoveAdMob)
+        DispatchQueue.main.async { [weak self] in
+            SVProgressHUD.dismiss()
+            guard let wself = self, let purchaseButtonRow: ButtonRow = wself.form.rowBy(tag: "remove_admob") else { return }
+            wself.isProcess = false
+            wself.purchasingProduct = nil
+            purchaseButtonRow.hidden = Condition(booleanLiteral: true)
+            purchaseButtonRow.evaluateHidden()
+        }
+    }
+
     // MARK: - UIBarButtonItem target
 
     @objc private func onTapCloseButton(_ sender: Any) {
@@ -417,7 +465,11 @@ class SettingViewController: FormViewController {
 extension SettingViewController: PaymentManagerProtocol {
 
     func finish(request: SKProductsRequest, products: [SKProduct]) {
-        self.products = products
+        if products.first!.productIdentifier == "moe.nnsnodnb.NowPlaying.autoTweet" {
+            self.products = [products.first!, products.last!]
+        } else {
+            self.products = [products.last!, products.first!]
+        }
         SVProgressHUD.dismiss()
     }
 
@@ -438,14 +490,13 @@ extension SettingViewController: PaymentManagerProtocol {
                     "receipt-data": receiptData.base64EncodedString()
                 ]
                 let requestData = try JSONSerialization.data(withJSONObject: requestContents, options: [])
-                let verifyUrl: String!
+                let verifyUrl: URL
                 #if DEBUG
-                    verifyUrl = "https://sandbox.itunes.apple.com/verifyReceipt"
+                    verifyUrl = URL(string: "https://sandbox.itunes.apple.com/verifyReceipt")!
                 #else
-                    verifyUrl = "https://buy.itunes.apple.com/verifyReceipt"
+                    verifyUrl = URL(string: "https://buy.itunes.apple.com/verifyReceipt")!
                 #endif
-                let storeUrl = URL(string: verifyUrl)!
-                var storeRequest = URLRequest(url: storeUrl)
+                var storeRequest = URLRequest(url: verifyUrl)
                 storeRequest.httpMethod = "POST"
                 storeRequest.httpBody = requestData
 
@@ -455,21 +506,17 @@ extension SettingViewController: PaymentManagerProtocol {
                         return
                     }
                     do {
-                        guard let jsonResponse = try JSONSerialization.jsonObject(with: data,
-                                                                                  options: JSONSerialization.ReadingOptions(rawValue: JSONSerialization.ReadingOptions.RawValue(0))) as? [String: Any],
+                        guard let jsonResponse = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
                             let status = jsonResponse["status"] as? Int,
-                            status == 0 else { return }
-                        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAutoTweetPurchase.rawValue)
-                        UserDefaults.standard.synchronize()
-                        DispatchQueue.main.async { [weak self] in
-                            SVProgressHUD.dismiss()
-                            guard let wself = self else { return }
-                            wself.isProcess = false
-                            let purchaseButtonRow: ButtonRow = wself.form.rowBy(tag: "auto_tweet_purchase")!
-                            let autoTweetSwitchRow: SwitchRow = wself.form.rowBy(tag: "auto_tweet_switch")!
-                            purchaseButtonRow.hidden = Condition(booleanLiteral: true)
-                            purchaseButtonRow.evaluateHidden()
-                            autoTweetSwitchRow.evaluateHidden()
+                            let wself = self,
+                            let purchasingProduct = wself.purchasingProduct,
+                            status == 0 else {
+                                return
+                        }
+                        if purchasingProduct.productIdentifier == "moe.nnsnodnb.NowPlaying.autoTweet" {
+                            wself.completePuchaseAutoTweet()
+                        } else {
+                            wself.completePurchaseRemoveAdmob()
                         }
                     } catch {
                         SVProgressHUD.showError(withStatus: "検証に失敗しました")
@@ -477,6 +524,7 @@ extension SettingViewController: PaymentManagerProtocol {
                 }
                 task.resume()
             } catch {
+                self.purchasingProduct = nil
                 self.isProcess = false
                 fatalError()
             }
@@ -484,18 +532,31 @@ extension SettingViewController: PaymentManagerProtocol {
     }
 
     func finishPayment(failed paymentTransaction: SKPaymentTransaction) {
+        purchasingProduct = nil
+        isProcess = false
         DispatchQueue.main.async {
             SVProgressHUD.showError(withStatus: "購入に失敗しました")
         }
     }
 
     func finishRestore(queue: SKPaymentQueue) {
-        SVProgressHUD.showInfo(withStatus: "復元に成功しました")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            SVProgressHUD.dismiss {
+                SVProgressHUD.showInfo(withStatus: "復元に成功しました")
+            }
+        }
+        if purchasingProduct!.productIdentifier == "moe.nnsnodnb.NowPlaying.autoTweet" {
+            completePuchaseAutoTweet()
+        } else {
+            completePurchaseRemoveAdmob()
+        }
         isProcess = false
+        purchasingProduct = nil
     }
 
     func finishRestore(queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError: Error) {
         isProcess = false
+        purchasingProduct = nil
         DispatchQueue.main.async {
             SVProgressHUD.showError(withStatus: "復元に失敗しました")
         }

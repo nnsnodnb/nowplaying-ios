@@ -44,6 +44,8 @@
 		CF8C85E01F6F1B610051A0C7 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85DF1F6F1B610051A0C7 /* .env */; };
 		CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85E11F6F1B6F0051A0C7 /* .env.sample */; };
 		CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */; };
+		CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */; };
+		CF8E48802081EC75003A5E70 /* ProcessInfo+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */; };
 		CF918D071F7075110005B686 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF918D061F7075110005B686 /* Settings.bundle */; };
 		CFB553821FD17163000618FF /* MastodonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB553811FD17163000618FF /* MastodonClient.swift */; };
 /* End PBXBuildFile section */
@@ -117,6 +119,8 @@
 		CF8C85DF1F6F1B610051A0C7 /* .env */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env; sourceTree = "<group>"; };
 		CF8C85E11F6F1B6F0051A0C7 /* .env.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env.sample; sourceTree = "<group>"; };
 		CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthManager.swift; path = Manager/AuthManager.swift; sourceTree = "<group>"; };
+		CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Key.swift"; sourceTree = "<group>"; };
+		CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+Key.swift"; sourceTree = "<group>"; };
 		CF918D061F7075110005B686 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		CFB553811FD17163000618FF /* MastodonClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonClient.swift; path = Manager/MastodonClient.swift; sourceTree = "<group>"; };
 		F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
@@ -271,6 +275,7 @@
 		CF615B021F56E75900315019 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				CF8E487C2081E851003A5E70 /* Extension */,
 				CF0FA21D206D506F00647317 /* Protocol */,
 				CF1AAFE61F75F28400384000 /* Common */,
 				CF8C85C81F6EB3AE0051A0C7 /* Manager */,
@@ -352,6 +357,15 @@
 				CF0FA21B206D4D5A00647317 /* PaymentManager.swift */,
 			);
 			name = Manager;
+			sourceTree = "<group>";
+		};
+		CF8E487C2081E851003A5E70 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */,
+				CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		EC7B05E3D377DC1195B61730 /* Pods */ = {
@@ -603,7 +617,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFileSource=\"${SRCROOT}/${INFOPLIST_FILE}\"\ninfoPlistFileDestination=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\n. NowPlaying/Resources/.env\n\n$plistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 twitterkit-${TWITTER_CONSUMER_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :Fabric:APIKey ${FABRIC_API_KEY}\" \"${infoPlistFileDestination}\"";
+			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFileSource=\"${SRCROOT}/${INFOPLIST_FILE}\"\ninfoPlistFileDestination=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\nif [ \"${BITRISE_SOURCE_DIR}\" == \"\" ]; then\n. NowPlaying/Resources/.env\nfi\n\n$plistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 twitterkit-${TWITTER_CONSUMER_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :Fabric:APIKey ${FABRIC_API_KEY}\" \"${infoPlistFileDestination}\"";
 		};
 		DC4488FCE3B57E00C3DB2FFC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -635,7 +649,9 @@
 				CF8C85CA1F6EB3CF0051A0C7 /* AudioManager.swift in Sources */,
 				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
+				CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
+				CF8E48802081EC75003A5E70 /* ProcessInfo+Key.swift in Sources */,
 				CF0FA21F206D508900647317 /* PaymentManagerProtocol.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */,

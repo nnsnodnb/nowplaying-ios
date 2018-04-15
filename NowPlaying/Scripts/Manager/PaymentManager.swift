@@ -11,10 +11,6 @@ import StoreKit
 
 class PaymentManager: NSObject {
 
-    deinit {
-        print(#function)
-    }
-
     class var shared: PaymentManager {
         struct Static {
             static let shared = PaymentManager()
@@ -30,7 +26,7 @@ class PaymentManager: NSObject {
 
     // トランザクションが残っているか
     static var isRemainTransaction: Bool {
-        return UserDefaults.standard.bool(forKey: "IsRemainTransaction")
+        return UserDefaults.bool(forKey: .isRemainTransaction)
     }
 
     weak var delegate: PaymentManagerProtocol?
@@ -106,28 +102,21 @@ extension PaymentManager: SKPaymentTransactionObserver {
         for transaction in transactions {
             switch (transaction.transactionState) {
             case .purchased: // 購入処理完了
-                print("購入処理完了")
                 complete(transaction: transaction)
             case .failed: // 購入処理失敗
-                print("購入処理失敗")
                 failed(transaction: transaction)
             case .restored: // リストア
-                print("リストア")
                 complete(transaction: transaction)
             case .deferred: // 保留中
-                print("保留中")
                 break
             case .purchasing: // 購入処理開始
-                print("購入処理開始")
-                UserDefaults.standard.set(true, forKey: "IsRemainTransaction")
-                UserDefaults.standard.synchronize()
+                UserDefaults.set(true, forKey: .isRemainTransaction)
             }
         }
     }
 
     func paymentQueue(_ queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]) {
-        UserDefaults.standard.set(false, forKey: "IsRemainTransaction")
-        UserDefaults.standard.synchronize()
+        UserDefaults.set(false, forKey: .isRemainTransaction)
     }
 
     func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {

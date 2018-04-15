@@ -15,7 +15,7 @@ class MastodonClient: NSObject {
     static let shared = MastodonClient()
 
     private let keychain = Keychain(service: keychainServiceKey)
-    private let baseUrl = UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue) ?? ""
+    private let baseUrl = UserDefaults.string(forKey: .mastodonHostname) ?? ""
 
     func register(handler: @escaping (([String: Any]?, Error?) -> ())) {
         // 重複登録防止
@@ -39,7 +39,7 @@ class MastodonClient: NSObject {
                     handler(nil, response.error)
                     return
                 }
-                let value = response.result.value as! Dictionary<String, Any>
+                let value = response.result.value as! Parameters
                 handler(value, nil)
             }
         } catch {}

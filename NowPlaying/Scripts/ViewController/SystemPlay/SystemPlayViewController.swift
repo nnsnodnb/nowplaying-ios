@@ -11,8 +11,8 @@ import MediaPlayer
 
 class SystemPlayViewController: UIViewController {
 
-    fileprivate let playViewController = PlayViewController()
-    fileprivate let player = MPMusicPlayerController.systemMusicPlayer
+    private let playViewController = PlayViewController()
+    private let player = MPMusicPlayerController.systemMusicPlayer
 
     // MARK: - Life cycle
 
@@ -54,7 +54,7 @@ class SystemPlayViewController: UIViewController {
 
     // MARK: - Private method
 
-    fileprivate func setupAccessMusicLibrary() {
+    private func setupAccessMusicLibrary() {
         MPMediaLibrary.default().beginGeneratingLibraryChangeNotifications()
         MPMediaLibrary.requestAuthorization { [unowned self] (status) in
             switch status {
@@ -70,23 +70,23 @@ class SystemPlayViewController: UIViewController {
         }
     }
 
-    fileprivate func setupNotification() {
+    private func setupNotification() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(musicNotification(_:)),
-            name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
+            name: .MPMusicPlayerControllerNowPlayingItemDidChange,
             object: nil
         )
     }
 
-    fileprivate func setupPlayViewControllerItem(isNotification: Bool=false) {
+    private func setupPlayViewControllerItem(isNotification: Bool=false) {
         if let item = player.nowPlayingItem {
             playViewController.song = item
             playViewController.isNotification = isNotification
         }
     }
 
-    fileprivate func showRequestDeniedAlert() {
+    private func showRequestDeniedAlert() {
         let alert = UIAlertController(title: "アプリを使用するには\n許可が必要です", message: "設定しますか？", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "設定画面へ", style: .default, handler: { _ in

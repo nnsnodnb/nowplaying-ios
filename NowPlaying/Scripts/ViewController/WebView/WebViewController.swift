@@ -37,7 +37,7 @@ class WebViewController: UIViewController {
 
     // MARK: - Private method
 
-    fileprivate func setupNavibar() {
+    private func setupNavibar() {
         guard navigationController != nil else {
             return
         }
@@ -46,7 +46,7 @@ class WebViewController: UIViewController {
         navigationItem.leftBarButtonItem = leftBarButtonItem
     }
 
-    fileprivate func getToken(_ authorizationCode: String) {
+    private func getToken(_ authorizationCode: String) {
         SVProgressHUD.show()
         do {
             let clientID = try keychain.get(KeychainKey.mastodonClientID.rawValue) ?? ""
@@ -57,7 +57,7 @@ class WebViewController: UIViewController {
                                                "client_id": clientID,
                                                "client_secret": clientSecret,
                                                "code": authorizationCode]
-            MastodonClient.shared.request(UserDefaults.standard.string(forKey: UserDefaultsKey.mastodonHostname.rawValue)! + "/oauth/token", method: .post, parameter: parameter) { [unowned self] (response) in
+            MastodonClient.shared.request(UserDefaults.string(forKey: .mastodonHostname)! + "/oauth/token", method: .post, parameter: parameter) { [unowned self] (response) in
                 guard response.result.isSuccess, let value = response.result.value as? [String: Any] else {
                     self.handler(nil, response.result.error)
                     SVProgressHUD.dismiss()
@@ -96,8 +96,7 @@ extension WebViewController : UIWebViewDelegate {
                 return true
             }
             let authorizationCode = path.components(separatedBy: "/oauth/authorize/").last!
-            UserDefaults.standard.set(authorizationCode, forKey: "authorization_code")
-            UserDefaults.standard.synchronize()
+            UserDefaults.set(authorizationCode, forKey: .mastodonAuthorizationCode)
             gotToken = true
             getToken(authorizationCode)
             return false
