@@ -129,7 +129,11 @@ class PlayViewController: UIViewController {
     }
 
     private func autoTweet() {
-        guard UserDefaults.bool(forKey: .isAutoTweet) || Twitter.sharedInstance().sessionStore.session() != nil else { return }
+        if !UserDefaults.bool(forKey: .isAutoTweetPurchase) ||
+            !UserDefaults.bool(forKey: .isAutoTweet) ||
+            Twitter.sharedInstance().sessionStore.session() == nil {
+            return
+        }
         SVProgressHUD.show()
         let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
         if let artwork = song?.artwork, UserDefaults.bool(forKey: .isWithImage) {
