@@ -36,6 +36,17 @@
 		CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615AED1F56AB3B00315019 /* AppDelegate.swift */; };
 		CF615B131F56F56100315019 /* Album.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615B121F56F56100315019 /* Album.storyboard */; };
 		CF6334891F5AB6EB00D80EB8 /* ExtensionCollection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */; };
+		CF65C38120A0971500E95640 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37620A0971400E95640 /* FirebaseInstanceID.framework */; };
+		CF65C38220A0971500E95640 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37720A0971400E95640 /* GoogleToolboxForMac.framework */; };
+		CF65C38320A0971500E95640 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37820A0971400E95640 /* FirebaseCoreDiagnostics.framework */; };
+		CF65C38420A0971500E95640 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37920A0971400E95640 /* GoogleMobileAds.framework */; };
+		CF65C38520A0971500E95640 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37A20A0971500E95640 /* nanopb.framework */; };
+		CF65C38620A0971500E95640 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37B20A0971500E95640 /* Firebase.framework */; };
+		CF65C38720A0971500E95640 /* FirebaseAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37C20A0971500E95640 /* FirebaseAuth.framework */; };
+		CF65C38820A0971500E95640 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37D20A0971500E95640 /* FirebaseCore.framework */; };
+		CF65C38920A0971500E95640 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37E20A0971500E95640 /* FirebaseAnalytics.framework */; };
+		CF65C38A20A0971500E95640 /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37F20A0971500E95640 /* FirebaseNanoPB.framework */; };
+		CF65C38B20A0971500E95640 /* GTMSessionFetcher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C38020A0971500E95640 /* GTMSessionFetcher.framework */; };
 		CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */; };
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
@@ -108,13 +119,23 @@
 		CF615B061F56E89100315019 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CF615B121F56F56100315019 /* Album.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Album.storyboard; path = Album/Album.storyboard; sourceTree = "<group>"; };
 		CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExtensionCollection.framework; path = Carthage/Build/iOS/ExtensionCollection.framework; sourceTree = "<group>"; };
+		CF65C37620A0971400E95640 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstanceID.framework; path = Carthage/Build/iOS/FirebaseInstanceID.framework; sourceTree = "<group>"; };
+		CF65C37720A0971400E95640 /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleToolboxForMac.framework; path = Carthage/Build/iOS/GoogleToolboxForMac.framework; sourceTree = "<group>"; };
+		CF65C37820A0971400E95640 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCoreDiagnostics.framework; path = Carthage/Build/iOS/FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
+		CF65C37920A0971400E95640 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = Carthage/Build/iOS/GoogleMobileAds.framework; sourceTree = "<group>"; };
+		CF65C37A20A0971500E95640 /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = nanopb.framework; path = Carthage/Build/iOS/nanopb.framework; sourceTree = "<group>"; };
+		CF65C37B20A0971500E95640 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = Carthage/Build/iOS/Firebase.framework; sourceTree = "<group>"; };
+		CF65C37C20A0971500E95640 /* FirebaseAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAuth.framework; path = Carthage/Build/iOS/FirebaseAuth.framework; sourceTree = "<group>"; };
+		CF65C37D20A0971500E95640 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Carthage/Build/iOS/FirebaseCore.framework; sourceTree = "<group>"; };
+		CF65C37E20A0971500E95640 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAnalytics.framework; path = Carthage/Build/iOS/FirebaseAnalytics.framework; sourceTree = "<group>"; };
+		CF65C37F20A0971500E95640 /* FirebaseNanoPB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseNanoPB.framework; path = Carthage/Build/iOS/FirebaseNanoPB.framework; sourceTree = "<group>"; };
+		CF65C38020A0971500E95640 /* GTMSessionFetcher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GTMSessionFetcher.framework; path = Carthage/Build/iOS/GTMSessionFetcher.framework; sourceTree = "<group>"; };
 		CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		CF6FFF24207E4CE4003FD38D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		CF6FFF26207E4CE4003FD38D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF8C85C91F6EB3CF0051A0C7 /* AudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioManager.swift; path = Manager/AudioManager.swift; sourceTree = "<group>"; };
-		CF8C85CB1F6EFBE30051A0C7 /* KeychainSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainSwift.framework; path = Carthage/Build/iOS/KeychainSwift.framework; sourceTree = "<group>"; };
 		CF8C85DE1F6F1AC20051A0C7 /* NowPlaying.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NowPlaying.entitlements; sourceTree = "<group>"; };
 		CF8C85DF1F6F1B610051A0C7 /* .env */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env; sourceTree = "<group>"; };
 		CF8C85E11F6F1B6F0051A0C7 /* .env.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env.sample; sourceTree = "<group>"; };
@@ -133,11 +154,22 @@
 			files = (
 				CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */,
 				CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */,
+				CF65C38920A0971500E95640 /* FirebaseAnalytics.framework in Frameworks */,
+				CF65C38420A0971500E95640 /* GoogleMobileAds.framework in Frameworks */,
+				CF65C38B20A0971500E95640 /* GTMSessionFetcher.framework in Frameworks */,
 				CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */,
 				CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */,
+				CF65C38720A0971500E95640 /* FirebaseAuth.framework in Frameworks */,
 				CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */,
+				CF65C38220A0971500E95640 /* GoogleToolboxForMac.framework in Frameworks */,
 				CF6334891F5AB6EB00D80EB8 /* ExtensionCollection.framework in Frameworks */,
 				CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */,
+				CF65C38820A0971500E95640 /* FirebaseCore.framework in Frameworks */,
+				CF65C38120A0971500E95640 /* FirebaseInstanceID.framework in Frameworks */,
+				CF65C38620A0971500E95640 /* Firebase.framework in Frameworks */,
+				CF65C38A20A0971500E95640 /* FirebaseNanoPB.framework in Frameworks */,
+				CF65C38520A0971500E95640 /* nanopb.framework in Frameworks */,
+				CF65C38320A0971500E95640 /* FirebaseCoreDiagnostics.framework in Frameworks */,
 				CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */,
 				584E54B8BE9943C10025A548 /* Pods_NowPlaying.framework in Frameworks */,
 			);
@@ -262,11 +294,21 @@
 				CF28A8331FD180AC00E45F12 /* Alamofire.framework */,
 				CF4D73D11F791D4300E72FBF /* StoreKit.framework */,
 				CF1AAFE41F75459B00384000 /* Eureka.framework */,
-				CF8C85CB1F6EFBE30051A0C7 /* KeychainSwift.framework */,
 				CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */,
 				CF615B061F56E89100315019 /* AVFoundation.framework */,
 				CF615B001F56B04E00315019 /* MediaPlayer.framework */,
 				4B230B4E800D2C82BD7BC8FF /* Pods_NowPlaying.framework */,
+				CF65C37B20A0971500E95640 /* Firebase.framework */,
+				CF65C37E20A0971500E95640 /* FirebaseAnalytics.framework */,
+				CF65C37C20A0971500E95640 /* FirebaseAuth.framework */,
+				CF65C37D20A0971500E95640 /* FirebaseCore.framework */,
+				CF65C37820A0971400E95640 /* FirebaseCoreDiagnostics.framework */,
+				CF65C37620A0971400E95640 /* FirebaseInstanceID.framework */,
+				CF65C37F20A0971500E95640 /* FirebaseNanoPB.framework */,
+				CF65C37920A0971400E95640 /* GoogleMobileAds.framework */,
+				CF65C37720A0971400E95640 /* GoogleToolboxForMac.framework */,
+				CF65C38020A0971500E95640 /* GTMSessionFetcher.framework */,
+				CF65C37A20A0971500E95640 /* nanopb.framework */,
 				CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
@@ -527,17 +569,11 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -9,8 +9,5 @@ target 'NowPlaying' do
   pod 'SVProgressHUD'
   pod 'Fabric'
   pod 'Crashlytics'
-  pod 'Firebase/Core'
-  pod 'Firebase/Auth'
-  pod 'Firebase/AdMob'
 
 end

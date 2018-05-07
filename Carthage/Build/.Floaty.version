@@ -1,9 +1,9 @@
 {
-  "commitish" : "4.0.0",
+  "commitish" : "4.0.1",
   "iOS" : [
     {
       "name" : "Floaty",
-      "hash" : "98a590f5a081b1e43c07d27bb50bee819fb3cfa625ba2cb3eb5b7e05d98d1771"
+      "hash" : "39bf947b066f49d6250413d16a43669b4aebb162c7dbe41ac24e2c755db0d348"
     }
   ]
 }
