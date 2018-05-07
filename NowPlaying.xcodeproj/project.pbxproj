@@ -48,6 +48,8 @@
 		CF65C38A20A0971500E95640 /* FirebaseNanoPB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37F20A0971500E95640 /* FirebaseNanoPB.framework */; };
 		CF65C38B20A0971500E95640 /* GTMSessionFetcher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C38020A0971500E95640 /* GTMSessionFetcher.framework */; };
 		CF65C38D20A0983400E95640 /* SVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C38C20A0983400E95640 /* SVProgressHUD.framework */; };
+		CF65C3A320A09F3F00E95640 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C3A120A09F3F00E95640 /* Crashlytics.framework */; };
+		CF65C3A420A09F3F00E95640 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C3A220A09F3F00E95640 /* Fabric.framework */; };
 		CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */; };
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
@@ -131,6 +133,8 @@
 		CF65C37F20A0971500E95640 /* FirebaseNanoPB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseNanoPB.framework; path = Carthage/Build/iOS/FirebaseNanoPB.framework; sourceTree = "<group>"; };
 		CF65C38020A0971500E95640 /* GTMSessionFetcher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GTMSessionFetcher.framework; path = Carthage/Build/iOS/GTMSessionFetcher.framework; sourceTree = "<group>"; };
 		CF65C38C20A0983400E95640 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = Carthage/Build/iOS/SVProgressHUD.framework; sourceTree = "<group>"; };
+		CF65C3A120A09F3F00E95640 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Carthage/Build/iOS/Crashlytics.framework; sourceTree = "<group>"; };
+		CF65C3A220A09F3F00E95640 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Carthage/Build/iOS/Fabric.framework; sourceTree = "<group>"; };
 		CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -153,6 +157,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF65C3A320A09F3F00E95640 /* Crashlytics.framework in Frameworks */,
+				CF65C3A420A09F3F00E95640 /* Fabric.framework in Frameworks */,
 				CF65C38D20A0983400E95640 /* SVProgressHUD.framework in Frameworks */,
 				CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */,
 				CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */,
@@ -290,6 +296,8 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF65C3A120A09F3F00E95640 /* Crashlytics.framework */,
+				CF65C3A220A09F3F00E95640 /* Fabric.framework */,
 				CF65C38C20A0983400E95640 /* SVProgressHUD.framework */,
 				CF0FA219206D3C3200647317 /* KeychainAccess.framework */,
 				CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */,
@@ -622,7 +630,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = ". NowPlaying/Resources/.env\n\n\"${PODS_ROOT}/Fabric/run\" ${FABRIC_API_KEY} ${FABRIC_BUILD_SECRET}";
+			shellScript = ". NowPlaying/Resources/.env\n\n\"${SRCROOT}/Carthage/Build/iOS/Fabric.framework/run\" ${FABRIC_API_KEY} ${FABRIC_BUILD_SECRET}";
 		};
 		CF63348A1F5AB6F200D80EB8 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -636,6 +644,8 @@
 				"$(SRCROOT)/Carthage/Build/iOS/KeychainAccess.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Floaty.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Fabric.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Crashlytics.framework",
 			);
 			name = Carthage;
 			outputPaths = (

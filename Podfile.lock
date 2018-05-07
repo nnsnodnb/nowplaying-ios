@@ -1,22 +1,15 @@
 PODS:
-  - Crashlytics (3.10.1):
-    - Fabric (~> 1.7.5)
-  - Fabric (1.7.6)
   - TwitterCore (3.0.2)
   - TwitterKit (3.2.1):
     - TwitterCore (>= 3.0.2)
 
 DEPENDENCIES:
-  - Crashlytics
-  - Fabric
   - TwitterKit
 
 SPEC CHECKSUMS:
-  Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
-  Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
   TwitterCore: e0420b01e02e7d20e94690e37f43e75de219ab8d
   TwitterKit: 205ac89824bbfe9e85a16c420d30bb7bcbedac45
 
-PODFILE CHECKSUM: e2cbe4f02d44c16a74ca397bb7bdbcd8e238fdec
+PODFILE CHECKSUM: e51520c81a34f6e83b464bcda4dad1f82c3f12dc
 
 COCOAPODS: 1.3.1

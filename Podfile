@@ -6,7 +6,5 @@ target 'NowPlaying' do
   use_frameworks!
 
   pod 'TwitterKit'
-  pod 'Fabric'
-  pod 'Crashlytics'
 
 end
