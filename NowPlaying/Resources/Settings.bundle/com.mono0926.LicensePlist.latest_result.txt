@@ -6,10 +6,6 @@ name: Fabric, nameSpecified:
 body: Fabric: Copyright 20…
 version: 1.7.6
 
-name: SVProgressHUD, nameSpecified: 
-body: Copyright (c) 2011-2…
-version: 2.2.2
-
 name: TwitterCore, nameSpecified: 
 body: Copyright Twitter, I…
 version: 3.0.2
@@ -27,6 +23,8 @@ name: ExtensionCollection, nameSpecified: , owner: HiyakashiGroupHoldings, versi
 name: Floaty, nameSpecified: , owner: kciter, version: 4.0.1
 
 name: KeychainAccess, nameSpecified: , owner: kishikawakatsumi, version: v3.1.1
+
+name: SVProgressHUD, nameSpecified: , owner: SVProgressHUD, version: 2.2.5
 
 add-version-numbers: true
 

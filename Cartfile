@@ -3,6 +3,7 @@ github "xmartlabs/Eureka" ~> 4.0
 github "Alamofire/Alamofire" ~> 4.5
 github "kciter/Floaty" ~> 4.0.1
 github "kishikawakatsumi/KeychainAccess"
+github "SVProgressHUD/SVProgressHUD"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAdMobBinary.json"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAuthBinary.json"

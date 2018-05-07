@@ -64,7 +64,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/SVProgressHUD</string>
 			<key>Title</key>
-			<string>SVProgressHUD (2.2.2)</string>
+			<string>SVProgressHUD (2.2.5)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
