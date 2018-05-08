@@ -34,7 +34,6 @@
 		CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B001F56B04E00315019 /* MediaPlayer.framework */; };
 		CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B061F56E89100315019 /* AVFoundation.framework */; };
 		CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615AED1F56AB3B00315019 /* AppDelegate.swift */; };
-		CF615B131F56F56100315019 /* Album.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615B121F56F56100315019 /* Album.storyboard */; };
 		CF6334891F5AB6EB00D80EB8 /* ExtensionCollection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */; };
 		CF65C38120A0971500E95640 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37620A0971400E95640 /* FirebaseInstanceID.framework */; };
 		CF65C38220A0971500E95640 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C37720A0971400E95640 /* GoogleToolboxForMac.framework */; };
@@ -119,7 +118,6 @@
 		CF615AF91F56AB3B00315019 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF615B001F56B04E00315019 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		CF615B061F56E89100315019 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		CF615B121F56F56100315019 /* Album.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Album.storyboard; path = Album/Album.storyboard; sourceTree = "<group>"; };
 		CF6334881F5AB6EB00D80EB8 /* ExtensionCollection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExtensionCollection.framework; path = Carthage/Build/iOS/ExtensionCollection.framework; sourceTree = "<group>"; };
 		CF65C37620A0971400E95640 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstanceID.framework; path = Carthage/Build/iOS/FirebaseInstanceID.framework; sourceTree = "<group>"; };
 		CF65C37720A0971400E95640 /* GoogleToolboxForMac.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleToolboxForMac.framework; path = Carthage/Build/iOS/GoogleToolboxForMac.framework; sourceTree = "<group>"; };
@@ -353,7 +351,6 @@
 			isa = PBXGroup;
 			children = (
 				CF16113B1F727DB30027144D /* SystemPlay */,
-				CF615B111F56F54F00315019 /* Album */,
 				CF615B081F56E8D200315019 /* Main */,
 				CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */,
 			);
@@ -379,14 +376,6 @@
 				CF615AF11F56AB3B00315019 /* Main.storyboard */,
 			);
 			path = Main;
-			sourceTree = "<group>";
-		};
-		CF615B111F56F54F00315019 /* Album */ = {
-			isa = PBXGroup;
-			children = (
-				CF615B121F56F56100315019 /* Album.storyboard */,
-			);
-			name = Album;
 			sourceTree = "<group>";
 		};
 		CF6FFF20207E4CE4003FD38D /* TodayExtension */ = {
@@ -539,7 +528,6 @@
 				CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */,
 				CF1611371F726D110027144D /* PlayViewController.xib in Resources */,
 				CF615AF31F56AB3B00315019 /* Main.storyboard in Resources */,
-				CF615B131F56F56100315019 /* Album.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
