@@ -24,8 +24,6 @@
 		CF28A8391FD183D300E45F12 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8371FD183D300E45F12 /* WebViewController.xib */; };
 		CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
-		CF3CD92620A3214100ED84E1 /* leveldb-library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3CD92420A3214100ED84E1 /* leveldb-library.framework */; };
-		CF3CD92720A3214100ED84E1 /* FirebaseDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3CD92520A3214100ED84E1 /* FirebaseDatabase.framework */; };
 		CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */; };
 		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
 		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
@@ -108,8 +106,6 @@
 		CF28A8371FD183D300E45F12 /* WebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WebViewController.xib; path = WebView/WebViewController.xib; sourceTree = "<group>"; };
 		CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Floaty.framework; path = Carthage/Build/iOS/Floaty.framework; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		CF3CD92420A3214100ED84E1 /* leveldb-library.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "leveldb-library.framework"; path = "Carthage/Build/iOS/leveldb-library.framework"; sourceTree = "<group>"; };
-		CF3CD92520A3214100ED84E1 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseDatabase.framework; path = Carthage/Build/iOS/FirebaseDatabase.framework; sourceTree = "<group>"; };
 		CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TweetViewController.swift; path = Tweet/TweetViewController.swift; sourceTree = "<group>"; };
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
 		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
@@ -159,8 +155,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF3CD92620A3214100ED84E1 /* leveldb-library.framework in Frameworks */,
-				CF3CD92720A3214100ED84E1 /* FirebaseDatabase.framework in Frameworks */,
 				CF65C3A320A09F3F00E95640 /* Crashlytics.framework in Frameworks */,
 				CF65C3A420A09F3F00E95640 /* Fabric.framework in Frameworks */,
 				CF65C38D20A0983400E95640 /* SVProgressHUD.framework in Frameworks */,
@@ -300,8 +294,6 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CF3CD92520A3214100ED84E1 /* FirebaseDatabase.framework */,
-				CF3CD92420A3214100ED84E1 /* leveldb-library.framework */,
 				CF65C3A120A09F3F00E95640 /* Crashlytics.framework */,
 				CF65C3A220A09F3F00E95640 /* Fabric.framework */,
 				CF65C38C20A0983400E95640 /* SVProgressHUD.framework */,
