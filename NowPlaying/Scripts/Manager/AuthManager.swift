@@ -9,6 +9,7 @@
 import UIKit
 import TwitterKit
 import FirebaseAuth
+import FirebaseDatabase
 import KeychainAccess
 
 class AuthManager: NSObject {
@@ -22,15 +23,23 @@ class AuthManager: NSObject {
             guard let wself = self, let session = session else {
                 return
             }
-            let credential = TwitterAuthProvider.credential(withToken: session.authToken, secret: session.authTokenSecret)
-            Auth.auth().signIn(with: credential) { (user, error) in
-                if user == nil && error != nil {
-                    return
-                }
-                wself.keychain[KeychainKey.authToken.rawValue] = session.authToken
-                wself.keychain[KeychainKey.authTokenSecret.rawValue] = session.authTokenSecret
-                if let completion = completion {
-                    completion()
+            DispatchQueue.main.async {
+                let credential = TwitterAuthProvider.credential(withToken: session.authToken, secret: session.authTokenSecret)
+                Auth.auth().signIn(with: credential) { (user, error) in
+                    guard let user = user, error == nil else {
+                        return
+                    }
+                    wself.keychain[KeychainKey.authToken.rawValue] = session.authToken
+                    wself.keychain[KeychainKey.authTokenSecret.rawValue] = session.authTokenSecret
+
+                    DispatchQueue.global().async {
+                        let ref = Database.database().reference(withPath: "twitter")
+                        ref.child(user.uid).setValue(["name": session.userName, "user_id": session.userID, "display_name": user.displayName])
+                    }
+
+                    if let completion = completion {
+                        completion()
+                    }
                 }
             }
         })
