@@ -24,6 +24,9 @@
 		CF28A8391FD183D300E45F12 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8371FD183D300E45F12 /* WebViewController.xib */; };
 		CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
+		CF3CD92E20A33ADC00ED84E1 /* leveldb-library.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3CD92C20A33ADB00ED84E1 /* leveldb-library.framework */; };
+		CF3CD92F20A33ADC00ED84E1 /* FirebaseDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3CD92D20A33ADB00ED84E1 /* FirebaseDatabase.framework */; };
+		CF3CD93120A33D7E00ED84E1 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3CD93020A33D7D00ED84E1 /* libicucore.tbd */; };
 		CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */; };
 		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
 		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
@@ -106,6 +109,9 @@
 		CF28A8371FD183D300E45F12 /* WebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WebViewController.xib; path = WebView/WebViewController.xib; sourceTree = "<group>"; };
 		CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Floaty.framework; path = Carthage/Build/iOS/Floaty.framework; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CF3CD92C20A33ADB00ED84E1 /* leveldb-library.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "leveldb-library.framework"; path = "Carthage/Build/iOS/leveldb-library.framework"; sourceTree = "<group>"; };
+		CF3CD92D20A33ADB00ED84E1 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseDatabase.framework; path = Carthage/Build/iOS/FirebaseDatabase.framework; sourceTree = "<group>"; };
+		CF3CD93020A33D7D00ED84E1 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TweetViewController.swift; path = Tweet/TweetViewController.swift; sourceTree = "<group>"; };
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
 		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
@@ -155,27 +161,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF65C3A320A09F3F00E95640 /* Crashlytics.framework in Frameworks */,
-				CF65C3A420A09F3F00E95640 /* Fabric.framework in Frameworks */,
-				CF65C38D20A0983400E95640 /* SVProgressHUD.framework in Frameworks */,
-				CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */,
-				CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */,
-				CF65C38920A0971500E95640 /* FirebaseAnalytics.framework in Frameworks */,
-				CF65C38420A0971500E95640 /* GoogleMobileAds.framework in Frameworks */,
-				CF65C38B20A0971500E95640 /* GTMSessionFetcher.framework in Frameworks */,
+				CF3CD93120A33D7E00ED84E1 /* libicucore.tbd in Frameworks */,
+				CF3CD92E20A33ADC00ED84E1 /* leveldb-library.framework in Frameworks */,
+				CF3CD92F20A33ADC00ED84E1 /* FirebaseDatabase.framework in Frameworks */,
 				CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */,
-				CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */,
-				CF65C38720A0971500E95640 /* FirebaseAuth.framework in Frameworks */,
+				CF65C3A320A09F3F00E95640 /* Crashlytics.framework in Frameworks */,
 				CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */,
-				CF65C38220A0971500E95640 /* GoogleToolboxForMac.framework in Frameworks */,
 				CF6334891F5AB6EB00D80EB8 /* ExtensionCollection.framework in Frameworks */,
-				CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */,
-				CF65C38820A0971500E95640 /* FirebaseCore.framework in Frameworks */,
-				CF65C38120A0971500E95640 /* FirebaseInstanceID.framework in Frameworks */,
+				CF65C3A420A09F3F00E95640 /* Fabric.framework in Frameworks */,
 				CF65C38620A0971500E95640 /* Firebase.framework in Frameworks */,
-				CF65C38A20A0971500E95640 /* FirebaseNanoPB.framework in Frameworks */,
-				CF65C38520A0971500E95640 /* nanopb.framework in Frameworks */,
+				CF65C38920A0971500E95640 /* FirebaseAnalytics.framework in Frameworks */,
+				CF65C38720A0971500E95640 /* FirebaseAuth.framework in Frameworks */,
+				CF65C38820A0971500E95640 /* FirebaseCore.framework in Frameworks */,
 				CF65C38320A0971500E95640 /* FirebaseCoreDiagnostics.framework in Frameworks */,
+				CF65C38120A0971500E95640 /* FirebaseInstanceID.framework in Frameworks */,
+				CF65C38A20A0971500E95640 /* FirebaseNanoPB.framework in Frameworks */,
+				CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */,
+				CF65C38420A0971500E95640 /* GoogleMobileAds.framework in Frameworks */,
+				CF65C38220A0971500E95640 /* GoogleToolboxForMac.framework in Frameworks */,
+				CF65C38B20A0971500E95640 /* GTMSessionFetcher.framework in Frameworks */,
+				CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */,
+				CF65C38520A0971500E95640 /* nanopb.framework in Frameworks */,
+				CF65C38D20A0983400E95640 /* SVProgressHUD.framework in Frameworks */,
+				CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */,
+				CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */,
 				CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */,
 				584E54B8BE9943C10025A548 /* Pods_NowPlaying.framework in Frameworks */,
 			);
@@ -294,6 +303,9 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF3CD93020A33D7D00ED84E1 /* libicucore.tbd */,
+				CF3CD92D20A33ADB00ED84E1 /* FirebaseDatabase.framework */,
+				CF3CD92C20A33ADB00ED84E1 /* leveldb-library.framework */,
 				CF65C3A120A09F3F00E95640 /* Crashlytics.framework */,
 				CF65C3A220A09F3F00E95640 /* Fabric.framework */,
 				CF65C38C20A0983400E95640 /* SVProgressHUD.framework */,

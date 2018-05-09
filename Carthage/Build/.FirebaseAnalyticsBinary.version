@@ -15,20 +15,20 @@
       "hash" : "a8669248da9519e9955e00448e518e1ca6becb32689eedddde237e19ad1136ae"
     },
     {
-      "name" : "nanopb",
-      "hash" : "fb64471ede30d50ff66165caab857ec821e3e1fa5e70d707621ec92fe8cdaa83"
-    },
-    {
       "name" : "GoogleToolboxForMac",
       "hash" : "c6362955629f614a25cb6b71d4a880405f8eb82423ebe7fba5af574c5675fd07"
     },
     {
-      "name" : "FirebaseNanoPB",
-      "hash" : "40438b5897cf514f79524a3978ac66b78799b335f45a6a9421ca63d6cba92b8f"
+      "name" : "nanopb",
+      "hash" : "fb64471ede30d50ff66165caab857ec821e3e1fa5e70d707621ec92fe8cdaa83"
     },
     {
       "name" : "FirebaseCore",
       "hash" : "2b9db7c205122423fa7635fdf8a99d64b6f9a1d05f252517ea65460697376fca"
+    },
+    {
+      "name" : "FirebaseNanoPB",
+      "hash" : "40438b5897cf514f79524a3978ac66b78799b335f45a6a9421ca63d6cba92b8f"
     },
     {
       "name" : "FirebaseCoreDiagnostics",
