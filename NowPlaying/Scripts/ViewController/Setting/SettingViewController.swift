@@ -55,6 +55,10 @@ class SettingViewController: FormViewController {
         Analytics.logEvent("screen_open", parameters: nil)
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        SVProgressHUD.dismiss()
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
