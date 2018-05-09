@@ -8,6 +8,7 @@
 
 import UIKit
 import TwitterKit
+import FirebaseAuth
 import KeychainAccess
 
 class AuthManager: NSObject {
@@ -17,19 +18,26 @@ class AuthManager: NSObject {
     private let keychain = Keychain(service: keychainServiceKey)
 
     func login(completion: (() -> ())?=nil) {
-        Twitter.sharedInstance().logIn(completion: { [unowned self] (session, error) in
-            guard let session = session else {
+        Twitter.sharedInstance().logIn(completion: { [weak self] (session, error) in
+            guard let wself = self, let session = session else {
                 return
             }
-            self.keychain[KeychainKey.authToken.rawValue] = session.authToken
-            self.keychain[KeychainKey.authTokenSecret.rawValue] = session.authTokenSecret
-            if let completion = completion {
-                completion()
+            let credential = TwitterAuthProvider.credential(withToken: session.authToken, secret: session.authTokenSecret)
+            Auth.auth().signIn(with: credential) { (user, error) in
+                if user == nil && error != nil {
+                    return
+                }
+                wself.keychain[KeychainKey.authToken.rawValue] = session.authToken
+                wself.keychain[KeychainKey.authTokenSecret.rawValue] = session.authTokenSecret
+                if let completion = completion {
+                    completion()
+                }
             }
         })
     }
 
     func logout(completion: () -> Void) {
+        try? Auth.auth().signOut()
         Twitter.sharedInstance().sessionStore.logOutUserID(Twitter.sharedInstance().sessionStore.session()!.userID)
         keychain[KeychainKey.authToken.rawValue] = nil
         keychain[KeychainKey.authTokenSecret.rawValue] = nil
