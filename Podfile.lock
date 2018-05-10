@@ -1,4 +1,7 @@
 PODS:
+  - Crashlytics (3.10.1):
+    - Fabric (~> 1.7.5)
+  - Fabric (1.7.6)
   - Firebase/AdMob (5.0.0):
     - Firebase/Core
     - Google-Mobile-Ads-SDK (= 7.30.0)
@@ -38,6 +41,8 @@ PODS:
     - TwitterCore (>= 3.0.2)
 
 DEPENDENCIES:
+  - Crashlytics
+  - Fabric
   - Firebase/AdMob
   - FirebaseAuth
   - FirebaseCore
@@ -46,6 +51,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Crashlytics
+    - Fabric
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -61,6 +68,8 @@ SPEC REPOS:
     - TwitterKit
 
 SPEC CHECKSUMS:
+  Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
+  Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
   Firebase: 4bd804448ab2596794698773d41520a0af101e65
   FirebaseAnalytics: 19812b49fa5f283dd6b23edf8a14b5d477029ab8
   FirebaseAuth: acbeef02fe7c3a26624e309849f3fe30c84115af
@@ -75,6 +84,6 @@ SPEC CHECKSUMS:
   TwitterCore: e0420b01e02e7d20e94690e37f43e75de219ab8d
   TwitterKit: 205ac89824bbfe9e85a16c420d30bb7bcbedac45
 
-PODFILE CHECKSUM: 07b91661a97d1996db433d2e7b2d0b2f1956f1be
+PODFILE CHECKSUM: a2c126ca25c566a3564fb49818c5a65f8957f335
 
 COCOAPODS: 1.5.2

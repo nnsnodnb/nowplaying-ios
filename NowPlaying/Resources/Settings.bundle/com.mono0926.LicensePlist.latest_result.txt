@@ -1,3 +1,11 @@
+name: Crashlytics, nameSpecified: 
+body: Fabric: Copyright 20…
+version: 3.10.1
+
+name: Fabric, nameSpecified: 
+body: Fabric: Copyright 20…
+version: 1.7.6
+
 name: Firebase, nameSpecified: 
 body: Copyright 2018 Googl…
 version: 5.0.0
