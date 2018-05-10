@@ -56,10 +56,7 @@ Temporary Items
 Pods/
 
 # Carthage
-Carthage/Checkouts/
-Carthage/Build/iOS/*.dSYM/
-Carthage/Build/iOS/*.bcsymbolmap
-!Carthage/Build/iOS/*.framework/*
+Carthage/
 
 # Other
 .env
