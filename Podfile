@@ -6,5 +6,9 @@ target 'NowPlaying' do
   use_frameworks!
 
   pod 'TwitterKit'
+  pod 'FirebaseCore'
+  pod 'FirebaseAuth'
+  pod 'FirebaseDatabase'
+  pod 'Firebase/AdMob'
 
 end

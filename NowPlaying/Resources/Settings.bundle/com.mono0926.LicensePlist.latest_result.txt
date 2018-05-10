@@ -1,3 +1,52 @@
+name: Firebase, nameSpecified: 
+body: Copyright 2018 Googl…
+version: 5.0.0
+
+name: FirebaseAnalytics, nameSpecified: 
+body: Copyright 2018 Googl…
+version: 5.0.0
+
+name: FirebaseAuth, nameSpecified: 
+body: 
+                   …
+version: 5.0.0
+
+name: FirebaseCore, nameSpecified: 
+body: 
+                   …
+version: 5.0.0
+
+name: FirebaseDatabase, nameSpecified: 
+body: 
+                   …
+version: 5.0.0
+
+name: FirebaseInstanceID, nameSpecified: 
+body: Copyright 2018 Googl…
+version: 3.0.0
+
+name: Google-Mobile-Ads-SDK, nameSpecified: 
+body: Copyright 2018 Googl…
+version: 7.30.0
+
+name: GoogleToolboxForMac, nameSpecified: 
+body: 
+                   …
+version: 2.1.4
+
+name: GTMSessionFetcher, nameSpecified: 
+body: 
+                   …
+version: 1.1.15
+
+name: leveldb-library, nameSpecified: 
+body: Copyright (c) 2011 T…
+version: 1.20
+
+name: nanopb, nameSpecified: 
+body: Copyright (c) 2011 P…
+version: 0.3.8
+
 name: TwitterCore, nameSpecified: 
 body: Copyright Twitter, I…
 version: 3.0.2
