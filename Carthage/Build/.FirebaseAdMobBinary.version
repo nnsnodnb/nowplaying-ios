@@ -1,0 +1,18 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "4.12.0",
+  "iOS" : [
+    {
+      "name" : "GoogleMobileAds",
+      "hash" : "ce49b5085f4515d82e7f09ba0f01e674923d7b8deead1399252b6334678087b7"
+    }
+  ]
+}

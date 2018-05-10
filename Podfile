@@ -6,11 +6,5 @@ target 'NowPlaying' do
   use_frameworks!
 
   pod 'TwitterKit'
-  pod 'SVProgressHUD'
-  pod 'Fabric'
-  pod 'Crashlytics'
-  pod 'Firebase/Core'
-  pod 'Firebase/Auth'
-  pod 'Firebase/AdMob'
 
 end

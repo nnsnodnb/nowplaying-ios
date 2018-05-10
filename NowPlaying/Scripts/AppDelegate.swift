@@ -13,6 +13,7 @@ import Crashlytics
 import KeychainAccess
 import FirebaseCore
 import GoogleMobileAds
+import SVProgressHUD
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let keychain = Keychain()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        SVProgressHUD.setDefaultMaskType(.clear)
         UIApplication.shared.beginReceivingRemoteControlEvents()
         loadEnvironment()
         Twitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
