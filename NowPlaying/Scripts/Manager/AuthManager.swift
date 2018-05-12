@@ -25,8 +25,8 @@ class AuthManager: NSObject {
             }
             DispatchQueue.main.async {
                 let credential = TwitterAuthProvider.credential(withToken: session.authToken, secret: session.authTokenSecret)
-                Auth.auth().signIn(with: credential) { (user, error) in
-                    guard let user = user, error == nil else {
+                Auth.auth().signInAndRetrieveData(with: credential) { (result, error) in
+                    guard let user = result?.user, error == nil else {
                         return
                     }
                     wself.keychain[KeychainKey.authToken.rawValue] = session.authToken
