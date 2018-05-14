@@ -67,6 +67,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
+            print(userActivity.webpageURL!)
+        }
+        return true
+    }
+
     override func remoteControlReceived(with event: UIEvent?) {
         AudioManager.shared.remoteControlReceived(with: event)
     }
