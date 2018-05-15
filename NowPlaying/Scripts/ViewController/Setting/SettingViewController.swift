@@ -224,49 +224,37 @@ class SettingViewController: FormViewController {
                     self.showMastodonError()
                     return
                 }
-                SVProgressHUD.show()
-                /* アプリの登録 */
-                MastodonClient.shared.register(handler: { (responseJson, error) in
+
+                let clientID = ProcessInfo.processInfo.get(forKey: .mastodonConsumerKey)
+
+                /* GUIログイン */
+                let webViewController = WebViewController()
+                webViewController.url = URL(string: baseUrl + "/oauth/authorize?client_id=\(clientID)&response_type=code&redirect_uri=urn:ietf:wg:oauth:2.0:oob&scope=write")!
+                webViewController.handler = { accessToken, error in
                     if error != nil {
                         self.showMastodonError()
-                        SVProgressHUD.dismiss()
                         return
                     }
-                    let clientID = responseJson!["client_id"] as! String
-                    let clientSecret = responseJson!["client_secret"] as! String
-
-                    self.keychain[KeychainKey.mastodonClientID.rawValue] = clientID
-                    self.keychain[KeychainKey.mastodonClientSecret.rawValue] = clientSecret
-
-                    /* GUIログイン */
-                    let webViewController = WebViewController()
-                    webViewController.url = URL(string: baseUrl + "/oauth/authorize?client_id=\(clientID)&response_type=code&redirect_uri=urn:ietf:wg:oauth:2.0:oob&scope=write")!
-                    webViewController.handler = { accessToken, error in
-                        if error != nil {
-                            self.showMastodonError()
-                            return
-                        }
-                        self.isMastodonLogin = true
-                        UserDefaults.set(true, forKey: .isMastodonLogin)
-                        Analytics.logEvent("tap", parameters: [
-                            "type": "action",
-                            "button": "mastodon_login"]
-                        )
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                            SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                            SVProgressHUD.dismiss(withDelay: 0.5)
-                            cell.textLabel?.text = "ログアウト"
-                            let textRow = self.form.rowBy(tag: "mastodon_host") as! TextRow
-                            textRow.baseCell.isUserInteractionEnabled = false
-                        }
+                    self.isMastodonLogin = true
+                    UserDefaults.set(true, forKey: .isMastodonLogin)
+                    Analytics.logEvent("tap", parameters: [
+                        "type": "action",
+                        "button": "mastodon_login"]
+                    )
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        SVProgressHUD.showSuccess(withStatus: "ログインしました")
+                        SVProgressHUD.dismiss(withDelay: 0.5)
+                        cell.textLabel?.text = "ログアウト"
+                        let textRow = self.form.rowBy(tag: "mastodon_host") as! TextRow
+                        textRow.baseCell.isUserInteractionEnabled = false
                     }
-                    let navi = UINavigationController(rootViewController: webViewController)
-                    DispatchQueue.main.async {
-                        self.present(navi, animated: true) {
-                            SVProgressHUD.dismiss()
-                        }
+                }
+                let navi = UINavigationController(rootViewController: webViewController)
+                DispatchQueue.main.async {
+                    self.present(navi, animated: true) {
+                        SVProgressHUD.dismiss()
                     }
-                })
+                }
             } else {
                 AuthManager.shared.mastodonLogout()
                 self.isMastodonLogin = false

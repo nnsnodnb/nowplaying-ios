@@ -17,54 +17,6 @@ class MastodonClient: NSObject {
     private let keychain = Keychain(service: keychainServiceKey)
     private let baseUrl = UserDefaults.string(forKey: .mastodonHostname) ?? ""
 
-    func register(handler: @escaping (([String: Any]?, Error?) -> ())) {
-        // 重複登録防止
-        do {
-            if let clientID = try keychain.get(KeychainKey.mastodonClientID.rawValue),
-                let clientSecret = try keychain.get(KeychainKey.mastodonClientSecret.rawValue) {
-                let responseJson = [
-                    "client_id": clientID,
-                    "client_secret": clientSecret
-                ]
-                handler(responseJson, nil)
-                return
-            }
-            let parameter: [String: String] = ["client_name": "NowPlayingiOS",
-                                               "redirect_uris": "urn:ietf:wg:oauth:2.0:oob",
-                                               "scopes": "write",
-                                               "website": websiteUrl]
-
-            request(baseUrl + "/api/v1/apps", method: .post, parameter: parameter) { (response) in
-                guard response.result.isSuccess else {
-                    handler(nil, response.error)
-                    return
-                }
-                let value = response.result.value as! Parameters
-                handler(value, nil)
-            }
-        } catch {}
-    }
-
-    func login(clientID: String, clientSecret: String, username: String, password: String, handler: @escaping ((String?) -> ())) {
-        let parameter: [String: String] = ["scope": "write",
-                                           "client_id": clientID,
-                                           "client_secret": clientSecret,
-                                           "grant_type": "password",
-                                           "username": username,
-                                           "password": password]
-
-        request(baseUrl + "/oauth/token", method: .post, parameter: parameter) { (response) in
-            guard response.result.isSuccess else {
-                handler(nil)
-                return
-            }
-            let value = response.result.value as! [String: Any]
-            if let accessToken = value["access_token"] {
-                handler(accessToken as? String)
-            }
-        }
-    }
-
     func toot(text: String, image: UIImage?, handler: @escaping ((Error?) -> ())) {
         guard let image = image, let imageData = UIImagePNGRepresentation(image) else {
             toot(text: text) {
