@@ -48,31 +48,29 @@ class WebViewController: UIViewController {
 
     private func getToken(_ authorizationCode: String) {
         SVProgressHUD.show()
-        do {
-            let clientID = try keychain.get(KeychainKey.mastodonClientID.rawValue) ?? ""
-            let clientSecret = try keychain.get(KeychainKey.mastodonClientSecret.rawValue) ?? ""
+        let clientID = ProcessInfo.processInfo.get(forKey: .mastodonConsumerKey)
+        let clientSecret = ProcessInfo.processInfo.get(forKey: .mastodonConsumerSecret)
 
-            let parameter: [String: String] = ["grant_type": "authorization_code",
-                                               "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
-                                               "client_id": clientID,
-                                               "client_secret": clientSecret,
-                                               "code": authorizationCode]
-            MastodonClient.shared.request(UserDefaults.string(forKey: .mastodonHostname)! + "/oauth/token", method: .post, parameter: parameter) { [unowned self] (response) in
-                guard response.result.isSuccess, let value = response.result.value as? [String: Any] else {
-                    self.handler(nil, response.result.error)
+        let parameter: [String: String] = ["grant_type": "authorization_code",
+                                           "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+                                           "client_id": clientID,
+                                           "client_secret": clientSecret,
+                                           "code": authorizationCode]
+        MastodonClient.shared.request(UserDefaults.string(forKey: .mastodonHostname)! + "/oauth/token", method: .post, parameter: parameter) { [unowned self] (response) in
+            guard response.result.isSuccess, let value = response.result.value as? [String: Any] else {
+                self.handler(nil, response.result.error)
+                SVProgressHUD.dismiss()
+                return
+            }
+            if let accessToken: String = value["access_token"] as? String {
+                self.keychain[KeychainKey.mastodonAccessToken.rawValue] = accessToken
+                self.handler(accessToken, nil)
+                DispatchQueue.main.async {
                     SVProgressHUD.dismiss()
-                    return
-                }
-                if let accessToken: String = value["access_token"] as? String {
-                    self.keychain[KeychainKey.mastodonAccessToken.rawValue] = accessToken
-                    self.handler(accessToken, nil)
-                    DispatchQueue.main.async {
-                        SVProgressHUD.dismiss()
-                        self.dismiss(animated: true, completion: nil)
-                    }
+                    self.dismiss(animated: true, completion: nil)
                 }
             }
-        } catch {}
+        }
     }
 
     // MARK: - UIBarButtonItem targer

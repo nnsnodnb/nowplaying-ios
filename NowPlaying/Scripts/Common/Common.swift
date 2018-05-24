@@ -28,14 +28,14 @@ enum UserDefaultsKey: String {
 enum KeychainKey: String {
     case authToken = "authToken"
     case authTokenSecret = "authTokenSecret"
-    case mastodonClientID = "mastodon_client_id"
-    case mastodonClientSecret = "mastodon_client_secret"
     case mastodonAccessToken = "mastodon_access_token"
 }
 
 enum EnvironmentKey: String {
     case twitterConsumerKey = "TWITTER_CONSUMER_KEY"
     case twitterConsumerSecret = "TWITTER_CONSUMER_SECRET"
+    case mastodonConsumerKey = "MASTODON_CONSUMER_KEY"
+    case mastodonConsumerSecret = "MASTODON_CONSUMER_SECRET"
     case firebaseAdmobAppId = "FIREBASE_ADMOB_APP_ID"
     case firebaseAdmobBannerId = "FIREBASE_ADMOB_BANNER_ID"
 }
