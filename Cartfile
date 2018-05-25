@@ -4,7 +4,6 @@ github "Alamofire/Alamofire" ~> 4.5
 github "kciter/Floaty" ~> 4.0.1
 github "kishikawakatsumi/KeychainAccess"
 github "SVProgressHUD/SVProgressHUD"
-github "OAuthSwift/OAuthSwift" ~> 1.2.0
 github "antitypical/Result"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAdMobBinary.json"

@@ -61,7 +61,6 @@
 		CF8E48802081EC75003A5E70 /* ProcessInfo+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */; };
 		CF918D071F7075110005B686 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF918D061F7075110005B686 /* Settings.bundle */; };
 		CFB553821FD17163000618FF /* MastodonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB553811FD17163000618FF /* MastodonClient.swift */; };
-		CFC5C93720AB1B0B00B49829 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC5C93620AB1B0A00B49829 /* OAuthSwift.framework */; };
 		CFD1D37420B87E94009C50ED /* AppInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37320B87E94009C50ED /* AppInfoManager.swift */; };
 		CFD1D37620B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */; };
 		CFD1D37F20B88188009C50ED /* APIResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37D20B88188009C50ED /* APIResult.swift */; };
@@ -154,7 +153,6 @@
 		CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+Key.swift"; sourceTree = "<group>"; };
 		CF918D061F7075110005B686 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		CFB553811FD17163000618FF /* MastodonClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonClient.swift; path = Manager/MastodonClient.swift; sourceTree = "<group>"; };
-		CFC5C93620AB1B0A00B49829 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
 		CFD1D37320B87E94009C50ED /* AppInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppInfoManager.swift; path = Manager/AppInfoManager.swift; sourceTree = "<group>"; };
 		CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPURLResponse+StatusCode.swift"; sourceTree = "<group>"; };
 		CFD1D37D20B88188009C50ED /* APIResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIResult.swift; sourceTree = "<group>"; };
@@ -169,7 +167,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFD1D38220B887A9009C50ED /* Result.framework in Frameworks */,
-				CFC5C93720AB1B0B00B49829 /* OAuthSwift.framework in Frameworks */,
 				CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */,
 				CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */,
 				CF2DBD6620A4AB1B0039217F /* FirebaseCoreDiagnostics.framework in Frameworks */,
@@ -310,7 +307,6 @@
 			isa = PBXGroup;
 			children = (
 				CFD1D38120B887A9009C50ED /* Result.framework */,
-				CFC5C93620AB1B0A00B49829 /* OAuthSwift.framework */,
 				CF2DBD7220A4AB630039217F /* libicucore.tbd */,
 				CF2DBD7020A4AB330039217F /* Firebase.framework */,
 				CF2DBD6120A4AB1B0039217F /* FirebaseAnalytics.framework */,
@@ -646,7 +642,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/KeychainAccess.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Floaty.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/OAuthSwift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
 			);
 			name = Carthage;
