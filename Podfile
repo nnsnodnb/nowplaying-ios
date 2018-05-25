@@ -8,9 +8,5 @@ target 'NowPlaying' do
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'TwitterKit'
-  #pod 'FirebaseCore'
-  #pod 'FirebaseAuth'
-  #pod 'FirebaseDatabase'
-  #pod 'Firebase/AdMob'
 
 end
