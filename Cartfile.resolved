@@ -3,6 +3,7 @@ binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.j
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAuthBinary.json" "5.0.0"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseDatabaseBinary.json" "5.0.0"
 github "Alamofire/Alamofire" "4.7.2"
+github "ArtSabintsev/Siren" "3.4.0"
 github "HiyakashiGroupHoldings/ExtensionCollection" "0.0.4"
 github "OAuthSwift/OAuthSwift" "1.2.1"
 github "SVProgressHUD/SVProgressHUD" "2.2.5"
