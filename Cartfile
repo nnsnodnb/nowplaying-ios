@@ -5,7 +5,6 @@ github "kciter/Floaty" ~> 4.0.1
 github "kishikawakatsumi/KeychainAccess"
 github "SVProgressHUD/SVProgressHUD"
 github "OAuthSwift/OAuthSwift" ~> 1.2.0
-github "ArtSabintsev/Siren"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAdMobBinary.json"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAuthBinary.json"

@@ -62,7 +62,6 @@
 		CF918D071F7075110005B686 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF918D061F7075110005B686 /* Settings.bundle */; };
 		CFB553821FD17163000618FF /* MastodonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB553811FD17163000618FF /* MastodonClient.swift */; };
 		CFC5C93720AB1B0B00B49829 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC5C93620AB1B0A00B49829 /* OAuthSwift.framework */; };
-		CFD1D37220B8769C009C50ED /* Siren.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFD1D37120B8769C009C50ED /* Siren.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -151,7 +150,6 @@
 		CF918D061F7075110005B686 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		CFB553811FD17163000618FF /* MastodonClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonClient.swift; path = Manager/MastodonClient.swift; sourceTree = "<group>"; };
 		CFC5C93620AB1B0A00B49829 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
-		CFD1D37120B8769C009C50ED /* Siren.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Siren.framework; path = Carthage/Build/iOS/Siren.framework; sourceTree = "<group>"; };
 		F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -160,7 +158,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFD1D37220B8769C009C50ED /* Siren.framework in Frameworks */,
 				CFC5C93720AB1B0B00B49829 /* OAuthSwift.framework in Frameworks */,
 				CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */,
 				CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */,
@@ -301,7 +298,6 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CFD1D37120B8769C009C50ED /* Siren.framework */,
 				CFC5C93620AB1B0A00B49829 /* OAuthSwift.framework */,
 				CF2DBD7220A4AB630039217F /* libicucore.tbd */,
 				CF2DBD7020A4AB330039217F /* Firebase.framework */,
@@ -627,7 +623,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Floaty.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/OAuthSwift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Siren.framework",
 			);
 			name = Carthage;
 			outputPaths = (
