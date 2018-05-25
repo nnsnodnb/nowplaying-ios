@@ -42,6 +42,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]=[:]) -> Bool {
+        if let sourceApplication = options[.sourceApplication] as? String {
+            if String(describing: sourceApplication) == "com.apple.SafariViewService" {
+                NotificationCenter.default.post(name: receiveSafariNotificationName, object: url)
+                return true
+            }
+        }
         return Twitter.sharedInstance().application(application, open: url, options: options)
     }
 

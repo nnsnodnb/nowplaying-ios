@@ -20,17 +20,20 @@ class SettingViewController: FormViewController {
 
     private let keychain = Keychain(service: keychainServiceKey)
 
+    private var safari: SFSafariViewController!
     private var isProcess = false
     private var isTwitterLogin = false
     private var isMastodonLogin = false
     private var productRequest: SKProductsRequest?
     private var products = [SKProduct]()
     private var purchasingProduct: SKProduct?
+    private var mastodonLoginButtonRowCell: ButtonRow.Cell?
 
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNotification()
         setupNavigationbar()
         setupIsLogin()
         setupProducts()
@@ -63,7 +66,17 @@ class SettingViewController: FormViewController {
         super.didReceiveMemoryWarning()
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: receiveSafariNotificationName, object: nil)
+    }
+
     // MARK: - Private method
+
+    private func setupNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveSafariNotification(_:)),
+                                               name: receiveSafariNotificationName,
+                                               object: nil)
+    }
 
     private func setupNavigationbar() {
         guard navigationController != nil else {
@@ -217,44 +230,18 @@ class SettingViewController: FormViewController {
             cell.textLabel?.textColor = UIColor.black
             cell.accessoryType = .disclosureIndicator
         }).onCellSelection({ [unowned self] (cell, row) in
+            self.mastodonLoginButtonRowCell = cell
             row.deselect()
             if !self.isMastodonLogin {
-                let baseUrl = UserDefaults.string(forKey: .mastodonHostname)!
-                guard URL(string: baseUrl + "/api/v1/apps") != nil else {
-                    self.showMastodonError()
-                    return
-                }
-
                 let clientID = ProcessInfo.processInfo.get(forKey: .mastodonConsumerKey)
-
-                /* GUIログイン */
-                let webViewController = WebViewController()
-                webViewController.url = URL(string: baseUrl + "/oauth/authorize?client_id=\(clientID)&response_type=code&redirect_uri=urn:ietf:wg:oauth:2.0:oob&scope=write")!
-                webViewController.handler = { accessToken, error in
-                    if error != nil {
+                guard let baseUrl = UserDefaults.string(forKey: .mastodonHostname),
+                    let url = URL(string: baseUrl + "/oauth/authorize?client_id=\(clientID)&response_type=code&redirect_uri=nowplaying-ios-nnsnodnb://oauth_mastodon&scope=write") else {
                         self.showMastodonError()
                         return
-                    }
-                    self.isMastodonLogin = true
-                    UserDefaults.set(true, forKey: .isMastodonLogin)
-                    Analytics.logEvent("tap", parameters: [
-                        "type": "action",
-                        "button": "mastodon_login"]
-                    )
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                        SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                        SVProgressHUD.dismiss(withDelay: 0.5)
-                        cell.textLabel?.text = "ログアウト"
-                        let textRow = self.form.rowBy(tag: "mastodon_host") as! TextRow
-                        textRow.baseCell.isUserInteractionEnabled = false
-                    }
                 }
-                let navi = UINavigationController(rootViewController: webViewController)
-                DispatchQueue.main.async {
-                    self.present(navi, animated: true) {
-                        SVProgressHUD.dismiss()
-                    }
-                }
+
+                self.safari = SFSafariViewController(url: url)
+                self.present(self.safari, animated: true, completion: nil)
             } else {
                 AuthManager.shared.mastodonLogout()
                 self.isMastodonLogin = false
@@ -449,6 +436,31 @@ class SettingViewController: FormViewController {
 
     @objc private func onTapCloseButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+
+    // MARK: - Notification target
+
+    @objc private func receiveSafariNotification(_ notification: Notification) {
+        guard let url = notification.object as? URL, let queryString = url.query else { return }
+        let query = QueryParser.queryDictionary(query: queryString)
+        guard let code = query["code"] as? String else { return }
+        MastodonClient.shared.getAuthToken(with: code) { [weak self] (accessToken, error) in
+            if let accessToken = accessToken, error == nil {
+                self?.keychain[KeychainKey.mastodonAccessToken.rawValue] = accessToken
+                DispatchQueue.main.async {
+                    SVProgressHUD.showSuccess(withStatus: "ログインしました")
+                    SVProgressHUD.dismiss(withDelay: 0.5)
+                    self?.isMastodonLogin = true
+                    UserDefaults.set(true, forKey: .isMastodonLogin)
+                    self?.mastodonLoginButtonRowCell?.textLabel?.text = "ログアウト"
+                    let textRow = self?.form.rowBy(tag: "mastodon_host") as! TextRow
+                    textRow.baseCell.isUserInteractionEnabled = false
+                }
+            }
+            DispatchQueue.main.async {
+                self?.dismiss(animated: true, completion: nil)
+            }
+        }
     }
 }
 

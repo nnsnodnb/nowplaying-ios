@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import KeychainAccess
+import SVProgressHUD
 
 class MastodonClient: NSObject {
 
@@ -16,6 +17,26 @@ class MastodonClient: NSObject {
 
     private let keychain = Keychain(service: keychainServiceKey)
     private let baseUrl = UserDefaults.string(forKey: .mastodonHostname) ?? ""
+
+    func getAuthToken(with code: String, handler: @escaping ((String?, Error?) -> Void)) {
+        let clientID = ProcessInfo.processInfo.get(forKey: .mastodonConsumerKey)
+        let clientSecret = ProcessInfo.processInfo.get(forKey: .mastodonConsumerSecret)
+
+        let parameter: Parameters = ["grant_type": "authorization_code",
+                                     "redirect_uri": "nowplaying-ios-nnsnodnb://oauth_mastodon",
+                                     "client_id": clientID,
+                                     "client_secret": clientSecret,
+                                     "code": code]
+        request(UserDefaults.string(forKey: .mastodonHostname)! + "/oauth/token", method: .post, parameter: parameter) { [unowned self] (response) in
+            SVProgressHUD.dismiss()
+            guard response.result.isSuccess, let value = response.result.value as? Parameters, let accessToken: String = value["access_token"] as? String else {
+                handler(nil, response.result.error)
+                return
+            }
+            self.keychain[KeychainKey.mastodonAccessToken.rawValue] = accessToken
+            handler(accessToken, nil)
+        }
+    }
 
     func toot(text: String, image: UIImage?, handler: @escaping ((Error?) -> ())) {
         guard let image = image, let imageData = UIImagePNGRepresentation(image) else {
