@@ -1,10 +1,10 @@
 name: Crashlytics, nameSpecified: 
 body: Fabric: Copyright 20…
-version: 3.10.1
+version: 3.10.2
 
 name: Fabric, nameSpecified: 
 body: Fabric: Copyright 20…
-version: 1.7.6
+version: 1.7.7
 
 name: TwitterCore, nameSpecified: 
 body: Copyright Twitter, I…
