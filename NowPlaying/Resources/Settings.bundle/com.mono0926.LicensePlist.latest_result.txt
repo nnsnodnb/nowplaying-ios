@@ -26,6 +26,8 @@ name: KeychainAccess, nameSpecified: , owner: kishikawakatsumi, version: v3.1.1
 
 name: OAuthSwift, nameSpecified: , owner: OAuthSwift, version: 1.2.1
 
+name: Result, nameSpecified: , owner: antitypical, version: 4.0.0
+
 name: SVProgressHUD, nameSpecified: , owner: SVProgressHUD, version: 2.2.5
 
 add-version-numbers: true

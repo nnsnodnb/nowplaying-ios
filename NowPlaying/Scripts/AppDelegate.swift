@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        checkFirebaseHostingAppVersion()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -96,6 +96,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         } catch {
             fatalError(error.localizedDescription)
+        }
+    }
+
+    private func checkFirebaseHostingAppVersion() {
+        AppInfoManager.getAppInfo { [weak self] (result) in
+            guard let wself = self else { return }
+            switch result {
+            case .success(let response):
+                guard let body = response.body, let appVersion = body["app_version"] as? Parameters,
+                    let requireVerion = appVersion["require"] as? String, let latestVersion = appVersion["latest"] as? String else {
+                        return
+                }
+                let current = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+
+                if !AppInfoManager.checkLargeVersion(current: current, target: requireVerion) {
+                    // 必須アップデート
+                    let alert = UIAlertController(title: "アップデートが必要です", message: nil, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
+                        let url = URL(string: websiteUrl)!
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    })
+                    DispatchQueue.main.async {
+                        wself.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                    }
+                } else if !AppInfoManager.checkLargeVersion(current: current, target: latestVersion) {
+                    // アップデートがある
+                    let alert = UIAlertController(title: "アップデートがあります", message: nil, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "あとで", style: .cancel, handler: nil))
+                    let action = UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
+                        let url = URL(string: websiteUrl)!
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
+                    alert.addAction(action)
+                    alert.preferredAction = action
+                    DispatchQueue.main.async {
+                        wself.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                    }
+                }
+
+            case .failure:
+                return
+            }
         }
     }
 }
