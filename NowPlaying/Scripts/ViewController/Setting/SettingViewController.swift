@@ -20,17 +20,20 @@ class SettingViewController: FormViewController {
 
     private let keychain = Keychain(service: keychainServiceKey)
 
+    private var safari: SFSafariViewController!
     private var isProcess = false
     private var isTwitterLogin = false
     private var isMastodonLogin = false
     private var productRequest: SKProductsRequest?
     private var products = [SKProduct]()
     private var purchasingProduct: SKProduct?
+    private var mastodonLoginButtonRowCell: ButtonRow.Cell?
 
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNotification()
         setupNavigationbar()
         setupIsLogin()
         setupProducts()
@@ -63,7 +66,17 @@ class SettingViewController: FormViewController {
         super.didReceiveMemoryWarning()
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: receiveSafariNotificationName, object: nil)
+    }
+
     // MARK: - Private method
+
+    private func setupNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveSafariNotification(_:)),
+                                               name: receiveSafariNotificationName,
+                                               object: nil)
+    }
 
     private func setupNavigationbar() {
         guard navigationController != nil else {
@@ -179,7 +192,7 @@ class SettingViewController: FormViewController {
             if !row.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) {
                 return
             }
-            let alert = UIAlertController(title: nil, message: "起動中のみ自動的にツイートされます", preferredStyle: .alert)
+            let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             DispatchQueue.main.async {
                 self.present(alert, animated: true) {
@@ -217,42 +230,24 @@ class SettingViewController: FormViewController {
             cell.textLabel?.textColor = UIColor.black
             cell.accessoryType = .disclosureIndicator
         }).onCellSelection({ [unowned self] (cell, row) in
+            self.mastodonLoginButtonRowCell = cell
             row.deselect()
-            if !self.isMastodonLogin {
-                let baseUrl = UserDefaults.string(forKey: .mastodonHostname)!
-                guard URL(string: baseUrl + "/api/v1/apps") != nil else {
-                    self.showMastodonError()
-                    return
-                }
-
-                let clientID = ProcessInfo.processInfo.get(forKey: .mastodonConsumerKey)
-
-                /* GUIログイン */
-                let webViewController = WebViewController()
-                webViewController.url = URL(string: baseUrl + "/oauth/authorize?client_id=\(clientID)&response_type=code&redirect_uri=urn:ietf:wg:oauth:2.0:oob&scope=write")!
-                webViewController.handler = { accessToken, error in
-                    if error != nil {
-                        self.showMastodonError()
-                        return
-                    }
-                    self.isMastodonLogin = true
-                    UserDefaults.set(true, forKey: .isMastodonLogin)
-                    Analytics.logEvent("tap", parameters: [
-                        "type": "action",
-                        "button": "mastodon_login"]
-                    )
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                        SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                        SVProgressHUD.dismiss(withDelay: 0.5)
-                        cell.textLabel?.text = "ログアウト"
-                        let textRow = self.form.rowBy(tag: "mastodon_host") as! TextRow
-                        textRow.baseCell.isUserInteractionEnabled = false
-                    }
-                }
-                let navi = UINavigationController(rootViewController: webViewController)
-                DispatchQueue.main.async {
-                    self.present(navi, animated: true) {
-                        SVProgressHUD.dismiss()
+            if let baseUrl = UserDefaults.string(forKey: .mastodonHostname), !self.isMastodonLogin {
+                MastodonRequest.Register().send { [weak self] (result) in
+                    switch result {
+                    case .success(let response):
+                        guard let wself = self, let body = response.body, let clientID = body["client_id"] as? String,
+                            let clientSecret = body["client_secret"] as? String else {
+                            self?.showMastodonError()
+                            return
+                        }
+                        UserDefaults.set(clientID, forKey: .mastodonClientID)
+                        UserDefaults.set(clientSecret, forKey: .mastodonClientSecret)
+                        let url = URL(string: baseUrl + "/oauth/authorize?client_id=\(clientID)&response_type=code&redirect_uri=nowplaying-ios-nnsnodnb://oauth_mastodon&scope=write")!
+                        wself.safari = SFSafariViewController(url: url)
+                        wself.present(wself.safari, animated: true, completion: nil)
+                    case .failure:
+                        self?.showMastodonError()
                     }
                 }
             } else {
@@ -296,7 +291,7 @@ class SettingViewController: FormViewController {
                 "button": "mastodon_auto_tweet",
                 "value": row.value!]
             )
-            let alert = UIAlertController(title: nil, message: "起動中のみ自動的にトゥートされます", preferredStyle: .alert)
+            let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             DispatchQueue.main.async {
                 self.present(alert, animated: true) {
@@ -341,6 +336,18 @@ class SettingViewController: FormViewController {
                 self.navigationController?.present(safariViewController, animated: true, completion: nil)
             }
         })
+        <<< ButtonRow() {
+            $0.title = "バグ報告"
+        }.cellUpdate { (cell, _) in
+            cell.textLabel?.textAlignment = .left
+            cell.textLabel?.textColor = UIColor.black
+            cell.accessoryType = .disclosureIndicator
+        }.onCellSelection { [unowned self] (_, _) in
+            let safariViewController = SFSafariViewController(url: URL(string: "https://goo.gl/forms/Ve9hPalUJD3DQW5y2")!)
+            DispatchQueue.main.async {
+                self.navigationController?.present(safariViewController, animated: true, completion: nil)
+            }
+        }
         <<< ButtonRow() {
             $0.title = "アプリ内広告削除(有料)"
             $0.tag = "remove_admob"
@@ -450,6 +457,38 @@ class SettingViewController: FormViewController {
     @objc private func onTapCloseButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
+
+    // MARK: - Notification target
+
+    @objc private func receiveSafariNotification(_ notification: Notification) {
+        guard let url = notification.object as? URL, let queryString = url.query else { return }
+        let query = QueryParser.queryDictionary(query: queryString)
+        guard let code = query["code"] as? String else { return }
+        MastodonRequest.GetToken(code: code).send { [weak self] (result) in
+            guard let wself = self else { return }
+            switch result {
+            case .success(let response):
+                guard let body = response.body, let accessToken = body["access_token"] as? String else {
+                    return
+                }
+                wself.keychain[KeychainKey.mastodonAccessToken.rawValue] = accessToken
+                DispatchQueue.main.async {
+                    SVProgressHUD.showSuccess(withStatus: "ログインしました")
+                    SVProgressHUD.dismiss(withDelay: 0.5)
+                    wself.isMastodonLogin = true
+                    UserDefaults.set(true, forKey: .isMastodonLogin)
+                    wself.mastodonLoginButtonRowCell?.textLabel?.text = "ログアウト"
+                    let textRow = wself.form.rowBy(tag: "mastodon_host") as! TextRow
+                    textRow.baseCell.isUserInteractionEnabled = false
+                }
+            case .failure:
+                break
+            }
+            DispatchQueue.main.async {
+                wself.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
 }
 
 // MARK: - PaymentManagerProtocol
@@ -467,58 +506,35 @@ extension SettingViewController: PaymentManagerProtocol {
 
     func finish(request: SKRequest, didFailWithError: Error) {
         SVProgressHUD.showError(withStatus: "通信エラーが発生しました")
+        SVProgressHUD.dismiss(withDelay: 0.3)
     }
 
     func finish(success paymentTransaction: SKPaymentTransaction) {
         DispatchQueue.main.async { [weak self] in
             guard let `self` = self else { return }
             SVProgressHUD.show()
-            guard let receiptUrl = Bundle.main.appStoreReceiptURL else {
-                return
-            }
-            do {
-                let receiptData = try Data(contentsOf: receiptUrl, options: .uncached)
-                let requestContents = [
-                    "receipt-data": receiptData.base64EncodedString()
-                ]
-                let requestData = try JSONSerialization.data(withJSONObject: requestContents, options: [])
-                let verifyUrl: URL
-                #if DEBUG
-                    verifyUrl = URL(string: "https://sandbox.itunes.apple.com/verifyReceipt")!
-                #else
-                    verifyUrl = URL(string: "https://buy.itunes.apple.com/verifyReceipt")!
-                #endif
-                var storeRequest = URLRequest(url: verifyUrl)
-                storeRequest.httpMethod = "POST"
-                storeRequest.httpBody = requestData
-
-                let session = URLSession(configuration: URLSessionConfiguration.default)
-                let task = session.dataTask(with: storeRequest) { [weak self] (data, response, error) in
-                    guard let data = data else {
-                        return
-                    }
-                    do {
-                        guard let jsonResponse = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
-                            let status = jsonResponse["status"] as? Int,
-                            let wself = self,
-                            let purchasingProduct = wself.purchasingProduct,
-                            status == 0 else {
-                                return
-                        }
-                        if purchasingProduct.productIdentifier == "moe.nnsnodnb.NowPlaying.autoTweet" {
-                            wself.completePuchaseAutoTweet()
-                        } else {
-                            wself.completePurchaseRemoveAdmob()
-                        }
-                    } catch {
-                        SVProgressHUD.showError(withStatus: "検証に失敗しました")
-                    }
+            guard let receiptUrl = Bundle.main.appStoreReceiptURL,
+                let receiptData = try? Data(contentsOf: receiptUrl, options: .uncached) else { return }
+            let request = PurchaseRequest(receiptData: receiptData.base64EncodedString())
+            request.send { [weak self] (result) in
+                DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
                 }
-                task.resume()
-            } catch {
-                self.purchasingProduct = nil
-                self.isProcess = false
-                fatalError()
+                switch result {
+                case .success(let response):
+                    guard let body = response.body, let status = body["status"] as? Int,
+                        let wself = self, let purchasingProduct = wself.purchasingProduct, status == 0 else {
+                            return
+                    }
+                    if purchasingProduct.productIdentifier == "moe.nnsnodnb.NowPlaying.autoTweet" {
+                        wself.completePuchaseAutoTweet()
+                    } else if purchasingProduct.productIdentifier == "moe.nnsnodnb.NowPlaying.hideAdMob" {
+                        wself.completePurchaseRemoveAdmob()
+                    }
+                case .failure:
+                    SVProgressHUD.showError(withStatus: "検証に失敗しました")
+                    SVProgressHUD.dismiss(withDelay: 0.3)
+                }
             }
         }
     }
@@ -528,6 +544,7 @@ extension SettingViewController: PaymentManagerProtocol {
         isProcess = false
         DispatchQueue.main.async {
             SVProgressHUD.showError(withStatus: "購入に失敗しました")
+            SVProgressHUD.dismiss(withDelay: 0.3)
         }
     }
 
@@ -539,7 +556,7 @@ extension SettingViewController: PaymentManagerProtocol {
         }
         if purchasingProduct!.productIdentifier == "moe.nnsnodnb.NowPlaying.autoTweet" {
             completePuchaseAutoTweet()
-        } else {
+        } else if purchasingProduct!.productIdentifier == "moe.nnsnodnb.NowPlaying.hideAdMob" {
             completePurchaseRemoveAdmob()
         }
         isProcess = false
@@ -551,6 +568,7 @@ extension SettingViewController: PaymentManagerProtocol {
         purchasingProduct = nil
         DispatchQueue.main.async {
             SVProgressHUD.showError(withStatus: "復元に失敗しました")
+            SVProgressHUD.dismiss(withDelay: 0.3)
         }
     }
 }

@@ -14,6 +14,8 @@ enum UserDefaultsKey: String {
     case isAutoTweetPurchase = "is_auto_tweet_purchase"
     case isAutoTweet = "is_auto_tweet"
     case isShowAutoTweetAlert = "is_show_auto_tweet_alert"
+    case mastodonClientID = "mastodon_client_id"
+    case mastodonClientSecret = "mastodon_client_secret"
     case mastodonHostname = "mastodon_hostname"
     case mastodonAuthorizationCode = "authorization_code"
     case isMastodonLogin = "is_mastodon_login"
@@ -43,3 +45,7 @@ enum EnvironmentKey: String {
 let keychainServiceKey = "moe.nnsnodnb.NowPlaying"
 
 let websiteUrl = "https://itunes.apple.com/jp/app/nowplaying-%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B%E3%81%A0%E3%81%91%E3%81%A7%E3%83%84%E3%82%A4%E3%83%BC%E3%83%88/id1289764391?mt=8"
+
+typealias Parameters = [String: Any]
+
+let receiveSafariNotificationName = NSNotification.Name("receiveSafariNotification")

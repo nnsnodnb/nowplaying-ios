@@ -20,8 +20,6 @@
 		CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1AAFE41F75459B00384000 /* Eureka.framework */; };
 		CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1AAFE91F75F2A600384000 /* Common.swift */; };
 		CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF28A8331FD180AC00E45F12 /* Alamofire.framework */; };
-		CF28A8381FD183D300E45F12 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF28A8361FD183D300E45F12 /* WebViewController.swift */; };
-		CF28A8391FD183D300E45F12 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8371FD183D300E45F12 /* WebViewController.xib */; };
 		CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
 		CF2DBD6420A4AB1B0039217F /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD5820A4AB1A0039217F /* FirebaseInstanceID.framework */; };
@@ -60,8 +58,16 @@
 		CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */; };
 		CF8E48802081EC75003A5E70 /* ProcessInfo+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */; };
 		CF918D071F7075110005B686 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF918D061F7075110005B686 /* Settings.bundle */; };
-		CFB553821FD17163000618FF /* MastodonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB553811FD17163000618FF /* MastodonClient.swift */; };
-		CFC5C93720AB1B0B00B49829 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC5C93620AB1B0A00B49829 /* OAuthSwift.framework */; };
+		CFD1D37420B87E94009C50ED /* AppInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37320B87E94009C50ED /* AppInfoManager.swift */; };
+		CFD1D37620B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */; };
+		CFD1D37F20B88188009C50ED /* APIResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37D20B88188009C50ED /* APIResult.swift */; };
+		CFD1D38020B88188009C50ED /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37E20B88188009C50ED /* APIResponse.swift */; };
+		CFD1D38220B887A9009C50ED /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFD1D38120B887A9009C50ED /* Result.framework */; };
+		CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39020B9A176009C50ED /* R.generated.swift */; };
+		CFD1D39F20B9C465009C50ED /* RequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39E20B9C465009C50ED /* RequestFactory.swift */; };
+		CFD1D3A120B9CA76009C50ED /* PurchaseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D3A020B9CA76009C50ED /* PurchaseRequest.swift */; };
+		CFD1D3A320B9CFF3009C50ED /* MastodonRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */; };
+		CFFDE9A520BA15080032F2B0 /* MastodonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFDE9A420BA15070032F2B0 /* MastodonClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,8 +109,6 @@
 		CF1AAFE41F75459B00384000 /* Eureka.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Eureka.framework; path = Carthage/Build/iOS/Eureka.framework; sourceTree = "<group>"; };
 		CF1AAFE91F75F2A600384000 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = Common/Common.swift; sourceTree = "<group>"; };
 		CF28A8331FD180AC00E45F12 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
-		CF28A8361FD183D300E45F12 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WebViewController.swift; path = WebView/WebViewController.swift; sourceTree = "<group>"; };
-		CF28A8371FD183D300E45F12 /* WebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WebViewController.xib; path = WebView/WebViewController.xib; sourceTree = "<group>"; };
 		CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Floaty.framework; path = Carthage/Build/iOS/Floaty.framework; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF2DBD5820A4AB1A0039217F /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstanceID.framework; path = Carthage/Build/iOS/FirebaseInstanceID.framework; sourceTree = "<group>"; };
@@ -148,8 +152,16 @@
 		CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Key.swift"; sourceTree = "<group>"; };
 		CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+Key.swift"; sourceTree = "<group>"; };
 		CF918D061F7075110005B686 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		CFB553811FD17163000618FF /* MastodonClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonClient.swift; path = Manager/MastodonClient.swift; sourceTree = "<group>"; };
-		CFC5C93620AB1B0A00B49829 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
+		CFD1D37320B87E94009C50ED /* AppInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoManager.swift; sourceTree = "<group>"; };
+		CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPURLResponse+StatusCode.swift"; sourceTree = "<group>"; };
+		CFD1D37D20B88188009C50ED /* APIResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIResult.swift; sourceTree = "<group>"; };
+		CFD1D37E20B88188009C50ED /* APIResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
+		CFD1D38120B887A9009C50ED /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
+		CFD1D39020B9A176009C50ED /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
+		CFD1D39E20B9C465009C50ED /* RequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestFactory.swift; sourceTree = "<group>"; };
+		CFD1D3A020B9CA76009C50ED /* PurchaseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseRequest.swift; sourceTree = "<group>"; };
+		CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonRequest.swift; sourceTree = "<group>"; };
+		CFFDE9A420BA15070032F2B0 /* MastodonClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MastodonClient.swift; path = Manager/MastodonClient.swift; sourceTree = "<group>"; };
 		F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,7 +170,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFC5C93720AB1B0B00B49829 /* OAuthSwift.framework in Frameworks */,
+				CFD1D38220B887A9009C50ED /* Result.framework in Frameworks */,
 				CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */,
 				CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */,
 				CF2DBD6620A4AB1B0039217F /* FirebaseCoreDiagnostics.framework in Frameworks */,
@@ -246,15 +258,6 @@
 			name = Common;
 			sourceTree = "<group>";
 		};
-		CF28A8351FD183B700E45F12 /* WebView */ = {
-			isa = PBXGroup;
-			children = (
-				CF28A8361FD183D300E45F12 /* WebViewController.swift */,
-				CF28A8371FD183D300E45F12 /* WebViewController.xib */,
-			);
-			name = WebView;
-			sourceTree = "<group>";
-		};
 		CF43E7D31F733C1F00A2A49A /* Tweet */ = {
 			isa = PBXGroup;
 			children = (
@@ -298,7 +301,7 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CFC5C93620AB1B0A00B49829 /* OAuthSwift.framework */,
+				CFD1D38120B887A9009C50ED /* Result.framework */,
 				CF2DBD7220A4AB630039217F /* libicucore.tbd */,
 				CF2DBD7020A4AB330039217F /* Firebase.framework */,
 				CF2DBD6120A4AB1B0039217F /* FirebaseAnalytics.framework */,
@@ -331,6 +334,8 @@
 		CF615B021F56E75900315019 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				CFD1D39020B9A176009C50ED /* R.generated.swift */,
+				CFD1D37C20B88188009C50ED /* API */,
 				CF8E487C2081E851003A5E70 /* Extension */,
 				CF0FA21D206D506F00647317 /* Protocol */,
 				CF1AAFE61F75F28400384000 /* Common */,
@@ -344,7 +349,6 @@
 		CF615B031F56E76200315019 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				CF28A8351FD183B700E45F12 /* WebView */,
 				CF1611381F727D6E0027144D /* SystemPlay */,
 				CF1611331F726CF20027144D /* Play */,
 				CF1AAFDD1F7544D800384000 /* Setting */,
@@ -400,7 +404,7 @@
 				CF8C85C91F6EB3CF0051A0C7 /* AudioManager.swift */,
 				CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */,
 				CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */,
-				CFB553811FD17163000618FF /* MastodonClient.swift */,
+				CFFDE9A420BA15070032F2B0 /* MastodonClient.swift */,
 				CF0FA21B206D4D5A00647317 /* PaymentManager.swift */,
 			);
 			name = Manager;
@@ -411,8 +415,22 @@
 			children = (
 				CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */,
 				CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */,
+				CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		CFD1D37C20B88188009C50ED /* API */ = {
+			isa = PBXGroup;
+			children = (
+				CFD1D37E20B88188009C50ED /* APIResponse.swift */,
+				CFD1D37D20B88188009C50ED /* APIResult.swift */,
+				CFD1D37320B87E94009C50ED /* AppInfoManager.swift */,
+				CFD1D39E20B9C465009C50ED /* RequestFactory.swift */,
+				CFD1D3A020B9CA76009C50ED /* PurchaseRequest.swift */,
+				CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 		EC7B05E3D377DC1195B61730 /* Pods */ = {
@@ -432,6 +450,7 @@
 			buildConfigurationList = CF615AFC1F56AB3B00315019 /* Build configuration list for PBXNativeTarget "NowPlaying" */;
 			buildPhases = (
 				2B302B8935A65A820A7DC1BE /* [CP] Check Pods Manifest.lock */,
+				CFD1D38F20B9A148009C50ED /* R.swift */,
 				CF615AE61F56AB3B00315019 /* Sources */,
 				CF28A8461FD29D6200E45F12 /* Check GoogleService-Info.plist */,
 				CF615AE71F56AB3B00315019 /* Frameworks */,
@@ -442,6 +461,7 @@
 				CF4D73D31F7A979400E72FBF /* Crashlytics */,
 				CF28A83E1FD1C87D00E45F12 /* License-Plist */,
 				CF6FFF2D207E4CE4003FD38D /* Embed App Extensions */,
+				8A6A952692B78C7F109051EF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -528,7 +548,6 @@
 				CF918D071F7075110005B686 /* Settings.bundle in Resources */,
 				CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */,
 				CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */,
-				CF28A8391FD183D300E45F12 /* WebViewController.xib in Resources */,
 				CF8C85E01F6F1B610051A0C7 /* .env in Resources */,
 				CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */,
 				CF1AAFE11F7544F200384000 /* SettingViewController.xib in Resources */,
@@ -566,6 +585,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8A6A952692B78C7F109051EF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/NSURL+QueryDictionary/NSURL_QueryDictionary.framework",
+				"${BUILT_PRODUCTS_DIR}/R.swift.Library/Rswift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSURL_QueryDictionary.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Rswift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CF28A83E1FD1C87D00E45F12 /* License-Plist */ = {
@@ -622,7 +661,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/KeychainAccess.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Floaty.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/OAuthSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
 			);
 			name = Carthage;
 			outputPaths = (
@@ -644,6 +683,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFileSource=\"${SRCROOT}/${INFOPLIST_FILE}\"\ninfoPlistFileDestination=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\nif [ \"${BITRISE_SOURCE_DIR}\" == \"\" ]; then\n. NowPlaying/Resources/.env\nfi\n\n$plistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 twitterkit-${TWITTER_CONSUMER_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :Fabric:APIKey ${FABRIC_API_KEY}\" \"${infoPlistFileDestination}\"";
+		};
+		CFD1D38F20B9A148009C50ED /* R.swift */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = R.swift;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/NowPlaying/Scripts\"";
 		};
 		DC4488FCE3B57E00C3DB2FFC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -677,16 +730,23 @@
 				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
 				CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */,
+				CFFDE9A520BA15080032F2B0 /* MastodonClient.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
+				CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */,
 				CF8E48802081EC75003A5E70 /* ProcessInfo+Key.swift in Sources */,
+				CFD1D37620B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift in Sources */,
+				CFD1D37420B87E94009C50ED /* AppInfoManager.swift in Sources */,
 				CF0FA21F206D508900647317 /* PaymentManagerProtocol.swift in Sources */,
+				CFD1D37F20B88188009C50ED /* APIResult.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */,
+				CFD1D38020B88188009C50ED /* APIResponse.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
+				CFD1D3A120B9CA76009C50ED /* PurchaseRequest.swift in Sources */,
+				CFD1D3A320B9CFF3009C50ED /* MastodonRequest.swift in Sources */,
+				CFD1D39F20B9C465009C50ED /* RequestFactory.swift in Sources */,
 				CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */,
 				CF1AAFE01F7544F200384000 /* SettingViewController.swift in Sources */,
-				CF28A8381FD183D300E45F12 /* WebViewController.swift in Sources */,
-				CFB553821FD17163000618FF /* MastodonClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

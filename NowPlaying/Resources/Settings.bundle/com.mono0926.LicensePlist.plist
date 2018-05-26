@@ -16,7 +16,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/Crashlytics</string>
 			<key>Title</key>
-			<string>Crashlytics (3.10.1)</string>
+			<string>Crashlytics (3.10.2)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -40,7 +40,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/Fabric</string>
 			<key>Title</key>
-			<string>Fabric (1.7.6)</string>
+			<string>Fabric (1.7.7)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -62,9 +62,41 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>com.mono0926.LicensePlist/NSURL+QueryDictionary</string>
+			<key>Title</key>
+			<string>NSURL+QueryDictionary</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>com.mono0926.LicensePlist/OAuthSwift</string>
 			<key>Title</key>
 			<string>OAuthSwift (1.2.1)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>com.mono0926.LicensePlist/R.swift</string>
+			<key>Title</key>
+			<string>R.swift (4.0.0)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>com.mono0926.LicensePlist/R.swift.Library</string>
+			<key>Title</key>
+			<string>R.swift.Library (4.0.0)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>com.mono0926.LicensePlist/Result</string>
+			<key>Title</key>
+			<string>Result (4.0.0)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import KeychainAccess
+import SVProgressHUD
 
 class MastodonClient: NSObject {
 

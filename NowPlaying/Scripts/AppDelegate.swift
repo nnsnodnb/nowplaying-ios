@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private let keychain = Keychain()
 
+    private var backgroundTaskID: UIBackgroundTaskIdentifier = 0
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         SVProgressHUD.setDefaultMaskType(.clear)
         UIApplication.shared.beginReceivingRemoteControlEvents()
@@ -42,12 +44,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]=[:]) -> Bool {
+        if let sourceApplication = options[.sourceApplication] as? String {
+            if String(describing: sourceApplication) == "com.apple.SafariViewService" {
+                NotificationCenter.default.post(name: receiveSafariNotificationName, object: url)
+                return true
+            }
+        }
         return Twitter.sharedInstance().application(application, open: url, options: options)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        backgroundTaskID = application.beginBackgroundTask(withName: "AutoTweetBackgroundTask") { [weak self] in
+            guard let `self` = self else { return }
+            application.endBackgroundTask(self.backgroundTaskID)
+            self.backgroundTaskID = UIBackgroundTaskInvalid
+        }
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -60,7 +71,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        application.endBackgroundTask(backgroundTaskID)
+        checkFirebaseHostingAppVersion()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -96,6 +108,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         } catch {
             fatalError(error.localizedDescription)
+        }
+    }
+
+    private func checkFirebaseHostingAppVersion() {
+        AppInfoManager().fetch { [weak self] (result) in
+            guard let wself = self else { return }
+            switch result {
+            case .success(let response):
+                guard let body = response.body, let appVersion = body["app_version"] as? Parameters,
+                    let requireVerion = appVersion["require"] as? String, let latestVersion = appVersion["latest"] as? String else {
+                        return
+                }
+                let current = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+
+                if !AppInfoManager.checkLargeVersion(current: current, target: requireVerion) {
+                    // 必須アップデート
+                    let alert = UIAlertController(title: "アップデートが必要です", message: nil, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
+                        let url = URL(string: websiteUrl)!
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    })
+                    DispatchQueue.main.async {
+                        wself.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                    }
+                } else if !AppInfoManager.checkLargeVersion(current: current, target: latestVersion) {
+                    // アップデートがある
+                    let alert = UIAlertController(title: "アップデートがあります", message: nil, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "あとで", style: .cancel, handler: nil))
+                    let action = UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
+                        let url = URL(string: websiteUrl)!
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
+                    alert.addAction(action)
+                    alert.preferredAction = action
+                    DispatchQueue.main.async {
+                        wself.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                    }
+                }
+            case .failure:
+                break
+            }
         }
     }
 }
