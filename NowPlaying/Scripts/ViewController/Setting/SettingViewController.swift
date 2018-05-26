@@ -232,16 +232,24 @@ class SettingViewController: FormViewController {
         }).onCellSelection({ [unowned self] (cell, row) in
             self.mastodonLoginButtonRowCell = cell
             row.deselect()
-            if !self.isMastodonLogin {
-                let clientID = ProcessInfo.processInfo.get(forKey: .mastodonConsumerKey)
-                guard let baseUrl = UserDefaults.string(forKey: .mastodonHostname),
-                    let url = URL(string: baseUrl + "/oauth/authorize?client_id=\(clientID)&response_type=code&redirect_uri=nowplaying-ios-nnsnodnb://oauth_mastodon&scope=write") else {
-                        self.showMastodonError()
-                        return
+            if let baseUrl = UserDefaults.string(forKey: .mastodonHostname), !self.isMastodonLogin {
+                MastodonRequest.Register().send { [weak self] (result) in
+                    switch result {
+                    case .success(let response):
+                        guard let wself = self, let body = response.body, let clientID = body["client_id"] as? String,
+                            let clientSecret = body["client_secret"] as? String else {
+                            self?.showMastodonError()
+                            return
+                        }
+                        UserDefaults.set(clientID, forKey: .mastodonClientID)
+                        UserDefaults.set(clientSecret, forKey: .mastodonClientSecret)
+                        let url = URL(string: baseUrl + "/oauth/authorize?client_id=\(clientID)&response_type=code&redirect_uri=nowplaying-ios-nnsnodnb://oauth_mastodon&scope=write")!
+                        wself.safari = SFSafariViewController(url: url)
+                        wself.present(wself.safari, animated: true, completion: nil)
+                    case .failure:
+                        self?.showMastodonError()
+                    }
                 }
-
-                self.safari = SFSafariViewController(url: url)
-                self.present(self.safari, animated: true, completion: nil)
             } else {
                 AuthManager.shared.mastodonLogout()
                 self.isMastodonLogin = false
@@ -456,21 +464,28 @@ class SettingViewController: FormViewController {
         guard let url = notification.object as? URL, let queryString = url.query else { return }
         let query = QueryParser.queryDictionary(query: queryString)
         guard let code = query["code"] as? String else { return }
-        MastodonClient.shared.getAuthToken(with: code) { [weak self] (accessToken, error) in
-            if let accessToken = accessToken, error == nil {
-                self?.keychain[KeychainKey.mastodonAccessToken.rawValue] = accessToken
+        MastodonRequest.GetToken(code: code).send { [weak self] (result) in
+            guard let wself = self else { return }
+            switch result {
+            case .success(let response):
+                guard let body = response.body, let accessToken = body["access_token"] as? String else {
+                    return
+                }
+                wself.keychain[KeychainKey.mastodonAccessToken.rawValue] = accessToken
                 DispatchQueue.main.async {
                     SVProgressHUD.showSuccess(withStatus: "ログインしました")
                     SVProgressHUD.dismiss(withDelay: 0.5)
-                    self?.isMastodonLogin = true
+                    wself.isMastodonLogin = true
                     UserDefaults.set(true, forKey: .isMastodonLogin)
-                    self?.mastodonLoginButtonRowCell?.textLabel?.text = "ログアウト"
-                    let textRow = self?.form.rowBy(tag: "mastodon_host") as! TextRow
+                    wself.mastodonLoginButtonRowCell?.textLabel?.text = "ログアウト"
+                    let textRow = wself.form.rowBy(tag: "mastodon_host") as! TextRow
                     textRow.baseCell.isUserInteractionEnabled = false
                 }
+            case .failure:
+                break
             }
             DispatchQueue.main.async {
-                self?.dismiss(animated: true, completion: nil)
+                wself.dismiss(animated: true, completion: nil)
             }
         }
     }
