@@ -106,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func checkFirebaseHostingAppVersion() {
-        AppInfoManager.getAppInfo { [weak self] (result) in
+        AppInfoManager().fetch { [weak self] (result) in
             guard let wself = self else { return }
             switch result {
             case .success(let response):
@@ -140,9 +140,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         wself.window?.rootViewController?.present(alert, animated: true, completion: nil)
                     }
                 }
-
             case .failure:
-                return
+                break
             }
         }
     }

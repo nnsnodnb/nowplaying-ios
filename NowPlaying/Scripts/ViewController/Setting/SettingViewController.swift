@@ -491,58 +491,35 @@ extension SettingViewController: PaymentManagerProtocol {
 
     func finish(request: SKRequest, didFailWithError: Error) {
         SVProgressHUD.showError(withStatus: "通信エラーが発生しました")
+        SVProgressHUD.dismiss(withDelay: 0.3)
     }
 
     func finish(success paymentTransaction: SKPaymentTransaction) {
         DispatchQueue.main.async { [weak self] in
             guard let `self` = self else { return }
             SVProgressHUD.show()
-            guard let receiptUrl = Bundle.main.appStoreReceiptURL else {
-                return
-            }
-            do {
-                let receiptData = try Data(contentsOf: receiptUrl, options: .uncached)
-                let requestContents = [
-                    "receipt-data": receiptData.base64EncodedString()
-                ]
-                let requestData = try JSONSerialization.data(withJSONObject: requestContents, options: [])
-                let verifyUrl: URL
-                #if DEBUG
-                    verifyUrl = URL(string: "https://sandbox.itunes.apple.com/verifyReceipt")!
-                #else
-                    verifyUrl = URL(string: "https://buy.itunes.apple.com/verifyReceipt")!
-                #endif
-                var storeRequest = URLRequest(url: verifyUrl)
-                storeRequest.httpMethod = "POST"
-                storeRequest.httpBody = requestData
-
-                let session = URLSession(configuration: URLSessionConfiguration.default)
-                let task = session.dataTask(with: storeRequest) { [weak self] (data, response, error) in
-                    guard let data = data else {
-                        return
-                    }
-                    do {
-                        guard let jsonResponse = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
-                            let status = jsonResponse["status"] as? Int,
-                            let wself = self,
-                            let purchasingProduct = wself.purchasingProduct,
-                            status == 0 else {
-                                return
-                        }
-                        if purchasingProduct.productIdentifier == "moe.nnsnodnb.NowPlaying.autoTweet" {
-                            wself.completePuchaseAutoTweet()
-                        } else {
-                            wself.completePurchaseRemoveAdmob()
-                        }
-                    } catch {
-                        SVProgressHUD.showError(withStatus: "検証に失敗しました")
-                    }
+            guard let receiptUrl = Bundle.main.appStoreReceiptURL,
+                let receiptData = try? Data(contentsOf: receiptUrl, options: .uncached) else { return }
+            let request = PurchaseRequest(receiptData: receiptData.base64EncodedString())
+            request.send { [weak self] (result) in
+                DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
                 }
-                task.resume()
-            } catch {
-                self.purchasingProduct = nil
-                self.isProcess = false
-                fatalError()
+                switch result {
+                case .success(let response):
+                    guard let body = response.body, let status = body["status"] as? Int,
+                        let wself = self, let purchasingProduct = wself.purchasingProduct, status == 0 else {
+                            return
+                    }
+                    if purchasingProduct.productIdentifier == "moe.nnsnodnb.NowPlaying.autoTweet" {
+                        wself.completePuchaseAutoTweet()
+                    } else if purchasingProduct.productIdentifier == "moe.nnsnodnb.NowPlaying.hideAdMob" {
+                        wself.completePurchaseRemoveAdmob()
+                    }
+                case .failure:
+                    SVProgressHUD.showError(withStatus: "検証に失敗しました")
+                    SVProgressHUD.dismiss(withDelay: 0.3)
+                }
             }
         }
     }
@@ -552,6 +529,7 @@ extension SettingViewController: PaymentManagerProtocol {
         isProcess = false
         DispatchQueue.main.async {
             SVProgressHUD.showError(withStatus: "購入に失敗しました")
+            SVProgressHUD.dismiss(withDelay: 0.3)
         }
     }
 
@@ -563,7 +541,7 @@ extension SettingViewController: PaymentManagerProtocol {
         }
         if purchasingProduct!.productIdentifier == "moe.nnsnodnb.NowPlaying.autoTweet" {
             completePuchaseAutoTweet()
-        } else {
+        } else if purchasingProduct!.productIdentifier == "moe.nnsnodnb.NowPlaying.hideAdMob" {
             completePurchaseRemoveAdmob()
         }
         isProcess = false
@@ -575,6 +553,7 @@ extension SettingViewController: PaymentManagerProtocol {
         purchasingProduct = nil
         DispatchQueue.main.async {
             SVProgressHUD.showError(withStatus: "復元に失敗しました")
+            SVProgressHUD.dismiss(withDelay: 0.3)
         }
     }
 }

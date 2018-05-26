@@ -9,24 +9,10 @@
 import Foundation
 import Result
 
-class AppInfoManager {
+class AppInfoManager: RequestFactory {
 
-    static var session: URLSession {
-        let sessionConfigure = URLSessionConfiguration.default
-        return URLSession(configuration: sessionConfigure)
-    }
-
-    class func getAppInfo(handler: @escaping (APIResult) -> Void) {
-        guard let url = URL(string: "https://nowplayingios.firebaseapp.com/app_info.json") else { return }
-        let task = AppInfoManager.session.dataTask(with: url) { (data, response, error) in
-            if let data = data, let urlResponse = response as? HTTPURLResponse, urlResponse.statusCode.isSuccessStatusCode {
-                handler(APIResult(value: APIResponse(from: data, urlResponse: urlResponse)))
-            } else {
-                let error = error ?? NSError(domain: "APIRequestError", code: 2, userInfo: nil)
-                handler(APIResult(error: AnyError(error)))
-            }
-        }
-        task.resume()
+    override var url: URL {
+        return URL(string: "https://nowplayingios.firebaseapp.com/app_info.json")!
     }
 
     class func parseStringVersion(from versionString: String) -> (Int, Int, Int) {

@@ -9,5 +9,6 @@ target 'NowPlaying' do
   pod 'Crashlytics'
   pod 'TwitterKit'
   pod 'R.swift'
+  pod 'NSURL+QueryDictionary'
 
 end

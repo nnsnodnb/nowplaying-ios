@@ -2,6 +2,7 @@ PODS:
   - Crashlytics (3.10.2):
     - Fabric (~> 1.7.7)
   - Fabric (1.7.7)
+  - "NSURL+QueryDictionary (1.2.0)"
   - R.swift (4.0.0):
     - R.swift.Library (~> 4.0.0)
   - R.swift.Library (4.0.0)
@@ -12,6 +13,7 @@ PODS:
 DEPENDENCIES:
   - Crashlytics
   - Fabric
+  - "NSURL+QueryDictionary"
   - R.swift
   - TwitterKit
 
@@ -19,6 +21,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Crashlytics
     - Fabric
+    - "NSURL+QueryDictionary"
     - R.swift
     - R.swift.Library
     - TwitterCore
@@ -27,11 +30,12 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Crashlytics: 0360624eea1c978a743feddb2fb1ef8b37fb7a0d
   Fabric: bda89e242bce1b7b8ab264248cf3407774ce0095
+  "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   R.swift: d6a5ec2f55a8441dc0ed9f1f8b37d7d11ae85c66
   R.swift.Library: c3af34921024333546e23b70e70d0b4e0cffca75
   TwitterCore: e0420b01e02e7d20e94690e37f43e75de219ab8d
   TwitterKit: 205ac89824bbfe9e85a16c420d30bb7bcbedac45
 
-PODFILE CHECKSUM: d0df240c23e45ea2fca57512c2788729013678b4
+PODFILE CHECKSUM: 6d42d68ca0404c0242a48e2c22a409792c2bcca5
 
 COCOAPODS: 1.5.3

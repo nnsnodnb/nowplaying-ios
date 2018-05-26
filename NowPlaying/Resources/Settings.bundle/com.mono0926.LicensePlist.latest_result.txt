@@ -6,6 +6,10 @@ name: Fabric, nameSpecified:
 body: Fabric: Copyright 20…
 version: 1.7.7
 
+name: NSURL+QueryDictionary, nameSpecified: 
+body: The MIT License (MIT…
+version: 
+
 name: R.swift, nameSpecified: 
 body: The MIT License (MIT…
 version: 4.0.0
