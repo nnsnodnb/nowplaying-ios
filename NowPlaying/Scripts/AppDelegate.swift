@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private let keychain = Keychain()
 
+    private var backgroundTaskID: UIBackgroundTaskIdentifier = 0
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         SVProgressHUD.setDefaultMaskType(.clear)
         UIApplication.shared.beginReceivingRemoteControlEvents()
@@ -52,8 +54,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        backgroundTaskID = application.beginBackgroundTask(withName: "AutoTweetBackgroundTask") { [weak self] in
+            guard let `self` = self else { return }
+            application.endBackgroundTask(self.backgroundTaskID)
+            self.backgroundTaskID = UIBackgroundTaskInvalid
+        }
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -66,6 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
+        application.endBackgroundTask(backgroundTaskID)
         checkFirebaseHostingAppVersion()
     }
 
