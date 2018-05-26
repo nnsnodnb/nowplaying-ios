@@ -329,6 +329,18 @@ class SettingViewController: FormViewController {
             }
         })
         <<< ButtonRow() {
+            $0.title = "バグ報告"
+        }.cellUpdate { (cell, _) in
+            cell.textLabel?.textAlignment = .left
+            cell.textLabel?.textColor = UIColor.black
+            cell.accessoryType = .disclosureIndicator
+        }.onCellSelection { [unowned self] (_, _) in
+            let safariViewController = SFSafariViewController(url: URL(string: "https://goo.gl/forms/Ve9hPalUJD3DQW5y2")!)
+            DispatchQueue.main.async {
+                self.navigationController?.present(safariViewController, animated: true, completion: nil)
+            }
+        }
+        <<< ButtonRow() {
             $0.title = "アプリ内広告削除(有料)"
             $0.tag = "remove_admob"
             $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isPurchasedRemoveAdMob))
