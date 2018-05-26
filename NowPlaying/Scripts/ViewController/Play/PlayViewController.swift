@@ -174,8 +174,8 @@ class PlayViewController: UIViewController {
         }
         SVProgressHUD.show()
         let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
-        if let artwork = song?.artwork, UserDefaults.bool(forKey: .isMastodonWithImage) {
-            let image = artwork.image(at: artwork.bounds.size)
+        if let artwork = song?.artwork, UserDefaults.bool(forKey: .isMastodonWithImage),
+            let image = artwork.image(at: artwork.bounds.size) {
             Analytics.logEvent("post", parameters: [
                 "type": "mastodon",
                 "auto_post": true,
@@ -183,12 +183,12 @@ class PlayViewController: UIViewController {
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
-            MastodonClient.shared.toot(text: message, image: image, handler: { (error) in
+            MastodonClient.shared.toot(text: message, image: image) { (error) in
                 SVProgressHUD.dismiss()
                 if error != nil {
                     self.showError(error: error!)
                 }
-            })
+            }
         } else {
             Analytics.logEvent("post", parameters: [
                 "type": "tweet",
@@ -197,12 +197,18 @@ class PlayViewController: UIViewController {
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
-            MastodonClient.shared.toot(text: message, handler: { (error) in
-                SVProgressHUD.dismiss()
-                if error != nil {
-                    self.showError(error: error!)
+            MastodonRequest.Toot(status: message).send { [weak self] (result) in
+                DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
+                    guard let `self` = self else { return }
+                    switch result {
+                    case .success:
+                        break
+                    case .failure(let error):
+                        self.showError(error: error.error)
+                    }
                 }
-            })
+            }
         }
     }
 

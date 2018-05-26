@@ -9,3 +9,4 @@
 import Result
 
 typealias APIResult = Result<APIResponse, AnyError>
+typealias UploadResult = Result<Parameters?, AnyError>

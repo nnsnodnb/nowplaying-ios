@@ -135,7 +135,7 @@ class TweetViewController: UIViewController {
 
     @objc func onTapTweetButton(_ sender: UIBarButtonItem) {
         SVProgressHUD.show()
-        if shareImage != nil {
+        if let image = shareImage {
             if isMastodon {
                 Analytics.logEvent("post", parameters: [
                     "type": "mastodon",
@@ -144,9 +144,18 @@ class TweetViewController: UIViewController {
                     "artist_name": artistName,
                     "song_name": songName]
                 )
-                MastodonClient.shared.toot(text: textView.text, image: shareImage, handler: { [unowned self] (error) in
-                    self.treatmentRespones(error)
-                })
+                MastodonClient.shared.toot(text: textView.text, image: image) { [weak self] (error) in
+                    DispatchQueue.main.async {
+                        SVProgressHUD.dismiss()
+                        guard let wself = self else { return }
+                        if error == nil {
+                            wself.textView.resignFirstResponder()
+                            wself.dismiss(animated: true, completion: nil)
+                            return
+                        }
+                        wself.showError(error: error!)
+                    }
+                }
             } else {
                 Analytics.logEvent("post", parameters: [
                     "type": "twitter",
@@ -169,9 +178,19 @@ class TweetViewController: UIViewController {
                     "artist_name": artistName,
                     "song_name": songName]
                 )
-                MastodonClient.shared.toot(text: textView.text, handler: { [unowned self] (error) in
-                    self.treatmentRespones(error)
-                })
+                MastodonRequest.Toot(status: textView.text).send { [weak self] (result) in
+                    DispatchQueue.main.async {
+                        SVProgressHUD.dismiss()
+                        guard let `self` = self else { return }
+                        switch result {
+                        case .success:
+                            self.textView.resignFirstResponder()
+                            self.dismiss(animated: true, completion: nil)
+                        case .failure(let error):
+                            self.showError(error: error.error)
+                        }
+                    }
+                }
             } else {
                 Analytics.logEvent("post", parameters: [
                     "type": "twitter",

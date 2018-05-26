@@ -6,10 +6,15 @@
 //  Copyright © 2018年 Oka Yuya. All rights reserved.
 //
 
+import UIKit
 import Foundation
 import Alamofire
+import KeychainAccess
+import Result
 
 class MastodonRequest: RequestFactory {
+
+    let keychain = Keychain(service: keychainServiceKey)
 
     class Register: MastodonRequest {
         private let clientName: String = "NowPlayingiOS"
@@ -62,6 +67,41 @@ class MastodonRequest: RequestFactory {
                 "client_id": clientID,
                 "client_secret": clientSecret,
                 "code": code
+            ]
+        }
+    }
+
+    class Toot: MastodonRequest {
+
+        override var session: URLSession {
+            let sessionConfigure = URLSessionConfiguration.default
+            let accessToken = try? keychain.get(KeychainKey.mastodonAccessToken.rawValue) ?? ""
+            sessionConfigure.httpAdditionalHeaders = [
+                "Authorization": "Bearer \(accessToken ?? "")",
+                "Content-type": "application/json"
+            ]
+            return URLSession(configuration: sessionConfigure)
+        }
+
+        private let status: String
+
+        init(status: String) {
+            self.status = status
+        }
+
+        override var url: URL {
+            var baseURL = URL(string: UserDefaults.string(forKey: .mastodonHostname)!)!
+            baseURL.appendPathComponent("api/v1/statuses")
+            return baseURL
+        }
+
+        override var method: HTTPMethod {
+            return .post
+        }
+
+        override var dictionary: Parameters {
+            return [
+                "status": status
             ]
         }
     }
