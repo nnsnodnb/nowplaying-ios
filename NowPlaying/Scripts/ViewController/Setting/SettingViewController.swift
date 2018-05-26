@@ -192,7 +192,7 @@ class SettingViewController: FormViewController {
             if !row.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) {
                 return
             }
-            let alert = UIAlertController(title: nil, message: "起動中のみ自動的にツイートされます", preferredStyle: .alert)
+            let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             DispatchQueue.main.async {
                 self.present(alert, animated: true) {
@@ -291,7 +291,7 @@ class SettingViewController: FormViewController {
                 "button": "mastodon_auto_tweet",
                 "value": row.value!]
             )
-            let alert = UIAlertController(title: nil, message: "起動中のみ自動的にトゥートされます", preferredStyle: .alert)
+            let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             DispatchQueue.main.async {
                 self.present(alert, animated: true) {
