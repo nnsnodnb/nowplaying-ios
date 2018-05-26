@@ -8,5 +8,6 @@ target 'NowPlaying' do
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'TwitterKit'
+  pod 'R.swift'
 
 end
