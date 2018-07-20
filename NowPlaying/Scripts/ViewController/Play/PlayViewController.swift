@@ -57,6 +57,7 @@ class PlayViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNotification()
         setupView()
         layoutFAB()
         setupBanner()
@@ -74,7 +75,6 @@ class PlayViewController: UIViewController {
         Analytics.setScreenName("再生画面", screenClass: "PlayViewController")
         Analytics.logEvent("screen_open", parameters: nil)
         countUpOpenCount()
-        showPurchaseInfo()
     }
 
     override func viewWillLayoutSubviews() {
@@ -86,7 +86,16 @@ class PlayViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
+    }
+
     // MARK: - Private method
+
+    private func setupNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(receivePlaybackStateDidChange(_:)),
+                                               name: .MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
+    }
 
     private func layoutFAB() {
         let item = FloatyItem()
@@ -267,30 +276,7 @@ class PlayViewController: UIViewController {
         UserDefaults.set(count, forKey: .appOpenCount)
         if count == 15 {
             SKStoreReviewController.requestReview()
-        }
-    }
-
-    /* 2.0.1のみ使用 */
-    private func showPurchaseInfo() {
-        if UserDefaults.bool(forKey: .update2_1_0) {
-            return
-        }
-        let dateFormatter = DateFormatter()
-        dateFormatter.calendar = Calendar(identifier: .gregorian)
-        dateFormatter.timeZone = NSTimeZone.system
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        if let untilFreePurchaseDate = dateFormatter.date(from: "2018-04-20"), untilFreePurchaseDate < Date() {
-            return
-        }
-        let alert = UIAlertController(title: "自動ツイートについてのお知らせ",
-                                      message: "自動ツイートの機能のみ課金制になりました。なお2018年4月20日までに設定画面より無料で入手することが可能です。お試しください。",
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        DispatchQueue.main.async { [unowned self] in
-            self.present(alert, animated: true) {
-                UserDefaults.set(true, forKey: .update2_1_0)
-            }
+            UserDefaults.set(0, forKey: .appOpenCount)
         }
     }
 
@@ -334,5 +320,10 @@ class PlayViewController: UIViewController {
         )
         present(navi, animated: true, completion: nil)
     }
-}
 
+    // MARK: - Notification target
+
+    @objc private func receivePlaybackStateDidChange(_ notification: Notification) {
+        isPlay = !isPlay
+    }
+}
