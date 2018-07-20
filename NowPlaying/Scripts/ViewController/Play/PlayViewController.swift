@@ -58,10 +58,13 @@ class PlayViewController: UIViewController {
         }
     }
 
-    private var isPlay: Bool = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing {
-        didSet {
+    private var isPlay: Bool  {
+        get {
+            return MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
+        }
+        set {
             DispatchQueue.main.async {
-                self.playButton.setImage(UIImage(named: self.isPlay ? "pause" : "play"), for: .normal)
+                self.playButton.setImage(UIImage(named: newValue ? "pause" : "play"), for: .normal)
             }
         }
     }
@@ -143,6 +146,7 @@ class PlayViewController: UIViewController {
     }
 
     @IBAction func onTapPlayButton(_ sender: Any) {
+        let isPlay = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
         if isPlay {
             MPMusicPlayerController.systemMusicPlayer.pause()
         } else {
@@ -150,9 +154,9 @@ class PlayViewController: UIViewController {
         }
         Analytics.logEvent("tap", parameters: [
             "type": "action",
-            "button": isPlay ? "previous" : "play"]
+            "button": isPlay ? "pause" : "play"]
         )
-        isPlay = !isPlay
+        self.isPlay = !isPlay
     }
 
     @IBAction func onTapNextButton(_ sender: Any) {
@@ -223,6 +227,6 @@ class PlayViewController: UIViewController {
     // MARK: - Notification target
 
     @objc private func receivePlaybackStateDidChange(_ notification: Notification) {
-        isPlay = !isPlay
+        isPlay = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
     }
 }
