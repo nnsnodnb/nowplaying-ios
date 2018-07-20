@@ -1,7 +1,6 @@
 github "HiyakashiGroupHoldings/ExtensionCollection"
 github "xmartlabs/Eureka" ~> 4.0
 github "Alamofire/Alamofire" ~> 4.5
-github "kciter/Floaty" ~> 4.0.1
 github "kishikawakatsumi/KeychainAccess"
 github "SVProgressHUD/SVProgressHUD"
 github "antitypical/Result"

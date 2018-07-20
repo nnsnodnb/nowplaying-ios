@@ -21,7 +21,6 @@
 		CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1AAFE41F75459B00384000 /* Eureka.framework */; };
 		CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1AAFE91F75F2A600384000 /* Common.swift */; };
 		CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF28A8331FD180AC00E45F12 /* Alamofire.framework */; };
-		CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF28A83C1FD1A4CF00E45F12 /* Floaty.framework */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
 		CF2DBD6420A4AB1B0039217F /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD5820A4AB1A0039217F /* FirebaseInstanceID.framework */; };
 		CF2DBD6520A4AB1B0039217F /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD5920A4AB1A0039217F /* GoogleToolboxForMac.framework */; };
@@ -181,7 +180,6 @@
 				CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */,
 				CF2DBD6D20A4AB1B0039217F /* FirebaseAnalytics.framework in Frameworks */,
 				CF6334891F5AB6EB00D80EB8 /* ExtensionCollection.framework in Frameworks */,
-				CF28A83D1FD1A4CF00E45F12 /* Floaty.framework in Frameworks */,
 				CF2DBD6420A4AB1B0039217F /* FirebaseInstanceID.framework in Frameworks */,
 				CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */,
 				CF2DBD6A20A4AB1B0039217F /* FirebaseAuth.framework in Frameworks */,
@@ -663,7 +661,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Eureka.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/KeychainAccess.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Floaty.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework",
