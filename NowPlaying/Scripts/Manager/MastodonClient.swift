@@ -10,6 +10,8 @@ import UIKit
 import Alamofire
 import KeychainAccess
 import SVProgressHUD
+import MediaPlayer
+import FirebaseAnalytics
 
 class MastodonClient: NSObject {
 
@@ -97,5 +99,50 @@ class MastodonClient: NSObject {
             .responseJSON { (response) in
                 handler(response)
             }
+    }
+
+    func autoToot(_ song: MPMediaItem?, resultCompletion: @escaping ((Bool, Error?) -> Void)) {
+        // Mastodonへのオートツイートオフ or Mastodonのログインなしの場合、早期終了
+        if !UserDefaults.bool(forKey: .isMastodonAutoToot) || !UserDefaults.bool(forKey: .isMastodonLogin) {
+            return
+        }
+
+        SVProgressHUD.show()
+        let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
+        if let artwork = song?.artwork, UserDefaults.bool(forKey: .isMastodonWithImage),
+            let image = artwork.image(at: artwork.bounds.size) {
+            Analytics.logEvent("post", parameters: [
+                "type": "mastodon",
+                "auto_post": true,
+                "image": true,
+                "artist_name": song?.artist ?? "",
+                "song_name": song?.title ?? ""]
+            )
+            MastodonClient.shared.toot(text: message, image: image) { (error) in
+                DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
+                    resultCompletion(error == nil, error)
+                }
+            }
+        } else {
+            Analytics.logEvent("post", parameters: [
+                "type": "tweet",
+                "auto_post": true,
+                "image": false,
+                "artist_name": song?.artist ?? "",
+                "song_name": song?.title ?? ""]
+            )
+            MastodonRequest.Toot(status: message).send { (result) in
+                DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
+                    switch result {
+                    case .success:
+                        resultCompletion(true, nil)
+                    case .failure(let error):
+                        resultCompletion(false, error.error)
+                    }
+                }
+            }
+        }
     }
 }

@@ -138,84 +138,20 @@ class PlayViewController: UIViewController {
     }
 
     private func autoTweet() {
-        if !UserDefaults.bool(forKey: .isAutoTweetPurchase) ||
-            !UserDefaults.bool(forKey: .isAutoTweet) ||
-            Twitter.sharedInstance().sessionStore.session() == nil {
-            return
-        }
-        SVProgressHUD.show()
-        let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
-        if let artwork = song?.artwork, UserDefaults.bool(forKey: .isWithImage) {
-            let image = artwork.image(at: artwork.bounds.size)
-            Analytics.logEvent("post", parameters: [
-                "type": "tweet",
-                "auto_post": true,
-                "image": true,
-                "artist_name": song?.artist ?? "",
-                "song_name": song?.title ?? ""]
-            )
-            TwitterClient.shared.client?.sendTweet(withText: message, image: image!) { [unowned self] (tweet, error) in
-                SVProgressHUD.dismiss()
-                if error != nil {
-                    self.showError(error: error!)
-                }
-            }
-        } else {
-            Analytics.logEvent("post", parameters: [
-                "type": "tweet",
-                "auto_post": true,
-                "image": false,
-                "artist_name": song?.artist ?? "",
-                "song_name": song?.title ?? ""]
-            )
-            TwitterClient.shared.client?.sendTweet(withText: message) { [unowned self] (tweet, error) in
-                SVProgressHUD.dismiss()
-                if error != nil {
-                    self.showError(error: error!)
+        TwitterClient.shared.autoTweet(song) { [weak self] (result, error) in
+            if let wself = self, let error = error, !result {
+                DispatchQueue.main.async {
+                    wself.showError(error: error)
                 }
             }
         }
     }
 
     private func autoToot() {
-        if !UserDefaults.bool(forKey: .isMastodonAutoToot) || !UserDefaults.bool(forKey: .isMastodonLogin) {
-            return
-        }
-        SVProgressHUD.show()
-        let message = "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying"
-        if let artwork = song?.artwork, UserDefaults.bool(forKey: .isMastodonWithImage),
-            let image = artwork.image(at: artwork.bounds.size) {
-            Analytics.logEvent("post", parameters: [
-                "type": "mastodon",
-                "auto_post": true,
-                "image": true,
-                "artist_name": song?.artist ?? "",
-                "song_name": song?.title ?? ""]
-            )
-            MastodonClient.shared.toot(text: message, image: image) { (error) in
-                SVProgressHUD.dismiss()
-                if error != nil {
-                    self.showError(error: error!)
-                }
-            }
-        } else {
-            Analytics.logEvent("post", parameters: [
-                "type": "tweet",
-                "auto_post": true,
-                "image": false,
-                "artist_name": song?.artist ?? "",
-                "song_name": song?.title ?? ""]
-            )
-            MastodonRequest.Toot(status: message).send { [weak self] (result) in
+        MastodonClient.shared.autoToot(song) { [weak self] (result, error) in
+            if let wself = self, let error = error, !result {
                 DispatchQueue.main.async {
-                    SVProgressHUD.dismiss()
-                    guard let `self` = self else { return }
-                    switch result {
-                    case .success:
-                        break
-                    case .failure(let error):
-                        self.showError(error: error.error)
-                    }
+                    wself.showError(error: error)
                 }
             }
         }
@@ -223,7 +159,7 @@ class PlayViewController: UIViewController {
 
     // MARK: - Floaty's items target
 
-    func onTapTwitterButton(_ sender: FloatyItem) {
+    private func onTapTwitterButton(_ sender: FloatyItem) {
         if Twitter.sharedInstance().sessionStore.session() == nil {
             let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
@@ -246,7 +182,7 @@ class PlayViewController: UIViewController {
         present(navi, animated: true, completion: nil)
     }
 
-    func onTapMastodonButton(_ sender: FloatyItem) {
+    private func onTapMastodonButton(_ sender: FloatyItem) {
         if !UserDefaults.bool(forKey: .isMastodonLogin) {
             let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))

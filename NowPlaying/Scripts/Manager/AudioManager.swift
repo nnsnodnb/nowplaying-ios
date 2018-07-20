@@ -31,26 +31,6 @@ class AudioManager: NSObject {
         return audioPlayer.currentTime
     }
 
-    func remoteControlReceived(with event: UIEvent?) {
-        switch event?.subtype {
-        case .some(.remoteControlPlay):
-            if let song = play() {
-                notifyNowPlaying(song: song)
-            }
-        case .some(.remoteControlPause):
-            let song = pause()
-            notifyNowPlaying(song: song)
-        case .some(.remoteControlNextTrack):
-            let song = next()
-            notifyNowPlaying(song: song!)
-        case .some(.remoteControlPreviousTrack):
-            let song = previous()
-            notifyNowPlaying(song: song!)
-        default:
-            break
-        }
-    }
-
     @discardableResult
     func play(url: URL?=nil, album: [MPMediaItem]?=nil, number: Int?=nil) -> MPMediaItem? {
         guard url != nil else {

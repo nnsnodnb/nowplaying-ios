@@ -83,10 +83,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    override func remoteControlReceived(with event: UIEvent?) {
-        AudioManager.shared.remoteControlReceived(with: event)
-    }
-
     private func loadEnvironment() {
         guard let path = Bundle.main.path(forResource: ".env", ofType: nil) else {
             fatalError("Not found: 'Resources/.env'.\nPlease create .env file reference from .env.sample")
