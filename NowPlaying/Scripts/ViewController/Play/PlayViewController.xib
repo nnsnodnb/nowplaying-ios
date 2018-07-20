@@ -27,7 +27,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="A5A-pe-FD2">
-                    <rect key="frame" x="38" y="76" width="300" height="509"/>
+                    <rect key="frame" x="38" y="76" width="300" height="467"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mog-av-GTN">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="363"/>
@@ -59,11 +59,8 @@
                                 <constraint firstAttribute="width" constant="300" id="AS8-30-QtK"/>
                             </constraints>
                         </stackView>
-                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WfX-gJ-dx6">
-                            <rect key="frame" x="0.0" y="403" width="300" height="2"/>
-                        </progressView>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cPV-yO-10a">
-                            <rect key="frame" x="0.0" y="445" width="300" height="64"/>
+                            <rect key="frame" x="0.0" y="403" width="300" height="64"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-cW-baF">
                                     <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>

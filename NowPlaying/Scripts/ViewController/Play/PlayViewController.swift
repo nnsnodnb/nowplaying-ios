@@ -30,8 +30,10 @@ class PlayViewController: UIViewController {
     }
     var song: MPMediaItem? {
         didSet {
-            artworkImageView.image = song?.artwork?.image(at: artworkImageView.frame.size)
-            songNameLabel.text = song?.title
+            DispatchQueue.main.async {
+                self.artworkImageView.image = self.song?.artwork?.image(at: self.artworkImageView.frame.size)
+                self.songNameLabel.text = self.song?.title
+            }
         }
     }
     var isNotification: Bool = false {
@@ -58,7 +60,9 @@ class PlayViewController: UIViewController {
 
     private var isPlay: Bool = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing {
         didSet {
-            playButton.setImage(UIImage(named: isPlay ? "pause" : "play"), for: .normal)
+            DispatchQueue.main.async {
+                self.playButton.setImage(UIImage(named: self.isPlay ? "pause" : "play"), for: .normal)
+            }
         }
     }
 
