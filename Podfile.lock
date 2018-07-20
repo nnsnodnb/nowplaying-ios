@@ -1,7 +1,7 @@
 PODS:
-  - Crashlytics (3.10.2):
-    - Fabric (~> 1.7.7)
-  - Fabric (1.7.7)
+  - Crashlytics (3.10.5):
+    - Fabric (~> 1.7.9)
+  - Fabric (1.7.9)
   - "NSURL+QueryDictionary (1.2.0)"
   - R.swift (4.0.0):
     - R.swift.Library (~> 4.0.0)
@@ -28,8 +28,8 @@ SPEC REPOS:
     - TwitterKit
 
 SPEC CHECKSUMS:
-  Crashlytics: 0360624eea1c978a743feddb2fb1ef8b37fb7a0d
-  Fabric: bda89e242bce1b7b8ab264248cf3407774ce0095
+  Crashlytics: 7f2e38d302d9da96475b3d64d86fb29e31a542b7
+  Fabric: a2917d3895e4c1569b9c3170de7320ea1b1e6661
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   R.swift: d6a5ec2f55a8441dc0ed9f1f8b37d7d11ae85c66
   R.swift.Library: c3af34921024333546e23b70e70d0b4e0cffca75

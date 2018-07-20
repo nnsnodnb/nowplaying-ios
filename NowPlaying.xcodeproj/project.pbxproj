@@ -918,7 +918,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 50FC5A8BCC24D752D2A0D1AA /* Pods-NowPlaying.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NowPlaying/NowPlaying.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -947,7 +947,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NowPlaying/NowPlaying.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

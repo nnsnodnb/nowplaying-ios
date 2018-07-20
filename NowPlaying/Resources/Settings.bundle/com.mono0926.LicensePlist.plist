@@ -16,7 +16,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/Crashlytics</string>
 			<key>Title</key>
-			<string>Crashlytics (3.10.2)</string>
+			<string>Crashlytics (3.10.5)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -40,7 +40,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/Fabric</string>
 			<key>Title</key>
-			<string>Fabric (1.7.7)</string>
+			<string>Fabric (1.7.9)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

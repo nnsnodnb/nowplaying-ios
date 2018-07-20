@@ -1,10 +1,10 @@
 name: Crashlytics, nameSpecified: 
 body: Fabric: Copyright 20…
-version: 3.10.2
+version: 3.10.5
 
 name: Fabric, nameSpecified: 
 body: Fabric: Copyright 20…
-version: 1.7.7
+version: 1.7.9
 
 name: NSURL+QueryDictionary, nameSpecified: 
 body: The MIT License (MIT…
