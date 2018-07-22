@@ -6,7 +6,6 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
-import ExtensionCollection
 import TwitterKit
 import SVProgressHUD
 import MediaPlayer
@@ -15,6 +14,10 @@ import FirebaseAnalytics
 class TwitterClient: NSObject {
 
     static let shared = TwitterClient()
+
+    var isLogin: Bool {
+        return Twitter.sharedInstance().sessionStore.session() != nil
+    }
 
     var client: TWTRAPIClient? {
         get {

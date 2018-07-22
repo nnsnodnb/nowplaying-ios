@@ -14,31 +14,25 @@ import StoreKit
 import SafariServices
 import KeychainAccess
 import FirebaseAnalytics
-import ExtensionCollection
+import NSURL_QueryDictionary
+import DTTJailbreakDetection
 
 class SettingViewController: FormViewController {
 
     private let keychain = Keychain(service: keychainServiceKey)
 
-    private var safari: SFSafariViewController!
     private var isProcess = false
-    private var isTwitterLogin = false
-    private var isMastodonLogin = false
     private var productRequest: SKProductsRequest?
     private var products = [SKProduct]()
     private var purchasingProduct: SKProduct?
-    private var mastodonLoginButtonRowCell: ButtonRow.Cell?
 
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNotification()
         setupNavigationbar()
-        setupIsLogin()
         setupProducts()
-        twitterForm()
-        mastodonForm()
+        snsSectionForm()
         aboutForm()
     }
 
@@ -72,12 +66,6 @@ class SettingViewController: FormViewController {
 
     // MARK: - Private method
 
-    private func setupNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveSafariNotification(_:)),
-                                               name: receiveSafariNotificationName,
-                                               object: nil)
-    }
-
     private func setupNavigationbar() {
         guard navigationController != nil else {
             return
@@ -87,218 +75,33 @@ class SettingViewController: FormViewController {
         navigationItem.rightBarButtonItem = closeButton
     }
 
-    private func setupIsLogin() {
-        isTwitterLogin = Twitter.sharedInstance().sessionStore.session() != nil
-        isMastodonLogin = UserDefaults.bool(forKey: .isMastodonLogin)
-    }
-
-    private func twitterForm() {
+    private func snsSectionForm() {
         form
-        +++ Section("Twitter") {
-            $0.tag = "twitter_section"
-        }
-        <<< ButtonRow() { [unowned self] in
-            $0.title = !self.isTwitterLogin ? "ログイン" : "ログアウト"
-            $0.tag = "twitter_login"
-        }.cellUpdate({ (cell, row) in
-            cell.textLabel?.textAlignment = .left
-            cell.textLabel?.textColor = UIColor.black
-            cell.accessoryType = .disclosureIndicator
-        }).onCellSelection({ (cell, row) in
-            row.deselect()
-            SVProgressHUD.show()
-            if self.isTwitterLogin {
-                AuthManager.shared.logout {
-                    SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
-                    SVProgressHUD.dismiss(withDelay: 0.5)
-                    self.isTwitterLogin = !self.isTwitterLogin
-                    DispatchQueue.main.async {
-                        cell.textLabel?.text = "ログイン"
-                    }
-                    Analytics.logEvent("tap", parameters: [
-                        "type": "action",
-                        "button": "twitter_logout"]
-                    )
-                }
-            } else {
-                AuthManager.shared.login() {
-                    SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                    SVProgressHUD.dismiss(withDelay: 0.5)
-                    self.isTwitterLogin = !self.isTwitterLogin
-                    DispatchQueue.main.async {
-                        cell.textLabel?.text = "ログアウト"
-                    }
-                    Analytics.logEvent("tap", parameters: [
-                        "type": "action",
-                        "button": "twitter_login"]
-                    )
-                }
+            +++ Section("SNS設定") {
+                $0.tag = "sns_setting_section"
             }
-        })
-        <<< SwitchRow() {
-            $0.title = "アートワークを添付"
-            $0.value = UserDefaults.bool(forKey: .isWithImage)
-        }.onChange({ (row) in
-            UserDefaults.set(row.value!, forKey: .isWithImage)
-            Analytics.logEvent("change", parameters: [
-                "type": "action",
-                "button": "twitter_with_artwork",
-                "value": row.value!]
-            )
-        })
-        <<< ButtonRow() {
-            $0.title = "自動ツイートを購入"
-            $0.tag = "auto_tweet_purchase"
-            $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isAutoTweetPurchase))
-        }.cellUpdate({ (cell, row) in
-            cell.textLabel?.textAlignment = .left
-            cell.textLabel?.textColor = UIColor.black
-            cell.accessoryType = .disclosureIndicator
-        }).onCellSelection({ [unowned self] (cell, row) in
-            if JailbreakChecker.isJailbreak {
-                let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
-                DispatchQueue.main.async { [unowned self] in
-                    self.present(alert, animated: true, completion: nil)
-                }
-                return
+            <<< ButtonRow() { (row) in
+                row.title = "Twitter設定"
+                row.tag = "twitter_setting"
+            }.cellUpdate { (cell, _) in
+                cell.textLabel?.textAlignment = .left
+                cell.textLabel?.textColor = UIColor.black
+                cell.accessoryType = .disclosureIndicator
+            }.onCellSelection { [unowned self] (cell, row) in
+                let viewController = TwitterSettingViewController()
+                self.navigationController?.pushViewController(viewController, animated: true)
             }
-            if self.isProcess {
-                SVProgressHUD.showInfo(withStatus: "処理中です")
-                return
+            <<< ButtonRow() { (row) in
+                row.title = "Mastodon設定"
+                row.tag = "mastodon_setting"
+            }.cellUpdate { (cell, _) in
+                cell.textLabel?.textAlignment = .left
+                cell.textLabel?.textColor = UIColor.black
+                cell.accessoryType = .disclosureIndicator
+            }.onCellSelection { (cell, row) in
+                let viewController = MastodonSettingViewController()
+                self.navigationController?.pushViewController(viewController, animated: true)
             }
-            guard let product = self.products.first else {
-                SVProgressHUD.showInfo(withStatus: "少し時間をおいて試してみてください")
-                return
-            }
-            self.isProcess = true
-            self.showSelectPurchaseType(product: product)
-
-        })
-        <<< SwitchRow() {
-            $0.title = "自動ツイート"
-            $0.value = UserDefaults.bool(forKey: .isAutoTweet)
-            $0.tag = "auto_tweet_switch"
-            $0.hidden = Condition.function(["auto_tweet_purchase"]) { (form) -> Bool in
-                return !form.rowBy(tag: "auto_tweet_purchase")!.isHidden
-            }
-        }.onChange({ (row) in
-            UserDefaults.set(row.value!, forKey: .isAutoTweet)
-            Analytics.logEvent("change", parameters: [
-                "type": "action",
-                "button": "twitter_auto_tweet",
-                "value": row.value!]
-            )
-            if !row.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) {
-                return
-            }
-            let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            DispatchQueue.main.async {
-                self.present(alert, animated: true) {
-                    UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
-                }
-            }
-        })
-    }
-
-    private func mastodonForm() {
-        form
-        +++ Section("Mastodon")
-        <<< TextRow() {
-            $0.title = "ホストネーム"
-            $0.placeholder = "https://mstdn.jp"
-            $0.value = UserDefaults.string(forKey: .mastodonHostname)
-            $0.tag = "mastodon_host"
-        }.cellSetup({ [unowned self] (cell, row) in
-            cell.textField.keyboardType = .URL
-            row.baseCell.isUserInteractionEnabled = !self.isMastodonLogin
-        }).onChange({ (row) in
-            guard let value = row.value else {
-                return
-            }
-            UserDefaults.set(value, forKey: .mastodonHostname)
-        })
-        <<< ButtonRow() {
-            $0.title = !isMastodonLogin ? "ログイン" : "ログアウト"
-            $0.tag = "mastodon_login"
-            $0.hidden = Condition.function(["mastodon_host"], { form in
-                return (form.rowBy(tag: "mastodon_host") as! TextRow).value == nil
-            })
-        }.cellUpdate({ (cell, row) in
-            cell.textLabel?.textAlignment = .left
-            cell.textLabel?.textColor = UIColor.black
-            cell.accessoryType = .disclosureIndicator
-        }).onCellSelection({ [unowned self] (cell, row) in
-            self.mastodonLoginButtonRowCell = cell
-            row.deselect()
-            if let baseUrl = UserDefaults.string(forKey: .mastodonHostname), !self.isMastodonLogin {
-                MastodonRequest.Register().send { [weak self] (result) in
-                    switch result {
-                    case .success(let response):
-                        guard let wself = self, let body = response.body, let clientID = body["client_id"] as? String,
-                            let clientSecret = body["client_secret"] as? String else {
-                            self?.showMastodonError()
-                            return
-                        }
-                        UserDefaults.set(clientID, forKey: .mastodonClientID)
-                        UserDefaults.set(clientSecret, forKey: .mastodonClientSecret)
-                        let url = URL(string: baseUrl + "/oauth/authorize?client_id=\(clientID)&response_type=code&redirect_uri=nowplaying-ios-nnsnodnb://oauth_mastodon&scope=write")!
-                        wself.safari = SFSafariViewController(url: url)
-                        wself.present(wself.safari, animated: true, completion: nil)
-                    case .failure:
-                        self?.showMastodonError()
-                    }
-                }
-            } else {
-                AuthManager.shared.mastodonLogout()
-                self.isMastodonLogin = false
-                UserDefaults.set(false, forKey: .isMastodonLogin)
-                Analytics.logEvent("tap", parameters: [
-                    "type": "action",
-                    "button": "mastodon_logout"]
-                )
-                DispatchQueue.main.async {
-                    SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
-                    SVProgressHUD.dismiss(withDelay: 0.5)
-                    cell.textLabel?.text = "ログイン"
-                    let textRow = self.form.rowBy(tag: "mastodon_host") as! TextRow
-                    textRow.baseCell.isUserInteractionEnabled = true
-                }
-            }
-        })
-        <<< SwitchRow() {
-            $0.title = "アートワークを添付"
-            $0.value = UserDefaults.bool(forKey: .isMastodonWithImage)
-        }.onChange({ (row) in
-            UserDefaults.set(row.value!, forKey: .isMastodonWithImage)
-            Analytics.logEvent("change", parameters: [
-                "type": "action",
-                "button": "mastodon_with_artwork",
-                "value": row.value!]
-            )
-        })
-        <<< SwitchRow() {
-            $0.title = "自動トゥート"
-            $0.value = UserDefaults.bool(forKey: .isMastodonAutoToot)
-        }.onChange({ (row) in
-            UserDefaults.set(row.value!, forKey: .isMastodonAutoToot)
-            if !row.value! || UserDefaults.bool(forKey: .isMastodonShowAutoTweetAlert) {
-                return
-            }
-            Analytics.logEvent("change", parameters: [
-                "type": "action",
-                "button": "mastodon_auto_tweet",
-                "value": row.value!]
-            )
-            let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            DispatchQueue.main.async {
-                self.present(alert, animated: true) {
-                    UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
-                }
-            }
-        })
     }
 
     private func aboutForm() {
@@ -357,7 +160,7 @@ class SettingViewController: FormViewController {
             cell.textLabel?.textColor = UIColor.black
             cell.accessoryType = .disclosureIndicator
         }).onCellSelection({ (cell, row) in
-            if JailbreakChecker.isJailbreak {
+            if DTTJailbreakDetection.isJailbroken() {
                 let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
                 DispatchQueue.main.async { [unowned self] in
@@ -390,12 +193,6 @@ class SettingViewController: FormViewController {
             )
             SKStoreReviewController.requestReview()
         })
-    }
-
-    private func showMastodonError() {
-        let alert = UIAlertController(title: "エラー", message: "Mastodonのホストネームを確認してください", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
     }
 
     private func setupProducts() {
@@ -456,38 +253,6 @@ class SettingViewController: FormViewController {
 
     @objc private func onTapCloseButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-    }
-
-    // MARK: - Notification target
-
-    @objc private func receiveSafariNotification(_ notification: Notification) {
-        guard let url = notification.object as? URL, let queryString = url.query else { return }
-        let query = QueryParser.queryDictionary(query: queryString)
-        guard let code = query["code"] as? String else { return }
-        MastodonRequest.GetToken(code: code).send { [weak self] (result) in
-            guard let wself = self else { return }
-            switch result {
-            case .success(let response):
-                guard let body = response.body, let accessToken = body["access_token"] as? String else {
-                    return
-                }
-                wself.keychain[KeychainKey.mastodonAccessToken.rawValue] = accessToken
-                DispatchQueue.main.async {
-                    SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                    SVProgressHUD.dismiss(withDelay: 0.5)
-                    wself.isMastodonLogin = true
-                    UserDefaults.set(true, forKey: .isMastodonLogin)
-                    wself.mastodonLoginButtonRowCell?.textLabel?.text = "ログアウト"
-                    let textRow = wself.form.rowBy(tag: "mastodon_host") as! TextRow
-                    textRow.baseCell.isUserInteractionEnabled = false
-                }
-            case .failure:
-                break
-            }
-            DispatchQueue.main.async {
-                wself.dismiss(animated: true, completion: nil)
-            }
-        }
     }
 }
 

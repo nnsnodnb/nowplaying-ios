@@ -10,5 +10,6 @@ target 'NowPlaying' do
   pod 'TwitterKit'
   pod 'R.swift'
   pod 'NSURL+QueryDictionary'
+  pod 'DTTJailbreakDetection'
 
 end

@@ -1,4 +1,3 @@
-github "HiyakashiGroupHoldings/ExtensionCollection"
 github "xmartlabs/Eureka" ~> 4.0
 github "Alamofire/Alamofire" ~> 4.5
 github "kishikawakatsumi/KeychainAccess"

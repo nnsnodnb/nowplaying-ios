@@ -2,6 +2,10 @@ name: Crashlytics, nameSpecified:
 body: Fabric: Copyright 20…
 version: 3.10.5
 
+name: DTTJailbreakDetection, nameSpecified: 
+body: The MIT License (MIT…
+version: 0.4.0
+
 name: Fabric, nameSpecified: 
 body: Fabric: Copyright 20…
 version: 1.7.9
@@ -29,10 +33,6 @@ version: 3.2.1
 name: Alamofire, nameSpecified: , owner: Alamofire, version: 4.7.2
 
 name: Eureka, nameSpecified: , owner: xmartlabs, version: 4.1.1
-
-name: ExtensionCollection, nameSpecified: , owner: HiyakashiGroupHoldings, version: 0.0.4
-
-name: Floaty, nameSpecified: , owner: kciter, version: 4.0.1
 
 name: KeychainAccess, nameSpecified: , owner: kishikawakatsumi, version: v3.1.1
 

@@ -168,7 +168,9 @@ class PlayViewController: UIViewController {
     }
 
     @IBAction func onTapGearButton(_ sender: Any) {
-        let settingViewController = SettingViewController()
+        guard let settingViewController = R.storyboard.setting.instantiateInitialViewController() else {
+            return
+        }
         let navi = UINavigationController(rootViewController: settingViewController)
         Analytics.logEvent("tap", parameters: [
             "type": "action",

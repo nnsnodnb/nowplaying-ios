@@ -22,6 +22,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>com.mono0926.LicensePlist/DTTJailbreakDetection</string>
+			<key>Title</key>
+			<string>DTTJailbreakDetection (0.4.0)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>com.mono0926.LicensePlist/Eureka</string>
 			<key>Title</key>
 			<string>Eureka (4.1.1)</string>
@@ -30,25 +38,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/ExtensionCollection</string>
-			<key>Title</key>
-			<string>ExtensionCollection (0.0.4)</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>com.mono0926.LicensePlist/Fabric</string>
 			<key>Title</key>
 			<string>Fabric (1.7.9)</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>com.mono0926.LicensePlist/Floaty</string>
-			<key>Title</key>
-			<string>Floaty (4.0.1)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
