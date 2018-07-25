@@ -60,7 +60,7 @@ class TwitterSettingViewController: SNSSettingBaseViewController {
     private func completePuchaseAutoTweet() {
         UserDefaults.set(true, forKey: .isAutoTweetPurchase)
         DispatchQueue.main.async { [weak self] in
-            SVProgressHUD.dismiss()
+            SVProgressHUD.dismiss(withDelay: 0.5)
             guard let wself = self else { return }
             wself.isProces = false
             let purchaseButtonRow: ButtonRow = wself.form.rowBy(tag: "auto_tweet_purchase")!
