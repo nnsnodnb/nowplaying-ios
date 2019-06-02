@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,8 +15,13 @@
                 <outlet property="artworkImageView" destination="hQk-D4-a1j" id="9Xg-Rq-qYb"/>
                 <outlet property="bannerView" destination="XmZ-8C-J1H" id="kVj-QU-aB0"/>
                 <outlet property="bannerViewHeight" destination="4hu-1H-Tu9" id="Cdx-Zg-U0Z"/>
+                <outlet property="gearButton" destination="3aW-hZ-XIr" id="WPs-VK-aJ4"/>
+                <outlet property="mastodonButton" destination="zMZ-jf-778" id="7RO-Go-c23"/>
+                <outlet property="nextButton" destination="crR-aX-F7g" id="Jjm-cx-wlt"/>
                 <outlet property="playButton" destination="qMi-NZ-cvB" id="ckT-BR-BCK"/>
+                <outlet property="previousButton" destination="zQA-cW-baF" id="JYw-Mo-ddL"/>
                 <outlet property="songNameLabel" destination="LaS-KO-82c" id="U5e-zW-JkR"/>
+                <outlet property="twitterButton" destination="AyT-Cc-yUw" id="5VI-dc-xY6"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -27,7 +31,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="A5A-pe-FD2">
-                    <rect key="frame" x="38" y="76" width="300" height="467"/>
+                    <rect key="frame" x="37.666666666666657" y="76" width="300" height="467"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mog-av-GTN">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="363"/>
@@ -44,7 +48,7 @@
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                     </userDefinedRuntimeAttributes>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="曲名" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LaS-KO-82c">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LaS-KO-82c">
                                     <rect key="frame" x="30" y="324" width="240" height="39"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="240" id="FeT-RW-gKp"/>
@@ -68,9 +72,6 @@
                                         <constraint firstAttribute="width" secondItem="zQA-cW-baF" secondAttribute="height" multiplier="1:1" id="QR8-uu-KsC"/>
                                     </constraints>
                                     <state key="normal" image="previous"/>
-                                    <connections>
-                                        <action selector="onTapPreviousButton:" destination="-1" eventType="touchUpInside" id="F4v-S7-W4h"/>
-                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMi-NZ-cvB">
                                     <rect key="frame" x="118" y="0.0" width="64" height="64"/>
@@ -78,9 +79,6 @@
                                         <constraint firstAttribute="width" secondItem="qMi-NZ-cvB" secondAttribute="height" multiplier="1:1" id="fYr-Vb-t1n"/>
                                     </constraints>
                                     <state key="normal" image="play"/>
-                                    <connections>
-                                        <action selector="onTapPlayButton:" destination="-1" eventType="touchUpInside" id="OKT-xd-Vx6"/>
-                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crR-aX-F7g">
                                     <rect key="frame" x="236" y="0.0" width="64" height="64"/>
@@ -88,9 +86,6 @@
                                         <constraint firstAttribute="width" secondItem="crR-aX-F7g" secondAttribute="height" multiplier="1:1" id="1PE-9s-i8S"/>
                                     </constraints>
                                     <state key="normal" image="next"/>
-                                    <connections>
-                                        <action selector="onTapNextButton:" destination="-1" eventType="touchUpInside" id="VW8-i3-aQ0"/>
-                                    </connections>
                                 </button>
                             </subviews>
                             <constraints>
@@ -113,9 +108,6 @@
                                 <constraint firstAttribute="width" secondItem="3aW-hZ-XIr" secondAttribute="height" multiplier="1:1" id="pZU-wu-QFi"/>
                             </constraints>
                             <state key="normal" image="gear"/>
-                            <connections>
-                                <action selector="onTapGearButton:" destination="-1" eventType="touchUpInside" id="EKu-nm-Ua3"/>
-                            </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Urp-xs-QIC">
                             <rect key="frame" x="58" y="0.0" width="119" height="50"/>

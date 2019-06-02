@@ -12,16 +12,44 @@ import MediaPlayer
 import TwitterKit
 import SVProgressHUD
 import FirebaseAnalytics
+import RxSwift
 import StoreKit
 import GoogleMobileAds
 
 class PlayViewController: UIViewController {
 
-    @IBOutlet weak var artworkImageView: UIImageView!
-    @IBOutlet weak var songNameLabel: UILabel!
-    @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var bannerView: GADBannerView!
-    @IBOutlet weak var bannerViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var artworkImageView: UIImageView!
+    @IBOutlet private weak var songNameLabel: UILabel!
+    @IBOutlet private weak var previousButton: UIButton!
+    @IBOutlet private weak var playButton: UIButton!
+    @IBOutlet private weak var nextButton: UIButton!
+    @IBOutlet private weak var gearButton: UIButton! {
+        didSet {
+            gearButton.rx.tap
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { [weak self] (_) in
+                    let settingViewController = R.storyboard.setting.instantiateInitialViewController()!
+                    let navi = UINavigationController(rootViewController: settingViewController)
+                    Analytics.logEvent("tap", parameters: [
+                        "type": "action",
+                        "button": "setting"]
+                    )
+                    self?.present(navi, animated: true, completion: nil)
+                })
+                .disposed(by: disposeBag)
+        }
+    }
+    @IBOutlet private weak var mastodonButton: UIButton!
+    @IBOutlet private weak var twitterButton: UIButton!
+    @IBOutlet private weak var bannerView: GADBannerView! {
+        didSet {
+            bannerView.adUnitID = ProcessInfo.processInfo.get(forKey: .firebaseAdmobBannerId)
+            bannerView.adSize = kGADAdSizeBanner
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+        }
+    }
+    @IBOutlet private weak var bannerViewHeight: NSLayoutConstraint!
 
     var albumTitle: String! {
         didSet {
@@ -58,6 +86,8 @@ class PlayViewController: UIViewController {
         }
     }
 
+    private let disposeBag = DisposeBag()
+
     private var isPlay: Bool  {
         get {
             return MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
@@ -68,14 +98,25 @@ class PlayViewController: UIViewController {
             }
         }
     }
+    private var viewModel: PlayViewModelType!
 
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let inputs = PlayViewModelInput(
+            previousButton: previousButton.rx.tap.asObservable(),
+            playButton: playButton.rx.tap.asObservable(),
+            nextButton: nextButton.rx.tap.asObservable()
+        )
+        viewModel = PlayViewModel(inputs: inputs)
+        viewModel.outputs.playButtonImage
+            .drive(onNext: { [weak self] (image) in
+                self?.playButton.setImage(image, for: .normal)
+            })
+            .disposed(by: disposeBag)
+
         setupNotification()
-        setupView()
-        setupBanner()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -89,11 +130,7 @@ class PlayViewController: UIViewController {
         super.viewDidAppear(animated)
         Analytics.setScreenName("再生画面", screenClass: "PlayViewController")
         Analytics.logEvent("screen_open", parameters: nil)
-        countUpOpenCount()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        viewModel.countUpOpenCount()
     }
 
     deinit {
@@ -107,77 +144,13 @@ class PlayViewController: UIViewController {
                                                name: .MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
     }
 
-    private func setupView() {
-        songNameLabel.text = nil
-        isPlay = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
-    }
-
-    private func setupBanner() {
-        bannerView.adUnitID = ProcessInfo.processInfo.get(forKey: .firebaseAdmobBannerId)
-        bannerView.adSize = kGADAdSizeBanner
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-    }
-
     private func showError(error: Error) {
         let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 
-    private func countUpOpenCount() {
-        var count = UserDefaults.integer(forKey: .appOpenCount)
-        count += 1
-        UserDefaults.set(count, forKey: .appOpenCount)
-        if count == 15 {
-            SKStoreReviewController.requestReview()
-            UserDefaults.set(0, forKey: .appOpenCount)
-        }
-    }
-
     // MARK: - IBAction
-
-    @IBAction func onTapPreviousButton(_ sender: Any) {
-        MPMusicPlayerController.systemMusicPlayer.skipToPreviousItem()
-        Analytics.logEvent("tap", parameters: [
-            "type": "action",
-            "button": "previous"]
-        )
-    }
-
-    @IBAction func onTapPlayButton(_ sender: Any) {
-        let isPlay = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
-        if isPlay {
-            MPMusicPlayerController.systemMusicPlayer.pause()
-        } else {
-            MPMusicPlayerController.systemMusicPlayer.play()
-        }
-        Analytics.logEvent("tap", parameters: [
-            "type": "action",
-            "button": isPlay ? "pause" : "play"]
-        )
-        self.isPlay = !isPlay
-    }
-
-    @IBAction func onTapNextButton(_ sender: Any) {
-        MPMusicPlayerController.systemMusicPlayer.skipToNextItem()
-        Analytics.logEvent("tap", parameters: [
-            "type": "action",
-            "button": "next"]
-        )
-    }
-
-    @IBAction func onTapGearButton(_ sender: Any) {
-        guard let settingViewController = R.storyboard.setting.instantiateInitialViewController() else {
-            return
-        }
-        let navi = UINavigationController(rootViewController: settingViewController)
-        Analytics.logEvent("tap", parameters: [
-            "type": "action",
-            "button": "setting"]
-        )
-        present(navi, animated: true, completion: nil)
-    }
 
     @IBAction func onTapMastodonButton(_ sender: Any) {
         if !UserDefaults.bool(forKey: .isMastodonLogin) {
