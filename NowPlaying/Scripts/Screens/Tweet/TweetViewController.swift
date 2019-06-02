@@ -8,6 +8,8 @@
 
 import FirebaseAnalytics
 import SVProgressHUD
+import RxKeyboard
+import RxSwift
 import TwitterKit
 import UIKit
 
@@ -20,6 +22,7 @@ final class TweetViewController: UIViewController {
     @IBOutlet private weak var artworkImageButtonHeight: NSLayoutConstraint!
 
     private let postContent: PostContent
+    private let disposeBag = DisposeBag()
 
     private var keyboardHeight: CGFloat = 0
     private var isMastodon: Bool {
@@ -44,16 +47,22 @@ final class TweetViewController: UIViewController {
         setupTextView()
         setupArtworkImageButton()
         setupNavigationBar()
-    }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(showKeyboard(_:)),
-            name: UIResponder.keyboardDidShowNotification,
-            object: nil
-        )
+        RxKeyboard.instance.visibleHeight
+            .drive(onNext: { [weak self] (height) in
+                guard let wself = self else { return }
+                wself.keyboardHeight = height
+                wself.textViewHeight.constant = UIScreen.main.bounds.size.height - height - wself.artworkImageButtonHeight.constant - (wself.artworkImageButtonTopMargin.constant * 2)
+            })
+            .disposed(by: disposeBag)
+
+        RxKeyboard.instance.isHidden
+            .drive(onNext: { [weak self] (_) in
+                UIView.animate(withDuration: 0.5) {
+                    self?.artworkImageButton.alpha = 1
+                }
+            })
+            .disposed(by: disposeBag)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -63,15 +72,6 @@ final class TweetViewController: UIViewController {
             "type": isMastodon ? "mastodon" : "twitter",
             "artist_name": postContent.artistName,
             "song_name": postContent.songTitle]
-        )
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(
-            self,
-            name: UIResponder.keyboardDidShowNotification,
-            object: nil
         )
     }
 
@@ -209,15 +209,6 @@ final class TweetViewController: UIViewController {
                     self.treatmentRespones(error)
                 })
             }
-        }
-    }
-
-    // MARK: - Notification target
-
-    @objc func showKeyboard(_ notification: Notification) {
-        if let userInfo = notification.userInfo, let keyboard = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            keyboardHeight = keyboard.cgRectValue.size.height
-            resizeTextView()
         }
     }
 
