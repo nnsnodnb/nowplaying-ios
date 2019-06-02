@@ -116,13 +116,8 @@ class PlayViewController: UIViewController {
 
         viewModel.outputs.postContent
             .drive(onNext: { [weak self] (post) in
-                let tweetViewController = TweetViewController()
-                tweetViewController.tweetText = post.postMessage
-                tweetViewController.shareImage = post.shareImage
-                tweetViewController.artistName = post.artistName
-                tweetViewController.songName = post.songTitle
-                tweetViewController.isMastodon = post.service == .mastodon
-                let navi = UINavigationController(rootViewController: tweetViewController)
+                let viewController = TweetViewController(postContent: post)
+                let navi = UINavigationController(rootViewController: viewController)
                 self?.present(navi, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)

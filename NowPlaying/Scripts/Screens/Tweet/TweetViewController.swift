@@ -6,12 +6,12 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
-import UIKit
-import TwitterKit
-import SVProgressHUD
 import FirebaseAnalytics
+import SVProgressHUD
+import TwitterKit
+import UIKit
 
-class TweetViewController: UIViewController {
+final class TweetViewController: UIViewController {
 
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewHeight: NSLayoutConstraint!
@@ -19,13 +19,23 @@ class TweetViewController: UIViewController {
     @IBOutlet weak var artworkImageButtonTopMargin: NSLayoutConstraint!
     @IBOutlet weak var artworkImageButtonHeight: NSLayoutConstraint!
 
-    var tweetText: String?
-    var shareImage: UIImage?
-    var artistName: String!
-    var songName: String!
-    var isMastodon = false
+    private let postContent: PostContent
 
     private var keyboardHeight: CGFloat = 0
+    private var isMastodon: Bool {
+        return postContent.service == .mastodon
+    }
+    private var shareImage: UIImage?
+
+    init(postContent: PostContent) {
+        self.postContent = postContent
+        super.init(nibName: R.nib.tweetViewController.name, bundle: R.nib.tweetViewController.bundle)
+        shareImage = postContent.shareImage
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Life cycle
 
@@ -51,8 +61,8 @@ class TweetViewController: UIViewController {
         Analytics.setScreenName("投稿画面", screenClass: "TweetViewController")
         Analytics.logEvent("screen_open", parameters: [
             "type": isMastodon ? "mastodon" : "twitter",
-            "artist_name": artistName ?? "",
-            "song_name": songName ?? ""]
+            "artist_name": postContent.artistName,
+            "song_name": postContent.songTitle]
         )
     }
 
@@ -65,19 +75,15 @@ class TweetViewController: UIViewController {
         )
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
     // MARK: - Private method
 
     private func setupTextView() {
         textView.becomeFirstResponder()
-        textView.text = tweetText
+        textView.text = postContent.postMessage
     }
 
     private func setupArtworkImageButton() {
-        if shareImage == nil || tweetText == nil {
+        if shareImage == nil {
             artworkImageButton.isHidden = true
             artworkImageButtonHeight.constant = 0
             return
@@ -140,9 +146,9 @@ class TweetViewController: UIViewController {
                 Analytics.logEvent("post", parameters: [
                     "type": "mastodon",
                     "auto_post": false,
-                    "image": shareImage!,
-                    "artist_name": artistName ?? "",
-                    "song_name": songName ?? ""]
+                    "image": image,
+                    "artist_name": postContent.artistName,
+                    "song_name": postContent.songTitle]
                 )
                 MastodonClient.shared.toot(text: textView.text, image: image) { [weak self] (error) in
                     DispatchQueue.main.async {
@@ -160,14 +166,14 @@ class TweetViewController: UIViewController {
                 Analytics.logEvent("post", parameters: [
                     "type": "twitter",
                     "auto_post": false,
-                    "image": shareImage!,
-                    "artist_name": artistName ?? "",
-                    "song_name": songName ?? ""]
+                    "image": image,
+                    "artist_name": postContent.artistName,
+                    "song_name": postContent.songTitle]
                 )
-                TwitterClient.shared.client?.sendTweet(withText: textView.text, image: shareImage!, completion: { [weak self] (tweet, error) in
+                TwitterClient.shared.client?.sendTweet(withText: textView.text, image: image) { [weak self] (tweet, error) in
                     guard let `self` = self else { return }
                     self.treatmentRespones(error)
-                })
+                }
             }
         } else {
             if isMastodon {
@@ -175,8 +181,8 @@ class TweetViewController: UIViewController {
                     "type": "mastodon",
                     "auto_post": false,
                     "image": false,
-                    "artist_name": artistName ?? "",
-                    "song_name": songName ?? ""]
+                    "artist_name": postContent.artistName,
+                    "song_name": postContent.songTitle]
                 )
                 MastodonRequest.Toot(status: textView.text).send { [weak self] (result) in
                     DispatchQueue.main.async {
@@ -196,8 +202,8 @@ class TweetViewController: UIViewController {
                     "type": "twitter",
                     "auto_post": false,
                     "image": false,
-                    "artist_name": artistName ?? "",
-                    "song_name": songName ?? ""]
+                    "artist_name": postContent.artistName,
+                    "song_name": postContent.songTitle]
                 )
                 TwitterClient.shared.client?.sendTweet(withText: textView.text, completion: { [unowned self] (tweet, error) in
                     self.treatmentRespones(error)
