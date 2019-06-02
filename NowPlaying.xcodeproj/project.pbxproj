@@ -40,6 +40,7 @@
 		CF55B68022A3DE0400D5C9E1 /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B64122A3DDED00D5C9E1 /* RxRelay.framework */; };
 		CF55B68122A3DE0400D5C9E1 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B67422A3DDED00D5C9E1 /* RxSwift.framework */; };
 		CF55B68622A3E12E00D5C9E1 /* AnyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B68522A3E12E00D5C9E1 /* AnyError.swift */; };
+		CF55B68822A3E22800D5C9E1 /* PlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B68722A3E22800D5C9E1 /* PlayViewModel.swift */; };
 		CF615AF31F56AB3B00315019 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF11F56AB3B00315019 /* Main.storyboard */; };
 		CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF41F56AB3B00315019 /* Assets.xcassets */; };
 		CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */; };
@@ -214,6 +215,7 @@
 		CF55B67D22A3DDED00D5C9E1 /* .SnapKit.version */ = {isa = PBXFileReference; lastKnownFileType = text; path = .SnapKit.version; sourceTree = "<group>"; };
 		CF55B67E22A3DDED00D5C9E1 /* .Eureka.version */ = {isa = PBXFileReference; lastKnownFileType = text; path = .Eureka.version; sourceTree = "<group>"; };
 		CF55B68522A3E12E00D5C9E1 /* AnyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyError.swift; sourceTree = "<group>"; };
+		CF55B68722A3E22800D5C9E1 /* PlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlayViewModel.swift; path = Play/PlayViewModel.swift; sourceTree = "<group>"; };
 		CF615AEA1F56AB3B00315019 /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF615AED1F56AB3B00315019 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF615AF21F56AB3B00315019 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -313,6 +315,7 @@
 			children = (
 				CF1611341F726D110027144D /* PlayViewController.swift */,
 				CF1611351F726D110027144D /* PlayViewController.xib */,
+				CF55B68722A3E22800D5C9E1 /* PlayViewModel.swift */,
 			);
 			name = Play;
 			sourceTree = "<group>";
@@ -907,6 +910,7 @@
 				CF8E48802081EC75003A5E70 /* ProcessInfo+Key.swift in Sources */,
 				CFD1D37620B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift in Sources */,
 				CFD1D37420B87E94009C50ED /* AppInfoManager.swift in Sources */,
+				CF55B68822A3E22800D5C9E1 /* PlayViewModel.swift in Sources */,
 				CF0FA21F206D508900647317 /* PaymentManagerProtocol.swift in Sources */,
 				CFD1D37F20B88188009C50ED /* APIResult.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
