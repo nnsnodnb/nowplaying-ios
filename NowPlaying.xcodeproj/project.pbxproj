@@ -14,6 +14,8 @@
 		CF0FA21F206D508900647317 /* PaymentManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0FA21E206D508900647317 /* PaymentManagerProtocol.swift */; };
 		CF1611361F726D110027144D /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1611341F726D110027144D /* PlayViewController.swift */; };
 		CF1611371F726D110027144D /* PlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF1611351F726D110027144D /* PlayViewController.xib */; };
+		CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1611391F727D8C0027144D /* SystemPlayViewController.swift */; };
+		CF16113D1F727DCE0027144D /* SystemPlay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF16113C1F727DCE0027144D /* SystemPlay.storyboard */; };
 		CF1AAFE01F7544F200384000 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1AAFDE1F7544F200384000 /* SettingViewController.swift */; };
 		CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1AAFE41F75459B00384000 /* Eureka.framework */; };
 		CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1AAFE91F75F2A600384000 /* Common.swift */; };
@@ -109,6 +111,8 @@
 		CF0FA21E206D508900647317 /* PaymentManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaymentManagerProtocol.swift; path = Protocol/PaymentManagerProtocol.swift; sourceTree = "<group>"; };
 		CF1611341F726D110027144D /* PlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayViewController.swift; path = Play/PlayViewController.swift; sourceTree = "<group>"; };
 		CF1611351F726D110027144D /* PlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlayViewController.xib; path = Play/PlayViewController.xib; sourceTree = "<group>"; };
+		CF1611391F727D8C0027144D /* SystemPlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SystemPlayViewController.swift; path = SystemPlay/SystemPlayViewController.swift; sourceTree = "<group>"; };
+		CF16113C1F727DCE0027144D /* SystemPlay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SystemPlay.storyboard; path = SystemPlay/SystemPlay.storyboard; sourceTree = "<group>"; };
 		CF1AAFDE1F7544F200384000 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingViewController.swift; path = Setting/SettingViewController.swift; sourceTree = "<group>"; };
 		CF1AAFE41F75459B00384000 /* Eureka.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Eureka.framework; path = Carthage/Build/iOS/Eureka.framework; sourceTree = "<group>"; };
 		CF1AAFE91F75F2A600384000 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = Common/Common.swift; sourceTree = "<group>"; };
@@ -318,6 +322,22 @@
 				CF55B68722A3E22800D5C9E1 /* PlayViewModel.swift */,
 			);
 			name = Play;
+			sourceTree = "<group>";
+		};
+		CF1611381F727D6E0027144D /* SystemPlay */ = {
+			isa = PBXGroup;
+			children = (
+				CF1611391F727D8C0027144D /* SystemPlayViewController.swift */,
+			);
+			name = SystemPlay;
+			sourceTree = "<group>";
+		};
+		CF16113B1F727DB30027144D /* SystemPlay */ = {
+			isa = PBXGroup;
+			children = (
+				CF16113C1F727DCE0027144D /* SystemPlay.storyboard */,
+			);
+			name = SystemPlay;
 			sourceTree = "<group>";
 		};
 		CF1AAFDD1F7544D800384000 /* Setting */ = {
@@ -530,6 +550,7 @@
 		CF615B031F56E76200315019 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				CF1611381F727D6E0027144D /* SystemPlay */,
 				CF1611331F726CF20027144D /* Play */,
 				CF1AAFDD1F7544D800384000 /* Setting */,
 				CF43E7D31F733C1F00A2A49A /* Tweet */,
@@ -540,6 +561,7 @@
 		CF615B041F56E76A00315019 /* Storyboard */ = {
 			isa = PBXGroup;
 			children = (
+				CF16113B1F727DB30027144D /* SystemPlay */,
 				CFE129A62103D23C006D3D32 /* Setting */,
 				CF615B081F56E8D200315019 /* Main */,
 				CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */,
@@ -744,6 +766,7 @@
 				CF8C85E01F6F1B610051A0C7 /* .env in Resources */,
 				CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */,
 				CFE129AC2103D698006D3D32 /* TwitterSettingViewController.xib in Resources */,
+				CF16113D1F727DCE0027144D /* SystemPlay.storyboard in Resources */,
 				CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */,
 				CF1611371F726D110027144D /* PlayViewController.xib in Resources */,
 				CF615AF31F56AB3B00315019 /* Main.storyboard in Resources */,
@@ -915,6 +938,7 @@
 				CFD1D37F20B88188009C50ED /* APIResult.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CFE129AB2103D698006D3D32 /* TwitterSettingViewController.swift in Sources */,
+				CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */,
 				CFD1D38020B88188009C50ED /* APIResponse.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
 				CFD1D3A120B9CA76009C50ED /* PurchaseRequest.swift in Sources */,
