@@ -30,10 +30,7 @@ final class PlayViewController: UIViewController {
                 .subscribe(onNext: { [weak self] (_) in
                     let viewController = SettingViewController()
                     let navi = UINavigationController(rootViewController: viewController)
-                    Analytics.logEvent("tap", parameters: [
-                        "type": "action",
-                        "button": "setting"]
-                    )
+                    Analytics.Play.gearButton()
                     self?.present(navi, animated: true, completion: nil)
                 })
                 .disposed(by: disposeBag)

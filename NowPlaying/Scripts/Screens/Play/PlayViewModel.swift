@@ -60,10 +60,7 @@ final class PlayViewModel: PlayViewModelType {
         inputs.previousButton
             .subscribe(onNext: { () in
                 MPMusicPlayerController.systemMusicPlayer.skipToPreviousItem()
-                Analytics.logEvent("tap", parameters: [
-                    "type": "action",
-                    "button": "previous"]
-                )
+                Analytics.Play.previousButton()
             })
             .disposed(by: disposeBag)
 
@@ -75,10 +72,7 @@ final class PlayViewModel: PlayViewModelType {
                 } else {
                     MPMusicPlayerController.systemMusicPlayer.play()
                 }
-                Analytics.logEvent("tap", parameters: [
-                    "type": "action",
-                    "button": isPlay ? "pause" : "play"]
-                )
+                Analytics.Play.playButton(isPlaying: isPlay)
                 self?.isPlaying.accept(isPlay)
             })
             .disposed(by: disposeBag)
@@ -86,10 +80,7 @@ final class PlayViewModel: PlayViewModelType {
         inputs.nextButton
             .subscribe(onNext: { (_) in
                 MPMusicPlayerController.systemMusicPlayer.skipToNextItem()
-                Analytics.logEvent("tap", parameters: [
-                    "type": "action",
-                    "button": "next"]
-                )
+                Analytics.Play.nextButton()
             })
             .disposed(by: disposeBag)
 
@@ -99,10 +90,7 @@ final class PlayViewModel: PlayViewModelType {
                     self?.loginError.accept(())
                     return
                 }
-                Analytics.logEvent("tap", parameters: [
-                    "type": "action",
-                    "button": "mastodon"]
-                )
+                Analytics.Play.mastodonButton()
 
                 self?.setNewPostContent(service: .mastodon)
             })
@@ -114,10 +102,7 @@ final class PlayViewModel: PlayViewModelType {
                     self?.loginError.accept(())
                     return
                 }
-                Analytics.logEvent("tap", parameters: [
-                    "type": "action",
-                    "button": "twitter"]
-                )
+                Analytics.Play.twitterButton()
 
                 self?.setNewPostContent(service: .twitter)
             })
