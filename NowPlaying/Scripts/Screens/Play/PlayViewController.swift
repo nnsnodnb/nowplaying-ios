@@ -28,8 +28,8 @@ class PlayViewController: UIViewController {
             gearButton.rx.tap
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { [weak self] (_) in
-                    let settingViewController = R.storyboard.setting.instantiateInitialViewController()!
-                    let navi = UINavigationController(rootViewController: settingViewController)
+                    let viewController = SettingViewController()
+                    let navi = UINavigationController(rootViewController: viewController)
                     Analytics.logEvent("tap", parameters: [
                         "type": "action",
                         "button": "setting"]
