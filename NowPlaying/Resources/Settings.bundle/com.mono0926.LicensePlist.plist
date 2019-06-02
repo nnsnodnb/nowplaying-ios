@@ -8,7 +8,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/Alamofire</string>
 			<key>Title</key>
-			<string>Alamofire (4.7.2)</string>
+			<string>Alamofire (5.0.0-beta.5)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -16,7 +16,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/Crashlytics</string>
 			<key>Title</key>
-			<string>Crashlytics (3.10.5)</string>
+			<string>Crashlytics (3.13.1)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -32,7 +32,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/Eureka</string>
 			<key>Title</key>
-			<string>Eureka (4.1.1)</string>
+			<string>Eureka (5.0.0)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -40,7 +40,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/Fabric</string>
 			<key>Title</key>
-			<string>Fabric (1.7.9)</string>
+			<string>Fabric (1.10.1)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -48,7 +48,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/KeychainAccess</string>
 			<key>Title</key>
-			<string>KeychainAccess (v3.1.1)</string>
+			<string>KeychainAccess (v3.2.0)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -64,7 +64,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/R.swift</string>
 			<key>Title</key>
-			<string>R.swift (4.0.0)</string>
+			<string>R.swift (5.0.3)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -72,7 +72,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/R.swift.Library</string>
 			<key>Title</key>
-			<string>R.swift.Library (4.0.0)</string>
+			<string>R.swift.Library (5.0.1)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -88,7 +88,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/SnapKit</string>
 			<key>Title</key>
-			<string>SnapKit (4.0.0)</string>
+			<string>SnapKit (5.0.0)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -104,7 +104,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/TwitterCore</string>
 			<key>Title</key>
-			<string>TwitterCore (3.0.2)</string>
+			<string>TwitterCore (3.2.0)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -112,7 +112,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/TwitterKit</string>
 			<key>Title</key>
-			<string>TwitterKit (3.2.1)</string>
+			<string>TwitterKit (3.4.2)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

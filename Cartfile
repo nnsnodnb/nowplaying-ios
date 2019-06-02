@@ -1,9 +1,9 @@
-github "xmartlabs/Eureka" ~> 4.0
-github "Alamofire/Alamofire" ~> 4.5
+github "xmartlabs/Eureka" ~> 5.0
+github "Alamofire/Alamofire" "5.0.0-beta.5"
 github "kishikawakatsumi/KeychainAccess"
 github "SVProgressHUD/SVProgressHUD"
 github "antitypical/Result"
-github "SnapKit/SnapKit" ~> 4.0.0
+github "SnapKit/SnapKit" ~> 5.0.0
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAdMobBinary.json"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAuthBinary.json"
