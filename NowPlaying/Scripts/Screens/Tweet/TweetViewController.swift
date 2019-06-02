@@ -77,8 +77,9 @@ final class TweetViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
-        RxKeyboard.instance.isHidden
-            .drive(onNext: { [weak self] (_) in
+        RxKeyboard.instance.isHidden.asObservable()
+            .take(1)
+            .subscribe(onNext: { [weak self] (_) in
                 UIView.animate(withDuration: 0.5) {
                     self?.artworkImageButton.alpha = 1
                 }
