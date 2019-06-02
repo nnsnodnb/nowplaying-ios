@@ -12,7 +12,6 @@ $(SRCROOT)/Carthage/Build/iOS/Eureka.framework
 $(SRCROOT)/Carthage/Build/iOS/Alamofire.framework
 $(SRCROOT)/Carthage/Build/iOS/KeychainAccess.framework
 $(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework
-$(SRCROOT)/Carthage/Build/iOS/Result.framework
 $(SRCROOT)/Carthage/Build/iOS/SnapKit.framework
 $(SRCROOT)/Carthage/Build/iOS/RxSwift.framework
 $(SRCROOT)/Carthage/Build/iOS/RxCocoa.framework

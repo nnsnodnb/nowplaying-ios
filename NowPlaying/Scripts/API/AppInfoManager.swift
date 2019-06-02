@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Result
 
 class AppInfoManager: RequestFactory {
 

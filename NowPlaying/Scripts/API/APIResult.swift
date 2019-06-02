@@ -6,7 +6,5 @@
 //  Copyright © 2018年 Oka Yuya. All rights reserved.
 //
 
-import Result
-
 typealias APIResult = Result<APIResponse, AnyError>
 typealias UploadResult = Result<Parameters?, AnyError>

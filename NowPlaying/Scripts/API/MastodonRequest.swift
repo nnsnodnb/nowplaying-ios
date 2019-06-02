@@ -10,7 +10,6 @@ import UIKit
 import Foundation
 import Alamofire
 import KeychainAccess
-import Result
 
 class MastodonRequest: RequestFactory {
 

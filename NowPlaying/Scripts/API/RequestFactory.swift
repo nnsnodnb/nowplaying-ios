@@ -9,7 +9,6 @@
 import Foundation
 import Alamofire
 import NSURL_QueryDictionary
-import Result
 
 class RequestFactory {
 
@@ -33,8 +32,8 @@ class RequestFactory {
     func fetch(handler: @escaping (APIResult) -> Void) {
         guard let targetUrl = try? (url as NSURL).uq_URL(byAppendingQueryDictionary: dictionary).asURL(),
             let request = try? URLRequest(url: targetUrl, method: method) else {
-                let error = AnyError(NSError(domain: "RequestFactoryError", code: 1, userInfo: nil))
-                handler(APIResult(error: error))
+                let error = AnyError(error: NSError(domain: "RequestFactoryError", code: 1, userInfo: nil))
+                handler(APIResult.failure(error))
             return
         }
 
@@ -45,8 +44,8 @@ class RequestFactory {
 
     func send(handler: @escaping (APIResult) -> Void) {
         guard var request = try? URLRequest(url: url, method: method) else {
-            let error = AnyError(NSError(domain: "RequestFactoryError", code: 1, userInfo: nil))
-            handler(APIResult(error: error))
+            let error = AnyError(error: NSError(domain: "RequestFactoryError", code: 1, userInfo: nil))
+            handler(APIResult.failure(error))
             return
         }
         request.httpBody = try? JSONSerialization.data(withJSONObject: dictionary, options: .init(rawValue: 0))
@@ -63,10 +62,10 @@ class RequestFactory {
 
         let task = session.dataTask(with: request) { (data, response, error) in
             if let data = data, let urlResponse = response as? HTTPURLResponse, urlResponse.statusCode.isSuccessStatusCode {
-                handler(APIResult(value: APIResponse(from: data, urlResponse: urlResponse)))
+                handler(APIResult.success(APIResponse(from: data, urlResponse: urlResponse)))
             } else {
                 let error = error ?? NSError(domain: "APIRequestError", code: 2, userInfo: nil)
-                handler(APIResult(error: AnyError(error)))
+                handler(APIResult.failure(AnyError(error: error)))
             }
         }
         task.resume()
