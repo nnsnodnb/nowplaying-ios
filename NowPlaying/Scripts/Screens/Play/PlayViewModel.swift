@@ -11,6 +11,7 @@ import MediaPlayer
 import RxCocoa
 import RxSwift
 import StoreKit
+import TwitterKit
 import UIKit
 
 struct PlayViewModelInput {
@@ -18,6 +19,8 @@ struct PlayViewModelInput {
     let previousButton: Observable<Void>
     let playButton: Observable<Void>
     let nextButton: Observable<Void>
+    let mastodonButton: Observable<Void>
+    let twitterButton: Observable<Void>
 }
 
 // MARK: - PlayViewModelOutput
@@ -25,6 +28,8 @@ struct PlayViewModelInput {
 protocol PlayViewModelOutput {
 
     var playButtonImage: Driver<UIImage?> { get }
+    var loginRequired: Observable<Void> { get }
+    var postContent: Driver<PostContent> { get }
 }
 
 // MARK: - PlayViewModelType
@@ -42,6 +47,8 @@ final class PlayViewModel: PlayViewModelType {
 
     private let disposeBag = DisposeBag()
     private let isPlaying = PublishRelay<Bool>()
+    private let loginError = PublishRelay<Void>()
+    private let _postContent = PublishRelay<PostContent>()
 
     init(inputs: PlayViewModelInput) {
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
@@ -86,6 +93,36 @@ final class PlayViewModel: PlayViewModelType {
             })
             .disposed(by: disposeBag)
 
+        inputs.mastodonButton
+            .subscribe(onNext: { [weak self] (_) in
+                if !UserDefaults.bool(forKey: .isMastodonLogin) {
+                    self?.loginError.accept(())
+                    return
+                }
+                Analytics.logEvent("tap", parameters: [
+                    "type": "action",
+                    "button": "mastodon"]
+                )
+
+                self?.setNewPostContent(service: .mastodon)
+            })
+            .disposed(by: disposeBag)
+
+        inputs.twitterButton
+            .subscribe(onNext: { [weak self] (_) in
+                if TWTRTwitter.sharedInstance().sessionStore.session() == nil {
+                    self?.loginError.accept(())
+                    return
+                }
+                Analytics.logEvent("tap", parameters: [
+                    "type": "action",
+                    "button": "twitter"]
+                )
+
+                self?.setNewPostContent(service: .twitter)
+            })
+            .disposed(by: disposeBag)
+
         isPlaying.accept(MPMusicPlayerController.systemMusicPlayer.playbackState == .playing)
     }
 
@@ -96,6 +133,31 @@ final class PlayViewModel: PlayViewModelType {
         if count == 15 {
             SKStoreReviewController.requestReview()
             UserDefaults.set(0, forKey: .appOpenCount)
+        }
+    }
+
+    // MARK: - Private method
+
+    private func setNewPostContent(service: Service) {
+        guard let nowPlayingItem = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem else {
+            let post = PostContent(postMessage: "", shareImage: nil, songTitle: "", artistName: "", service: service)
+            _postContent.accept(post)
+            return
+        }
+
+        let postTitle = nowPlayingItem.title ?? ""
+        let postArtist = nowPlayingItem.artist ?? ""
+        let postText = "\(postTitle) by \(postArtist) #NowPlaying"
+
+        let userDefaultsKey: UserDefaultsKey = service == .mastodon ? .isMastodonWithImage : .isWithImage
+        if UserDefaults.bool(forKey: userDefaultsKey), let artwork = nowPlayingItem.artwork {
+            let post = PostContent(postMessage: postText, shareImage: artwork.image(at: artwork.bounds.size),
+                                   songTitle: postTitle, artistName: postArtist, service: service)
+            _postContent.accept(post)
+        } else {
+            let post = PostContent(postMessage: postText, shareImage: nil, songTitle: postTitle,
+                                   artistName: postArtist, service: service)
+            _postContent.accept(post)
         }
     }
 }
@@ -109,5 +171,13 @@ extension PlayViewModel: PlayViewModelOutput {
             .map { $0 ? R.image.pause() : R.image.play() }
             .observeOn(MainScheduler.instance)
             .asDriver(onErrorJustReturn: nil)
+    }
+
+    var loginRequired: Observable<Void> {
+        return loginError.observeOn(MainScheduler.instance).asObservable()
+    }
+
+    var postContent: SharedSequence<DriverSharingStrategy, PostContent> {
+        return _postContent.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
     }
 }

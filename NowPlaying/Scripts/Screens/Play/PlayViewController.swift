@@ -95,14 +95,35 @@ class PlayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let inputs = PlayViewModelInput(
-            previousButton: previousButton.rx.tap.asObservable(),
-            playButton: playButton.rx.tap.asObservable(),
-            nextButton: nextButton.rx.tap.asObservable()
+            previousButton: previousButton.rx.tap.asObservable(), playButton: playButton.rx.tap.asObservable(),
+            nextButton: nextButton.rx.tap.asObservable(), mastodonButton: mastodonButton.rx.tap.asObservable(),
+            twitterButton: twitterButton.rx.tap.asObservable()
         )
         viewModel = PlayViewModel(inputs: inputs)
         viewModel.outputs.playButtonImage
             .drive(onNext: { [weak self] (image) in
                 self?.playButton.setImage(image, for: .normal)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.loginRequired
+            .subscribe(onNext: { [weak self] (_) in
+                let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
+                self?.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.postContent
+            .drive(onNext: { [weak self] (post) in
+                let tweetViewController = TweetViewController()
+                tweetViewController.tweetText = post.postMessage
+                tweetViewController.shareImage = post.shareImage
+                tweetViewController.artistName = post.artistName
+                tweetViewController.songName = post.songTitle
+                tweetViewController.isMastodon = post.service == .mastodon
+                let navi = UINavigationController(rootViewController: tweetViewController)
+                self?.present(navi, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }
@@ -127,54 +148,5 @@ class PlayViewController: UIViewController {
         let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
-    }
-
-    // MARK: - IBAction
-
-    @IBAction func onTapMastodonButton(_ sender: Any) {
-        if !UserDefaults.bool(forKey: .isMastodonLogin) {
-            let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
-            present(alert, animated: true, completion: nil)
-            return
-        }
-        Analytics.logEvent("tap", parameters: [
-            "type": "action",
-            "button": "mastodon"]
-        )
-        let tweetViewController = TweetViewController()
-        tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
-        if let artwork = song?.artwork, UserDefaults.bool(forKey: .isMastodonWithImage) {
-            let image = artwork.image(at: artwork.bounds.size)
-            tweetViewController.shareImage = image
-        }
-        tweetViewController.artistName = song?.artist ?? ""
-        tweetViewController.songName = song?.title ?? ""
-        tweetViewController.isMastodon = true
-        let navi = UINavigationController(rootViewController: tweetViewController)
-        present(navi, animated: true, completion: nil)
-    }
-
-    @IBAction func onTapTwitterButton(_ sender: Any) {
-        if TWTRTwitter.sharedInstance().sessionStore.session() == nil {
-            let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
-            present(alert, animated: true, completion: nil)
-            return
-        }
-        Analytics.logEvent("tap", parameters: [
-            "type": "action",
-            "button": "twitter"]
-        )
-        let tweetViewController = TweetViewController()
-        tweetViewController.tweetText = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem != nil ? "\(song?.title ?? "") by \(song?.artist ?? "") #NowPlaying" : nil
-        if let artwork = song?.artwork, UserDefaults.bool(forKey: .isWithImage) {
-            let image = artwork.image(at: artwork.bounds.size)
-            tweetViewController.shareImage = image
-        }
-        tweetViewController.artistName = song?.artist ?? ""
-        tweetViewController.songName = song?.title ?? ""
-        let navi = UINavigationController(rootViewController: tweetViewController)
-        present(navi, animated: true, completion: nil)
     }
 }

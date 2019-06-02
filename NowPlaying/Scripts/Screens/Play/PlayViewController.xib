@@ -31,7 +31,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="A5A-pe-FD2">
-                    <rect key="frame" x="37.666666666666657" y="76" width="300" height="467"/>
+                    <rect key="frame" x="37.666666666666657" y="100" width="300" height="467"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mog-av-GTN">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="363"/>
@@ -127,9 +127,6 @@
                                         <constraint firstAttribute="width" secondItem="zMZ-jf-778" secondAttribute="height" multiplier="1:1" id="Yc1-Ke-lWo"/>
                                     </constraints>
                                     <state key="normal" image="mastodon"/>
-                                    <connections>
-                                        <action selector="onTapMastodonButton:" destination="-1" eventType="touchUpInside" id="4Zn-yX-USA"/>
-                                    </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AyT-Cc-yUw">
                                     <rect key="frame" x="66" y="0.0" width="50" height="50"/>
@@ -139,9 +136,6 @@
                                         <constraint firstAttribute="width" secondItem="AyT-Cc-yUw" secondAttribute="height" multiplier="1:1" id="jyQ-Bk-OPo"/>
                                     </constraints>
                                     <state key="normal" image="twitter"/>
-                                    <connections>
-                                        <action selector="onTapTwitterButton:" destination="-1" eventType="touchUpInside" id="jrv-Ry-LTQ"/>
-                                    </connections>
                                 </button>
                             </subviews>
                         </stackView>
@@ -160,7 +154,7 @@
                 <constraint firstItem="XmZ-8C-J1H" firstAttribute="leading" secondItem="GlU-pD-9su" secondAttribute="leading" id="7qX-fA-LNE"/>
                 <constraint firstItem="GlU-pD-9su" firstAttribute="trailing" secondItem="XJG-9e-16K" secondAttribute="trailing" constant="37" id="DK7-0y-CRv"/>
                 <constraint firstItem="XmZ-8C-J1H" firstAttribute="trailing" secondItem="GlU-pD-9su" secondAttribute="trailing" id="DTm-Jo-9iT"/>
-                <constraint firstItem="A5A-pe-FD2" firstAttribute="top" secondItem="GlU-pD-9su" secondAttribute="top" constant="32" id="McN-44-g9U"/>
+                <constraint firstItem="A5A-pe-FD2" firstAttribute="top" secondItem="GlU-pD-9su" secondAttribute="top" constant="56" id="McN-44-g9U"/>
                 <constraint firstItem="XmZ-8C-J1H" firstAttribute="bottom" secondItem="GlU-pD-9su" secondAttribute="bottom" id="VDC-h9-79L"/>
                 <constraint firstItem="XJG-9e-16K" firstAttribute="leading" secondItem="GlU-pD-9su" secondAttribute="leading" constant="37" id="XqF-z5-OX0"/>
                 <constraint firstItem="A5A-pe-FD2" firstAttribute="centerX" secondItem="XmZ-8C-J1H" secondAttribute="centerX" id="ie7-Be-h2y"/>

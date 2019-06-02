@@ -43,6 +43,7 @@
 		CF55B68122A3DE0400D5C9E1 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B67422A3DDED00D5C9E1 /* RxSwift.framework */; };
 		CF55B68622A3E12E00D5C9E1 /* AnyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B68522A3E12E00D5C9E1 /* AnyError.swift */; };
 		CF55B68822A3E22800D5C9E1 /* PlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B68722A3E22800D5C9E1 /* PlayViewModel.swift */; };
+		CF55B68F22A40ACD00D5C9E1 /* PostContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B68E22A40ACD00D5C9E1 /* PostContent.swift */; };
 		CF615AF31F56AB3B00315019 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF11F56AB3B00315019 /* Main.storyboard */; };
 		CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF41F56AB3B00315019 /* Assets.xcassets */; };
 		CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */; };
@@ -220,6 +221,7 @@
 		CF55B67E22A3DDED00D5C9E1 /* .Eureka.version */ = {isa = PBXFileReference; lastKnownFileType = text; path = .Eureka.version; sourceTree = "<group>"; };
 		CF55B68522A3E12E00D5C9E1 /* AnyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyError.swift; sourceTree = "<group>"; };
 		CF55B68722A3E22800D5C9E1 /* PlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlayViewModel.swift; path = Play/PlayViewModel.swift; sourceTree = "<group>"; };
+		CF55B68E22A40ACD00D5C9E1 /* PostContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContent.swift; sourceTree = "<group>"; };
 		CF615AEA1F56AB3B00315019 /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF615AED1F56AB3B00315019 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF615AF21F56AB3B00315019 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -466,6 +468,14 @@
 			path = iOS;
 			sourceTree = "<group>";
 		};
+		CF55B68D22A40ABB00D5C9E1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CF55B68E22A40ACD00D5C9E1 /* PostContent.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		CF615AE11F56AB3B00315019 = {
 			isa = PBXGroup;
 			children = (
@@ -537,6 +547,7 @@
 			children = (
 				CFD1D39020B9A176009C50ED /* R.generated.swift */,
 				CFD1D37C20B88188009C50ED /* API */,
+				CF55B68D22A40ABB00D5C9E1 /* Model */,
 				CF8E487C2081E851003A5E70 /* Extension */,
 				CF0FA21D206D506F00647317 /* Protocol */,
 				CF1AAFE61F75F28400384000 /* Common */,
@@ -928,6 +939,7 @@
 				CFFDE9A520BA15080032F2B0 /* MastodonClient.swift in Sources */,
 				CFE129B22103E052006D3D32 /* SNSSettingBaseViewController.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
+				CF55B68F22A40ACD00D5C9E1 /* PostContent.swift in Sources */,
 				CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */,
 				CFE129AF2103D6CC006D3D32 /* MastodonSettingViewController.swift in Sources */,
 				CF8E48802081EC75003A5E70 /* ProcessInfo+Key.swift in Sources */,
