@@ -518,20 +518,20 @@
 				CF0FA21D206D506F00647317 /* Protocol */,
 				CF1AAFE61F75F28400384000 /* Common */,
 				CF8C85C81F6EB3AE0051A0C7 /* Manager */,
-				CF615B031F56E76200315019 /* ViewController */,
+				CF615B031F56E76200315019 /* Screens */,
 				CF615AED1F56AB3B00315019 /* AppDelegate.swift */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
 		};
-		CF615B031F56E76200315019 /* ViewController */ = {
+		CF615B031F56E76200315019 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
 				CF1611331F726CF20027144D /* Play */,
 				CF1AAFDD1F7544D800384000 /* Setting */,
 				CF43E7D31F733C1F00A2A49A /* Tweet */,
 			);
-			path = ViewController;
+			path = Screens;
 			sourceTree = "<group>";
 		};
 		CF615B041F56E76A00315019 /* Storyboard */ = {
