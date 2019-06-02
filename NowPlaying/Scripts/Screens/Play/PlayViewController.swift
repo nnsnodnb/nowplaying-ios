@@ -16,7 +16,7 @@ import RxSwift
 import StoreKit
 import GoogleMobileAds
 
-class PlayViewController: UIViewController {
+final class PlayViewController: UIViewController {
 
     @IBOutlet private weak var artworkImageView: UIImageView!
     @IBOutlet private weak var songNameLabel: UILabel!

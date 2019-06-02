@@ -10,7 +10,7 @@ import UIKit
 import MediaPlayer
 import SnapKit
 
-class SystemPlayViewController: UIViewController {
+final class SystemPlayViewController: UIViewController {
 
     private let playViewController = PlayViewController()
     private let player = MPMusicPlayerController.systemMusicPlayer

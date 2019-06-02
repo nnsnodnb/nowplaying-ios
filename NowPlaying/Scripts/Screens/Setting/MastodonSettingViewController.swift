@@ -13,7 +13,7 @@ import FirebaseAnalytics
 import SVProgressHUD
 import KeychainAccess
 
-class MastodonSettingViewController: SNSSettingBaseViewController {
+final class MastodonSettingViewController: SNSSettingBaseViewController {
 
     private let keychain = Keychain(service: keychainServiceKey)
 

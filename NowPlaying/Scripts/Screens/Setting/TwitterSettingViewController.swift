@@ -13,7 +13,7 @@ import DTTJailbreakDetection
 import SVProgressHUD
 import StoreKit
 
-class TwitterSettingViewController: SNSSettingBaseViewController {
+final class TwitterSettingViewController: SNSSettingBaseViewController {
 
     private var isProces = false
     private var productRequest: SKProductsRequest?
