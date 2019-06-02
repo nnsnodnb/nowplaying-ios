@@ -525,6 +525,7 @@
 					CF615AE91F56AB3B00315019 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 99649YXF6E;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -538,6 +539,7 @@
 					CF6FFF1C207E4CE4003FD38D = {
 						CreatedOnToolsVersion = 9.2;
 						DevelopmentTeam = 99649YXF6E;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -947,7 +949,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -976,7 +978,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -1000,7 +1002,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1024,7 +1026,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -111,6 +111,8 @@ extension PaymentManager: SKPaymentTransactionObserver {
                 break
             case .purchasing: // 購入処理開始
                 UserDefaults.set(true, forKey: .isRemainTransaction)
+            @unknown default:
+                break
             }
         }
     }

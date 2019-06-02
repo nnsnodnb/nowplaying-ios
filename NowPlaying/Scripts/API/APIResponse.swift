@@ -17,6 +17,6 @@ class APIResponse {
         guard let data = object else {
             return
         }
-        body = try? JSONSerialization.jsonObject(with: data, options: .init(rawValue: 0)) as! Parameters
+        body = try? JSONSerialization.jsonObject(with: data, options: .init(rawValue: 0)) as? Parameters
     }
 }

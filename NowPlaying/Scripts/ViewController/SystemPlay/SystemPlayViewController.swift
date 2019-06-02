@@ -20,12 +20,12 @@ class SystemPlayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         playViewController.albumTitle = "アルバムタイトル"
-        addChildViewController(playViewController)
+        addChild(playViewController)
         view.addSubview(playViewController.view)
         playViewController.view.snp.makeConstraints { (maker) in
             maker.edges.equalToSuperview()
         }
-        playViewController.didMove(toParentViewController: self)
+        playViewController.didMove(toParent: self)
         setupNotification()
     }
 
@@ -68,6 +68,8 @@ class SystemPlayViewController: UIViewController {
                 self.showRequestDeniedAlert()
             case .notDetermined, .restricted:
                 break
+            @unknown default:
+                break
             }
         }
     }
@@ -92,7 +94,7 @@ class SystemPlayViewController: UIViewController {
         let alert = UIAlertController(title: "アプリを使用するには\n許可が必要です", message: "設定しますか？", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "設定画面へ", style: .default) { _ in
-            UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
         })
         DispatchQueue.main.async {
             self.present(alert, animated: true, completion: nil)
@@ -104,4 +106,9 @@ class SystemPlayViewController: UIViewController {
     @objc private func musicNotification(_ notification: Notification) {
         setupPlayViewControllerItem(isNotification: true)
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }

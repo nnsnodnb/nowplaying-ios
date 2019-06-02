@@ -22,9 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private let keychain = Keychain()
 
-    private var backgroundTaskID: UIBackgroundTaskIdentifier = 0
+    private var backgroundTaskID: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         SVProgressHUD.setDefaultMaskType(.clear)
         loadEnvironment()
         TWTRTwitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]=[:]) -> Bool {
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]=[:]) -> Bool {
         if let sourceApplication = options[.sourceApplication] as? String {
             if String(describing: sourceApplication) == "com.apple.SafariViewService" {
                 NotificationCenter.default.post(name: receiveSafariNotificationName, object: url)
@@ -55,8 +55,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         backgroundTaskID = application.beginBackgroundTask(withName: "AutoTweetBackgroundTask") { [weak self] in
             guard let wself = self else { return }
-            application.endBackgroundTask(wself.backgroundTaskID)
-            wself.backgroundTaskID = UIBackgroundTaskInvalid
+            application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(wself.backgroundTaskID.rawValue))
+            wself.backgroundTaskID = UIBackgroundTaskIdentifier.invalid
         }
     }
 
@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        application.endBackgroundTask(backgroundTaskID)
+        application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(backgroundTaskID.rawValue))
         resignFirstResponder()
         checkFirebaseHostingAppVersion()
     }
@@ -76,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.endReceivingRemoteControlEvents()
     }
 
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
             print(userActivity.webpageURL!)
         }
@@ -120,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     let alert = UIAlertController(title: "アップデートが必要です", message: nil, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
                         let url = URL(string: websiteUrl)!
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
                     })
                     DispatchQueue.main.async {
                         wself.window?.rootViewController?.present(alert, animated: true, completion: nil)
@@ -131,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     alert.addAction(UIAlertAction(title: "あとで", style: .cancel, handler: nil))
                     let action = UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
                         let url = URL(string: websiteUrl)!
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
                     }
                     alert.addAction(action)
                     alert.preferredAction = action
@@ -146,3 +146,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
+	return UIBackgroundTaskIdentifier(rawValue: input)
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
+}

@@ -41,7 +41,7 @@ class TweetViewController: UIViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(showKeyboard(_:)),
-            name: .UIKeyboardDidShow,
+            name: UIResponder.keyboardDidShowNotification,
             object: nil
         )
     }
@@ -51,8 +51,8 @@ class TweetViewController: UIViewController {
         Analytics.setScreenName("投稿画面", screenClass: "TweetViewController")
         Analytics.logEvent("screen_open", parameters: [
             "type": isMastodon ? "mastodon" : "twitter",
-            "artist_name": artistName,
-            "song_name": songName]
+            "artist_name": artistName ?? "",
+            "song_name": songName ?? ""]
         )
     }
 
@@ -60,7 +60,7 @@ class TweetViewController: UIViewController {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(
             self,
-            name: .UIKeyboardDidShow,
+            name: UIResponder.keyboardDidShowNotification,
             object: nil
         )
     }
@@ -141,8 +141,8 @@ class TweetViewController: UIViewController {
                     "type": "mastodon",
                     "auto_post": false,
                     "image": shareImage!,
-                    "artist_name": artistName,
-                    "song_name": songName]
+                    "artist_name": artistName ?? "",
+                    "song_name": songName ?? ""]
                 )
                 MastodonClient.shared.toot(text: textView.text, image: image) { [weak self] (error) in
                     DispatchQueue.main.async {
@@ -161,8 +161,8 @@ class TweetViewController: UIViewController {
                     "type": "twitter",
                     "auto_post": false,
                     "image": shareImage!,
-                    "artist_name": artistName,
-                    "song_name": songName]
+                    "artist_name": artistName ?? "",
+                    "song_name": songName ?? ""]
                 )
                 TwitterClient.shared.client?.sendTweet(withText: textView.text, image: shareImage!, completion: { [weak self] (tweet, error) in
                     guard let `self` = self else { return }
@@ -175,8 +175,8 @@ class TweetViewController: UIViewController {
                     "type": "mastodon",
                     "auto_post": false,
                     "image": false,
-                    "artist_name": artistName,
-                    "song_name": songName]
+                    "artist_name": artistName ?? "",
+                    "song_name": songName ?? ""]
                 )
                 MastodonRequest.Toot(status: textView.text).send { [weak self] (result) in
                     DispatchQueue.main.async {
@@ -196,8 +196,8 @@ class TweetViewController: UIViewController {
                     "type": "twitter",
                     "auto_post": false,
                     "image": false,
-                    "artist_name": artistName,
-                    "song_name": songName]
+                    "artist_name": artistName ?? "",
+                    "song_name": songName ?? ""]
                 )
                 TwitterClient.shared.client?.sendTweet(withText: textView.text, completion: { [unowned self] (tweet, error) in
                     self.treatmentRespones(error)
@@ -209,7 +209,7 @@ class TweetViewController: UIViewController {
     // MARK: - Notification target
 
     @objc func showKeyboard(_ notification: Notification) {
-        if let userInfo = notification.userInfo, let keyboard = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+        if let userInfo = notification.userInfo, let keyboard = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             keyboardHeight = keyboard.cgRectValue.size.height
             resizeTextView()
         }

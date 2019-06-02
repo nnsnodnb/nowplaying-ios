@@ -21,7 +21,7 @@ class MastodonClient: NSObject {
     private let baseUrl = UserDefaults.string(forKey: .mastodonHostname) ?? ""
 
     func toot(text: String, image: UIImage?, handler: @escaping ((Error?) -> ())) {
-        guard let image = image, let imageData = UIImagePNGRepresentation(image) else {
+        guard let image = image, let imageData = image.pngData() else {
             toot(text: text) {
                 handler($0)
             }

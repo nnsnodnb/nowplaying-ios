@@ -40,7 +40,7 @@ class AudioManager: NSObject {
         do {
             try audioPlayer = AVAudioPlayer(contentsOf: url!)
             audioPlayer.delegate = self
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.playAndRecord)))
             try AVAudioSession.sharedInstance().setActive(true)
             try AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker)
 
@@ -136,4 +136,9 @@ extension AudioManager : AVAudioPlayerDelegate {
     func audioPlayerEndInterruption(_ player: AVAudioPlayer, withOptions flags: Int) {
         play()
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
 }

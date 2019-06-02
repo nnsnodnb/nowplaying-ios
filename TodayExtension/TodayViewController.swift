@@ -88,6 +88,8 @@ class TodayViewController: UIViewController {
                     self.deniedView.isHidden = false
                 case .notDetermined, .restricted:
                     break
+                @unknown default:
+                    break
                 }
             }
         }
