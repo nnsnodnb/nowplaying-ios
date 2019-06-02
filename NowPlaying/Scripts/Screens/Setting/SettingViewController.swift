@@ -6,16 +6,16 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
-import UIKit
+import DTTJailbreakDetection
 import Eureka
+import FirebaseAnalytics
+import KeychainAccess
+import NSURL_QueryDictionary
+import SafariServices
+import StoreKit
 import SVProgressHUD
 import TwitterKit
-import StoreKit
-import SafariServices
-import KeychainAccess
-import FirebaseAnalytics
-import NSURL_QueryDictionary
-import DTTJailbreakDetection
+import UIKit
 
 final class SettingViewController: FormViewController {
 
