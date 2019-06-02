@@ -27,8 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         SVProgressHUD.setDefaultMaskType(.clear)
         loadEnvironment()
-        Twitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
-                                       consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
+        TWTRTwitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
+                                           consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
         Fabric.with([Crashlytics.self])
         FirebaseApp.configure()
         GADMobileAds.configure(withApplicationID: ProcessInfo.processInfo.get(forKey: .firebaseAdmobAppId))
@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return true
             }
         }
-        return Twitter.sharedInstance().application(application, open: url, options: options)
+        return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

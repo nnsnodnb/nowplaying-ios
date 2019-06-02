@@ -19,7 +19,7 @@ class AuthManager: NSObject {
     private let keychain = Keychain(service: keychainServiceKey)
 
     func login(completion: (() -> ())?=nil) {
-        Twitter.sharedInstance().logIn(completion: { [weak self] (session, error) in
+        TWTRTwitter.sharedInstance().logIn { [weak self] (session, error) in
             guard let wself = self, let session = session else {
                 return
             }
@@ -42,12 +42,12 @@ class AuthManager: NSObject {
                     }
                 }
             }
-        })
+        }
     }
 
     func logout(completion: () -> Void) {
         try? Auth.auth().signOut()
-        Twitter.sharedInstance().sessionStore.logOutUserID(Twitter.sharedInstance().sessionStore.session()!.userID)
+        TWTRTwitter.sharedInstance().sessionStore.logOutUserID(TWTRTwitter.sharedInstance().sessionStore.session()!.userID)
         keychain[KeychainKey.authToken.rawValue] = nil
         keychain[KeychainKey.authTokenSecret.rawValue] = nil
         completion()

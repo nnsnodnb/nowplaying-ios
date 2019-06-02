@@ -16,12 +16,12 @@ class TwitterClient: NSObject {
     static let shared = TwitterClient()
 
     var isLogin: Bool {
-        return Twitter.sharedInstance().sessionStore.session() != nil
+        return TWTRTwitter.sharedInstance().sessionStore.session() != nil
     }
 
     var client: TWTRAPIClient? {
         get {
-            if let userID = Twitter.sharedInstance().sessionStore.session()?.userID {
+            if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
                 return TWTRAPIClient(userID: userID)
             } else {
                 return nil
@@ -35,7 +35,7 @@ class TwitterClient: NSObject {
             return
         }
         // Twitterログインなしの場合、早期終了
-        if Twitter.sharedInstance().sessionStore.session() == nil {
+        if TWTRTwitter.sharedInstance().sessionStore.session() == nil {
             return
         }
 
