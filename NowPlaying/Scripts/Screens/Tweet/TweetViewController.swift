@@ -97,9 +97,11 @@ final class TweetViewController: UIViewController {
             .disposed(by: disposeBag)
 
         viewModel.outputs.failureRequest
-            .subscribe(onNext: { (error) in
+            .subscribe(onNext: { [weak self] (error) in
                 SVProgressHUD.dismiss()
-                print(error.localizedDescription)
+                let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self?.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }
@@ -147,28 +149,11 @@ final class TweetViewController: UIViewController {
         navigationItem.rightBarButtonItem = postButton
     }
 
-    private func showError(error: Error) {
-        let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-    }
-
     private func resizeTextView() {
         textViewHeight.constant = UIScreen.main.bounds.size.height - keyboardHeight - artworkImageButtonHeight.constant - (artworkImageButtonTopMargin.constant * 2)
         UIView.animate(withDuration: 0.5) { [unowned self] in
             self.artworkImageButton.alpha = 1
         }
-    }
-
-    private func treatmentRespones(_ error: Error?) {
-        if error != nil {
-            SVProgressHUD.dismiss()
-            showError(error: error!)
-            return
-        }
-        SVProgressHUD.dismiss()
-        textView.resignFirstResponder()
-        dismiss(animated: true, completion: nil)
     }
 
     // MARK: - IBAction
