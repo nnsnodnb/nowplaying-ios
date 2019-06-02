@@ -46,6 +46,7 @@
 		CF55B69422A4161B00D5C9E1 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B69222A4161B00D5C9E1 /* SettingViewController.swift */; };
 		CF55B69522A4161B00D5C9E1 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF55B69322A4161B00D5C9E1 /* SettingViewController.xib */; };
 		CF55B69722A418A100D5C9E1 /* Analytics+NowPlaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */; };
+		CF55B69922A41B8800D5C9E1 /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B69822A41B8800D5C9E1 /* TweetViewModel.swift */; };
 		CF615AF31F56AB3B00315019 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF11F56AB3B00315019 /* Main.storyboard */; };
 		CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF41F56AB3B00315019 /* Assets.xcassets */; };
 		CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */; };
@@ -225,6 +226,7 @@
 		CF55B69222A4161B00D5C9E1 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingViewController.swift; path = Setting/SettingViewController.swift; sourceTree = "<group>"; };
 		CF55B69322A4161B00D5C9E1 /* SettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SettingViewController.xib; path = Setting/SettingViewController.xib; sourceTree = "<group>"; };
 		CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Analytics+NowPlaying.swift"; sourceTree = "<group>"; };
+		CF55B69822A41B8800D5C9E1 /* TweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TweetViewModel.swift; path = Tweet/TweetViewModel.swift; sourceTree = "<group>"; };
 		CF615AEA1F56AB3B00315019 /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF615AED1F56AB3B00315019 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF615AF21F56AB3B00315019 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -371,6 +373,7 @@
 			children = (
 				CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */,
 				CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */,
+				CF55B69822A41B8800D5C9E1 /* TweetViewModel.swift */,
 			);
 			name = Tweet;
 			sourceTree = "<group>";
@@ -931,6 +934,7 @@
 				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
 				CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */,
+				CF55B69922A41B8800D5C9E1 /* TweetViewModel.swift in Sources */,
 				CFFDE9A520BA15080032F2B0 /* MastodonClient.swift in Sources */,
 				CFE129B22103E052006D3D32 /* SNSSettingBaseViewController.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
