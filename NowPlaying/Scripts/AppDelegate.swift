@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         backgroundTaskID = application.beginBackgroundTask(withName: "AutoTweetBackgroundTask") { [weak self] in
             guard let wself = self else { return }
-            application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(wself.backgroundTaskID.rawValue))
+            application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: wself.backgroundTaskID.rawValue))
             wself.backgroundTaskID = UIBackgroundTaskIdentifier.invalid
         }
     }
@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(backgroundTaskID.rawValue))
+        application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: backgroundTaskID.rawValue))
         resignFirstResponder()
         checkFirebaseHostingAppVersion()
     }
@@ -120,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     let alert = UIAlertController(title: "アップデートが必要です", message: nil, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
                         let url = URL(string: websiteUrl)!
-                        UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     })
                     DispatchQueue.main.async {
                         wself.window?.rootViewController?.present(alert, animated: true, completion: nil)
@@ -131,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     alert.addAction(UIAlertAction(title: "あとで", style: .cancel, handler: nil))
                     let action = UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
                         let url = URL(string: websiteUrl)!
-                        UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     }
                     alert.addAction(action)
                     alert.preferredAction = action
@@ -144,15 +144,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-}
-
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
-	return UIBackgroundTaskIdentifier(rawValue: input)
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }
