@@ -15,11 +15,30 @@ import UIKit
 
 final class TweetViewController: UIViewController {
 
-    @IBOutlet private weak var textView: UITextView!
+    @IBOutlet private weak var textView: UITextView! {
+        didSet {
+            textView.becomeFirstResponder()
+            textView.text = postContent.postMessage
+        }
+    }
     @IBOutlet private weak var textViewHeight: NSLayoutConstraint!
-    @IBOutlet private weak var artworkImageButton: UIButton!
+    @IBOutlet private weak var artworkImageButton: UIButton! {
+        didSet {
+            if shareImage == nil {
+                artworkImageButton.isHidden = true
+                return
+            }
+            artworkImageButton.alpha = 0
+            artworkImageButton.imageView?.backgroundColor = UIColor.clear
+            artworkImageButton.setImage(shareImage, for: .normal)
+        }
+    }
     @IBOutlet private weak var artworkImageButtonTopMargin: NSLayoutConstraint!
-    @IBOutlet private weak var artworkImageButtonHeight: NSLayoutConstraint!
+    @IBOutlet private weak var artworkImageButtonHeight: NSLayoutConstraint! {
+        didSet {
+            if shareImage == nil { artworkImageButtonHeight.constant = 0 }
+        }
+    }
 
     private let postContent: PostContent
     private let disposeBag = DisposeBag()
@@ -44,8 +63,6 @@ final class TweetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTextView()
-        setupArtworkImageButton()
         setupNavigationBar()
 
         RxKeyboard.instance.visibleHeight
@@ -76,22 +93,6 @@ final class TweetViewController: UIViewController {
     }
 
     // MARK: - Private method
-
-    private func setupTextView() {
-        textView.becomeFirstResponder()
-        textView.text = postContent.postMessage
-    }
-
-    private func setupArtworkImageButton() {
-        if shareImage == nil {
-            artworkImageButton.isHidden = true
-            artworkImageButtonHeight.constant = 0
-            return
-        }
-        artworkImageButton.alpha = 0
-        artworkImageButton.imageView?.backgroundColor = UIColor.clear
-        artworkImageButton.setImage(shareImage, for: .normal)
-    }
 
     private func setupNavigationBar() {
         guard navigationController != nil else {
