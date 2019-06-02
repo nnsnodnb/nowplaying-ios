@@ -44,6 +44,12 @@ final class PlayViewModel: PlayViewModelType {
     private let isPlaying = PublishRelay<Bool>()
 
     init(inputs: PlayViewModelInput) {
+        NotificationCenter.default.rx.notification(.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
+            .subscribe(onNext: { [weak self] (notification) in
+                self?.isPlaying.accept(MPMusicPlayerController.systemMusicPlayer.playbackState == .playing)
+            })
+            .disposed(by: disposeBag)
+
         inputs.previousButton
             .subscribe(onNext: { () in
                 MPMusicPlayerController.systemMusicPlayer.skipToPreviousItem()

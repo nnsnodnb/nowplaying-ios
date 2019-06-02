@@ -88,16 +88,6 @@ class PlayViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
-    private var isPlay: Bool  {
-        get {
-            return MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
-        }
-        set {
-            DispatchQueue.main.async {
-                self.playButton.setImage(UIImage(named: newValue ? "pause" : "play"), for: .normal)
-            }
-        }
-    }
     private var viewModel: PlayViewModelType!
 
     // MARK: - Life cycle
@@ -115,8 +105,6 @@ class PlayViewController: UIViewController {
                 self?.playButton.setImage(image, for: .normal)
             })
             .disposed(by: disposeBag)
-
-        setupNotification()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -133,16 +121,7 @@ class PlayViewController: UIViewController {
         viewModel.countUpOpenCount()
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: .MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
-    }
-
     // MARK: - Private method
-
-    private func setupNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(receivePlaybackStateDidChange(_:)),
-                                               name: .MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
-    }
 
     private func showError(error: Error) {
         let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
@@ -197,11 +176,5 @@ class PlayViewController: UIViewController {
         tweetViewController.songName = song?.title ?? ""
         let navi = UINavigationController(rootViewController: tweetViewController)
         present(navi, animated: true, completion: nil)
-    }
-
-    // MARK: - Notification target
-
-    @objc private func receivePlaybackStateDidChange(_ notification: Notification) {
-        isPlay = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
     }
 }
