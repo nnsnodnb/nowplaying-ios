@@ -8,6 +8,7 @@
 
 import FirebaseAnalytics
 import SVProgressHUD
+import RxCocoa
 import RxKeyboard
 import RxSwift
 import TwitterKit
@@ -48,6 +49,9 @@ final class TweetViewController: UIViewController {
         return postContent.service == .mastodon
     }
     private var shareImage: UIImage?
+    private var viewModel: TweetViewModelType!
+
+    // MARK: - Initializer
 
     init(postContent: PostContent) {
         self.postContent = postContent
@@ -80,6 +84,24 @@ final class TweetViewController: UIViewController {
                 }
             })
             .disposed(by: disposeBag)
+
+        let inputs = TweetViewModelInput(postContent: postContent,textViewText: textView.rx.text.orEmpty.asObservable())
+        viewModel = TweetViewModel(inputs: inputs)
+
+        viewModel.outputs.successRequest
+            .subscribe(onNext: { [weak self] (_) in
+                SVProgressHUD.dismiss()
+                self?.textView.resignFirstResponder()
+                self?.dismiss(animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.failureRequest
+            .subscribe(onNext: { (error) in
+                SVProgressHUD.dismiss()
+                print(error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -99,10 +121,30 @@ final class TweetViewController: UIViewController {
             return
         }
         title = isMastodon ? "トゥート" : "ツイート"
-        let cancelButton = UIBarButtonItem(title: "閉じる", style: .plain, target: self, action: #selector(onTapCancelButton(_:)))
+        let cancelButton = UIBarButtonItem(title: "閉じる", style: .plain, target: nil, action: nil)
+        cancelButton.rx.tap
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (_) in
+                guard let wself = self else { return }
+                wself.textView.resignFirstResponder()
+                Analytics.Tweet.cancelPost(isMastodon: wself.isMastodon)
+                wself.dismiss(animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
         navigationItem.leftBarButtonItem = cancelButton
-        let tweetButton = UIBarButtonItem(title: isMastodon ? "トゥート" : "ツイート", style: .done, target: self, action: #selector(onTapTweetButton(_:)))
-        navigationItem.rightBarButtonItem = tweetButton
+
+        let postButton = UIBarButtonItem(title: isMastodon ? "トゥート" : "ツイート", style: .done, target: nil, action: nil)
+        postButton.rx.tap
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (_) in
+                if let shareImage = self?.shareImage {
+                    self?.viewModel.preparePost(withImage: shareImage)
+                } else {
+                    self?.viewModel.preparePost()
+                }
+            })
+            .disposed(by: disposeBag)
+        navigationItem.rightBarButtonItem = postButton
     }
 
     private func showError(error: Error) {
@@ -127,90 +169,6 @@ final class TweetViewController: UIViewController {
         SVProgressHUD.dismiss()
         textView.resignFirstResponder()
         dismiss(animated: true, completion: nil)
-    }
-
-    // MARK: - UIBarButtonItem target
-
-    @objc func onTapCancelButton(_ sender: UIBarButtonItem) {
-        textView.resignFirstResponder()
-        Analytics.logEvent("tap", parameters: [
-            "type": isMastodon ? "mastodon" : "twitter",
-            "button": "post_close"]
-        )
-        dismiss(animated: true, completion: nil)
-    }
-
-    @objc func onTapTweetButton(_ sender: UIBarButtonItem) {
-        SVProgressHUD.show()
-        if let image = shareImage {
-            if isMastodon {
-                Analytics.logEvent("post", parameters: [
-                    "type": "mastodon",
-                    "auto_post": false,
-                    "image": image,
-                    "artist_name": postContent.artistName,
-                    "song_name": postContent.songTitle]
-                )
-                MastodonClient.shared.toot(text: textView.text, image: image) { [weak self] (error) in
-                    DispatchQueue.main.async {
-                        SVProgressHUD.dismiss()
-                        guard let wself = self else { return }
-                        if error == nil {
-                            wself.textView.resignFirstResponder()
-                            wself.dismiss(animated: true, completion: nil)
-                            return
-                        }
-                        wself.showError(error: error!)
-                    }
-                }
-            } else {
-                Analytics.logEvent("post", parameters: [
-                    "type": "twitter",
-                    "auto_post": false,
-                    "image": image,
-                    "artist_name": postContent.artistName,
-                    "song_name": postContent.songTitle]
-                )
-                TwitterClient.shared.client?.sendTweet(withText: textView.text, image: image) { [weak self] (tweet, error) in
-                    guard let `self` = self else { return }
-                    self.treatmentRespones(error)
-                }
-            }
-        } else {
-            if isMastodon {
-                Analytics.logEvent("post", parameters: [
-                    "type": "mastodon",
-                    "auto_post": false,
-                    "image": false,
-                    "artist_name": postContent.artistName,
-                    "song_name": postContent.songTitle]
-                )
-                MastodonRequest.Toot(status: textView.text).send { [weak self] (result) in
-                    DispatchQueue.main.async {
-                        SVProgressHUD.dismiss()
-                        guard let `self` = self else { return }
-                        switch result {
-                        case .success:
-                            self.textView.resignFirstResponder()
-                            self.dismiss(animated: true, completion: nil)
-                        case .failure(let error):
-                            self.showError(error: error.error)
-                        }
-                    }
-                }
-            } else {
-                Analytics.logEvent("post", parameters: [
-                    "type": "twitter",
-                    "auto_post": false,
-                    "image": false,
-                    "artist_name": postContent.artistName,
-                    "song_name": postContent.songTitle]
-                )
-                TwitterClient.shared.client?.sendTweet(withText: textView.text, completion: { [unowned self] (tweet, error) in
-                    self.treatmentRespones(error)
-                })
-            }
-        }
     }
 
     // MARK: - IBAction

@@ -53,3 +53,35 @@ extension Analytics {
         }
     }
 }
+
+// MARK: - TweetViewController
+
+extension Analytics {
+
+    final class Tweet: Analytics {
+
+        static func cancelPost(isMastodon: Bool) {
+            logEvent("tap", parameters: [
+                "type": isMastodon ? "mastodon" : "twitter",
+                "button": "post_close"])
+        }
+
+        static func postTweetTwitter(withHasImage hasImage: Bool, content: PostContent) {
+            logEvent("post", parameters: [
+                "type": "twitter",
+                "auto_post": false,
+                "image": hasImage,
+                "artist_name": content.artistName,
+                "song_name": content.songTitle])
+        }
+
+        static func postTootMastodon(withHasImage hasImage: Bool, content: PostContent) {
+            logEvent("post", parameters: [
+                "type": "mastodon",
+                "auto_post": false,
+                "image": hasImage,
+                "artist_name": content.artistName,
+                "song_name": content.songTitle])
+        }
+    }
+}
