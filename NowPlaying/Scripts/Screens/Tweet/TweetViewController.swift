@@ -13,11 +13,11 @@ import UIKit
 
 final class TweetViewController: UIViewController {
 
-    @IBOutlet weak var textView: UITextView!
-    @IBOutlet weak var textViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var artworkImageButton: UIButton!
-    @IBOutlet weak var artworkImageButtonTopMargin: NSLayoutConstraint!
-    @IBOutlet weak var artworkImageButtonHeight: NSLayoutConstraint!
+    @IBOutlet private weak var textView: UITextView!
+    @IBOutlet private weak var textViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var artworkImageButton: UIButton!
+    @IBOutlet private weak var artworkImageButtonTopMargin: NSLayoutConstraint!
+    @IBOutlet private weak var artworkImageButtonHeight: NSLayoutConstraint!
 
     private let postContent: PostContent
 

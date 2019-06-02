@@ -6,15 +6,15 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
-import Foundation
-import UIKit
-import MediaPlayer
-import TwitterKit
-import SVProgressHUD
 import FirebaseAnalytics
+import Foundation
+import GoogleMobileAds
+import MediaPlayer
 import RxSwift
 import StoreKit
-import GoogleMobileAds
+import SVProgressHUD
+import TwitterKit
+import UIKit
 
 final class PlayViewController: UIViewController {
 
