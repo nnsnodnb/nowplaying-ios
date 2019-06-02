@@ -1,15 +1,15 @@
 PODS:
-  - Crashlytics (3.10.5):
-    - Fabric (~> 1.7.9)
+  - Crashlytics (3.13.1):
+    - Fabric (~> 1.10.1)
   - DTTJailbreakDetection (0.4.0)
-  - Fabric (1.7.9)
+  - Fabric (1.10.1)
   - "NSURL+QueryDictionary (1.2.0)"
-  - R.swift (4.0.0):
-    - R.swift.Library (~> 4.0.0)
-  - R.swift.Library (4.0.0)
-  - TwitterCore (3.0.2)
-  - TwitterKit (3.2.1):
-    - TwitterCore (>= 3.0.2)
+  - R.swift (5.0.3):
+    - R.swift.Library (~> 5.0.0)
+  - R.swift.Library (5.0.1)
+  - TwitterCore (3.2.0)
+  - TwitterKit (3.4.2):
+    - TwitterCore (>= 3.2.0)
 
 DEPENDENCIES:
   - Crashlytics
@@ -31,14 +31,14 @@ SPEC REPOS:
     - TwitterKit
 
 SPEC CHECKSUMS:
-  Crashlytics: 7f2e38d302d9da96475b3d64d86fb29e31a542b7
+  Crashlytics: 5aa8e90dcbf2f34898b4f5a0037787531246cca0
   DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
-  Fabric: a2917d3895e4c1569b9c3170de7320ea1b1e6661
+  Fabric: f6f21452846788bb44595d73e9909d79d328e617
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
-  R.swift: d6a5ec2f55a8441dc0ed9f1f8b37d7d11ae85c66
-  R.swift.Library: c3af34921024333546e23b70e70d0b4e0cffca75
-  TwitterCore: e0420b01e02e7d20e94690e37f43e75de219ab8d
-  TwitterKit: 205ac89824bbfe9e85a16c420d30bb7bcbedac45
+  R.swift: f5a87643b91ea569d23d6afb3eee9c743edde239
+  R.swift.Library: cfe85d569d9bae6cb262922db130e7c3a7a5fad1
+  TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
+  TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
 PODFILE CHECKSUM: 93c1c312496c8953b730202353c4f204663200d9
 
