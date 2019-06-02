@@ -3,6 +3,7 @@ github "Alamofire/Alamofire" "5.0.0-beta.5"
 github "kishikawakatsumi/KeychainAccess"
 github "SVProgressHUD/SVProgressHUD"
 github "antitypical/Result"
+github "ReactiveX/RxSwift" ~> 5.0
 github "SnapKit/SnapKit" ~> 5.0.0
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAdMobBinary.json"

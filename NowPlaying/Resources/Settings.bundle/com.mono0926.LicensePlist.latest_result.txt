@@ -38,6 +38,8 @@ name: KeychainAccess, nameSpecified: , owner: kishikawakatsumi, version: v3.2.0
 
 name: Result, nameSpecified: , owner: antitypical, version: 4.0.0
 
+name: RxSwift, nameSpecified: , owner: ReactiveX, version: 5.0.1
+
 name: SnapKit, nameSpecified: , owner: SnapKit, version: 5.0.0
 
 name: SVProgressHUD, nameSpecified: , owner: SVProgressHUD, version: 2.2.5
