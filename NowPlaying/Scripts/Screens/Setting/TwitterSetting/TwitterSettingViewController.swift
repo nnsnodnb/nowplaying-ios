@@ -6,14 +6,14 @@
 //  Copyright © 2018年 Oka Yuya. All rights reserved.
 //
 
-import UIKit
 import Eureka
 import FirebaseAnalytics
 import DTTJailbreakDetection
 import SVProgressHUD
 import StoreKit
+import UIKit
 
-final class TwitterSettingViewController: SNSSettingBaseViewController {
+final class TwitterSettingViewController: FormViewController {
 
     private var isProces = false
     private var productRequest: SKProductsRequest?
@@ -22,11 +22,16 @@ final class TwitterSettingViewController: SNSSettingBaseViewController {
     // MARK: - Life cycle
 
     override func viewDidLoad() {
-        title = "Twitter設定"
-        screenName = "Twitter設定画面"
-        viewControllerName = "TwitterSettingViewController"
         super.viewDidLoad()
+        setupForm()
+        title = "Twitter設定"
         setupProducts()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("Twitter設定画面", screenClass: "TwitterSettingViewController")
+        Analytics.logEvent("screen_open", parameters: nil)
     }
 
     // MARK: - Private method
@@ -71,9 +76,7 @@ final class TwitterSettingViewController: SNSSettingBaseViewController {
         }
     }
 
-    // MARK: - Override method
-
-    override func setupForm() {
+    func setupForm() {
         form
             +++ Section("Twitter") {
                 $0.tag = "twitter_section"

@@ -82,7 +82,6 @@
 		CFD1D39F20B9C465009C50ED /* RequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39E20B9C465009C50ED /* RequestFactory.swift */; };
 		CFD1D3A120B9CA76009C50ED /* PurchaseRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D3A020B9CA76009C50ED /* PurchaseRequest.swift */; };
 		CFD1D3A320B9CFF3009C50ED /* MastodonRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */; };
-		CFE129B22103E052006D3D32 /* SNSSettingBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE129B12103E052006D3D32 /* SNSSettingBaseViewController.swift */; };
 		CFFDE9A520BA15080032F2B0 /* MastodonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFDE9A420BA15070032F2B0 /* MastodonClient.swift */; };
 /* End PBXBuildFile section */
 
@@ -273,7 +272,6 @@
 		CFD1D39E20B9C465009C50ED /* RequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestFactory.swift; sourceTree = "<group>"; };
 		CFD1D3A020B9CA76009C50ED /* PurchaseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseRequest.swift; sourceTree = "<group>"; };
 		CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonRequest.swift; sourceTree = "<group>"; };
-		CFE129B12103E052006D3D32 /* SNSSettingBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SNSSettingBaseViewController.swift; path = Setting/SNSSettingBaseViewController.swift; sourceTree = "<group>"; };
 		CFFDE9A420BA15070032F2B0 /* MastodonClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MastodonClient.swift; path = Manager/MastodonClient.swift; sourceTree = "<group>"; };
 		F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -361,7 +359,6 @@
 			isa = PBXGroup;
 			children = (
 				CF531BF222A9492A00D05896 /* Top */,
-				CFE129B12103E052006D3D32 /* SNSSettingBaseViewController.swift */,
 				CF531BFC22A952FA00D05896 /* TwitterSetting */,
 				CF531C0522A9537400D05896 /* MastodonSetting */,
 			);
@@ -986,7 +983,6 @@
 				CF55B69922A41B8800D5C9E1 /* TweetViewModel.swift in Sources */,
 				CFFDE9A520BA15080032F2B0 /* MastodonClient.swift in Sources */,
 				CF531C0322A9536A00D05896 /* TwitterSettingViewController.swift in Sources */,
-				CFE129B22103E052006D3D32 /* SNSSettingBaseViewController.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
 				CF55B68F22A40ACD00D5C9E1 /* PostContent.swift in Sources */,
 				CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */,

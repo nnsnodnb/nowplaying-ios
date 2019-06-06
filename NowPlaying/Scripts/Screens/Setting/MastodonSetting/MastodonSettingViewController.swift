@@ -6,14 +6,14 @@
 //  Copyright © 2018年 Oka Yuya. All rights reserved.
 //
 
-import UIKit
 import Eureka
-import SafariServices
 import FirebaseAnalytics
-import SVProgressHUD
 import KeychainAccess
+import SafariServices
+import SVProgressHUD
+import UIKit
 
-final class MastodonSettingViewController: SNSSettingBaseViewController {
+final class MastodonSettingViewController: FormViewController {
 
     private let keychain = Keychain(service: keychainServiceKey)
 
@@ -24,11 +24,16 @@ final class MastodonSettingViewController: SNSSettingBaseViewController {
     // MARK: - Life cycle
 
     override func viewDidLoad() {
-        title = "Mastodon設定"
-        screenName = "Mastodon設定画面"
-        viewControllerName = "MastodonSettingViewController"
-        isMastodonLogin = UserDefaults.bool(forKey: .isMastodonLogin)
         super.viewDidLoad()
+        setupForm()
+        title = "Mastodon設定"
+        isMastodonLogin = UserDefaults.bool(forKey: .isMastodonLogin)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("Mastodon設定画面", screenClass: "MastodonSettingViewController")
+        Analytics.logEvent("screen_open", parameters: nil)
     }
 
     deinit {
@@ -48,9 +53,7 @@ final class MastodonSettingViewController: SNSSettingBaseViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    // MARK: - Override method
-
-    override func setupForm() {
+    private func setupForm() {
         form
             +++ Section("Mastodon")
             <<< TextRow() { (row) in
