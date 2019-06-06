@@ -24,7 +24,7 @@ enum UserDefaultsKey: String {
     case isMastodonShowAutoTweetAlert = "is_mastodon_show_auto_tweet_alert"
     case isPurchasedRemoveAdMob = "is_purchased_remove_admob"
     case isRemainTransaction = "IsRemainTransaction"
-    case update2_1_0 = "update_2_1_0"
+    case update210 = "update_2_1_0"
 }
 
 enum KeychainKey: String {

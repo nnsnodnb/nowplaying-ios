@@ -713,6 +713,7 @@
 			buildPhases = (
 				2B302B8935A65A820A7DC1BE /* [CP] Check Pods Manifest.lock */,
 				CFD1D38F20B9A148009C50ED /* R.swift */,
+				CF531C3722A9969800D05896 /* ShellScript */,
 				CF615AE61F56AB3B00315019 /* Sources */,
 				CF615AE71F56AB3B00315019 /* Frameworks */,
 				CF8C85E31F6F26260051A0C7 /* PlistBuddy */,
@@ -896,6 +897,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = ". NowPlaying/Resources/.env\n\n\"${PODS_ROOT}/Fabric/run\" ${FABRIC_API_KEY} ${FABRIC_BUILD_SECRET}\n";
+		};
+		CF531C3722A9969800D05896 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		CF63348A1F5AB6F200D80EB8 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;

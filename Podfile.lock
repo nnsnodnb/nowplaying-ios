@@ -8,6 +8,7 @@ PODS:
   - R.swift (5.0.3):
     - R.swift.Library (~> 5.0.0)
   - R.swift.Library (5.0.1)
+  - SwiftLint (0.32.0)
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.2):
     - TwitterCore (>= 3.2.0)
@@ -19,6 +20,7 @@ DEPENDENCIES:
   - LicensePlist
   - "NSURL+QueryDictionary"
   - R.swift
+  - SwiftLint
   - TwitterKit
 
 SPEC REPOS:
@@ -30,6 +32,7 @@ SPEC REPOS:
     - "NSURL+QueryDictionary"
     - R.swift
     - R.swift.Library
+    - SwiftLint
     - TwitterCore
     - TwitterKit
 
@@ -41,9 +44,10 @@ SPEC CHECKSUMS:
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   R.swift: f5a87643b91ea569d23d6afb3eee9c743edde239
   R.swift.Library: cfe85d569d9bae6cb262922db130e7c3a7a5fad1
+  SwiftLint: 009a898ef2a1c851f45e1b59349bf6ff2ddc990d
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: 4baa500854023ba3143c723d8d6d39e0bfb3f161
+PODFILE CHECKSUM: e97f614fe73b6e43adfc19e81a68616745dada51
 
 COCOAPODS: 1.7.1

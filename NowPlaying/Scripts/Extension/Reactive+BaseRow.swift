@@ -17,9 +17,9 @@ extension Reactive where Base: BaseRow, Base: RowType {
 
     var value: ControlProperty<Base.Cell.Value?> {
         let source = Observable<Base.Cell.Value?>.create { [weak base] observer in
-            if let _base = base {
-                observer.onNext(_base.value)
-                _base.onChange {
+            if let base = base {
+                observer.onNext(base.value)
+                base.onChange {
                     observer.onNext($0.value)
                 }
             }

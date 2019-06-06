@@ -23,10 +23,10 @@ final class BindableObserver<ContainerType, ValueType>: ObserverType {
     func on(_ event: Event<ValueType>) {
         switch event {
         case .next(let element):
-            guard let _container = self._container else {
+            guard let container = _container else {
                 fatalError("No _container in BindableObserver at time of a .Next event")
             }
-            self._binding(_container, element)
+            self._binding(container, element)
         case .error:
             self._container = nil
         case .completed:

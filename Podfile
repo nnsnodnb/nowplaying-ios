@@ -5,12 +5,13 @@ target 'NowPlaying' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'LicensePlist'
-  pod 'Fabric'
   pod 'Crashlytics'
-  pod 'TwitterKit'
-  pod 'R.swift'
-  pod 'NSURL+QueryDictionary'
   pod 'DTTJailbreakDetection'
+  pod 'Fabric'
+  pod 'LicensePlist'
+  pod 'NSURL+QueryDictionary'
+  pod 'R.swift'
+  pod 'SwiftLint'
+  pod 'TwitterKit'
 
 end
