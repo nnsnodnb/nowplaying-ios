@@ -8,6 +8,7 @@
 
 import FirebaseAnalytics
 import Foundation
+import UIKit
 
 // MARK: - PlayViewController
 
@@ -82,6 +83,33 @@ extension Analytics {
                 "image": hasImage,
                 "artist_name": content.artistName,
                 "song_name": content.songTitle])
+        }
+    }
+}
+
+// MARK: - SettingViewController
+
+extension Analytics {
+
+    final class Setting: Analytics {
+
+        static func onTapDeveloper() {
+            logEvent("tap", parameters: [
+                "type": "action",
+                "button": "developer_twitter"])
+        }
+
+        static func github() {
+            logEvent("tap", parameters: [
+                "type": "action",
+                "button": "github_respository"])
+        }
+
+        static func review() {
+            logEvent("tap", parameters: [
+                "type": "action",
+                "button": "appstore_review",
+                "os": UIDevice.current.systemVersion])
         }
     }
 }

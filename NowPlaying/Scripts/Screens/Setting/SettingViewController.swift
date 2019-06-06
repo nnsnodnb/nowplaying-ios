@@ -6,25 +6,25 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
-import DTTJailbreakDetection
 import Eureka
 import FirebaseAnalytics
 import KeychainAccess
 import NSURL_QueryDictionary
-import SafariServices
+import RxSwift
 import StoreKit
 import SVProgressHUD
-import TwitterKit
 import UIKit
 
 final class SettingViewController: FormViewController {
 
     private let keychain = Keychain(service: keychainServiceKey)
+    private let disposeBag = DisposeBag()
 
     private var isProcess = false
     private var productRequest: SKProductsRequest?
     private var products = [SKProduct]()
     private var purchasingProduct: SKProduct?
+    private var viewModel: SettingViewModelType!
 
     // MARK: - Life cycle
 
@@ -32,8 +32,22 @@ final class SettingViewController: FormViewController {
         super.viewDidLoad()
         setupNavigationbar()
         setupProducts()
-        snsSectionForm()
-        aboutForm()
+
+        viewModel = SettingViewModel()
+
+        form = viewModel.form
+
+        viewModel.outputs.pushViewController
+            .drive(onNext: { [weak self] (viewController) in
+                self?.navigationController?.pushViewController(viewController, animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.presentViewController
+            .drive(onNext: { [weak self] (viewController) in
+                self?.present(viewController, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -66,126 +80,6 @@ final class SettingViewController: FormViewController {
         title = "設定"
         let closeButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(onTapCloseButton(_:)))
         navigationItem.rightBarButtonItem = closeButton
-    }
-
-    private func snsSectionForm() {
-        form
-            +++ Section("SNS設定") {
-                $0.tag = "sns_setting_section"
-            }
-            <<< ButtonRow() { (row) in
-                row.title = "Twitter設定"
-                row.tag = "twitter_setting"
-            }.cellUpdate { (cell, _) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { [unowned self] (cell, row) in
-                let viewController = TwitterSettingViewController()
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }
-            <<< ButtonRow() { (row) in
-                row.title = "Mastodon設定"
-                row.tag = "mastodon_setting"
-            }.cellUpdate { (cell, _) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { (cell, row) in
-                let viewController = MastodonSettingViewController()
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }
-    }
-
-    private func aboutForm() {
-        form
-            +++ Section("アプリについて")
-            <<< ButtonRow() {
-                $0.title = "開発者(Twitter)"
-            }.cellUpdate { (cell, row) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { [unowned self] (cell, row) in
-                let safariViewController = SFSafariViewController(url: URL(string: "https://twitter.com/nnsnodnb")!)
-                Analytics.logEvent("tap", parameters: [
-                    "type": "action",
-                    "button": "developer_twitter"]
-                )
-                DispatchQueue.main.async {
-                    self.navigationController?.present(safariViewController, animated: true, completion: nil)
-                }
-            }
-            <<< ButtonRow() {
-                $0.title = "ソースコード(GitHub)"
-            }.cellUpdate { (cell, row) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { (cell, row) in
-                let safariViewController = SFSafariViewController(url: URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!)
-                Analytics.logEvent("tap", parameters: [
-                    "type": "action",
-                    "button": "github_respository"]
-                )
-                DispatchQueue.main.async {
-                    self.navigationController?.present(safariViewController, animated: true, completion: nil)
-                }
-            }
-            <<< ButtonRow() {
-                $0.title = "バグ報告"
-            }.cellUpdate { (cell, _) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { [unowned self] (_, _) in
-                let safariViewController = SFSafariViewController(url: URL(string: "https://goo.gl/forms/Ve9hPalUJD3DQW5y2")!)
-                DispatchQueue.main.async {
-                    self.navigationController?.present(safariViewController, animated: true, completion: nil)
-                }
-            }
-            <<< ButtonRow() {
-                $0.title = "アプリ内広告削除(有料)"
-                $0.tag = "remove_admob"
-                $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isPurchasedRemoveAdMob))
-            }.cellUpdate { (cell, row) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { (cell, row) in
-                if DTTJailbreakDetection.isJailbroken() {
-                    let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
-                    DispatchQueue.main.async { [unowned self] in
-                        self.present(alert, animated: true, completion: nil)
-                    }
-                    return
-                }
-                if self.isProcess {
-                    SVProgressHUD.showInfo(withStatus: "処理中です")
-                    return
-                }
-                guard let product = self.products.last else {
-                    SVProgressHUD.showInfo(withStatus: "少し時間をおいて試してみてください")
-                    return
-                }
-                self.isProcess = true
-                self.showSelectPurchaseType(product: product)
-            }
-            <<< ButtonRow() {
-                $0.title = "レビューする"
-            }.cellUpdate { (cell, row) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { (cell, row) in
-                Analytics.logEvent("tap", parameters: [
-                    "type": "action",
-                    "button": "appstore_review",
-                    "os": UIDevice.current.systemVersion]
-                )
-                SKStoreReviewController.requestReview()
-            }
     }
 
     private func setupProducts() {

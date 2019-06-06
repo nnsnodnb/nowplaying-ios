@@ -37,6 +37,9 @@
 		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
 		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
 		CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4D73D11F791D4300E72FBF /* StoreKit.framework */; };
+		CF531BF422A9495000D05896 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BF322A9495000D05896 /* SettingViewModel.swift */; };
+		CF531BF722A94A6D00D05896 /* BindableObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BF622A94A6D00D05896 /* BindableObserver.swift */; };
+		CF531BFB22A94B8100D05896 /* Reactive+BaseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BFA22A94B8100D05896 /* Reactive+BaseRow.swift */; };
 		CF55B67F22A3DE0400D5C9E1 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B67022A3DDED00D5C9E1 /* RxCocoa.framework */; };
 		CF55B68022A3DE0400D5C9E1 /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B64122A3DDED00D5C9E1 /* RxRelay.framework */; };
 		CF55B68122A3DE0400D5C9E1 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B67422A3DDED00D5C9E1 /* RxSwift.framework */; };
@@ -139,6 +142,9 @@
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
 		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
 		CF4D73D11F791D4300E72FBF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		CF531BF322A9495000D05896 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingViewModel.swift; path = Setting/Top/SettingViewModel.swift; sourceTree = "<group>"; };
+		CF531BF622A94A6D00D05896 /* BindableObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindableObserver.swift; sourceTree = "<group>"; };
+		CF531BFA22A94B8100D05896 /* Reactive+BaseRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reactive+BaseRow.swift"; sourceTree = "<group>"; };
 		CF55B62C22A3DD8B00D5C9E1 /* Carthage.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = Carthage.xcfilelist; sourceTree = "<group>"; };
 		CF55B62E22A3DDED00D5C9E1 /* .Result.version */ = {isa = PBXFileReference; lastKnownFileType = text; path = .Result.version; sourceTree = "<group>"; };
 		CF55B62F22A3DDED00D5C9E1 /* .KeychainAccess.version */ = {isa = PBXFileReference; lastKnownFileType = text; path = .KeychainAccess.version; sourceTree = "<group>"; };
@@ -350,8 +356,7 @@
 		CF1AAFDD1F7544D800384000 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
-				CF55B69222A4161B00D5C9E1 /* SettingViewController.swift */,
-				CF55B69322A4161B00D5C9E1 /* SettingViewController.xib */,
+				CF531BF222A9492A00D05896 /* Top */,
 				CFE129B12103E052006D3D32 /* SNSSettingBaseViewController.swift */,
 				CFE129A92103D698006D3D32 /* TwitterSettingViewController.swift */,
 				CFE129AA2103D698006D3D32 /* TwitterSettingViewController.xib */,
@@ -377,6 +382,24 @@
 				CF55B69822A41B8800D5C9E1 /* TweetViewModel.swift */,
 			);
 			name = Tweet;
+			sourceTree = "<group>";
+		};
+		CF531BF222A9492A00D05896 /* Top */ = {
+			isa = PBXGroup;
+			children = (
+				CF55B69222A4161B00D5C9E1 /* SettingViewController.swift */,
+				CF55B69322A4161B00D5C9E1 /* SettingViewController.xib */,
+				CF531BF322A9495000D05896 /* SettingViewModel.swift */,
+			);
+			name = Top;
+			sourceTree = "<group>";
+		};
+		CF531BF522A94A5D00D05896 /* Reactive */ = {
+			isa = PBXGroup;
+			children = (
+				CF531BF622A94A6D00D05896 /* BindableObserver.swift */,
+			);
+			path = Reactive;
 			sourceTree = "<group>";
 		};
 		CF55B62D22A3DDED00D5C9E1 /* Build */ = {
@@ -573,6 +596,7 @@
 				CF1611331F726CF20027144D /* Play */,
 				CF1AAFDD1F7544D800384000 /* Setting */,
 				CF43E7D31F733C1F00A2A49A /* Tweet */,
+				CF531BF522A94A5D00D05896 /* Reactive */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -637,6 +661,7 @@
 				CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */,
 				CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */,
 				CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */,
+				CF531BFA22A94B8100D05896 /* Reactive+BaseRow.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -929,6 +954,7 @@
 			files = (
 				CF55B68622A3E12E00D5C9E1 /* AnyError.swift in Sources */,
 				CF1611361F726D110027144D /* PlayViewController.swift in Sources */,
+				CF531BFB22A94B8100D05896 /* Reactive+BaseRow.swift in Sources */,
 				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
 				CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */,
@@ -950,8 +976,10 @@
 				CF55B69422A4161B00D5C9E1 /* SettingViewController.swift in Sources */,
 				CFE129AB2103D698006D3D32 /* TwitterSettingViewController.swift in Sources */,
 				CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */,
+				CF531BF722A94A6D00D05896 /* BindableObserver.swift in Sources */,
 				CFD1D38020B88188009C50ED /* APIResponse.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
+				CF531BF422A9495000D05896 /* SettingViewModel.swift in Sources */,
 				CFD1D3A120B9CA76009C50ED /* PurchaseRequest.swift in Sources */,
 				CFD1D3A320B9CFF3009C50ED /* MastodonRequest.swift in Sources */,
 				CFD1D39F20B9C465009C50ED /* RequestFactory.swift in Sources */,
