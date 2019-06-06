@@ -113,3 +113,30 @@ extension Analytics {
         }
     }
 }
+
+// MARK: - TwitterSettingViewController
+
+extension Analytics {
+
+    final class TwitterSetting: Analytics {
+
+        static func login() {
+            logEvent("tap", parameters: [
+                "type": "action",
+                "button": "twitter_login"])
+        }
+
+        static func logout() {
+            logEvent("tap", parameters: [
+                "type": "action",
+                "button": "twitter_logout"])
+        }
+
+        static func changeWithArtwork(_ value: Bool) {
+            logEvent("change", parameters: [
+                "type": "action",
+                "button": "twitter_with_artwork",
+                "value": value])
+        }
+    }
+}
