@@ -36,6 +36,8 @@ name: Eureka, nameSpecified: , owner: xmartlabs, version: 5.0.0
 
 name: KeychainAccess, nameSpecified: , owner: kishikawakatsumi, version: v3.2.0
 
+name: RxStoreKit, nameSpecified: , owner: glassonion1, version: 5.1.2.1.0
+
 name: RxSwift, nameSpecified: , owner: ReactiveX, version: 5.0.1
 
 name: SnapKit, nameSpecified: , owner: SnapKit, version: 5.0.0

@@ -46,6 +46,13 @@
 		CF531C0A22A953C900D05896 /* MastodonSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531C0822A953C800D05896 /* MastodonSettingViewController.swift */; };
 		CF531C0B22A953C900D05896 /* MastodonSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF531C0922A953C800D05896 /* MastodonSettingViewController.xib */; };
 		CF531C0D22A9540500D05896 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF531C0C22A9540500D05896 /* SettingViewController.xib */; };
+		CF531C2A22A980EA00D05896 /* RxSKPaymentTransactionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531C2922A980EA00D05896 /* RxSKPaymentTransactionObserver.swift */; };
+		CF531C2C22A9817A00D05896 /* SKPaymentQueue+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531C2B22A9817A00D05896 /* SKPaymentQueue+Rx.swift */; };
+		CF531C2E22A9824100D05896 /* SKProductsRequest+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531C2D22A9824100D05896 /* SKProductsRequest+Rx.swift */; };
+		CF531C3022A9827100D05896 /* SKProductsRequestDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531C2F22A9827100D05896 /* SKProductsRequestDelegateProxy.swift */; };
+		CF531C3222A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531C3122A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift */; };
+		CF531C3422A982BE00D05896 /* SKReceiptRefreshRequestDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531C3322A982BE00D05896 /* SKReceiptRefreshRequestDelegateProxy.swift */; };
+		CF531C3622A9830B00D05896 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = CF531C3522A9830B00D05896 /* LICENSE */; };
 		CF55B67F22A3DE0400D5C9E1 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B67022A3DDED00D5C9E1 /* RxCocoa.framework */; };
 		CF55B68022A3DE0400D5C9E1 /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B64122A3DDED00D5C9E1 /* RxRelay.framework */; };
 		CF55B68122A3DE0400D5C9E1 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B67422A3DDED00D5C9E1 /* RxSwift.framework */; };
@@ -149,6 +156,13 @@
 		CF531C0822A953C800D05896 /* MastodonSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MastodonSettingViewController.swift; path = Setting/MastodonSetting/MastodonSettingViewController.swift; sourceTree = "<group>"; };
 		CF531C0922A953C800D05896 /* MastodonSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MastodonSettingViewController.xib; path = Setting/MastodonSetting/MastodonSettingViewController.xib; sourceTree = "<group>"; };
 		CF531C0C22A9540500D05896 /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingViewController.xib; path = Setting/Top/SettingViewController.xib; sourceTree = "<group>"; };
+		CF531C2922A980EA00D05896 /* RxSKPaymentTransactionObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxSKPaymentTransactionObserver.swift; sourceTree = "<group>"; };
+		CF531C2B22A9817A00D05896 /* SKPaymentQueue+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKPaymentQueue+Rx.swift"; sourceTree = "<group>"; };
+		CF531C2D22A9824100D05896 /* SKProductsRequest+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKProductsRequest+Rx.swift"; sourceTree = "<group>"; };
+		CF531C2F22A9827100D05896 /* SKProductsRequestDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKProductsRequestDelegateProxy.swift; sourceTree = "<group>"; };
+		CF531C3122A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKReceiptRefreshRequest+Rx.swift"; sourceTree = "<group>"; };
+		CF531C3322A982BE00D05896 /* SKReceiptRefreshRequestDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKReceiptRefreshRequestDelegateProxy.swift; sourceTree = "<group>"; };
+		CF531C3522A9830B00D05896 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		CF55B62C22A3DD8B00D5C9E1 /* Carthage.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = Carthage.xcfilelist; sourceTree = "<group>"; };
 		CF55B62E22A3DDED00D5C9E1 /* .Result.version */ = {isa = PBXFileReference; lastKnownFileType = text; path = .Result.version; sourceTree = "<group>"; };
 		CF55B62F22A3DDED00D5C9E1 /* .KeychainAccess.version */ = {isa = PBXFileReference; lastKnownFileType = text; path = .KeychainAccess.version; sourceTree = "<group>"; };
@@ -374,6 +388,7 @@
 		CF531BF522A94A5D00D05896 /* Reactive */ = {
 			isa = PBXGroup;
 			children = (
+				CF531C2822A980DB00D05896 /* RxStoreKit */,
 				CF531BF622A94A6D00D05896 /* BindableObserver.swift */,
 			);
 			path = Reactive;
@@ -397,6 +412,20 @@
 				CF531C0622A953B200D05896 /* MastodonSettingViewModel.swift */,
 			);
 			name = MastodonSetting;
+			sourceTree = "<group>";
+		};
+		CF531C2822A980DB00D05896 /* RxStoreKit */ = {
+			isa = PBXGroup;
+			children = (
+				CF531C2922A980EA00D05896 /* RxSKPaymentTransactionObserver.swift */,
+				CF531C2B22A9817A00D05896 /* SKPaymentQueue+Rx.swift */,
+				CF531C2D22A9824100D05896 /* SKProductsRequest+Rx.swift */,
+				CF531C2F22A9827100D05896 /* SKProductsRequestDelegateProxy.swift */,
+				CF531C3122A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift */,
+				CF531C3322A982BE00D05896 /* SKReceiptRefreshRequestDelegateProxy.swift */,
+				CF531C3522A9830B00D05896 /* LICENSE */,
+			);
+			path = RxStoreKit;
 			sourceTree = "<group>";
 		};
 		CF55B62D22A3DDED00D5C9E1 /* Build */ = {
@@ -785,6 +814,7 @@
 				CF531C0D22A9540500D05896 /* SettingViewController.xib in Resources */,
 				CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */,
 				CF531C0422A9536A00D05896 /* TwitterSettingViewController.xib in Resources */,
+				CF531C3622A9830B00D05896 /* LICENSE in Resources */,
 				CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */,
 				CF8C85E01F6F1B610051A0C7 /* .env in Resources */,
 				CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */,
@@ -851,7 +881,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -e /usr/local/bin/license-plist ]; then\nexit 0\nfi\nif [ $CONFIGURATION = \"Debug\" ]; then\ncd $SRCROOT\n/usr/local/bin/license-plist --add-version-numbers --output-path $PRODUCT_NAME/Resources/Settings.bundle --cartfile-path Cartfile --pods-path Pods --github-token \"${GITHUB_ACCESS_TOKEN}\"\nfi";
+			shellScript = "if [ ! -e /usr/local/bin/license-plist ]; then\nexit 0\nfi\nif [ $CONFIGURATION = \"Debug\" ]; then\ncd $SRCROOT\n/usr/local/bin/license-plist --add-version-numbers --output-path ${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle --cartfile-path Cartfile --pods-path Pods --github-token \"${GITHUB_ACCESS_TOKEN}\" --config-path ${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml\nfi\n";
 		};
 		CF4D73D31F7A979400E72FBF /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -938,18 +968,22 @@
 			files = (
 				CF55B68622A3E12E00D5C9E1 /* AnyError.swift in Sources */,
 				CF531BFE22A9532400D05896 /* TwitterSettingViewModel.swift in Sources */,
+				CF531C3422A982BE00D05896 /* SKReceiptRefreshRequestDelegateProxy.swift in Sources */,
 				CF1611361F726D110027144D /* PlayViewController.swift in Sources */,
 				CF531BFB22A94B8100D05896 /* Reactive+BaseRow.swift in Sources */,
 				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
 				CF531C0022A9534F00D05896 /* SettingViewController.swift in Sources */,
 				CF531C0722A953B200D05896 /* MastodonSettingViewModel.swift in Sources */,
+				CF531C3022A9827100D05896 /* SKProductsRequestDelegateProxy.swift in Sources */,
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
 				CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */,
 				CF55B69922A41B8800D5C9E1 /* TweetViewModel.swift in Sources */,
 				CFFDE9A520BA15080032F2B0 /* MastodonClient.swift in Sources */,
 				CF531C0322A9536A00D05896 /* TwitterSettingViewController.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
+				CF531C3222A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift in Sources */,
 				CF55B68F22A40ACD00D5C9E1 /* PostContent.swift in Sources */,
+				CF531C2A22A980EA00D05896 /* RxSKPaymentTransactionObserver.swift in Sources */,
 				CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */,
 				CF8E48802081EC75003A5E70 /* ProcessInfo+Key.swift in Sources */,
 				CFD1D37620B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift in Sources */,
@@ -962,11 +996,13 @@
 				CF531BF722A94A6D00D05896 /* BindableObserver.swift in Sources */,
 				CFD1D38020B88188009C50ED /* APIResponse.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
+				CF531C2E22A9824100D05896 /* SKProductsRequest+Rx.swift in Sources */,
 				CF531BF422A9495000D05896 /* SettingViewModel.swift in Sources */,
 				CFD1D3A120B9CA76009C50ED /* PurchaseRequest.swift in Sources */,
 				CFD1D3A320B9CFF3009C50ED /* MastodonRequest.swift in Sources */,
 				CFD1D39F20B9C465009C50ED /* RequestFactory.swift in Sources */,
 				CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */,
+				CF531C2C22A9817A00D05896 /* SKPaymentQueue+Rx.swift in Sources */,
 				CF531C0A22A953C900D05896 /* MastodonSettingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
