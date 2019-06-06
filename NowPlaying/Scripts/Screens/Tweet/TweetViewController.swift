@@ -32,6 +32,28 @@ final class TweetViewController: UIViewController {
             artworkImageButton.alpha = 0
             artworkImageButton.imageView?.backgroundColor = UIColor.clear
             artworkImageButton.setImage(shareImage, for: .normal)
+            artworkImageButton.rx.tap
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { [weak self] (_) in
+                    guard let wself = self else { return }
+                    let sheet = UIAlertController(title: nil, message: "アートワークを削除します", preferredStyle: .actionSheet)
+                    sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                    sheet.addAction(UIAlertAction(title: "削除", style: .destructive) { [weak self] (action) in
+                        self?.shareImage = nil
+                        UIView.animate(withDuration: 0.3, animations: {
+                            self?.artworkImageButton.alpha = 0.0
+                        }, completion: { (_) in
+                            self?.artworkImageButton.setImage(nil, for: .normal)
+                            self?.artworkImageButtonHeight.constant = 0
+                            self?.resizeTextView()
+                            Analytics.logEvent("delete_image", parameters: ["type": "action"])
+                        })
+                    })
+                    sheet.popoverPresentationController?.sourceView = wself.artworkImageButton
+                    sheet.popoverPresentationController?.sourceRect = wself.artworkImageButton.frame
+                    wself.present(sheet, animated: true, completion: nil)
+                })
+                .disposed(by: disposeBag)
         }
     }
     @IBOutlet private weak var artworkImageButtonTopMargin: NSLayoutConstraint!
@@ -86,7 +108,8 @@ final class TweetViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
-        let inputs = TweetViewModelInput(postContent: postContent,textViewText: textView.rx.text.orEmpty.asObservable())
+        let inputs = TweetViewModelInput(postContent: postContent,
+                                         textViewText: textView.rx.text.orEmpty.asObservable())
         viewModel = TweetViewModel(inputs: inputs)
 
         viewModel.outputs.successRequest
@@ -155,26 +178,5 @@ final class TweetViewController: UIViewController {
         UIView.animate(withDuration: 0.5) { [unowned self] in
             self.artworkImageButton.alpha = 1
         }
-    }
-
-    // MARK: - IBAction
-
-    @IBAction func onTapArtworkImageButton(_ sender: Any) {
-        let sheet = UIAlertController(title: nil, message: "アートワークを削除します", preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        sheet.addAction(UIAlertAction(title: "削除", style: .destructive) { [unowned self] (action) in
-            self.shareImage = nil
-            UIView.animate(withDuration: 0.3, animations: {
-                self.artworkImageButton.alpha = 0.0
-            }, completion: { (completion) in
-                self.artworkImageButton.setImage(nil, for: .normal)
-                self.artworkImageButtonHeight.constant = 0
-                self.resizeTextView()
-                Analytics.logEvent("delete_image", parameters: ["type": "action"])
-            })
-        })
-        sheet.popoverPresentationController?.sourceView = artworkImageButton
-        sheet.popoverPresentationController?.sourceRect = artworkImageButton.frame
-        present(sheet, animated: true, completion: nil)
     }
 }
