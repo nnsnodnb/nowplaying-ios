@@ -138,5 +138,12 @@ extension Analytics {
                 "button": "twitter_with_artwork",
                 "value": value])
         }
+
+        static func changeAutoTweet(_ value: Bool) {
+            logEvent("change", parameters: [
+                "type": "action",
+                "button": "twitter_auto_tweet",
+                "value": value])
+        }
     }
 }

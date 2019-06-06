@@ -125,14 +125,8 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
                 }
             }.onChange { [weak self] (row) in
                 UserDefaults.set(row.value!, forKey: .isAutoTweet)
-                Analytics.logEvent("change", parameters: [
-                    "type": "action",
-                    "button": "twitter_auto_tweet",
-                    "value": row.value!]
-                )
-                if !row.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) {
-                    return
-                }
+                Analytics.TwitterSetting.changeAutoTweet(row.value!)
+                if !row.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) { return }
                 let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。",
                                               preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
