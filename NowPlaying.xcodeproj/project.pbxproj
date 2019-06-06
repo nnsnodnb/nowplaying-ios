@@ -37,6 +37,8 @@
 		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
 		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
 		CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4D73D11F791D4300E72FBF /* StoreKit.framework */; };
+		CF531BE422A93CB600D05896 /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BE222A93CB600D05896 /* SettingTableViewController.swift */; };
+		CF531BE522A93CB600D05896 /* SettingTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF531BE322A93CB600D05896 /* SettingTableViewController.xib */; };
 		CF55B67F22A3DE0400D5C9E1 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B67022A3DDED00D5C9E1 /* RxCocoa.framework */; };
 		CF55B68022A3DE0400D5C9E1 /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B64122A3DDED00D5C9E1 /* RxRelay.framework */; };
 		CF55B68122A3DE0400D5C9E1 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B67422A3DDED00D5C9E1 /* RxSwift.framework */; };
@@ -139,6 +141,8 @@
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
 		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
 		CF4D73D11F791D4300E72FBF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		CF531BE222A93CB600D05896 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingTableViewController.swift; path = Setting/SettingTableViewController.swift; sourceTree = "<group>"; };
+		CF531BE322A93CB600D05896 /* SettingTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SettingTableViewController.xib; path = Setting/SettingTableViewController.xib; sourceTree = "<group>"; };
 		CF55B62C22A3DD8B00D5C9E1 /* Carthage.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = Carthage.xcfilelist; sourceTree = "<group>"; };
 		CF55B62E22A3DDED00D5C9E1 /* .Result.version */ = {isa = PBXFileReference; lastKnownFileType = text; path = .Result.version; sourceTree = "<group>"; };
 		CF55B62F22A3DDED00D5C9E1 /* .KeychainAccess.version */ = {isa = PBXFileReference; lastKnownFileType = text; path = .KeychainAccess.version; sourceTree = "<group>"; };
@@ -357,6 +361,8 @@
 				CFE129AA2103D698006D3D32 /* TwitterSettingViewController.xib */,
 				CFE129AD2103D6CC006D3D32 /* MastodonSettingViewController.swift */,
 				CFE129AE2103D6CC006D3D32 /* MastodonSettingViewController.xib */,
+				CF531BE222A93CB600D05896 /* SettingTableViewController.swift */,
+				CF531BE322A93CB600D05896 /* SettingTableViewController.xib */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -772,6 +778,7 @@
 				CFE129B02103D6CC006D3D32 /* MastodonSettingViewController.xib in Resources */,
 				CF918D071F7075110005B686 /* Settings.bundle in Resources */,
 				CF55B69522A4161B00D5C9E1 /* SettingViewController.xib in Resources */,
+				CF531BE522A93CB600D05896 /* SettingTableViewController.xib in Resources */,
 				CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */,
 				CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */,
 				CF8C85E01F6F1B610051A0C7 /* .env in Resources */,
@@ -953,6 +960,7 @@
 				CFE129AB2103D698006D3D32 /* TwitterSettingViewController.swift in Sources */,
 				CF16113A1F727D8C0027144D /* SystemPlayViewController.swift in Sources */,
 				CFD1D38020B88188009C50ED /* APIResponse.swift in Sources */,
+				CF531BE422A93CB600D05896 /* SettingTableViewController.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
 				CFD1D3A120B9CA76009C50ED /* PurchaseRequest.swift in Sources */,
 				CFD1D3A320B9CFF3009C50ED /* MastodonRequest.swift in Sources */,
