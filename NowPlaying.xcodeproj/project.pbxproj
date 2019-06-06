@@ -881,7 +881,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -e /usr/local/bin/license-plist ]; then\nexit 0\nfi\nif [ $CONFIGURATION = \"Debug\" ]; then\ncd $SRCROOT\n/usr/local/bin/license-plist --add-version-numbers --output-path ${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle --cartfile-path Cartfile --pods-path Pods --github-token \"${GITHUB_ACCESS_TOKEN}\" --config-path ${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml\nfi\n";
+			shellScript = "if [ ! -e /usr/local/bin/license-plist ]; then\nexit 0\nfi\nif [ $CONFIGURATION = \"Debug\" ]; then\n${PODS_ROOT}/LicensePlist/license-plist --add-version-numbers --output-path ${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle --cartfile-path Cartfile --pods-path Pods --github-token \"${GITHUB_ACCESS_TOKEN}\" --config-path ${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml\nfi\n";
 		};
 		CF4D73D31F7A979400E72FBF /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
