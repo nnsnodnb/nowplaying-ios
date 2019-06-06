@@ -57,6 +57,7 @@ final class TweetViewModel: TweetViewModelType {
     }
 
     func preparePost() {
+        SVProgressHUD.show()
         switch postContent.service {
         case .twitter:
             TwitterClient.shared.client?.sendTweet(withText: postMessage.value) { [weak self] (_, error) in
@@ -81,6 +82,7 @@ final class TweetViewModel: TweetViewModelType {
     }
 
     func preparePost(withImage image: UIImage) {
+        SVProgressHUD.show()
         switch postContent.service {
         case .twitter:
             TwitterClient.shared.client?.sendTweet(withText: postMessage.value, image: image) { [weak self] (_, error) in
