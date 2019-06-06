@@ -31,6 +31,7 @@ protocol PlayViewModelOutput {
     var playButtonImage: Driver<UIImage?> { get }
     var loginRequired: Observable<Void> { get }
     var postContent: Driver<PostContent> { get }
+    var requestDenied: Observable<Void> { get }
 }
 
 // MARK: - PlayViewModelType
@@ -47,29 +48,49 @@ final class PlayViewModel: PlayViewModelType {
     var outputs: PlayViewModelOutput { return self }
 
     private let isPlaying: BehaviorRelay<Bool>
+    private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     private let disposeBag = DisposeBag()
     private let _nowPlayingItem = BehaviorRelay<MPMediaItem?>(value: MPMusicPlayerController.systemMusicPlayer.nowPlayingItem)
     private let loginError = PublishRelay<Void>()
     private let _postContent = PublishRelay<PostContent>()
-    private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
+    private let _requestDenied = PublishRelay<Void>()
 
     init(inputs: PlayViewModelInput) {
         isPlaying = BehaviorRelay(value: musicPlayer.playbackState == .playing)
 
         musicPlayer.beginGeneratingPlaybackNotifications()
 
+        // 再生状態の変更
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
             .subscribe(onNext: { [weak self] (notification) in
                 self?.isPlaying.accept(self?.musicPlayer.playbackState == .playing)
             })
             .disposed(by: disposeBag)
 
+        // 再生されている曲の変更
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
             .subscribe(onNext: { [weak self] (notification) in
                 guard let player = notification.object as? MPMusicPlayerController else { return }
                 self?._nowPlayingItem.accept(player.nowPlayingItem)
             })
             .disposed(by: disposeBag)
+
+        MPMediaLibrary.requestAuthorization { [unowned self] (status) in
+            switch status {
+            case .authorized:
+                Observable<Int>.timer(.milliseconds(500), scheduler: MainScheduler.instance)
+                    .subscribe(onNext: { [weak self] (_) in
+                        self?._nowPlayingItem.accept(self?.musicPlayer.nowPlayingItem)
+                    })
+                    .disposed(by: self.disposeBag)
+            case .denied:
+                self._requestDenied.accept(())
+            case .notDetermined, .restricted:
+                break
+            @unknown default:
+                break
+            }
+        }
 
         inputs.previousButton
             .subscribe(onNext: { () in
@@ -187,5 +208,9 @@ extension PlayViewModel: PlayViewModelOutput {
 
     var postContent: SharedSequence<DriverSharingStrategy, PostContent> {
         return _postContent.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
+    }
+
+    var requestDenied: Observable<Void> {
+        return _requestDenied.observeOn(MainScheduler.instance).asObservable()
     }
 }
