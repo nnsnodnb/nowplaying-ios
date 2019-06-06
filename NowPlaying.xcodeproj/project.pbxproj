@@ -11,7 +11,6 @@
 		CF01C1D921023F1700DC1901 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF01C1D821023F1700DC1901 /* SnapKit.framework */; };
 		CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF0FA219206D3C3200647317 /* KeychainAccess.framework */; };
 		CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0FA21B206D4D5A00647317 /* PaymentManager.swift */; };
-		CF0FA21F206D508900647317 /* PaymentManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0FA21E206D508900647317 /* PaymentManagerProtocol.swift */; };
 		CF1611361F726D110027144D /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1611341F726D110027144D /* PlayViewController.swift */; };
 		CF1611371F726D110027144D /* PlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF1611351F726D110027144D /* PlayViewController.xib */; };
 		CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1AAFE41F75459B00384000 /* Eureka.framework */; };
@@ -119,7 +118,6 @@
 		CF01C1D821023F1700DC1901 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		CF0FA219206D3C3200647317 /* KeychainAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainAccess.framework; path = Carthage/Build/iOS/KeychainAccess.framework; sourceTree = "<group>"; };
 		CF0FA21B206D4D5A00647317 /* PaymentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaymentManager.swift; path = Manager/PaymentManager.swift; sourceTree = "<group>"; };
-		CF0FA21E206D508900647317 /* PaymentManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaymentManagerProtocol.swift; path = Protocol/PaymentManagerProtocol.swift; sourceTree = "<group>"; };
 		CF1611341F726D110027144D /* PlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayViewController.swift; path = Play/PlayViewController.swift; sourceTree = "<group>"; };
 		CF1611351F726D110027144D /* PlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlayViewController.xib; path = Play/PlayViewController.xib; sourceTree = "<group>"; };
 		CF1AAFE41F75459B00384000 /* Eureka.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Eureka.framework; path = Carthage/Build/iOS/Eureka.framework; sourceTree = "<group>"; };
@@ -329,14 +327,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CF0FA21D206D506F00647317 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				CF0FA21E206D508900647317 /* PaymentManagerProtocol.swift */,
-			);
-			name = Protocol;
-			sourceTree = "<group>";
-		};
 		CF1611331F726CF20027144D /* Play */ = {
 			isa = PBXGroup;
 			children = (
@@ -607,7 +597,6 @@
 				CFD1D37C20B88188009C50ED /* API */,
 				CF55B68D22A40ABB00D5C9E1 /* Model */,
 				CF8E487C2081E851003A5E70 /* Extension */,
-				CF0FA21D206D506F00647317 /* Protocol */,
 				CF1AAFE61F75F28400384000 /* Common */,
 				CF8C85C81F6EB3AE0051A0C7 /* Manager */,
 				CF615B031F56E76200315019 /* Screens */,
@@ -1007,7 +996,6 @@
 				CFD1D37620B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift in Sources */,
 				CFD1D37420B87E94009C50ED /* AppInfoManager.swift in Sources */,
 				CF55B68822A3E22800D5C9E1 /* PlayViewModel.swift in Sources */,
-				CF0FA21F206D508900647317 /* PaymentManagerProtocol.swift in Sources */,
 				CFD1D37F20B88188009C50ED /* APIResult.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CF55B69722A418A100D5C9E1 /* Analytics+NowPlaying.swift in Sources */,

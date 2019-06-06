@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]=[:]) -> Bool {
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]=[:]) -> Bool {
         if let sourceApplication = options[.sourceApplication] as? String {
             if String(describing: sourceApplication) == "com.apple.SafariViewService" {
                 NotificationCenter.default.post(name: receiveSafariNotificationName, object: url)
@@ -96,9 +96,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let data = try Data(contentsOf: url)
             let str = String(data: data, encoding: .utf8) ?? "Empty File"
             let clean = str.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "'", with: "")
-            let envVars = clean.components(separatedBy:"\n")
+            let envVars = clean.components(separatedBy: "\n")
             for envVar in envVars {
-                let keyVal = envVar.components(separatedBy:"=")
+                let keyVal = envVar.components(separatedBy: "=")
                 if keyVal.count == 2 {
                     setenv(keyVal[0], keyVal[1], 1)
                 }

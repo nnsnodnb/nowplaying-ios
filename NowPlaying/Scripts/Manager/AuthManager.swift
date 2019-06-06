@@ -18,7 +18,7 @@ class AuthManager: NSObject {
 
     private let keychain = Keychain(service: keychainServiceKey)
 
-    func login(completion: (() -> ())?=nil) {
+    func login(completion: (() -> Void)?=nil) {
         TWTRTwitter.sharedInstance().logIn { [weak self] (session, error) in
             guard let wself = self, let session = session else {
                 return

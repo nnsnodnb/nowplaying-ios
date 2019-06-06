@@ -62,7 +62,7 @@ final class PlayViewModel: PlayViewModelType {
 
         // 再生状態の変更
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
-            .subscribe(onNext: { [weak self] (notification) in
+            .subscribe(onNext: { [weak self] (_) in
                 self?.isPlaying.accept(self?.musicPlayer.playbackState == .playing)
             })
             .disposed(by: disposeBag)

@@ -38,7 +38,7 @@ final class TweetViewController: UIViewController {
                     guard let wself = self else { return }
                     let sheet = UIAlertController(title: nil, message: "アートワークを削除します", preferredStyle: .actionSheet)
                     sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                    sheet.addAction(UIAlertAction(title: "削除", style: .destructive) { [weak self] (action) in
+                    sheet.addAction(UIAlertAction(title: "削除", style: .destructive) { [weak self] (_) in
                         self?.shareImage = nil
                         UIView.animate(withDuration: 0.3, animations: {
                             self?.artworkImageButton.alpha = 0.0

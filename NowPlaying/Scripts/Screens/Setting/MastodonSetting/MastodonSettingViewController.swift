@@ -56,7 +56,7 @@ final class MastodonSettingViewController: FormViewController {
     private func setupForm() {
         form
             +++ Section("Mastodon")
-            <<< TextRow() { (row) in
+            <<< TextRow { (row) in
                 row.title = "ホストネーム"
                 row.placeholder = "https://mstdn.jp"
                 row.value = UserDefaults.string(forKey: .mastodonHostname)
@@ -70,17 +70,17 @@ final class MastodonSettingViewController: FormViewController {
                 }
                 UserDefaults.set(value, forKey: .mastodonHostname)
             }
-            <<< ButtonRow() { (row) in
+            <<< ButtonRow { (row) in
                 row.title = !isMastodonLogin ? "ログイン" : "ログアウト"
                 row.tag = "mastodon_login"
                 row.hidden = Condition.function(["mastodon_host"]) { form in
                     return (form.rowBy(tag: "mastodon_host") as! TextRow).value == nil
                 }
-            }.cellUpdate { (cell, row) in
+            }.cellUpdate { (cell, _) in
                     cell.textLabel?.textAlignment = .left
                     cell.textLabel?.textColor = UIColor.black
                     cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { [unowned self] (cell, row) in
+            }.onCellSelection { [unowned self] (cell, _) in
                 self.mastodonLoginButtonRowCell = cell
                 if let baseUrl = UserDefaults.string(forKey: .mastodonHostname), !self.isMastodonLogin {
                     MastodonRequest.Register().send { [weak self] (result) in
@@ -120,7 +120,7 @@ final class MastodonSettingViewController: FormViewController {
                     }
                 }
             }
-            <<< SwitchRow() { (row) in
+            <<< SwitchRow { (row) in
                 row.title = "アートワークを添付"
                 row.value = UserDefaults.bool(forKey: .isMastodonWithImage)
             }.onChange { (row) in
@@ -131,7 +131,7 @@ final class MastodonSettingViewController: FormViewController {
                     "value": row.value!]
                 )
             }
-            <<< SwitchRow() { (row) in
+            <<< SwitchRow { (row) in
                 row.title = "自動トゥート"
                 row.value = UserDefaults.bool(forKey: .isMastodonAutoToot)
             }.onChange { (row) in

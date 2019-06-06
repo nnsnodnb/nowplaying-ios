@@ -20,13 +20,8 @@ class TwitterClient: NSObject {
     }
 
     var client: TWTRAPIClient? {
-        get {
-            if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
-                return TWTRAPIClient(userID: userID)
-            } else {
-                return nil
-            }
-        }
+        guard let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID else { return nil }
+        return TWTRAPIClient(userID: userID)
     }
 
     func autoTweet(_ song: MPMediaItem?, resultCompletion: @escaping ((Bool, Error?) -> Void)) {
@@ -52,7 +47,7 @@ class TwitterClient: NSObject {
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
-            TwitterClient.shared.client?.sendTweet(withText: message, image: image!) { (tweet, error) in
+            TwitterClient.shared.client?.sendTweet(withText: message, image: image!) { (_, error) in
                 DispatchQueue.main.async {
                     SVProgressHUD.dismiss()
                     resultCompletion(error == nil, error)
@@ -66,7 +61,7 @@ class TwitterClient: NSObject {
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
-            TwitterClient.shared.client?.sendTweet(withText: message) { (tweet, error) in
+            TwitterClient.shared.client?.sendTweet(withText: message) { (_, error) in
                 DispatchQueue.main.async {
                     SVProgressHUD.dismiss()
                     resultCompletion(error == nil, error)

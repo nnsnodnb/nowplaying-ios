@@ -20,7 +20,7 @@ class MastodonClient: NSObject {
     private let keychain = Keychain(service: keychainServiceKey)
     private let baseUrl = UserDefaults.string(forKey: .mastodonHostname) ?? ""
 
-    func toot(text: String, image: UIImage?, handler: @escaping ((Error?) -> ())) {
+    func toot(text: String, image: UIImage?, handler: @escaping ((Error?) -> Void)) {
         guard let image = image, let imageData = image.pngData() else {
             toot(text: text) {
                 handler($0)
@@ -53,7 +53,7 @@ class MastodonClient: NSObject {
 //        }
     }
 
-    func toot(text: String, handler: @escaping ((Error?) -> ())) {
+    func toot(text: String, handler: @escaping ((Error?) -> Void)) {
         let parameter = ["status": text]
         request(baseUrl + "/api/v1/statuses", method: .post, parameter: parameter) { (response) in
 //            guard response.result.isSuccess else {
@@ -85,7 +85,7 @@ class MastodonClient: NSObject {
 //        }
 //    }
 
-    func request(_ url: String, method: HTTPMethod, parameter: Dictionary<String, Any>?, handler: @escaping ((DataResponse<Any>) -> ())) {
+    func request(_ url: String, method: HTTPMethod, parameter: [String: Any]?, handler: @escaping ((DataResponse<Any>) -> Void)) {
         var header: [String: String] = ["Content-Type": "application/json"]
         do {
             let accessToken = try keychain.get(KeychainKey.mastodonAccessToken.rawValue) ?? ""

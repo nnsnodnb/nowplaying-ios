@@ -52,7 +52,7 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
                 $0.tag = "twitter_section"
             }
 
-            <<< ButtonRow() { (row) in
+            <<< ButtonRow { (row) in
                 row.title = !TwitterClient.shared.isLogin ? "ログイン" : "ログアウト"
                 row.tag = "twitter_login"
             }.cellUpdate { (cell, _) in
@@ -82,7 +82,7 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
                 }
             }
 
-            <<< SwitchRow() { (row) in
+            <<< SwitchRow { (row) in
                 row.title = "アートワークを添付"
                 row.value = UserDefaults.bool(forKey: .isWithImage)
             }.onChange { (row) in
@@ -90,15 +90,15 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
                 Analytics.TwitterSetting.changeWithArtwork(row.value!)
             }
 
-            <<< ButtonRow() { (row) in
+            <<< ButtonRow { (row) in
                 row.title = "自動ツイートを購入"
                 row.tag = "auto_tweet_purchase"
                 row.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isAutoTweetPurchase))
-            }.cellUpdate { (cell, row) in
+            }.cellUpdate { (cell, _) in
                 cell.textLabel?.textAlignment = .left
                 cell.textLabel?.textColor = UIColor.black
                 cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { [weak self] (cell, row) in
+            }.onCellSelection { [weak self] (_, _) in
                 guard !DTTJailbreakDetection.isJailbroken() else {
                     let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
@@ -116,7 +116,7 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
 //                self.isProces = true
 //                self.showSelectPurchaseType(product: product)
             }
-            <<< SwitchRow() {
+            <<< SwitchRow {
                 $0.title = "自動ツイート"
                 $0.value = UserDefaults.bool(forKey: .isAutoTweet)
                 $0.tag = "auto_tweet_switch"

@@ -63,27 +63,27 @@ final class SettingViewModel: SettingViewModelType {
             }
 
             // Twitter
-            <<< ButtonRow() { (row) in
+            <<< ButtonRow { (row) in
                 row.title = "Twitter設定"
                 row.tag = "twitter_setting"
             }.cellUpdate { (cell, _) in
                 cell.textLabel?.textAlignment = .left
                 cell.textLabel?.textColor = UIColor.black
                 cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { [weak self] (cell, row) in
+            }.onCellSelection { [weak self] (_, _) in
                 let viewController = TwitterSettingViewController()
                 self?._pushViewController.accept(viewController)
             }
 
             // Mastodon
-            <<< ButtonRow() { (row) in
+            <<< ButtonRow { (row) in
                 row.title = "Mastodon設定"
                 row.tag = "mastodon_setting"
             }.cellUpdate { (cell, _) in
                 cell.textLabel?.textAlignment = .left
                 cell.textLabel?.textColor = UIColor.black
                 cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { [weak self] (cell, row) in
+            }.onCellSelection { [weak self] (_, _) in
                 let viewController = MastodonSettingViewController()
                 self?._pushViewController.accept(viewController)
             }
@@ -93,31 +93,31 @@ final class SettingViewModel: SettingViewModelType {
         form
             +++ Section("アプリについて")
 
-            <<< ButtonRow() {
+            <<< ButtonRow {
                 $0.title = "開発者(Twitter)"
-            }.cellUpdate { (cell, row) in
+            }.cellUpdate { (cell, _) in
                 cell.textLabel?.textAlignment = .left
                 cell.textLabel?.textColor = UIColor.black
                 cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { [weak self] (cell, row) in
+            }.onCellSelection { [weak self] (_, _) in
                 let safariViewController = SFSafariViewController(url: URL(string: "https://twitter.com/nnsnodnb")!)
                 Analytics.Setting.onTapDeveloper()
                 self?._presentViewController.accept(safariViewController)
             }
 
-            <<< ButtonRow() {
+            <<< ButtonRow {
                 $0.title = "ソースコード(GitHub)"
-            }.cellUpdate { (cell, row) in
+            }.cellUpdate { (cell, _) in
                 cell.textLabel?.textAlignment = .left
                 cell.textLabel?.textColor = UIColor.black
                 cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { [weak self] (cell, row) in
+            }.onCellSelection { [weak self] (_, _) in
                 let safariViewController = SFSafariViewController(url: URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!)
                 Analytics.Setting.github()
                 self?._presentViewController.accept(safariViewController)
             }
 
-            <<< ButtonRow() {
+            <<< ButtonRow {
                 $0.title = "バグ報告"
             }.cellUpdate { (cell, _) in
                 cell.textLabel?.textAlignment = .left
@@ -128,15 +128,15 @@ final class SettingViewModel: SettingViewModelType {
                 self?._presentViewController.accept(safariViewController)
             }
 
-            <<< ButtonRow() {
+            <<< ButtonRow {
                 $0.title = "アプリ内広告削除(有料)"
                 $0.tag = "remove_admob"
                 $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isPurchasedRemoveAdMob))
-            }.cellUpdate { (cell, row) in
+            }.cellUpdate { (cell, _) in
                 cell.textLabel?.textAlignment = .left
                 cell.textLabel?.textColor = UIColor.black
                 cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { [weak self] (cell, row) in
+            }.onCellSelection { [weak self] (_, _) in
                 if DTTJailbreakDetection.isJailbroken() {
                     let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
@@ -146,13 +146,13 @@ final class SettingViewModel: SettingViewModelType {
                 self?._startInAppPurchase.accept(())
             }
 
-            <<< ButtonRow() {
+            <<< ButtonRow {
                 $0.title = "レビューする"
-            }.cellUpdate { (cell, row) in
+            }.cellUpdate { (cell, _) in
                 cell.textLabel?.textAlignment = .left
                 cell.textLabel?.textColor = UIColor.black
                 cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { (cell, row) in
+            }.onCellSelection { (_, _) in
                 Analytics.Setting.review()
                 SKStoreReviewController.requestReview()
         }
@@ -169,7 +169,7 @@ final class SettingViewModel: SettingViewModelType {
                 case .purchasing:
                     SVProgressHUD.show(withStatus: "購入処理中...")
                 }
-            }, onError: { (error) in
+            }, onError: { (_) in
                 SVProgressHUD.showError(withStatus: "購入が失敗しました")
                 SVProgressHUD.dismiss(withDelay: 0.5)
             })
@@ -182,7 +182,7 @@ final class SettingViewModel: SettingViewModelType {
                 products.forEach { $0.finishPurchased() }
                 SVProgressHUD.showSuccess(withStatus: "復元が完了しました")
                 SVProgressHUD.dismiss(withDelay: 0.5)
-            }, onError: { (error) in
+            }, onError: { (_) in
                 SVProgressHUD.showError(withStatus: "復元に失敗しました")
                 SVProgressHUD.dismiss(withDelay: 0.5)
             })
