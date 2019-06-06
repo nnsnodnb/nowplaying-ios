@@ -13,7 +13,3 @@ excluded:
 
 line_length: 200
 file_length: 450
-
-identifier_name:
-  exclude:
-    - update2_1_0

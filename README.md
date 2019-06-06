@@ -8,7 +8,9 @@ NowPlaying tweet & toot application for iOS.
 
 - Xcode 10.2.1
   - Swift 5.0.1
-- Cocoapods 1.7.1
+- Ruby 2.5.3
+  - Bundler 2.0.1
+    - Cocoapods 1.7.1
 - Carthage 0.33.0 and higher
 
 ## Installation
