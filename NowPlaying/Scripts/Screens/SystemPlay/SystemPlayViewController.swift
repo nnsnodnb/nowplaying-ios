@@ -15,43 +15,10 @@ final class SystemPlayViewController: UIViewController {
     private let playViewController = PlayViewController()
     private let player = MPMusicPlayerController.systemMusicPlayer
 
-    // MARK: - Life cycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        playViewController.albumTitle = "アルバムタイトル"
-        addChild(playViewController)
-        view.addSubview(playViewController.view)
-        playViewController.view.snp.makeConstraints { (maker) in
-            maker.edges.equalToSuperview()
-        }
-        playViewController.didMove(toParent: self)
-        setupNotification()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        player.beginGeneratingPlaybackNotifications()
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupPlayViewControllerItem()
         setupAccessMusicLibrary()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: NSNotification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
-            object: nil
-        )
-        player.endGeneratingPlaybackNotifications()
-        MPMediaLibrary.default().endGeneratingLibraryChangeNotifications()
     }
 
     // MARK: - Private method
@@ -74,15 +41,6 @@ final class SystemPlayViewController: UIViewController {
         }
     }
 
-    private func setupNotification() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(musicNotification(_:)),
-            name: .MPMusicPlayerControllerNowPlayingItemDidChange,
-            object: nil
-        )
-    }
-
     private func setupPlayViewControllerItem(isNotification: Bool=false) {
         if let item = player.nowPlayingItem {
             playViewController.song = item
@@ -99,11 +57,5 @@ final class SystemPlayViewController: UIViewController {
         DispatchQueue.main.async {
             self.present(alert, animated: true, completion: nil)
         }
-    }
-
-    // MARK: - Notification target
-
-    @objc private func musicNotification(_ notification: Notification) {
-        setupPlayViewControllerItem(isNotification: true)
     }
 }

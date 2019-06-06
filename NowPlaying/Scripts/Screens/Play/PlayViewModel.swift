@@ -27,6 +27,7 @@ struct PlayViewModelInput {
 
 protocol PlayViewModelOutput {
 
+    var nowPlayingItem: Driver<MPMediaItem> { get }
     var playButtonImage: Driver<UIImage?> { get }
     var loginRequired: Observable<Void> { get }
     var postContent: Driver<PostContent> { get }
@@ -47,15 +48,26 @@ final class PlayViewModel: PlayViewModelType {
 
     private let isPlaying: BehaviorRelay<Bool>
     private let disposeBag = DisposeBag()
+    private let _nowPlayingItem = BehaviorRelay<MPMediaItem?>(value: MPMusicPlayerController.systemMusicPlayer.nowPlayingItem)
     private let loginError = PublishRelay<Void>()
     private let _postContent = PublishRelay<PostContent>()
+    private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
 
     init(inputs: PlayViewModelInput) {
-        isPlaying = BehaviorRelay(value: MPMusicPlayerController.systemMusicPlayer.playbackState == .playing)
+        isPlaying = BehaviorRelay(value: musicPlayer.playbackState == .playing)
+
+        musicPlayer.beginGeneratingPlaybackNotifications()
 
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
             .subscribe(onNext: { [weak self] (notification) in
-                self?.isPlaying.accept(MPMusicPlayerController.systemMusicPlayer.playbackState == .playing)
+                self?.isPlaying.accept(self?.musicPlayer.playbackState == .playing)
+            })
+            .disposed(by: disposeBag)
+
+        NotificationCenter.default.rx.notification(.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
+            .subscribe(onNext: { [weak self] (notification) in
+                guard let player = notification.object as? MPMusicPlayerController else { return }
+                self?._nowPlayingItem.accept(player.nowPlayingItem)
             })
             .disposed(by: disposeBag)
 
@@ -121,6 +133,10 @@ final class PlayViewModel: PlayViewModelType {
         }
     }
 
+    deinit {
+        musicPlayer.endGeneratingPlaybackNotifications()
+    }
+
     // MARK: - Private method
 
     private func setNewPostContent(service: Service) {
@@ -150,6 +166,13 @@ final class PlayViewModel: PlayViewModelType {
 // MARK: - PlayViewModelOutput
 
 extension PlayViewModel: PlayViewModelOutput {
+
+    var nowPlayingItem: SharedSequence<DriverSharingStrategy, MPMediaItem> {
+        return _nowPlayingItem
+            .compactMap { $0 }
+            .observeOn(MainScheduler.instance)
+            .asDriver(onErrorDriveWith: .empty())
+    }
 
     var playButtonImage: SharedSequence<DriverSharingStrategy, UIImage?> {
         return isPlaying

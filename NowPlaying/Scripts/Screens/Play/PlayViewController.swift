@@ -53,14 +53,7 @@ final class PlayViewController: UIViewController {
             title = albumTitle
         }
     }
-    var song: MPMediaItem? {
-        didSet {
-            DispatchQueue.main.async {
-                self.artworkImageView.image = self.song?.artwork?.image(at: self.artworkImageView.frame.size)
-                self.songNameLabel.text = self.song?.title
-            }
-        }
-    }
+    var song: MPMediaItem?
     var isNotification: Bool = false {
         didSet {
             if !isNotification {
@@ -97,6 +90,15 @@ final class PlayViewController: UIViewController {
             twitterButton: twitterButton.rx.tap.asObservable()
         )
         viewModel = PlayViewModel(inputs: inputs)
+
+        viewModel.outputs.nowPlayingItem
+            .drive(onNext: { [weak self] (item) in
+                guard let wself = self else { return }
+                wself.artworkImageView.image = item.artwork?.image(at: wself.artworkImageView.frame.size)
+                wself.songNameLabel.text = item.title
+            })
+            .disposed(by: disposeBag)
+
         viewModel.outputs.playButtonImage
             .drive(onNext: { [weak self] (image) in
                 self?.playButton.setImage(image, for: .normal)
