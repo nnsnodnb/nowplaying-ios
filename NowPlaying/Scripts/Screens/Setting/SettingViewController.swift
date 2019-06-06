@@ -63,9 +63,6 @@ final class SettingViewController: FormViewController {
     // MARK: - Private method
 
     private func setupNavigationbar() {
-        guard navigationController != nil else {
-            return
-        }
         title = "設定"
         let closeButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(onTapCloseButton(_:)))
         navigationItem.rightBarButtonItem = closeButton
