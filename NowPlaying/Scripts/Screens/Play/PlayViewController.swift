@@ -48,11 +48,6 @@ final class PlayViewController: UIViewController {
     }
     @IBOutlet private weak var bannerViewHeight: NSLayoutConstraint!
 
-    var albumTitle: String! {
-        didSet {
-            title = albumTitle
-        }
-    }
     var song: MPMediaItem?
     var isNotification: Bool = false {
         didSet {
