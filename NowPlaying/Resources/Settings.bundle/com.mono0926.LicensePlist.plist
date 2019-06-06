@@ -88,7 +88,7 @@
 			<key>File</key>
 			<string>com.mono0926.LicensePlist/RxStoreKit</string>
 			<key>Title</key>
-			<string>RxStoreKit (5.1.2.1.0)</string>
+			<string>RxStoreKit (1.2.1)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
