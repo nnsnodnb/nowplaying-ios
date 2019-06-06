@@ -45,12 +45,14 @@ final class PlayViewModel: PlayViewModelType {
 
     var outputs: PlayViewModelOutput { return self }
 
+    private let isPlaying: BehaviorRelay<Bool>
     private let disposeBag = DisposeBag()
-    private let isPlaying = PublishRelay<Bool>()
     private let loginError = PublishRelay<Void>()
     private let _postContent = PublishRelay<PostContent>()
 
     init(inputs: PlayViewModelInput) {
+        isPlaying = BehaviorRelay(value: MPMusicPlayerController.systemMusicPlayer.playbackState == .playing)
+
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
             .subscribe(onNext: { [weak self] (notification) in
                 self?.isPlaying.accept(MPMusicPlayerController.systemMusicPlayer.playbackState == .playing)
@@ -107,8 +109,6 @@ final class PlayViewModel: PlayViewModelType {
                 self?.setNewPostContent(service: .twitter)
             })
             .disposed(by: disposeBag)
-
-        isPlaying.accept(MPMusicPlayerController.systemMusicPlayer.playbackState == .playing)
     }
 
     func countUpOpenCount() {
