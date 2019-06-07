@@ -54,7 +54,45 @@ final class SettingViewModel: SettingViewModelType {
         configureAbout()
     }
 
-    // MARK: - Private method
+    func buyProduct(_ product: PaymentManager.Product) {
+        PaymentManager.shared.buyProduct(product)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (state) in
+                switch state {
+                case .purchased:
+                    SVProgressHUD.showSuccess(withStatus: "購入が完了しました！")
+                    SVProgressHUD.dismiss(withDelay: 0.5)
+                    product.finishPurchased()
+                    self?.changeStateAdMob()
+                case .purchasing:
+                    SVProgressHUD.show(withStatus: "購入処理中...")
+                }
+            }, onError: { (_) in
+                SVProgressHUD.showError(withStatus: "購入が失敗しました")
+                SVProgressHUD.dismiss(withDelay: 0.5)
+            })
+            .disposed(by: disposeBag)
+    }
+
+    func restore() {
+        PaymentManager.shared.restore()
+            .subscribe(onNext: { [weak self] (products) in
+                products.forEach { $0.finishPurchased() }
+                SVProgressHUD.showSuccess(withStatus: "復元が完了しました")
+                SVProgressHUD.dismiss(withDelay: 0.5)
+                if products.first(where: { $0 == .hideAdmob }) == nil { return }
+                self?.changeStateAdMob()
+            }, onError: { (_) in
+                SVProgressHUD.showError(withStatus: "復元に失敗しました")
+                SVProgressHUD.dismiss(withDelay: 0.5)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+// MARK: - Private method
+
+extension SettingViewModel {
 
     private func configureSNSSection() {
         form
@@ -66,27 +104,27 @@ final class SettingViewModel: SettingViewModelType {
             <<< ButtonRow { (row) in
                 row.title = "Twitter設定"
                 row.tag = "twitter_setting"
-            }.cellUpdate { (cell, _) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { [weak self] (_, _) in
-                let viewController = TwitterSettingViewController()
-                self?._pushViewController.accept(viewController)
+                }.cellUpdate { (cell, _) in
+                    cell.textLabel?.textAlignment = .left
+                    cell.textLabel?.textColor = UIColor.black
+                    cell.accessoryType = .disclosureIndicator
+                }.onCellSelection { [weak self] (_, _) in
+                    let viewController = TwitterSettingViewController()
+                    self?._pushViewController.accept(viewController)
             }
 
             // Mastodon
             <<< ButtonRow { (row) in
                 row.title = "Mastodon設定"
                 row.tag = "mastodon_setting"
-            }.cellUpdate { (cell, _) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
-            }.onCellSelection { [weak self] (_, _) in
-                let viewController = MastodonSettingViewController()
-                self?._pushViewController.accept(viewController)
-            }
+                }.cellUpdate { (cell, _) in
+                    cell.textLabel?.textAlignment = .left
+                    cell.textLabel?.textColor = UIColor.black
+                    cell.accessoryType = .disclosureIndicator
+                }.onCellSelection { [weak self] (_, _) in
+                    let viewController = MastodonSettingViewController()
+                    self?._pushViewController.accept(viewController)
+        }
     }
 
     private func configureAbout() {
@@ -135,38 +173,13 @@ final class SettingViewModel: SettingViewModelType {
             }.onCellSelection { (_, _) in
                 Analytics.Setting.review()
                 SKStoreReviewController.requestReview()
-        }
+            }
     }
 
-    func buyProduct(_ product: PaymentManager.Product) {
-        PaymentManager.shared.buyProduct(product)
-            .subscribe(onNext: { (state) in
-                switch state {
-                case .purchased:
-                    SVProgressHUD.showSuccess(withStatus: "購入が完了しました！")
-                    SVProgressHUD.dismiss(withDelay: 0.5)
-                    product.finishPurchased()
-                case .purchasing:
-                    SVProgressHUD.show(withStatus: "購入処理中...")
-                }
-            }, onError: { (_) in
-                SVProgressHUD.showError(withStatus: "購入が失敗しました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-            })
-            .disposed(by: disposeBag)
-    }
-
-    func restore() {
-        PaymentManager.shared.restore()
-            .subscribe(onNext: { (products) in
-                products.forEach { $0.finishPurchased() }
-                SVProgressHUD.showSuccess(withStatus: "復元が完了しました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-            }, onError: { (_) in
-                SVProgressHUD.showError(withStatus: "復元に失敗しました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-            })
-            .disposed(by: disposeBag)
+    private func changeStateAdMob() {
+        guard let purchaseButtonRow: NowPlayingButtonRow = form.rowBy(tag: "remove_admob") else { return }
+        purchaseButtonRow.hidden = Condition(booleanLiteral: true)
+        purchaseButtonRow.evaluateHidden()
     }
 }
 
