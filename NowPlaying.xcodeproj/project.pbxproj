@@ -35,8 +35,6 @@
 		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
 		CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4D73D11F791D4300E72FBF /* StoreKit.framework */; };
 		CF531BF422A9495000D05896 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BF322A9495000D05896 /* SettingViewModel.swift */; };
-		CF531BF722A94A6D00D05896 /* BindableObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BF622A94A6D00D05896 /* BindableObserver.swift */; };
-		CF531BFB22A94B8100D05896 /* Reactive+BaseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BFA22A94B8100D05896 /* Reactive+BaseRow.swift */; };
 		CF531BFE22A9532400D05896 /* TwitterSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BFD22A9532400D05896 /* TwitterSettingViewModel.swift */; };
 		CF531C0022A9534F00D05896 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BFF22A9534F00D05896 /* SettingViewController.swift */; };
 		CF531C0322A9536A00D05896 /* TwitterSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531C0122A9536A00D05896 /* TwitterSettingViewController.swift */; };
@@ -145,8 +143,6 @@
 		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
 		CF4D73D11F791D4300E72FBF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CF531BF322A9495000D05896 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingViewModel.swift; path = Setting/Top/SettingViewModel.swift; sourceTree = "<group>"; };
-		CF531BF622A94A6D00D05896 /* BindableObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindableObserver.swift; sourceTree = "<group>"; };
-		CF531BFA22A94B8100D05896 /* Reactive+BaseRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reactive+BaseRow.swift"; sourceTree = "<group>"; };
 		CF531BFD22A9532400D05896 /* TwitterSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TwitterSettingViewModel.swift; path = Setting/TwitterSetting/TwitterSettingViewModel.swift; sourceTree = "<group>"; };
 		CF531BFF22A9534F00D05896 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingViewController.swift; path = Setting/Top/SettingViewController.swift; sourceTree = "<group>"; };
 		CF531C0122A9536A00D05896 /* TwitterSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterSettingViewController.swift; path = Setting/TwitterSetting/TwitterSettingViewController.swift; sourceTree = "<group>"; };
@@ -381,7 +377,6 @@
 			isa = PBXGroup;
 			children = (
 				CF531C2822A980DB00D05896 /* RxStoreKit */,
-				CF531BF622A94A6D00D05896 /* BindableObserver.swift */,
 			);
 			path = Reactive;
 			sourceTree = "<group>";
@@ -676,7 +671,6 @@
 				CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */,
 				CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */,
 				CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */,
-				CF531BFA22A94B8100D05896 /* Reactive+BaseRow.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -988,7 +982,6 @@
 				CF531BFE22A9532400D05896 /* TwitterSettingViewModel.swift in Sources */,
 				CF531C3422A982BE00D05896 /* SKReceiptRefreshRequestDelegateProxy.swift in Sources */,
 				CF1611361F726D110027144D /* PlayViewController.swift in Sources */,
-				CF531BFB22A94B8100D05896 /* Reactive+BaseRow.swift in Sources */,
 				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
 				CF531C0022A9534F00D05896 /* SettingViewController.swift in Sources */,
 				CF531C0722A953B200D05896 /* MastodonSettingViewModel.swift in Sources */,
@@ -1011,7 +1004,6 @@
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CF55B69722A418A100D5C9E1 /* Analytics+NowPlaying.swift in Sources */,
 				CF531C3A22AACEC800D05896 /* NowPlayingButtonRow.swift in Sources */,
-				CF531BF722A94A6D00D05896 /* BindableObserver.swift in Sources */,
 				CFD1D38020B88188009C50ED /* APIResponse.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
 				CF531C2E22A9824100D05896 /* SKProductsRequest+Rx.swift in Sources */,
