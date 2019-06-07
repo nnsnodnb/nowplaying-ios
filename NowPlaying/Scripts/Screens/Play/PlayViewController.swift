@@ -23,10 +23,7 @@ final class PlayViewController: UIViewController {
     @IBOutlet private weak var songNameLabel: CBAutoScrollLabel! {
         didSet {
             songNameLabel.textColor = .black
-            songNameLabel.labelSpacing = 20
-            songNameLabel.scrollSpeed = 20
             songNameLabel.textAlignment = .center
-            songNameLabel.fadeLength = 12
             songNameLabel.font = .boldSystemFont(ofSize: 21)
             songNameLabel.pauseInterval = 2
             songNameLabel.scrollDirection = .left
@@ -36,10 +33,7 @@ final class PlayViewController: UIViewController {
     @IBOutlet private weak var artistNameLabel: CBAutoScrollLabel! {
         didSet {
             artistNameLabel.textColor = .black
-            artistNameLabel.labelSpacing = 20
-            artistNameLabel.scrollSpeed = 20
             artistNameLabel.textAlignment = .center
-            artistNameLabel.fadeLength = 12
             artistNameLabel.font = .systemFont(ofSize: 16)
             artistNameLabel.pauseInterval = 2
             artistNameLabel.scrollDirection = .left
