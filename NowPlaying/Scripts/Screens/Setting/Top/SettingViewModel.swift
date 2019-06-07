@@ -110,30 +110,22 @@ extension SettingViewModel {
             }
 
             // Twitter
-            <<< ButtonRow { (row) in
-                row.title = "Twitter設定"
-                row.tag = "twitter_setting"
-                }.cellUpdate { (cell, _) in
-                    cell.textLabel?.textAlignment = .left
-                    cell.textLabel?.textColor = UIColor.black
-                    cell.accessoryType = .disclosureIndicator
-                }.onCellSelection { [weak self] (_, _) in
-                    let viewController = TwitterSettingViewController()
-                    self?._pushViewController.accept(viewController)
+            <<< NowPlayingButtonRow {
+                $0.title = "Twitter設定"
+                $0.tag = "twitter_setting"
+            }.onCellSelection { [weak self] (_, _) in
+                let viewController = TwitterSettingViewController(viewModel: TwitterSettingViewModel())
+                self?._pushViewController.accept(viewController)
             }
 
             // Mastodon
-            <<< ButtonRow { (row) in
-                row.title = "Mastodon設定"
-                row.tag = "mastodon_setting"
-                }.cellUpdate { (cell, _) in
-                    cell.textLabel?.textAlignment = .left
-                    cell.textLabel?.textColor = UIColor.black
-                    cell.accessoryType = .disclosureIndicator
-                }.onCellSelection { [weak self] (_, _) in
-                    let viewController = MastodonSettingViewController()
-                    self?._pushViewController.accept(viewController)
-        }
+            <<< NowPlayingButtonRow {
+                $0.title = "Mastodon設定"
+                $0.tag = "mastodon_setting"
+            }.onCellSelection { [weak self] (_, _) in
+                let viewController = MastodonSettingViewController(viewModel: MastodonSettingViewModel())
+                self?._pushViewController.accept(viewController)
+            }
     }
 
     private func configureAbout() {

@@ -15,16 +15,24 @@ import UIKit
 final class MastodonSettingViewController: FormViewController {
 
     private let disposeBag = DisposeBag()
+    private let viewModel: MastodonSettingViewModelType
 
-    private var viewModel: MastodonSettingViewModelType!
+    // MARK: - Initializer
+
+    init(viewModel: MastodonSettingViewModelType) {
+        self.viewModel = viewModel
+        super.init(nibName: R.nib.mastodonSettingViewController.name, bundle: R.nib.mastodonSettingViewController.bundle)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Mastodon設定"
-
-        viewModel = MastodonSettingViewModel()
 
         form = viewModel.form
 

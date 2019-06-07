@@ -168,10 +168,10 @@ extension TwitterSettingViewModel {
                 $0.hidden = Condition.function(["auto_tweet_purchase"]) { (form) -> Bool in
                     return !form.rowBy(tag: "auto_tweet_purchase")!.isHidden
                 }
-            }.onChange { [weak self] (row) in
-                UserDefaults.set(row.value!, forKey: .isAutoTweet)
-                Analytics.TwitterSetting.changeAutoTweet(row.value!)
-                if !row.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) { return }
+            }.onChange { [weak self] in
+                UserDefaults.set($0.value!, forKey: .isAutoTweet)
+                Analytics.TwitterSetting.changeAutoTweet($0.value!)
+                if !$0.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) { return }
                 let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。",
                                               preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
