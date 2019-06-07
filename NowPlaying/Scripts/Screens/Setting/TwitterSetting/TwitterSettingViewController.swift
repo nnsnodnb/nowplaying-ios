@@ -49,6 +49,10 @@ final class TwitterSettingViewController: FormViewController {
         Analytics.logEvent("screen_open", parameters: nil)
     }
 
+    deinit {
+        SVProgressHUD.dismiss(withDelay: 0.3)
+    }
+
     // MARK: - Private method
 
     private func showSelectPurchaseType() {

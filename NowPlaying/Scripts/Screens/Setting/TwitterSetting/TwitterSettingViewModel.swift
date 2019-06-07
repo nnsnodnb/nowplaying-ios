@@ -102,44 +102,50 @@ extension TwitterSettingViewModel {
                 $0.tag = "twitter_section"
             }
 
-            <<< NowPlayingButtonRow { (row) in
-                row.title = !TwitterClient.shared.isLogin ? "ログイン" : "ログアウト"
-                row.tag = "twitter_login"
-            }.onCellSelection { (cell, _) in
+            <<< NowPlayingButtonRow {
+                $0.title = "ログイン"
+                $0.tag = "twitter_login"
+                $0.hidden = Condition(booleanLiteral: TwitterClient.shared.isLogin)
+            }.onCellSelection { [weak self] (_, _) in
                 SVProgressHUD.show()
-                if TwitterClient.shared.isLogin {
-                    AuthManager.shared.logout {
-                        SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
-                        SVProgressHUD.dismiss(withDelay: 0.5)
-                        DispatchQueue.main.async {
-                            cell.textLabel?.text = "ログイン"
-                        }
-                        Analytics.TwitterSetting.logout()
-                    }
-                } else {
-                    AuthManager.shared.login {
-                        SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                        SVProgressHUD.dismiss(withDelay: 0.5)
-                        DispatchQueue.main.async {
-                            cell.textLabel?.text = "ログアウト"
-                        }
-                        Analytics.TwitterSetting.login()
+                AuthManager.shared.login {
+                    SVProgressHUD.showSuccess(withStatus: "ログインしました")
+                    SVProgressHUD.dismiss(withDelay: 0.5)
+                    DispatchQueue.main.async {
+                        self?.changeTwitterLogState(didLogin: true)
                     }
                 }
+                Analytics.TwitterSetting.login()
             }
 
-            <<< SwitchRow { (row) in
-                row.title = "アートワークを添付"
-                row.value = UserDefaults.bool(forKey: .isWithImage)
+            <<< NowPlayingButtonRow {
+                $0.title = "ログアウト"
+                $0.tag = "twitter_logout"
+                $0.hidden = Condition(booleanLiteral: !TwitterClient.shared.isLogin)
+            }.onCellSelection { [weak self] (_, _) in
+                SVProgressHUD.show()
+                AuthManager.shared.logout {
+                    SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
+                    SVProgressHUD.dismiss(withDelay: 0.5)
+                    DispatchQueue.main.async {
+                        self?.changeTwitterLogState(didLogin: false)
+                    }
+                }
+                Analytics.TwitterSetting.logout()
+            }
+
+            <<< SwitchRow {
+                $0.title = "アートワークを添付"
+                $0.value = UserDefaults.bool(forKey: .isWithImage)
             }.onChange { (row) in
                 UserDefaults.set(row.value!, forKey: .isWithImage)
                 Analytics.TwitterSetting.changeWithArtwork(row.value!)
             }
 
-            <<< NowPlayingButtonRow { (row) in
-                row.title = "自動ツイートを購入"
-                row.tag = "auto_tweet_purchase"
-                row.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isAutoTweetPurchase))
+            <<< NowPlayingButtonRow {
+                $0.title = "自動ツイートを購入"
+                $0.tag = "auto_tweet_purchase"
+                $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isAutoTweetPurchase))
             }.onCellSelection { [weak self] (_, _) in
                 guard !DTTJailbreakDetection.isJailbroken() else {
                     let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
@@ -177,6 +183,16 @@ extension TwitterSettingViewModel {
         autoTweetSwitchRow.hidden = Condition(booleanLiteral: false)
         purchaseButtonRow.evaluateHidden()
         autoTweetSwitchRow.evaluateHidden()
+    }
+
+    private func changeTwitterLogState(didLogin: Bool) {
+        if TwitterClient.shared.isLogin != didLogin { return }
+        guard let loginRow: NowPlayingButtonRow = form.rowBy(tag: "twitter_login"),
+            let logoutRow: NowPlayingButtonRow = form.rowBy(tag: "twitter_logout") else { return }
+        loginRow.hidden = Condition(booleanLiteral: didLogin)
+        logoutRow.hidden = Condition(booleanLiteral: !didLogin)
+        loginRow.evaluateHidden()
+        logoutRow.evaluateHidden()
     }
 }
 
