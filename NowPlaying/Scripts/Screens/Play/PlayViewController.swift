@@ -33,6 +33,19 @@ final class PlayViewController: UIViewController {
             songNameLabel.observeApplicationNotifications()
         }
     }
+    @IBOutlet private weak var artistNameLabel: CBAutoScrollLabel! {
+        didSet {
+            artistNameLabel.textColor = .black
+            artistNameLabel.labelSpacing = 20
+            artistNameLabel.scrollSpeed = 20
+            artistNameLabel.textAlignment = .center
+            artistNameLabel.fadeLength = 12
+            artistNameLabel.font = .systemFont(ofSize: 16)
+            artistNameLabel.pauseInterval = 2
+            artistNameLabel.scrollDirection = .left
+            artistNameLabel.observeApplicationNotifications()
+        }
+    }
     @IBOutlet private weak var previousButton: UIButton!
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var nextButton: UIButton!
@@ -104,6 +117,7 @@ final class PlayViewController: UIViewController {
                 guard let wself = self else { return }
                 wself.artworkImageView.image = item.artwork?.image(at: wself.artworkImageView.frame.size)
                 wself.songNameLabel.text = item.title
+                wself.artistNameLabel.text = item.artist
             })
             .disposed(by: disposeBag)
 

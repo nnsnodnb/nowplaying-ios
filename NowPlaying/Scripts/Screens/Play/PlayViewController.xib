@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlayViewController" customModule="NowPlaying" customModuleProvider="target">
             <connections>
+                <outlet property="artistNameLabel" destination="7Tl-1g-kSO" id="BHh-at-fwr"/>
                 <outlet property="artworkImageView" destination="hQk-D4-a1j" id="9Xg-Rq-qYb"/>
                 <outlet property="bannerView" destination="XmZ-8C-J1H" id="kVj-QU-aB0"/>
                 <outlet property="bannerViewHeight" destination="4hu-1H-Tu9" id="Cdx-Zg-U0Z"/>
@@ -31,10 +32,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="A5A-pe-FD2">
-                    <rect key="frame" x="37.666666666666657" y="100" width="300" height="467"/>
+                    <rect key="frame" x="37.666666666666657" y="100" width="300" height="520"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mog-av-GTN">
-                            <rect key="frame" x="0.0" y="0.0" width="300" height="363"/>
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="416"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="music" translatesAutoresizingMaskIntoConstraints="NO" id="hQk-D4-a1j">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
@@ -48,21 +49,34 @@
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                     </userDefinedRuntimeAttributes>
                                 </imageView>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ccL-cq-6gt" customClass="CBAutoScrollLabel">
-                                    <rect key="frame" x="30" y="324" width="240" height="39"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="240" id="eTt-cw-wnR"/>
-                                        <constraint firstAttribute="height" constant="39" id="phy-MR-dJh"/>
-                                    </constraints>
-                                </view>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="dfF-u4-Zba">
+                                    <rect key="frame" x="30" y="324" width="240" height="92"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ccL-cq-6gt" customClass="CBAutoScrollLabel">
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="39"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="240" id="eTt-cw-wnR"/>
+                                                <constraint firstAttribute="height" constant="39" id="phy-MR-dJh"/>
+                                            </constraints>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Tl-1g-kSO" customClass="CBAutoScrollLabel">
+                                            <rect key="frame" x="0.0" y="63" width="240" height="29"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="29" id="ash-6p-bxE"/>
+                                                <constraint firstAttribute="width" constant="240" id="yNh-nb-xRD"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                </stackView>
                             </subviews>
                             <constraints>
                                 <constraint firstAttribute="width" constant="300" id="AS8-30-QtK"/>
                             </constraints>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cPV-yO-10a">
-                            <rect key="frame" x="0.0" y="403" width="300" height="64"/>
+                            <rect key="frame" x="0.0" y="456" width="300" height="64"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-cW-baF">
                                     <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
