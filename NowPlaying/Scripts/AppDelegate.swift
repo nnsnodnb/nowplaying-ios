@@ -119,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
                 let current = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 
-                if !AppInfoManager.checkLargeVersion(current: current, target: requireVerion) {
+                if current.compare(requireVerion, options: .numeric) == .orderedAscending {
                     // 必須アップデート
                     let alert = UIAlertController(title: "アップデートが必要です", message: nil, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
@@ -129,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     DispatchQueue.main.async {
                         wself.window?.rootViewController?.present(alert, animated: true, completion: nil)
                     }
-                } else if !AppInfoManager.checkLargeVersion(current: current, target: latestVersion) {
+                } else if current.compare(latestVersion, options: .numeric) == .orderedAscending {
                     // アップデートがある
                     let alert = UIAlertController(title: "アップデートがあります", message: nil, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "あとで", style: .cancel, handler: nil))
