@@ -93,49 +93,33 @@ final class SettingViewModel: SettingViewModelType {
         form
             +++ Section("アプリについて")
 
-            <<< ButtonRow {
+            <<< NowPlayingButtonRow {
                 $0.title = "開発者(Twitter)"
-            }.cellUpdate { (cell, _) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
             }.onCellSelection { [weak self] (_, _) in
                 let safariViewController = SFSafariViewController(url: URL(string: "https://twitter.com/nnsnodnb")!)
                 Analytics.Setting.onTapDeveloper()
                 self?._presentViewController.accept(safariViewController)
             }
 
-            <<< ButtonRow {
+            <<< NowPlayingButtonRow {
                 $0.title = "ソースコード(GitHub)"
-            }.cellUpdate { (cell, _) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
             }.onCellSelection { [weak self] (_, _) in
                 let safariViewController = SFSafariViewController(url: URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!)
                 Analytics.Setting.github()
                 self?._presentViewController.accept(safariViewController)
             }
 
-            <<< ButtonRow {
+            <<< NowPlayingButtonRow {
                 $0.title = "バグ報告"
-            }.cellUpdate { (cell, _) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
             }.onCellSelection { [weak self] (_, _) in
                 let safariViewController = SFSafariViewController(url: URL(string: "https://goo.gl/forms/Ve9hPalUJD3DQW5y2")!)
                 self?._presentViewController.accept(safariViewController)
             }
 
-            <<< ButtonRow {
+            <<< NowPlayingButtonRow {
                 $0.title = "アプリ内広告削除(有料)"
                 $0.tag = "remove_admob"
                 $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isPurchasedRemoveAdMob))
-            }.cellUpdate { (cell, _) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
             }.onCellSelection { [weak self] (_, _) in
                 if DTTJailbreakDetection.isJailbroken() {
                     let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
@@ -146,12 +130,8 @@ final class SettingViewModel: SettingViewModelType {
                 self?._startInAppPurchase.accept(())
             }
 
-            <<< ButtonRow {
+            <<< NowPlayingButtonRow {
                 $0.title = "レビューする"
-            }.cellUpdate { (cell, _) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
             }.onCellSelection { (_, _) in
                 Analytics.Setting.review()
                 SKStoreReviewController.requestReview()

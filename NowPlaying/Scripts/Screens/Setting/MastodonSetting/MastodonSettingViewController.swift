@@ -65,21 +65,15 @@ final class MastodonSettingViewController: FormViewController {
                 cell.textField.keyboardType = .URL
                 row.baseCell.isUserInteractionEnabled = !self.isMastodonLogin
             }.onChange { (row) in
-                guard let value = row.value else {
-                    return
-                }
+                guard let value = row.value else { return }
                 UserDefaults.set(value, forKey: .mastodonHostname)
             }
-            <<< ButtonRow { (row) in
+            <<< NowPlayingButtonRow { (row) in
                 row.title = !isMastodonLogin ? "ログイン" : "ログアウト"
                 row.tag = "mastodon_login"
                 row.hidden = Condition.function(["mastodon_host"]) { form in
                     return (form.rowBy(tag: "mastodon_host") as! TextRow).value == nil
                 }
-            }.cellUpdate { (cell, _) in
-                    cell.textLabel?.textAlignment = .left
-                    cell.textLabel?.textColor = UIColor.black
-                    cell.accessoryType = .disclosureIndicator
             }.onCellSelection { [unowned self] (cell, _) in
                 self.mastodonLoginButtonRowCell = cell
                 if let baseUrl = UserDefaults.string(forKey: .mastodonHostname), !self.isMastodonLogin {

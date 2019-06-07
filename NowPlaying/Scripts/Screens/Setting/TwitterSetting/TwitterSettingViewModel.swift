@@ -52,13 +52,9 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
                 $0.tag = "twitter_section"
             }
 
-            <<< ButtonRow { (row) in
+            <<< NowPlayingButtonRow { (row) in
                 row.title = !TwitterClient.shared.isLogin ? "ログイン" : "ログアウト"
                 row.tag = "twitter_login"
-            }.cellUpdate { (cell, _) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
             }.onCellSelection { (cell, _) in
                 SVProgressHUD.show()
                 if TwitterClient.shared.isLogin {
@@ -90,14 +86,10 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
                 Analytics.TwitterSetting.changeWithArtwork(row.value!)
             }
 
-            <<< ButtonRow { (row) in
+            <<< NowPlayingButtonRow { (row) in
                 row.title = "自動ツイートを購入"
                 row.tag = "auto_tweet_purchase"
                 row.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isAutoTweetPurchase))
-            }.cellUpdate { (cell, _) in
-                cell.textLabel?.textAlignment = .left
-                cell.textLabel?.textColor = UIColor.black
-                cell.accessoryType = .disclosureIndicator
             }.onCellSelection { [weak self] (_, _) in
                 guard !DTTJailbreakDetection.isJailbroken() else {
                     let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)

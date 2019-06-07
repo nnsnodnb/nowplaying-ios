@@ -92,6 +92,26 @@ final class PlayViewModel: PlayViewModelType {
             }
         }
 
+        setupInputObserver(inputs)
+    }
+
+    func countUpOpenCount() {
+        var count = UserDefaults.integer(forKey: .appOpenCount)
+        count += 1
+        UserDefaults.set(count, forKey: .appOpenCount)
+        if count == 15 {
+            SKStoreReviewController.requestReview()
+            UserDefaults.set(0, forKey: .appOpenCount)
+        }
+    }
+
+    deinit {
+        musicPlayer.endGeneratingPlaybackNotifications()
+    }
+
+    // MARK: - Private method
+
+    private func setupInputObserver(_ inputs: PlayViewModelInput) {
         inputs.previousButton
             .subscribe(onNext: { () in
                 MPMusicPlayerController.systemMusicPlayer.skipToPreviousItem()
@@ -143,22 +163,6 @@ final class PlayViewModel: PlayViewModelType {
             })
             .disposed(by: disposeBag)
     }
-
-    func countUpOpenCount() {
-        var count = UserDefaults.integer(forKey: .appOpenCount)
-        count += 1
-        UserDefaults.set(count, forKey: .appOpenCount)
-        if count == 15 {
-            SKStoreReviewController.requestReview()
-            UserDefaults.set(0, forKey: .appOpenCount)
-        }
-    }
-
-    deinit {
-        musicPlayer.endGeneratingPlaybackNotifications()
-    }
-
-    // MARK: - Private method
 
     private func setNewPostContent(service: Service) {
         guard let nowPlayingItem = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem else {

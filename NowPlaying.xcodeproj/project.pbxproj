@@ -52,6 +52,7 @@
 		CF531C3222A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531C3122A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift */; };
 		CF531C3422A982BE00D05896 /* SKReceiptRefreshRequestDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531C3322A982BE00D05896 /* SKReceiptRefreshRequestDelegateProxy.swift */; };
 		CF531C3622A9830B00D05896 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = CF531C3522A9830B00D05896 /* LICENSE */; };
+		CF531C3A22AACEC800D05896 /* NowPlayingButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531C3922AACEC800D05896 /* NowPlayingButtonRow.swift */; };
 		CF55B67F22A3DE0400D5C9E1 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B67022A3DDED00D5C9E1 /* RxCocoa.framework */; };
 		CF55B68022A3DE0400D5C9E1 /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B64122A3DDED00D5C9E1 /* RxRelay.framework */; };
 		CF55B68122A3DE0400D5C9E1 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B67422A3DDED00D5C9E1 /* RxSwift.framework */; };
@@ -161,6 +162,7 @@
 		CF531C3122A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKReceiptRefreshRequest+Rx.swift"; sourceTree = "<group>"; };
 		CF531C3322A982BE00D05896 /* SKReceiptRefreshRequestDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKReceiptRefreshRequestDelegateProxy.swift; sourceTree = "<group>"; };
 		CF531C3522A9830B00D05896 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		CF531C3922AACEC800D05896 /* NowPlayingButtonRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingButtonRow.swift; sourceTree = "<group>"; };
 		CF55B62C22A3DD8B00D5C9E1 /* Carthage.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = Carthage.xcfilelist; sourceTree = "<group>"; };
 		CF55B62E22A3DDED00D5C9E1 /* .Result.version */ = {isa = PBXFileReference; lastKnownFileType = text; path = .Result.version; sourceTree = "<group>"; };
 		CF55B62F22A3DDED00D5C9E1 /* .KeychainAccess.version */ = {isa = PBXFileReference; lastKnownFileType = text; path = .KeychainAccess.version; sourceTree = "<group>"; };
@@ -418,6 +420,14 @@
 			path = RxStoreKit;
 			sourceTree = "<group>";
 		};
+		CF531C3822AACEA200D05896 /* Eureka */ = {
+			isa = PBXGroup;
+			children = (
+				CF531C3922AACEC800D05896 /* NowPlayingButtonRow.swift */,
+			);
+			path = Eureka;
+			sourceTree = "<group>";
+		};
 		CF55B62D22A3DDED00D5C9E1 /* Build */ = {
 			isa = PBXGroup;
 			children = (
@@ -601,6 +611,7 @@
 				CF8C85C81F6EB3AE0051A0C7 /* Manager */,
 				CF615B031F56E76200315019 /* Screens */,
 				CF531BF522A94A5D00D05896 /* Reactive */,
+				CF531C3822AACEA200D05896 /* Eureka */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -999,6 +1010,7 @@
 				CFD1D37F20B88188009C50ED /* APIResult.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CF55B69722A418A100D5C9E1 /* Analytics+NowPlaying.swift in Sources */,
+				CF531C3A22AACEC800D05896 /* NowPlayingButtonRow.swift in Sources */,
 				CF531BF722A94A6D00D05896 /* BindableObserver.swift in Sources */,
 				CFD1D38020B88188009C50ED /* APIResponse.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
