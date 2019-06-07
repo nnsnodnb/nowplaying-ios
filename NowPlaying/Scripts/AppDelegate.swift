@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var backgroundTaskID: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setDefaultMaskType(.black)
         loadEnvironment()
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
