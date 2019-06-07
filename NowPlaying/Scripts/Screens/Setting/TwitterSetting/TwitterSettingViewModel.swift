@@ -108,7 +108,12 @@ extension TwitterSettingViewModel {
                 $0.hidden = Condition(booleanLiteral: TwitterClient.shared.isLogin)
             }.onCellSelection { [weak self] (_, _) in
                 SVProgressHUD.show()
-                AuthManager.shared.login {
+                AuthManager.shared.login { [weak self] (error) in
+                    if let error = error {
+                        SVProgressHUD.showError(withStatus: error.localizedDescription)
+                        SVProgressHUD.dismiss(withDelay: 0.5)
+                        return
+                    }
                     SVProgressHUD.showSuccess(withStatus: "ログインしました")
                     SVProgressHUD.dismiss(withDelay: 0.5)
                     DispatchQueue.main.async {
