@@ -147,7 +147,7 @@ extension MastodonSettingViewModel {
                 if !$0.value! || UserDefaults.bool(forKey: .isMastodonShowAutoTweetAlert) {
                     return
                 }
-                let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
+                let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもトゥートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
                 self._presentViewController.accept(alert)
