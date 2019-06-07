@@ -19,6 +19,7 @@ import SVProgressHUD
 protocol TwitterSettingViewModelOutput {
 
     var presentViewController: Driver<UIViewController> { get }
+    var startInAppPurchase: Observable<Void> { get }
 }
 
 // MARK: - TwitterSettingViewModelType
@@ -27,6 +28,9 @@ protocol TwitterSettingViewModelType {
 
     var outputs: TwitterSettingViewModelOutput { get }
     var form: Form { get }
+
+    func buyProduct(_ product: PaymentManager.Product)
+    func restore()
 }
 
 final class TwitterSettingViewModel: TwitterSettingViewModelType {
@@ -37,6 +41,7 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
 
     private let disposeBag = DisposeBag()
     private let _presentViewController = PublishRelay<UIViewController>()
+    private let _startInAppPurchase = PublishRelay<Void>()
 
     init() {
         form = Form()
@@ -44,7 +49,52 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
         configureCells()
     }
 
-    // MARK: - Private method
+    func buyProduct(_ product: PaymentManager.Product) {
+        PaymentManager.shared.buyProduct(product)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (state) in
+                switch state {
+                case .purchased:
+                    SVProgressHUD.showSuccess(withStatus: "購入が完了しました！")
+                    SVProgressHUD.dismiss(withDelay: 0.5)
+                    product.finishPurchased()
+                    self?.changeStateAutoTweet()
+                case .purchasing:
+                    SVProgressHUD.show(withStatus: "購入処理中...")
+                }
+            }, onError: { (_) in
+                SVProgressHUD.showError(withStatus: "購入が失敗しました")
+                SVProgressHUD.dismiss(withDelay: 0.5)
+            })
+            .disposed(by: disposeBag)
+    }
+
+    func restore() {
+        PaymentManager.shared.restore()
+            .subscribe(onNext: { [weak self] (products) in
+                products.forEach {
+                    $0.finishPurchased()
+                    switch $0 {
+                    case .hideAdmob:
+                        // SettingViewModel に通知を送る
+                        NotificationCenter.default.post(name: .purchasedHideAdMobNotification, object: nil)
+                    case .autoTweet:
+                        self?.changeStateAutoTweet()
+                    }
+                }
+                SVProgressHUD.showSuccess(withStatus: "復元が完了しました")
+                SVProgressHUD.dismiss(withDelay: 0.5)
+            }, onError: { (_) in
+                SVProgressHUD.showError(withStatus: "復元に失敗しました")
+                SVProgressHUD.dismiss(withDelay: 0.5)
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+// MARK: - Private method
+
+extension TwitterSettingViewModel {
 
     private func configureCells() {
         form
@@ -97,17 +147,9 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
                     self?._presentViewController.accept(alert)
                     return
                 }
-//                if self.isProces {
-//                    SVProgressHUD.showInfo(withStatus: "処理中です")
-//                    return
-//                }
-//                guard let product = self.autoTweetProduct else {
-//                    SVProgressHUD.showInfo(withStatus: "少し時間をおいて試してみてください")
-//                    return
-//                }
-//                self.isProces = true
-//                self.showSelectPurchaseType(product: product)
+                self?._startInAppPurchase.accept(())
             }
+
             <<< SwitchRow {
                 $0.title = "自動ツイート"
                 $0.value = UserDefaults.bool(forKey: .isAutoTweet)
@@ -126,11 +168,25 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
                 UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
         }
     }
+
+    private func changeStateAutoTweet() {
+        if !UserDefaults.bool(forKey: .isAutoTweetPurchase) { return }
+        guard let purchaseButtonRow: NowPlayingButtonRow = form.rowBy(tag: "auto_tweet_purchase"),
+            let autoTweetSwitchRow: SwitchRow = form.rowBy(tag: "auto_tweet_switch") else { return }
+        purchaseButtonRow.hidden = Condition(booleanLiteral: true)
+        autoTweetSwitchRow.hidden = Condition(booleanLiteral: false)
+        purchaseButtonRow.evaluateHidden()
+        autoTweetSwitchRow.evaluateHidden()
+    }
 }
 
 extension TwitterSettingViewModel: TwitterSettingViewModelOutput {
 
     var presentViewController: SharedSequence<DriverSharingStrategy, UIViewController> {
         return _presentViewController.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
+    }
+
+    var startInAppPurchase: Observable<Void> {
+        return _startInAppPurchase.observeOn(MainScheduler.instance).asObservable()
     }
 }

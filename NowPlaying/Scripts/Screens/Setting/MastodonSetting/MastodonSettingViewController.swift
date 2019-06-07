@@ -37,14 +37,14 @@ final class MastodonSettingViewController: FormViewController {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self, name: receiveSafariNotificationName, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .receiveSafariNotificationName, object: nil)
     }
 
     // MARK: - Private method
 
     private func setupNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(receiveSafariNotification(_:)),
-                                               name: receiveSafariNotificationName,
+                                               name: .receiveSafariNotificationName,
                                                object: nil)
     }
     private func showMastodonError() {

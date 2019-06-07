@@ -50,6 +50,15 @@ final class SettingViewModel: SettingViewModelType {
     init() {
         form = Form()
 
+        if !UserDefaults.bool(forKey: .isPurchasedRemoveAdMob) {
+            NotificationCenter.default.rx.notification(.purchasedHideAdMobNotification, object: nil)
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { [weak self] (_) in
+                    self?.changeStateAdMob()
+                })
+                .disposed(by: disposeBag)
+        }
+
         configureSNSSection()
         configureAbout()
     }
@@ -177,6 +186,7 @@ extension SettingViewModel {
     }
 
     private func changeStateAdMob() {
+        if !UserDefaults.bool(forKey: .isPurchasedRemoveAdMob) { return }
         guard let purchaseButtonRow: NowPlayingButtonRow = form.rowBy(tag: "remove_admob") else { return }
         purchaseButtonRow.hidden = Condition(booleanLiteral: true)
         purchaseButtonRow.evaluateHidden()

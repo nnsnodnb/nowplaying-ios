@@ -48,4 +48,8 @@ let websiteUrl = "https://itunes.apple.com/jp/app/nowplaying-%E8%B5%B7%E5%8B%95%
 
 typealias Parameters = [String: Any]
 
-let receiveSafariNotificationName = NSNotification.Name("receiveSafariNotification")
+extension NSNotification.Name {
+
+    static let receiveSafariNotificationName = NSNotification.Name("receiveSafariNotification")
+    static let purchasedHideAdMobNotification = NSNotification.Name("purchasedHideAdMobNotification")
+}
