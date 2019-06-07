@@ -147,3 +147,37 @@ extension Analytics {
         }
     }
 }
+
+// MARK: - MastodonSettingViewController
+
+extension Analytics {
+
+    final class MastodonSetting: Analytics {
+
+        static func login() {
+            logEvent("tap", parameters: [
+                "type": "action",
+                "button": "mastodon_login"])
+        }
+
+        static func logout() {
+            logEvent("tap", parameters: [
+                "type": "action",
+                "button": "mastodon_logout"])
+        }
+
+        static func changeWithArtwork(_ value: Bool) {
+            logEvent("change", parameters: [
+                "type": "action",
+                "button": "mastodon_with_artwork",
+                "value": value])
+        }
+
+        static func changeAutoToot(_ value: Bool) {
+            logEvent("change", parameters: [
+                "type": "action",
+                "button": "mastodon_auto_tweet",
+                "value": value])
+        }
+    }
+}

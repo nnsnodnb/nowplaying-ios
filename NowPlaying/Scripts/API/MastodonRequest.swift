@@ -16,12 +16,18 @@ class MastodonRequest: RequestFactory {
     let keychain = Keychain(service: keychainServiceKey)
 
     class Register: MastodonRequest {
+
+        private let hostname: String
         private let clientName: String = "NowPlayingiOS"
         private let redirectURI = "nowplaying-ios-nnsnodnb://oauth_mastodon"
         private let scopes = "write"
 
+        init(hostname: String) {
+            self.hostname = hostname
+        }
+
         override var url: URL {
-            var baseURL = URL(string: UserDefaults.string(forKey: .mastodonHostname)!)!
+            var baseURL = URL(string: hostname)!
             baseURL.appendPathComponent("api/v1/apps")
             return baseURL
         }
