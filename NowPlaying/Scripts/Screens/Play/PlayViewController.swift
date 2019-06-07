@@ -6,6 +6,7 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
+import AutoScrollLabel
 import FirebaseAnalytics
 import Foundation
 import GoogleMobileAds
@@ -19,7 +20,19 @@ import UIKit
 final class PlayViewController: UIViewController {
 
     @IBOutlet private weak var artworkImageView: UIImageView!
-    @IBOutlet private weak var songNameLabel: UILabel!
+    @IBOutlet private weak var songNameLabel: CBAutoScrollLabel! {
+        didSet {
+            songNameLabel.textColor = .black
+            songNameLabel.labelSpacing = 20
+            songNameLabel.scrollSpeed = 20
+            songNameLabel.textAlignment = .center
+            songNameLabel.fadeLength = 12
+            songNameLabel.font = .boldSystemFont(ofSize: 21)
+            songNameLabel.pauseInterval = 2
+            songNameLabel.scrollDirection = .left
+            songNameLabel.observeApplicationNotifications()
+        }
+    }
     @IBOutlet private weak var previousButton: UIButton!
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var nextButton: UIButton!
