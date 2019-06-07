@@ -8,20 +8,14 @@
 
 import Eureka
 import FirebaseAnalytics
-import KeychainAccess
 import RxSwift
 import SafariServices
-import SVProgressHUD
 import UIKit
 
 final class MastodonSettingViewController: FormViewController {
 
-    private let keychain = Keychain(service: keychainServiceKey)
     private let disposeBag = DisposeBag()
 
-    private var isMastodonLogin = false
-    private var mastodonLoginButtonRowCell: ButtonRow.Cell?
-    private var safari: SFSafariViewController!
     private var viewModel: MastodonSettingViewModelType!
 
     // MARK: - Life cycle
@@ -60,17 +54,7 @@ final class MastodonSettingViewController: FormViewController {
         Analytics.logEvent("screen_open", parameters: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: .receiveSafariNotificationName, object: nil)
-    }
-
     // MARK: - Private method
-
-    private func setupNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveSafariNotification(_:)),
-                                               name: .receiveSafariNotificationName,
-                                               object: nil)
-    }
 
     private func showMastodonError() {
         let alert = UIAlertController(title: "エラー", message: "Mastodonのドメインを確認してください", preferredStyle: .alert)
@@ -172,39 +156,4 @@ final class MastodonSettingViewController: FormViewController {
 //                }
 //            }
 //    }
-}
-
-// MARK: - Notification target
-
-extension MastodonSettingViewController {
-
-    @objc private func receiveSafariNotification(_ notification: Notification) {
-        guard let url = notification.object as? URL else { return }
-        guard let query = (url as NSURL).uq_queryDictionary() else { return }
-        guard let code = query["code"] as? String else { return }
-        MastodonRequest.GetToken(code: code).send { [weak self] (result) in
-            guard let wself = self else { return }
-            switch result {
-            case .success(let response):
-                guard let body = response.body, let accessToken = body["access_token"] as? String else {
-                    return
-                }
-                wself.keychain[KeychainKey.mastodonAccessToken.rawValue] = accessToken
-                DispatchQueue.main.async {
-                    SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                    SVProgressHUD.dismiss(withDelay: 0.5)
-                    wself.isMastodonLogin = true
-                    UserDefaults.set(true, forKey: .isMastodonLogin)
-                    wself.mastodonLoginButtonRowCell?.textLabel?.text = "ログアウト"
-                    let textRow = wself.form.rowBy(tag: "mastodon_host") as! TextRow
-                    textRow.baseCell.isUserInteractionEnabled = false
-                }
-            case .failure:
-                break
-            }
-            DispatchQueue.main.async {
-                wself.dismiss(animated: true, completion: nil)
-            }
-        }
-    }
 }
