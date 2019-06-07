@@ -1,4 +1,5 @@
 PODS:
+  - AutoScrollLabel (0.4.3)
   - Crashlytics (3.13.1):
     - Fabric (~> 1.10.1)
   - DTTJailbreakDetection (0.4.0)
@@ -14,6 +15,7 @@ PODS:
     - TwitterCore (>= 3.2.0)
 
 DEPENDENCIES:
+  - AutoScrollLabel
   - Crashlytics
   - DTTJailbreakDetection
   - Fabric
@@ -25,6 +27,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - AutoScrollLabel
     - Crashlytics
     - DTTJailbreakDetection
     - Fabric
@@ -37,6 +40,7 @@ SPEC REPOS:
     - TwitterKit
 
 SPEC CHECKSUMS:
+  AutoScrollLabel: bee53a1d4532569b49cbecaf9b80ca003bed3767
   Crashlytics: 5aa8e90dcbf2f34898b4f5a0037787531246cca0
   DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
   Fabric: f6f21452846788bb44595d73e9909d79d328e617
@@ -48,6 +52,6 @@ SPEC CHECKSUMS:
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: e97f614fe73b6e43adfc19e81a68616745dada51
+PODFILE CHECKSUM: ffb1ccd7349a26646c2e6cae50fc41826815378d
 
 COCOAPODS: 1.7.1
