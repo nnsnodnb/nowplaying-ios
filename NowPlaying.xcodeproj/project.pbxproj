@@ -30,7 +30,6 @@
 		CF2DBD6F20A4AB1B0039217F /* GTMSessionFetcher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD6320A4AB1B0039217F /* GTMSessionFetcher.framework */; };
 		CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD7220A4AB630039217F /* libicucore.tbd */; };
 		CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF301D8C22B009C5007E675E /* APIKit.framework */; };
-		CF301D9122B01724007E675E /* Action.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF301D9022B01724007E675E /* Action.framework */; };
 		CF301D9322B01841007E675E /* Reactive+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9222B01841007E675E /* Reactive+Session.swift */; };
 		CF301D9822B01A59007E675E /* MastodonAppRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9722B01A59007E675E /* MastodonAppRequest.swift */; };
 		CF301D9A22B01B84007E675E /* SwiftPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9922B01B84007E675E /* SwiftPrint.swift */; };
@@ -288,7 +287,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF301D9122B01724007E675E /* Action.framework in Frameworks */,
 				CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */,
 				CF55B69B22A41D5800D5C9E1 /* RxKeyboard.framework in Frameworks */,
 				CF55B67F22A3DE0400D5C9E1 /* RxCocoa.framework in Frameworks */,

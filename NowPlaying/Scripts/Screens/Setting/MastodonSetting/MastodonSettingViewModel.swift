@@ -6,7 +6,6 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
-import Action
 import APIKit
 import Eureka
 import FirebaseAnalytics
