@@ -6,14 +6,16 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
-import UIKit
-import TwitterKit
-import Fabric
+import APIKit
 import Crashlytics
-import KeychainAccess
+import Fabric
 import FirebaseCore
 import GoogleMobileAds
+import KeychainAccess
+import RxSwift
 import SVProgressHUD
+import TwitterKit
+import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     private let keychain = Keychain()
+    private let disposeBag = DisposeBag()
 
     private var backgroundTaskID: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
 
@@ -112,43 +115,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func checkFirebaseHostingAppVersion() {
-        AppInfoManager().fetch { [weak self] (result) in
-            guard let wself = self else { return }
-            switch result {
-            case .success(let response):
-                guard let body = response.body, let appVersion = body["app_version"] as? Parameters,
-                    let requireVerion = appVersion["require"] as? String, let latestVersion = appVersion["latest"] as? String else {
-                        return
-                }
+        Session.shared.rx.response(AppInfoRequest())
+            .subscribe(onSuccess: { [weak self] (response) in
                 let current = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-
-                if current.compare(requireVerion, options: .numeric) == .orderedAscending {
+                if current.compare(response.appVersion.require, options: .numeric) == .orderedAscending {
                     // 必須アップデート
                     let alert = UIAlertController(title: "アップデートが必要です", message: nil, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
-                        let url = URL(string: websiteUrl)!
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    alert.addAction(UIAlertAction(title: "AppStoreを開く", style: .default) { (_) in
+                        UIApplication.shared.open(URL(string: websiteURL)!, options: [:], completionHandler: nil)
                     })
+                    alert.preferredAction = alert.actions.first
                     DispatchQueue.main.async {
-                        wself.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                        self?.window?.rootViewController?.present(alert, animated: true, completion: nil)
                     }
-                } else if current.compare(latestVersion, options: .numeric) == .orderedAscending {
-                    // アップデートがある
+                } else if current.compare(response.appVersion.latest, options: .numeric) == .orderedAscending {
+                    // アップデートあり
                     let alert = UIAlertController(title: "アップデートがあります", message: nil, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "あとで", style: .cancel, handler: nil))
-                    let action = UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
-                        let url = URL(string: websiteUrl)!
+                    let action = UIAlertAction(title: "AppStoreを開く", style: .default) { (_) in
+                        let url = URL(string: websiteURL)!
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     }
                     alert.addAction(action)
                     alert.preferredAction = action
                     DispatchQueue.main.async {
-                        wself.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                        self?.window?.rootViewController?.present(alert, animated: true, completion: nil)
                     }
                 }
-            case .failure:
-                break
-            }
-        }
+            }, onError: { (error) in
+                print(error)
+            })
+            .disposed(by: disposeBag)
     }
 }

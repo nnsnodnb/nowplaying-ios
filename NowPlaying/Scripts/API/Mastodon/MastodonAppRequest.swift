@@ -36,7 +36,7 @@ struct MastodonAppRequeset: MastodonRequest {
             "client_name": "NowPlayingiOS",
             "redirect_uris": "nowplaying-ios-nnsnodnb://oauth_mastodon",
             "scopes": "write",
-            "website": websiteUrl
+            "website": websiteURL
         ]
     }
 
