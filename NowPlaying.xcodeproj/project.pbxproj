@@ -275,7 +275,6 @@
 		CFD1D39020B9A176009C50ED /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonMediaRequest.swift; sourceTree = "<group>"; };
 		CFD6B2DF22B0332B00E5F2FC /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
-		CFD6B2E522B0421B00E5F2FC /* Carthage.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = Carthage.xcfilelist; sourceTree = "<group>"; };
 		F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -658,7 +657,6 @@
 				CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */,
 				CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */,
 				CF6FFF26207E4CE4003FD38D /* Info.plist */,
-				CFD6B2E522B0421B00E5F2FC /* Carthage.xcfilelist */,
 			);
 			path = TodayExtension;
 			sourceTree = "<group>";
@@ -742,7 +740,6 @@
 				CF6FFF19207E4CE4003FD38D /* Sources */,
 				CF6FFF1A207E4CE4003FD38D /* Frameworks */,
 				CF6FFF1B207E4CE4003FD38D /* Resources */,
-				CFD6B2E422B041BD00E5F2FC /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -960,25 +957,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate --disable-input-output-files-validation \"$SRCROOT/NowPlaying/Scripts/R.generated.swift\"\n";
-		};
-		CFD6B2E422B041BD00E5F2FC /* Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"$(SRCROOT)/TodayExtension/Carthage.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = Carthage;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 		DC4488FCE3B57E00C3DB2FFC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1273,7 +1251,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying.TodayExtension;
@@ -1301,7 +1278,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying.TodayExtension;
