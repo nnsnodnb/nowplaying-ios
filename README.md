@@ -1,5 +1,7 @@
 # nowplaying-ios
 
+[![Swift 5.0.1](https://img.shields.io/badge/language-Swift%205.0.1-orange.svg)](https://developer.apple.com/swift)
+![GitHub](https://img.shields.io/github/license/nnsnodnb/nowplaying-ios.svg)
 [![Build Status](https://app.bitrise.io/app/46e890b35211fd70/status.svg?token=eG6YD8x7X8SU2glJTGMMGg&branch=deploygate)](https://app.bitrise.io/app/46e890b35211fd70)
 
 NowPlaying tweet & toot application for iOS.
