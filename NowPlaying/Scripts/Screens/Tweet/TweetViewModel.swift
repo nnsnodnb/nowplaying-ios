@@ -6,6 +6,7 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
+import APIKit
 import FirebaseAnalytics
 import Foundation
 import RxCocoa
@@ -57,6 +58,7 @@ final class TweetViewModel: TweetViewModelType {
     }
 
     func preparePost() {
+        UIApplication.shared.windows.forEach { $0.endEditing(true) }
         SVProgressHUD.show()
         switch postContent.service {
         case .twitter:
@@ -69,19 +71,20 @@ final class TweetViewModel: TweetViewModelType {
             }
             Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
         case .mastodon:
-//            MastodonRequest.Toot(status: postMessage.value).send { [weak self] (result) in
-//                switch result {
-//                case .success:
-//                    self?._success.accept(())
-//                case .failure(let error):
-//                    self?._failure.accept(error)
-//                }
-//            }
+            Session.shared.rx.response(MastodonTootRequest(status: postMessage.value))
+                .subscribe(onSuccess: { [weak self] (_) in
+                    self?._success.accept(())
+                }, onError: { [weak self] (error) in
+                    print(error)
+                    self?._failure.accept(error)
+                })
+                .disposed(by: disposeBag)
             Analytics.Tweet.postTootMastodon(withHasImage: false, content: postContent)
         }
     }
 
     func preparePost(withImage image: UIImage) {
+        UIApplication.shared.windows.forEach { $0.endEditing(true) }
         SVProgressHUD.show()
         switch postContent.service {
         case .twitter:

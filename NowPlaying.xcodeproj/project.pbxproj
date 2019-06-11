@@ -36,6 +36,7 @@
 		CF301D9822B01A59007E675E /* MastodonAppRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9722B01A59007E675E /* MastodonAppRequest.swift */; };
 		CF301D9A22B01B84007E675E /* SwiftPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9922B01B84007E675E /* SwiftPrint.swift */; };
 		CF301D9C22B01BE9007E675E /* MastodonGetTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9B22B01BE9007E675E /* MastodonGetTokenRequest.swift */; };
+		CF301D9E22B02343007E675E /* MastodonTootRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9D22B02343007E675E /* MastodonTootRequest.swift */; };
 		CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */; };
 		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
 		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
@@ -150,6 +151,7 @@
 		CF301D9722B01A59007E675E /* MastodonAppRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonAppRequest.swift; sourceTree = "<group>"; };
 		CF301D9922B01B84007E675E /* SwiftPrint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftPrint.swift; path = Common/SwiftPrint.swift; sourceTree = "<group>"; };
 		CF301D9B22B01BE9007E675E /* MastodonGetTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonGetTokenRequest.swift; sourceTree = "<group>"; };
+		CF301D9D22B02343007E675E /* MastodonTootRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonTootRequest.swift; sourceTree = "<group>"; };
 		CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TweetViewController.swift; path = Tweet/TweetViewController.swift; sourceTree = "<group>"; };
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
 		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
@@ -287,7 +289,7 @@
 		CFD1D39020B9A176009C50ED /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		CFD1D39E20B9C465009C50ED /* RequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestFactory.swift; sourceTree = "<group>"; };
 		CFD1D3A020B9CA76009C50ED /* PurchaseRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseRequest.swift; sourceTree = "<group>"; };
-		CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonRequest.swift; sourceTree = "<group>"; };
+		CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonRequest.swift; path = NowPlaying/Scripts/API/MastodonRequest.swift; sourceTree = SOURCE_ROOT; };
 		CFFDE9A420BA15070032F2B0 /* MastodonClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MastodonClient.swift; path = Manager/MastodonClient.swift; sourceTree = "<group>"; };
 		F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -371,8 +373,10 @@
 		CF301D9622B01A3D007E675E /* Mastodon */ = {
 			isa = PBXGroup;
 			children = (
+				CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */,
 				CF301D9722B01A59007E675E /* MastodonAppRequest.swift */,
 				CF301D9B22B01BE9007E675E /* MastodonGetTokenRequest.swift */,
+				CF301D9D22B02343007E675E /* MastodonTootRequest.swift */,
 			);
 			path = Mastodon;
 			sourceTree = "<group>";
@@ -710,7 +714,6 @@
 				CFD1D37320B87E94009C50ED /* AppInfoManager.swift */,
 				CFD1D39E20B9C465009C50ED /* RequestFactory.swift */,
 				CFD1D3A020B9CA76009C50ED /* PurchaseRequest.swift */,
-				CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */,
 				CF55B68522A3E12E00D5C9E1 /* AnyError.swift */,
 				CF301D9622B01A3D007E675E /* Mastodon */,
 			);
@@ -1028,6 +1031,7 @@
 				CF8E48802081EC75003A5E70 /* ProcessInfo+Key.swift in Sources */,
 				CFD1D37620B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift in Sources */,
 				CFD1D37420B87E94009C50ED /* AppInfoManager.swift in Sources */,
+				CF301D9E22B02343007E675E /* MastodonTootRequest.swift in Sources */,
 				CF55B68822A3E22800D5C9E1 /* PlayViewModel.swift in Sources */,
 				CFD1D37F20B88188009C50ED /* APIResult.swift in Sources */,
 				CF301D9822B01A59007E675E /* MastodonAppRequest.swift in Sources */,
