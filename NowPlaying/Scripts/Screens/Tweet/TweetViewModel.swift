@@ -23,6 +23,7 @@ struct TweetViewModelInput {
 
 protocol TweetViewModelOutput {
 
+    var isPostable: Observable<Bool> { get }
     var successRequest: Observable<Void> { get }
     var failureRequest: Observable<Error> { get }
 }
@@ -138,5 +139,12 @@ extension TweetViewModel: TweetViewModelOutput {
 
     var failureRequest: Observable<Error> {
         return _failure.observeOn(MainScheduler.instance).asObservable()
+    }
+
+    var isPostable: Observable<Bool> {
+        return postMessage
+            .map { !$0.isEmpty }
+            .observeOn(MainScheduler.instance)
+            .asObservable()
     }
 }

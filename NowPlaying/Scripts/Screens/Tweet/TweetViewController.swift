@@ -112,6 +112,10 @@ final class TweetViewController: UIViewController {
                                          textViewText: textView.rx.text.orEmpty.asObservable())
         viewModel = TweetViewModel(inputs: inputs)
 
+        viewModel.outputs.isPostable
+            .bind(to: navigationItem.rightBarButtonItem!.rx.isEnabled)
+            .disposed(by: disposeBag)
+
         viewModel.outputs.successRequest
             .subscribe(onNext: { [weak self] (_) in
                 SVProgressHUD.dismiss()
