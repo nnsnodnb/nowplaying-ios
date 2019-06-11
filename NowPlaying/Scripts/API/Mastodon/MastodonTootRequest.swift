@@ -17,9 +17,11 @@ struct MastodonTootRequest: MastodonRequest {
     private let keychain = Keychain(service: keychainServiceKey)
     private let hostname = UserDefaults.string(forKey: .mastodonHostname)!
     private let status: String
+    private let mediaIDs: [String]?
 
-    init(status: String) {
+    init(status: String, mediaIDs: [String]?=nil) {
         self.status = status
+        self.mediaIDs = mediaIDs
     }
 
     var baseURL: URL {
@@ -35,8 +37,10 @@ struct MastodonTootRequest: MastodonRequest {
     }
 
     var parameters: Any? {
+        guard let mediaIDs = mediaIDs else { return ["status": status] }
         return [
-            "status": status
+            "status": status,
+            "media_ids": mediaIDs
         ]
     }
 
