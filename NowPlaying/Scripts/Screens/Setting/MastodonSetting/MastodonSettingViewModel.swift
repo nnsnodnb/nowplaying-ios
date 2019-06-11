@@ -16,6 +16,7 @@ import RxCocoa
 import RxSwift
 import SafariServices
 import SVProgressHUD
+import NSURL_QueryDictionary
 
 // MARK: - MastodonSettingViewModelOutput
 
@@ -158,12 +159,12 @@ extension MastodonSettingViewModel {
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
                 self._presentViewController.accept(alert)
-        }
+            }
     }
 
     private func loginProcessForSafariCallback(url: URL) {
         guard let query = (url as NSURL).uq_queryDictionary(), let code = query["code"] as? String,
-            let textRow = self.form.rowBy(tag: "mastodon_host") as? TextRow, let hostname = textRow.value else { return }
+            let textRow = form.rowBy(tag: "mastodon_host") as? TextRow, let hostname = textRow.value else { return }
         Session.shared.rx.response(MastodonGetTokenRequest(hostname: hostname, code: code))
             .subscribe(onSuccess: { [weak self] (response) in
                 self?.keychain[KeychainKey.mastodonAccessToken.rawValue] = response.accessToken
