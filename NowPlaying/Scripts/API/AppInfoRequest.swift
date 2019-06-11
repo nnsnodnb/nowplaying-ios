@@ -14,7 +14,7 @@ struct AppInfoRequest: Request {
     typealias Response = AppInfoResponse
 
     var baseURL: URL {
-        return URL(string: "https://nowplayingios.firebaseapp.com")!
+        return URL(string: "https://nnsnodnb.github.io/nowplaying-ios")!
     }
 
     var path: String {
