@@ -89,8 +89,8 @@
 		CFD1D38020B88188009C50ED /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37E20B88188009C50ED /* APIResponse.swift */; };
 		CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39020B9A176009C50ED /* R.generated.swift */; };
 		CFD1D39F20B9C465009C50ED /* RequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39E20B9C465009C50ED /* RequestFactory.swift */; };
-		CFD1D3A320B9CFF3009C50ED /* MastodonRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */; };
 		CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */; };
+		CFD6B2E022B0332B00E5F2FC /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DF22B0332B00E5F2FC /* Requests.swift */; };
 		CFFDE9A520BA15080032F2B0 /* MastodonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFDE9A420BA15070032F2B0 /* MastodonClient.swift */; };
 /* End PBXBuildFile section */
 
@@ -288,8 +288,8 @@
 		CFD1D38120B887A9009C50ED /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		CFD1D39020B9A176009C50ED /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		CFD1D39E20B9C465009C50ED /* RequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestFactory.swift; sourceTree = "<group>"; };
-		CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonRequest.swift; path = NowPlaying/Scripts/API/MastodonRequest.swift; sourceTree = SOURCE_ROOT; };
 		CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonMediaRequest.swift; sourceTree = "<group>"; };
+		CFD6B2DF22B0332B00E5F2FC /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
 		CFFDE9A420BA15070032F2B0 /* MastodonClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MastodonClient.swift; path = Manager/MastodonClient.swift; sourceTree = "<group>"; };
 		F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -373,7 +373,6 @@
 		CF301D9622B01A3D007E675E /* Mastodon */ = {
 			isa = PBXGroup;
 			children = (
-				CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */,
 				CF301D9722B01A59007E675E /* MastodonAppRequest.swift */,
 				CF301D9B22B01BE9007E675E /* MastodonGetTokenRequest.swift */,
 				CF301D9D22B02343007E675E /* MastodonTootRequest.swift */,
@@ -715,6 +714,7 @@
 				CFD1D37320B87E94009C50ED /* AppInfoRequest.swift */,
 				CFD1D39E20B9C465009C50ED /* RequestFactory.swift */,
 				CF55B68522A3E12E00D5C9E1 /* AnyError.swift */,
+				CFD6B2DF22B0332B00E5F2FC /* Requests.swift */,
 				CF301D9622B01A3D007E675E /* Mastodon */,
 			);
 			path = API;
@@ -1042,9 +1042,9 @@
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
 				CF531C2E22A9824100D05896 /* SKProductsRequest+Rx.swift in Sources */,
 				CF301D9C22B01BE9007E675E /* MastodonGetTokenRequest.swift in Sources */,
+				CFD6B2E022B0332B00E5F2FC /* Requests.swift in Sources */,
 				CF301D9A22B01B84007E675E /* SwiftPrint.swift in Sources */,
 				CF531BF422A9495000D05896 /* SettingViewModel.swift in Sources */,
-				CFD1D3A320B9CFF3009C50ED /* MastodonRequest.swift in Sources */,
 				CFD1D39F20B9C465009C50ED /* RequestFactory.swift in Sources */,
 				CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */,
 				CF531C2C22A9817A00D05896 /* SKPaymentQueue+Rx.swift in Sources */,
