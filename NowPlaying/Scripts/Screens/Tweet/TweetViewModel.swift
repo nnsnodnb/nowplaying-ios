@@ -97,15 +97,34 @@ final class TweetViewModel: TweetViewModelType {
             }
             Analytics.Tweet.postTweetTwitter(withHasImage: true, content: postContent)
         case .mastodon:
-            MastodonClient.shared.toot(text: postMessage.value, image: image) { [weak self] (error) in
-                if let error = error {
-                    self?._failure.accept(error)
-                } else {
-                    self?._success.accept(())
-                }
+            guard let imageData = image.pngData() else {
+                _failure.accept(NSError(domain: "画像が見つかりませんでした", code: 400, userInfo: nil))
+                return
             }
+            Session.shared.rx.response(MastodonMediaRequest(imageData: imageData))
+                .subscribe(onSuccess: { [weak self] (response) in
+                    self?.tootWithMediaID(response.mediaID)
+                }, onError: { [weak self] (error) in
+                    self?._failure.accept(error)
+                })
+                .disposed(by: disposeBag)
             Analytics.Tweet.postTootMastodon(withHasImage: true, content: postContent)
         }
+    }
+}
+
+// MARK: - Private method
+
+extension TweetViewModel {
+
+    private func tootWithMediaID(_ mediaID: String) {
+        Session.shared.rx.response(MastodonTootRequest(status: postMessage.value, mediaIDs: [mediaID]))
+            .subscribe(onSuccess: { [weak self] (_) in
+                self?._success.accept(())
+            }, onError: { [weak self] (error) in
+                self?._failure.accept(error)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
