@@ -8,15 +8,17 @@
 
 import Foundation
 
-class APIResponse {
-    var statusCode: Int?
-    var body: Parameters?
+struct APIResponse {
+
+    let statusCode: Int?
+    let body: Parameters?
 
     init(from object: Data?, urlResponse: HTTPURLResponse) {
         statusCode = urlResponse.statusCode
         guard let data = object else {
+            body = nil
             return
         }
-        body = try? JSONSerialization.jsonObject(with: data, options: .init(rawValue: 0)) as? Parameters
+        body = try? JSONSerialization.jsonObject(with: data, options: []) as? Parameters
     }
 }

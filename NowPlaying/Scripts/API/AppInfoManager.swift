@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AppInfoManager: RequestFactory {
+final class AppInfoManager: RequestFactory {
 
     override var url: URL {
         return URL(string: "https://nowplayingios.firebaseapp.com/app_info.json")!
