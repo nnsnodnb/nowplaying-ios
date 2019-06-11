@@ -6,6 +6,8 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
+import Action
+import APIKit
 import Eureka
 import FirebaseAnalytics
 import Foundation
@@ -91,27 +93,21 @@ extension MastodonSettingViewModel {
                 $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isMastodonLogin))
             }.onCellSelection { [unowned self] (_, _) in
                 guard let textRow = self.form.rowBy(tag: "mastodon_host") as? TextRow,
-                    let host = textRow.value, !self.isMastodonLogin else {
+                    let hostname = textRow.value, !self.isMastodonLogin else {
                     return
                 }
-                MastodonRequest.Register(hostname: host).send { [weak self] (result) in
-                    guard let wself = self else { return }
-                    switch result {
-                    case .success(let response):
-                        guard let body = response.body, let clientID = body["client_id"] as? String,
-                            let clientSecret = body["client_secret"] as? String else {
-                                wself._error.accept(())
-                                return
-                        }
-                        UserDefaults.set(clientID, forKey: .mastodonClientID)
-                        UserDefaults.set(clientSecret, forKey: .mastodonClientSecret)
-                        let url = URL(string: "\(host)/oauth/authorize?client_id=\(clientID)&response_type=code&redirect_uri=nowplaying-ios-nnsnodnb://oauth_mastodon&scope=write")!
+                Session.shared.rx.response(MastodonAppRequeset(hostname: hostname))
+                    .subscribe(onSuccess: { [weak self] (response) in
+                        UserDefaults.set(response.clientID, forKey: .mastodonClientID)
+                        UserDefaults.set(response.clientSecret, forKey: .mastodonClientSecret)
+                        let url = URL(string: "\(hostname)/oauth/authorize?client_id=\(response.clientID)&response_type=code&redirect_uri=nowplaying-ios-nnsnodnb://oauth_mastodon&scope=write")!
                         let safari = SFSafariViewController(url: url)
-                        wself._presentViewController.accept(safari)
-                    case .failure:
-                        wself._error.accept(())
-                    }
-                }
+                        self?._presentViewController.accept(safari)
+                    }, onError: { [weak self] (error) in
+                        print(error)
+                        self?._error.accept(())
+                    })
+                    .disposed(by: self.disposeBag)
                 Analytics.MastodonSetting.login()
             }
 
@@ -155,26 +151,21 @@ extension MastodonSettingViewModel {
     }
 
     private func loginProcessForSafariCallback(url: URL) {
-        guard let query = (url as NSURL).uq_queryDictionary(), let code = query["code"] as? String else { return }
-        MastodonRequest.GetToken(code: code).send { [weak self] (result) in
-            guard let wself = self else { return }
-            switch result {
-            case .success(let response):
-                guard let body = response.body, let accessToken = body["access_token"] as? String else {
-                    return
-                }
-                wself.keychain[KeychainKey.mastodonAccessToken.rawValue] = accessToken
-                DispatchQueue.main.async {
-                    SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                    SVProgressHUD.dismiss(withDelay: 0.5)
-                    UserDefaults.set(true, forKey: .isMastodonLogin)
-                    wself.changeMastodonLogState(didLogin: true)
-                }
-                wself._endLoginSession.accept(())
-            case .failure:
-                break
-            }
-        }
+        guard let query = (url as NSURL).uq_queryDictionary(), let code = query["code"] as? String,
+            let textRow = self.form.rowBy(tag: "mastodon_host") as? TextRow, let hostname = textRow.value else { return }
+        Session.shared.rx.response(MastodonGetTokenRequest(hostname: hostname, code: code))
+            .subscribe(onSuccess: { [weak self] (response) in
+                self?.keychain[KeychainKey.mastodonAccessToken.rawValue] = response.accessToken
+                SVProgressHUD.showSuccess(withStatus: "ログインしました")
+                SVProgressHUD.dismiss(withDelay: 0.5)
+                UserDefaults.set(true, forKey: .isMastodonLogin)
+                self?.changeMastodonLogState(didLogin: true)
+                self?._endLoginSession.accept(())
+            }, onError: { [weak self] (error) in
+                print(error)
+                self?._error.accept(())
+            })
+            .disposed(by: self.disposeBag)
     }
 
     private func changeMastodonLogState(didLogin: Bool) {

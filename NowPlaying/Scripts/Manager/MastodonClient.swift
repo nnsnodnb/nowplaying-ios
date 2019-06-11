@@ -132,17 +132,17 @@ class MastodonClient: NSObject {
                 "artist_name": song?.artist ?? "",
                 "song_name": song?.title ?? ""]
             )
-            MastodonRequest.Toot(status: message).send { (result) in
-                DispatchQueue.main.async {
-                    SVProgressHUD.dismiss()
-                    switch result {
-                    case .success:
-                        resultCompletion(true, nil)
-                    case .failure(let error):
-                        resultCompletion(false, error.error)
-                    }
-                }
-            }
+//            MastodonRequest.Toot(status: message).send { (result) in
+//                DispatchQueue.main.async {
+//                    SVProgressHUD.dismiss()
+//                    switch result {
+//                    case .success:
+//                        resultCompletion(true, nil)
+//                    case .failure(let error):
+//                        resultCompletion(false, error.error)
+//                    }
+//                }
+//            }
         }
     }
 }

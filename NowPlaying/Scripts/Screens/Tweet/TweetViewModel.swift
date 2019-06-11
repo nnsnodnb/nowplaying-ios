@@ -69,14 +69,14 @@ final class TweetViewModel: TweetViewModelType {
             }
             Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
         case .mastodon:
-            MastodonRequest.Toot(status: postMessage.value).send { [weak self] (result) in
-                switch result {
-                case .success:
-                    self?._success.accept(())
-                case .failure(let error):
-                    self?._failure.accept(error)
-                }
-            }
+//            MastodonRequest.Toot(status: postMessage.value).send { [weak self] (result) in
+//                switch result {
+//                case .success:
+//                    self?._success.accept(())
+//                case .failure(let error):
+//                    self?._failure.accept(error)
+//                }
+//            }
             Analytics.Tweet.postTootMastodon(withHasImage: false, content: postContent)
         }
     }

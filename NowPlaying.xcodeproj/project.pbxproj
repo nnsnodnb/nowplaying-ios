@@ -32,6 +32,10 @@
 		CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD7220A4AB630039217F /* libicucore.tbd */; };
 		CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF301D8C22B009C5007E675E /* APIKit.framework */; };
 		CF301D9122B01724007E675E /* Action.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF301D9022B01724007E675E /* Action.framework */; };
+		CF301D9322B01841007E675E /* Reactive+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9222B01841007E675E /* Reactive+Session.swift */; };
+		CF301D9822B01A59007E675E /* MastodonAppRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9722B01A59007E675E /* MastodonAppRequest.swift */; };
+		CF301D9A22B01B84007E675E /* SwiftPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9922B01B84007E675E /* SwiftPrint.swift */; };
+		CF301D9C22B01BE9007E675E /* MastodonGetTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9B22B01BE9007E675E /* MastodonGetTokenRequest.swift */; };
 		CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */; };
 		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
 		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
@@ -142,6 +146,10 @@
 		CF2DBD7220A4AB630039217F /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		CF301D8C22B009C5007E675E /* APIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APIKit.framework; path = Carthage/Build/iOS/APIKit.framework; sourceTree = "<group>"; };
 		CF301D9022B01724007E675E /* Action.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Action.framework; path = Carthage/Build/iOS/Action.framework; sourceTree = "<group>"; };
+		CF301D9222B01841007E675E /* Reactive+Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reactive+Session.swift"; sourceTree = "<group>"; };
+		CF301D9722B01A59007E675E /* MastodonAppRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonAppRequest.swift; sourceTree = "<group>"; };
+		CF301D9922B01B84007E675E /* SwiftPrint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftPrint.swift; path = Common/SwiftPrint.swift; sourceTree = "<group>"; };
+		CF301D9B22B01BE9007E675E /* MastodonGetTokenRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonGetTokenRequest.swift; sourceTree = "<group>"; };
 		CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TweetViewController.swift; path = Tweet/TweetViewController.swift; sourceTree = "<group>"; };
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
 		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
@@ -355,8 +363,18 @@
 			isa = PBXGroup;
 			children = (
 				CF1AAFE91F75F2A600384000 /* Common.swift */,
+				CF301D9922B01B84007E675E /* SwiftPrint.swift */,
 			);
 			name = Common;
+			sourceTree = "<group>";
+		};
+		CF301D9622B01A3D007E675E /* Mastodon */ = {
+			isa = PBXGroup;
+			children = (
+				CF301D9722B01A59007E675E /* MastodonAppRequest.swift */,
+				CF301D9B22B01BE9007E675E /* MastodonGetTokenRequest.swift */,
+			);
+			path = Mastodon;
 			sourceTree = "<group>";
 		};
 		CF43E7D31F733C1F00A2A49A /* Tweet */ = {
@@ -679,6 +697,7 @@
 				CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */,
 				CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */,
 				CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */,
+				CF301D9222B01841007E675E /* Reactive+Session.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -693,6 +712,7 @@
 				CFD1D3A020B9CA76009C50ED /* PurchaseRequest.swift */,
 				CFD1D3A220B9CFF3009C50ED /* MastodonRequest.swift */,
 				CF55B68522A3E12E00D5C9E1 /* AnyError.swift */,
+				CF301D9622B01A3D007E675E /* Mastodon */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1000,6 +1020,7 @@
 				CFFDE9A520BA15080032F2B0 /* MastodonClient.swift in Sources */,
 				CF531C0322A9536A00D05896 /* TwitterSettingViewController.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
+				CF301D9322B01841007E675E /* Reactive+Session.swift in Sources */,
 				CF531C3222A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift in Sources */,
 				CF55B68F22A40ACD00D5C9E1 /* PostContent.swift in Sources */,
 				CF531C2A22A980EA00D05896 /* RxSKPaymentTransactionObserver.swift in Sources */,
@@ -1009,12 +1030,15 @@
 				CFD1D37420B87E94009C50ED /* AppInfoManager.swift in Sources */,
 				CF55B68822A3E22800D5C9E1 /* PlayViewModel.swift in Sources */,
 				CFD1D37F20B88188009C50ED /* APIResult.swift in Sources */,
+				CF301D9822B01A59007E675E /* MastodonAppRequest.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CF55B69722A418A100D5C9E1 /* Analytics+NowPlaying.swift in Sources */,
 				CF531C3A22AACEC800D05896 /* NowPlayingButtonRow.swift in Sources */,
 				CFD1D38020B88188009C50ED /* APIResponse.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
 				CF531C2E22A9824100D05896 /* SKProductsRequest+Rx.swift in Sources */,
+				CF301D9C22B01BE9007E675E /* MastodonGetTokenRequest.swift in Sources */,
+				CF301D9A22B01B84007E675E /* SwiftPrint.swift in Sources */,
 				CF531BF422A9495000D05896 /* SettingViewModel.swift in Sources */,
 				CFD1D3A120B9CA76009C50ED /* PurchaseRequest.swift in Sources */,
 				CFD1D3A320B9CFF3009C50ED /* MastodonRequest.swift in Sources */,
