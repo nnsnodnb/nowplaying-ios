@@ -91,7 +91,6 @@
 		CFD1D39F20B9C465009C50ED /* RequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39E20B9C465009C50ED /* RequestFactory.swift */; };
 		CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */; };
 		CFD6B2E022B0332B00E5F2FC /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DF22B0332B00E5F2FC /* Requests.swift */; };
-		CFFDE9A520BA15080032F2B0 /* MastodonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFDE9A420BA15070032F2B0 /* MastodonClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -290,7 +289,6 @@
 		CFD1D39E20B9C465009C50ED /* RequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestFactory.swift; sourceTree = "<group>"; };
 		CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonMediaRequest.swift; sourceTree = "<group>"; };
 		CFD6B2DF22B0332B00E5F2FC /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
-		CFFDE9A420BA15070032F2B0 /* MastodonClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MastodonClient.swift; path = Manager/MastodonClient.swift; sourceTree = "<group>"; };
 		F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -688,7 +686,6 @@
 			children = (
 				CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */,
 				CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */,
-				CFFDE9A420BA15070032F2B0 /* MastodonClient.swift */,
 				CF0FA21B206D4D5A00647317 /* PaymentManager.swift */,
 			);
 			name = Manager;
@@ -1020,7 +1017,6 @@
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
 				CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */,
 				CF55B69922A41B8800D5C9E1 /* TweetViewModel.swift in Sources */,
-				CFFDE9A520BA15080032F2B0 /* MastodonClient.swift in Sources */,
 				CF531C0322A9536A00D05896 /* TwitterSettingViewController.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
 				CF301D9322B01841007E675E /* Reactive+Session.swift in Sources */,

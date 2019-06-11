@@ -6,6 +6,7 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
+import APIKit
 import FirebaseAnalytics
 import MediaPlayer
 import RxCocoa
@@ -60,6 +61,27 @@ final class PlayViewModel: PlayViewModelType {
 
         musicPlayer.beginGeneratingPlaybackNotifications()
 
+        setupNotificationObserver()
+        setupInputObserver(inputs)
+    }
+
+    func countUpOpenCount() {
+        var count = UserDefaults.integer(forKey: .appOpenCount)
+        count += 1
+        UserDefaults.set(count, forKey: .appOpenCount)
+        if count == 15 {
+            SKStoreReviewController.requestReview()
+            UserDefaults.set(0, forKey: .appOpenCount)
+        }
+    }
+
+    deinit {
+        musicPlayer.endGeneratingPlaybackNotifications()
+    }
+
+    // MARK: - Private method
+
+    private func setupNotificationObserver() {
         // 再生状態の変更
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
             .subscribe(onNext: { [weak self] (_) in
@@ -72,6 +94,7 @@ final class PlayViewModel: PlayViewModelType {
             .subscribe(onNext: { [weak self] (notification) in
                 guard let player = notification.object as? MPMusicPlayerController else { return }
                 self?._nowPlayingItem.accept(player.nowPlayingItem)
+                self?.autoPostControl()
             })
             .disposed(by: disposeBag)
 
@@ -91,25 +114,7 @@ final class PlayViewModel: PlayViewModelType {
                 break
             }
         }
-
-        setupInputObserver(inputs)
     }
-
-    func countUpOpenCount() {
-        var count = UserDefaults.integer(forKey: .appOpenCount)
-        count += 1
-        UserDefaults.set(count, forKey: .appOpenCount)
-        if count == 15 {
-            SKStoreReviewController.requestReview()
-            UserDefaults.set(0, forKey: .appOpenCount)
-        }
-    }
-
-    deinit {
-        musicPlayer.endGeneratingPlaybackNotifications()
-    }
-
-    // MARK: - Private method
 
     private func setupInputObserver(_ inputs: PlayViewModelInput) {
         inputs.previousButton
@@ -163,27 +168,86 @@ final class PlayViewModel: PlayViewModelType {
             })
             .disposed(by: disposeBag)
     }
+}
 
-    private func setNewPostContent(service: Service) {
-        guard let nowPlayingItem = MPMusicPlayerController.systemMusicPlayer.nowPlayingItem else {
-            let post = PostContent(postMessage: "", shareImage: nil, songTitle: "", artistName: "", service: service)
-            _postContent.accept(post)
-            return
+// MARK: - Private method (Utilities)
+
+extension PlayViewModel {
+
+    private func createnewPostCotent(service: Service) -> PostContent {
+        guard let item = _nowPlayingItem.value else {
+            return PostContent(postMessage: "", shareImage: nil, songTitle: "", artistName: "", service: service)
+        }
+        let title = item.title ?? ""
+        let artist = item.artist ?? ""
+        let postText = "\(title) by \(artist) #NowPlaying"
+        let shareImage: UIImage?
+        if let artwork = item.artwork, let image = artwork.image(at: artwork.bounds.size) {
+            shareImage = image
+        } else {
+            shareImage = nil
         }
 
-        let postTitle = nowPlayingItem.title ?? ""
-        let postArtist = nowPlayingItem.artist ?? ""
-        let postText = "\(postTitle) by \(postArtist) #NowPlaying"
+        return PostContent(postMessage: postText, shareImage: shareImage, songTitle: title, artistName: artist, service: service)
+    }
+
+    private func setNewPostContent(service: Service) {
+        var content = createnewPostCotent(service: service)
 
         let userDefaultsKey: UserDefaultsKey = service == .mastodon ? .isMastodonWithImage : .isWithImage
-        if UserDefaults.bool(forKey: userDefaultsKey), let artwork = nowPlayingItem.artwork {
-            let post = PostContent(postMessage: postText, shareImage: artwork.image(at: artwork.bounds.size),
-                                   songTitle: postTitle, artistName: postArtist, service: service)
-            _postContent.accept(post)
+        if !UserDefaults.bool(forKey: userDefaultsKey) {
+            content.removeShareImage()
+        }
+        _postContent.accept(content)
+    }
+
+    private func autoPostControl() {
+        guard _nowPlayingItem.value != nil else { return }
+        var tweetContent = createnewPostCotent(service: .twitter)
+        var mastodonContent = createnewPostCotent(service: .mastodon)
+        if !UserDefaults.bool(forKey: .isWithImage) { tweetContent.removeShareImage() }
+        if !UserDefaults.bool(forKey: .isMastodonWithImage) { mastodonContent.removeShareImage() }
+        postTweet(tweetContent)
+        postMastodon(mastodonContent)
+    }
+
+    private func postTweet(_ content: PostContent) {
+        guard UserDefaults.bool(forKey: .isAutoTweetPurchase) && UserDefaults.bool(forKey: .isAutoTweet) else { return }
+        if let shareImage = content.shareImage {
+            TwitterClient.shared.client?.sendTweet(withText: content.postMessage, image: shareImage) { (_, _) in }
+            Analytics.AutoPost.withImageTweet(content)
         } else {
-            let post = PostContent(postMessage: postText, shareImage: nil, songTitle: postTitle,
-                                   artistName: postArtist, service: service)
-            _postContent.accept(post)
+            TwitterClient.shared.client?.sendTweet(withText: content.postMessage) { (_, _) in }
+            Analytics.AutoPost.textOnlyTweet(content)
+        }
+    }
+
+    private func postMastodon(_ content: PostContent) {
+        guard UserDefaults.bool(forKey: .isMastodonAutoToot) else { return }
+        if let shareImage = content.shareImage, let data = shareImage.pngData() {
+            Session.shared.rx.response(MastodonMediaRequest(imageData: data))
+                .subscribe(onSuccess: { [weak self] (response) in
+                    guard let wself = self else { return }
+                    Session.shared.rx.response(MastodonTootRequest(status: content.postMessage, mediaIDs: [response.mediaID]))
+                        .subscribe(onSuccess: { (_) in
+                        }, onError: { (error) in
+                            print(error)
+                        })
+                        .disposed(by: wself.disposeBag)
+                }, onError: { (error) in
+                    print(error)
+                })
+                .disposed(by: disposeBag)
+            Analytics.AutoPost.withImageToot(content)
+        } else {
+            Session.shared.rx.response(MastodonTootRequest(status: content.postMessage))
+                .subscribe(onSuccess: { (_) in
+
+                }, onError: { (error) in
+                    print(error)
+                })
+                .disposed(by: disposeBag)
+            Analytics.AutoPost.textOnlyToot(content)
         }
     }
 }

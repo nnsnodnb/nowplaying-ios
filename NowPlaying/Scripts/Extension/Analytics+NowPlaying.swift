@@ -181,3 +181,47 @@ extension Analytics {
         }
     }
 }
+
+// MARK: - Auto posting
+
+extension Analytics {
+
+    final class AutoPost: Analytics {
+
+        static func withImageTweet(_ value: PostContent) {
+            logEvent("post", parameters: [
+                "type": "tweet",
+                "auto_post": true,
+                "image": true,
+                "artist_name": value.artistName,
+                "song_name": value.songTitle])
+        }
+
+        static func textOnlyTweet(_ value: PostContent) {
+            logEvent("post", parameters: [
+                "type": "tweet",
+                "auto_post": true,
+                "image": false,
+                "artist_name": value.artistName,
+                "song_name": value.songTitle])
+        }
+
+        static func withImageToot(_ value: PostContent) {
+            logEvent("post", parameters: [
+                "type": "toot",
+                "auto_post": true,
+                "image": true,
+                "artist_name": value.artistName,
+                "song_name": value.songTitle])
+        }
+
+        static func textOnlyToot(_ value: PostContent) {
+            logEvent("post", parameters: [
+                "type": "toot",
+                "auto_post": true,
+                "image": false,
+                "artist_name": value.artistName,
+                "song_name": value.songTitle])
+        }
+    }
+}

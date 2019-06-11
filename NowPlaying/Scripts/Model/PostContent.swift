@@ -16,8 +16,12 @@ enum Service {
 struct PostContent {
 
     let postMessage: String
-    let shareImage: UIImage?
+    private(set) var shareImage: UIImage?
     let songTitle: String
     let artistName: String
     let service: Service
+
+    mutating func removeShareImage() {
+        shareImage = nil
+    }
 }

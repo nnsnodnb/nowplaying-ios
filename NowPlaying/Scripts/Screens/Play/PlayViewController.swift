@@ -68,29 +68,6 @@ final class PlayViewController: UIViewController {
     }
     @IBOutlet private weak var bannerViewHeight: NSLayoutConstraint!
 
-    var song: MPMediaItem?
-    var isNotification: Bool = false {
-        didSet {
-            if !isNotification {
-                return
-            }
-            TwitterClient.shared.autoTweet(song) { [weak self] (result, error) in
-                if let wself = self, let error = error, !result {
-                    DispatchQueue.main.async {
-                        wself.showError(error: error)
-                    }
-                }
-            }
-            MastodonClient.shared.autoToot(song) { [weak self] (result, error) in
-                if let wself = self, let error = error, !result {
-                    DispatchQueue.main.async {
-                        wself.showError(error: error)
-                    }
-                }
-            }
-        }
-    }
-
     private let disposeBag = DisposeBag()
 
     private var viewModel: PlayViewModelType!
