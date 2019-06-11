@@ -6,14 +6,16 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
-import UIKit
-import TwitterKit
-import Fabric
+import APIKit
 import Crashlytics
-import KeychainAccess
+import Fabric
 import FirebaseCore
 import GoogleMobileAds
+import KeychainAccess
+import RxSwift
 import SVProgressHUD
+import TwitterKit
+import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,18 +23,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     private let keychain = Keychain()
+    private let disposeBag = DisposeBag()
 
-    private var backgroundTaskID: UIBackgroundTaskIdentifier = 0
+    private var backgroundTaskID: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        SVProgressHUD.setDefaultMaskType(.clear)
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        SVProgressHUD.setDefaultMaskType(.black)
         loadEnvironment()
-        Twitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
-                                       consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
+        window?.rootViewController = PlayViewController()
+
+        TWTRTwitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
+                                           consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
         Fabric.with([Crashlytics.self])
         FirebaseApp.configure()
         GADMobileAds.configure(withApplicationID: ProcessInfo.processInfo.get(forKey: .firebaseAdmobAppId))
-        PaymentManager.shared.startTransactionObserve()
+//        PaymentManager.shared.startTransactionObserve()
         #if DEBUG
         AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(false)
 //        keychain.remove(KeychainKey.mastodonClientID.rawValue)
@@ -42,21 +49,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]=[:]) -> Bool {
-        if let sourceApplication = options[.sourceApplication] as? String {
-            if String(describing: sourceApplication) == "com.apple.SafariViewService" {
-                NotificationCenter.default.post(name: receiveSafariNotificationName, object: url)
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]=[:]) -> Bool {
+        if let source = options[.sourceApplication] as? String, source == "com.apple.SafariViewService" {
+            if let scheme = url.scheme, scheme.starts(with: "twitterkit-") {
+                return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
+            } else {
+                NotificationCenter.default.post(name: .receiveSafariNotificationName, object: url)
                 return true
             }
+        } else {
+            return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
         }
-        return Twitter.sharedInstance().application(application, open: url, options: options)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
         backgroundTaskID = application.beginBackgroundTask(withName: "AutoTweetBackgroundTask") { [weak self] in
             guard let wself = self else { return }
-            application.endBackgroundTask(wself.backgroundTaskID)
-            wself.backgroundTaskID = UIBackgroundTaskInvalid
+            application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: wself.backgroundTaskID.rawValue))
+            wself.backgroundTaskID = UIBackgroundTaskIdentifier.invalid
         }
     }
 
@@ -67,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        application.endBackgroundTask(backgroundTaskID)
+        application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: backgroundTaskID.rawValue))
         resignFirstResponder()
         checkFirebaseHostingAppVersion()
     }
@@ -76,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.endReceivingRemoteControlEvents()
     }
 
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
             print(userActivity.webpageURL!)
         }
@@ -92,9 +102,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let data = try Data(contentsOf: url)
             let str = String(data: data, encoding: .utf8) ?? "Empty File"
             let clean = str.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "'", with: "")
-            let envVars = clean.components(separatedBy:"\n")
+            let envVars = clean.components(separatedBy: "\n")
             for envVar in envVars {
-                let keyVal = envVar.components(separatedBy:"=")
+                let keyVal = envVar.components(separatedBy: "=")
                 if keyVal.count == 2 {
                     setenv(keyVal[0], keyVal[1], 1)
                 }
@@ -105,44 +115,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func checkFirebaseHostingAppVersion() {
-        AppInfoManager().fetch { [weak self] (result) in
-            guard let wself = self else { return }
-            switch result {
-            case .success(let response):
-                guard let body = response.body, let appVersion = body["app_version"] as? Parameters,
-                    let requireVerion = appVersion["require"] as? String, let latestVersion = appVersion["latest"] as? String else {
-                        return
-                }
+        Session.shared.rx.response(AppInfoRequest())
+            .subscribe(onSuccess: { [weak self] (response) in
                 let current = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-
-                if !AppInfoManager.checkLargeVersion(current: current, target: requireVerion) {
+                if current.compare(response.appVersion.require, options: .numeric) == .orderedAscending {
                     // 必須アップデート
                     let alert = UIAlertController(title: "アップデートが必要です", message: nil, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
-                        let url = URL(string: websiteUrl)!
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    alert.addAction(UIAlertAction(title: "AppStoreを開く", style: .default) { (_) in
+                        UIApplication.shared.open(URL(string: websiteURL)!, options: [:], completionHandler: nil)
                     })
+                    alert.preferredAction = alert.actions.first
                     DispatchQueue.main.async {
-                        wself.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                        self?.window?.rootViewController?.present(alert, animated: true, completion: nil)
                     }
-                } else if !AppInfoManager.checkLargeVersion(current: current, target: latestVersion) {
-                    // アップデートがある
+                } else if current.compare(response.appVersion.latest, options: .numeric) == .orderedAscending {
+                    // アップデートあり
                     let alert = UIAlertController(title: "アップデートがあります", message: nil, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "あとで", style: .cancel, handler: nil))
-                    let action = UIAlertAction(title: "AppStoreを開く", style: .cancel) { (_) in
-                        let url = URL(string: websiteUrl)!
+                    let action = UIAlertAction(title: "AppStoreを開く", style: .default) { (_) in
+                        let url = URL(string: websiteURL)!
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     }
                     alert.addAction(action)
                     alert.preferredAction = action
                     DispatchQueue.main.async {
-                        wself.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                        self?.window?.rootViewController?.present(alert, animated: true, completion: nil)
                     }
                 }
-            case .failure:
-                break
-            }
-        }
+            }, onError: { (error) in
+                print(error)
+            })
+            .disposed(by: disposeBag)
     }
 }
-

@@ -1,0 +1,150 @@
+//
+//  PlayViewController.swift
+//  NowPlaying
+//
+//  Created by Oka Yuya on 2017/09/20.
+//  Copyright © 2017年 Oka Yuya. All rights reserved.
+//
+
+import AutoScrollLabel
+import FirebaseAnalytics
+import Foundation
+import GoogleMobileAds
+import MediaPlayer
+import RxSwift
+import StoreKit
+import SVProgressHUD
+import TwitterKit
+import UIKit
+
+final class PlayViewController: UIViewController {
+
+    @IBOutlet private weak var artworkImageView: UIImageView!
+    @IBOutlet private weak var songNameLabel: CBAutoScrollLabel! {
+        didSet {
+            songNameLabel.textColor = .black
+            songNameLabel.textAlignment = .center
+            songNameLabel.font = .boldSystemFont(ofSize: 21)
+            songNameLabel.pauseInterval = 2
+            songNameLabel.scrollDirection = .left
+            songNameLabel.observeApplicationNotifications()
+        }
+    }
+    @IBOutlet private weak var artistNameLabel: CBAutoScrollLabel! {
+        didSet {
+            artistNameLabel.textColor = .black
+            artistNameLabel.textAlignment = .center
+            artistNameLabel.font = .systemFont(ofSize: 16)
+            artistNameLabel.pauseInterval = 2
+            artistNameLabel.scrollDirection = .left
+            artistNameLabel.observeApplicationNotifications()
+        }
+    }
+    @IBOutlet private weak var previousButton: UIButton!
+    @IBOutlet private weak var playButton: UIButton!
+    @IBOutlet private weak var nextButton: UIButton!
+    @IBOutlet private weak var gearButton: UIButton! {
+        didSet {
+            gearButton.rx.tap
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { [weak self] (_) in
+                    let viewController = SettingViewController()
+                    let navi = UINavigationController(rootViewController: viewController)
+                    Analytics.Play.gearButton()
+                    self?.present(navi, animated: true, completion: nil)
+                })
+                .disposed(by: disposeBag)
+        }
+    }
+    @IBOutlet private weak var mastodonButton: UIButton!
+    @IBOutlet private weak var twitterButton: UIButton!
+    @IBOutlet private weak var bannerView: GADBannerView! {
+        didSet {
+            bannerView.adUnitID = ProcessInfo.processInfo.get(forKey: .firebaseAdmobBannerId)
+            bannerView.adSize = kGADAdSizeBanner
+            bannerView.rootViewController = self
+            bannerView.load(GADRequest())
+        }
+    }
+    @IBOutlet private weak var bannerViewHeight: NSLayoutConstraint!
+
+    private let disposeBag = DisposeBag()
+
+    private var viewModel: PlayViewModelType!
+
+    // MARK: - Life cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let inputs = PlayViewModelInput(
+            previousButton: previousButton.rx.tap.asObservable(), playButton: playButton.rx.tap.asObservable(),
+            nextButton: nextButton.rx.tap.asObservable(), mastodonButton: mastodonButton.rx.tap.asObservable(),
+            twitterButton: twitterButton.rx.tap.asObservable()
+        )
+        viewModel = PlayViewModel(inputs: inputs)
+
+        viewModel.outputs.nowPlayingItem
+            .drive(onNext: { [weak self] (item) in
+                guard let wself = self else { return }
+                wself.artworkImageView.image = item.artwork?.image(at: wself.artworkImageView.frame.size)
+                wself.songNameLabel.text = item.title
+                wself.artistNameLabel.text = item.artist
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.playButtonImage
+            .drive(onNext: { [weak self] (image) in
+                self?.playButton.setImage(image, for: .normal)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.loginRequired
+            .subscribe(onNext: { [weak self] (_) in
+                let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
+                self?.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.postContent
+            .drive(onNext: { [weak self] (post) in
+                let viewController = TweetViewController(postContent: post)
+                let navi = UINavigationController(rootViewController: viewController)
+                self?.present(navi, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.requestDenied
+            .subscribe(onNext: { [weak self] (_) in
+                let alert = UIAlertController(title: "アプリを使用するには\n許可が必要です", message: "設定しますか？", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: "設定画面へ", style: .default) { _ in
+                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
+                })
+                self?.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard UserDefaults.bool(forKey: .isPurchasedRemoveAdMob) else { return }
+        bannerView.isHidden = true
+        bannerViewHeight.constant = 0
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("再生画面", screenClass: "PlayViewController")
+        Analytics.logEvent("screen_open", parameters: nil)
+        viewModel.countUpOpenCount()
+    }
+
+    // MARK: - Private method
+
+    private func showError(error: Error) {
+        let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+}

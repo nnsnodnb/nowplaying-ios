@@ -7,140 +7,96 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 import StoreKit
+import SVProgressHUD
 
-class PaymentManager: NSObject {
+final class PaymentManager {
 
-    class var shared: PaymentManager {
-        struct Static {
-            static let shared = PaymentManager()
-        }
-        return Static.shared
-    }
+    static let shared = PaymentManager()
 
-    // 購入完了のNotification
-    static let paymentCompletedNotification = "PaymentCompletedNotification"
+    private let disposeBag = DisposeBag()
 
-    // 購入失敗のNotification
-    static let paymentErrorNotification = "PaymentErrorNotification"
+    enum Product {
+        case hideAdmob
+        case autoTweet
 
-    // トランザクションが残っているか
-    static var isRemainTransaction: Bool {
-        return UserDefaults.bool(forKey: .isRemainTransaction)
-    }
-
-    weak var delegate: PaymentManagerProtocol?
-
-    private var productsRequest: SKProductsRequest!
-
-    func startTransactionObserve() {
-        SKPaymentQueue.default().add(self)
-    }
-
-    func stopTransactionObseve() {
-        SKPaymentQueue.default().remove(self)
-    }
-
-    func startProductRequest(_ productIds: Set<String>) -> SKProductsRequest {
-        productsRequest = SKProductsRequest(productIdentifiers: productIds)
-        productsRequest.delegate = self
-        productsRequest.start()
-
-        return productsRequest!
-    }
-
-    @discardableResult
-    func buyProduct(_ product: SKProduct) -> Bool {
-        guard SKPaymentQueue.canMakePayments() else {
-            return false
-        }
-
-        let payment = SKPayment(product: product)
-        SKPaymentQueue.default().add(payment)
-
-        return true
-    }
-
-    func startRestore() {
-        SKPaymentQueue.default().restoreCompletedTransactions()
-    }
-
-    // MARK: - Private method
-
-    /* Complete Payment */
-    private func complete(transaction: SKPaymentTransaction) {
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: PaymentManager.paymentCompletedNotification),
-                                        object: transaction)
-        delegate?.finish(success: transaction)
-
-        SKPaymentQueue.default().finishTransaction(transaction)
-    }
-
-    /* Failure Payment */
-    private func failed(transaction: SKPaymentTransaction) {
-        if let error: NSError = transaction.error as NSError? {
-            if error.code == SKError.paymentCancelled.rawValue {
-                print("Cancel")
+        static func create(withProductIdentifier identifier: String) -> Product {
+            if identifier == Product.hideAdmob.productIdentifier {
+                return .hideAdmob
+            } else if identifier == Product.autoTweet.productIdentifier {
+                return .autoTweet
             } else {
-                print("\(error.localizedDescription)")
+                fatalError("unknown product identifier")
             }
         }
 
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: PaymentManager.paymentErrorNotification),
-                                        object: transaction)
-        delegate?.finishPayment(failed: transaction)
+        var productIdentifier: String {
+            switch self {
+            case .hideAdmob:
+                return "moe.nnsnodnb.NowPlaying.hideAdMob"
+            case .autoTweet:
+                return "moe.nnsnodnb.NowPlaying.autoTweet"
+            }
+        }
 
-        SKPaymentQueue.default().finishTransaction(transaction)
-    }
-}
-
-// MARK: - SKPaymentTransactionObserver
-
-extension PaymentManager: SKPaymentTransactionObserver {
-
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        for transaction in transactions {
-            switch (transaction.transactionState) {
-            case .purchased: // 購入処理完了
-                complete(transaction: transaction)
-            case .failed: // 購入処理失敗
-                failed(transaction: transaction)
-            case .restored: // リストア
-                complete(transaction: transaction)
-            case .deferred: // 保留中
-                break
-            case .purchasing: // 購入処理開始
-                UserDefaults.set(true, forKey: .isRemainTransaction)
+        func finishPurchased() {
+            switch self {
+            case .hideAdmob:
+                UserDefaults.set(true, forKey: .isPurchasedRemoveAdMob)
+            case .autoTweet:
+                UserDefaults.set(true, forKey: .isAutoTweetPurchase)
             }
         }
     }
 
-    func paymentQueue(_ queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]) {
-        UserDefaults.set(false, forKey: .isRemainTransaction)
+    enum BuyTransactionState {
+        case purchasing
+        case purchased
     }
 
-    func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
-        delegate?.finishRestore(queue: queue, restoreCompletedTransactionsFailedWithError: error)
-    }
-
-    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
-        delegate?.finishRestore(queue: queue)
-    }
-}
-
-// MARK: - SKProductsRequestDelegate
-
-extension PaymentManager: SKProductsRequestDelegate {
-
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        for invalidIds in response.invalidProductIdentifiers {
-            print(invalidIds)
+    func buyProduct(_ product: Product) -> Observable<BuyTransactionState> {
+        return Observable<BuyTransactionState>.create { [unowned self] (observer) -> Disposable in
+            let productRequest = SKProductsRequest(productIdentifiers: Set([product.productIdentifier]))
+            productRequest.rx.productsRequest
+                .flatMap { Observable.from($0.products) }
+                .flatMap { SKPaymentQueue.default().rx.add(product: $0, shouldVerify: true) }
+                .subscribe(onNext: { (transaction) in
+                    switch transaction.transactionState {
+                    case .failed:
+                        observer.onError(NSError(domain: "transaction error", code: 0, userInfo: ["transaction": transaction]))
+                    case .purchased:
+                        observer.onNext(.purchased)
+                        observer.onCompleted()
+                    case .purchasing:
+                        observer.onNext(.purchasing)
+                    case .restored, .deferred:
+                        break
+                    @unknown default:
+                        break
+                    }
+                }, onError: { (error) in
+                    observer.onError(error)
+                })
+                .disposed(by: self.disposeBag)
+            productRequest.start()
+            return Disposables.create()
         }
-
-        delegate?.finish(request: request, products: response.products)
     }
 
-    func request(_ request: SKRequest, didFailWithError error: Error) {
-        delegate?.finish(request: request, didFailWithError: error)
+    func restore() -> Observable<[Product]> {
+        return Observable<[Product]>.create { [unowned self] (observer) -> Disposable in
+            SKPaymentQueue.default().rx.restoreCompletedTransactions()
+                .subscribe(onNext: { (queue) in
+                    let products = queue.transactions.map { Product.create(withProductIdentifier: $0.payment.productIdentifier) }
+                    observer.onNext(products)
+                    observer.onCompleted()
+                }, onError: { (error) in
+                    observer.onError(error)
+                })
+                .disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
     }
 }
