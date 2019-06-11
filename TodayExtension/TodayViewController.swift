@@ -6,33 +6,52 @@
 //  Copyright © 2018年 Oka Yuya. All rights reserved.
 //
 
-import UIKit
 import MediaPlayer
 import NotificationCenter
+import RxCocoa
+import RxSwift
+import UIKit
 
-class TodayViewController: UIViewController {
+final class TodayViewController: UIViewController {
 
-    @IBOutlet weak var artworkImageButton: UIButton!
-    @IBOutlet weak var songNameLabel: UILabel!
-    @IBOutlet weak var artistNameLabel: UILabel!
-    @IBOutlet weak var deniedView: UIView!
-
-    private let player = MPMusicPlayerController.systemMusicPlayer
-
-    private var nowPlayingItem: MPMediaItem? {
+    @IBOutlet private weak var artworkImageButton: UIButton! {
         didSet {
-            let image = nowPlayingItem?.artwork?.image(at: artworkImageButton.frame.size)
-            artworkImageButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-            songNameLabel.text = nowPlayingItem?.title
-            artistNameLabel.text = nowPlayingItem?.artist
+            artworkImageButton.rx.tap
+                .subscribe(onNext: { [unowned self] (_) in
+                    guard let url = URL(string: "nowplaying-ios-nnsnodnb://") else { return }
+                    self.extensionContext?.open(url, completionHandler: nil)
+                })
+                .disposed(by: disposeBag)
         }
     }
+    @IBOutlet private weak var songNameLabel: UILabel!
+    @IBOutlet private weak var artistNameLabel: UILabel!
+    @IBOutlet private weak var deniedView: UIView!
+
+    private let disposeBag = DisposeBag()
+    private let player = MPMusicPlayerController.systemMusicPlayer
+    private let nowPlayingItem = PublishRelay<MPMediaItem?>()
 
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNotification()
+        NotificationCenter.default.rx.notification(.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
+            .subscribe(onNext: { [weak self] (notification) in
+                guard let player = notification.object as? MPMusicPlayerController else { return }
+                self?.nowPlayingItem.accept(player.nowPlayingItem)
+            })
+            .disposed(by: disposeBag)
+
+        nowPlayingItem.asObservable()
+            .subscribe(onNext: { [weak self] (item) in
+                guard let wself = self else { return }
+                let image = item?.artwork?.image(at: wself.artworkImageButton.frame.size)
+                wself.artworkImageButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+                wself.songNameLabel.text = item?.title
+                wself.artistNameLabel.text = item?.artist
+            })
+            .disposed(by: disposeBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -43,7 +62,6 @@ class TodayViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupAccessMusicLibrary()
-        setupPlayViewControllerItem()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -51,38 +69,17 @@ class TodayViewController: UIViewController {
         player.endGeneratingPlaybackNotifications()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
-        MPMediaLibrary.default().endGeneratingLibraryChangeNotifications()
-    }
-
     // MARK: - Private method
 
-    private func setupNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(musicNotification(_:)),
-                                               name: .MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
-    }
-
-    private func setupPlayViewControllerItem() {
-        if let item = player.nowPlayingItem {
-            nowPlayingItem = item
-        }
-    }
-
     private func setupAccessMusicLibrary() {
-        MPMediaLibrary.default().beginGeneratingLibraryChangeNotifications()
         MPMediaLibrary.requestAuthorization { (status) in
             DispatchQueue.main.async { [unowned self] in
                 switch status {
                 case .authorized:
                     // 取得までに時間がかかるので遅延処理
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.setupPlayViewControllerItem()
-                        self.deniedView.isHidden = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                        self?.nowPlayingItem.accept(MPMusicPlayerController.systemMusicPlayer.nowPlayingItem)
+                        self?.deniedView.isHidden = true
                     }
                 case .denied:
                     self.deniedView.isHidden = false
@@ -96,30 +93,11 @@ class TodayViewController: UIViewController {
     }
 }
 
-// MARK: - IBAction
-
-extension TodayViewController {
-
-    @IBAction func onTapArtworkImageButton(_ sender: Any) {
-        guard let url = URL(string: "nowplaying-ios-nnsnodnb://") else { return }
-        extensionContext?.open(url, completionHandler: nil)
-    }
-}
-
-// MARK: - Notification target
-
-extension TodayViewController {
-
-    @objc private func musicNotification(_ notification: Notification) {
-        setupPlayViewControllerItem()
-    }
-}
-
 // MARK: - NCWidgetProviding
 
 extension TodayViewController: NCWidgetProviding {
 
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
-        completionHandler(NCUpdateResult.newData)
+        completionHandler(.newData)
     }
 }
