@@ -12,7 +12,6 @@ import FirebaseAnalytics
 import RxCocoa
 import RxSwift
 import SafariServices
-import StoreKit
 import SVProgressHUD
 import UIKit
 
@@ -171,9 +170,18 @@ extension SettingViewModel {
 
             <<< NowPlayingButtonRow {
                 $0.title = "レビューする"
-            }.onCellSelection { (_, _) in
+            }.onCellSelection { [unowned self] (_, _) in
                 Analytics.Setting.review()
-                SKStoreReviewController.requestReview()
+                let alert = UIAlertController(title: "AppStoreが開きます", message: nil, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "開く", style: .default) { (_) in
+                    let reviewURL = URL(string: "\(websiteURL)&action=write-review")!
+                    DispatchQueue.main.async {
+                        UIApplication.shared.open(reviewURL, options: [:], completionHandler: nil)
+                    }
+                })
+                alert.preferredAction = alert.actions.last
+                self._presentViewController.accept(alert)
             }
     }
 
