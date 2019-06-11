@@ -1,20 +1,27 @@
 # nowplaying-ios
 
-[![Build Status](https://www.bitrise.io/app/46e890b35211fd70/status.svg?token=eG6YD8x7X8SU2glJTGMMGg)](https://www.bitrise.io/app/46e890b35211fd70)
+[![Swift 5.0.1](https://img.shields.io/badge/language-Swift%205.0.1-orange.svg)](https://developer.apple.com/swift)
+![GitHub](https://img.shields.io/github/license/nnsnodnb/nowplaying-ios.svg)
+[![Build Status](https://app.bitrise.io/app/46e890b35211fd70/status.svg?token=eG6YD8x7X8SU2glJTGMMGg&branch=deploygate)](https://app.bitrise.io/app/46e890b35211fd70)
 
 NowPlaying tweet & toot application for iOS.
+
+## Environments
+
+- Xcode 10.2.1
+  - Swift 5.0.1
+- Ruby 2.5.3
+  - Bundler 2.0.1
+    - Cocoapods 1.7.1
+- Carthage 0.33.0 and higher
 
 ## Installation
 
 ```bash
-$ brew update
-$ brew install mono0926/license-plist/license-plist
-$ brew install carthage
-$ gem install bundler
-$ bundle install
-$ bundle exec pod repo update
-$ bundle exec pod install
-$ carthage bootstrap --platform ios
+$ gem install bundler -N
+$ bundle install --path vendor/bundle
+$ bundle exec pod install --repo-update
+$ carthage bootstrap --platform iOS --cache-builds
 ```
 
 ## LICENSE

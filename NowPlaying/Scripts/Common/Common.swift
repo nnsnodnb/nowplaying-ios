@@ -24,7 +24,7 @@ enum UserDefaultsKey: String {
     case isMastodonShowAutoTweetAlert = "is_mastodon_show_auto_tweet_alert"
     case isPurchasedRemoveAdMob = "is_purchased_remove_admob"
     case isRemainTransaction = "IsRemainTransaction"
-    case update2_1_0 = "update_2_1_0"
+    case update210 = "update_2_1_0"
 }
 
 enum KeychainKey: String {
@@ -44,8 +44,12 @@ enum EnvironmentKey: String {
 
 let keychainServiceKey = "moe.nnsnodnb.NowPlaying"
 
-let websiteUrl = "https://itunes.apple.com/jp/app/nowplaying-%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B%E3%81%A0%E3%81%91%E3%81%A7%E3%83%84%E3%82%A4%E3%83%BC%E3%83%88/id1289764391?mt=8"
+let websiteURL = "https://itunes.apple.com/jp/app/nowplaying-%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B%E3%81%A0%E3%81%91%E3%81%A7%E3%83%84%E3%82%A4%E3%83%BC%E3%83%88/id1289764391?mt=8"
 
 typealias Parameters = [String: Any]
 
-let receiveSafariNotificationName = NSNotification.Name("receiveSafariNotification")
+extension NSNotification.Name {
+
+    static let receiveSafariNotificationName = NSNotification.Name("receiveSafariNotification")
+    static let purchasedHideAdMobNotification = NSNotification.Name("purchasedHideAdMobNotification")
+}

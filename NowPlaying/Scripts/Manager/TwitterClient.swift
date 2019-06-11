@@ -6,20 +6,21 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
-import ExtensionCollection
 import TwitterKit
+import SVProgressHUD
+import MediaPlayer
+import FirebaseAnalytics
 
 class TwitterClient: NSObject {
 
     static let shared = TwitterClient()
 
+    var isLogin: Bool {
+        return TWTRTwitter.sharedInstance().sessionStore.session() != nil
+    }
+
     var client: TWTRAPIClient? {
-        get {
-            if let userID = Twitter.sharedInstance().sessionStore.session()?.userID {
-                return TWTRAPIClient(userID: userID)
-            } else {
-                return nil
-            }
-        }
+        guard let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID else { return nil }
+        return TWTRAPIClient(userID: userID)
     }
 }
