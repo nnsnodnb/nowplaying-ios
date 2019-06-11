@@ -100,8 +100,19 @@ extension MastodonSettingViewModel {
                     .subscribe(onSuccess: { [weak self] (response) in
                         UserDefaults.set(response.clientID, forKey: .mastodonClientID)
                         UserDefaults.set(response.clientSecret, forKey: .mastodonClientSecret)
-                        let url = URL(string: "\(hostname)/oauth/authorize?client_id=\(response.clientID)&response_type=code&redirect_uri=nowplaying-ios-nnsnodnb://oauth_mastodon&scope=write")!
-                        let safari = SFSafariViewController(url: url)
+                        let url = URL(string: "\(hostname)/oauth/authorize")!
+                        var components = URLComponents(url: url, resolvingAgainstBaseURL: url.baseURL != nil)
+                        components?.queryItems = [
+                            URLQueryItem(name: "client_id", value: response.clientID),
+                            URLQueryItem(name: "response_type", value: "code"),
+                            URLQueryItem(name: "redirect_uri", value: "nowplaying-ios-nnsnodnb://oauth_mastodon"),
+                            URLQueryItem(name: "scope", value: "write")
+                        ]
+                        guard let authorizeURL = components?.url else {
+                            self?._error.accept(())
+                            return
+                        }
+                        let safari = SFSafariViewController(url: authorizeURL)
                         self?._presentViewController.accept(safari)
                     }, onError: { [weak self] (error) in
                         print(error)
