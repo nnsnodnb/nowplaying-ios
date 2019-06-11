@@ -4,7 +4,7 @@ page_title                                :
 # App Info
 ios_app_id                                : 1289764391
 
-appstore_link                             :
+appstore_link                             : https://itunes.apple.com/jp/app/nowplaying-%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B%E3%81%A0%E3%81%91%E3%81%A7%E3%83%84%E3%82%A4%E3%83%BC%E3%83%88/id1289764391?mt=8
 
 app_icon                                  : assets/appicon.jpg
 app_name                                  : NowPlaying
@@ -42,8 +42,8 @@ features                                  :
     description                           : 気が狂ってしまったのか、GitHubにてソースコードを公開しています！ぜひPull Request等を😎
     fontawesome_icon_name                 : file-code
 
-  - title                                 : 皆様のおかげでユーザ数7,000人超え🤩🤩
-    description                           : 本当にいつも使ってくれてありがとうございます🙇‍♂️ (MAU: 2,900, WAU: 1,600, DAU: 500)
+  - title                                 : 皆様のおかげでユーザ数7000人超え🤩🤩
+    description                           : 本当にいつも使ってくれてありがとうございます🙇‍♂️ (月間使用ユーザ数：2900人)
     fontawesome_icon_name                 : user
 
 
