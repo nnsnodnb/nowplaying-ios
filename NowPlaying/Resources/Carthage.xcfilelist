@@ -11,7 +11,6 @@
 $(SRCROOT)/Carthage/Build/iOS/Action.framework
 $(SRCROOT)/Carthage/Build/iOS/APIKit.framework
 $(SRCROOT)/Carthage/Build/iOS/Eureka.framework
-$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework
 $(SRCROOT)/Carthage/Build/iOS/KeychainAccess.framework
 $(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework
 $(SRCROOT)/Carthage/Build/iOS/SnapKit.framework

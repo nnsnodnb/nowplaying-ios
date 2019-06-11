@@ -15,7 +15,6 @@
 		CF1611371F726D110027144D /* PlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF1611351F726D110027144D /* PlayViewController.xib */; };
 		CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1AAFE41F75459B00384000 /* Eureka.framework */; };
 		CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1AAFE91F75F2A600384000 /* Common.swift */; };
-		CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF28A8331FD180AC00E45F12 /* Alamofire.framework */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
 		CF2DBD6420A4AB1B0039217F /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD5820A4AB1A0039217F /* FirebaseInstanceID.framework */; };
 		CF2DBD6520A4AB1B0039217F /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD5920A4AB1A0039217F /* GoogleToolboxForMac.framework */; };
@@ -297,7 +296,6 @@
 				CF55B68122A3DE0400D5C9E1 /* RxSwift.framework in Frameworks */,
 				CF01C1D921023F1700DC1901 /* SnapKit.framework in Frameworks */,
 				CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */,
-				CF28A8341FD180AC00E45F12 /* Alamofire.framework in Frameworks */,
 				CF2DBD6620A4AB1B0039217F /* FirebaseCoreDiagnostics.framework in Frameworks */,
 				CF2DBD6B20A4AB1B0039217F /* FirebaseCore.framework in Frameworks */,
 				CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */,
