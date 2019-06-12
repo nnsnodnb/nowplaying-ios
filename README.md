@@ -22,7 +22,11 @@ $ gem install bundler -N
 $ bundle install --path vendor/bundle
 $ bundle exec pod install --repo-update
 $ carthage bootstrap --platform iOS --cache-builds
+$ open NowPlaying.xcworkspace
 ```
+
+Please change build system in this workspace.  
+[File] -> [Workspace Settings...] -> [Per-User Workspace Settings:] -> [Build System:] -> [Legacy Build System]
 
 ## LICENSE
 
