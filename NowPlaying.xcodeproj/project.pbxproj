@@ -270,6 +270,8 @@
 		CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Key.swift"; sourceTree = "<group>"; };
 		CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+Key.swift"; sourceTree = "<group>"; };
 		CF918D061F7075110005B686 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		CF9AB0B522B0CEAC0088483D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		CF9AB0B622B0CEAC0088483D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/MainInterface.strings; sourceTree = "<group>"; };
 		CFD1D37320B87E94009C50ED /* AppInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoRequest.swift; sourceTree = "<group>"; };
 		CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPURLResponse+StatusCode.swift"; sourceTree = "<group>"; };
 		CFD1D39020B9A176009C50ED /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
@@ -790,9 +792,8 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
-				en,
 				Base,
+				ja,
 			);
 			mainGroup = CF615AE11F56AB3B00315019;
 			productRefGroup = CF615AEB1F56AB3B00315019 /* Products */;
@@ -1047,6 +1048,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				CF615AF71F56AB3B00315019 /* Base */,
+				CF9AB0B522B0CEAC0088483D /* ja */,
 			);
 			name = LaunchScreen.storyboard;
 			path = .;
@@ -1056,6 +1058,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				CF6FFF24207E4CE4003FD38D /* Base */,
+				CF9AB0B622B0CEAC0088483D /* ja */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
