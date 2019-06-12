@@ -32,19 +32,19 @@ features                                  :
 
   - title                                 : Twitterシェア
     description                           : 自分自身でシェアすることも可能ですが、1回限りの購入で自動的にツイートする機能もあり！
-    fontawesome_icon_name                 : twitter
+    fontawesome_icon_name                 : fab fa-twitter
     
   - title                                 : Mastodonシェア
     description                           : 自分自身でシェアすることも、自動でトゥートする機能あり！（現在の時点では無料！！）
-    fontawesome_icon_name                 : mastodon
+    fontawesome_icon_name                 : fab fa-mastodon
 
   - title                                 : あなたも開発に参加💻
     description                           : 気が狂ってしまったのか、GitHubにてソースコードを公開しています！ぜひPull Request等を😎
-    fontawesome_icon_name                 : file-code
+    fontawesome_icon_name                 : fas fa-file-code
 
   - title                                 : 皆様のおかげでユーザ数7000人超え🤩🤩
     description                           : 本当にいつも使ってくれてありがとうございます🙇‍♂️ (月間使用ユーザ数：2900人)
-    fontawesome_icon_name                 : user
+    fontawesome_icon_name                 : fas fa-user
 
 
 # Theme Settings
