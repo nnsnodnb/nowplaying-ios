@@ -92,93 +92,111 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
     }
 }
 
-// MARK: - Private method
+// MARK: - Private method (Form)
 
 extension TwitterSettingViewModel {
 
     private func configureCells() {
         form
-            +++ Section("Twitter") {
-                $0.tag = "twitter_section"
-            }
+            +++ Section("Twitter")
+                <<< configureLogin()
+                <<< configureLogout()
+                <<< configureArtwork()
+                <<< configurePurchase()
+                <<< configureAutoTweet()
+    }
 
-            <<< NowPlayingButtonRow {
-                $0.title = "ログイン"
-                $0.tag = "twitter_login"
-                $0.hidden = Condition(booleanLiteral: TwitterClient.shared.isLogin)
-            }.onCellSelection { [weak self] (_, _) in
-                SVProgressHUD.show()
-                AuthManager.shared.login { [weak self] (error) in
-                    if let error = error {
-                        SVProgressHUD.showError(withStatus: error.localizedDescription)
-                        SVProgressHUD.dismiss(withDelay: 0.5)
-                        return
-                    }
-                    SVProgressHUD.showSuccess(withStatus: "ログインしました")
+    private func configureLogin() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "ログイン"
+            $0.tag = "twitter_login"
+            $0.hidden = Condition(booleanLiteral: TwitterClient.shared.isLogin)
+        }.onCellSelection { [weak self] (_, _) in
+            SVProgressHUD.show()
+            AuthManager.shared.login { [weak self] (error) in
+                if let error = error {
+                    SVProgressHUD.showError(withStatus: error.localizedDescription)
                     SVProgressHUD.dismiss(withDelay: 0.5)
-                    DispatchQueue.main.async {
-                        self?.changeTwitterLogState(didLogin: true)
-                    }
-                }
-                Analytics.TwitterSetting.login()
-            }
-
-            <<< NowPlayingButtonRow {
-                $0.title = "ログアウト"
-                $0.tag = "twitter_logout"
-                $0.hidden = Condition(booleanLiteral: !TwitterClient.shared.isLogin)
-            }.onCellSelection { [weak self] (_, _) in
-                SVProgressHUD.show()
-                AuthManager.shared.logout {
-                    SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
-                    SVProgressHUD.dismiss(withDelay: 0.5)
-                    DispatchQueue.main.async {
-                        self?.changeTwitterLogState(didLogin: false)
-                    }
-                }
-                Analytics.TwitterSetting.logout()
-            }
-
-            <<< SwitchRow {
-                $0.title = "アートワークを添付"
-                $0.value = UserDefaults.bool(forKey: .isWithImage)
-            }.onChange { (row) in
-                UserDefaults.set(row.value!, forKey: .isWithImage)
-                Analytics.TwitterSetting.changeWithArtwork(row.value!)
-            }
-
-            <<< NowPlayingButtonRow {
-                $0.title = "自動ツイートを購入"
-                $0.tag = "auto_tweet_purchase"
-                $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isAutoTweetPurchase))
-            }.onCellSelection { [weak self] (_, _) in
-                guard !DTTJailbreakDetection.isJailbroken() else {
-                    let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
-                    self?._presentViewController.accept(alert)
                     return
                 }
-                self?._startInAppPurchase.accept(())
-            }
-
-            <<< SwitchRow {
-                $0.title = "自動ツイート"
-                $0.value = UserDefaults.bool(forKey: .isAutoTweet)
-                $0.tag = "auto_tweet_switch"
-                $0.hidden = Condition.function(["auto_tweet_purchase"]) { (form) -> Bool in
-                    return !form.rowBy(tag: "auto_tweet_purchase")!.isHidden
+                SVProgressHUD.showSuccess(withStatus: "ログインしました")
+                SVProgressHUD.dismiss(withDelay: 0.5)
+                DispatchQueue.main.async {
+                    self?.changeTwitterLogState(didLogin: true)
                 }
-            }.onChange { [weak self] in
-                UserDefaults.set($0.value!, forKey: .isAutoTweet)
-                Analytics.TwitterSetting.changeAutoTweet($0.value!)
-                if !$0.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) { return }
-                let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。",
-                                              preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self?._presentViewController.accept(alert)
-                UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
+            }
+            Analytics.TwitterSetting.login()
         }
     }
+
+    private func configureLogout() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "ログアウト"
+            $0.tag = "twitter_logout"
+            $0.hidden = Condition(booleanLiteral: !TwitterClient.shared.isLogin)
+        }.onCellSelection { [weak self] (_, _) in
+            SVProgressHUD.show()
+            AuthManager.shared.logout {
+                SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
+                SVProgressHUD.dismiss(withDelay: 0.5)
+                DispatchQueue.main.async {
+                    self?.changeTwitterLogState(didLogin: false)
+                }
+            }
+            Analytics.TwitterSetting.logout()
+        }
+    }
+
+    private func configureArtwork() -> SwitchRow {
+        return SwitchRow {
+            $0.title = "アートワークを添付"
+            $0.value = UserDefaults.bool(forKey: .isWithImage)
+        }.onChange {
+            UserDefaults.set($0.value!, forKey: .isWithImage)
+            Analytics.TwitterSetting.changeWithArtwork($0.value!)
+        }
+    }
+
+    private func configurePurchase() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "自動ツイートを購入"
+            $0.tag = "auto_tweet_purchase"
+            $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isAutoTweetPurchase))
+        }.onCellSelection { [weak self] (_, _) in
+            guard !DTTJailbreakDetection.isJailbroken() else {
+                let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
+                self?._presentViewController.accept(alert)
+                return
+            }
+            self?._startInAppPurchase.accept(())
+        }
+    }
+
+    private func configureAutoTweet() -> SwitchRow {
+        return SwitchRow {
+            $0.title = "自動ツイート"
+            $0.value = UserDefaults.bool(forKey: .isAutoTweet)
+            $0.tag = "auto_tweet_switch"
+            $0.hidden = Condition.function(["auto_tweet_purchase"]) { (form) -> Bool in
+                return !form.rowBy(tag: "auto_tweet_purchase")!.isHidden
+            }
+        }.onChange { [weak self] in
+            UserDefaults.set($0.value!, forKey: .isAutoTweet)
+            Analytics.TwitterSetting.changeAutoTweet($0.value!)
+            if !$0.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) { return }
+            let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self?._presentViewController.accept(alert)
+            UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
+        }
+    }
+}
+
+// MARK: - Private method (Utilities)
+
+extension TwitterSettingViewModel {
 
     private func changeStateAutoTweet() {
         if !UserDefaults.bool(forKey: .isAutoTweetPurchase) { return }
