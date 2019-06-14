@@ -10,6 +10,7 @@ import APIKit
 import Crashlytics
 import Fabric
 import FirebaseCore
+import FirebaseAnalytics
 import GoogleMobileAds
 import KeychainAccess
 import RxSwift
@@ -38,10 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                            consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
         Fabric.with([Crashlytics.self])
         FirebaseApp.configure()
-        GADMobileAds.configure(withApplicationID: ProcessInfo.processInfo.get(forKey: .firebaseAdmobAppId))
-//        PaymentManager.shared.startTransactionObserve()
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
         #if DEBUG
-        AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(false)
+        Analytics.setAnalyticsCollectionEnabled(false)
 //        keychain.remove(KeychainKey.mastodonClientID.rawValue)
 //        keychain.remove(KeychainKey.mastodonClientSecret.rawValue)
 //        keychain.remove(KeychainKey.mastodonAccessToken.rawValue)

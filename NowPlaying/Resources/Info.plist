@@ -55,6 +55,8 @@
 			</dict>
 		</array>
 	</dict>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-hoge~foo</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>twitter</string>
