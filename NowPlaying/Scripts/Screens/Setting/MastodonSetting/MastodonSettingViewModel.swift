@@ -50,17 +50,11 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
     private var isMastodonLogin: Bool {
         return UserDefaults.bool(forKey: .isMastodonLogin)
     }
+    private var session: SFAuthenticationSession?
 
     init() {
         form = Form()
         error = _error.observeOn(MainScheduler.instance).asObservable()
-
-        NotificationCenter.default.rx.notification(.receiveSafariNotificationName, object: nil)
-            .subscribe(onNext: { [weak self] (notification) in
-                guard let url = notification.object as? URL else { return }
-                self?.loginProcessForSafariCallback(url: url)
-            })
-            .disposed(by: disposeBag)
 
         configureCells()
     }
@@ -96,6 +90,7 @@ extension MastodonSettingViewModel {
                     let hostname = textRow.value, !self.isMastodonLogin else {
                     return
                 }
+                SVProgressHUD.show()
                 Session.shared.rx.response(MastodonAppRequeset(hostname: hostname))
                     .subscribe(onSuccess: { [weak self] (response) in
                         UserDefaults.set(response.clientID, forKey: .mastodonClientID)
@@ -108,13 +103,16 @@ extension MastodonSettingViewModel {
                             URLQueryItem(name: "redirect_uri", value: "nowplaying-ios-nnsnodnb://oauth_mastodon"),
                             URLQueryItem(name: "scope", value: "write")
                         ]
+                        SVProgressHUD.dismiss()
                         guard let authorizeURL = components?.url else {
                             self?._error.accept(())
                             return
                         }
-                        let safari = SFSafariViewController(url: authorizeURL)
-                        self?._presentViewController.accept(safari)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            self?.challengeAuthenticationSession(with: authorizeURL)
+                        }
                     }, onError: { [weak self] (error) in
+                        SVProgressHUD.dismiss()
                         print(error)
                         self?._error.accept(())
                     })
@@ -159,6 +157,20 @@ extension MastodonSettingViewModel {
                 UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
                 self._presentViewController.accept(alert)
             }
+    }
+
+    private func challengeAuthenticationSession(with url: URL) {
+        session = SFAuthenticationSession(url: url, callbackURLScheme: "nowplaying-ios-nnsnodnb") { [weak self] (url, error) in
+            defer { self?.session = nil }
+            print(url?.absoluteString ?? "")
+            print(error?.localizedDescription ?? "")
+            guard let url = url else {
+                self?._error.accept(())
+                return
+            }
+            self?.loginProcessForSafariCallback(url: url)
+        }
+        session?.start()
     }
 
     private func loginProcessForSafariCallback(url: URL) {

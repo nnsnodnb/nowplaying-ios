@@ -51,12 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]=[:]) -> Bool {
         if let source = options[.sourceApplication] as? String, source == "com.apple.SafariViewService" {
-            if let scheme = url.scheme, scheme.starts(with: "twitterkit-") {
-                return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
-            } else {
-                NotificationCenter.default.post(name: .receiveSafariNotificationName, object: url)
-                return true
-            }
+            guard let scheme = url.scheme, scheme.starts(with: "twitterkit-") else { return true }
+            return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
         } else {
             return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
         }

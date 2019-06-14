@@ -50,6 +50,5 @@ typealias Parameters = [String: Any]
 
 extension NSNotification.Name {
 
-    static let receiveSafariNotificationName = NSNotification.Name("receiveSafariNotification")
     static let purchasedHideAdMobNotification = NSNotification.Name("purchasedHideAdMobNotification")
 }
