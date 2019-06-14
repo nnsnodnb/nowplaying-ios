@@ -60,104 +60,122 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
     }
 }
 
-// MARK: - Private method
+// MARK: - Private method (Form)
 
 extension MastodonSettingViewModel {
 
     private func configureCells() {
         form
             +++ Section("Mastodon")
+                <<< configureDomain()
+                <<< configureLogin()
+                <<< configureLogout()
+                <<< configureArtwork()
+                <<< configureAutoToot()
+    }
 
-            <<< TextRow {
-                $0.title = "ドメイン"
-                $0.placeholder = "https://mstdn.jp"
-                $0.value = UserDefaults.string(forKey: .mastodonHostname)
-                $0.tag = "mastodon_host"
-            }.cellSetup { [unowned self] (cell, row) in
-                cell.textField.keyboardType = .URL
-                row.baseCell.isUserInteractionEnabled = !self.isMastodonLogin
-            }.onChange {
-                guard let value = $0.value else { return }
-                UserDefaults.set(value, forKey: .mastodonHostname)
-            }
+    private func configureDomain() -> TextRow {
+        return TextRow {
+            $0.title = "ドメイン"
+            $0.placeholder = "https://mstdn.jp"
+            $0.value = UserDefaults.string(forKey: .mastodonHostname)
+            $0.tag = "mastodon_host"
+        }.cellSetup { [unowned self] (cell, row) in
+            cell.textField.keyboardType = .URL
+            row.baseCell.isUserInteractionEnabled = !self.isMastodonLogin
+        }.onChange {
+            guard let value = $0.value else { return }
+            UserDefaults.set(value, forKey: .mastodonHostname)
+        }
+    }
 
-            <<< NowPlayingButtonRow {
-                $0.title = "ログイン"
-                $0.tag = "mastodon_login"
-                $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isMastodonLogin))
-            }.onCellSelection { [unowned self] (_, _) in
-                guard let textRow = self.form.rowBy(tag: "mastodon_host") as? TextRow,
-                    let hostname = textRow.value, !self.isMastodonLogin else {
-                    return
-                }
-                SVProgressHUD.show()
-                Session.shared.rx.response(MastodonAppRequeset(hostname: hostname))
-                    .subscribe(onSuccess: { [weak self] (response) in
-                        UserDefaults.set(response.clientID, forKey: .mastodonClientID)
-                        UserDefaults.set(response.clientSecret, forKey: .mastodonClientSecret)
-                        let url = URL(string: "\(hostname)/oauth/authorize")!
-                        var components = URLComponents(url: url, resolvingAgainstBaseURL: url.baseURL != nil)
-                        components?.queryItems = [
-                            URLQueryItem(name: "client_id", value: response.clientID),
-                            URLQueryItem(name: "response_type", value: "code"),
-                            URLQueryItem(name: "redirect_uri", value: "nowplaying-ios-nnsnodnb://oauth_mastodon"),
-                            URLQueryItem(name: "scope", value: "write")
-                        ]
-                        SVProgressHUD.dismiss()
-                        guard let authorizeURL = components?.url else {
-                            self?._error.accept(())
-                            return
-                        }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            self?.challengeAuthenticationSession(with: authorizeURL)
-                        }
+    private func configureLogin() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "ログイン"
+            $0.tag = "mastodon_login"
+            $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isMastodonLogin))
+        }.onCellSelection { [unowned self] (_, _) in
+            guard let textRow = self.form.rowBy(tag: "mastodon_host") as? TextRow,
+                let hostname = textRow.value, !self.isMastodonLogin else { return }
+            SVProgressHUD.show()
+            Session.shared.rx.response(MastodonAppRequeset(hostname: hostname))
+                .subscribe(onSuccess: { [weak self] (response) in
+                    UserDefaults.set(response.clientID, forKey: .mastodonClientID)
+                    UserDefaults.set(response.clientSecret, forKey: .mastodonClientSecret)
+                    let url = URL(string: "\(hostname)/oauth/authorize")!
+                    var components = URLComponents(url: url, resolvingAgainstBaseURL: url.baseURL != nil)
+                    components?.queryItems = [
+                        URLQueryItem(name: "client_id", value: response.clientID),
+                        URLQueryItem(name: "response_type", value: "code"),
+                        URLQueryItem(name: "redirect_uri", value: "nowplaying-ios-nnsnodnb://oauth_mastodon"),
+                        URLQueryItem(name: "scope", value: "write")
+                    ]
+                    SVProgressHUD.dismiss()
+                    guard let authorizeURL = components?.url else {
+                        self?._error.accept(())
+                        return
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        self?.challengeAuthenticationSession(with: authorizeURL)
+                    }
                     }, onError: { [weak self] (error) in
                         SVProgressHUD.dismiss()
                         print(error)
                         self?._error.accept(())
-                    })
-                    .disposed(by: self.disposeBag)
-                Analytics.MastodonSetting.login()
-            }
-
-            <<< NowPlayingButtonRow {
-                $0.title = "ログアウト"
-                $0.tag = "mastodon_logout"
-                $0.hidden = Condition(booleanLiteral: !UserDefaults.bool(forKey: .isMastodonLogin))
-            }.onCellSelection { [weak self] (_, _) in
-                AuthManager.shared.mastodonLogout()
-                UserDefaults.set(false, forKey: .isMastodonLogin)
-                Analytics.MastodonSetting.logout()
-                DispatchQueue.main.async {
-                    SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
-                    SVProgressHUD.dismiss(withDelay: 0.5)
-                    self?.changeMastodonLogState(didLogin: false)
-                }
-            }
-
-            <<< SwitchRow {
-                $0.title = "アートワークを添付"
-                $0.value = UserDefaults.bool(forKey: .isMastodonWithImage)
-            }.onChange {
-                UserDefaults.set($0.value!, forKey: .isMastodonWithImage)
-                Analytics.MastodonSetting.changeWithArtwork($0.value!)
-            }
-
-            <<< SwitchRow {
-                $0.title = "自動トゥート"
-                $0.value = UserDefaults.bool(forKey: .isMastodonAutoToot)
-            }.onChange { [unowned self] in
-                UserDefaults.set($0.value!, forKey: .isMastodonAutoToot)
-                Analytics.MastodonSetting.changeAutoToot($0.value!)
-                if !$0.value! || UserDefaults.bool(forKey: .isMastodonShowAutoTweetAlert) {
-                    return
-                }
-                let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもトゥートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
-                self._presentViewController.accept(alert)
-            }
+                })
+                .disposed(by: self.disposeBag)
+            Analytics.MastodonSetting.login()
+        }
     }
+
+    private func configureLogout() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "ログアウト"
+            $0.tag = "mastodon_logout"
+            $0.hidden = Condition(booleanLiteral: !UserDefaults.bool(forKey: .isMastodonLogin))
+        }.onCellSelection { [weak self] (_, _) in
+            AuthManager.shared.mastodonLogout()
+            UserDefaults.set(false, forKey: .isMastodonLogin)
+            Analytics.MastodonSetting.logout()
+            DispatchQueue.main.async {
+                SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
+                SVProgressHUD.dismiss(withDelay: 0.5)
+                self?.changeMastodonLogState(didLogin: false)
+            }
+        }
+    }
+
+    private func configureArtwork() -> SwitchRow {
+        return SwitchRow {
+            $0.title = "アートワークを添付"
+            $0.value = UserDefaults.bool(forKey: .isMastodonWithImage)
+        }.onChange {
+            UserDefaults.set($0.value!, forKey: .isMastodonWithImage)
+            Analytics.MastodonSetting.changeWithArtwork($0.value!)
+        }
+    }
+
+    private func configureAutoToot() -> SwitchRow {
+        return SwitchRow {
+            $0.title = "自動トゥート"
+            $0.value = UserDefaults.bool(forKey: .isMastodonAutoToot)
+        }.onChange { [unowned self] in
+            UserDefaults.set($0.value!, forKey: .isMastodonAutoToot)
+            Analytics.MastodonSetting.changeAutoToot($0.value!)
+            if !$0.value! || UserDefaults.bool(forKey: .isMastodonShowAutoTweetAlert) {
+                return
+            }
+            let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもトゥートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
+            self._presentViewController.accept(alert)
+        }
+    }
+}
+
+// MARK: - Private method (Utilities)
+
+extension MastodonSettingViewModel {
 
     private func challengeAuthenticationSession(with url: URL) {
         session = SFAuthenticationSession(url: url, callbackURLScheme: "nowplaying-ios-nnsnodnb") { [weak self] (url, error) in
