@@ -46,6 +46,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        keychain.remove(KeychainKey.mastodonClientSecret.rawValue)
 //        keychain.remove(KeychainKey.mastodonAccessToken.rawValue)
         #endif
+
+        if UserDefaults.string(forKey: .tweetFormat) == nil {
+            UserDefaults.set(defaultPostFormat, forKey: .tweetFormat)
+        }
+        if UserDefaults.string(forKey: .tootFormat) == nil {
+            UserDefaults.set(defaultPostFormat, forKey: .tootFormat)
+        }
         return true
     }
 
