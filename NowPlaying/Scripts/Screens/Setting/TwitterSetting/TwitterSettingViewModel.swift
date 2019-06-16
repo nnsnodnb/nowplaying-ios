@@ -104,6 +104,9 @@ extension TwitterSettingViewModel {
                 <<< configureArtwork()
                 <<< configurePurchase()
                 <<< configureAutoTweet()
+
+            +++ Section("投稿フォーマット")
+                <<< configureTweetFormat()
     }
 
     private func configureLogin() -> NowPlayingButtonRow {
@@ -190,6 +193,16 @@ extension TwitterSettingViewModel {
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self?._presentViewController.accept(alert)
             UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
+        }
+    }
+
+    private func configureTweetFormat() -> TextAreaRow {
+        return TextAreaRow {
+            $0.placeholder = "ツイートフォーマット"
+            $0.value = UserDefaults.string(forKey: .tweetFormat)
+        }.onChange { (row) in
+            guard let value = row.value, !value.isEmpty else { return }
+            UserDefaults.set(value, forKey: .tweetFormat)
         }
     }
 }
