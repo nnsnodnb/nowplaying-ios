@@ -105,7 +105,7 @@ extension TwitterSettingViewModel {
                 <<< configurePurchase()
                 <<< configureAutoTweet()
 
-            +++ Section("投稿フォーマット")
+            +++ Section("投稿フォーマット", configureHeaderForTweetFormat())
                 <<< configureTweetFormat()
     }
 
@@ -193,6 +193,14 @@ extension TwitterSettingViewModel {
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self?._presentViewController.accept(alert)
             UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
+        }
+    }
+
+    private func configureHeaderForTweetFormat() -> (Section) -> Void {
+        return {
+            let postFormatHelpView = R.nib.postFormatHelpView
+            $0.footer = HeaderFooterView<PostFormatHelpView>(.nibFile(name: postFormatHelpView.name,
+                                                                      bundle: postFormatHelpView.bundle))
         }
     }
 
