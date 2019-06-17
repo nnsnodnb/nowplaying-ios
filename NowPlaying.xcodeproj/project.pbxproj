@@ -65,6 +65,8 @@
 		CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */; };
 		CF8E48802081EC75003A5E70 /* ProcessInfo+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */; };
 		CF918D071F7075110005B686 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF918D061F7075110005B686 /* Settings.bundle */; };
+		CF99DF4922B607AE006E3876 /* PostFormatHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99DF4822B607AE006E3876 /* PostFormatHelpView.swift */; };
+		CF99DF4B22B607C1006E3876 /* PostFormatHelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF99DF4A22B607C1006E3876 /* PostFormatHelpView.xib */; };
 		CFD1D37420B87E94009C50ED /* AppInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37320B87E94009C50ED /* AppInfoRequest.swift */; };
 		CFD1D37620B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */; };
 		CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39020B9A176009C50ED /* R.generated.swift */; };
@@ -161,6 +163,8 @@
 		CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Key.swift"; sourceTree = "<group>"; };
 		CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+Key.swift"; sourceTree = "<group>"; };
 		CF918D061F7075110005B686 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		CF99DF4822B607AE006E3876 /* PostFormatHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFormatHelpView.swift; sourceTree = "<group>"; };
+		CF99DF4A22B607C1006E3876 /* PostFormatHelpView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostFormatHelpView.xib; sourceTree = "<group>"; };
 		CF9AB0B522B0CEAC0088483D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		CF9AB0B622B0CEAC0088483D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/MainInterface.strings; sourceTree = "<group>"; };
 		CFD1D37320B87E94009C50ED /* AppInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoRequest.swift; sourceTree = "<group>"; };
@@ -306,6 +310,7 @@
 		CF531C3822AACEA200D05896 /* Eureka */ = {
 			isa = PBXGroup;
 			children = (
+				CF99DF4722B60781006E3876 /* Footers */,
 				CF531C3922AACEC800D05896 /* NowPlayingButtonRow.swift */,
 			);
 			path = Eureka;
@@ -450,6 +455,15 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		CF99DF4722B60781006E3876 /* Footers */ = {
+			isa = PBXGroup;
+			children = (
+				CF99DF4822B607AE006E3876 /* PostFormatHelpView.swift */,
+				CF99DF4A22B607C1006E3876 /* PostFormatHelpView.xib */,
+			);
+			path = Footers;
+			sourceTree = "<group>";
+		};
 		CFD1D37C20B88188009C50ED /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -579,6 +593,7 @@
 			files = (
 				CF531C0B22A953C900D05896 /* MastodonSettingViewController.xib in Resources */,
 				CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */,
+				CF99DF4B22B607C1006E3876 /* PostFormatHelpView.xib in Resources */,
 				CF918D071F7075110005B686 /* Settings.bundle in Resources */,
 				CF531C0D22A9540500D05896 /* SettingViewController.xib in Resources */,
 				CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */,
@@ -757,6 +772,7 @@
 				CF531C3422A982BE00D05896 /* SKReceiptRefreshRequestDelegateProxy.swift in Sources */,
 				CF1611361F726D110027144D /* PlayViewController.swift in Sources */,
 				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
+				CF99DF4922B607AE006E3876 /* PostFormatHelpView.swift in Sources */,
 				CF531C0022A9534F00D05896 /* SettingViewController.swift in Sources */,
 				CF531C0722A953B200D05896 /* MastodonSettingViewModel.swift in Sources */,
 				CF531C3022A9827100D05896 /* SKProductsRequestDelegateProxy.swift in Sources */,

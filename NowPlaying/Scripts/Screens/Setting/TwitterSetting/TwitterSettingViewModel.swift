@@ -104,6 +104,10 @@ extension TwitterSettingViewModel {
                 <<< configureArtwork()
                 <<< configurePurchase()
                 <<< configureAutoTweet()
+
+            +++ Section("投稿フォーマット", configureHeaderForTweetFormat())
+                <<< configureTweetFormat()
+                <<< configureFormatReset()
     }
 
     private func configureLogin() -> NowPlayingButtonRow {
@@ -190,6 +194,42 @@ extension TwitterSettingViewModel {
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self?._presentViewController.accept(alert)
             UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
+        }
+    }
+
+    private func configureHeaderForTweetFormat() -> (Section) -> Void {
+        return {
+            let postFormatHelpView = R.nib.postFormatHelpView
+            $0.footer = HeaderFooterView<PostFormatHelpView>(.nibFile(name: postFormatHelpView.name,
+                                                                      bundle: postFormatHelpView.bundle))
+        }
+    }
+
+    private func configureTweetFormat() -> TextAreaRow {
+        return TextAreaRow {
+            $0.placeholder = "ツイートフォーマット"
+            $0.tag = "tweet_format"
+            $0.value = UserDefaults.string(forKey: .tweetFormat)
+        }.onChange { (row) in
+            guard let value = row.value, !value.isEmpty else { return }
+            UserDefaults.set(value, forKey: .tweetFormat)
+        }
+    }
+
+    private func configureFormatReset() -> ButtonRow {
+        return ButtonRow {
+            $0.title = "リセットする"
+        }.onCellSelection { [unowned self] (_, _) in
+            let alert = UIAlertController(title: "投稿フォーマットをリセットします", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "リセット", style: .destructive) { [unowned self] (_) in
+                guard let tweetFormatRow: TextAreaRow = self.form.rowBy(tag: "tweet_format") else { return }
+                DispatchQueue.main.async {
+                    tweetFormatRow.baseValue = defaultPostFormat
+                    tweetFormatRow.updateCell()
+                }
+            })
+            self._presentViewController.accept(alert)
         }
     }
 }
