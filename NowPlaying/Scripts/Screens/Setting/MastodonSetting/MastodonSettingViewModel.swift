@@ -72,6 +72,10 @@ extension MastodonSettingViewModel {
                 <<< configureLogout()
                 <<< configureArtwork()
                 <<< configureAutoToot()
+
+            +++ Section("投稿フォーマット", configureHeaderForTootFormat())
+                <<< configureTootFormat()
+                <<< configureFormatReset()
     }
 
     private func configureDomain() -> TextRow {
@@ -168,6 +172,42 @@ extension MastodonSettingViewModel {
             let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもトゥートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
+            self._presentViewController.accept(alert)
+        }
+    }
+
+    private func configureHeaderForTootFormat() -> (Section) -> Void {
+        return {
+            let postFormatHelpView = R.nib.postFormatHelpView
+            $0.footer = HeaderFooterView<PostFormatHelpView>(.nibFile(name: postFormatHelpView.name,
+                                                                      bundle: postFormatHelpView.bundle))
+        }
+    }
+
+    private func configureTootFormat() -> TextAreaRow {
+        return TextAreaRow {
+            $0.placeholder = "トゥートフォーマット"
+            $0.tag = "toot_format"
+            $0.value = UserDefaults.string(forKey: .tootFormat)
+        }.onChange { (row) in
+            guard let value = row.value, !value.isEmpty else { return }
+            UserDefaults.set(value, forKey: .tootFormat)
+        }
+    }
+
+    private func configureFormatReset() -> ButtonRow {
+        return ButtonRow {
+            $0.title = "リセットする"
+        }.onCellSelection { [unowned self] (_, _) in
+            let alert = UIAlertController(title: "投稿フォーマットをリセットします", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "リセット", style: .destructive) { [unowned self] (_) in
+                guard let tweetFormatRow: TextAreaRow = self.form.rowBy(tag: "toot_format") else { return }
+                DispatchQueue.main.async {
+                    tweetFormatRow.baseValue = defaultPostFormat
+                    tweetFormatRow.updateCell()
+                }
+            })
             self._presentViewController.accept(alert)
         }
     }
