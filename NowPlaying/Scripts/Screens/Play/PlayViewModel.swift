@@ -178,9 +178,19 @@ extension PlayViewModel {
         guard let item = _nowPlayingItem.value else {
             return PostContent(postMessage: "", shareImage: nil, songTitle: "", artistName: "", service: service)
         }
-        let title = item.title ?? ""
-        let artist = item.artist ?? ""
-        let postText = "\(title) by \(artist) #NowPlaying"
+        var postText: String
+        switch service {
+        case .twitter:
+            postText = UserDefaults.string(forKey: .tweetFormat)!
+        case .mastodon:
+            postText = UserDefaults.string(forKey: .tootFormat)!
+        }
+        let title = item.title ?? "不明なタイトル"
+        let artist = item.artist ?? "不明なアーティスト"
+        let album = item.albumTitle ?? "不明なアルバム"
+        postText = postText.replacingOccurrences(of: "__songtitle__", with: title)
+        postText = postText.replacingOccurrences(of: "__artist__", with: artist)
+        postText = postText.replacingOccurrences(of: "__album__", with: album)
         let shareImage: UIImage?
         if let artwork = item.artwork, let image = artwork.image(at: artwork.bounds.size) {
             shareImage = image
