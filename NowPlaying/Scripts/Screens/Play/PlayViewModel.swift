@@ -195,11 +195,8 @@ extension PlayViewModel {
     private func getShareImage(service: Service, item: MPMediaItem) -> UIImage? {
         switch WithImageType(rawValue: UserDefaults.string(forKey: service.withImageTypeUserDefaultsKey)!)! {
         case .onlyArtwork:
-            if let artwork = item.artwork, let image = artwork.image(at: artwork.bounds.size) {
-                return image
-            } else {
-                return nil
-            }
+            guard let artwork = item.artwork, let image = artwork.image(at: artwork.bounds.size) else { return nil }
+            return image
         case .playerScreenshot:
             let rect = UIScreen.main.bounds
             UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
