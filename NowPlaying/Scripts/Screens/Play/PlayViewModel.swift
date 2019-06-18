@@ -187,30 +187,30 @@ extension PlayViewModel {
         postText = postText.replacingOccurrences(of: "__artist__", with: artist)
         postText = postText.replacingOccurrences(of: "__album__", with: album)
 
-        let shareImage: UIImage?
-        let withImageTypeKey = service.withImageTypeUserDefaultsKey
-        switch WithImageType(rawValue: UserDefaults.string(forKey: withImageTypeKey)!)! {
+        let shareImage = getShareImage(service: service, item: item)
+
+        return PostContent(postMessage: postText, shareImage: shareImage, songTitle: title, artistName: artist, service: service)
+    }
+
+    private func getShareImage(service: Service, item: MPMediaItem) -> UIImage? {
+        switch WithImageType(rawValue: UserDefaults.string(forKey: service.withImageTypeUserDefaultsKey)!)! {
         case .onlyArtwork:
             if let artwork = item.artwork, let image = artwork.image(at: artwork.bounds.size) {
-                shareImage = image
+                return image
             } else {
-                shareImage = nil
+                return nil
             }
         case .playerScreenshot:
             let rect = UIScreen.main.bounds
             UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
+            defer { UIGraphicsEndImageContext() }
             let context = UIGraphicsGetCurrentContext()!
 
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.window?.rootViewController?.view.layer.render(in: context)
 
-            let capturedImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-
-            shareImage = capturedImage
+            return UIGraphicsGetImageFromCurrentImageContext()
         }
-
-        return PostContent(postMessage: postText, shareImage: shareImage, songTitle: title, artistName: artist, service: service)
     }
 
     private func setNewPostContent(service: Service) {
