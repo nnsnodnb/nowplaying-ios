@@ -70,7 +70,8 @@ extension MastodonSettingViewModel {
                 <<< configureDomain()
                 <<< configureLogin()
                 <<< configureLogout()
-                <<< configureArtwork()
+                <<< configureWith()
+                <<< configureWithImageType()
                 <<< configureAutoToot()
 
             +++ Section("投稿フォーマット", configureHeaderForTootFormat())
@@ -149,13 +150,24 @@ extension MastodonSettingViewModel {
         }
     }
 
-    private func configureArtwork() -> SwitchRow {
+    private func configureWith() -> SwitchRow {
         return SwitchRow {
-            $0.title = "アートワークを添付"
+            $0.title = "画像を添付"
             $0.value = UserDefaults.bool(forKey: .isMastodonWithImage)
         }.onChange {
             UserDefaults.set($0.value!, forKey: .isMastodonWithImage)
             Analytics.MastodonSetting.changeWithArtwork($0.value!)
+        }
+    }
+
+    private func configureWithImageType() -> ActionSheetRow<String> {
+        return ActionSheetRow<String> {
+            $0.title = "投稿時の画像"
+            $0.options = ["アートワークのみ", "再生画面のスクリーンショット"]
+            $0.value = UserDefaults.string(forKey: .tootWithImageType)!
+        }.onChange {
+            guard let value = $0.value, let type = WithImageType(rawValue: value) else { return }
+            UserDefaults.set(type.rawValue, forKey: .tootWithImageType)
         }
     }
 

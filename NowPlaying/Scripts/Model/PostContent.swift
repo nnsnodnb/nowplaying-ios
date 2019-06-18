@@ -8,11 +8,6 @@
 
 import UIKit
 
-enum Service {
-    case twitter
-    case mastodon
-}
-
 struct PostContent {
 
     let postMessage: String
