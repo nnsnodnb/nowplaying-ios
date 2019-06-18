@@ -25,6 +25,7 @@ final class TweetViewController: UIViewController {
     @IBOutlet private weak var textViewHeight: NSLayoutConstraint!
     @IBOutlet private weak var artworkImageButton: UIButton! {
         didSet {
+            artworkImageButton.imageView?.contentMode = .scaleAspectFit
             if shareImage == nil {
                 artworkImageButton.isHidden = true
                 return
