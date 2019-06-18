@@ -178,24 +178,36 @@ extension PlayViewModel {
         guard let item = _nowPlayingItem.value else {
             return PostContent(postMessage: "", shareImage: nil, songTitle: "", artistName: "", service: service)
         }
-        var postText: String
-        switch service {
-        case .twitter:
-            postText = UserDefaults.string(forKey: .tweetFormat)!
-        case .mastodon:
-            postText = UserDefaults.string(forKey: .tootFormat)!
-        }
+        var postText = UserDefaults.string(forKey: service.postTextFormatUserDefaultsKey)!
+
         let title = item.title ?? "不明なタイトル"
         let artist = item.artist ?? "不明なアーティスト"
         let album = item.albumTitle ?? "不明なアルバム"
         postText = postText.replacingOccurrences(of: "__songtitle__", with: title)
         postText = postText.replacingOccurrences(of: "__artist__", with: artist)
         postText = postText.replacingOccurrences(of: "__album__", with: album)
+
         let shareImage: UIImage?
-        if let artwork = item.artwork, let image = artwork.image(at: artwork.bounds.size) {
-            shareImage = image
-        } else {
-            shareImage = nil
+        let withImageTypeKey = service.withImageTypeUserDefaultsKey
+        switch WithImageType(rawValue: UserDefaults.string(forKey: withImageTypeKey)!)! {
+        case .onlyArtwork:
+            if let artwork = item.artwork, let image = artwork.image(at: artwork.bounds.size) {
+                shareImage = image
+            } else {
+                shareImage = nil
+            }
+        case .playerScreenshot:
+            let rect = UIScreen.main.bounds
+            UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
+            let context = UIGraphicsGetCurrentContext()!
+
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.window?.rootViewController?.view.layer.render(in: context)
+
+            let capturedImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+
+            shareImage = capturedImage
         }
 
         return PostContent(postMessage: postText, shareImage: shareImage, songTitle: title, artistName: artist, service: service)

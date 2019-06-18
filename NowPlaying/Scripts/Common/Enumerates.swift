@@ -12,6 +12,24 @@ enum Service {
 
     case twitter
     case mastodon
+
+    var postTextFormatUserDefaultsKey: UserDefaultsKey {
+        switch self {
+        case .twitter:
+            return .tweetFormat
+        case .mastodon:
+            return .tootFormat
+        }
+    }
+
+    var withImageTypeUserDefaultsKey: UserDefaultsKey {
+        switch self {
+        case .twitter:
+            return .tweetWithImageType
+        case .mastodon:
+            return .tootWithImageType
+        }
+    }
 }
 
 enum WithImageType: String {
