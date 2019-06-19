@@ -22,6 +22,7 @@ import NSURL_QueryDictionary
 protocol MastodonSettingViewModelOutput {
 
     var presentViewController: Driver<UIViewController> { get }
+    var pushViewController: Driver<UIViewController> { get }
     var endLoginSession: Observable<Void> { get }
     var error: Observable<Void> { get }
 }
@@ -44,6 +45,7 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
     private let disposeBag = DisposeBag()
     private let keychain = Keychain(service: keychainServiceKey)
     private let _presentViewController = PublishRelay<UIViewController>()
+    private let _pushViewController = PublishRelay<UIViewController>()
     private let _endLoginSession = PublishRelay<Void>()
     private let _error = PublishRelay<Void>()
 
@@ -79,20 +81,30 @@ extension MastodonSettingViewModel {
                 <<< configureFormatReset()
     }
 
-    private func configureDomain() -> TextRow {
-        return TextRow {
+    private func configureDomain() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
             $0.title = "ドメイン"
-            $0.placeholder = "https://mstdn.jp"
             $0.value = UserDefaults.string(forKey: .mastodonHostname)
-            $0.tag = "mastodon_host"
-        }.cellSetup { [unowned self] (cell, row) in
-            cell.textField.keyboardType = .URL
-            row.baseCell.isUserInteractionEnabled = !self.isMastodonLogin
-        }.onChange {
-            guard let value = $0.value else { return }
-            UserDefaults.set(value, forKey: .mastodonHostname)
+        }.onCellSelection { [unowned self] (_, _) in
+            let viewController = SearchMastodonTableViewController()
+            self._pushViewController.accept(viewController)
         }
     }
+
+//    private func configureDomain() -> TextRow {
+//        return TextRow {
+//            $0.title = "ドメイン"
+//            $0.placeholder = "https://mstdn.jp"
+//            $0.value = UserDefaults.string(forKey: .mastodonHostname)
+//            $0.tag = "mastodon_host"
+//        }.cellSetup { [unowned self] (cell, row) in
+//            cell.textField.keyboardType = .URL
+//            row.baseCell.isUserInteractionEnabled = !self.isMastodonLogin
+//        }.onChange {
+//            guard let value = $0.value else { return }
+//            UserDefaults.set(value, forKey: .mastodonHostname)
+//        }
+//    }
 
     private func configureLogin() -> NowPlayingButtonRow {
         return NowPlayingButtonRow {
@@ -280,6 +292,10 @@ extension MastodonSettingViewModel: MastodonSettingViewModelOutput {
 
     var presentViewController: Driver<UIViewController> {
         return _presentViewController.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
+    }
+
+    var pushViewController: Driver<UIViewController> {
+        return _pushViewController.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
     }
 
     var endLoginSession: Observable<Void> {

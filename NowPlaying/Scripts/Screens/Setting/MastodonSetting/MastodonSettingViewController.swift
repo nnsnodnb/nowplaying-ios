@@ -42,6 +42,12 @@ final class MastodonSettingViewController: FormViewController {
             })
             .disposed(by: disposeBag)
 
+        viewModel.outputs.pushViewController
+            .drive(onNext: { [weak self] (viewControlelr) in
+                self?.navigationController?.pushViewController(viewControlelr, animated: true)
+            })
+            .disposed(by: disposeBag)
+
         viewModel.outputs.endLoginSession
             .subscribe(onNext: { [weak self] (_) in
                 guard let safari = self?.presentedViewController as? SFSafariViewController else { return }
