@@ -50,7 +50,7 @@ final class SearchMastodonTableViewController: UITableViewController {
                 let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "subtitle")
                 cell.textLabel?.text = "\(instance.name)"
                 cell.detailTextLabel?.textColor = .lightGray
-                cell.detailTextLabel?.text = "https://\(instance.name)"
+                cell.detailTextLabel?.text = instance.info.shortDescription
                 return cell
             }
             .disposed(by: disposeBag)

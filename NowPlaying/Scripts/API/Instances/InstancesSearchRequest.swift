@@ -67,11 +67,24 @@ struct InstanceSearchResponse: Codable {
 
 struct Instance: Codable {
 
-    let id: String
+    let instanceID: String
     let name: String
+    let info: InstanceInfo
+    let thumbnailURL: URL
 
     private enum CodingKeys: String, CodingKey {
-        case id
+        case instanceID = "id"
         case name
+        case info
+        case thumbnailURL = "thumbnail"
+    }
+}
+
+struct InstanceInfo: Codable {
+
+    let shortDescription: String
+
+    private enum CodingKeys: String, CodingKey {
+        case shortDescription = "short_description"
     }
 }
