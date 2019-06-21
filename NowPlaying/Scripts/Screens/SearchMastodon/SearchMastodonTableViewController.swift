@@ -7,17 +7,22 @@
 //
 
 import UIKit
+import RxCocoa
 import RxSwift
 
 final class SearchMastodonTableViewController: UITableViewController {
 
     private let disposeBag = DisposeBag()
+    private let searchBar: UISearchBar
     private let viewModel: SearchMastodonTableViewModelType
 
     // MARK: - Initializer
 
     init() {
-        viewModel = SearchMastodonTableViewModel()
+        searchBar = UISearchBar()
+        searchBar.placeholder = "mstdn.jp"
+        let inputs = SearchMastodonTableViewModelInput(searchBarText: searchBar.rx.text.asObservable())
+        viewModel = SearchMastodonTableViewModel(inputs: inputs)
         super.init(nibName: R.nib.searchMastodonTableViewController.name, bundle: R.nib.searchMastodonTableViewController.bundle)
     }
 
@@ -29,16 +34,32 @@ final class SearchMastodonTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.indexPathsForSelectedRows?.forEach {
+            tableView.deselectRow(at: $0, animated: true)
+        }
+
+        viewModel.outputs.isLoading
+            .observeOn(MainScheduler.instance)
+            .bind(to: UIApplication.shared.rx.isNetworkActivityIndicatorVisible)
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.mastodonInstances
+            .observeOn(MainScheduler.instance)
+            .bind(to: tableView.rx.items) { _, _, instance in
+                let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "subtitle")
+                cell.textLabel?.text = "\(instance.name)"
+                cell.detailTextLabel?.textColor = .lightGray
+                cell.detailTextLabel?.text = "https://\(instance.name)"
+                return cell
+            }
+            .disposed(by: disposeBag)
     }
 }
 
 // MARK: - UITableViewDataSource
 
 extension SearchMastodonTableViewController {
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
-    }
 }
 
 // MARK: - UITableViewDelegate
@@ -50,8 +71,6 @@ extension SearchMastodonTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let searchBar = UISearchBar()
-        searchBar.placeholder = "mstdn.jp"
         return searchBar
     }
 }
