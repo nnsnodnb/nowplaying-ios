@@ -70,7 +70,7 @@ struct Instance: Codable {
     let instanceID: String
     let name: String
     let info: InstanceInfo?
-    let thumbnailURL: URL
+    let thumbnailURL: URL?
 
     private enum CodingKeys: String, CodingKey {
         case instanceID = "id"

@@ -59,8 +59,8 @@ final class SearchMastodonTableViewController: UITableViewController {
                 cell.textLabel?.text = "\(instance.name)"
                 cell.detailTextLabel?.textColor = .lightGray
                 cell.detailTextLabel?.text = instance.info?.shortDescription
-                guard let imageView = cell.imageView else { return cell }
-                loadImage(with: instance.thumbnailURL, into: imageView)
+                guard let imageView = cell.imageView, let thumbnailURL = instance.thumbnailURL else { return cell }
+                loadImage(with: thumbnailURL, into: imageView)
                 imageView.contentMode = .scaleAspectFit
                 return cell
             }
