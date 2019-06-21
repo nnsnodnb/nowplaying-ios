@@ -69,7 +69,7 @@ struct Instance: Codable {
 
     let instanceID: String
     let name: String
-    let info: InstanceInfo
+    let info: InstanceInfo?
     let thumbnailURL: URL
 
     private enum CodingKeys: String, CodingKey {
@@ -82,7 +82,7 @@ struct Instance: Codable {
 
 struct InstanceInfo: Codable {
 
-    let shortDescription: String
+    let shortDescription: String?
 
     private enum CodingKeys: String, CodingKey {
         case shortDescription = "short_description"

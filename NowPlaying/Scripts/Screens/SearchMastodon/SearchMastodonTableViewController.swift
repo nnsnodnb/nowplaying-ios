@@ -6,9 +6,11 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
-import UIKit
+import Nuke
 import RxCocoa
 import RxSwift
+import SVProgressHUD
+import UIKit
 
 final class SearchMastodonTableViewController: UITableViewController {
 
@@ -44,13 +46,22 @@ final class SearchMastodonTableViewController: UITableViewController {
             .bind(to: UIApplication.shared.rx.isNetworkActivityIndicatorVisible)
             .disposed(by: disposeBag)
 
+        viewModel.outputs.error
+            .subscribe(onNext: { (error) in
+                SVProgressHUD.showError(withStatus: error.localizedDescription)
+            })
+            .disposed(by: disposeBag)
+
         viewModel.outputs.mastodonInstances
             .observeOn(MainScheduler.instance)
             .bind(to: tableView.rx.items) { _, _, instance in
                 let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "subtitle")
                 cell.textLabel?.text = "\(instance.name)"
                 cell.detailTextLabel?.textColor = .lightGray
-                cell.detailTextLabel?.text = instance.info.shortDescription
+                cell.detailTextLabel?.text = instance.info?.shortDescription
+                guard let imageView = cell.imageView else { return cell }
+                loadImage(with: instance.thumbnailURL, into: imageView)
+                imageView.contentMode = .scaleAspectFit
                 return cell
             }
             .disposed(by: disposeBag)
