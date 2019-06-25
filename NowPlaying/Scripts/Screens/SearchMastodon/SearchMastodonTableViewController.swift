@@ -37,9 +37,12 @@ final class SearchMastodonTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.indexPathsForSelectedRows?.forEach {
-            tableView.deselectRow(at: $0, animated: true)
-        }
+        tableView.rx.modelSelected(Instance.self)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { (instance) in
+                print(instance.name)
+            })
+            .disposed(by: disposeBag)
 
         viewModel.outputs.isLoading
             .observeOn(MainScheduler.instance)
