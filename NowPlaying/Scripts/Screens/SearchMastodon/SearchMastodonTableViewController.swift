@@ -41,8 +41,16 @@ final class SearchMastodonTableViewController: UITableViewController {
 
         tableView.rx.modelSelected(Instance.self)
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (instance) in
+            .subscribe(onNext: { [unowned self] (instance) in
                 print(instance.name)
+                let alert = UIAlertController(title: "\(instance.name)\nこのインスタンスに設定します", message: nil, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "OK", style: .default) { (_) in
+                    UserDefaults.set(instance.name, forKey: .mastodonHostname)
+                    self.navigationController?.popViewController(animated: true)
+                })
+                alert.preferredAction = alert.actions.last
+                self.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
 
