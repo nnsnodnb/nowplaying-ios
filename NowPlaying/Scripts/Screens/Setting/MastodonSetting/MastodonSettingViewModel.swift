@@ -65,8 +65,9 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
             .compactMap { $0 }
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
-                guard let wself = self, let domainRow = wself.form.rowBy(tag: "mastodon_domain") as? NowPlayingButtonRow else { return }
-                domainRow.title = "ドメイン (\($0))"
+                guard let wself = self,
+                    let domainRow = wself.form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow else { return }
+                domainRow.value = $0
                 domainRow.updateCell()
             })
             .disposed(by: disposeBag)
@@ -92,14 +93,10 @@ extension MastodonSettingViewModel {
                 <<< configureFormatReset()
     }
 
-    private func configureDomain() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
-            if let hostname = UserDefaults.string(forKey: .mastodonHostname) {
-                $0.title = "ドメイン (\(hostname))"
-            } else {
-                $0.title = "ドメイン"
-            }
+    private func configureDomain() -> MastodonSettingDomainRow {
+        return MastodonSettingDomainRow {
             $0.tag = "mastodon_domain"
+            $0.value = UserDefaults.string(forKey: .mastodonHostname)
         }.onCellSelection { [unowned self] (_, _) in
             let viewController = SearchMastodonTableViewController()
             self._pushViewController.accept(viewController)
