@@ -576,7 +576,8 @@
 				CF531C3722A9969800D05896 /* SwiftLint */,
 				CF615AE61F56AB3B00315019 /* Sources */,
 				CF615AE71F56AB3B00315019 /* Frameworks */,
-				CF8C85E31F6F26260051A0C7 /* PlistBuddy */,
+				CFB5798922C3A33F001F3D13 /* PlistBuddy (Settings.bundle Root.plist) */,
+				CF8C85E31F6F26260051A0C7 /* PlistBuddy (Info.plist) */,
 				CF615AE81F56AB3B00315019 /* Resources */,
 				CF63348A1F5AB6F200D80EB8 /* Carthage */,
 				DC4488FCE3B57E00C3DB2FFC /* [CP] Copy Pods Resources */,
@@ -800,19 +801,37 @@
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
-		CF8C85E31F6F26260051A0C7 /* PlistBuddy */ = {
+		CF8C85E31F6F26260051A0C7 /* PlistBuddy (Info.plist) */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = PlistBuddy;
+			name = "PlistBuddy (Info.plist)";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFileSource=\"${SRCROOT}/${INFOPLIST_FILE}\"\ninfoPlistFileDestination=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\nif [ \"${BITRISE_SOURCE_DIR}\" == \"\" ]; then\n. NowPlaying/Resources/.env\nfi\n\n$plistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 twitterkit-${TWITTER_CONSUMER_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :Fabric:APIKey ${FABRIC_API_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :GADApplicationIdentifier ${FIREBASE_ADMOB_APP_ID}\" \"${infoPlistFileDestination}\"\n";
+		};
+		CFB5798922C3A33F001F3D13 /* PlistBuddy (Settings.bundle Root.plist) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "PlistBuddy (Settings.bundle Root.plist)";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "APP_VERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" $PRODUCT_SETTINGS_PATH)\n\n/usr/libexec/PlistBuddy -c \"Set :PreferenceSpecifiers:1:DefaultValue ${APP_VERSION}\" \"${SRCROOT}/NowPlaying/Resources/Settings.bundle/Root.plist\"\n";
 		};
 		CFD1D38F20B9A148009C50ED /* R.swift */ = {
 			isa = PBXShellScriptBuildPhase;
