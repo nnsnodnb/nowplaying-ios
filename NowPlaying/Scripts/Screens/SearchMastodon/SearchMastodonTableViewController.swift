@@ -56,12 +56,6 @@ final class SearchMastodonTableViewController: UITableViewController {
             .bind(to: UIApplication.shared.rx.isNetworkActivityIndicatorVisible)
             .disposed(by: disposeBag)
 
-        viewModel.outputs.error
-            .subscribe(onNext: { (error) in
-                SVProgressHUD.showError(withStatus: error.localizedDescription)
-            })
-            .disposed(by: disposeBag)
-
         viewModel.outputs.mastodonInstances
             .observeOn(MainScheduler.instance)
             .bind(to: tableView.rx.items) { _, _, instance in

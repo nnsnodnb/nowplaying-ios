@@ -25,7 +25,6 @@ protocol SearchMastodonTableViewModelOutput {
 
     var mastodonInstances: Observable<[Instance]> { get }
     var isLoading: Observable<Bool> { get }
-    var error: Observable<Error> { get }
 }
 
 // MARK: - SearchMastodonTableViewModelType
@@ -40,35 +39,45 @@ final class SearchMastodonTableViewModel: SearchMastodonTableViewModelType {
 
     let mastodonInstances: Observable<[Instance]>
     let isLoading: Observable<Bool>
-    let error: Observable<Error>
 
     var outputs: SearchMastodonTableViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
+    private let initialAction: Action<Void, [Instance]>
     private let searchAction: Action<String, [Instance]>
 
     init(inputs: SearchMastodonTableViewModelInput) {
-        searchAction = Action {
-            Session.shared.rx.response(InstancesSearchRequest(query: $0))
-                .map { $0.instances }
+        initialAction = Action {
+            Session.shared.rx.response(InstanceListRequest()).map { $0.instances }
         }
+        searchAction = Action {
+            Session.shared.rx.response(InstancesSearchRequest(query: $0)).map { $0.instances }
+        }
+
         let response = BehaviorRelay<[Instance]>(value: [])
         mastodonInstances = response.asObservable()
 
         isLoading = searchAction.executing.startWith(false)
 
-        error = searchAction.errors
-            .map { _ in NSError(domain: "Network error", code: 0, userInfo: nil) }
-            .asObservable()
-
+        initialAction.elements
+            .bind(to: response)
+            .disposed(by: disposeBag)
         searchAction.elements
+            .skip(1)
             .bind(to: response)
             .disposed(by: disposeBag)
 
         inputs.searchBarText
-            .compactMap { $0 }
-            .bind(to: searchAction.inputs)
+            .subscribe(onNext: { [weak self] in
+                if let text = $0, !text.isEmpty {
+                    self?.searchAction.inputs.onNext(text)
+                } else {
+                    self?.initialAction.inputs.onNext(())
+                }
+            })
             .disposed(by: disposeBag)
+
+        initialAction.inputs.onNext(())
     }
 }
 

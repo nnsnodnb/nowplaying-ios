@@ -9,7 +9,7 @@
 import APIKit
 import Foundation
 
-struct InstancesSearchRequest: Request {
+struct InstancesSearchRequest: MastodonSocialRequest {
 
     typealias Response = InstanceSearchResponse
 
@@ -21,10 +21,6 @@ struct InstancesSearchRequest: Request {
         self.count = count
         self.query = query
         self.name = name
-    }
-
-    var baseURL: URL {
-        return URL(string: "https://instances.social")!
     }
 
     var method: HTTPMethod {
@@ -43,13 +39,6 @@ struct InstancesSearchRequest: Request {
         ]
     }
 
-    var headerFields: [String: String] {
-        let apiToken = ProcessInfo.processInfo.get(forKey: .mastodonInstancesApiToken)
-        return [
-            "Authorization": "Bearer \(apiToken)"
-        ]
-    }
-
     func response(from object: Any, urlResponse: HTTPURLResponse) throws -> InstanceSearchResponse {
         let data = try JSONSerialization.data(withJSONObject: object, options: [])
         return try JSONDecoder().decode(Response.self, from: data)
@@ -62,29 +51,5 @@ struct InstanceSearchResponse: Codable {
 
     private enum CodingKeys: String, CodingKey {
         case instances
-    }
-}
-
-struct Instance: Codable {
-
-    let instanceID: String
-    let name: String
-    let info: InstanceInfo?
-    let thumbnailURL: URL?
-
-    private enum CodingKeys: String, CodingKey {
-        case instanceID = "id"
-        case name
-        case info
-        case thumbnailURL = "thumbnail"
-    }
-}
-
-struct InstanceInfo: Codable {
-
-    let shortDescription: String?
-
-    private enum CodingKeys: String, CodingKey {
-        case shortDescription = "short_description"
     }
 }
