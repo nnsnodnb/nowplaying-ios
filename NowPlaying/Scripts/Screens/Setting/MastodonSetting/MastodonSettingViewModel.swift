@@ -22,6 +22,7 @@ import NSURL_QueryDictionary
 protocol MastodonSettingViewModelOutput {
 
     var presentViewController: Driver<UIViewController> { get }
+    var pushViewController: Driver<UIViewController> { get }
     var endLoginSession: Observable<Void> { get }
     var error: Observable<Void> { get }
 }
@@ -44,6 +45,7 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
     private let disposeBag = DisposeBag()
     private let keychain = Keychain(service: keychainServiceKey)
     private let _presentViewController = PublishRelay<UIViewController>()
+    private let _pushViewController = PublishRelay<UIViewController>()
     private let _endLoginSession = PublishRelay<Void>()
     private let _error = PublishRelay<Void>()
 
@@ -57,6 +59,18 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
         error = _error.observeOn(MainScheduler.instance).asObservable()
 
         configureCells()
+
+        UserDefaults.standard.rx
+            .observe(String.self, UserDefaultsKey.mastodonHostname.rawValue)
+            .compactMap { $0 }
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                guard let wself = self,
+                    let domainRow = wself.form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow else { return }
+                domainRow.value = $0
+                domainRow.updateCell()
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -79,18 +93,20 @@ extension MastodonSettingViewModel {
                 <<< configureFormatReset()
     }
 
-    private func configureDomain() -> TextRow {
-        return TextRow {
-            $0.title = "ドメイン"
-            $0.placeholder = "https://mstdn.jp"
+    private func configureDomain() -> MastodonSettingDomainRow {
+        return MastodonSettingDomainRow {
+            $0.tag = "mastodon_domain"
             $0.value = UserDefaults.string(forKey: .mastodonHostname)
-            $0.tag = "mastodon_host"
-        }.cellSetup { [unowned self] (cell, row) in
-            cell.textField.keyboardType = .URL
-            row.baseCell.isUserInteractionEnabled = !self.isMastodonLogin
-        }.onChange {
-            guard let value = $0.value else { return }
-            UserDefaults.set(value, forKey: .mastodonHostname)
+        }.onCellSelection { [unowned self] (_, row) in
+            if UserDefaults.bool(forKey: .isMastodonLogin) {
+                let alert = UIAlertController(title: "すでにログインされています", message: "ドメインを変更するには先にログアウトをしてください", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
+                self._presentViewController.accept(alert)
+                row.deselect(animated: true)
+                return
+            }
+            let viewController = SearchMastodonTableViewController()
+            self._pushViewController.accept(viewController)
         }
     }
 
@@ -100,14 +116,14 @@ extension MastodonSettingViewModel {
             $0.tag = "mastodon_login"
             $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isMastodonLogin))
         }.onCellSelection { [unowned self] (_, _) in
-            guard let textRow = self.form.rowBy(tag: "mastodon_host") as? TextRow,
-                let hostname = textRow.value, !self.isMastodonLogin else { return }
+            guard let domainRow = self.form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow,
+                let hostname = domainRow.value, !self.isMastodonLogin else { return }
             SVProgressHUD.show()
             Session.shared.rx.response(MastodonAppRequeset(hostname: hostname))
                 .subscribe(onSuccess: { [weak self] (response) in
                     UserDefaults.set(response.clientID, forKey: .mastodonClientID)
                     UserDefaults.set(response.clientSecret, forKey: .mastodonClientSecret)
-                    let url = URL(string: "\(hostname)/oauth/authorize")!
+                    let url = URL(string: "https://\(hostname)/oauth/authorize")!
                     var components = URLComponents(url: url, resolvingAgainstBaseURL: url.baseURL != nil)
                     components?.queryItems = [
                         URLQueryItem(name: "client_id", value: response.clientID),
@@ -123,10 +139,10 @@ extension MastodonSettingViewModel {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         self?.challengeAuthenticationSession(with: authorizeURL)
                     }
-                    }, onError: { [weak self] (error) in
-                        SVProgressHUD.dismiss()
-                        print(error)
-                        self?._error.accept(())
+                }, onError: { [weak self] (error) in
+                    SVProgressHUD.dismiss()
+                    print(error)
+                    self?._error.accept(())
                 })
                 .disposed(by: self.disposeBag)
             Analytics.MastodonSetting.login()
@@ -245,7 +261,8 @@ extension MastodonSettingViewModel {
 
     private func loginProcessForSafariCallback(url: URL) {
         guard let query = (url as NSURL).uq_queryDictionary(), let code = query["code"] as? String,
-            let textRow = form.rowBy(tag: "mastodon_host") as? TextRow, let hostname = textRow.value else { return }
+            let domainRow = form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow,
+            let hostname = domainRow.value else { return }
         Session.shared.rx.response(MastodonGetTokenRequest(hostname: hostname, code: code))
             .subscribe(onSuccess: { [weak self] (response) in
                 self?.keychain[KeychainKey.mastodonAccessToken.rawValue] = response.accessToken
@@ -263,10 +280,8 @@ extension MastodonSettingViewModel {
 
     private func changeMastodonLogState(didLogin: Bool) {
         if UserDefaults.bool(forKey: .isMastodonLogin) != didLogin { return }
-        guard let textRow = form.rowBy(tag: "mastodon_host") as? TextRow,
-            let loginRow = form.rowBy(tag: "mastodon_login"),
+        guard let loginRow = form.rowBy(tag: "mastodon_login"),
             let logoutRow = form.rowBy(tag: "mastodon_logout") else { return }
-        textRow.baseCell.isUserInteractionEnabled = !didLogin
         loginRow.hidden = Condition(booleanLiteral: didLogin)
         logoutRow.hidden = Condition(booleanLiteral: !didLogin)
         loginRow.evaluateHidden()
@@ -280,6 +295,10 @@ extension MastodonSettingViewModel: MastodonSettingViewModelOutput {
 
     var presentViewController: Driver<UIViewController> {
         return _presentViewController.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
+    }
+
+    var pushViewController: Driver<UIViewController> {
+        return _pushViewController.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
     }
 
     var endLoginSession: Observable<Void> {

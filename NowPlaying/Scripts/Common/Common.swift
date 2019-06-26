@@ -44,6 +44,7 @@ enum EnvironmentKey: String {
     case mastodonConsumerSecret = "MASTODON_CONSUMER_SECRET"
     case firebaseAdmobAppId = "FIREBASE_ADMOB_APP_ID"
     case firebaseAdmobBannerId = "FIREBASE_ADMOB_BANNER_ID"
+    case mastodonInstancesApiToken = "MASTODON_INSTANCES_API_TOKEN"
 }
 
 let keychainServiceKey = "moe.nnsnodnb.NowPlaying"

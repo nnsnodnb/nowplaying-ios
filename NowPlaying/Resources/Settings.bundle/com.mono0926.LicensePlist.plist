@@ -6,6 +6,14 @@
 	<array>
 		<dict>
 			<key>File</key>
+			<string>com.mono0926.LicensePlist/Action</string>
+			<key>Title</key>
+			<string>Action (4.0.1)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>com.mono0926.LicensePlist/APIKit</string>
 			<key>Title</key>
 			<string>APIKit (5.0.0)</string>
@@ -177,6 +185,14 @@
 			<string>com.mono0926.LicensePlist/NSURL+QueryDictionary</string>
 			<key>Title</key>
 			<string>NSURL+QueryDictionary</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>com.mono0926.LicensePlist/Nuke</string>
+			<key>Title</key>
+			<string>Nuke (7.6.3)</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

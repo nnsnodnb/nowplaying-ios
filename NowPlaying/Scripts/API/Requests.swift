@@ -9,3 +9,19 @@
 import APIKit
 
 protocol MastodonRequest: Request {}
+
+protocol MastodonSocialRequest: Request {}
+
+extension MastodonSocialRequest {
+
+    var baseURL: URL {
+        return URL(string: "https://instances.social")!
+    }
+
+    var headerFields: [String: String] {
+        let apiToken = ProcessInfo.processInfo.get(forKey: .mastodonInstancesApiToken)
+        return [
+            "Authorization": "Bearer \(apiToken)"
+        ]
+    }
+}

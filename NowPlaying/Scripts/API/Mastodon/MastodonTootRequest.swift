@@ -15,7 +15,7 @@ struct MastodonTootRequest: MastodonRequest {
     typealias Response = Void
 
     private let keychain = Keychain(service: keychainServiceKey)
-    private let hostname = UserDefaults.string(forKey: .mastodonHostname)!
+    private let hostname = "https://\(UserDefaults.string(forKey: .mastodonHostname)!)"
     private let status: String
     private let mediaIDs: [String]?
 

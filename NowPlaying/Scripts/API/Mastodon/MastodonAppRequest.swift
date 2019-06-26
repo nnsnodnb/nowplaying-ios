@@ -16,7 +16,7 @@ struct MastodonAppRequeset: MastodonRequest {
     private let hostname: String
 
     init(hostname: String) {
-        self.hostname = hostname
+        self.hostname = "https://\(hostname)"
     }
 
     var baseURL: URL {

@@ -19,7 +19,7 @@ struct MastodonGetTokenRequest: MastodonRequest {
     private let clientSecret = UserDefaults.string(forKey: .mastodonClientSecret)!
 
     init(hostname: String, code: String) {
-        self.hostname = hostname
+        self.hostname = "https://\(hostname)"
         self.code = code
     }
 
