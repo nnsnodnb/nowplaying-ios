@@ -42,7 +42,6 @@ final class SearchMastodonTableViewController: UITableViewController {
         tableView.rx.modelSelected(Instance.self)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [unowned self] (instance) in
-                print(instance.name)
                 let alert = UIAlertController(title: "\(instance.name)\nこのインスタンスに設定します", message: nil, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
                 alert.addAction(UIAlertAction(title: "OK", style: .default) { (_) in

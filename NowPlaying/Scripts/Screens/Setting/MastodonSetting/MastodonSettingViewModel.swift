@@ -141,7 +141,6 @@ extension MastodonSettingViewModel {
                     }
                 }, onError: { [weak self] (error) in
                     SVProgressHUD.dismiss()
-                    print(error)
                     self?._error.accept(())
                 })
                 .disposed(by: self.disposeBag)
@@ -248,8 +247,6 @@ extension MastodonSettingViewModel {
     private func challengeAuthenticationSession(with url: URL) {
         session = SFAuthenticationSession(url: url, callbackURLScheme: "nowplaying-ios-nnsnodnb") { [weak self] (url, error) in
             defer { self?.session = nil }
-            print(url?.absoluteString ?? "")
-            print(error?.localizedDescription ?? "")
             guard let url = url else {
                 self?._error.accept(())
                 return
@@ -272,7 +269,6 @@ extension MastodonSettingViewModel {
                 self?.changeMastodonLogState(didLogin: true)
                 self?._endLoginSession.accept(())
             }, onError: { [weak self] (error) in
-                print(error)
                 self?._error.accept(())
             })
             .disposed(by: self.disposeBag)
