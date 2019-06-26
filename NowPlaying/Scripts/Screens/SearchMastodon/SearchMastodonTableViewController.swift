@@ -44,6 +44,13 @@ final class SearchMastodonTableViewController: UITableViewController {
             })
             .disposed(by: disposeBag)
 
+        tableView.rx.itemSelected
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [unowned self] in
+                self.tableView.deselectRow(at: $0, animated: true)
+            })
+            .disposed(by: disposeBag)
+
         viewModel.outputs.isLoading
             .observeOn(MainScheduler.instance)
             .bind(to: UIApplication.shared.rx.isNetworkActivityIndicatorVisible)
