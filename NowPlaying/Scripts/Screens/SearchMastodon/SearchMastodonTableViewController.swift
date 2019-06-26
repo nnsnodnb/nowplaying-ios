@@ -22,7 +22,7 @@ final class SearchMastodonTableViewController: UITableViewController {
 
     init() {
         searchBar = UISearchBar()
-        searchBar.placeholder = "mstdn.jp"
+        searchBar.placeholder = "例: mstdn.jp"
         let inputs = SearchMastodonTableViewModelInput(searchBarText: searchBar.rx.text.asObservable())
         viewModel = SearchMastodonTableViewModel(inputs: inputs)
         super.init(nibName: R.nib.searchMastodonTableViewController.name, bundle: R.nib.searchMastodonTableViewController.bundle)
