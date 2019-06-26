@@ -109,8 +109,8 @@ extension MastodonSettingViewModel {
             $0.tag = "mastodon_login"
             $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isMastodonLogin))
         }.onCellSelection { [unowned self] (_, _) in
-            guard let textRow = self.form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow,
-                let hostname = textRow.value, !self.isMastodonLogin else { return }
+            guard let domainRow = self.form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow,
+                let hostname = domainRow.value, !self.isMastodonLogin else { return }
             SVProgressHUD.show()
             Session.shared.rx.response(MastodonAppRequeset(hostname: hostname))
                 .subscribe(onSuccess: { [weak self] (response) in
@@ -132,10 +132,10 @@ extension MastodonSettingViewModel {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         self?.challengeAuthenticationSession(with: authorizeURL)
                     }
-                    }, onError: { [weak self] (error) in
-                        SVProgressHUD.dismiss()
-                        print(error)
-                        self?._error.accept(())
+                }, onError: { [weak self] (error) in
+                    SVProgressHUD.dismiss()
+                    print(error)
+                    self?._error.accept(())
                 })
                 .disposed(by: self.disposeBag)
             Analytics.MastodonSetting.login()
@@ -254,7 +254,8 @@ extension MastodonSettingViewModel {
 
     private func loginProcessForSafariCallback(url: URL) {
         guard let query = (url as NSURL).uq_queryDictionary(), let code = query["code"] as? String,
-            let textRow = form.rowBy(tag: "mastodon_host") as? TextRow, let hostname = textRow.value else { return }
+            let domainRow = form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow,
+            let hostname = domainRow.value else { return }
         Session.shared.rx.response(MastodonGetTokenRequest(hostname: hostname, code: code))
             .subscribe(onSuccess: { [weak self] (response) in
                 self?.keychain[KeychainKey.mastodonAccessToken.rawValue] = response.accessToken
@@ -272,10 +273,8 @@ extension MastodonSettingViewModel {
 
     private func changeMastodonLogState(didLogin: Bool) {
         if UserDefaults.bool(forKey: .isMastodonLogin) != didLogin { return }
-        guard let textRow = form.rowBy(tag: "mastodon_host") as? TextRow,
-            let loginRow = form.rowBy(tag: "mastodon_login"),
+        guard let loginRow = form.rowBy(tag: "mastodon_login"),
             let logoutRow = form.rowBy(tag: "mastodon_logout") else { return }
-        textRow.baseCell.isUserInteractionEnabled = !didLogin
         loginRow.hidden = Condition(booleanLiteral: didLogin)
         logoutRow.hidden = Condition(booleanLiteral: !didLogin)
         loginRow.evaluateHidden()
