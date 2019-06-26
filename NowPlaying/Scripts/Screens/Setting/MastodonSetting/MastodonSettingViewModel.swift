@@ -97,11 +97,12 @@ extension MastodonSettingViewModel {
         return MastodonSettingDomainRow {
             $0.tag = "mastodon_domain"
             $0.value = UserDefaults.string(forKey: .mastodonHostname)
-        }.onCellSelection { [unowned self] (_, _) in
+        }.onCellSelection { [unowned self] (_, row) in
             if UserDefaults.bool(forKey: .isMastodonLogin) {
                 let alert = UIAlertController(title: "すでにログインされています", message: "ドメインを変更するには先にログアウトをしてください", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
                 self._presentViewController.accept(alert)
+                row.deselect(animated: true)
                 return
             }
             let viewController = SearchMastodonTableViewController()
