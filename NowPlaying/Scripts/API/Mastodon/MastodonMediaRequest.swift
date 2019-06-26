@@ -23,7 +23,7 @@ struct MastodonMediaRequest: MastodonRequest {
     }
 
     var baseURL: URL {
-        return URL(string: UserDefaults.string(forKey: .mastodonHostname)!)!
+        return URL(string: "https://\(UserDefaults.string(forKey: .mastodonHostname)!)")!
     }
 
     var path: String {

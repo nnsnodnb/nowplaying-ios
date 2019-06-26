@@ -109,14 +109,14 @@ extension MastodonSettingViewModel {
             $0.tag = "mastodon_login"
             $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isMastodonLogin))
         }.onCellSelection { [unowned self] (_, _) in
-            guard let textRow = self.form.rowBy(tag: "mastodon_host") as? TextRow,
+            guard let textRow = self.form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow,
                 let hostname = textRow.value, !self.isMastodonLogin else { return }
             SVProgressHUD.show()
             Session.shared.rx.response(MastodonAppRequeset(hostname: hostname))
                 .subscribe(onSuccess: { [weak self] (response) in
                     UserDefaults.set(response.clientID, forKey: .mastodonClientID)
                     UserDefaults.set(response.clientSecret, forKey: .mastodonClientSecret)
-                    let url = URL(string: "\(hostname)/oauth/authorize")!
+                    let url = URL(string: "https://\(hostname)/oauth/authorize")!
                     var components = URLComponents(url: url, resolvingAgainstBaseURL: url.baseURL != nil)
                     components?.queryItems = [
                         URLQueryItem(name: "client_id", value: response.clientID),
