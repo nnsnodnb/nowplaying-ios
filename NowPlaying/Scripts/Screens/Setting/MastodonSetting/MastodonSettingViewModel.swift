@@ -139,7 +139,7 @@ extension MastodonSettingViewModel {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         self?.challengeAuthenticationSession(with: authorizeURL)
                     }
-                }, onError: { [weak self] (error) in
+                }, onError: { [weak self] (_) in
                     SVProgressHUD.dismiss()
                     self?._error.accept(())
                 })
@@ -245,7 +245,7 @@ extension MastodonSettingViewModel {
 extension MastodonSettingViewModel {
 
     private func challengeAuthenticationSession(with url: URL) {
-        session = SFAuthenticationSession(url: url, callbackURLScheme: "nowplaying-ios-nnsnodnb") { [weak self] (url, error) in
+        session = SFAuthenticationSession(url: url, callbackURLScheme: "nowplaying-ios-nnsnodnb") { [weak self] (url, _) in
             defer { self?.session = nil }
             guard let url = url else {
                 self?._error.accept(())
@@ -268,7 +268,7 @@ extension MastodonSettingViewModel {
                 UserDefaults.set(true, forKey: .isMastodonLogin)
                 self?.changeMastodonLogState(didLogin: true)
                 self?._endLoginSession.accept(())
-            }, onError: { [weak self] (error) in
+            }, onError: { [weak self] (_) in
                 self?._error.accept(())
             })
             .disposed(by: self.disposeBag)
