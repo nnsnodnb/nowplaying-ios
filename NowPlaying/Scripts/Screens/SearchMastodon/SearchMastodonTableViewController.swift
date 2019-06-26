@@ -37,6 +37,8 @@ final class SearchMastodonTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.register(R.nib.mastodonDomainTableViewCell)
+
         tableView.rx.modelSelected(Instance.self)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { (instance) in
@@ -58,15 +60,9 @@ final class SearchMastodonTableViewController: UITableViewController {
 
         viewModel.outputs.mastodonInstances
             .observeOn(MainScheduler.instance)
-            .bind(to: tableView.rx.items) { _, _, instance in
-                let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "subtitle")
-                cell.textLabel?.text = "\(instance.name)"
-                cell.detailTextLabel?.textColor = .lightGray
-                cell.detailTextLabel?.text = instance.info?.shortDescription
-                guard let imageView = cell.imageView, let thumbnailURL = instance.thumbnailURL else { return cell }
-                loadImage(with: thumbnailURL, into: imageView)
-                imageView.contentMode = .scaleAspectFit
-                return cell
+            .bind(to: tableView.rx.items(cellIdentifier: R.reuseIdentifier.mastodonDomainTableViewCell.identifier)) {
+                guard let cell = $2 as? MastodonDomainTableViewCell else { return }
+                cell.instance = $1
             }
             .disposed(by: disposeBag)
     }
