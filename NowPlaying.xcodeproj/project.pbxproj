@@ -57,6 +57,8 @@
 		CF65C38D20A0983400E95640 /* SVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C38C20A0983400E95640 /* SVProgressHUD.framework */; };
 		CF6F566322C4C13400F517E9 /* DynamicBlurView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566122C4C13400F517E9 /* DynamicBlurView.framework */; };
 		CF6F566422C4C13400F517E9 /* PopupDialog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566222C4C13400F517E9 /* PopupDialog.framework */; };
+		CF6F566822C4D0E300F517E9 /* ArtworkPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F566622C4D0E300F517E9 /* ArtworkPreviewViewController.swift */; };
+		CF6F566922C4D0E300F517E9 /* ArtworkPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF6F566722C4D0E300F517E9 /* ArtworkPreviewViewController.xib */; };
 		CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */; };
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
@@ -168,6 +170,8 @@
 		CF65C38C20A0983400E95640 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = Carthage/Build/iOS/SVProgressHUD.framework; sourceTree = "<group>"; };
 		CF6F566122C4C13400F517E9 /* DynamicBlurView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DynamicBlurView.framework; path = Carthage/Build/iOS/DynamicBlurView.framework; sourceTree = "<group>"; };
 		CF6F566222C4C13400F517E9 /* PopupDialog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PopupDialog.framework; path = Carthage/Build/iOS/PopupDialog.framework; sourceTree = "<group>"; };
+		CF6F566622C4D0E300F517E9 /* ArtworkPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ArtworkPreviewViewController.swift; path = Preview/ArtworkPreviewViewController.swift; sourceTree = "<group>"; };
+		CF6F566722C4D0E300F517E9 /* ArtworkPreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ArtworkPreviewViewController.xib; path = Preview/ArtworkPreviewViewController.xib; sourceTree = "<group>"; };
 		CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -438,6 +442,7 @@
 				CF1611331F726CF20027144D /* Play */,
 				CF1AAFDD1F7544D800384000 /* Setting */,
 				CF43E7D31F733C1F00A2A49A /* Tweet */,
+				CF6F566522C4D0C000F517E9 /* Preview */,
 				CF99DF5322BA0089006E3876 /* SearchMastodon */,
 			);
 			path = Screens;
@@ -463,6 +468,15 @@
 				CF918D061F7075110005B686 /* Settings.bundle */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		CF6F566522C4D0C000F517E9 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				CF6F566622C4D0E300F517E9 /* ArtworkPreviewViewController.swift */,
+				CF6F566722C4D0E300F517E9 /* ArtworkPreviewViewController.xib */,
+			);
+			name = Preview;
 			sourceTree = "<group>";
 		};
 		CF6FFF20207E4CE4003FD38D /* TodayExtension */ = {
@@ -690,6 +704,7 @@
 				CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */,
 				CF531C0422A9536A00D05896 /* TwitterSettingViewController.xib in Resources */,
 				CF531C3622A9830B00D05896 /* LICENSE in Resources */,
+				CF6F566922C4D0E300F517E9 /* ArtworkPreviewViewController.xib in Resources */,
 				CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */,
 				CF8C85E01F6F1B610051A0C7 /* .env in Resources */,
 				CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */,
@@ -883,6 +898,7 @@
 				CF531BFE22A9532400D05896 /* TwitterSettingViewModel.swift in Sources */,
 				CF531C3422A982BE00D05896 /* SKReceiptRefreshRequestDelegateProxy.swift in Sources */,
 				CF1611361F726D110027144D /* PlayViewController.swift in Sources */,
+				CF6F566822C4D0E300F517E9 /* ArtworkPreviewViewController.swift in Sources */,
 				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
 				CFB5797922C385A3001F3D13 /* Instance.swift in Sources */,
 				CF99DF4922B607AE006E3876 /* PostFormatHelpView.swift in Sources */,
