@@ -55,6 +55,8 @@
 		CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B061F56E89100315019 /* AVFoundation.framework */; };
 		CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF615AED1F56AB3B00315019 /* AppDelegate.swift */; };
 		CF65C38D20A0983400E95640 /* SVProgressHUD.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF65C38C20A0983400E95640 /* SVProgressHUD.framework */; };
+		CF6F566322C4C13400F517E9 /* DynamicBlurView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566122C4C13400F517E9 /* DynamicBlurView.framework */; };
+		CF6F566422C4C13400F517E9 /* PopupDialog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566222C4C13400F517E9 /* PopupDialog.framework */; };
 		CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */; };
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
@@ -164,6 +166,8 @@
 		CF615B001F56B04E00315019 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		CF615B061F56E89100315019 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CF65C38C20A0983400E95640 /* SVProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SVProgressHUD.framework; path = Carthage/Build/iOS/SVProgressHUD.framework; sourceTree = "<group>"; };
+		CF6F566122C4C13400F517E9 /* DynamicBlurView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DynamicBlurView.framework; path = Carthage/Build/iOS/DynamicBlurView.framework; sourceTree = "<group>"; };
+		CF6F566222C4C13400F517E9 /* PopupDialog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PopupDialog.framework; path = Carthage/Build/iOS/PopupDialog.framework; sourceTree = "<group>"; };
 		CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -206,6 +210,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF6F566322C4C13400F517E9 /* DynamicBlurView.framework in Frameworks */,
+				CF6F566422C4C13400F517E9 /* PopupDialog.framework in Frameworks */,
 				CFA2985F22BC7466002C94AC /* Nuke.framework in Frameworks */,
 				CF99DF5B22BA09D6006E3876 /* Action.framework in Frameworks */,
 				CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */,
@@ -388,6 +394,8 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF6F566122C4C13400F517E9 /* DynamicBlurView.framework */,
+				CF6F566222C4C13400F517E9 /* PopupDialog.framework */,
 				CFA2985E22BC7466002C94AC /* Nuke.framework */,
 				CF99DF5A22BA09D6006E3876 /* Action.framework */,
 				CF2DBD7220A4AB630039217F /* libicucore.tbd */,

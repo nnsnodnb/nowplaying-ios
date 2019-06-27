@@ -1,6 +1,7 @@
 github "ishkawa/APIKit" ~> 5.0
 github "kean/Nuke" ~> 7.0
 github "kishikawakatsumi/KeychainAccess"
+github "Orderella/PopupDialog" ~> 1.1
 github "ReactiveX/RxSwift" ~> 5.0
 github "RxSwiftCommunity/Action" ~> 4.0
 github "SnapKit/SnapKit" ~> 5.0.0
