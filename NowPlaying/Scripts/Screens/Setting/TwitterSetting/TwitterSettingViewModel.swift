@@ -14,11 +14,15 @@ import RxCocoa
 import RxSwift
 import SVProgressHUD
 
+struct TwitterSettingViewModelInput {
+
+    let viewController: UIViewController
+}
+
 // MARK: - TwitterSettingViewModelOutput
 
 protocol TwitterSettingViewModelOutput {
 
-    var presentViewController: Driver<UIViewController> { get }
     var startInAppPurchase: Observable<Void> { get }
 }
 
@@ -29,6 +33,7 @@ protocol TwitterSettingViewModelType {
     var outputs: TwitterSettingViewModelOutput { get }
     var form: Form { get }
 
+    init(inputs: TwitterSettingViewModelInput)
     func buyProduct(_ product: PaymentManager.Product)
     func restore()
 }
@@ -40,11 +45,12 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
     var outputs: TwitterSettingViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
-    private let _presentViewController = PublishRelay<UIViewController>()
     private let _startInAppPurchase = PublishRelay<Void>()
+    private let inputs: TwitterSettingViewModelInput
 
-    init() {
+    init(inputs: TwitterSettingViewModelInput) {
         form = Form()
+        self.inputs = inputs
 
         configureCells()
     }
@@ -116,7 +122,7 @@ extension TwitterSettingViewModel {
             $0.title = "ログイン"
             $0.tag = "twitter_login"
             $0.hidden = Condition(booleanLiteral: TwitterClient.shared.isLogin)
-        }.onCellSelection { [weak self] (_, _) in
+        }.onCellSelection { (_, _) in
             SVProgressHUD.show()
             AuthManager.shared.login { [weak self] (error) in
                 if let error = error {
@@ -182,7 +188,7 @@ extension TwitterSettingViewModel {
             guard !DTTJailbreakDetection.isJailbroken() else {
                 let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
-                self?._presentViewController.accept(alert)
+                self?.inputs.viewController.present(alert, animated: true, completion: nil)
                 return
             }
             self?._startInAppPurchase.accept(())
@@ -197,15 +203,16 @@ extension TwitterSettingViewModel {
             $0.hidden = Condition.function(["auto_tweet_purchase"]) { (form) -> Bool in
                 return !form.rowBy(tag: "auto_tweet_purchase")!.isHidden
             }
-        }.onChange { [weak self] in
+        }.onChange { [unowned self] in
             UserDefaults.set($0.value!, forKey: .isAutoTweet)
             Analytics.TwitterSetting.changeAutoTweet($0.value!)
             if !$0.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) { return }
             let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。",
                                           preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self?._presentViewController.accept(alert)
-            UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
+            self.inputs.viewController.present(alert, animated: true) {
+                UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
+            }
         }
     }
 
@@ -241,7 +248,7 @@ extension TwitterSettingViewModel {
                     tweetFormatRow.updateCell()
                 }
             })
-            self._presentViewController.accept(alert)
+            self.inputs.viewController.present(alert, animated: true, completion: nil)
         }
     }
 }
@@ -272,10 +279,6 @@ extension TwitterSettingViewModel {
 }
 
 extension TwitterSettingViewModel: TwitterSettingViewModelOutput {
-
-    var presentViewController: SharedSequence<DriverSharingStrategy, UIViewController> {
-        return _presentViewController.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
-    }
 
     var startInAppPurchase: Observable<Void> {
         return _startInAppPurchase.observeOn(MainScheduler.instance).asObservable()

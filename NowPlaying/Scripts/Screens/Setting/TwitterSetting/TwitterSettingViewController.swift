@@ -17,32 +17,18 @@ import UIKit
 final class TwitterSettingViewController: FormViewController {
 
     private let disposeBag = DisposeBag()
-    private let viewModel: TwitterSettingViewModelType
 
-    // MARK: - Initializer
-
-    init(viewModel: TwitterSettingViewModelType) {
-        self.viewModel = viewModel
-        super.init(nibName: R.nib.twitterSettingViewController.name, bundle: R.nib.twitterSettingViewController.bundle)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var viewModel: TwitterSettingViewModelType!
 
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Twitter設定"
+        let inputs = TwitterSettingViewModelInput(viewController: self)
+        viewModel = TwitterSettingViewModel(inputs: inputs)
 
         form = viewModel.form
-
-        viewModel.outputs.presentViewController
-            .drive(onNext: { [weak self] (viewController) in
-                self?.present(viewController, animated: true, completion: nil)
-            })
-            .disposed(by: disposeBag)
 
         viewModel.outputs.startInAppPurchase
             .subscribe(onNext: { [weak self] (_) in

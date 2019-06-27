@@ -113,7 +113,7 @@ extension SettingViewModel {
                 $0.title = "Twitter設定"
                 $0.tag = "twitter_setting"
             }.onCellSelection { [weak self] (_, _) in
-                let viewController = TwitterSettingViewController(viewModel: TwitterSettingViewModel())
+                let viewController = TwitterSettingViewController()
                 self?._pushViewController.accept(viewController)
             }
 
