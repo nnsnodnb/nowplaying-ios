@@ -149,6 +149,10 @@ final class TweetViewController: UIViewController {
         )
     }
 
+    func forcusToTextView() {
+        textView.becomeFirstResponder()
+    }
+
     // MARK: - Private method
 
     private func setupNavigationBar() {
@@ -191,7 +195,7 @@ final class TweetViewController: UIViewController {
 
     private func showPreviewer() {
         guard let shareImage = self.shareImage else { return }
-        let viewController = ArtworkPreviewViewController(image: shareImage)
+        let viewController = ArtworkPreviewViewController(image: shareImage, parent: self)
         present(viewController, animated: true, completion: nil)
     }
 }

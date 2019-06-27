@@ -15,6 +15,7 @@
                 <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
             </userDefinedRuntimeAttributes>
             <connections>
+                <outlet property="closeButton" destination="WBW-CJ-Bkx" id="jT5-0F-Ejb"/>
                 <outlet property="previewImageView" destination="8tW-9z-Em3" id="R0V-K9-C8V"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -25,20 +26,37 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8tW-9z-Em3">
-                    <rect key="frame" x="16" y="60" width="382" height="786"/>
+                    <rect key="frame" x="16" y="144" width="382" height="702"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="previewImageView"/>
                     </userDefinedRuntimeAttributes>
                 </imageView>
+                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WBW-CJ-Bkx">
+                    <rect key="frame" x="16" y="60" width="69" height="33"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="0.5724031690140845" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="69" id="EGX-Zv-u7P"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="閉じる"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="8tW-9z-Em3" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="K07-Vd-1LI"/>
+                <constraint firstItem="8tW-9z-Em3" firstAttribute="leading" secondItem="WBW-CJ-Bkx" secondAttribute="leading" id="58B-G4-GuO"/>
+                <constraint firstItem="8tW-9z-Em3" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="100" id="K07-Vd-1LI"/>
+                <constraint firstItem="WBW-CJ-Bkx" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="Rov-iQ-f9K"/>
                 <constraint firstItem="8tW-9z-Em3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="kKF-IF-fam"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="8tW-9z-Em3" secondAttribute="trailing" constant="16" id="kyu-8M-a0R"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="8tW-9z-Em3" secondAttribute="bottom" constant="16" id="w70-HD-K5r"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="47.826086956521742" y="35.491071428571423"/>
         </view>
     </objects>
 </document>
