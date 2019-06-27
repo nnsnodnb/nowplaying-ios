@@ -126,7 +126,7 @@ extension SettingViewModel {
                 $0.title = "Mastodon設定"
                 $0.tag = "mastodon_setting"
             }.onCellSelection { [unowned self] (_, _) in
-                let viewController = MastodonSettingViewController(viewModel: MastodonSettingViewModel())
+                let viewController = MastodonSettingViewController()
                 self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
             }
     }

@@ -17,13 +17,15 @@ import SafariServices
 import SVProgressHUD
 import NSURL_QueryDictionary
 
+struct MastodonSettingViewModelInput {
+
+    let viewController: UIViewController
+}
+
 // MARK: - MastodonSettingViewModelOutput
 
 protocol MastodonSettingViewModelOutput {
 
-    var presentViewController: Driver<UIViewController> { get }
-    var pushViewController: Driver<UIViewController> { get }
-    var endLoginSession: Observable<Void> { get }
     var error: Observable<Void> { get }
 }
 
@@ -33,6 +35,8 @@ protocol MastodonSettingViewModelType {
 
     var outputs: MastodonSettingViewModelOutput { get }
     var form: Form { get }
+
+    init(inputs: MastodonSettingViewModelInput)
 }
 
 final class MastodonSettingViewModel: MastodonSettingViewModelType {
@@ -43,10 +47,8 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
     var outputs: MastodonSettingViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
+    private let inputs: MastodonSettingViewModelInput
     private let keychain = Keychain(service: keychainServiceKey)
-    private let _presentViewController = PublishRelay<UIViewController>()
-    private let _pushViewController = PublishRelay<UIViewController>()
-    private let _endLoginSession = PublishRelay<Void>()
     private let _error = PublishRelay<Void>()
 
     private var isMastodonLogin: Bool {
@@ -54,7 +56,8 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
     }
     private var session: SFAuthenticationSession?
 
-    init() {
+    init(inputs: MastodonSettingViewModelInput) {
+        self.inputs = inputs
         form = Form()
         error = _error.observeOn(MainScheduler.instance).asObservable()
 
@@ -101,12 +104,13 @@ extension MastodonSettingViewModel {
             if UserDefaults.bool(forKey: .isMastodonLogin) {
                 let alert = UIAlertController(title: "すでにログインされています", message: "ドメインを変更するには先にログアウトをしてください", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
-                self._presentViewController.accept(alert)
-                row.deselect(animated: true)
+                self.inputs.viewController.present(alert, animated: true) {
+                    row.deselect(animated: true)
+                }
                 return
             }
             let viewController = SearchMastodonTableViewController()
-            self._pushViewController.accept(viewController)
+            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
         }
     }
 
@@ -198,8 +202,9 @@ extension MastodonSettingViewModel {
             }
             let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもトゥートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
-            self._presentViewController.accept(alert)
+            self.inputs.viewController.present(alert, animated: true) {
+                UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
+            }
         }
     }
 
@@ -235,7 +240,7 @@ extension MastodonSettingViewModel {
                     tweetFormatRow.updateCell()
                 }
             })
-            self._presentViewController.accept(alert)
+            self.inputs.viewController.present(alert, animated: true, completion: nil)
         }
     }
 }
@@ -267,7 +272,6 @@ extension MastodonSettingViewModel {
                 SVProgressHUD.dismiss(withDelay: 0.5)
                 UserDefaults.set(true, forKey: .isMastodonLogin)
                 self?.changeMastodonLogState(didLogin: true)
-                self?._endLoginSession.accept(())
             }, onError: { [weak self] (_) in
                 self?._error.accept(())
             })
@@ -287,17 +291,4 @@ extension MastodonSettingViewModel {
 
 // MARK: - MastodonSettingViewModelOutput
 
-extension MastodonSettingViewModel: MastodonSettingViewModelOutput {
-
-    var presentViewController: Driver<UIViewController> {
-        return _presentViewController.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
-    }
-
-    var pushViewController: Driver<UIViewController> {
-        return _pushViewController.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
-    }
-
-    var endLoginSession: Observable<Void> {
-        return _endLoginSession.observeOn(MainScheduler.instance).asObservable()
-    }
-}
+extension MastodonSettingViewModel: MastodonSettingViewModelOutput {}
