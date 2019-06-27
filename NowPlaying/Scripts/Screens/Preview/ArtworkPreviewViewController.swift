@@ -8,16 +8,13 @@
 
 import UIKit
 import RxSwift
+import SnapKit
 
 final class ArtworkPreviewViewController: UIViewController {
 
     @IBOutlet private weak var closeButton: UIButton!
-    @IBOutlet private weak var previewImageView: UIImageView! {
-        didSet {
-            previewImageView.image = image
-        }
-    }
 
+    private let previewImageView: UIImageView
     private let disposeBag = DisposeBag()
     private let image: UIImage
     private let _parent: TweetViewController
@@ -27,6 +24,9 @@ final class ArtworkPreviewViewController: UIViewController {
     // MARK: - Initializer
 
     init(image: UIImage, parent: TweetViewController) {
+        previewImageView = UIImageView(image: image)
+        previewImageView.hero.isEnabled = true
+        previewImageView.hero.id = "previewImageView"
         self.image = image
         self._parent = parent
         super.init(nibName: R.nib.artworkPreviewViewController.name, bundle: R.nib.artworkPreviewViewController.bundle)
@@ -40,6 +40,14 @@ final class ArtworkPreviewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(previewImageView)
+        previewImageView.snp.makeConstraints {
+            $0.top.equalTo(closeButton.snp.bottom).offset(51)
+            $0.left.equalTo(closeButton.snp.left)
+            $0.centerX.equalToSuperview()
+            let height = (UIScreen.main.bounds.size.width - (16 * 2)) * image.size.height / image.size.width
+            $0.height.equalTo(height)
+        }
         let inputs = ArtworkPreviewViewModelInput(closeButton: closeButton.rx.tap.asObservable(),
                                                   parent: _parent, currentViewController: self)
         viewModel = ArtworkPreviewViewModel(inputs: inputs)

@@ -42,7 +42,7 @@ final class ArtworkPreviewViewModel: ArtworkPreviewViewModelType {
         inputs.closeButton
             .subscribeOn(MainScheduler.instance)
             .subscribe(onNext: { (_) in
-                inputs.parent.forcusToTextView()
+                inputs.parent.forcusToTextView(delay: 0.4)
                 inputs.currentViewController.dismiss(animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
@@ -51,6 +51,4 @@ final class ArtworkPreviewViewModel: ArtworkPreviewViewModelType {
 
 // MARK: - ArtworkPreviewViewModelOutput
 
-extension ArtworkPreviewViewModel: ArtworkPreviewViewModelOutput {
-
-}
+extension ArtworkPreviewViewModel: ArtworkPreviewViewModelOutput {}

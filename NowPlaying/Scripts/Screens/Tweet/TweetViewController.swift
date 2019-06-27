@@ -39,7 +39,9 @@ final class TweetViewController: UIViewController {
                 .subscribe(onNext: { [unowned self] (_) in
                     self.textView.resignFirstResponder()
                     let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                    sheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+                    sheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel) { [unowned self] (_) in
+                        self.forcusToTextView()
+                    })
                     let previewAction = UIAlertAction(title: "プレビュー", style: .default) { [unowned self] (_) in
                         self.showPreviewer()
                     }
@@ -149,8 +151,10 @@ final class TweetViewController: UIViewController {
         )
     }
 
-    func forcusToTextView() {
-        textView.becomeFirstResponder()
+    func forcusToTextView(delay: TimeInterval = 0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+            self?.textView.becomeFirstResponder()
+        }
     }
 
     // MARK: - Private method
