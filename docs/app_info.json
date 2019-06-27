@@ -1,6 +1,6 @@
 {
-	"app_version": {
-		"require": "2.3.0",
-		"latest": "2.3.0"
-	}
+    "app_version": {
+        "require": "2.3.0",
+        "latest": "2.3.0"
+    }
 }

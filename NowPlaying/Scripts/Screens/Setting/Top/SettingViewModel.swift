@@ -15,12 +15,15 @@ import SafariServices
 import SVProgressHUD
 import UIKit
 
+struct SettingViewModelInput {
+
+    let viewController: UIViewController
+}
+
 // MARK: - SettingViewModelOutput
 
 protocol SettingViewModelOutput {
 
-    var pushViewController: Driver<UIViewController> { get }
-    var presentViewController: Driver<UIViewController> { get }
     var startInAppPurchase: Observable<Void> { get }
 }
 
@@ -31,6 +34,7 @@ protocol SettingViewModelType {
     var outputs: SettingViewModelOutput { get }
     var form: Form { get }
 
+    init(inputs: SettingViewModelInput)
     func buyProduct(_ product: PaymentManager.Product)
     func restore()
 }
@@ -42,11 +46,11 @@ final class SettingViewModel: SettingViewModelType {
     var outputs: SettingViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
-    private let _pushViewController = PublishRelay<UIViewController>()
-    private let _presentViewController = PublishRelay<UIViewController>()
     private let _startInAppPurchase = PublishRelay<Void>()
+    private let inputs: SettingViewModelInput
 
-    init() {
+    init(inputs: SettingViewModelInput) {
+        self.inputs = inputs
         form = Form()
 
         if !UserDefaults.bool(forKey: .isPurchasedRemoveAdMob) {
@@ -58,8 +62,7 @@ final class SettingViewModel: SettingViewModelType {
                 .disposed(by: disposeBag)
         }
 
-        configureSNSSection()
-        configureAbout()
+        configureCells()
     }
 
     func buyProduct(_ product: PaymentManager.Product) {
@@ -102,87 +105,98 @@ final class SettingViewModel: SettingViewModelType {
 
 extension SettingViewModel {
 
-    private func configureSNSSection() {
+    private func configureCells() {
         form
-            +++ Section("SNS設定") {
-                $0.tag = "sns_setting_section"
-            }
-
-            // Twitter
-            <<< NowPlayingButtonRow {
-                $0.title = "Twitter設定"
-                $0.tag = "twitter_setting"
-            }.onCellSelection { [weak self] (_, _) in
-                let viewController = TwitterSettingViewController(viewModel: TwitterSettingViewModel())
-                self?._pushViewController.accept(viewController)
-            }
-
-            // Mastodon
-            <<< NowPlayingButtonRow {
-                $0.title = "Mastodon設定"
-                $0.tag = "mastodon_setting"
-            }.onCellSelection { [weak self] (_, _) in
-                let viewController = MastodonSettingViewController(viewModel: MastodonSettingViewModel())
-                self?._pushViewController.accept(viewController)
-            }
+            +++ Section("SNS設定")
+                <<< configureTwitterSetting()
+                <<< configureMastodonSetting()
+            +++ Section("アプリについて")
+                <<< configureDeveloper()
+                <<< configureSourceCode()
+                <<< configureReportBugs()
+                <<< configureHideAdmobPurchase()
+                <<< configureReview()
     }
 
-    private func configureAbout() {
-        form
-            +++ Section("アプリについて")
+    private func configureTwitterSetting() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "Twitter設定"
+        }.onCellSelection { [unowned self] (_, _) in
+            let viewController = TwitterSettingViewController()
+            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 
-            <<< NowPlayingButtonRow {
-                $0.title = "開発者(Twitter)"
-            }.onCellSelection { [weak self] (_, _) in
-                let safariViewController = SFSafariViewController(url: URL(string: "https://twitter.com/nnsnodnb")!)
-                Analytics.Setting.onTapDeveloper()
-                self?._presentViewController.accept(safariViewController)
+    private func configureMastodonSetting() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "Mastodon設定"
+        }.onCellSelection { [unowned self] (_, _) in
+            let viewController = MastodonSettingViewController()
+            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+
+    private func configureDeveloper() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "開発者(Twitter)"
+        }.onCellSelection { [unowned self] (_, _) in
+            let safariViewController = SFSafariViewController(url: URL(string: "https://twitter.com/nnsnodnb")!)
+            self.inputs.viewController.present(safariViewController, animated: true, completion: nil)
+            Analytics.Setting.onTapDeveloper()
+        }
+    }
+
+    private func configureSourceCode() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "ソースコード(GitHub)"
+        }.onCellSelection { [unowned self] (_, _) in
+            let safariViewController = SFSafariViewController(url: URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!)
+            self.inputs.viewController.present(safariViewController, animated: true, completion: nil)
+            Analytics.Setting.github()
+        }
+    }
+
+    private func configureReportBugs() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "バグ報告"
+        }.onCellSelection { [unowned self] (_, _) in
+            let safariViewController = SFSafariViewController(url: URL(string: "https://goo.gl/forms/Ve9hPalUJD3DQW5y2")!)
+            self.inputs.viewController.present(safariViewController, animated: true, completion: nil)
+        }
+    }
+
+    private func configureHideAdmobPurchase() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "アプリ内広告削除(有料)"
+            $0.tag = "remove_admob"
+            $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isPurchasedRemoveAdMob))
+        }.onCellSelection { [unowned self] (_, _) in
+            if DTTJailbreakDetection.isJailbroken() {
+                let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
+                self.inputs.viewController.present(alert, animated: true, completion: nil)
+                return
             }
+            self._startInAppPurchase.accept(())
+        }
+    }
 
-            <<< NowPlayingButtonRow {
-                $0.title = "ソースコード(GitHub)"
-            }.onCellSelection { [weak self] (_, _) in
-                let safariViewController = SFSafariViewController(url: URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!)
-                Analytics.Setting.github()
-                self?._presentViewController.accept(safariViewController)
-            }
-
-            <<< NowPlayingButtonRow {
-                $0.title = "バグ報告"
-            }.onCellSelection { [weak self] (_, _) in
-                let safariViewController = SFSafariViewController(url: URL(string: "https://goo.gl/forms/Ve9hPalUJD3DQW5y2")!)
-                self?._presentViewController.accept(safariViewController)
-            }
-
-            <<< NowPlayingButtonRow {
-                $0.title = "アプリ内広告削除(有料)"
-                $0.tag = "remove_admob"
-                $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isPurchasedRemoveAdMob))
-            }.onCellSelection { [weak self] (_, _) in
-                if DTTJailbreakDetection.isJailbroken() {
-                    let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
-                    self?._presentViewController.accept(alert)
-                    return
+    private func configureReview() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "レビューする"
+        }.onCellSelection { [unowned self] (_, _) in
+            Analytics.Setting.review()
+            let alert = UIAlertController(title: "AppStoreが開きます", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "開く", style: .default) { (_) in
+                let reviewURL = URL(string: "\(websiteURL)&action=write-review")!
+                DispatchQueue.main.async {
+                    UIApplication.shared.open(reviewURL, options: [:], completionHandler: nil)
                 }
-                self?._startInAppPurchase.accept(())
-            }
-
-            <<< NowPlayingButtonRow {
-                $0.title = "レビューする"
-            }.onCellSelection { [unowned self] (_, _) in
-                Analytics.Setting.review()
-                let alert = UIAlertController(title: "AppStoreが開きます", message: nil, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: "開く", style: .default) { (_) in
-                    let reviewURL = URL(string: "\(websiteURL)&action=write-review")!
-                    DispatchQueue.main.async {
-                        UIApplication.shared.open(reviewURL, options: [:], completionHandler: nil)
-                    }
-                })
-                alert.preferredAction = alert.actions.last
-                self._presentViewController.accept(alert)
-            }
+            })
+            alert.preferredAction = alert.actions.last
+            self.inputs.viewController.present(alert, animated: true, completion: nil)
+        }
     }
 
     private func changeStateAdMob() {
@@ -196,14 +210,6 @@ extension SettingViewModel {
 // MARK: - SettingViewModelOutput
 
 extension SettingViewModel: SettingViewModelOutput {
-
-    var pushViewController: SharedSequence<DriverSharingStrategy, UIViewController> {
-        return _pushViewController.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
-    }
-
-    var presentViewController: SharedSequence<DriverSharingStrategy, UIViewController> {
-        return _presentViewController.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
-    }
 
     var startInAppPurchase: Observable<Void> {
         return _startInAppPurchase.observeOn(MainScheduler.instance).asObservable()

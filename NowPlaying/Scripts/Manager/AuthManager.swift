@@ -26,7 +26,7 @@ final class AuthManager: NSObject {
                     return
                 }
                 let credential = TwitterAuthProvider.credential(withToken: session.authToken, secret: session.authTokenSecret)
-                Auth.auth().signInAndRetrieveData(with: credential) { (result, error) in
+                Auth.auth().signIn(with: credential) { (result, error) in
                     guard let user = result?.user, error == nil else {
                         completion(error)
                         return

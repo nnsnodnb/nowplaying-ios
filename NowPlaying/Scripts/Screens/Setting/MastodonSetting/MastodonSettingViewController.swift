@@ -15,18 +15,8 @@ import UIKit
 final class MastodonSettingViewController: FormViewController {
 
     private let disposeBag = DisposeBag()
-    private let viewModel: MastodonSettingViewModelType
 
-    // MARK: - Initializer
-
-    init(viewModel: MastodonSettingViewModelType) {
-        self.viewModel = viewModel
-        super.init(nibName: R.nib.mastodonSettingViewController.name, bundle: R.nib.mastodonSettingViewController.bundle)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var viewModel: MastodonSettingViewModelType!
 
     // MARK: - Life cycle
 
@@ -34,20 +24,9 @@ final class MastodonSettingViewController: FormViewController {
         super.viewDidLoad()
         title = "Mastodon設定"
 
+        viewModel = MastodonSettingViewModel(inputs: MastodonSettingViewModelInput(viewController: self))
+
         form = viewModel.form
-
-        viewModel.outputs.presentViewController
-            .drive(onNext: { [weak self] (viewController) in
-                self?.present(viewController, animated: true, completion: nil)
-            })
-            .disposed(by: disposeBag)
-
-        viewModel.outputs.endLoginSession
-            .subscribe(onNext: { [weak self] (_) in
-                guard let safari = self?.presentedViewController as? SFSafariViewController else { return }
-                safari.dismiss(animated: true, completion: nil)
-            })
-            .disposed(by: disposeBag)
 
         viewModel.outputs.error
             .subscribe(onNext: { [weak self] (_) in

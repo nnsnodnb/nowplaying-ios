@@ -6,6 +6,7 @@
 //  Copyright © 2018年 Oka Yuya. All rights reserved.
 //
 
+import PopupDialog
 import DTTJailbreakDetection
 import Eureka
 import FirebaseAnalytics
@@ -17,32 +18,18 @@ import UIKit
 final class TwitterSettingViewController: FormViewController {
 
     private let disposeBag = DisposeBag()
-    private let viewModel: TwitterSettingViewModelType
 
-    // MARK: - Initializer
-
-    init(viewModel: TwitterSettingViewModelType) {
-        self.viewModel = viewModel
-        super.init(nibName: R.nib.twitterSettingViewController.name, bundle: R.nib.twitterSettingViewController.bundle)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var viewModel: TwitterSettingViewModelType!
 
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Twitter設定"
+        let inputs = TwitterSettingViewModelInput(viewController: self)
+        viewModel = TwitterSettingViewModel(inputs: inputs)
 
         form = viewModel.form
-
-        viewModel.outputs.presentViewController
-            .drive(onNext: { [weak self] (viewController) in
-                self?.present(viewController, animated: true, completion: nil)
-            })
-            .disposed(by: disposeBag)
 
         viewModel.outputs.startInAppPurchase
             .subscribe(onNext: { [weak self] (_) in
@@ -65,11 +52,31 @@ final class TwitterSettingViewController: FormViewController {
             self.viewModel.restore()
         })
         let newPurchaseAction = UIAlertAction(title: "購入", style: .default) { [unowned self] (_) in
-            self.viewModel.buyProduct(.autoTweet)
+            self.showBeforePurchaseNote()
         }
         alert.addAction(newPurchaseAction)
         alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
         alert.preferredAction = newPurchaseAction
         present(alert, animated: true, completion: nil)
+    }
+
+    private func showBeforePurchaseNote() {
+        let dialog = PopupDialog(title: nil,
+                                 message: "iOS上での制約のため\n長時間には対応できません\n1〜2曲ごとにアプリを起動することで\n自動投稿可能です",
+                                 buttonAlignment: .horizontal, transitionStyle: .zoomIn, tapGestureDismissal: false,
+                                 panGestureDismissal: false, hideStatusBar: true, completion: nil)
+
+        let cancelButton = CancelButton(title: "キャンセル", action: nil)
+        let purchaseButton = DefaultButton(title: "購入") { [unowned self] in
+            self.viewModel.buyProduct(.autoTweet)
+        }
+        purchaseButton.titleFont = .boldSystemFont(ofSize: 15)
+        dialog.addButtons([cancelButton, purchaseButton])
+        let dialogVC = dialog.viewController as! PopupDialogDefaultViewController
+        dialogVC.messageFont = .boldSystemFont(ofSize: 17)
+        dialogVC.messageColor = .black
+        DispatchQueue.main.async {
+            self.present(dialog, animated: true, completion: nil)
+        }
     }
 }

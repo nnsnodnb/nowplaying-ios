@@ -178,17 +178,36 @@ extension PlayViewModel {
         guard let item = _nowPlayingItem.value else {
             return PostContent(postMessage: "", shareImage: nil, songTitle: "", artistName: "", service: service)
         }
-        let title = item.title ?? ""
-        let artist = item.artist ?? ""
-        let postText = "\(title) by \(artist) #NowPlaying"
-        let shareImage: UIImage?
-        if let artwork = item.artwork, let image = artwork.image(at: artwork.bounds.size) {
-            shareImage = image
-        } else {
-            shareImage = nil
-        }
+        var postText = UserDefaults.string(forKey: service.postTextFormatUserDefaultsKey)!
+
+        let title = item.title ?? "不明なタイトル"
+        let artist = item.artist ?? "不明なアーティスト"
+        let album = item.albumTitle ?? "不明なアルバム"
+        postText = postText.replacingOccurrences(of: "__songtitle__", with: title)
+        postText = postText.replacingOccurrences(of: "__artist__", with: artist)
+        postText = postText.replacingOccurrences(of: "__album__", with: album)
+
+        let shareImage = getShareImage(service: service, item: item)
 
         return PostContent(postMessage: postText, shareImage: shareImage, songTitle: title, artistName: artist, service: service)
+    }
+
+    private func getShareImage(service: Service, item: MPMediaItem) -> UIImage? {
+        switch WithImageType(rawValue: UserDefaults.string(forKey: service.withImageTypeUserDefaultsKey)!)! {
+        case .onlyArtwork:
+            guard let artwork = item.artwork, let image = artwork.image(at: artwork.bounds.size) else { return nil }
+            return image
+        case .playerScreenshot:
+            let rect = UIScreen.main.bounds
+            UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
+            defer { UIGraphicsEndImageContext() }
+            let context = UIGraphicsGetCurrentContext()!
+
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.window?.rootViewController?.view.layer.render(in: context)
+
+            return UIGraphicsGetImageFromCurrentImageContext()
+        }
     }
 
     private func setNewPostContent(service: Service) {

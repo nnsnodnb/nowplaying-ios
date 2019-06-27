@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '10.3'
+platform :ios, '11.0'
 
 target 'NowPlaying' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
@@ -9,6 +9,10 @@ target 'NowPlaying' do
   pod 'Crashlytics'
   pod 'DTTJailbreakDetection'
   pod 'Fabric'
+  pod 'Firebase/AdMob'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Database'
   pod 'LicensePlist'
   pod 'NSURL+QueryDictionary'
   pod 'R.swift'

@@ -7,10 +7,11 @@
 //
 
 import FirebaseAnalytics
-import SVProgressHUD
+import Hero
 import RxCocoa
 import RxKeyboard
 import RxSwift
+import SVProgressHUD
 import TwitterKit
 import UIKit
 
@@ -25,20 +26,27 @@ final class TweetViewController: UIViewController {
     @IBOutlet private weak var textViewHeight: NSLayoutConstraint!
     @IBOutlet private weak var artworkImageButton: UIButton! {
         didSet {
+            artworkImageButton.imageView?.contentMode = .scaleAspectFit
             if shareImage == nil {
                 artworkImageButton.isHidden = true
                 return
             }
             artworkImageButton.alpha = 0
-            artworkImageButton.imageView?.backgroundColor = UIColor.clear
+            artworkImageButton.imageView?.backgroundColor = .clear
             artworkImageButton.setImage(shareImage, for: .normal)
             artworkImageButton.rx.tap
                 .observeOn(MainScheduler.instance)
-                .subscribe(onNext: { [weak self] (_) in
-                    guard let wself = self else { return }
-                    let sheet = UIAlertController(title: nil, message: "アートワークを削除します", preferredStyle: .actionSheet)
-                    sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                    sheet.addAction(UIAlertAction(title: "削除", style: .destructive) { [weak self] (_) in
+                .subscribe(onNext: { [unowned self] (_) in
+                    self.textView.resignFirstResponder()
+                    let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                    sheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel) { [unowned self] (_) in
+                        self.forcusToTextView()
+                    })
+                    let previewAction = UIAlertAction(title: "プレビュー", style: .default) { [unowned self] (_) in
+                        self.showPreviewer()
+                    }
+                    sheet.addAction(previewAction)
+                    sheet.addAction(UIAlertAction(title: "添付画像を削除", style: .destructive) { [weak self] (_) in
                         self?.shareImage = nil
                         UIView.animate(withDuration: 0.3, animations: {
                             self?.artworkImageButton.alpha = 0.0
@@ -49,9 +57,8 @@ final class TweetViewController: UIViewController {
                             Analytics.logEvent("delete_image", parameters: ["type": "action"])
                         })
                     })
-                    sheet.popoverPresentationController?.sourceView = wself.artworkImageButton
-                    sheet.popoverPresentationController?.sourceRect = wself.artworkImageButton.frame
-                    wself.present(sheet, animated: true, completion: nil)
+                    sheet.preferredAction = previewAction
+                    self.present(sheet, animated: true, completion: nil)
                 })
                 .disposed(by: disposeBag)
         }
@@ -144,6 +151,12 @@ final class TweetViewController: UIViewController {
         )
     }
 
+    func forcusToTextView(delay: TimeInterval = 0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+            self?.textView.becomeFirstResponder()
+        }
+    }
+
     // MARK: - Private method
 
     private func setupNavigationBar() {
@@ -182,5 +195,11 @@ final class TweetViewController: UIViewController {
         UIView.animate(withDuration: 0.5) { [unowned self] in
             self.artworkImageButton.alpha = 1
         }
+    }
+
+    private func showPreviewer() {
+        guard let shareImage = self.shareImage else { return }
+        let viewController = ArtworkPreviewViewController(image: shareImage, parent: self)
+        present(viewController, animated: true, completion: nil)
     }
 }

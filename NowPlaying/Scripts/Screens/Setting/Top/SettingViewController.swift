@@ -31,21 +31,9 @@ final class SettingViewController: FormViewController {
             .disposed(by: disposeBag)
         navigationItem.rightBarButtonItem = closeButton
 
-        viewModel = SettingViewModel()
+        viewModel = SettingViewModel(inputs: SettingViewModelInput(viewController: self))
 
         form = viewModel.form
-
-        viewModel.outputs.pushViewController
-            .drive(onNext: { [weak self] (viewController) in
-                self?.navigationController?.pushViewController(viewController, animated: true)
-            })
-            .disposed(by: disposeBag)
-
-        viewModel.outputs.presentViewController
-            .drive(onNext: { [weak self] (viewController) in
-                self?.present(viewController, animated: true, completion: nil)
-            })
-            .disposed(by: disposeBag)
 
         viewModel.outputs.startInAppPurchase
             .subscribe(onNext: { [weak self] (_) in

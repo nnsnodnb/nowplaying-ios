@@ -10,6 +10,7 @@ import APIKit
 import Crashlytics
 import Fabric
 import FirebaseCore
+import FirebaseAnalytics
 import GoogleMobileAds
 import KeychainAccess
 import RxSwift
@@ -38,46 +39,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                            consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
         Fabric.with([Crashlytics.self])
         FirebaseApp.configure()
-        GADMobileAds.configure(withApplicationID: ProcessInfo.processInfo.get(forKey: .firebaseAdmobAppId))
-//        PaymentManager.shared.startTransactionObserve()
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
         #if DEBUG
-        AnalyticsConfiguration.shared().setAnalyticsCollectionEnabled(false)
+        Analytics.setAnalyticsCollectionEnabled(false)
 //        keychain.remove(KeychainKey.mastodonClientID.rawValue)
 //        keychain.remove(KeychainKey.mastodonClientSecret.rawValue)
 //        keychain.remove(KeychainKey.mastodonAccessToken.rawValue)
         #endif
+
+        if UserDefaults.string(forKey: .tweetFormat) == nil {
+            UserDefaults.set(defaultPostFormat, forKey: .tweetFormat)
+        }
+        if UserDefaults.string(forKey: .tweetWithImageType) == nil {
+            UserDefaults.set(WithImageType.onlyArtwork.rawValue, forKey: .tweetWithImageType)
+        }
+        if UserDefaults.string(forKey: .tootFormat) == nil {
+            UserDefaults.set(defaultPostFormat, forKey: .tootFormat)
+        }
+        if UserDefaults.string(forKey: .tootWithImageType) == nil {
+            UserDefaults.set(WithImageType.onlyArtwork.rawValue, forKey: .tootWithImageType)
+        }
         return true
     }
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]=[:]) -> Bool {
         if let source = options[.sourceApplication] as? String, source == "com.apple.SafariViewService" {
-            if let scheme = url.scheme, scheme.starts(with: "twitterkit-") {
-                return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
-            } else {
-                NotificationCenter.default.post(name: .receiveSafariNotificationName, object: url)
-                return true
-            }
+            guard let scheme = url.scheme, scheme.starts(with: "twitterkit-") else { return true }
+            return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
         } else {
             return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
         }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        backgroundTaskID = application.beginBackgroundTask(withName: "AutoTweetBackgroundTask") { [weak self] in
-            guard let wself = self else { return }
-            application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: wself.backgroundTaskID.rawValue))
-            wself.backgroundTaskID = UIBackgroundTaskIdentifier.invalid
-        }
+        beginBackgroundTask(application)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
     }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
-    }
-
     func applicationDidBecomeActive(_ application: UIApplication) {
         application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: backgroundTaskID.rawValue))
+        backgroundTaskID = UIBackgroundTaskIdentifier.invalid
         resignFirstResponder()
         checkFirebaseHostingAppVersion()
     }
@@ -93,8 +96,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    private func beginBackgroundTask(_ application: UIApplication) {
+        let name = "AutoTweetBackgroundTask_\(UUID().uuidString)"
+        backgroundTaskID = application.beginBackgroundTask(withName: name) { [weak self] in
+            guard let wself = self else { return }
+            application.endBackgroundTask(.init(rawValue: wself.backgroundTaskID.rawValue))
+            wself.backgroundTaskID = .invalid
+        }
+    }
+
     private func loadEnvironment() {
-        guard let path = Bundle.main.path(forResource: ".env", ofType: nil) else {
+        guard let path = Bundle.main.path(forResource: R.file.env) else {
             fatalError("Not found: 'Resources/.env'.\nPlease create .env file reference from .env.sample")
         }
         let url = URL(fileURLWithPath: path)
