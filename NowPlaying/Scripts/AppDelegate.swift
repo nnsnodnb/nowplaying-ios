@@ -72,21 +72,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        backgroundTaskID = application.beginBackgroundTask(withName: "AutoTweetBackgroundTask") { [weak self] in
-            guard let wself = self else { return }
-            application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: wself.backgroundTaskID.rawValue))
-            wself.backgroundTaskID = UIBackgroundTaskIdentifier.invalid
-        }
+        beginBackgroundTask(application)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
     }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
-    }
-
     func applicationDidBecomeActive(_ application: UIApplication) {
         application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: backgroundTaskID.rawValue))
+        backgroundTaskID = UIBackgroundTaskIdentifier.invalid
         resignFirstResponder()
         checkFirebaseHostingAppVersion()
     }
@@ -102,8 +96,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    private func beginBackgroundTask(_ application: UIApplication) {
+        let name = "AutoTweetBackgroundTask_\(UUID().uuidString)"
+        backgroundTaskID = application.beginBackgroundTask(withName: name) { [weak self] in
+            guard let wself = self else { return }
+            application.endBackgroundTask(.init(rawValue: wself.backgroundTaskID.rawValue))
+            wself.backgroundTaskID = .invalid
+        }
+    }
+
     private func loadEnvironment() {
-        guard let path = Bundle.main.path(forResource: ".env", ofType: nil) else {
+        guard let path = Bundle.main.path(forResource: R.file.env) else {
             fatalError("Not found: 'Resources/.env'.\nPlease create .env file reference from .env.sample")
         }
         let url = URL(fileURLWithPath: path)
