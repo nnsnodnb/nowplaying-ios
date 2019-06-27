@@ -31,15 +31,20 @@ final class TweetViewController: UIViewController {
                 return
             }
             artworkImageButton.alpha = 0
-            artworkImageButton.imageView?.backgroundColor = UIColor.clear
+            artworkImageButton.imageView?.backgroundColor = .clear
             artworkImageButton.setImage(shareImage, for: .normal)
             artworkImageButton.rx.tap
                 .observeOn(MainScheduler.instance)
-                .subscribe(onNext: { [weak self] (_) in
-                    guard let wself = self else { return }
-                    let sheet = UIAlertController(title: nil, message: "アートワークを削除します", preferredStyle: .actionSheet)
-                    sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                    sheet.addAction(UIAlertAction(title: "削除", style: .destructive) { [weak self] (_) in
+                .subscribe(onNext: { [unowned self] (_) in
+                    let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                    sheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+                    let previewAction = UIAlertAction(title: "プレビュー", style: .default) { [unowned self] (_) in
+                        guard let shareImage = self.shareImage else { return }
+                        let viewController = ArtworkPreviewViewController(image: shareImage)
+                        self.present(viewController, animated: true, completion: nil)
+                    }
+                    sheet.addAction(previewAction)
+                    sheet.addAction(UIAlertAction(title: "添付画像を削除", style: .destructive) { [weak self] (_) in
                         self?.shareImage = nil
                         UIView.animate(withDuration: 0.3, animations: {
                             self?.artworkImageButton.alpha = 0.0
@@ -50,9 +55,8 @@ final class TweetViewController: UIViewController {
                             Analytics.logEvent("delete_image", parameters: ["type": "action"])
                         })
                     })
-                    sheet.popoverPresentationController?.sourceView = wself.artworkImageButton
-                    sheet.popoverPresentationController?.sourceRect = wself.artworkImageButton.frame
-                    wself.present(sheet, animated: true, completion: nil)
+                    sheet.preferredAction = previewAction
+                    self.present(sheet, animated: true, completion: nil)
                 })
                 .disposed(by: disposeBag)
         }
