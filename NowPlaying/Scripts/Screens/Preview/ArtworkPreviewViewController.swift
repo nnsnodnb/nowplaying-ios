@@ -13,6 +13,7 @@ import SnapKit
 final class ArtworkPreviewViewController: UIViewController {
 
     @IBOutlet private weak var closeButton: UIButton!
+    @IBOutlet private weak var screenshotPreviewImageView: UIImageView!
 
     private let previewImageView: UIImageView
     private let disposeBag = DisposeBag()
@@ -25,6 +26,7 @@ final class ArtworkPreviewViewController: UIViewController {
 
     init(image: UIImage, parent: TweetViewController) {
         previewImageView = UIImageView(image: image)
+        previewImageView.contentMode = .scaleAspectFit
         previewImageView.hero.isEnabled = true
         previewImageView.hero.id = "previewImageView"
         self.image = image
@@ -40,14 +42,20 @@ final class ArtworkPreviewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(previewImageView)
-        previewImageView.snp.makeConstraints {
-            $0.top.equalTo(closeButton.snp.bottom).offset(51)
-            $0.left.equalTo(closeButton.snp.left)
-            $0.centerX.equalToSuperview()
-            let height = (UIScreen.main.bounds.size.width - (16 * 2)) * image.size.height / image.size.width
-            $0.height.equalTo(height)
+        if UIScreen.main.bounds.size.width == image.size.width && UIScreen.main.bounds.size.height == image.size.height {
+            screenshotPreviewImageView.image = image
+        } else {
+            screenshotPreviewImageView.removeFromSuperview()
+            view.addSubview(previewImageView)
+            previewImageView.snp.makeConstraints {
+                $0.top.equalTo(closeButton.snp.bottom).offset(51)
+                $0.left.equalTo(closeButton.snp.left)
+                $0.centerX.equalToSuperview()
+                let height = (UIScreen.main.bounds.size.width - (16 * 2)) * image.size.height / image.size.width
+                $0.height.equalTo(height)
+            }
         }
+
         let inputs = ArtworkPreviewViewModelInput(closeButton: closeButton.rx.tap.asObservable(),
                                                   parent: _parent, currentViewController: self)
         viewModel = ArtworkPreviewViewModel(inputs: inputs)
