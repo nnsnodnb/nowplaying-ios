@@ -1,3 +1,4 @@
+github "HeroTransitions/Hero"
 github "ishkawa/APIKit" ~> 5.0
 github "kean/Nuke" ~> 7.0
 github "kishikawakatsumi/KeychainAccess"

@@ -12,6 +12,7 @@ $(SRCROOT)/Carthage/Build/iOS/Action.framework
 $(SRCROOT)/Carthage/Build/iOS/APIKit.framework
 $(SRCROOT)/Carthage/Build/iOS/DynamicBlurView.framework
 $(SRCROOT)/Carthage/Build/iOS/Eureka.framework
+$(SRCROOT)/Carthage/Build/iOS/Hero.framework
 $(SRCROOT)/Carthage/Build/iOS/KeychainAccess.framework
 $(SRCROOT)/Carthage/Build/iOS/Nuke.framework
 $(SRCROOT)/Carthage/Build/iOS/PopupDialog.framework

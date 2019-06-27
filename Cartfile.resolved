@@ -1,4 +1,5 @@
 binary "https://raw.githubusercontent.com/RxSwiftCommunity/RxKeyboard/master/RxKeyboard.json" "1.0.0"
+github "HeroTransitions/Hero" "1.4.0"
 github "KyoheiG3/DynamicBlurView" "3.0.1"
 github "Orderella/PopupDialog" "1.1.0"
 github "ReactiveX/RxSwift" "5.0.1"
