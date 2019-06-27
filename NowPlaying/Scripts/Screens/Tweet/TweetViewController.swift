@@ -7,10 +7,11 @@
 //
 
 import FirebaseAnalytics
-import SVProgressHUD
+import Hero
 import RxCocoa
 import RxKeyboard
 import RxSwift
+import SVProgressHUD
 import TwitterKit
 import UIKit
 
@@ -36,12 +37,11 @@ final class TweetViewController: UIViewController {
             artworkImageButton.rx.tap
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { [unowned self] (_) in
+                    self.textView.resignFirstResponder()
                     let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                     sheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
                     let previewAction = UIAlertAction(title: "プレビュー", style: .default) { [unowned self] (_) in
-                        guard let shareImage = self.shareImage else { return }
-                        let viewController = ArtworkPreviewViewController(image: shareImage)
-                        self.present(viewController, animated: true, completion: nil)
+                        self.showPreviewer()
                     }
                     sheet.addAction(previewAction)
                     sheet.addAction(UIAlertAction(title: "添付画像を削除", style: .destructive) { [weak self] (_) in
@@ -187,5 +187,11 @@ final class TweetViewController: UIViewController {
         UIView.animate(withDuration: 0.5) { [unowned self] in
             self.artworkImageButton.alpha = 1
         }
+    }
+
+    private func showPreviewer() {
+        guard let shareImage = self.shareImage else { return }
+        let viewController = ArtworkPreviewViewController(image: shareImage)
+        present(viewController, animated: true, completion: nil)
     }
 }
