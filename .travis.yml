@@ -3,6 +3,7 @@ osx_image: xcode10.2
 xcode_project: NowPlaying.xcworkspace
 xcode_scheme: NowPlaying
 before_install:
+  - gem update bundler -N
   - bundle install --path vendor/bundle
   - bundle exec pod install
   - brew update
