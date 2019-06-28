@@ -4,15 +4,14 @@ xcode_project: NowPlaying.xcworkspace
 xcode_scheme: NowPlaying
 cache:
   directories:
-    - Carthage
-    - Pods
-    - vendor
+  - Carthage
+  - Pods
+  - vendor
 before_install:
+  - export GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN
   - gem update bundler -N
   - bundle install --path vendor/bundle
   - bundle exec pod install --repo-update
-  - brew update
-  - brew install carthage
   - carthage bootstrap --platform iOS --cache-builds
 script:
   - sudo security create-keychain -p travis travis.keychain
@@ -27,14 +26,14 @@ script:
   - sudo security import ./certs/Distribution.p12 -k ~/Library/Keychains/travis.keychain -P $CERT_PASS -T /usr/bin/codesign
   - mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
   - cp certs/embedded.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
-  - sudo security set-key-partition-list -S apple-tool:,apple: -s -k travis travis.keychain
+  - sudo security set-key-partition-list -S apple-tool:,apple: "-s -k travis travis.keychain"
   - set -o pipefail && xcodebuild -workspace NowPlaying.xcworkspace -scheme NowPlaying -configuration Debug COMPILER_INDEX_STORE_ENABLE=NO archive -archivePath ./build/NowPlaying.xcarchive -UseModernBuildSystem=NO | xcpretty
   - set -o pipefail && xcodebuild -exportArchive -archivePath ./build/NowPlaying.xcarchive -exportPath ./build/export -exportOptionsPlist ./build/export/export_options.plist | xcpretty
 env:
   global:
     secure: pFIOMwaJ+v3QUNyf0sIWhy+DA25VCatifCVIr0JGu8sLw7If7VwBW3iL6+VCEsAq+JqDeUzXGuiIzqHjTQDFteQQzGH/gsYkElZlgqqn0lA3OcjwHZX9/9buQw4UCmXfF4W+qQS0rB5jw3SyPH7hWuKy+u1kO8opdiTLRBlTKqPtIPuMchx2PZaZ0Bjs5SPla+5YEGoz7dn8IEXutURoQQTlCvwyg6v7ftgZkpf3tWRqTVJPjHdSALjLJQDx2ZUcR9JnpnZzxest9ZM3R/FOcOf2VlROSChNn1aQVD3eqkg7tsxF4FrhkRMFhmtR1CXdJzvC1h+OXy0toZw9AX4VqcXD0SinzyWfehtfV+E7QsbnBb+av82ejr7tfqC0VMq7X3wvoRwSTkxJF81wLFRBJfIC6BqBRmQwhqGkeqNaVlNohOOjBGGNfrY7jNUYwsuvHe9JUpQDMkzBjbXL2BhcdQ5eGTfTrOWq54MfwVLmVWDYczb60EVw82X+QBsBaXCQpu0IJmZq4lx8RARd+ENLK6JrI3gLT8TveyIwARmlwFpRyhj0ITV6BtwQOWAb6JtR5hA1XeZF2OjM6nUlnAcc7l0jiB+qpH4itva0tVydnY2mNeu1zzQCPPp0AhUh5ViAjBvzBL+T95exO0yQB8jyw5QB45hZcfbKt4b/5oLmwIU=
 dd:
-  secure: l5XnvZHROukgQ3tuEnZmZnOVH8dVx3SZIymakkCBnFQMBTXwzAflE/O5XrKDpwinGcfFrpzh1n/IdpJfCbTWSzFX3cTfXN01B3RSKsbZYjHtty8bpuex845a4d/nTul+zoeZSBXtDrrhIVFoTHK8MDzfhIhX09Ax/4oOQc2aEcz+cnMSyvLP4kTtmjkzbdDrs3LnDdwG6XhamNlY12ZW+p5byqpUiGzLC+m8MjmUOZVTPGWVpEscir/pAuiqm4QKmm+tvfXFVDgiSDh3yc1XSy/Hmmc84+uoSRHeJL7yzKOT9JUJC+bJm12ddWo8tbb98oCnTqPuoHhHjSaxi5A+h01OX8za5azsr+yFD3NfY6yDw3viaXXafUIT9ESGJWJQQZpybkOHNDxQhQujYP/27cDy/JPpErjVu60ZdXGwV6W8G+1N19QLpaJHtZPLMnelE16sRCwK6EyztxzsX3tJNEfTVPme7WInxy5ozjA8RtWX64cUFrfYM4ir7GmAuLNIUgxlmAniLBhpL5XhFO/tzsmo84aWc/IVBAxH6d3cGzWeU/QozUGeX2ATe4+5N67zxtQ1xiKPRw46TdAmBEj8/br3IqSx0jC8SxbkLZkwYL6X5SXRcDhvqx0n0MBV+QGQJT+ys7C3pVqOn8XAme92lHUwqwFlnAaNVAmsrj24NbI=
+  secure: M0YcGWYiJRDcR/BowVgBpyyIvSDh2ZR/PDstHXPLCVHMNQk3T4J5ILVQ76juCXvsWcBXqpV74df1wmZNlPcUA7c5HgBdl9G0GyyAi3aXRP2ahBmmd2Gr5uV6q95ji/vwEpVznmceK6dYfUEZKDmzxfvKsIxRZb8TPAeVluI2mrQFRCoXGCYkQlMhb2RKXJ/+2IPf5SNH5HvF/K0kGtuZCMCwQKjkjlN6uC8Aqtgvch0sacD6C4KDsKPadomSu3M9p9dzpWRtZ4kNXrt1q8SyF9KLzJYeItQ2j3FQofjftpi2KxHxGQuqLWjysBad2EzBHiJynmtCnWwhQLS0e4VKrvRRKR9+moY/h7j7O/W7GUOZjQmDahyJReoCmWHWsmxopnu5ngSciJ/XKS3Qcs4Gh/OxvBUyAifU9Xoe6/Bq0luK1bU7gSUsmpH4eAfSIKgmdAVghZ8rpHSaJOwIQOTnl5+pIRGaO3RCbHJ6plImO3woGYO3J07m99MqbzrjPvGaMB6Nq2hyE1PbyPVnA4lmuJ6omM4VliDaZ4cgA4+EZrM0Eg7b1cA7r1dewUyXn92itvIozwzYV0zG6Sc2q9ejB/s4EVVtM1r+W2+Cy/zWKKbhShgwVvb/B8uBV1DQvdrXe4xC9wpsPMKOuGdFEt3HjfLMJERB1E1GIMsjyFBsE+w=
 branches:
   only:
     - travis/deploygate
