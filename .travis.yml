@@ -2,7 +2,6 @@ language: objective-c
 osx_image: xcode10.2
 xcode_project: NowPlaying.xcworkspace
 xcode_scheme: NowPlaying
-
 before_install:
   - gem install cocoapods --no-document -v '1.7.2'
   - gem install -no-document xcpretty
@@ -10,7 +9,27 @@ before_install:
   - brew update
   - brew install carthage
   - carthage bootstrap --platform iOS --cache-builds
-
 script:
+  - sudo security create-keychain -p travis travis.keychain
+  - sudo security default-keychain -s travis.keychain
+  - sudo security unlock-keychain -p travis travis.keychain
+  - sudo security set-keychain-settings -t 3600 -l ~/Library/Keychains/travis.keychain
+  - openssl aes-256-cbc -a -d -k $DECORD_CERTS -in certs/GoogleService-Info.plist.enc -out NowPlaying/Resources/GoogleService-Info.plist
+  - openssl aes-256-cbc -a -d -k $DECORD_CERTS -in certs/env.enc -out NowPlaying/Resources/.env
+  - openssl aes-256-cbc -a -d -k $DECORD_CERTS -in certs/embedded.mobileprovision.enc -out certs/embedded.mobileprovision
+  - openssl aes-256-cbc -a -d -k $DECORD_CERTS -in certs/Distribution.p12.enc -out certs/Distribution.p12
+  - sudo security import ./certs/ios_distribution.cer -k ~/Library/Keychains/travis.keychain -T /usr/bin/codesign
+  - sudo security import ./certs/Distribution.p12 -k ~/Library/Keychains/travis.keychain -P $CERT_PASS -T /usr/bin/codesign
+  - mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+  - cp certs/embedded.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
+  - sudo security set-key-partition-list -S apple-tool:,apple: -s -k travis travis.keychain
   - set -o pipefail && xcodebuild -workspace NowPlaying.xcworkspace -scheme NowPlaying -configuration Debug COMPILER_INDEX_STORE_ENABLE=NO archive -archivePath ./build/NowPlaying.xcarchive -UseModernBuildSystem=NO | xcpretty
   - set -o pipefail && xcodebuild -exportArchive -archivePath ./build/NowPlaying.xcarchive -exportPath ./build/export -exportOptionsPlist ./build/export/export_options.plist | xcpretty
+env:
+  global:
+    secure: pFIOMwaJ+v3QUNyf0sIWhy+DA25VCatifCVIr0JGu8sLw7If7VwBW3iL6+VCEsAq+JqDeUzXGuiIzqHjTQDFteQQzGH/gsYkElZlgqqn0lA3OcjwHZX9/9buQw4UCmXfF4W+qQS0rB5jw3SyPH7hWuKy+u1kO8opdiTLRBlTKqPtIPuMchx2PZaZ0Bjs5SPla+5YEGoz7dn8IEXutURoQQTlCvwyg6v7ftgZkpf3tWRqTVJPjHdSALjLJQDx2ZUcR9JnpnZzxest9ZM3R/FOcOf2VlROSChNn1aQVD3eqkg7tsxF4FrhkRMFhmtR1CXdJzvC1h+OXy0toZw9AX4VqcXD0SinzyWfehtfV+E7QsbnBb+av82ejr7tfqC0VMq7X3wvoRwSTkxJF81wLFRBJfIC6BqBRmQwhqGkeqNaVlNohOOjBGGNfrY7jNUYwsuvHe9JUpQDMkzBjbXL2BhcdQ5eGTfTrOWq54MfwVLmVWDYczb60EVw82X+QBsBaXCQpu0IJmZq4lx8RARd+ENLK6JrI3gLT8TveyIwARmlwFpRyhj0ITV6BtwQOWAb6JtR5hA1XeZF2OjM6nUlnAcc7l0jiB+qpH4itva0tVydnY2mNeu1zzQCPPp0AhUh5ViAjBvzBL+T95exO0yQB8jyw5QB45hZcfbKt4b/5oLmwIU=
+dd:
+  secure: l5XnvZHROukgQ3tuEnZmZnOVH8dVx3SZIymakkCBnFQMBTXwzAflE/O5XrKDpwinGcfFrpzh1n/IdpJfCbTWSzFX3cTfXN01B3RSKsbZYjHtty8bpuex845a4d/nTul+zoeZSBXtDrrhIVFoTHK8MDzfhIhX09Ax/4oOQc2aEcz+cnMSyvLP4kTtmjkzbdDrs3LnDdwG6XhamNlY12ZW+p5byqpUiGzLC+m8MjmUOZVTPGWVpEscir/pAuiqm4QKmm+tvfXFVDgiSDh3yc1XSy/Hmmc84+uoSRHeJL7yzKOT9JUJC+bJm12ddWo8tbb98oCnTqPuoHhHjSaxi5A+h01OX8za5azsr+yFD3NfY6yDw3viaXXafUIT9ESGJWJQQZpybkOHNDxQhQujYP/27cDy/JPpErjVu60ZdXGwV6W8G+1N19QLpaJHtZPLMnelE16sRCwK6EyztxzsX3tJNEfTVPme7WInxy5ozjA8RtWX64cUFrfYM4ir7GmAuLNIUgxlmAniLBhpL5XhFO/tzsmo84aWc/IVBAxH6d3cGzWeU/QozUGeX2ATe4+5N67zxtQ1xiKPRw46TdAmBEj8/br3IqSx0jC8SxbkLZkwYL6X5SXRcDhvqx0n0MBV+QGQJT+ys7C3pVqOn8XAme92lHUwqwFlnAaNVAmsrj24NbI=
+branches:
+  only:
+    - travis/deploygate

@@ -64,3 +64,5 @@ vendor/
 NowPlaying/Resources/GoogleService-Info.plist
 *.generated.swift
 com.mono0926.LicensePlist.latest_result.txt
+Distribution.p12
+embedded.mobileprovision
