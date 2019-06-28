@@ -3,9 +3,8 @@ osx_image: xcode10.2
 xcode_project: NowPlaying.xcworkspace
 xcode_scheme: NowPlaying
 before_install:
-  - gem install cocoapods --no-document -v '1.7.2'
-  - gem install -no-document xcpretty
-  - pod install
+  - bundle install --path vendor/bundle
+  - bundle exec pod install
   - brew update
   - brew install carthage
   - carthage bootstrap --platform iOS --cache-builds
