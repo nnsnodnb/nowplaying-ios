@@ -21,18 +21,21 @@ script:
   - sudo security set-keychain-settings -t 3600 -l ~/Library/Keychains/travis.keychain
   - openssl aes-256-cbc -a -d -k $DECORD_CERTS -in "certs/GoogleService-Info.plist.enc" -out "NowPlaying/Resources/GoogleService-Info.plist"
   - openssl aes-256-cbc -a -d -k $DECORD_CERTS -in "certs/env.enc" -out "NowPlaying/Resources/.env"
-  - openssl aes-256-cbc -a -d -k $DECORD_CERTS -in "certs/embedded.mobileprovision.enc" -out "certs/embedded.mobileprovision"
+  - openssl aes-256-cbc -a -d -k $DECORD_CERTS -in "certs/provisions/89d6fa9c-f33e-4e8b-b37a-50088d3e7923.iOSTeamAdHocProvisioningProfilemoe.nnsnodnb.NowPlaying.mobileprovision.enc" -out "certs/provisions/89d6fa9c-f33e-4e8b-b37a-50088d3e7923.iOSTeamAdHocProvisioningProfilemoe.nnsnodnb.NowPlaying.mobileprovision"
+  - openssl aes-256-cbc -a -d -k $DECORD_CERTS -in "certs/provisions/d57d0a2b-f80e-402c-821a-6a7ec63ee18f.iOSTeamAdHocProvisioningProfile.mobileprovision.enc" -out "certs/provisions/d57d0a2b-f80e-402c-821a-6a7ec63ee18f.iOSTeamAdHocProvisioningProfile.mobileprovision"
+  - openssl aes-256-cbc -a -d -k $DECORD_CERTS -in "certs/provisions/d116311f-ba2e-4cd8-b3b2-05f61e57d5f0.iOSTeamProvisioningProfilemoe.nnsnodnb.NowPlaying.mobileprovision.enc" -out "certs/provisions/d116311f-ba2e-4cd8-b3b2-05f61e57d5f0.iOSTeamProvisioningProfilemoe.nnsnodnb.NowPlaying.mobileprovision"
+  - openssl aes-256-cbc -a -d -k $DECORD_CERTS -in "certs/provisions/e68d3fe7-358c-4126-9416-5179adc91877.iOSTeamProvisioningProfile.mobileprovision.enc" -out "certs/provisions/e68d3fe7-358c-4126-9416-5179adc91877.iOSTeamProvisioningProfile.mobileprovision"
   - openssl aes-256-cbc -a -d -k $DECORD_CERTS -in "certs/Distribution.p12.enc" -out "certs/Distribution.p12"
   - sudo security import ./certs/ios_distribution.cer -k ~/Library/Keychains/travis.keychain -T /usr/bin/codesign
   - sudo security import ./certs/Distribution.p12 -k ~/Library/Keychains/travis.keychain -P $CERT_PASS -T /usr/bin/codesign
   - mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-  - set -o pipefail && cp certs/embedded.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
+  - set -o pipefail && cp certs/provisions/*.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
   - sudo security set-key-partition-list -S "apple-tool:,apple:" -s -k travis travis.keychain
   - set -o pipefail && xcodebuild -workspace NowPlaying.xcworkspace -scheme NowPlaying -configuration Debug COMPILER_INDEX_STORE_ENABLE=NO archive -archivePath ./build/NowPlaying.xcarchive -UseModernBuildSystem=NO | bundle exec xcpretty
   - set -o pipefail && xcodebuild -exportArchive -archivePath ./build/NowPlaying.xcarchive -exportPath ./build/export -exportOptionsPlist ./build/export/export_options.plist | bundle exec xcpretty
 after_script:
   - sudo security delete-keychain travis.keychain
-  - rm "~/Library/MobileDevice/Provisioning Profiles/embedded.mobileprovision"
+  - rm "~/Library/MobileDevice/Provisioning Profiles/*.mobileprovision"
 env:
   global:
     secure: pFIOMwaJ+v3QUNyf0sIWhy+DA25VCatifCVIr0JGu8sLw7If7VwBW3iL6+VCEsAq+JqDeUzXGuiIzqHjTQDFteQQzGH/gsYkElZlgqqn0lA3OcjwHZX9/9buQw4UCmXfF4W+qQS0rB5jw3SyPH7hWuKy+u1kO8opdiTLRBlTKqPtIPuMchx2PZaZ0Bjs5SPla+5YEGoz7dn8IEXutURoQQTlCvwyg6v7ftgZkpf3tWRqTVJPjHdSALjLJQDx2ZUcR9JnpnZzxest9ZM3R/FOcOf2VlROSChNn1aQVD3eqkg7tsxF4FrhkRMFhmtR1CXdJzvC1h+OXy0toZw9AX4VqcXD0SinzyWfehtfV+E7QsbnBb+av82ejr7tfqC0VMq7X3wvoRwSTkxJF81wLFRBJfIC6BqBRmQwhqGkeqNaVlNohOOjBGGNfrY7jNUYwsuvHe9JUpQDMkzBjbXL2BhcdQ5eGTfTrOWq54MfwVLmVWDYczb60EVw82X+QBsBaXCQpu0IJmZq4lx8RARd+ENLK6JrI3gLT8TveyIwARmlwFpRyhj0ITV6BtwQOWAb6JtR5hA1XeZF2OjM6nUlnAcc7l0jiB+qpH4itva0tVydnY2mNeu1zzQCPPp0AhUh5ViAjBvzBL+T95exO0yQB8jyw5QB45hZcfbKt4b/5oLmwIU=
