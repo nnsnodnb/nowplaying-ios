@@ -27,8 +27,8 @@ script:
   - mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
   - cp certs/embedded.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
   - sudo security set-key-partition-list -S apple-tool:,apple: "-s -k travis travis.keychain"
-  - set -o pipefail && xcodebuild -workspace NowPlaying.xcworkspace -scheme NowPlaying -configuration Debug COMPILER_INDEX_STORE_ENABLE=NO archive -archivePath ./build/NowPlaying.xcarchive -UseModernBuildSystem=NO | xcpretty
-  - set -o pipefail && xcodebuild -exportArchive -archivePath ./build/NowPlaying.xcarchive -exportPath ./build/export -exportOptionsPlist ./build/export/export_options.plist | xcpretty
+  - set -o pipefail && xcodebuild -workspace NowPlaying.xcworkspace -scheme NowPlaying -configuration Debug COMPILER_INDEX_STORE_ENABLE=NO archive -archivePath ./build/NowPlaying.xcarchive -UseModernBuildSystem=NO | bundle exec xcpretty
+  - set -o pipefail && xcodebuild -exportArchive -archivePath ./build/NowPlaying.xcarchive -exportPath ./build/export -exportOptionsPlist ./build/export/export_options.plist | bundle exec xcpretty
 env:
   global:
     secure: pFIOMwaJ+v3QUNyf0sIWhy+DA25VCatifCVIr0JGu8sLw7If7VwBW3iL6+VCEsAq+JqDeUzXGuiIzqHjTQDFteQQzGH/gsYkElZlgqqn0lA3OcjwHZX9/9buQw4UCmXfF4W+qQS0rB5jw3SyPH7hWuKy+u1kO8opdiTLRBlTKqPtIPuMchx2PZaZ0Bjs5SPla+5YEGoz7dn8IEXutURoQQTlCvwyg6v7ftgZkpf3tWRqTVJPjHdSALjLJQDx2ZUcR9JnpnZzxest9ZM3R/FOcOf2VlROSChNn1aQVD3eqkg7tsxF4FrhkRMFhmtR1CXdJzvC1h+OXy0toZw9AX4VqcXD0SinzyWfehtfV+E7QsbnBb+av82ejr7tfqC0VMq7X3wvoRwSTkxJF81wLFRBJfIC6BqBRmQwhqGkeqNaVlNohOOjBGGNfrY7jNUYwsuvHe9JUpQDMkzBjbXL2BhcdQ5eGTfTrOWq54MfwVLmVWDYczb60EVw82X+QBsBaXCQpu0IJmZq4lx8RARd+ENLK6JrI3gLT8TveyIwARmlwFpRyhj0ITV6BtwQOWAb6JtR5hA1XeZF2OjM6nUlnAcc7l0jiB+qpH4itva0tVydnY2mNeu1zzQCPPp0AhUh5ViAjBvzBL+T95exO0yQB8jyw5QB45hZcfbKt4b/5oLmwIU=
