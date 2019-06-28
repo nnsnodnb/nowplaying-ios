@@ -6,7 +6,7 @@ ios_app_id                                : 1289764391
 
 appstore_link                             : https://itunes.apple.com/jp/app/nowplaying-%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B%E3%81%A0%E3%81%91%E3%81%A7%E3%83%84%E3%82%A4%E3%83%BC%E3%83%88/id1289764391?mt=8
 
-app_icon                                  : assets/appicon.jpg
+app_icon                                  : assets/appicon.png
 app_name                                  : NowPlaying
 app_price                                 : 無料 ( 一部コンテンツ有料 )
 app_description                           : 今聞いている音楽をTwitterとマストドンにシェアしよう！
