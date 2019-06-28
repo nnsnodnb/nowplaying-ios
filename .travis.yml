@@ -1,0 +1,16 @@
+language: objective-c
+osx_image: xcode10.2
+xcode_project: NowPlaying.xcworkspace
+xcode_scheme: NowPlaying
+
+before_install:
+  - gem install cocoapods --no-document -v '1.7.2'
+  - gem install -no-document xcpretty
+  - pod install
+  - brew update
+  - brew install carthage
+  - carthage bootstrap --platform iOS --cache-builds
+
+script:
+  - set -o pipefail && xcodebuild -workspace NowPlaying.xcworkspace -scheme NowPlaying -configuration Debug COMPILER_INDEX_STORE_ENABLE=NO archive -archivePath ./build/NowPlaying.xcarchive -UseModernBuildSystem=NO | xcpretty
+  - set -o pipefail && xcodebuild -exportArchive -archivePath ./build/NowPlaying.xcarchive -exportPath ./build/export -exportOptionsPlist ./build/export/export_options.plist | xcpretty
