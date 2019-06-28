@@ -26,7 +26,7 @@ script:
   - sudo security import ./certs/ios_distribution.cer -k ~/Library/Keychains/travis.keychain -T /usr/bin/codesign
   - sudo security import ./certs/Distribution.p12 -k ~/Library/Keychains/travis.keychain -P $CERT_PASS -T /usr/bin/codesign
   - mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-  - cp certs/embedded.mobileprovision "~/Library/MobileDevice/Provisioning Profiles/"
+  - cp certs/embedded.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
   - sudo security set-key-partition-list -S "apple-tool:,apple:" -s -k travis travis.keychain
   - xcodebuild -workspace NowPlaying.xcworkspace -scheme NowPlaying -configuration Debug COMPILER_INDEX_STORE_ENABLE=NO archive -archivePath ./build/NowPlaying.xcarchive -UseModernBuildSystem=NO | bundle exec xcpretty
   - xcodebuild -exportArchive -archivePath ./build/NowPlaying.xcarchive -exportPath ./build/export -exportOptionsPlist ./build/export/export_options.plist | bundle exec xcpretty
