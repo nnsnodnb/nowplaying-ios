@@ -2,10 +2,15 @@ language: objective-c
 osx_image: xcode10.2
 xcode_project: NowPlaying.xcworkspace
 xcode_scheme: NowPlaying
+cache:
+  directories:
+    - Carthage
+    - Pods
+    - vendor
 before_install:
   - gem update bundler -N
   - bundle install --path vendor/bundle
-  - bundle exec pod install
+  - bundle exec pod install --repo-update
   - brew update
   - brew install carthage
   - carthage bootstrap --platform iOS --cache-builds
