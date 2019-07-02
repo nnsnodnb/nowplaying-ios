@@ -8,7 +8,9 @@
 
 import APIKit
 import FirebaseAnalytics
+import FirebaseAuth
 import MediaPlayer
+import PopupDialog
 import RxCocoa
 import RxSwift
 import StoreKit
@@ -17,6 +19,7 @@ import UIKit
 
 struct PlayViewModelInput {
 
+    let viewController: UIViewController
     let previousButton: Observable<Void>
     let playButton: Observable<Void>
     let nextButton: Observable<Void>
@@ -42,12 +45,14 @@ protocol PlayViewModelType {
     var outputs: PlayViewModelOutput { get }
     init(inputs: PlayViewModelInput)
     func countUpOpenCount()
+    func showSingleAccountToMultiAccountDialog()
 }
 
 final class PlayViewModel: PlayViewModelType {
 
     var outputs: PlayViewModelOutput { return self }
 
+    private let viewController: UIViewController
     private let isPlaying: BehaviorRelay<Bool>
     private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     private let disposeBag = DisposeBag()
@@ -57,6 +62,7 @@ final class PlayViewModel: PlayViewModelType {
     private let _requestDenied = PublishRelay<Void>()
 
     init(inputs: PlayViewModelInput) {
+        viewController = inputs.viewController
         isPlaying = BehaviorRelay(value: musicPlayer.playbackState == .playing)
 
         musicPlayer.beginGeneratingPlaybackNotifications()
@@ -72,6 +78,29 @@ final class PlayViewModel: PlayViewModelType {
         if count == 15 {
             SKStoreReviewController.requestReview()
             UserDefaults.set(0, forKey: .appOpenCount)
+        }
+    }
+
+    // シングルアカウントログインの頃にインストールされていた場合、ポップアップを表示する
+    func showSingleAccountToMultiAccountDialog() {
+        if UserDefaults.bool(forKey: .singleAccountToMultiAccounts) { return }
+        guard Auth.auth().currentUser != nil && !UserDefaults.bool(forKey: .isMastodonLogin) else { return }
+        let dialog = PopupDialog(title: "お知らせ", message: "アカウント切り替えに対応しました！\n左下の歯車ボタンからもう一度ログインをお願いします",
+                                 buttonAlignment: .horizontal, transitionStyle: .zoomIn, tapGestureDismissal: false,
+                                 panGestureDismissal: false, hideStatusBar: true, completion: nil)
+        let cancelButton = CancelButton(title: "あとで", action: nil)
+        let goSettingButton = DefaultButton(title: "設定する") { [unowned self] in
+            DispatchQueue.main.async {
+                let navi = UINavigationController(rootViewController: SettingViewController())
+                self.viewController.present(navi, animated: true, completion: nil)
+            }
+        }
+        dialog.addButtons([cancelButton, goSettingButton])
+        let dialogVC = dialog.viewController as! PopupDialogDefaultViewController
+        dialogVC.messageFont = .boldSystemFont(ofSize: 17)
+        dialogVC.messageColor = .black
+        viewController.present(dialog, animated: true) {
+            UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)
         }
     }
 

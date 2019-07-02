@@ -7,9 +7,7 @@
 //
 
 import AutoScrollLabel
-import PopupDialog
 import FirebaseAnalytics
-import FirebaseAuth
 import Foundation
 import GoogleMobileAds
 import MediaPlayer
@@ -78,11 +76,10 @@ final class PlayViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let inputs = PlayViewModelInput(
-            previousButton: previousButton.rx.tap.asObservable(), playButton: playButton.rx.tap.asObservable(),
-            nextButton: nextButton.rx.tap.asObservable(), mastodonButton: mastodonButton.rx.tap.asObservable(),
-            twitterButton: twitterButton.rx.tap.asObservable()
-        )
+        let inputs = PlayViewModelInput(viewController: self, previousButton: previousButton.rx.tap.asObservable(),
+                                        playButton: playButton.rx.tap.asObservable(), nextButton: nextButton.rx.tap.asObservable(),
+                                        mastodonButton: mastodonButton.rx.tap.asObservable(), twitterButton: twitterButton.rx.tap.asObservable()
+            )
         viewModel = PlayViewModel(inputs: inputs)
 
         subscribeViewModel()
@@ -100,27 +97,7 @@ final class PlayViewController: UIViewController {
         Analytics.setScreenName("再生画面", screenClass: "PlayViewController")
         Analytics.logEvent("screen_open", parameters: nil)
         viewModel.countUpOpenCount()
-
-        // シングルアカウントログインの頃にインストールされていた場合、ポップアップを表示する
-        if UserDefaults.bool(forKey: .singleAccountToMultiAccounts) { return }
-        guard Auth.auth().currentUser != nil && !UserDefaults.bool(forKey: .isMastodonLogin) else { return }
-        let dialog = PopupDialog(title: "お知らせ", message: "アカウント切り替えに対応しました！\n左下の歯車ボタンからもう一度ログインをお願いします",
-                                 buttonAlignment: .horizontal, transitionStyle: .zoomIn, tapGestureDismissal: false,
-                                 panGestureDismissal: false, hideStatusBar: true, completion: nil)
-        let cancelButton = CancelButton(title: "あとで", action: nil)
-        let goSettingButton = DefaultButton(title: "設定する") { [unowned self] in
-            DispatchQueue.main.async {
-                let navi = UINavigationController(rootViewController: SettingViewController())
-                self.present(navi, animated: true, completion: nil)
-            }
-        }
-        dialog.addButtons([cancelButton, goSettingButton])
-        let dialogVC = dialog.viewController as! PopupDialogDefaultViewController
-        dialogVC.messageFont = .boldSystemFont(ofSize: 17)
-        dialogVC.messageColor = .black
-        self.present(dialog, animated: true) {
-            UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)
-        }
+        viewModel.showSingleAccountToMultiAccountDialog()
     }
 
     // MARK: - Private method
