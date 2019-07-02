@@ -16,7 +16,7 @@ final class AuthManager: NSObject {
 
     static let shared = AuthManager()
 
-    private let keychain = Keychain(service: keychainServiceKey)
+    private let keychain = Keychain.nowPlaying
 
     func login(completion: @escaping (Error?) -> Void) {
         TWTRTwitter.sharedInstance().logIn { [weak self] (session, error) in
@@ -31,8 +31,8 @@ final class AuthManager: NSObject {
                         completion(error)
                         return
                     }
-                    wself.keychain[KeychainKey.authToken.rawValue] = session.authToken
-                    wself.keychain[KeychainKey.authTokenSecret.rawValue] = session.authTokenSecret
+                    wself.keychain[.authToken] = session.authToken
+                    wself.keychain[.authTokenSecret] = session.authTokenSecret
 
                     DispatchQueue.global(qos: .utility).async {
                         let ref = Database.database().reference(withPath: "twitter")
@@ -49,15 +49,15 @@ final class AuthManager: NSObject {
     func logout(completion: () -> Void) {
         try? Auth.auth().signOut()
         TWTRTwitter.sharedInstance().sessionStore.logOutUserID(TWTRTwitter.sharedInstance().sessionStore.session()!.userID)
-        keychain[KeychainKey.authToken.rawValue] = nil
-        keychain[KeychainKey.authTokenSecret.rawValue] = nil
+        keychain[.authToken] = nil
+        keychain[.authTokenSecret] = nil
         completion()
     }
 
     @discardableResult
     func mastodonLogout() -> Bool {
         do {
-            try keychain.remove(KeychainKey.mastodonAccessToken.rawValue)
+            try keychain.remove(.mastodonAccessToken)
             return true
         } catch {
             return false

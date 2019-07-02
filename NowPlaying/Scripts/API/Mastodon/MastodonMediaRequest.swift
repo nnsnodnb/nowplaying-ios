@@ -16,7 +16,7 @@ struct MastodonMediaRequest: MastodonRequest {
 
     private let imageData: Data
     private let fileName = "\(Date().timeIntervalSince1970).png"
-    private let keychain = Keychain(service: keychainServiceKey)
+    private let keychain = Keychain.nowPlaying
 
     init(imageData: Data) {
         self.imageData = imageData

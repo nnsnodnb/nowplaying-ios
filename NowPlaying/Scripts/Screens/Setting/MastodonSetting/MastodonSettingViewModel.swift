@@ -48,7 +48,7 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
 
     private let disposeBag = DisposeBag()
     private let inputs: MastodonSettingViewModelInput
-    private let keychain = Keychain(service: keychainServiceKey)
+    private let keychain = Keychain.nowPlaying
     private let _error = PublishRelay<Void>()
 
     private var isMastodonLogin: Bool {
@@ -267,7 +267,7 @@ extension MastodonSettingViewModel {
             let hostname = domainRow.value else { return }
         Session.shared.rx.response(MastodonGetTokenRequest(hostname: hostname, code: code))
             .subscribe(onSuccess: { [weak self] (response) in
-                self?.keychain[KeychainKey.mastodonAccessToken.rawValue] = response.accessToken
+                self?.keychain[.mastodonAccessToken] = response.accessToken
                 SVProgressHUD.showSuccess(withStatus: "ログインしました")
                 SVProgressHUD.dismiss(withDelay: 0.5)
                 UserDefaults.set(true, forKey: .isMastodonLogin)

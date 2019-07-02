@@ -68,6 +68,7 @@
 		CF6F567A22CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */; };
 		CF6F567D22CB5C8300F517E9 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */; };
 		CF6F568022CB69B900F517E9 /* VersionMigrations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567F22CB69B900F517E9 /* VersionMigrations.swift */; };
+		CF6F568222CB731A00F517E9 /* Keychain+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568122CB731A00F517E9 /* Keychain+Key.swift */; };
 		CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */; };
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
@@ -190,6 +191,7 @@
 		CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonUpdateCredentialsRequest.swift; sourceTree = "<group>"; };
 		CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModel.swift; sourceTree = "<group>"; };
 		CF6F567F22CB69B900F517E9 /* VersionMigrations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionMigrations.swift; sourceTree = "<group>"; };
+		CF6F568122CB731A00F517E9 /* Keychain+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+Key.swift"; sourceTree = "<group>"; };
 		CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -558,6 +560,7 @@
 			children = (
 				CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */,
 				CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */,
+				CF6F568122CB731A00F517E9 /* Keychain+Key.swift */,
 				CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */,
 				CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */,
 				CF301D9222B01841007E675E /* Reactive+Session.swift */,
@@ -956,6 +959,7 @@
 				CF6F568022CB69B900F517E9 /* VersionMigrations.swift in Sources */,
 				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
 				CFB5797922C385A3001F3D13 /* Instance.swift in Sources */,
+				CF6F568222CB731A00F517E9 /* Keychain+Key.swift in Sources */,
 				CF99DF4922B607AE006E3876 /* PostFormatHelpView.swift in Sources */,
 				CF6F567622CB1E3C00F517E9 /* SecretCredential.swift in Sources */,
 				CF531C0022A9534F00D05896 /* SettingViewController.swift in Sources */,

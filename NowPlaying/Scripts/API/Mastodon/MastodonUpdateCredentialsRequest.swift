@@ -15,7 +15,7 @@ struct MastodonUpdateCredentialsRequest: MastodonRequest {
     typealias Response = MastodonUpdateCredentialsResponse
 
     private let hostname: String
-    private let keychain = Keychain(service: keychainServiceKey)
+    private let keychain = Keychain.nowPlaying
 
     init(hostname: String) {
         self.hostname = "https://\(hostname)"
@@ -34,7 +34,7 @@ struct MastodonUpdateCredentialsRequest: MastodonRequest {
     }
 
     var headerFields: [String: String] {
-        guard let accessToken = keychain[KeychainKey.mastodonAccessToken.rawValue] else { return [:] }
+        guard let accessToken = keychain[.mastodonAccessToken] else { return [:] }
         return [
             "Authorization": "Bearer \(accessToken)"
         ]

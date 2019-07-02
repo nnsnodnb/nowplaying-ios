@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    private let keychain = Keychain(service: keychainServiceKey)
+    private let keychain = Keychain.nowPlaying
     private let disposeBag = DisposeBag()
     private let viewModel: AppDelegateViewModelType = AppDelegateViewModel()
 

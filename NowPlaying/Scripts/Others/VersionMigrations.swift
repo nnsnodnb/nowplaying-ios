@@ -94,10 +94,10 @@ extension VersionMigrations {
             }
             Session.shared.rx.response(MastodonUpdateCredentialsRequest(hostname: hostname))
                 .subscribe(onSuccess: { (response) in
-                    let keychain = Keychain(service: keychainServiceKey)
+                    let keychain = Keychain.nowPlaying
                     guard let clientID = UserDefaults.string(forKey: .mastodonClientID),
                         let clientSecret = UserDefaults.string(forKey: .mastodonClientSecret),
-                        let authorizationCode = keychain[KeychainKey.mastodonAccessToken.rawValue] else {
+                        let authorizationCode = keychain[.mastodonAccessToken] else {
                             observer.onCompleted()
                             return
                     }

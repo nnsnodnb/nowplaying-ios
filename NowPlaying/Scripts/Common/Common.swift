@@ -64,11 +64,10 @@ extension NSNotification.Name {
 }
 
 var realmConfiguration: Realm.Configuration {
-    let keychain = Keychain(service: keychainServiceKey)
     let schemaVersion: UInt64 = 1
 
     // すでに Keychain に保存されている場合
-    if let encryptionKey = keychain[data: KeychainKey.realmEncryptionKey.rawValue] {
+    if let encryptionKey = Keychain.nowPlaying[data: .realmEncryptionKey] {
         return .init(encryptionKey: encryptionKey, schemaVersion: schemaVersion)
     }
 
@@ -76,6 +75,6 @@ var realmConfiguration: Realm.Configuration {
     let data = NSMutableData(length: 64)!
     let result = SecRandomCopyBytes(kSecRandomDefault, 64, data.mutableBytes.bindMemory(to: UInt8.self, capacity: 64))
     assert(result == 0, "Failed to get random bytes")
-    keychain[data: KeychainKey.realmEncryptionKey.rawValue] = data as Data
+    Keychain.nowPlaying[data: .realmEncryptionKey] = data as Data
     return .init(encryptionKey: data as Data, schemaVersion: schemaVersion)
 }
