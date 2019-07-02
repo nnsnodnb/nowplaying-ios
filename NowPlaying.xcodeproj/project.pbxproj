@@ -63,6 +63,8 @@
 		CF6F566D22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F566C22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift */; };
 		CF6F567022CB168200F517E9 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566E22CB168000F517E9 /* RealmSwift.framework */; };
 		CF6F567122CB168200F517E9 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566F22CB168200F517E9 /* Realm.framework */; };
+		CF6F567422CB1CD800F517E9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567322CB1CD800F517E9 /* User.swift */; };
+		CF6F567622CB1E3C00F517E9 /* SecretCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567522CB1E3C00F517E9 /* SecretCredential.swift */; };
 		CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */; };
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
@@ -180,6 +182,8 @@
 		CF6F566C22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ArtworkPreviewViewModel.swift; path = Preview/ArtworkPreviewViewModel.swift; sourceTree = "<group>"; };
 		CF6F566E22CB168000F517E9 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		CF6F566F22CB168200F517E9 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
+		CF6F567322CB1CD800F517E9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		CF6F567522CB1E3C00F517E9 /* SecretCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretCredential.swift; sourceTree = "<group>"; };
 		CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -438,6 +442,7 @@
 				CF615AED1F56AB3B00315019 /* AppDelegate.swift */,
 				CFD1D39020B9A176009C50ED /* R.generated.swift */,
 				CFD1D37C20B88188009C50ED /* API */,
+				CF6F567222CB1CAA00F517E9 /* RealmObject */,
 				CF55B68D22A40ABB00D5C9E1 /* Model */,
 				CF8E487C2081E851003A5E70 /* Extension */,
 				CF1AAFE61F75F28400384000 /* Common */,
@@ -492,6 +497,15 @@
 				CF6F566C22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift */,
 			);
 			name = Preview;
+			sourceTree = "<group>";
+		};
+		CF6F567222CB1CAA00F517E9 /* RealmObject */ = {
+			isa = PBXGroup;
+			children = (
+				CF6F567322CB1CD800F517E9 /* User.swift */,
+				CF6F567522CB1E3C00F517E9 /* SecretCredential.swift */,
+			);
+			path = RealmObject;
 			sourceTree = "<group>";
 		};
 		CF6FFF20207E4CE4003FD38D /* TodayExtension */ = {
@@ -917,6 +931,7 @@
 				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
 				CFB5797922C385A3001F3D13 /* Instance.swift in Sources */,
 				CF99DF4922B607AE006E3876 /* PostFormatHelpView.swift in Sources */,
+				CF6F567622CB1E3C00F517E9 /* SecretCredential.swift in Sources */,
 				CF531C0022A9534F00D05896 /* SettingViewController.swift in Sources */,
 				CF99DF5622BA00EF006E3876 /* SearchMastodonTableViewController.swift in Sources */,
 				CF531C0722A953B200D05896 /* MastodonSettingViewModel.swift in Sources */,
@@ -929,6 +944,7 @@
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
 				CF301D9322B01841007E675E /* Reactive+Session.swift in Sources */,
 				CF531C3222A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift in Sources */,
+				CF6F567422CB1CD800F517E9 /* User.swift in Sources */,
 				CF55B68F22A40ACD00D5C9E1 /* PostContent.swift in Sources */,
 				CF531C2A22A980EA00D05896 /* RxSKPaymentTransactionObserver.swift in Sources */,
 				CFB5797B22C385B4001F3D13 /* InstanceListRequest.swift in Sources */,
