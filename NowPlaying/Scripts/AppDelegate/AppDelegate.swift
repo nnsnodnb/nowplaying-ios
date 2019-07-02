@@ -86,9 +86,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         #if DEBUG
         Analytics.setAnalyticsCollectionEnabled(false)
-//        keychain.remove(KeychainKey.mastodonClientID.rawValue)
-//        keychain.remove(KeychainKey.mastodonClientSecret.rawValue)
-//        keychain.remove(KeychainKey.mastodonAccessToken.rawValue)
         let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()
         print("🔑 Realm encryption key: \(realmEncryptionKeyString)")
         let realm = try! Realm(configuration: realmConfiguration)
