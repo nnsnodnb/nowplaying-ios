@@ -29,36 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var backgroundTaskID: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        SVProgressHUD.setDefaultMaskType(.black)
-        loadEnvironment()
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.makeKeyAndVisible()
-        window?.rootViewController = PlayViewController()
-
-        TWTRTwitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
-                                           consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
-        Fabric.with([Crashlytics.self])
-        FirebaseApp.configure()
-        GADMobileAds.sharedInstance().start(completionHandler: nil)
-        #if DEBUG
-        Analytics.setAnalyticsCollectionEnabled(false)
-//        keychain.remove(KeychainKey.mastodonClientID.rawValue)
-//        keychain.remove(KeychainKey.mastodonClientSecret.rawValue)
-//        keychain.remove(KeychainKey.mastodonAccessToken.rawValue)
-        #endif
-
-        if UserDefaults.string(forKey: .tweetFormat) == nil {
-            UserDefaults.set(defaultPostFormat, forKey: .tweetFormat)
-        }
-        if UserDefaults.string(forKey: .tweetWithImageType) == nil {
-            UserDefaults.set(WithImageType.onlyArtwork.rawValue, forKey: .tweetWithImageType)
-        }
-        if UserDefaults.string(forKey: .tootFormat) == nil {
-            UserDefaults.set(defaultPostFormat, forKey: .tootFormat)
-        }
-        if UserDefaults.string(forKey: .tootWithImageType) == nil {
-            UserDefaults.set(WithImageType.onlyArtwork.rawValue, forKey: .tootWithImageType)
-        }
+        commonSetup()
         return true
     }
 
@@ -158,5 +129,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(error)
             })
             .disposed(by: disposeBag)
+    }
+
+    private func commonSetup() {
+        SVProgressHUD.setDefaultMaskType(.black)
+        loadEnvironment()
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
+        window?.rootViewController = PlayViewController()
+
+        TWTRTwitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
+                                           consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
+        Fabric.with([Crashlytics.self])
+        FirebaseApp.configure()
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        #if DEBUG
+        Analytics.setAnalyticsCollectionEnabled(false)
+//        keychain.remove(KeychainKey.mastodonClientID.rawValue)
+//        keychain.remove(KeychainKey.mastodonClientSecret.rawValue)
+//        keychain.remove(KeychainKey.mastodonAccessToken.rawValue)
+        #endif
+        setInitialData()
+    }
+
+    private func setInitialData() {
+        if UserDefaults.string(forKey: .tweetFormat) == nil {
+            UserDefaults.set(defaultPostFormat, forKey: .tweetFormat)
+        }
+        if UserDefaults.string(forKey: .tweetWithImageType) == nil {
+            UserDefaults.set(WithImageType.onlyArtwork.rawValue, forKey: .tweetWithImageType)
+        }
+        if UserDefaults.string(forKey: .tootFormat) == nil {
+            UserDefaults.set(defaultPostFormat, forKey: .tootFormat)
+        }
+        if UserDefaults.string(forKey: .tootWithImageType) == nil {
+            UserDefaults.set(WithImageType.onlyArtwork.rawValue, forKey: .tootWithImageType)
+        }
     }
 }
