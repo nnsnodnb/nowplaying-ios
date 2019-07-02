@@ -96,8 +96,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             realm.deleteAll()
         }
         #endif
-
-//        viewModel.inputs.migrationTrigger.onNext(.singleAccountToMultiAccounts)
     }
 
     private func subscribeViewModel() {

@@ -17,7 +17,6 @@ import UIKit
 protocol AppDelegateViewModelInput {
 
     var checkAppVersionTrigger: PublishSubject<Void> { get }
-    var migrationTrigger: PublishSubject<VersionMigrations.Version> { get }
 }
 
 // MARK: - AppDelegateViewModelOutput
@@ -41,7 +40,6 @@ final class AppDelegateViewModel: AppDelegateViewModelType {
 
     let presentAlert: Observable<UIAlertController>
     let checkAppVersionTrigger = PublishSubject<Void>()
-    let migrationTrigger = PublishSubject<VersionMigrations.Version>()
 
     var inputs: AppDelegateViewModelInput { return self }
     var outputs: AppDelegateViewModelOutput { return self }
@@ -64,11 +62,6 @@ final class AppDelegateViewModel: AppDelegateViewModelType {
 
         checkAppVersionTrigger
             .bind(to: checkAppVersionAction.inputs)
-            .disposed(by: disposeBag)
-        migrationTrigger
-            .subscribe(onNext: {
-                VersionMigrations.shared.migrations(version: $0)
-            })
             .disposed(by: disposeBag)
 
         checkAppVersionAction.elements
