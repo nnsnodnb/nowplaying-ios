@@ -31,6 +31,7 @@ enum UserDefaultsKey: String {
     case isPurchasedRemoveAdMob = "is_purchased_remove_admob"
     case isRemainTransaction = "IsRemainTransaction"
     case update210 = "update_2_1_0"
+    case singleAccountToMultiAccounts = "single_account_to_multi_accounts"
 }
 
 enum KeychainKey: String {

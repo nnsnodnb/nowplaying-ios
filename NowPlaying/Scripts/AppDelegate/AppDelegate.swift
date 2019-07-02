@@ -73,6 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func commonSetup() {
+        FirebaseApp.configure()
         SVProgressHUD.setDefaultMaskType(.black)
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
@@ -81,7 +82,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         TWTRTwitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
                                            consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
         Fabric.with([Crashlytics.self])
-        FirebaseApp.configure()
         GADMobileAds.sharedInstance().start(completionHandler: nil)
 
         #if DEBUG
@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         #endif
 
-        viewModel.inputs.migrationTrigger.onNext(.singleAccountToMultiAccounts)
+//        viewModel.inputs.migrationTrigger.onNext(.singleAccountToMultiAccounts)
     }
 
     private func subscribeViewModel() {

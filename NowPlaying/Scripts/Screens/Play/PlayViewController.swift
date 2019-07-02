@@ -7,7 +7,9 @@
 //
 
 import AutoScrollLabel
+import PopupDialog
 import FirebaseAnalytics
+import FirebaseAuth
 import Foundation
 import GoogleMobileAds
 import MediaPlayer
@@ -83,6 +85,47 @@ final class PlayViewController: UIViewController {
         )
         viewModel = PlayViewModel(inputs: inputs)
 
+        subscribeViewModel()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard UserDefaults.bool(forKey: .isPurchasedRemoveAdMob) else { return }
+        bannerView.isHidden = true
+        bannerViewHeight.constant = 0
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("再生画面", screenClass: "PlayViewController")
+        Analytics.logEvent("screen_open", parameters: nil)
+        viewModel.countUpOpenCount()
+
+        // シングルアカウントログインの頃にインストールされていた場合、ポップアップを表示する
+        if UserDefaults.bool(forKey: .singleAccountToMultiAccounts) { return }
+        guard Auth.auth().currentUser != nil && !UserDefaults.bool(forKey: .isMastodonLogin) else { return }
+        let dialog = PopupDialog(title: "お知らせ", message: "アカウント切り替えに対応しました！\n左下の歯車ボタンからもう一度ログインをお願いします",
+                                 buttonAlignment: .horizontal, transitionStyle: .zoomIn, tapGestureDismissal: false,
+                                 panGestureDismissal: false, hideStatusBar: true, completion: nil)
+        let cancelButton = CancelButton(title: "あとで", action: nil)
+        let goSettingButton = DefaultButton(title: "設定する") { [unowned self] in
+            DispatchQueue.main.async {
+                let navi = UINavigationController(rootViewController: SettingViewController())
+                self.present(navi, animated: true, completion: nil)
+            }
+        }
+        dialog.addButtons([cancelButton, goSettingButton])
+        let dialogVC = dialog.viewController as! PopupDialogDefaultViewController
+        dialogVC.messageFont = .boldSystemFont(ofSize: 17)
+        dialogVC.messageColor = .black
+        self.present(dialog, animated: true) {
+            UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)
+        }
+    }
+
+    // MARK: - Private method
+
+    private func subscribeViewModel() {
         viewModel.outputs.nowPlayingItem
             .drive(onNext: { [weak self] (item) in
                 guard let wself = self else { return }
@@ -125,22 +168,6 @@ final class PlayViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        guard UserDefaults.bool(forKey: .isPurchasedRemoveAdMob) else { return }
-        bannerView.isHidden = true
-        bannerViewHeight.constant = 0
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        Analytics.setScreenName("再生画面", screenClass: "PlayViewController")
-        Analytics.logEvent("screen_open", parameters: nil)
-        viewModel.countUpOpenCount()
-    }
-
-    // MARK: - Private method
 
     private func showError(error: Error) {
         let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
