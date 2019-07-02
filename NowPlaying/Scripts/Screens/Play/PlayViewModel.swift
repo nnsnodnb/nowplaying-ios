@@ -9,6 +9,7 @@
 import APIKit
 import FirebaseAnalytics
 import FirebaseAuth
+import KeychainAccess
 import MediaPlayer
 import PopupDialog
 import RxCocoa
@@ -53,6 +54,7 @@ final class PlayViewModel: PlayViewModelType {
     var outputs: PlayViewModelOutput { return self }
 
     private let viewController: UIViewController
+    private let keychain = Keychain.nowPlaying
     private let isPlaying: BehaviorRelay<Bool>
     private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     private let disposeBag = DisposeBag()
@@ -82,6 +84,7 @@ final class PlayViewModel: PlayViewModelType {
     }
 
     // シングルアカウントログインの頃にインストールされていた場合、ポップアップを表示する
+    @available(iOS, introduced: 2.4.0, deprecated: 2.4.1, message: "2.4.0以下のユーザは保証しないでいい")
     func showSingleAccountToMultiAccountDialog() {
         if UserDefaults.bool(forKey: .singleAccountToMultiAccounts) { return }
         guard Auth.auth().currentUser != nil && !UserDefaults.bool(forKey: .isMastodonLogin) else { return }
@@ -99,6 +102,14 @@ final class PlayViewModel: PlayViewModelType {
         let dialogVC = dialog.viewController as! PopupDialogDefaultViewController
         dialogVC.messageFont = .boldSystemFont(ofSize: 17)
         dialogVC.messageColor = .black
+        AuthManager.shared.logout {}  // Twitterログアウト (FirebaseAuth)
+        try? keychain.remove(.authToken)
+        try? keychain.remove(.authTokenSecret)
+        AuthManager.shared.mastodonLogout()  // Mastodonログアウト
+        UserDefaults.removeObject(forKey: .mastodonClientID)
+        UserDefaults.removeObject(forKey: .mastodonClientSecret)
+        UserDefaults.removeObject(forKey: .mastodonHostname)
+        UserDefaults.removeObject(forKey: .isMastodonLogin)
         viewController.present(dialog, animated: true) {
             UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)
         }
