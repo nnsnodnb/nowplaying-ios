@@ -17,6 +17,7 @@ import UIKit
 protocol AppDelegateViewModelInput {
 
     var checkAppVersionTrigger: PublishSubject<Void> { get }
+    var loadEnvironmentsTrigger: PublishSubject<Void> { get }
 }
 
 // MARK: - AppDelegateViewModelOutput
@@ -40,6 +41,7 @@ final class AppDelegateViewModel: AppDelegateViewModelType {
 
     let presentAlert: Observable<UIAlertController>
     let checkAppVersionTrigger = PublishSubject<Void>()
+    let loadEnvironmentsTrigger = PublishSubject<Void>()
 
     var inputs: AppDelegateViewModelInput { return self }
     var outputs: AppDelegateViewModelOutput { return self }
@@ -57,11 +59,15 @@ final class AppDelegateViewModel: AppDelegateViewModelType {
             return Session.shared.rx.response(AppInfoRequest())
         }
 
-        loadEnvironements()
         setInitialData()
 
         checkAppVersionTrigger
             .bind(to: checkAppVersionAction.inputs)
+            .disposed(by: disposeBag)
+        loadEnvironmentsTrigger
+            .subscribe(onNext: { [unowned self] in
+                self.loadEnvironements()
+            })
             .disposed(by: disposeBag)
 
         checkAppVersionAction.elements
