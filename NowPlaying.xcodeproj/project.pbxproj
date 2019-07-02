@@ -61,6 +61,8 @@
 		CF6F566922C4D0E300F517E9 /* ArtworkPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF6F566722C4D0E300F517E9 /* ArtworkPreviewViewController.xib */; };
 		CF6F566B22C4D61E00F517E9 /* Hero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566A22C4D61E00F517E9 /* Hero.framework */; };
 		CF6F566D22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F566C22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift */; };
+		CF6F567022CB168200F517E9 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566E22CB168000F517E9 /* RealmSwift.framework */; };
+		CF6F567122CB168200F517E9 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566F22CB168200F517E9 /* Realm.framework */; };
 		CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */; };
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
@@ -176,6 +178,8 @@
 		CF6F566722C4D0E300F517E9 /* ArtworkPreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ArtworkPreviewViewController.xib; path = Preview/ArtworkPreviewViewController.xib; sourceTree = "<group>"; };
 		CF6F566A22C4D61E00F517E9 /* Hero.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Hero.framework; path = Carthage/Build/iOS/Hero.framework; sourceTree = "<group>"; };
 		CF6F566C22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ArtworkPreviewViewModel.swift; path = Preview/ArtworkPreviewViewModel.swift; sourceTree = "<group>"; };
+		CF6F566E22CB168000F517E9 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
+		CF6F566F22CB168200F517E9 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -218,6 +222,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF6F567022CB168200F517E9 /* RealmSwift.framework in Frameworks */,
+				CF6F567122CB168200F517E9 /* Realm.framework in Frameworks */,
 				CF6F566B22C4D61E00F517E9 /* Hero.framework in Frameworks */,
 				CF6F566322C4C13400F517E9 /* DynamicBlurView.framework in Frameworks */,
 				CF6F566422C4C13400F517E9 /* PopupDialog.framework in Frameworks */,
@@ -403,6 +409,8 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF6F566F22CB168200F517E9 /* Realm.framework */,
+				CF6F566E22CB168000F517E9 /* RealmSwift.framework */,
 				CF6F566A22C4D61E00F517E9 /* Hero.framework */,
 				CF6F566122C4C13400F517E9 /* DynamicBlurView.framework */,
 				CF6F566222C4C13400F517E9 /* PopupDialog.framework */,

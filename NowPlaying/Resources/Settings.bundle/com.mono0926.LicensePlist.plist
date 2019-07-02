@@ -238,6 +238,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>com.mono0926.LicensePlist/realm-cocoa</string>
+			<key>Title</key>
+			<string>realm-cocoa (v3.17.0)</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>com.mono0926.LicensePlist/RxStoreKit</string>
 			<key>Title</key>
 			<string>RxStoreKit (1.2.1)</string>
