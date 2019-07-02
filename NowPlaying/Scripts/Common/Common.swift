@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import KeychainAccess
+import RealmSwift
 
 enum UserDefaultsKey: String {
     case appOpenCount = "app_open_count"
@@ -35,6 +37,7 @@ enum KeychainKey: String {
     case authToken = "authToken"
     case authTokenSecret = "authTokenSecret"
     case mastodonAccessToken = "mastodon_access_token"
+    case realmEncryptionKey = "realm_encryption_key"
 }
 
 enum EnvironmentKey: String {
@@ -58,4 +61,21 @@ typealias Parameters = [String: Any]
 extension NSNotification.Name {
 
     static let purchasedHideAdMobNotification = NSNotification.Name("purchasedHideAdMobNotification")
+}
+
+var realmConfiguration: Realm.Configuration {
+    let keychain = Keychain(service: keychainServiceKey)
+    let schemaVersion: UInt64 = 1
+
+    // すでに Keychain に保存されている場合
+    if let encryptionKey = keychain[data: KeychainKey.realmEncryptionKey.rawValue] {
+        return .init(encryptionKey: encryptionKey, schemaVersion: schemaVersion)
+    }
+
+    // 暗号化キーが保存されていない場合は生成
+    let data = NSMutableData(length: 64)!
+    let result = SecRandomCopyBytes(kSecRandomDefault, 64, data.mutableBytes.bindMemory(to: UInt8.self, capacity: 64))
+    assert(result == 0, "Failed to get random bytes")
+    keychain[data: KeychainKey.realmEncryptionKey.rawValue] = data as Data
+    return .init(encryptionKey: data as Data, schemaVersion: schemaVersion)
 }
