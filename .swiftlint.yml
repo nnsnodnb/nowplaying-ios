@@ -13,3 +13,7 @@ excluded:
 
 line_length: 200
 file_length: 450
+
+identifier_name:
+  excluded:
+    - id
