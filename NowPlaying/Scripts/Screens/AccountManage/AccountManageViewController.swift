@@ -42,11 +42,6 @@ final class AccountManageViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    struct Difference {
-        let target: Results<User>
-        let source: Results<User>
-    }
-
     // MARK: - Life cycle
 
     override func viewDidLoad() {
