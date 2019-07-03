@@ -74,8 +74,6 @@
 		CF6F569222CC6CD300F517E9 /* Realm+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */; };
 		CF6F569622CC740F00F517E9 /* AccountManageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F569422CC740F00F517E9 /* AccountManageTableViewCell.swift */; };
 		CF6F569722CC740F00F517E9 /* AccountManageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF6F569522CC740F00F517E9 /* AccountManageTableViewCell.xib */; };
-		CF6F569A22CC7B1D00F517E9 /* Differentiator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F569822CC7B1D00F517E9 /* Differentiator.framework */; };
-		CF6F569B22CC7B1D00F517E9 /* RxDataSources.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F569922CC7B1D00F517E9 /* RxDataSources.framework */; };
 		CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */; };
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
@@ -204,8 +202,6 @@
 		CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Rx.swift"; sourceTree = "<group>"; };
 		CF6F569422CC740F00F517E9 /* AccountManageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManageTableViewCell.swift; sourceTree = "<group>"; };
 		CF6F569522CC740F00F517E9 /* AccountManageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountManageTableViewCell.xib; sourceTree = "<group>"; };
-		CF6F569822CC7B1D00F517E9 /* Differentiator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Differentiator.framework; path = Carthage/Build/iOS/Differentiator.framework; sourceTree = "<group>"; };
-		CF6F569922CC7B1D00F517E9 /* RxDataSources.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxDataSources.framework; path = Carthage/Build/iOS/RxDataSources.framework; sourceTree = "<group>"; };
 		CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -248,8 +244,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF6F569A22CC7B1D00F517E9 /* Differentiator.framework in Frameworks */,
-				CF6F569B22CC7B1D00F517E9 /* RxDataSources.framework in Frameworks */,
 				CF6F567022CB168200F517E9 /* RealmSwift.framework in Frameworks */,
 				CF6F567122CB168200F517E9 /* Realm.framework in Frameworks */,
 				CF6F566B22C4D61E00F517E9 /* Hero.framework in Frameworks */,
@@ -438,8 +432,6 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CF6F569822CC7B1D00F517E9 /* Differentiator.framework */,
-				CF6F569922CC7B1D00F517E9 /* RxDataSources.framework */,
 				CF6F566F22CB168200F517E9 /* Realm.framework */,
 				CF6F566E22CB168000F517E9 /* RealmSwift.framework */,
 				CF6F566A22C4D61E00F517E9 /* Hero.framework */,
