@@ -59,9 +59,18 @@ final class AccountManageViewModel: AccountManageViewModelType {
             .response()
             .asObservable()
 
+        subscribeBarButtonItems(inputs: inputs)
+    }
+
+    private func subscribeBarButtonItems(inputs: AccountManageViewModelInput) {
         inputs.addAccountBarButtonItem
             .subscribe(onNext: {
-
+                switch inputs.service {
+                case .twitter:
+                    break
+                case .mastodon:
+                    break
+                }
             })
             .disposed(by: disposeBag)
 
