@@ -16,7 +16,6 @@ import KeychainAccess
 import RealmSwift
 import RxSwift
 import SVProgressHUD
-import TwitterKit
 import UIKit
 
 @UIApplicationMain
@@ -39,10 +38,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]=[:]) -> Bool {
         if let source = options[.sourceApplication] as? String, source == "com.apple.SafariViewService" {
             guard let scheme = url.scheme, scheme.starts(with: "twitterkit-") else { return true }
-            return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
+            // FIXME: URLスキーマハンドリング
+//            return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
         } else {
-            return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
+//            return TWTRTwitter.sharedInstance().application(application, open: url, options: options)
         }
+        return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -80,8 +81,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         window?.rootViewController = PlayViewController()
 
-        TWTRTwitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
-                                           consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
+//        TWTRTwitter.sharedInstance().start(withConsumerKey: ProcessInfo.processInfo.get(forKey: .twitterConsumerKey),
+//                                           consumerSecret: ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret))
         Fabric.with([Crashlytics.self])
         GADMobileAds.sharedInstance().start(completionHandler: nil)
 

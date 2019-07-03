@@ -86,9 +86,6 @@ PODS:
     - R.swift.Library (~> 5.0.0)
   - R.swift.Library (5.0.1)
   - SwiftLint (0.33.0)
-  - TwitterCore (3.2.0)
-  - TwitterKit (3.4.2):
-    - TwitterCore (>= 3.2.0)
 
 DEPENDENCIES:
   - AutoScrollLabel
@@ -103,7 +100,6 @@ DEPENDENCIES:
   - "NSURL+QueryDictionary"
   - R.swift
   - SwiftLint
-  - TwitterKit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -129,8 +125,6 @@ SPEC REPOS:
     - R.swift
     - R.swift.Library
     - SwiftLint
-    - TwitterCore
-    - TwitterKit
 
 SPEC CHECKSUMS:
   AutoScrollLabel: bee53a1d4532569b49cbecaf9b80ca003bed3767
@@ -155,9 +149,7 @@ SPEC CHECKSUMS:
   R.swift: f5a87643b91ea569d23d6afb3eee9c743edde239
   R.swift.Library: cfe85d569d9bae6cb262922db130e7c3a7a5fad1
   SwiftLint: fed9c66336e41fc74dc48a73678380718f0c8b0e
-  TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
-  TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: 127668f078d8c9cb106723104e6fd7f35c40d807
+PODFILE CHECKSUM: f36473dd0ea12dc0f29dffe0e7a0e081a0a67d58
 
 COCOAPODS: 1.7.3

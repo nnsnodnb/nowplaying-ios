@@ -12,7 +12,6 @@ import RxCocoa
 import RxKeyboard
 import RxSwift
 import SVProgressHUD
-import TwitterKit
 import UIKit
 
 final class TweetViewController: UIViewController {

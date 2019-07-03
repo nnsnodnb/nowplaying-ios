@@ -14,7 +14,6 @@ import MediaPlayer
 import RxSwift
 import StoreKit
 import SVProgressHUD
-import TwitterKit
 import UIKit
 
 final class PlayViewController: UIViewController {

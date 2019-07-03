@@ -6,7 +6,6 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
-import TwitterKit
 import SVProgressHUD
 import MediaPlayer
 import FirebaseAnalytics
@@ -16,11 +15,14 @@ class TwitterClient: NSObject {
     static let shared = TwitterClient()
 
     var isLogin: Bool {
-        return TWTRTwitter.sharedInstance().sessionStore.session() != nil
+        // FIXME: Twitterのログインユーザがある確認
+        return false
+//        return TWTRTwitter.sharedInstance().sessionStore.session() != nil
     }
 
-    var client: TWTRAPIClient? {
-        guard let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID else { return nil }
-        return TWTRAPIClient(userID: userID)
-    }
+    // TODO: クライアント作る？
+//    var client: TWTRAPIClient? {
+//        guard let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID else { return nil }
+//        return TWTRAPIClient(userID: userID)
+//    }
 }

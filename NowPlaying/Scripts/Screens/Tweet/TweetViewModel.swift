@@ -63,13 +63,14 @@ final class TweetViewModel: TweetViewModelType {
         SVProgressHUD.show()
         switch postContent.service {
         case .twitter:
-            TwitterClient.shared.client?.sendTweet(withText: postMessage.value) { [weak self] (_, error) in
-                if let error = error {
-                    self?._failure.accept(error)
-                } else {
-                    self?._success.accept(())
-                }
-            }
+//            TwitterClient.shared.client?.sendTweet(withText: postMessage.value) { [weak self] (_, error) in
+//                if let error = error {
+//                    self?._failure.accept(error)
+//                } else {
+//                    self?._success.accept(())
+//                }
+//            }
+            // FIXME: ツイートを送信する
             Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
         case .mastodon:
             Session.shared.rx.response(MastodonTootRequest(status: postMessage.value))
@@ -89,13 +90,14 @@ final class TweetViewModel: TweetViewModelType {
         SVProgressHUD.show()
         switch postContent.service {
         case .twitter:
-            TwitterClient.shared.client?.sendTweet(withText: postMessage.value, image: image) { [weak self] (_, error) in
-                if let error = error {
-                    self?._failure.accept(error)
-                } else {
-                    self?._success.accept(())
-                }
-            }
+//            TwitterClient.shared.client?.sendTweet(withText: postMessage.value, image: image) { [weak self] (_, error) in
+//                if let error = error {
+//                    self?._failure.accept(error)
+//                } else {
+//                    self?._success.accept(())
+//                }
+//            }
+            // FIXME: 画像つきツイートを送信する
             Analytics.Tweet.postTweetTwitter(withHasImage: true, content: postContent)
         case .mastodon:
             guard let imageData = image.pngData() else {

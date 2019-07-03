@@ -15,7 +15,6 @@ import PopupDialog
 import RxCocoa
 import RxSwift
 import StoreKit
-import TwitterKit
 import UIKit
 
 struct PlayViewModelInput {
@@ -198,10 +197,11 @@ final class PlayViewModel: PlayViewModelType {
 
         inputs.twitterButton
             .subscribe(onNext: { [weak self] (_) in
-                if TWTRTwitter.sharedInstance().sessionStore.session() == nil {
-                    self?.loginError.accept(())
-                    return
-                }
+                // FIXME: Twitterログインをしているか確認 (RealmでTwitterユーザが1件以上あるか)
+//                if TWTRTwitter.sharedInstance().sessionStore.session() == nil {
+//                    self?.loginError.accept(())
+//                    return
+//                }
                 Analytics.Play.twitterButton()
 
                 self?.setNewPostContent(service: .twitter)
@@ -273,10 +273,12 @@ extension PlayViewModel {
     private func postTweet(_ content: PostContent) {
         guard UserDefaults.bool(forKey: .isAutoTweetPurchase) && UserDefaults.bool(forKey: .isAutoTweet) else { return }
         if let shareImage = content.shareImage {
-            TwitterClient.shared.client?.sendTweet(withText: content.postMessage, image: shareImage) { (_, _) in }
+//            TwitterClient.shared.client?.sendTweet(withText: content.postMessage, image: shareImage) { (_, _) in }
+            // FIXME: 画像つきツイートを送信する
             Analytics.AutoPost.withImageTweet(content)
         } else {
-            TwitterClient.shared.client?.sendTweet(withText: content.postMessage) { (_, _) in }
+//            TwitterClient.shared.client?.sendTweet(withText: content.postMessage) { (_, _) in }
+            // FIXME: ツイートを送信する
             Analytics.AutoPost.textOnlyTweet(content)
         }
     }
