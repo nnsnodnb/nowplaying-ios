@@ -93,4 +93,5 @@ final class AccountManageViewController: UIViewController {
 
 // MARK: - SFSafariViewControllerDelegate
 
+// FIXME: SFSafariViewControllerの戻るボタンを隠す
 extension AccountManageViewController: SFSafariViewControllerDelegate {}
