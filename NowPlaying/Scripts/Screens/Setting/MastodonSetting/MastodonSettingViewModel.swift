@@ -85,9 +85,6 @@ extension MastodonSettingViewModel {
         form
             +++ Section("Mastodon")
                 <<< configureAccounts()
-//                <<< configureDomain()
-//                <<< configureLogin()
-//                <<< configureLogout()
                 <<< configureWith()
                 <<< configureWithImageType()
                 <<< configureAutoToot()

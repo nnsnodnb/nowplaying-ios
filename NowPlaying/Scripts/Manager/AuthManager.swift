@@ -34,7 +34,7 @@ final class AuthManager: NSObject {
         let accessTokenSecret: String
     }
 
-    func login(presenting: UIViewController) -> Observable<LoginCallback> {
+    func twitterLogin(presenting: UIViewController) -> Observable<LoginCallback> {
         return .create { (observer) -> Disposable in
             let callbackURL = URL(string: "nowplaying-ios-nnsnodnb://twitter/oauth/success")!
             let swifter = Swifter(consumerKey: .twitterConsumerKey, consumerSecret: .twitterConsumerSecret)

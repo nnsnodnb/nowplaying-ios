@@ -91,7 +91,7 @@ final class AccountManageViewModel: AccountManageViewModelType {
     }
 
     private func startTwitterLogin(inputs: AccountManageViewModelInput) {
-        AuthManager.shared.login(presenting: inputs.viewController)
+        AuthManager.shared.twitterLogin(presenting: inputs.viewController)
             .subscribe(onNext: { [weak self] (callback) in
                 let user = User(serviceID: callback.userID, name: callback.name,
                                 screenName: callback.screenName, iconURL: callback.photoURL, serviceType: .twitter)
@@ -115,6 +115,10 @@ final class AccountManageViewModel: AccountManageViewModelType {
                 SVProgressHUD.dismiss { self?._loginResult.accept(false) }
             })
             .disposed(by: disposeBag)
+    }
+
+    private func startMastodonLogin() {
+        
     }
 }
 
