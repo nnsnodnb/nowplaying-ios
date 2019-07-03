@@ -16,6 +16,7 @@ import KeychainAccess
 import RealmSwift
 import RxSwift
 import SVProgressHUD
+import SwifteriOS
 import UIKit
 
 @UIApplicationMain
@@ -36,6 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]=[:]) -> Bool {
+        Swifter.handleOpenURL(url)
+
         if let source = options[.sourceApplication] as? String, source == "com.apple.SafariViewService" {
             guard let scheme = url.scheme, scheme.starts(with: "twitterkit-") else { return true }
             // FIXME: URLスキーマハンドリング
@@ -90,10 +93,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Analytics.setAnalyticsCollectionEnabled(false)
         let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()
         print("🔑 Realm encryption key: \(realmEncryptionKeyString)")
-        let realm = try! Realm(configuration: realmConfiguration)
-        try! realm.write {
-            realm.deleteAll()
-        }
+//        let realm = try! Realm(configuration: realmConfiguration)
+//        try! realm.write {
+//            realm.deleteAll()
+//        }
         #endif
     }
 

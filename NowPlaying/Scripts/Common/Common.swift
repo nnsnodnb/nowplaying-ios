@@ -79,3 +79,14 @@ var realmConfiguration: Realm.Configuration {
     Keychain.nowPlaying[data: .realmEncryptionKey] = data as Data
     return .init(encryptionKey: data as Data, schemaVersion: schemaVersion)
 }
+
+extension String {
+
+    static var twitterConsumerKey: String {
+        return ProcessInfo.processInfo.get(forKey: .twitterConsumerKey)
+    }
+
+    static var twitterConsumerSecret: String {
+        return ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret)
+    }
+}

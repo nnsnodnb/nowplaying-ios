@@ -33,7 +33,7 @@
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FoW-YX-E1L">
                         <rect key="frame" x="69" y="7.5" width="235" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -46,13 +46,14 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="FoW-YX-E1L" secondAttribute="trailing" constant="16" id="2aR-8C-QGO"/>
+                    <constraint firstAttribute="bottom" secondItem="PXQ-QN-inn" secondAttribute="bottom" constant="7" id="5BG-2h-03O"/>
                     <constraint firstItem="w6E-6c-0kI" firstAttribute="trailing" secondItem="FoW-YX-E1L" secondAttribute="trailing" id="6K5-b1-GLq"/>
                     <constraint firstItem="PXQ-QN-inn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="7Ru-5l-kdH"/>
                     <constraint firstItem="w6E-6c-0kI" firstAttribute="bottom" secondItem="PXQ-QN-inn" secondAttribute="bottom" id="B0E-IA-snJ"/>
                     <constraint firstItem="FoW-YX-E1L" firstAttribute="top" secondItem="PXQ-QN-inn" secondAttribute="top" id="IbK-46-VJw"/>
                     <constraint firstItem="FoW-YX-E1L" firstAttribute="leading" secondItem="PXQ-QN-inn" secondAttribute="trailing" constant="16" id="JB9-jJ-sor"/>
-                    <constraint firstItem="PXQ-QN-inn" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="JF8-09-qRr"/>
                     <constraint firstItem="w6E-6c-0kI" firstAttribute="leading" secondItem="FoW-YX-E1L" secondAttribute="leading" id="MnJ-th-Q1g"/>
+                    <constraint firstItem="PXQ-QN-inn" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="7.5" id="W6v-JW-ya6"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

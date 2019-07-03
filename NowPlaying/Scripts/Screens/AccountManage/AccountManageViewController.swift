@@ -9,6 +9,8 @@
 import RealmSwift
 import RxCocoa
 import RxSwift
+import SafariServices
+import SVProgressHUD
 import UIKit
 
 final class AccountManageViewController: UIViewController {
@@ -61,6 +63,17 @@ final class AccountManageViewController: UIViewController {
                 cell.user = $1
             }
             .disposed(by: disposeBag)
+
+        viewModel.outputs.loginResult
+            .subscribe(onNext: { (result) in
+                if result {
+                    SVProgressHUD.showSuccess(withStatus: "ログインしました")
+                } else {
+                    SVProgressHUD.showError(withStatus: "ログインに失敗しました")
+                }
+                SVProgressHUD.dismiss(withDelay: 0.5)
+            })
+            .disposed(by: disposeBag)
     }
 
     // MARK: - Private method
@@ -73,6 +86,11 @@ final class AccountManageViewController: UIViewController {
 
         return .init(service: service,
                      addAccountBarButtonItem: addAccountBarButtonItem.rx.tap.asObservable(),
-                     editAccountsBarButtonItem: editAccountsBarButtonItem.rx.tap.asObservable())
+                     editAccountsBarButtonItem: editAccountsBarButtonItem.rx.tap.asObservable(),
+                     viewController: self)
     }
 }
+
+// MARK: - SFSafariViewControllerDelegate
+
+extension AccountManageViewController: SFSafariViewControllerDelegate {}
