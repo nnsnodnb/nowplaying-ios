@@ -11,6 +11,13 @@ import RealmSwift
 import RxCocoa
 import RxSwift
 
+struct AccountManageViewModelInput {
+
+    let service: Service
+    let addAccountBarButtonItem: Observable<Void>
+    let editAccountsBarButtonItem: Observable<Void>
+}
+
 // MARK: - AccountManageViewModelOutput
 
 protocol AccountManageViewModelOutput {
@@ -26,7 +33,7 @@ protocol AccountManageViewModelType {
     var outputs: AccountManageViewModelOutput { get }
     var realm: Realm { get }
 
-    init(service: Service)
+    init(inputs: AccountManageViewModelInput)
 }
 
 final class AccountManageViewModel: AccountManageViewModelType {
@@ -37,18 +44,32 @@ final class AccountManageViewModel: AccountManageViewModelType {
 
     var outputs: AccountManageViewModelOutput { return self }
 
-    init(service: Service) {
-        switch service {
+    private let disposeBag = DisposeBag()
+
+    init(inputs: AccountManageViewModelInput) {
+        switch inputs.service {
         case .twitter:
             title = Observable.just("Twitterアカウント")
         case .mastodon:
             title = Observable.just("Mastodonアカウント")
         }
         users = realm.objects(User.self)
-            .filter("serviceType = %@", service.rawValue)
+            .filter("serviceType = %@", inputs.service.rawValue)
             .sorted(byKeyPath: "id", ascending: true)
             .response()
             .asObservable()
+
+        inputs.addAccountBarButtonItem
+            .subscribe(onNext: {
+
+            })
+            .disposed(by: disposeBag)
+
+        inputs.editAccountsBarButtonItem
+            .subscribe(onNext: {
+
+            })
+            .disposed(by: disposeBag)
     }
 }
 

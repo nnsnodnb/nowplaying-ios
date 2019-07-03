@@ -14,13 +14,15 @@ import UIKit
 final class AccountManageViewController: UIViewController {
 
     private let service: Service
-    private let viewModel: AccountManageViewModelType
     private let disposeBag = DisposeBag()
+
+    private var viewModel: AccountManageViewModelType!
 
     @IBOutlet private weak var tableView: UITableView! {
         didSet {
             tableView.register(R.nib.accountManageTableViewCell)
             tableView.tableFooterView = UIView()
+
             tableView.rx.modelSelected(User.self)
                 .subscribe(onNext: { (user) in
                     print(user.name)
@@ -33,7 +35,6 @@ final class AccountManageViewController: UIViewController {
 
     init(service: Service) {
         self.service = service
-        viewModel = AccountManageViewModel(service: service)
         super.init(nibName: R.nib.accountManageViewController.name, bundle: R.nib.accountManageViewController.bundle)
     }
 
@@ -41,10 +42,20 @@ final class AccountManageViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    struct Difference {
+        let target: Results<User>
+        let source: Results<User>
+    }
+
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let inputs = setupNavigationBar()
+
+        viewModel = AccountManageViewModel(inputs: inputs)
+
         viewModel.outputs.title
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
@@ -55,5 +66,18 @@ final class AccountManageViewController: UIViewController {
                 cell.user = $1
             }
             .disposed(by: disposeBag)
+    }
+
+    // MARK: - Private method
+
+    private func setupNavigationBar() -> AccountManageViewModelInput {
+        let addAccountBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
+        let editAccountsBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: nil, action: nil)
+
+        navigationItem.rightBarButtonItems = [editAccountsBarButtonItem, addAccountBarButtonItem]
+
+        return .init(service: service,
+                     addAccountBarButtonItem: addAccountBarButtonItem.rx.tap.asObservable(),
+                     editAccountsBarButtonItem: editAccountsBarButtonItem.rx.tap.asObservable())
     }
 }
