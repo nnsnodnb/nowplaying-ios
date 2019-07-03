@@ -6,6 +6,7 @@ github "Orderella/PopupDialog" ~> 1.1
 github "ReactiveX/RxSwift" ~> 5.0
 github "realm/realm-cocoa"
 github "RxSwiftCommunity/Action" ~> 4.0
+github "RxSwiftCommunity/RxDataSources" ~> 4.0
 github "SnapKit/SnapKit" ~> 5.0.0
 github "SVProgressHUD/SVProgressHUD"
 github "xmartlabs/Eureka" ~> 5.0
