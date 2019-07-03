@@ -38,14 +38,6 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/DifferenceKit</string>
-			<key>Title</key>
-			<string>DifferenceKit (1.1.3)</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>com.mono0926.LicensePlist/DTTJailbreakDetection</string>
 			<key>Title</key>
 			<string>DTTJailbreakDetection (0.4.0)</string>

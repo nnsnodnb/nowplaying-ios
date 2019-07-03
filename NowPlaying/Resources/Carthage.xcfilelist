@@ -10,7 +10,6 @@
 
 $(SRCROOT)/Carthage/Build/iOS/Action.framework
 $(SRCROOT)/Carthage/Build/iOS/APIKit.framework
-$(SRCROOT)/Carthage/Build/iOS/DifferenceKit.framework
 $(SRCROOT)/Carthage/Build/iOS/DynamicBlurView.framework
 $(SRCROOT)/Carthage/Build/iOS/Eureka.framework
 $(SRCROOT)/Carthage/Build/iOS/Hero.framework
