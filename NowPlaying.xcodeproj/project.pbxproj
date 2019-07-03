@@ -72,6 +72,8 @@
 		CF6F568F22CC6A7D00F517E9 /* AccountManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568C22CC6A7D00F517E9 /* AccountManageViewController.swift */; };
 		CF6F569022CC6A7D00F517E9 /* AccountManageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF6F568D22CC6A7D00F517E9 /* AccountManageViewController.xib */; };
 		CF6F569222CC6CD300F517E9 /* Realm+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */; };
+		CF6F569622CC740F00F517E9 /* AccountManageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F569422CC740F00F517E9 /* AccountManageTableViewCell.swift */; };
+		CF6F569722CC740F00F517E9 /* AccountManageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF6F569522CC740F00F517E9 /* AccountManageTableViewCell.xib */; };
 		CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */; };
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
@@ -198,6 +200,8 @@
 		CF6F568C22CC6A7D00F517E9 /* AccountManageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManageViewController.swift; sourceTree = "<group>"; };
 		CF6F568D22CC6A7D00F517E9 /* AccountManageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountManageViewController.xib; sourceTree = "<group>"; };
 		CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Rx.swift"; sourceTree = "<group>"; };
+		CF6F569422CC740F00F517E9 /* AccountManageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManageTableViewCell.swift; sourceTree = "<group>"; };
+		CF6F569522CC740F00F517E9 /* AccountManageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountManageTableViewCell.xib; sourceTree = "<group>"; };
 		CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -543,6 +547,15 @@
 			path = AccountManage;
 			sourceTree = "<group>";
 		};
+		CF6F569322CC73EC00F517E9 /* AccountManageTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				CF6F569422CC740F00F517E9 /* AccountManageTableViewCell.swift */,
+				CF6F569522CC740F00F517E9 /* AccountManageTableViewCell.xib */,
+			);
+			path = AccountManageTableViewCell;
+			sourceTree = "<group>";
+		};
 		CF6FFF20207E4CE4003FD38D /* TodayExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -610,6 +623,7 @@
 			children = (
 				CFB5798422C39815001F3D13 /* MastodonSettingDomainCell */,
 				CFB5798322C39803001F3D13 /* MastodonDomainTableViewCell */,
+				CF6F569322CC73EC00F517E9 /* AccountManageTableViewCell */,
 			);
 			path = UITableViewCells;
 			sourceTree = "<group>";
@@ -761,6 +775,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF6F569722CC740F00F517E9 /* AccountManageTableViewCell.xib in Resources */,
 				CF531C0B22A953C900D05896 /* MastodonSettingViewController.xib in Resources */,
 				CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */,
 				CF99DF4B22B607C1006E3876 /* PostFormatHelpView.xib in Resources */,
@@ -977,6 +992,7 @@
 				CF531C0722A953B200D05896 /* MastodonSettingViewModel.swift in Sources */,
 				CF531C3022A9827100D05896 /* SKProductsRequestDelegateProxy.swift in Sources */,
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
+				CF6F569622CC740F00F517E9 /* AccountManageTableViewCell.swift in Sources */,
 				CF99DF5E22BA0C1F006E3876 /* InstancesSearchRequest.swift in Sources */,
 				CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */,
 				CF55B69922A41B8800D5C9E1 /* TweetViewModel.swift in Sources */,
