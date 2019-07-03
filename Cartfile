@@ -2,6 +2,7 @@ github "HeroTransitions/Hero"
 github "ishkawa/APIKit" ~> 5.0
 github "kean/Nuke" ~> 7.0
 github "kishikawakatsumi/KeychainAccess"
+github "mattdonnelly/Swifter"
 github "Orderella/PopupDialog" ~> 1.1
 github "ReactiveX/RxSwift" ~> 5.0
 github "realm/realm-cocoa"
