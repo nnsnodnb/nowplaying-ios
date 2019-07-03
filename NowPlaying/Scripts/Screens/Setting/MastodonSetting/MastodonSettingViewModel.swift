@@ -272,17 +272,17 @@ extension MastodonSettingViewModel {
         guard let query = (url as NSURL).uq_queryDictionary(), let code = query["code"] as? String,
             let domainRow = form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow,
             let hostname = domainRow.value else { return }
-        Session.shared.rx.response(MastodonGetTokenRequest(hostname: hostname, code: code))
-            .subscribe(onSuccess: { [weak self] (response) in
-                self?.keychain[.mastodonAccessToken] = response.accessToken
-                SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-                UserDefaults.set(true, forKey: .isMastodonLogin)
-                self?.changeMastodonLogState(didLogin: true)
-            }, onError: { [weak self] (_) in
-                self?._error.accept(())
-            })
-            .disposed(by: self.disposeBag)
+//        Session.shared.rx.response(MastodonGetTokenRequest(hostname: hostname, code: code))
+//            .subscribe(onSuccess: { [weak self] (response) in
+//                self?.keychain[.mastodonAccessToken] = response.accessToken
+//                SVProgressHUD.showSuccess(withStatus: "ログインしました")
+//                SVProgressHUD.dismiss(withDelay: 0.5)
+//                UserDefaults.set(true, forKey: .isMastodonLogin)
+//                self?.changeMastodonLogState(didLogin: true)
+//            }, onError: { [weak self] (_) in
+//                self?._error.accept(())
+//            })
+//            .disposed(by: self.disposeBag)
     }
 
     private func changeMastodonLogState(didLogin: Bool) {

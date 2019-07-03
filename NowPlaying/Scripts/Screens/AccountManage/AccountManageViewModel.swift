@@ -51,6 +51,9 @@ final class AccountManageViewModel: AccountManageViewModelType {
     private let disposeBag = DisposeBag()
     private let _loginResult = PublishRelay<Bool>()
 
+    private lazy var twitter = TwitterSessionControl()
+    private lazy var mastodon = MastodonSessionControl()
+
     init(inputs: AccountManageViewModelInput) {
         switch inputs.service {
         case .twitter:
@@ -91,7 +94,7 @@ final class AccountManageViewModel: AccountManageViewModelType {
     }
 
     private func startTwitterLogin(inputs: AccountManageViewModelInput) {
-        AuthManager(authService: .twitter).twitterLogin(presenting: inputs.viewController)
+        twitter.authorize(presenting: inputs.viewController)
             .subscribe(onNext: { [weak self] (callback) in
                 let user = User(serviceID: callback.userID, name: callback.name,
                                 screenName: callback.screenName, iconURL: callback.photoURL, serviceType: .twitter)
@@ -123,7 +126,7 @@ final class AccountManageViewModel: AccountManageViewModelType {
         viewController.decision
             .subscribe(onNext: { [weak self] in
                 guard let wself = self else { return }
-                AuthManager(authService: .mastodon($0)).mastodonLogin()
+                wself.mastodon.authorize(hostname: $0)
                     .subscribe(onNext: { (authorizationCode) in
                         print(authorizationCode)
                     }, onError: { [weak self] in
