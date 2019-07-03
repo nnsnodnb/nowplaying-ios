@@ -15,6 +15,7 @@ final class User: Object {
     @objc dynamic var serviceID: String = ""
     @objc dynamic var name: String = ""
     @objc dynamic var screenName: String = ""
+    @objc dynamic var iconURLString: String = ""
     @objc dynamic var serviceType: String = ""
 
     override class func primaryKey() -> String? {
@@ -26,13 +27,21 @@ final class User: Object {
         return realm?.objects(User.self).sorted(byKeyPath: "id", ascending: false).last?.id
     }
 
-    convenience init(serviceID: String, name: String="", screenName: String="", serviceType: Service) {
+    convenience init(serviceID: String, name: String="", screenName: String="", iconURL: URL, serviceType: Service) {
         self.init()
         let latestPrimaryKey = User.getLastestPrimaryKey() ?? 0
         self.id = latestPrimaryKey + 1
         self.serviceID = serviceID
         self.name = name
         self.screenName = screenName
+        self.iconURLString = iconURL.absoluteString
         self.serviceType = serviceType.rawValue
+    }
+}
+
+extension User {
+
+    var iconURL: URL {
+        return URL(string: iconURLString)!
     }
 }
