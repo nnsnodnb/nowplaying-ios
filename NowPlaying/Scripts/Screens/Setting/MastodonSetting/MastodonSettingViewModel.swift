@@ -84,9 +84,10 @@ extension MastodonSettingViewModel {
     private func configureCells() {
         form
             +++ Section("Mastodon")
-                <<< configureDomain()
-                <<< configureLogin()
-                <<< configureLogout()
+                <<< configureAccounts()
+//                <<< configureDomain()
+//                <<< configureLogin()
+//                <<< configureLogout()
                 <<< configureWith()
                 <<< configureWithImageType()
                 <<< configureAutoToot()
@@ -94,6 +95,15 @@ extension MastodonSettingViewModel {
             +++ Section("投稿フォーマット", configureHeaderForTootFormat())
                 <<< configureTootFormat()
                 <<< configureFormatReset()
+    }
+
+    private func configureAccounts() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "アカウント管理"
+        }.onCellSelection { [unowned self] (_, _) in
+            let viewController = AccountManageViewController(service: .mastodon)
+            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 
     private func configureDomain() -> MastodonSettingDomainRow {

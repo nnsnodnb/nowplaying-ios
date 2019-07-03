@@ -105,8 +105,9 @@ extension TwitterSettingViewModel {
     private func configureCells() {
         form
             +++ Section("Twitter")
-                <<< configureLogin()
-                <<< configureLogout()
+                <<< configureAccounts()
+//                <<< configureLogin()
+//                <<< configureLogout()
                 <<< configureWithImage()
                 <<< configureWithImageType()
                 <<< configurePurchase()
@@ -115,6 +116,15 @@ extension TwitterSettingViewModel {
             +++ Section("投稿フォーマット", configureHeaderForTweetFormat())
                 <<< configureTweetFormat()
                 <<< configureFormatReset()
+    }
+
+    private func configureAccounts() -> NowPlayingButtonRow {
+        return NowPlayingButtonRow {
+            $0.title = "アカウント管理"
+        }.onCellSelection { [unowned self] (_, _) in
+            let viewController = AccountManageViewController(service: .twitter)
+            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 
     private func configureLogin() -> NowPlayingButtonRow {

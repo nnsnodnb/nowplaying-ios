@@ -68,6 +68,10 @@
 		CF6F567A22CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */; };
 		CF6F567D22CB5C8300F517E9 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */; };
 		CF6F568222CB731A00F517E9 /* Keychain+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568122CB731A00F517E9 /* Keychain+Key.swift */; };
+		CF6F568E22CC6A7D00F517E9 /* AccountManageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568B22CC6A7D00F517E9 /* AccountManageViewModel.swift */; };
+		CF6F568F22CC6A7D00F517E9 /* AccountManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568C22CC6A7D00F517E9 /* AccountManageViewController.swift */; };
+		CF6F569022CC6A7D00F517E9 /* AccountManageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF6F568D22CC6A7D00F517E9 /* AccountManageViewController.xib */; };
+		CF6F569222CC6CD300F517E9 /* Realm+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */; };
 		CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */; };
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
@@ -190,6 +194,10 @@
 		CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonUpdateCredentialsRequest.swift; sourceTree = "<group>"; };
 		CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModel.swift; sourceTree = "<group>"; };
 		CF6F568122CB731A00F517E9 /* Keychain+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+Key.swift"; sourceTree = "<group>"; };
+		CF6F568B22CC6A7D00F517E9 /* AccountManageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManageViewModel.swift; sourceTree = "<group>"; };
+		CF6F568C22CC6A7D00F517E9 /* AccountManageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManageViewController.swift; sourceTree = "<group>"; };
+		CF6F568D22CC6A7D00F517E9 /* AccountManageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountManageViewController.xib; sourceTree = "<group>"; };
+		CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Rx.swift"; sourceTree = "<group>"; };
 		CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -467,6 +475,7 @@
 			children = (
 				CF1611331F726CF20027144D /* Play */,
 				CF1AAFDD1F7544D800384000 /* Setting */,
+				CF6F568A22CC6A7D00F517E9 /* AccountManage */,
 				CF43E7D31F733C1F00A2A49A /* Tweet */,
 				CF6F566522C4D0C000F517E9 /* Preview */,
 				CF99DF5322BA0089006E3876 /* SearchMastodon */,
@@ -524,6 +533,16 @@
 			path = AppDelegate;
 			sourceTree = "<group>";
 		};
+		CF6F568A22CC6A7D00F517E9 /* AccountManage */ = {
+			isa = PBXGroup;
+			children = (
+				CF6F568C22CC6A7D00F517E9 /* AccountManageViewController.swift */,
+				CF6F568D22CC6A7D00F517E9 /* AccountManageViewController.xib */,
+				CF6F568B22CC6A7D00F517E9 /* AccountManageViewModel.swift */,
+			);
+			path = AccountManage;
+			sourceTree = "<group>";
+		};
 		CF6FFF20207E4CE4003FD38D /* TodayExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -553,6 +572,7 @@
 				CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */,
 				CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */,
 				CF301D9222B01841007E675E /* Reactive+Session.swift */,
+				CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -756,6 +776,7 @@
 				CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */,
 				CFB5798222C38FA1001F3D13 /* MastodonDomainTableViewCell.xib in Resources */,
 				CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */,
+				CF6F569022CC6A7D00F517E9 /* AccountManageViewController.xib in Resources */,
 				CF99DF5722BA00EF006E3876 /* SearchMastodonTableViewController.xib in Resources */,
 				CF1611371F726D110027144D /* PlayViewController.xib in Resources */,
 			);
@@ -946,6 +967,7 @@
 				CF1611361F726D110027144D /* PlayViewController.swift in Sources */,
 				CF6F566822C4D0E300F517E9 /* ArtworkPreviewViewController.swift in Sources */,
 				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
+				CF6F568E22CC6A7D00F517E9 /* AccountManageViewModel.swift in Sources */,
 				CFB5797922C385A3001F3D13 /* Instance.swift in Sources */,
 				CF6F568222CB731A00F517E9 /* Keychain+Key.swift in Sources */,
 				CF99DF4922B607AE006E3876 /* PostFormatHelpView.swift in Sources */,
@@ -960,6 +982,7 @@
 				CF55B69922A41B8800D5C9E1 /* TweetViewModel.swift in Sources */,
 				CF531C0322A9536A00D05896 /* TwitterSettingViewController.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
+				CF6F568F22CC6A7D00F517E9 /* AccountManageViewController.swift in Sources */,
 				CF301D9322B01841007E675E /* Reactive+Session.swift in Sources */,
 				CF531C3222A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift in Sources */,
 				CF6F567422CB1CD800F517E9 /* User.swift in Sources */,
@@ -992,6 +1015,7 @@
 				CF531C2C22A9817A00D05896 /* SKPaymentQueue+Rx.swift in Sources */,
 				CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */,
 				CF531C0A22A953C900D05896 /* MastodonSettingViewController.swift in Sources */,
+				CF6F569222CC6CD300F517E9 /* Realm+Rx.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
