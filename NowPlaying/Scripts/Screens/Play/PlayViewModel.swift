@@ -101,10 +101,10 @@ final class PlayViewModel: PlayViewModelType {
         let dialogVC = dialog.viewController as! PopupDialogDefaultViewController
         dialogVC.messageFont = .boldSystemFont(ofSize: 17)
         dialogVC.messageColor = .black
-        AuthManager.shared.logout {}  // Twitterログアウト (FirebaseAuth)
+        AuthManager(authService: .twitter).logout {}  // Twitterログアウト (FirebaseAuth)
         try? keychain.remove(.authToken)
         try? keychain.remove(.authTokenSecret)
-        AuthManager.shared.mastodonLogout()  // Mastodonログアウト
+        AuthManager(authService: .mastodon("")).mastodonLogout()  // Mastodonログアウト
         UserDefaults.removeObject(forKey: .mastodonClientID)
         UserDefaults.removeObject(forKey: .mastodonClientSecret)
         UserDefaults.removeObject(forKey: .mastodonHostname)

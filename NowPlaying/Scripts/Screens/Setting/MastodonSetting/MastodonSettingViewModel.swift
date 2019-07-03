@@ -130,7 +130,7 @@ extension MastodonSettingViewModel {
             guard let domainRow = self.form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow,
                 let hostname = domainRow.value, !self.isMastodonLogin else { return }
             SVProgressHUD.show()
-            Session.shared.rx.response(MastodonAppRequeset(hostname: hostname))
+            Session.shared.rx.response(MastodonAppRequest   (hostname: hostname))
                 .subscribe(onSuccess: { [weak self] (response) in
                     UserDefaults.set(response.clientID, forKey: .mastodonClientID)
                     UserDefaults.set(response.clientSecret, forKey: .mastodonClientSecret)
@@ -165,7 +165,7 @@ extension MastodonSettingViewModel {
             $0.tag = "mastodon_logout"
             $0.hidden = Condition(booleanLiteral: !UserDefaults.bool(forKey: .isMastodonLogin))
         }.onCellSelection { [weak self] (_, _) in
-            AuthManager.shared.mastodonLogout()
+//            AuthManager.shared.mastodonLogout()
             UserDefaults.set(false, forKey: .isMastodonLogin)
             Analytics.MastodonSetting.logout()
             DispatchQueue.main.async {

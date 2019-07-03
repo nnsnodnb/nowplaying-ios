@@ -73,12 +73,12 @@ final class AccountManageViewModel: AccountManageViewModelType {
     private func subscribeBarButtonItems(inputs: AccountManageViewModelInput) {
         inputs.addAccountBarButtonItem
             .subscribe(onNext: { [unowned self] in
-                SVProgressHUD.show()
                 switch inputs.service {
                 case .twitter:
+                    SVProgressHUD.show()
                     self.startTwitterLogin(inputs: inputs)
                 case .mastodon:
-                    break
+                    self.startMastodonLogin(inputs: inputs)
                 }
             })
             .disposed(by: disposeBag)
@@ -91,7 +91,7 @@ final class AccountManageViewModel: AccountManageViewModelType {
     }
 
     private func startTwitterLogin(inputs: AccountManageViewModelInput) {
-        AuthManager.shared.twitterLogin(presenting: inputs.viewController)
+        AuthManager(authService: .twitter).twitterLogin(presenting: inputs.viewController)
             .subscribe(onNext: { [weak self] (callback) in
                 let user = User(serviceID: callback.userID, name: callback.name,
                                 screenName: callback.screenName, iconURL: callback.photoURL, serviceType: .twitter)
@@ -117,8 +117,27 @@ final class AccountManageViewModel: AccountManageViewModelType {
             .disposed(by: disposeBag)
     }
 
-    private func startMastodonLogin() {
-        
+    private func startMastodonLogin(inputs: AccountManageViewModelInput) {
+        // ドメイン検索 → アプリ登録 → SFSafariViewControllerでのOAuth認証 → トークンを取得
+        let viewController = SearchMastodonTableViewController()
+        viewController.decision
+            .subscribe(onNext: { [weak self] in
+                guard let wself = self else { return }
+                AuthManager(authService: .mastodon($0)).mastodonLogin()
+                    .subscribe(onNext: { (authorizationCode) in
+                        print(authorizationCode)
+                    }, onError: { [weak self] in
+                        print($0)
+                        self?._loginResult.accept(false)
+                    })
+                    .disposed(by: wself.disposeBag)
+            }, onError: { [weak self] in
+                print($0)
+                self?._loginResult.accept(false)
+            })
+            .disposed(by: disposeBag)
+
+        inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
