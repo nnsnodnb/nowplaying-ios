@@ -60,7 +60,7 @@ final class AccountManageViewController: UIViewController {
         viewModel.outputs.users
             .bind(to: tableView.rx.items(cellIdentifier: R.reuseIdentifier.accountManageTableViewCell.identifier)) {
                 guard let cell = $2 as? AccountManageTableViewCell else { return }
-                cell.user = $1
+                cell.configure(user: $1, secret: $1.secretCredentials.first)
             }
             .disposed(by: disposeBag)
 

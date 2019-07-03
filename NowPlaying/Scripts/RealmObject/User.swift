@@ -18,6 +18,8 @@ final class User: Object {
     @objc dynamic var iconURLString: String = ""
     @objc dynamic var serviceType: String = ""
 
+    let secretCredentials = LinkingObjects(fromType: SecretCredential.self, property: "user")
+
     override class func primaryKey() -> String? {
         return "id"
     }

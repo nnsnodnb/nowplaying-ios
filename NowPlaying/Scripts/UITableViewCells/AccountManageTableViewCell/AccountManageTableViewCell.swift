@@ -14,17 +14,30 @@ final class AccountManageTableViewCell: UITableViewCell {
     @IBOutlet private weak var iconImageView: UIImageView!
     @IBOutlet private weak var usernameLabel: UILabel!
     @IBOutlet private weak var screenNameLabel: UILabel!
+    @IBOutlet private weak var domainLabel: UILabel!
 
-    var user: User! {
+    private(set) var user: User! {
         didSet {
             loadImage(with: user.iconURL, into: iconImageView)
             usernameLabel.text = user.name
             screenNameLabel.text = "@\(user.screenName)"
         }
     }
+    private var secret: SecretCredential? {
+        didSet {
+            domainLabel.isHidden = secret == nil
+            guard let secret = secret else { return }
+            domainLabel.text = secret.domainName
+        }
+    }
 
     override func prepareForReuse() {
         iconImageView.image = nil
         super.prepareForReuse()
+    }
+
+    func configure(user: User, secret: SecretCredential?) {
+        self.user = user
+        self.secret = secret
     }
 }
