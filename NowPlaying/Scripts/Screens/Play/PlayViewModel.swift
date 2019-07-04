@@ -86,7 +86,10 @@ final class PlayViewModel: PlayViewModelType {
     @available(iOS, introduced: 2.4.0, deprecated: 2.4.1, message: "2.4.0以下のユーザは保証しないでいい")
     func showSingleAccountToMultiAccountDialog() {
         if UserDefaults.bool(forKey: .singleAccountToMultiAccounts) { return }
-        guard Auth.auth().currentUser != nil && !UserDefaults.bool(forKey: .isMastodonLogin) else { return }
+        guard Auth.auth().currentUser != nil && !UserDefaults.bool(forKey: .isMastodonLogin) else {
+            UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)
+            return
+        }
         let dialog = PopupDialog(title: "お知らせ", message: "アカウント切り替えに対応しました！\n左下の歯車ボタンからもう一度ログインをお願いします",
                                  buttonAlignment: .horizontal, transitionStyle: .zoomIn, tapGestureDismissal: false,
                                  panGestureDismissal: false, hideStatusBar: true, completion: nil)
