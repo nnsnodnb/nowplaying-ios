@@ -29,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>twitterkit-[CONSUMER_KEY]</string>
+				<string>swifter-[CONSUMER_KEY]</string>
 			</array>
 		</dict>
 		<dict>

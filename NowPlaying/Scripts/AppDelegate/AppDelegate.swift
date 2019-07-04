@@ -37,8 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]=[:]) -> Bool {
-        Swifter.handleOpenURL(url)
-        return true
+        return Swifter.application(application, open: url, options: options)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

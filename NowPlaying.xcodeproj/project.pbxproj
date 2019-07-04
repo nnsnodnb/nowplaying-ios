@@ -937,7 +937,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFileSource=\"${SRCROOT}/${INFOPLIST_FILE}\"\ninfoPlistFileDestination=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\nif [ \"${BITRISE_SOURCE_DIR}\" == \"\" ]; then\n. NowPlaying/Resources/.env\nfi\n\n$plistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 twitterkit-${TWITTER_CONSUMER_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :Fabric:APIKey ${FABRIC_API_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :GADApplicationIdentifier ${FIREBASE_ADMOB_APP_ID}\" \"${infoPlistFileDestination}\"\n";
+			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFileSource=\"${SRCROOT}/${INFOPLIST_FILE}\"\ninfoPlistFileDestination=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\nif [ \"${BITRISE_SOURCE_DIR}\" == \"\" ]; then\n. NowPlaying/Resources/.env\nfi\n\n$plistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 swifter-${TWITTER_CONSUMER_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :Fabric:APIKey ${FABRIC_API_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :GADApplicationIdentifier ${FIREBASE_ADMOB_APP_ID}\" \"${infoPlistFileDestination}\"\n";
 		};
 		CFB5798922C3A33F001F3D13 /* PlistBuddy (Settings.bundle Root.plist) */ = {
 			isa = PBXShellScriptBuildPhase;

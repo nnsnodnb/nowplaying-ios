@@ -16,10 +16,58 @@ import UIKit
 
 struct TwitterSessionControl {
 
-    func authorize(presenting: UIViewController) -> Observable<LoginCallback> {
+//    func authorize(presenting: UIViewController) -> Observable<LoginCallback> {
+//        let disposeBag = DisposeBag()
+//
+//        return .create { (observer) -> Disposable in
+//            let swifter = Swifter(consumerKey: .twitterConsumerKey, consumerSecret: .twitterConsumerSecret)
+//            TwitterSessionControl.tryAuthorizeSSO(swifter: swifter)
+//                .subscribe(onNext: { (oauthAccessToken) in
+//                    TwitterSessionControl.handleSuccessLogin(oauthAccessToken)
+//                        .bind(to: observer.asObserver())
+//                        .disposed(by: disposeBag)
+//                }, onError: { (error) in
+//                    guard let swifterError = error as? SwifterError else {
+//                        observer.onError(error)
+//                        return
+//                    }
+//                    switch swifterError.kind {
+//                    case .noTwitterApp:
+//                        TwitterSessionControl.tryAuthorizeBrowser(presenting: presenting, swifter: swifter)
+//                            .subscribe(onNext: { (oauthAccessToken) in
+//                                TwitterSessionControl.handleSuccessLogin(oauthAccessToken)
+//                                    .bind(to: observer.asObserver())
+//                                    .disposed(by: disposeBag)
+//                            }, onError: { (error) in
+//                                observer.onError(error)
+//                            })
+//                            .disposed(by: disposeBag)
+//                    default:
+//                        observer.onError(swifterError)
+//                    }
+//                })
+//                .disposed(by: disposeBag)
+//            return Disposables.create()
+//        }
+//    }
+
+    func tryAuthorizeSSO() -> Observable<Credential.OAuthAccessToken> {
         return .create { (observer) -> Disposable in
-            let callbackURL = URL(string: "nowplaying-ios-nnsnodnb://twitter/oauth/success")!
             let swifter = Swifter(consumerKey: .twitterConsumerKey, consumerSecret: .twitterConsumerSecret)
+            swifter.authorizeSSO(success: {
+                observer.onNext($0)
+                observer.onCompleted()
+            }, failure: { (error) in
+                observer.onError(error)
+            })
+            return Disposables.create()
+        }
+    }
+
+    func tryAuthorizeBrowser(presenting: UIViewController) -> Observable<Credential.OAuthAccessToken> {
+        return .create { (observer) -> Disposable in
+            let swifter = Swifter(consumerKey: .twitterConsumerKey, consumerSecret: .twitterConsumerSecret)
+            let callbackURL = URL(string: "nowplaying-ios-nnsnodnb://twitter/oauth/success")!
             swifter.authorize(
                 withCallback: callbackURL, presentingFrom: presenting, safariDelegate: presenting as? SFSafariViewControllerDelegate,
                 success: { (accessToken, _) in
@@ -27,29 +75,39 @@ struct TwitterSessionControl {
                         observer.onError(AuthError.nullAccessToken)
                         return
                     }
-                    // Firebase Auth
-                    let credential = TwitterAuthProvider.credential(withToken: accessToken.key, secret: accessToken.secret)
-                    Auth.auth().signIn(with: credential) { (authDataResult, error) in
-                        guard let authDataResult = authDataResult, error == nil else {
-                            observer.onError(error!)
-                            return
-                        }
-                        let name: String = authDataResult.additionalUserInfo?.profile?["name"] as? String ?? authDataResult.user.displayName ?? ""
-                        DispatchQueue.global(qos: .utility).async {
-                            Database.database().reference(withPath: "twitter").child(authDataResult.user.uid)
-                                .setValue(["display_name": name, "name": accessToken.screenName!, "user_id": accessToken.userID!])
-                        }
-                        let profileImageURLHttps = authDataResult.additionalUserInfo?.profile?["profile_image_url_https"] as? String ?? ""
-                        let photoURL = URL(string: profileImageURLHttps.replacingOccurrences(of: "_normal", with: ""))!
-
-                        let callback = LoginCallback(userID: accessToken.userID!, name: name, screenName: accessToken.screenName!,
-                                                     photoURL: photoURL, accessToken: accessToken.key, accessTokenSecret: accessToken.secret)
-                        observer.onNext(callback)
-                        observer.onCompleted()
-                    }
+                    observer.onNext(accessToken)
+                    observer.onCompleted()
             }, failure: {
                 observer.onError($0)
             })
+            return Disposables.create()
+        }
+    }
+
+    static func handleSuccessLogin(_ accessToken: Credential.OAuthAccessToken) -> Observable<LoginCallback> {
+        return .create { (observer) -> Disposable in
+            // Firebase Auth
+            let credential = TwitterAuthProvider.credential(withToken: accessToken.key, secret: accessToken.secret)
+            Auth.auth().signIn(with: credential) { (authDataResult, error) in
+                guard let authDataResult = authDataResult, error == nil else {
+                    observer.onError(error!)
+                    return
+                }
+                let userID = accessToken.userID ?? authDataResult.additionalUserInfo?.profile?["id_str"] as? String ?? ""
+                let screenName = accessToken.screenName ?? authDataResult.additionalUserInfo?.profile?["screen_name"] as? String ?? ""
+                let name: String = authDataResult.additionalUserInfo?.profile?["name"] as? String ?? authDataResult.user.displayName ?? ""
+                DispatchQueue.global(qos: .utility).async {
+                    Database.database().reference(withPath: "twitter").child(authDataResult.user.uid)
+                        .setValue(["display_name": name, "name": screenName, "user_id": userID])
+                }
+                let profileImageURLHttps = authDataResult.additionalUserInfo?.profile?["profile_image_url_https"] as? String ?? ""
+                let photoURL = URL(string: profileImageURLHttps.replacingOccurrences(of: "_normal", with: ""))!
+
+                let callback = LoginCallback(userID: userID, name: name, screenName: screenName,
+                                             photoURL: photoURL, accessToken: accessToken.key, accessTokenSecret: accessToken.secret)
+                observer.onNext(callback)
+                observer.onCompleted()
+            }
             return Disposables.create()
         }
     }

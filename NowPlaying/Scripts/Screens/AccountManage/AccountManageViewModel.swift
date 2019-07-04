@@ -137,12 +137,39 @@ extension AccountManageViewModel {
     }
 
     private func startTwitterLogin(inputs: AccountManageViewModelInput) {
-        twitter.authorize(presenting: inputs.viewController)
+        let twitterAuthURL = URL(string: "twitterauth://authorize")!
+        if UIApplication.shared.canOpenURL(twitterAuthURL) {
+            twitter.tryAuthorizeSSO()
+                .subscribe(onNext: { [weak self] in
+                    guard let wself = self else { return }
+                    TwitterSessionControl.handleSuccessLogin($0)
+                        .bind(to: wself.twitterLoginHandle)
+                }, onError: { [unowned self] in
+                    print($0)
+                    self._loginResult.accept(.failure($0))
+                })
+                .disposed(by: disposeBag)
+            return
+        }
+        twitter.tryAuthorizeBrowser(presenting: inputs.viewController)
+            .subscribe(onNext: { [weak self] in
+                guard let wself = self else { return }
+                TwitterSessionControl.handleSuccessLogin($0)
+                    .bind(to: wself.twitterLoginHandle)
+            }, onError: { [unowned self] (error) in
+                print(error)
+                self._loginResult.accept(.failure(error))
+            })
+            .disposed(by: disposeBag)
+    }
+
+    private func twitterLoginHandle(_ callback: Observable<LoginCallback>) {
+        callback
             .subscribe(onNext: { [weak self] (callback) in
                 let user = User(serviceID: callback.userID, name: callback.name,
                                 screenName: callback.screenName, iconURL: callback.photoURL, serviceType: .twitter)
                 let credential = SecretCredential(consumerKey: .twitterConsumerKey, consumerSecret: .twitterConsumerSecret,
-                                                   authToken: callback.accessToken, authTokenSecret: callback.accessTokenSecret, user: user)
+                                                  authToken: callback.accessToken, authTokenSecret: callback.accessTokenSecret, user: user)
                 let result: LoginResult
                 do {
                     let realm = try Realm(configuration: realmConfiguration)
@@ -162,7 +189,6 @@ extension AccountManageViewModel {
                 }
                 SVProgressHUD.dismiss { self?._loginResult.accept(result) }
             }, onError: { [weak self] (error) in
-                print(error)
                 SVProgressHUD.dismiss { self?._loginResult.accept(.failure(error)) }
             })
             .disposed(by: disposeBag)
