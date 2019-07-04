@@ -34,6 +34,7 @@ struct MastodonUpdateCredentialsRequest: MastodonRequest {
     }
 
     var headerFields: [String: String] {
+        // FIXME: トークンの取得方法
         guard let accessToken = keychain[.mastodonAccessToken] else { return [:] }
         return [
             "Authorization": "Bearer \(accessToken)"
