@@ -46,4 +46,9 @@ extension User {
     var iconURL: URL {
         return URL(string: iconURLString)!
     }
+
+    func isExists() throws -> Bool {
+        let realm = try Realm(configuration: realmConfiguration)
+        return !realm.objects(User.self).filter("serviceID = %@", serviceID).isEmpty
+    }
 }

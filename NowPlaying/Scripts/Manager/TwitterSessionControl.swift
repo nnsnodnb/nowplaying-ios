@@ -37,13 +37,7 @@ struct TwitterSessionControl {
                         let name: String = authDataResult.additionalUserInfo?.profile?["name"] as? String ?? authDataResult.user.displayName ?? ""
                         DispatchQueue.global(qos: .utility).async {
                             Database.database().reference(withPath: "twitter").child(authDataResult.user.uid)
-                                .setValue(
-                                    [
-                                        "display_name": name,
-                                        "name": accessToken.screenName!,
-                                        "user_id": accessToken.userID!
-                                    ]
-                            )
+                                .setValue(["display_name": name, "name": accessToken.screenName!, "user_id": accessToken.userID!])
                         }
                         let profileImageURLHttps = authDataResult.additionalUserInfo?.profile?["profile_image_url_https"] as? String ?? ""
                         let photoURL = URL(string: profileImageURLHttps.replacingOccurrences(of: "_normal", with: ""))!

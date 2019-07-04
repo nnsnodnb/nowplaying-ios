@@ -28,7 +28,7 @@ protocol AccountManageViewModelOutput {
 
     var title: Observable<String> { get }
     var users: Observable<Results<User>> { get }
-    var loginResult: Observable<Bool> { get }
+    var loginResult: Observable<LoginResult> { get }
 }
 
 // MARK: - AccountManageViewModelType
@@ -40,16 +40,22 @@ protocol AccountManageViewModelType {
     init(inputs: AccountManageViewModelInput)
 }
 
+enum LoginResult {
+    case success(User)
+    case failure(Error)
+    case duplicate
+}
+
 final class AccountManageViewModel: AccountManageViewModelType {
 
     let title: Observable<String>
     let users: Observable<Results<User>>
-    let loginResult: Observable<Bool>
+    let loginResult: Observable<LoginResult>
 
     var outputs: AccountManageViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
-    private let _loginResult = PublishRelay<Bool>()
+    private let _loginResult = PublishRelay<LoginResult>()
 
     private lazy var twitter = TwitterSessionControl()
     private lazy var mastodon = MastodonSessionControl()
@@ -86,7 +92,7 @@ final class AccountManageViewModel: AccountManageViewModelType {
                             self.startAuthorizeMastodon(hostname: hostname)
                         }, onError: { (error) in
                             print(error)
-                            self._loginResult.accept(false)
+                            self._loginResult.accept(.failure(error))
                         })
                         .disposed(by: self.disposeBag)
                 }
@@ -107,22 +113,27 @@ final class AccountManageViewModel: AccountManageViewModelType {
                                 screenName: callback.screenName, iconURL: callback.photoURL, serviceType: .twitter)
                 let credential = SecretCredential(consumerKey: .twitterConsumerKey, consumerSecret: .twitterConsumerSecret,
                                                    authToken: callback.accessToken, authTokenSecret: callback.accessTokenSecret, user: user)
-                let result: Bool
+                let result: LoginResult
                 do {
                     let realm = try Realm(configuration: realmConfiguration)
-                    try realm.write {
-                        realm.add(user, update: .error)
-                        realm.add(credential, update: .error)
+                    // 重複チェック
+                    if try user.isExists() {
+                        result = .duplicate
+                    } else {
+                        try realm.write {
+                            realm.add(user, update: .error)
+                            realm.add(credential, update: .error)
+                        }
+                        result = .success(user)
                     }
-                    result = true
                 } catch {
                     print(error)
-                    result = false
+                    result = .failure(error)
                 }
                 SVProgressHUD.dismiss { self?._loginResult.accept(result) }
             }, onError: { [weak self] (error) in
                 print(error)
-                SVProgressHUD.dismiss { self?._loginResult.accept(false) }
+                SVProgressHUD.dismiss { self?._loginResult.accept(.failure(error)) }
             })
             .disposed(by: disposeBag)
     }
@@ -144,24 +155,28 @@ final class AccountManageViewModel: AccountManageViewModelType {
         mastodon.authorize(hostname: hostname)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] (secret) in
+                let user = User(serviceID: secret.userID, name: secret.name, screenName: secret.screenName,
+                                iconURL: secret.photoURL!, serviceType: .mastodon)
+                let secretCredential = SecretCredential(consumerKey: secret.clientID, consumerSecret: secret.clientSecret,
+                                                        authToken: secret.accessToken, domainName: secret.domain, user: user)
                 do {
-                    let user = User(serviceID: secret.userID, name: secret.name, screenName: secret.screenName,
-                                    iconURL: secret.photoURL!, serviceType: .mastodon)
-                    let secretCredential = SecretCredential(consumerKey: secret.clientID, consumerSecret: secret.clientSecret,
-                                                            authToken: secret.accessToken, domainName: secret.domain, user: user)
                     let realm = try Realm(configuration: realmConfiguration)
+                    if try user.isExists() {
+                        self?._loginResult.accept(.duplicate)
+                        return
+                    }
                     try realm.write {
                         realm.add(user, update: .error)
                         realm.add(secretCredential, update: .error)
                     }
-                    self?._loginResult.accept(true)
+                    self?._loginResult.accept(.success(user))
                 } catch {
                     print(error)
-                    self?._loginResult.accept(false)
+                    self?._loginResult.accept(.failure(error))
                 }
             }, onError: { [weak self] in
                 print($0)
-                self?._loginResult.accept(false)
+                self?._loginResult.accept(.failure($0))
             })
             .disposed(by: disposeBag)
     }

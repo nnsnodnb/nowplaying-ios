@@ -66,12 +66,15 @@ final class AccountManageViewController: UIViewController {
 
         viewModel.outputs.loginResult
             .subscribe(onNext: { (result) in
-                if result {
-                    SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                } else {
+                switch result {
+                case .success(let user):
+                    SVProgressHUD.showSuccess(withStatus: "\(user.screenName)にログインしました")
+                case .failure:
                     SVProgressHUD.showError(withStatus: "ログインに失敗しました")
+                case .duplicate:
+                    SVProgressHUD.showInfo(withStatus: "すでにログインされているアカウントです")
                 }
-                SVProgressHUD.dismiss(withDelay: 0.5)
+                SVProgressHUD.dismiss(withDelay: 1)
             })
             .disposed(by: disposeBag)
     }

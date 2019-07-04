@@ -69,11 +69,9 @@ final class MastodonSessionControl {
                     observer.onCompleted()
                 }, onError: {
                     observer.onError($0)
-                }, onCompleted: {
-                    SVProgressHUD.dismiss()
                 })
                 .disposed(by: wself.disposeBag)
-            // TODO: Firebase Auth & Firebase RealDatabase
+            // TODO: Firebase Auth & Firebase RealtimeDatabase
 
             return Disposables.create()
         }
