@@ -71,8 +71,6 @@ final class MastodonSessionControl {
                     observer.onError($0)
                 })
                 .disposed(by: wself.disposeBag)
-            // TODO: Firebase Auth & Firebase RealtimeDatabase
-
             return Disposables.create()
         }
     }
