@@ -6,6 +6,8 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
+import Action
+import APIKit
 import RealmSwift
 import RxCocoa
 import RxSwift
@@ -38,6 +40,7 @@ protocol AccountManageViewModelType {
     var outputs: AccountManageViewModelOutput { get }
 
     init(inputs: AccountManageViewModelInput)
+    func tokenRevoke(secret: SecretCredential) -> Observable<Void>
 }
 
 enum LoginResult {
@@ -56,6 +59,9 @@ final class AccountManageViewModel: AccountManageViewModelType {
 
     private let disposeBag = DisposeBag()
     private let _loginResult = PublishRelay<LoginResult>()
+    private let mastodonTokenRevokeAction: Action<SecretCredential, Void> = Action {
+        return Session.shared.rx.response(MastodonTokenRevokeRequest(secret: $0))
+    }
 
     private lazy var twitter = TwitterSessionControl()
     private lazy var mastodon = MastodonSessionControl()
@@ -78,6 +84,27 @@ final class AccountManageViewModel: AccountManageViewModelType {
 
         subscribeBarButtonItems(inputs: inputs)
     }
+
+    func tokenRevoke(secret: SecretCredential) -> Observable<Void> {
+        return .create { [unowned self] (observer) -> Disposable in
+            self.mastodonTokenRevokeAction.elements
+                .subscribe(onNext: {
+                    observer.onNext(())
+                    observer.onCompleted()
+                }, onError: {
+                    observer.onError($0)
+                })
+                .disposed(by: self.disposeBag)
+
+            self.mastodonTokenRevokeAction.inputs.onNext(secret)
+            return Disposables.create()
+        }
+    }
+}
+
+// MARK: - Private method
+
+extension AccountManageViewModel {
 
     private func subscribeBarButtonItems(inputs: AccountManageViewModelInput) {
         inputs.addAccountBarButtonItem.rx.tap

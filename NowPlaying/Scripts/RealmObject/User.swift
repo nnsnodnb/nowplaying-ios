@@ -47,6 +47,17 @@ extension User {
         return URL(string: iconURLString)!
     }
 
+    var isTwitetrUser: Bool {
+        guard let service = Service(rawValue: serviceType) else {
+            return false
+        }
+        return service == .twitter
+    }
+
+    var isMastodonUser: Bool {
+        return !isTwitetrUser
+    }
+
     func isExists() throws -> Bool {
         let realm = try Realm(configuration: realmConfiguration)
         return !realm.objects(User.self).filter("serviceID = %@", serviceID).isEmpty

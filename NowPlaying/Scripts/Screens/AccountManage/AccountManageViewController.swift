@@ -26,12 +26,23 @@ final class AccountManageViewController: UIViewController {
             tableView.tableFooterView = UIView()
 
             tableView.rx.modelDeleted(User.self)
-                .subscribe(onNext: { (user) in
+                .subscribe(onNext: { [unowned self] in
                     let realm = try! Realm(configuration: realmConfiguration)
-                    try! realm.write {
-                        realm.delete(user.secretCredentials.first!)
-                        realm.delete(user)
+                    let user = realm.object(ofType: User.self, forPrimaryKey: $0.id)!
+                    SVProgressHUD.show()
+                    if user.isTwitetrUser {
+                        self.removeUserData(user: user)
+                        return
                     }
+                    self.viewModel.tokenRevoke(secret: user.secretCredentials.first!)
+                        .subscribe(onNext: { [weak self] (_) in
+                            self?.removeUserData(user: user)
+                        }, onError: { (error) in
+                            print(error)
+                            SVProgressHUD.showError(withStatus: "ログアウトに失敗しました")
+                            SVProgressHUD.dismiss(withDelay: 1)
+                        })
+                        .disposed(by: self.disposeBag)
                 })
                 .disposed(by: disposeBag)
         }
@@ -101,6 +112,20 @@ final class AccountManageViewController: UIViewController {
 
         return .init(service: service, addAccountBarButtonItem: addAccountBarButtonItem,
                      editAccountsBarButtonItem: editAccountsBarButtonItem, viewController: self)
+    }
+
+    private func removeUserData(user: User) {
+        do {
+            let realm = try Realm(configuration: realmConfiguration)
+            try realm.write {
+                realm.delete(user.secretCredentials.first!)
+                realm.delete(user)
+            }
+            SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
+            SVProgressHUD.dismiss(withDelay: 1)
+        } catch {
+            print(error)
+        }
     }
 }
 

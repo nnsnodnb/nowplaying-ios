@@ -82,6 +82,7 @@
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
 		CF6FFF29207E4CE4003FD38D /* TodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CF7E87D422CE480A00F10335 /* MastodonTokenRevokeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7E87D322CE480A00F10335 /* MastodonTokenRevokeRequest.swift */; };
 		CF8C85E01F6F1B610051A0C7 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85DF1F6F1B610051A0C7 /* .env */; };
 		CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85E11F6F1B6F0051A0C7 /* .env.sample */; };
 		CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */; };
@@ -215,6 +216,7 @@
 		CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		CF6FFF24207E4CE4003FD38D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		CF6FFF26207E4CE4003FD38D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CF7E87D322CE480A00F10335 /* MastodonTokenRevokeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonTokenRevokeRequest.swift; sourceTree = "<group>"; };
 		CF8C85DE1F6F1AC20051A0C7 /* NowPlaying.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NowPlaying.entitlements; sourceTree = "<group>"; };
 		CF8C85DF1F6F1B610051A0C7 /* .env */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env; sourceTree = "<group>"; };
 		CF8C85E11F6F1B6F0051A0C7 /* .env.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env.sample; sourceTree = "<group>"; };
@@ -324,6 +326,7 @@
 				CF301D9B22B01BE9007E675E /* MastodonGetTokenRequest.swift */,
 				CF301D9D22B02343007E675E /* MastodonTootRequest.swift */,
 				CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */,
+				CF7E87D322CE480A00F10335 /* MastodonTokenRevokeRequest.swift */,
 			);
 			path = Mastodon;
 			sourceTree = "<group>";
@@ -1015,6 +1018,7 @@
 				CF55B68822A3E22800D5C9E1 /* PlayViewModel.swift in Sources */,
 				CF6F567A22CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift in Sources */,
 				CF301D9822B01A59007E675E /* MastodonAppRequest.swift in Sources */,
+				CF7E87D422CE480A00F10335 /* MastodonTokenRevokeRequest.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CF55B69722A418A100D5C9E1 /* Analytics+NowPlaying.swift in Sources */,
 				CF531C3A22AACEC800D05896 /* NowPlayingButtonRow.swift in Sources */,
