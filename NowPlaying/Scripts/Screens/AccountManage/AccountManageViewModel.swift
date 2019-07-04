@@ -17,8 +17,8 @@ import UIKit
 struct AccountManageViewModelInput {
 
     let service: Service
-    let addAccountBarButtonItem: Observable<Void>
-    let editAccountsBarButtonItem: Observable<Void>
+    let addAccountBarButtonItem: UIBarButtonItem
+    let editAccountsBarButtonItem: UIBarButtonItem
     let viewController: UIViewController
 }
 
@@ -80,7 +80,7 @@ final class AccountManageViewModel: AccountManageViewModelType {
     }
 
     private func subscribeBarButtonItems(inputs: AccountManageViewModelInput) {
-        inputs.addAccountBarButtonItem
+        inputs.addAccountBarButtonItem.rx.tap
             .subscribe(onNext: { [unowned self] in
                 switch inputs.service {
                 case .twitter:
@@ -99,9 +99,12 @@ final class AccountManageViewModel: AccountManageViewModelType {
             })
             .disposed(by: disposeBag)
 
-        inputs.editAccountsBarButtonItem
+        inputs.editAccountsBarButtonItem.rx.tap
             .subscribe(onNext: {
-
+                let isEditing = !inputs.viewController.isEditing
+                inputs.viewController.setEditing(isEditing, animated: true)
+                let newTitle = isEditing ? "完了" : "編集"
+                inputs.editAccountsBarButtonItem.title = newTitle
             })
             .disposed(by: disposeBag)
     }

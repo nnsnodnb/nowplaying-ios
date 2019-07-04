@@ -25,6 +25,7 @@ final class AccountManageViewController: UIViewController {
             tableView.register(R.nib.accountManageTableViewCell)
             tableView.tableFooterView = UIView()
 
+            tableView.rx.setDelegate(self).disposed(by: disposeBag)
             tableView.rx.modelSelected(User.self)
                 .subscribe(onNext: { (user) in
                     print(user.name)
@@ -79,19 +80,31 @@ final class AccountManageViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 
+    // MARK: - Override method
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        tableView.isEditing = isEditing
+    }
+
     // MARK: - Private method
 
     private func setupNavigationBar() -> AccountManageViewModelInput {
         let addAccountBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
-        let editAccountsBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: nil, action: nil)
+        let editAccountsBarButtonItem = UIBarButtonItem(title: "編集", style: .plain, target: nil, action: nil)
+        editAccountsBarButtonItem.possibleTitles = ["編集", "完了"]
 
         navigationItem.rightBarButtonItems = [editAccountsBarButtonItem, addAccountBarButtonItem]
 
-        return .init(service: service,
-                     addAccountBarButtonItem: addAccountBarButtonItem.rx.tap.asObservable(),
-                     editAccountsBarButtonItem: editAccountsBarButtonItem.rx.tap.asObservable(),
-                     viewController: self)
+        return .init(service: service, addAccountBarButtonItem: addAccountBarButtonItem,
+                     editAccountsBarButtonItem: editAccountsBarButtonItem, viewController: self)
     }
+}
+
+// MARK: - UITableViewDelegate
+
+extension AccountManageViewController: UITableViewDelegate {
+
 }
 
 // MARK: - SFSafariViewControllerDelegate
