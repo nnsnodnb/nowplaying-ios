@@ -1,5 +1,5 @@
 //
-//  MastodonAccountsRequest.swift
+//  MastodonVerifyCredentialsRequest.swift
 //  NowPlaying
 //
 //  Created by Oka Yuya on 2019/07/03.
@@ -10,20 +10,25 @@ import APIKit
 import KeychainAccess
 import UIKit
 
-struct MastodonAccountsRequest: MastodonRequest {
+struct MastodonVerifyCredentialsRequest: MastodonRequest {
 
-    typealias Response = MastodonAccountsResponse
+    typealias Response = MastodonVerifyCredentialsResponse
 
     private let keychain = Keychain.nowPlaying
     private let hostname: String
-    private let userID: String
+    private let accessToken: String
+
+    init(hostname: String, accessToken: String) {
+        self.hostname = hostname
+        self.accessToken = accessToken
+    }
 
     var baseURL: URL {
         return URL(string: "https://\(hostname)")!
     }
 
     var path: String {
-        return "/api/v1/accounts/\(userID)"
+        return "/api/v1/accounts/verify_credentials"
     }
 
     var method: HTTPMethod {
@@ -31,7 +36,6 @@ struct MastodonAccountsRequest: MastodonRequest {
     }
 
     var headerFields: [String: String] {
-        guard let accessToken = keychain[.mastodonAccessToken] else { return [:] }
         return [
             "Authorization": "Bearer \(accessToken)"
         ]
@@ -43,7 +47,7 @@ struct MastodonAccountsRequest: MastodonRequest {
     }
 }
 
-struct MastodonAccountsResponse: Codable {
+struct MastodonVerifyCredentialsResponse: Codable {
 
     let serviceID: String
     let username: String

@@ -57,7 +57,6 @@ struct MastodonAppResponse: Codable {
     let redirectURI: String
     let website: URL
     let clientID: String
-    let vapidKey: String
     let clientSecret: String
     let host: String
 
@@ -67,7 +66,6 @@ struct MastodonAppResponse: Codable {
         case redirectURI = "redirect_uri"
         case website
         case clientID = "client_id"
-        case vapidKey = "vapid_key"
         case clientSecret = "client_secret"
         case host
     }

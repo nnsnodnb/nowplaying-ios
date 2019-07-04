@@ -26,7 +26,7 @@ final class User: Object {
 
     class func getLastestPrimaryKey() -> Int? {
         let realm = try? Realm(configuration: realmConfiguration)
-        return realm?.objects(User.self).sorted(byKeyPath: "id", ascending: false).last?.id
+        return realm?.objects(User.self).sorted(byKeyPath: "id", ascending: false).first?.id
     }
 
     convenience init(serviceID: String, name: String="", screenName: String="", iconURL: URL, serviceType: Service) {

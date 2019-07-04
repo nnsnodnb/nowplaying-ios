@@ -25,7 +25,7 @@ final class SecretCredential: Object {
 
     class func getLastestPrimaryKey() -> Int? {
         let realm = try? Realm(configuration: realmConfiguration)
-        return realm?.objects(SecretCredential.self).sorted(byKeyPath: "id", ascending: false).last?.id
+        return realm?.objects(SecretCredential.self).sorted(byKeyPath: "id", ascending: false).first?.id
     }
 
     convenience init(consumerKey: String="", consumerSecret: String="", authToken: String="",

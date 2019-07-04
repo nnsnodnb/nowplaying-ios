@@ -82,6 +82,13 @@ final class AccountManageViewModel: AccountManageViewModelType {
                     self.startTwitterLogin(inputs: inputs)
                 case .mastodon:
                     self.startMastodonLogin(inputs: inputs)
+                        .subscribe(onNext: { (hostname) in
+                            self.startAuthorizeMastodon(hostname: hostname)
+                        }, onError: { (error) in
+                            print(error)
+                            self._loginResult.accept(false)
+                        })
+                        .disposed(by: self.disposeBag)
                 }
             })
             .disposed(by: disposeBag)
@@ -120,27 +127,43 @@ final class AccountManageViewModel: AccountManageViewModelType {
             .disposed(by: disposeBag)
     }
 
-    private func startMastodonLogin(inputs: AccountManageViewModelInput) {
+    private func startMastodonLogin(inputs: AccountManageViewModelInput) -> Observable<String> {
         // ドメイン検索 → アプリ登録 → SFSafariViewControllerでのOAuth認証 → トークンを取得
-        let viewController = SearchMastodonTableViewController()
-        viewController.decision
-            .subscribe(onNext: { [weak self] in
-                guard let wself = self else { return }
-                wself.mastodon.authorize(hostname: $0)
-                    .subscribe(onNext: { (authorizationCode) in
-                        print(authorizationCode)
-                    }, onError: { [weak self] in
-                        print($0)
-                        self?._loginResult.accept(false)
-                    })
-                    .disposed(by: wself.disposeBag)
+        return .create { [unowned self] (observer) -> Disposable in
+            let viewController = SearchMastodonTableViewController()
+            viewController.decision
+                .bind(to: observer.asObserver())
+                .disposed(by: self.disposeBag)
+
+            inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
+            return Disposables.create()
+        }
+    }
+
+    private func startAuthorizeMastodon(hostname: String) {
+        mastodon.authorize(hostname: hostname)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (secret) in
+                do {
+                    let user = User(serviceID: secret.userID, name: secret.name, screenName: secret.screenName,
+                                    iconURL: secret.photoURL!, serviceType: .mastodon)
+                    let secretCredential = SecretCredential(consumerKey: secret.clientID, consumerSecret: secret.clientSecret,
+                                                            authToken: secret.accessToken, domainName: secret.domain, user: user)
+                    let realm = try Realm(configuration: realmConfiguration)
+                    try realm.write {
+                        realm.add(user, update: .error)
+                        realm.add(secretCredential, update: .error)
+                    }
+                    self?._loginResult.accept(true)
+                } catch {
+                    print(error)
+                    self?._loginResult.accept(false)
+                }
             }, onError: { [weak self] in
                 print($0)
                 self?._loginResult.accept(false)
             })
             .disposed(by: disposeBag)
-
-        inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 

@@ -11,12 +11,13 @@ import Foundation
 import RxCocoa
 import RxSwift
 import SafariServices
+import SVProgressHUD
 
 final class MastodonSessionControl {
 
     private let disposeBag = DisposeBag()
 
-    private struct Secret {
+    struct Secret {
         var userID: String = ""
         var name: String = ""
         var screenName: String = ""
@@ -38,24 +39,47 @@ final class MastodonSessionControl {
         mutating func setAccessToken(_ token: String) {
             accessToken = token
         }
+
+        mutating func configureUser(_ response: MastodonVerifyCredentialsResponse) {
+            userID = response.serviceID
+            name = response.displayName
+            screenName = response.username
+            photoURL = response.avatar
+        }
     }
 
     private lazy var secret = Secret()
 
-    func authorize(hostname: String) -> Observable<String> {
+    func authorize(hostname: String) -> Observable<Secret> {
         secret.setDomain(hostname)
-        return .create { [unowned self] (observer) -> Disposable in
-            self.mastodonRegisterApp(hostname)
-                .bind(to: self.mastodonAuthorize)
-                .bind(to: self.mastodonGetToken)
-                .bind(to: observer.asObserver())
-                .disposed(by: self.disposeBag)
+        return .create { [weak self] (observer) -> Disposable in
+            guard let wself = self else {
+                observer.onError(AuthError.nullMe)
+                return Disposables.create()
+            }
+            wself.mastodonRegisterApp(hostname)
+                .bind(to: wself.mastodonAuthorize)
+                .do(onNext: { (_) in
+                    SVProgressHUD.show()
+                })
+                .bind(to: wself.mastodonGetToken)
+                .bind(to: wself.mastodonVerifyCredentials)
+                .subscribe(onNext: { (secret) in
+                    observer.onNext(secret)
+                    observer.onCompleted()
+                }, onError: {
+                    observer.onError($0)
+                }, onCompleted: {
+                    SVProgressHUD.dismiss()
+                })
+                .disposed(by: wself.disposeBag)
             // TODO: Firebase Auth & Firebase RealDatabase
 
             return Disposables.create()
         }
     }
 
+    // アプリ登録
     private func mastodonRegisterApp(_ hostname: String) -> Observable<URL> {
         return .create { [unowned self] (observer) -> Disposable in
             Session.shared.rx.response(MastodonAppRequest(hostname: hostname))
@@ -84,6 +108,7 @@ final class MastodonSessionControl {
         }
     }
 
+    // ユーザ自身の操作による認証
     private func mastodonAuthorize(url: Observable<URL>) -> Observable<String> {
         var session: SFAuthenticationSession?
         return .create { [unowned self] (observer) -> Disposable in
@@ -109,30 +134,54 @@ final class MastodonSessionControl {
         }
     }
 
+    // 認証トークンを取得する
     private func mastodonGetToken(authorizationCode: Observable<String>) -> Observable<String> {
-        return .create { [unowned self] (observer) -> Disposable in
+        return .create { [weak self] (observer) -> Disposable in
+            guard let wself = self else {
+                observer.onError(AuthError.nullMe)
+                return Disposables.create()
+            }
             authorizationCode.subscribe(onNext: {
-                let inputs: MastodonGetTokenRequest.Input = .init(hostname: self.secret.domain, code: $0,
-                                                                  clientID: self.secret.clientID, clientSecret: self.secret.clientSecret)
+                let inputs = MastodonGetTokenRequest.Input(hostname: wself.secret.domain, code: $0,
+                                                           clientID: wself.secret.clientID, clientSecret: wself.secret.clientSecret)
                 Session.shared.rx.response(MastodonGetTokenRequest(inputs: inputs))
-                    .subscribe(onSuccess: { [weak self] (response) in
-                        self?.secret.setAccessToken(response.accessToken)
-                        observer.onNext(response.accessToken)
+                    .subscribe(onSuccess: {
+                        wself.secret.setAccessToken($0.accessToken)
+                        observer.onNext($0.accessToken)
                         observer.onCompleted()
                     }, onError: { (error) in
                         observer.onError(error)
                     })
-                    .disposed(by: self.disposeBag)
+                    .disposed(by: wself.disposeBag)
             }, onError: {
                 observer.onError($0)
             })
-            .disposed(by: self.disposeBag)
+            .disposed(by: wself.disposeBag)
             return Disposables.create()
         }
     }
 
-    private func mastodonGetAccountDetail(userID: Observable<String>) -> Observable<MastodonAccountsResponse> {
-        return .create { (observer) -> Disposable in
+    // 認証トークンを確認しユーザ情報を取得する
+    private func mastodonVerifyCredentials(accessToken: Observable<String>) -> Observable<Secret> {
+        return .create { [weak self] (observer) -> Disposable in
+            guard let wself = self else {
+                observer.onError(AuthError.nullMe)
+                return Disposables.create()
+            }
+            accessToken.subscribe(onNext: {
+                Session.shared.rx.response(MastodonVerifyCredentialsRequest(hostname: wself.secret.domain, accessToken: $0))
+                    .subscribe(onSuccess: {
+                        wself.secret.configureUser($0)
+                        observer.onNext(wself.secret)
+                        observer.onCompleted()
+                    }, onError: {
+                        observer.onError($0)
+                    })
+                    .disposed(by: wself.disposeBag)
+            }, onError: {
+                observer.onError($0)
+            })
+            .disposed(by: wself.disposeBag)
             return Disposables.create()
         }
     }

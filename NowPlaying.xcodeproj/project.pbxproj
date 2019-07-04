@@ -16,7 +16,7 @@
 		CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1AAFE41F75459B00384000 /* Eureka.framework */; };
 		CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1AAFE91F75F2A600384000 /* Common.swift */; };
 		CF232DA922CC93E200820C1B /* SwifteriOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF232DA822CC93E100820C1B /* SwifteriOS.framework */; };
-		CF232DAB22CCD45D00820C1B /* MastodonAccountsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAA22CCD45D00820C1B /* MastodonAccountsRequest.swift */; };
+		CF232DAB22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */; };
 		CF232DAD22CCD70400820C1B /* TwitterSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAC22CCD70400820C1B /* TwitterSessionControl.swift */; };
 		CF232DAF22CCD7F100820C1B /* MastodonSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
@@ -145,7 +145,7 @@
 		CF1AAFE41F75459B00384000 /* Eureka.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Eureka.framework; path = Carthage/Build/iOS/Eureka.framework; sourceTree = "<group>"; };
 		CF1AAFE91F75F2A600384000 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = Common/Common.swift; sourceTree = "<group>"; };
 		CF232DA822CC93E100820C1B /* SwifteriOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwifteriOS.framework; path = Carthage/Build/iOS/SwifteriOS.framework; sourceTree = "<group>"; };
-		CF232DAA22CCD45D00820C1B /* MastodonAccountsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonAccountsRequest.swift; sourceTree = "<group>"; };
+		CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonVerifyCredentialsRequest.swift; sourceTree = "<group>"; };
 		CF232DAC22CCD70400820C1B /* TwitterSessionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TwitterSessionControl.swift; path = Manager/TwitterSessionControl.swift; sourceTree = "<group>"; };
 		CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonSessionControl.swift; path = Manager/MastodonSessionControl.swift; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -319,7 +319,7 @@
 			isa = PBXGroup;
 			children = (
 				CF301D9722B01A59007E675E /* MastodonAppRequest.swift */,
-				CF232DAA22CCD45D00820C1B /* MastodonAccountsRequest.swift */,
+				CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */,
 				CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */,
 				CF301D9B22B01BE9007E675E /* MastodonGetTokenRequest.swift */,
 				CF301D9D22B02343007E675E /* MastodonTootRequest.swift */,
@@ -990,7 +990,7 @@
 				CF99DF5622BA00EF006E3876 /* SearchMastodonTableViewController.swift in Sources */,
 				CF531C0722A953B200D05896 /* MastodonSettingViewModel.swift in Sources */,
 				CF531C3022A9827100D05896 /* SKProductsRequestDelegateProxy.swift in Sources */,
-				CF232DAB22CCD45D00820C1B /* MastodonAccountsRequest.swift in Sources */,
+				CF232DAB22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift in Sources */,
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
 				CF6F569622CC740F00F517E9 /* AccountManageTableViewCell.swift in Sources */,
 				CF99DF5E22BA0C1F006E3876 /* InstancesSearchRequest.swift in Sources */,
