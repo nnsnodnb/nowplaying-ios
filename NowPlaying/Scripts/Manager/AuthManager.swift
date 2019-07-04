@@ -55,8 +55,6 @@ extension AuthManager {
     @available(iOS, deprecated: 2.3.1)
     func logout(completion: () -> Void) {
         try? Auth.auth().signOut()
-        // FIXME: Twitterログアウト実装
-//        TWTRTwitter.sharedInstance().sessionStore.logOutUserID(TWTRTwitter.sharedInstance().sessionStore.session()!.userID)
         keychain[.authToken] = nil
         keychain[.authTokenSecret] = nil
         completion()
