@@ -130,7 +130,7 @@ extension MastodonSettingViewModel {
             guard let domainRow = self.form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow,
                 let hostname = domainRow.value, !self.isMastodonLogin else { return }
             SVProgressHUD.show()
-            Session.shared.rx.response(MastodonAppRequest   (hostname: hostname))
+            Session.shared.rx.response(MastodonAppRequest(hostname: hostname))
                 .subscribe(onSuccess: { [weak self] (response) in
                     UserDefaults.set(response.clientID, forKey: .mastodonClientID)
                     UserDefaults.set(response.clientSecret, forKey: .mastodonClientSecret)
