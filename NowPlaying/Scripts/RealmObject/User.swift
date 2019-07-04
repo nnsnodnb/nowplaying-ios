@@ -63,3 +63,11 @@ extension User {
         return !realm.objects(User.self).filter("serviceID = %@", serviceID).isEmpty
     }
 }
+
+extension User {
+
+    class func isExists(service: Service) -> Bool {
+        let realm = try! Realm(configuration: realmConfiguration)
+        return !realm.objects(User.self).filter("serviceType = %@", service.rawValue).isEmpty
+    }
+}

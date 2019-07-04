@@ -188,11 +188,11 @@ final class PlayViewModel: PlayViewModelType {
 
         inputs.mastodonButton
             .subscribe(onNext: { [weak self] (_) in
-                if !UserDefaults.bool(forKey: .isMastodonLogin) {
+                defer { Analytics.Play.mastodonButton() }
+                if !User.isExists(service: .mastodon) {
                     self?.loginError.accept(())
                     return
                 }
-                Analytics.Play.mastodonButton()
 
                 self?.setNewPostContent(service: .mastodon)
             })
@@ -200,12 +200,11 @@ final class PlayViewModel: PlayViewModelType {
 
         inputs.twitterButton
             .subscribe(onNext: { [weak self] (_) in
-                // FIXME: Twitterログインをしているか確認 (RealmでTwitterユーザが1件以上あるか)
-//                if TWTRTwitter.sharedInstance().sessionStore.session() == nil {
-//                    self?.loginError.accept(())
-//                    return
-//                }
-                Analytics.Play.twitterButton()
+                defer { Analytics.Play.twitterButton() }
+                if !User.isExists(service: .twitter) {
+                    self?.loginError.accept(())
+                    return
+                }
 
                 self?.setNewPostContent(service: .twitter)
             })
@@ -289,28 +288,30 @@ extension PlayViewModel {
     private func postMastodon(_ content: PostContent) {
         guard UserDefaults.bool(forKey: .isMastodonAutoToot) else { return }
         if let shareImage = content.shareImage, let data = shareImage.pngData() {
-            Session.shared.rx.response(MastodonMediaRequest(imageData: data))
-                .subscribe(onSuccess: { [weak self] (response) in
-                    guard let wself = self else { return }
-                    Session.shared.rx.response(MastodonTootRequest(status: content.postMessage, mediaIDs: [response.mediaID]))
-                        .subscribe(onSuccess: { (_) in
-                        }, onError: { (error) in
-                            print(error)
-                        })
-                        .disposed(by: wself.disposeBag)
-                }, onError: { (error) in
-                    print(error)
-                })
-                .disposed(by: disposeBag)
+            // FIXME: User オブジェクトを取得する
+//            Session.shared.rx.response(MastodonMediaRequest(imageData: data))
+//                .subscribe(onSuccess: { [weak self] (response) in
+//                    guard let wself = self else { return }
+//                    Session.shared.rx.response(MastodonTootRequest(status: content.postMessage, mediaIDs: [response.mediaID]))
+//                        .subscribe(onSuccess: { (_) in
+//                        }, onError: { (error) in
+//                            print(error)
+//                        })
+//                        .disposed(by: wself.disposeBag)
+//                }, onError: { (error) in
+//                    print(error)
+//                })
+//                .disposed(by: disposeBag)
             Analytics.AutoPost.withImageToot(content)
         } else {
-            Session.shared.rx.response(MastodonTootRequest(status: content.postMessage))
-                .subscribe(onSuccess: { (_) in
-
-                }, onError: { (error) in
-                    print(error)
-                })
-                .disposed(by: disposeBag)
+            // FIXME: User オブジェクトを取得する
+//            Session.shared.rx.response(MastodonTootRequest(status: content.postMessage))
+//                .subscribe(onSuccess: { (_) in
+//
+//                }, onError: { (error) in
+//                    print(error)
+//                })
+//                .disposed(by: disposeBag)
             Analytics.AutoPost.textOnlyToot(content)
         }
     }

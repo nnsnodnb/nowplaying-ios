@@ -29,7 +29,6 @@
 		CF301D9E22B02343007E675E /* MastodonTootRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9D22B02343007E675E /* MastodonTootRequest.swift */; };
 		CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */; };
 		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
-		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
 		CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4D73D11F791D4300E72FBF /* StoreKit.framework */; };
 		CF531BF422A9495000D05896 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BF322A9495000D05896 /* SettingViewModel.swift */; };
 		CF531BFE22A9532400D05896 /* TwitterSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BFD22A9532400D05896 /* TwitterSettingViewModel.swift */; };
@@ -159,7 +158,6 @@
 		CF301D9D22B02343007E675E /* MastodonTootRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonTootRequest.swift; sourceTree = "<group>"; };
 		CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TweetViewController.swift; path = Tweet/TweetViewController.swift; sourceTree = "<group>"; };
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
-		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
 		CF4D73D11F791D4300E72FBF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CF531BF322A9495000D05896 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingViewModel.swift; path = Setting/Top/SettingViewModel.swift; sourceTree = "<group>"; };
 		CF531BFD22A9532400D05896 /* TwitterSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TwitterSettingViewModel.swift; path = Setting/TwitterSetting/TwitterSettingViewModel.swift; sourceTree = "<group>"; };
@@ -584,7 +582,6 @@
 			isa = PBXGroup;
 			children = (
 				CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */,
-				CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */,
 				CF0FA21B206D4D5A00647317 /* PaymentManager.swift */,
 				CF232DAC22CCD70400820C1B /* TwitterSessionControl.swift */,
 				CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */,
@@ -1031,7 +1028,6 @@
 				CF6F566D22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift in Sources */,
 				CF301D9A22B01B84007E675E /* SwiftPrint.swift in Sources */,
 				CF531BF422A9495000D05896 /* SettingViewModel.swift in Sources */,
-				CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */,
 				CF99DF5922BA05B7006E3876 /* SearchMastodonTableViewModel.swift in Sources */,
 				CF531C2C22A9817A00D05896 /* SKPaymentQueue+Rx.swift in Sources */,
 				CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */,
