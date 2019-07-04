@@ -132,4 +132,10 @@ final class AccountManageViewController: UIViewController {
 // MARK: - SFSafariViewControllerDelegate
 
 // FIXME: SFSafariViewControllerの戻るボタンを隠す
-extension AccountManageViewController: SFSafariViewControllerDelegate {}
+extension AccountManageViewController: SFSafariViewControllerDelegate {
+
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        SVProgressHUD.showInfo(withStatus: "ログインをキャンセルしました")
+        SVProgressHUD.dismiss(withDelay: 1)
+    }
+}
