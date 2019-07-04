@@ -25,10 +25,13 @@ final class AccountManageViewController: UIViewController {
             tableView.register(R.nib.accountManageTableViewCell)
             tableView.tableFooterView = UIView()
 
-            tableView.rx.setDelegate(self).disposed(by: disposeBag)
-            tableView.rx.modelSelected(User.self)
+            tableView.rx.modelDeleted(User.self)
                 .subscribe(onNext: { (user) in
-                    print(user.name)
+                    let realm = try! Realm(configuration: realmConfiguration)
+                    try! realm.write {
+                        realm.delete(user.secretCredentials.first!)
+                        realm.delete(user)
+                    }
                 })
                 .disposed(by: disposeBag)
         }
@@ -99,12 +102,6 @@ final class AccountManageViewController: UIViewController {
         return .init(service: service, addAccountBarButtonItem: addAccountBarButtonItem,
                      editAccountsBarButtonItem: editAccountsBarButtonItem, viewController: self)
     }
-}
-
-// MARK: - UITableViewDelegate
-
-extension AccountManageViewController: UITableViewDelegate {
-
 }
 
 // MARK: - SFSafariViewControllerDelegate
