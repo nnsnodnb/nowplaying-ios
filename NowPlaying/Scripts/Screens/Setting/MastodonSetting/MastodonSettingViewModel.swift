@@ -13,7 +13,6 @@ import Foundation
 import KeychainAccess
 import RxCocoa
 import RxSwift
-import SafariServices
 import SVProgressHUD
 import NSURL_QueryDictionary
 
@@ -54,7 +53,6 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
     private var isMastodonLogin: Bool {
         return UserDefaults.bool(forKey: .isMastodonLogin)
     }
-    private var session: SFAuthenticationSession?
 
     init(inputs: MastodonSettingViewModelInput) {
         self.inputs = inputs
@@ -100,79 +98,6 @@ extension MastodonSettingViewModel {
         }.onCellSelection { [unowned self] (_, _) in
             let viewController = AccountManageViewController(service: .mastodon)
             self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
-        }
-    }
-
-    private func configureDomain() -> MastodonSettingDomainRow {
-        return MastodonSettingDomainRow {
-            $0.tag = "mastodon_domain"
-            $0.value = UserDefaults.string(forKey: .mastodonHostname)
-        }.onCellSelection { [unowned self] (_, row) in
-            if UserDefaults.bool(forKey: .isMastodonLogin) {
-                let alert = UIAlertController(title: "すでにログインされています", message: "ドメインを変更するには先にログアウトをしてください", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
-                self.inputs.viewController.present(alert, animated: true) {
-                    row.deselect(animated: true)
-                }
-                return
-            }
-            let viewController = SearchMastodonTableViewController()
-            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
-        }
-    }
-
-    private func configureLogin() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
-            $0.title = "ログイン"
-            $0.tag = "mastodon_login"
-            $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isMastodonLogin))
-        }.onCellSelection { [unowned self] (_, _) in
-            guard let domainRow = self.form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow,
-                let hostname = domainRow.value, !self.isMastodonLogin else { return }
-            SVProgressHUD.show()
-            Session.shared.rx.response(MastodonAppRequest(hostname: hostname))
-                .subscribe(onSuccess: { [weak self] (response) in
-                    UserDefaults.set(response.clientID, forKey: .mastodonClientID)
-                    UserDefaults.set(response.clientSecret, forKey: .mastodonClientSecret)
-                    let url = URL(string: "https://\(hostname)/oauth/authorize")!
-                    var components = URLComponents(url: url, resolvingAgainstBaseURL: url.baseURL != nil)
-                    components?.queryItems = [
-                        URLQueryItem(name: "client_id", value: response.clientID),
-                        URLQueryItem(name: "response_type", value: "code"),
-                        URLQueryItem(name: "redirect_uri", value: "nowplaying-ios-nnsnodnb://oauth_mastodon"),
-                        URLQueryItem(name: "scope", value: "write")
-                    ]
-                    SVProgressHUD.dismiss()
-                    guard let authorizeURL = components?.url else {
-                        self?._error.accept(())
-                        return
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        self?.challengeAuthenticationSession(with: authorizeURL)
-                    }
-                }, onError: { [weak self] (_) in
-                    SVProgressHUD.dismiss()
-                    self?._error.accept(())
-                })
-                .disposed(by: self.disposeBag)
-            Analytics.MastodonSetting.login()
-        }
-    }
-
-    private func configureLogout() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
-            $0.title = "ログアウト"
-            $0.tag = "mastodon_logout"
-            $0.hidden = Condition(booleanLiteral: !UserDefaults.bool(forKey: .isMastodonLogin))
-        }.onCellSelection { [weak self] (_, _) in
-//            AuthManager.shared.mastodonLogout()
-            UserDefaults.set(false, forKey: .isMastodonLogin)
-            Analytics.MastodonSetting.logout()
-            DispatchQueue.main.async {
-                SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-                self?.changeMastodonLogState(didLogin: false)
-            }
         }
     }
 
@@ -249,50 +174,6 @@ extension MastodonSettingViewModel {
             })
             self.inputs.viewController.present(alert, animated: true, completion: nil)
         }
-    }
-}
-
-// MARK: - Private method (Utilities)
-
-extension MastodonSettingViewModel {
-
-    private func challengeAuthenticationSession(with url: URL) {
-        session = SFAuthenticationSession(url: url, callbackURLScheme: "nowplaying-ios-nnsnodnb") { [weak self] (url, _) in
-            defer { self?.session = nil }
-            guard let url = url else {
-                self?._error.accept(())
-                return
-            }
-            self?.loginProcessForSafariCallback(url: url)
-        }
-        session?.start()
-    }
-
-    private func loginProcessForSafariCallback(url: URL) {
-        guard let query = (url as NSURL).uq_queryDictionary(), let code = query["code"] as? String,
-            let domainRow = form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow,
-            let hostname = domainRow.value else { return }
-//        Session.shared.rx.response(MastodonGetTokenRequest(hostname: hostname, code: code))
-//            .subscribe(onSuccess: { [weak self] (response) in
-//                self?.keychain[.mastodonAccessToken] = response.accessToken
-//                SVProgressHUD.showSuccess(withStatus: "ログインしました")
-//                SVProgressHUD.dismiss(withDelay: 0.5)
-//                UserDefaults.set(true, forKey: .isMastodonLogin)
-//                self?.changeMastodonLogState(didLogin: true)
-//            }, onError: { [weak self] (_) in
-//                self?._error.accept(())
-//            })
-//            .disposed(by: self.disposeBag)
-    }
-
-    private func changeMastodonLogState(didLogin: Bool) {
-        if UserDefaults.bool(forKey: .isMastodonLogin) != didLogin { return }
-        guard let loginRow = form.rowBy(tag: "mastodon_login"),
-            let logoutRow = form.rowBy(tag: "mastodon_logout") else { return }
-        loginRow.hidden = Condition(booleanLiteral: didLogin)
-        logoutRow.hidden = Condition(booleanLiteral: !didLogin)
-        loginRow.evaluateHidden()
-        logoutRow.evaluateHidden()
     }
 }
 
