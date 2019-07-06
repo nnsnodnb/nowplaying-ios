@@ -16,41 +16,6 @@ import UIKit
 
 struct TwitterSessionControl {
 
-//    func authorize(presenting: UIViewController) -> Observable<LoginCallback> {
-//        let disposeBag = DisposeBag()
-//
-//        return .create { (observer) -> Disposable in
-//            let swifter = Swifter(consumerKey: .twitterConsumerKey, consumerSecret: .twitterConsumerSecret)
-//            TwitterSessionControl.tryAuthorizeSSO(swifter: swifter)
-//                .subscribe(onNext: { (oauthAccessToken) in
-//                    TwitterSessionControl.handleSuccessLogin(oauthAccessToken)
-//                        .bind(to: observer.asObserver())
-//                        .disposed(by: disposeBag)
-//                }, onError: { (error) in
-//                    guard let swifterError = error as? SwifterError else {
-//                        observer.onError(error)
-//                        return
-//                    }
-//                    switch swifterError.kind {
-//                    case .noTwitterApp:
-//                        TwitterSessionControl.tryAuthorizeBrowser(presenting: presenting, swifter: swifter)
-//                            .subscribe(onNext: { (oauthAccessToken) in
-//                                TwitterSessionControl.handleSuccessLogin(oauthAccessToken)
-//                                    .bind(to: observer.asObserver())
-//                                    .disposed(by: disposeBag)
-//                            }, onError: { (error) in
-//                                observer.onError(error)
-//                            })
-//                            .disposed(by: disposeBag)
-//                    default:
-//                        observer.onError(swifterError)
-//                    }
-//                })
-//                .disposed(by: disposeBag)
-//            return Disposables.create()
-//        }
-//    }
-
     func tryAuthorizeSSO() -> Observable<Credential.OAuthAccessToken> {
         return .create { (observer) -> Disposable in
             let swifter = Swifter(consumerKey: .twitterConsumerKey, consumerSecret: .twitterConsumerSecret)
