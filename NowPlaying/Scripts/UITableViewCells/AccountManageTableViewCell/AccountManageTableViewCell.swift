@@ -6,7 +6,6 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
-import Nuke
 import UIKit
 
 final class AccountManageTableViewCell: UITableViewCell {
@@ -18,7 +17,7 @@ final class AccountManageTableViewCell: UITableViewCell {
 
     private(set) var user: User! {
         didSet {
-            loadImage(with: user.iconURL, into: iconImageView)
+            iconImageView.setImage(with: user.iconURL)
             usernameLabel.text = user.name
             screenNameLabel.text = "@\(user.screenName)"
         }
