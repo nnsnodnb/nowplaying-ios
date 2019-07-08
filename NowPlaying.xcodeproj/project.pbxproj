@@ -19,6 +19,8 @@
 		CF232DAB22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */; };
 		CF232DAD22CCD70400820C1B /* TwitterSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAC22CCD70400820C1B /* TwitterSessionControl.swift */; };
 		CF232DAF22CCD7F100820C1B /* MastodonSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */; };
+		CF232DB522D3079400820C1B /* NowPlaying-Debug.xcconfig.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF232DB322D3079400820C1B /* NowPlaying-Debug.xcconfig.sample */; };
+		CF232DB622D3079400820C1B /* NowPlaying-Release.xcconfig.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
 		CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD7220A4AB630039217F /* libicucore.tbd */; };
 		CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF301D8C22B009C5007E675E /* APIKit.framework */; };
@@ -151,6 +153,8 @@
 		CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonSessionControl.swift; path = Manager/MastodonSessionControl.swift; sourceTree = "<group>"; };
 		CF232DB022D3037600820C1B /* NowPlaying-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "NowPlaying-Debug.xcconfig"; sourceTree = "<group>"; };
 		CF232DB122D303D900820C1B /* NowPlaying-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "NowPlaying-Release.xcconfig"; sourceTree = "<group>"; };
+		CF232DB322D3079400820C1B /* NowPlaying-Debug.xcconfig.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "NowPlaying-Debug.xcconfig.sample"; sourceTree = "<group>"; };
+		CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "NowPlaying-Release.xcconfig.sample"; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF2DBD7220A4AB630039217F /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		CF301D8C22B009C5007E675E /* APIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APIKit.framework; path = Carthage/Build/iOS/APIKit.framework; sourceTree = "<group>"; };
@@ -323,7 +327,9 @@
 			isa = PBXGroup;
 			children = (
 				CF232DB022D3037600820C1B /* NowPlaying-Debug.xcconfig */,
+				CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */,
 				CF232DB122D303D900820C1B /* NowPlaying-Release.xcconfig */,
+				CF232DB322D3079400820C1B /* NowPlaying-Debug.xcconfig.sample */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -804,6 +810,7 @@
 			files = (
 				CF6F569722CC740F00F517E9 /* AccountManageTableViewCell.xib in Resources */,
 				CF531C0B22A953C900D05896 /* MastodonSettingViewController.xib in Resources */,
+				CF232DB522D3079400820C1B /* NowPlaying-Debug.xcconfig.sample in Resources */,
 				CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */,
 				CF99DF4B22B607C1006E3876 /* PostFormatHelpView.xib in Resources */,
 				CF918D071F7075110005B686 /* Settings.bundle in Resources */,
@@ -811,6 +818,7 @@
 				CFB5798822C3982D001F3D13 /* MastodonSettingDomainTableViewCell.xib in Resources */,
 				CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */,
 				CF531C0422A9536A00D05896 /* TwitterSettingViewController.xib in Resources */,
+				CF232DB622D3079400820C1B /* NowPlaying-Release.xcconfig.sample in Resources */,
 				CF531C3622A9830B00D05896 /* LICENSE in Resources */,
 				CF6F566922C4D0E300F517E9 /* ArtworkPreviewViewController.xib in Resources */,
 				CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */,
