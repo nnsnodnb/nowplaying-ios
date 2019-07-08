@@ -17,6 +17,7 @@ final class User: Object {
     @objc dynamic var screenName: String = ""
     @objc dynamic var iconURLString: String = ""
     @objc dynamic var serviceType: String = ""
+    @objc dynamic var isDefault: Bool = false
 
     let secretCredentials = LinkingObjects(fromType: SecretCredential.self, property: "user")
 
@@ -32,12 +33,13 @@ final class User: Object {
     convenience init(serviceID: String, name: String="", screenName: String="", iconURL: URL, serviceType: Service) {
         self.init()
         let latestPrimaryKey = User.getLastestPrimaryKey() ?? 0
-        self.id = latestPrimaryKey + 1
+        id = latestPrimaryKey + 1
         self.serviceID = serviceID
         self.name = name
         self.screenName = screenName
-        self.iconURLString = iconURL.absoluteString
+        iconURLString = iconURL.absoluteString
         self.serviceType = serviceType.rawValue
+        isDefault = !User.isExists(service: serviceType)
     }
 }
 
