@@ -86,8 +86,6 @@
 		CF6FFF29207E4CE4003FD38D /* TodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CF7E87D422CE480A00F10335 /* MastodonTokenRevokeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7E87D322CE480A00F10335 /* MastodonTokenRevokeRequest.swift */; };
 		CF7E87D622D22DBB00F10335 /* UIImageView+Nuke.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7E87D522D22DBB00F10335 /* UIImageView+Nuke.swift */; };
-		CF8C85E01F6F1B610051A0C7 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85DF1F6F1B610051A0C7 /* .env */; };
-		CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85E11F6F1B6F0051A0C7 /* .env.sample */; };
 		CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */; };
 		CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */; };
 		CF8E48802081EC75003A5E70 /* Environments.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8E487F2081EC75003A5E70 /* Environments.swift */; };
@@ -226,8 +224,6 @@
 		CF7E87D322CE480A00F10335 /* MastodonTokenRevokeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonTokenRevokeRequest.swift; sourceTree = "<group>"; };
 		CF7E87D522D22DBB00F10335 /* UIImageView+Nuke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Nuke.swift"; sourceTree = "<group>"; };
 		CF8C85DE1F6F1AC20051A0C7 /* NowPlaying.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NowPlaying.entitlements; sourceTree = "<group>"; };
-		CF8C85DF1F6F1B610051A0C7 /* .env */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env; sourceTree = "<group>"; };
-		CF8C85E11F6F1B6F0051A0C7 /* .env.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env.sample; sourceTree = "<group>"; };
 		CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthManager.swift; path = Manager/AuthManager.swift; sourceTree = "<group>"; };
 		CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Key.swift"; sourceTree = "<group>"; };
 		CF8E487F2081EC75003A5E70 /* Environments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environments.swift; sourceTree = "<group>"; };
@@ -536,8 +532,6 @@
 				CF615AF41F56AB3B00315019 /* Assets.xcassets */,
 				CF615AF91F56AB3B00315019 /* Info.plist */,
 				CF232DB722D30B2200820C1B /* Environments.plist */,
-				CF8C85DF1F6F1B610051A0C7 /* .env */,
-				CF8C85E11F6F1B6F0051A0C7 /* .env.sample */,
 				CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */,
 				CF55B62C22A3DD8B00D5C9E1 /* Carthage.xcfilelist */,
 				CF918D061F7075110005B686 /* Settings.bundle */,
@@ -825,8 +819,6 @@
 				CF531C3622A9830B00D05896 /* LICENSE in Resources */,
 				CF6F566922C4D0E300F517E9 /* ArtworkPreviewViewController.xib in Resources */,
 				CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */,
-				CF8C85E01F6F1B610051A0C7 /* .env in Resources */,
-				CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */,
 				CFB5798222C38FA1001F3D13 /* MastodonDomainTableViewCell.xib in Resources */,
 				CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */,
 				CF6F569022CC6A7D00F517E9 /* AccountManageViewController.xib in Resources */,

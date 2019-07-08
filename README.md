@@ -32,7 +32,7 @@ $ cp NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig.sample NowPlaying/Res
 $ cp NowPlaying/Resources/Config/NowPlaying-Release.xcconfig.sample NowPlaying/Resources/Config/NowPlaying-Release.xcconfig
 ```
 
-And fill your environment variables.
+And please fill your environment variables.
 
 ## LICENSE
 
