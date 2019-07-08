@@ -17,7 +17,19 @@ final class User: Object {
     @objc dynamic var screenName: String = ""
     @objc dynamic var iconURLString: String = ""
     @objc dynamic var serviceType: String = ""
-    @objc dynamic var isDefault: Bool = false
+    @objc dynamic var isDefault: Bool = false {
+        didSet {
+            // 前の値と同じ OR デフォルトアカウントではない場合無視
+            if oldValue == isDefault || !isDefault { return }
+            let realm = try! Realm(configuration: realmConfiguration)
+            // 自分以外の同じサービスのユーザの isDefault を偽にする
+            let users = realm.objects(User.self)
+                .filter("id != %@ AND serviceType = %@ AND isDefault = %@", id, serviceType, true)
+            try! realm.write {
+                users.setValue(false, forKey: "isDefault")
+            }
+        }
+    }
 
     let secretCredentials = LinkingObjects(fromType: SecretCredential.self, property: "user")
 

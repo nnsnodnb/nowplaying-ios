@@ -25,6 +25,24 @@ final class AccountManageViewController: UIViewController {
             tableView.register(R.nib.accountManageTableViewCell)
             tableView.tableFooterView = UIView()
 
+            tableView.rx.itemSelected
+                .subscribe(onNext: { [tableView] (indexPath) in
+                    tableView?.deselectRow(at: indexPath, animated: true)
+                })
+                .disposed(by: disposeBag)
+
+            tableView.rx.modelSelected(User.self)
+                .filter { !$0.isDefault }
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: {
+                    let realm = try! Realm(configuration: realmConfiguration)
+                    let user = realm.object(ofType: User.self, forPrimaryKey: $0.id)!
+                    try! realm.write {
+                        user.isDefault = true
+                    }
+                })
+                .disposed(by: disposeBag)
+
             tableView.rx.modelDeleted(User.self)
                 .subscribe(onNext: { [unowned self] in
                     let realm = try! Realm(configuration: realmConfiguration)
