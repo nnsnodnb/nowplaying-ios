@@ -15,12 +15,16 @@ import UIKit
 final class SearchMastodonTableViewController: UITableViewController {
 
     private let disposeBag = DisposeBag()
+    private let decisionTrigger = PublishSubject<String>()
     private let searchBar: UISearchBar
     private let viewModel: SearchMastodonTableViewModelType
+
+    let decision: Observable<String>
 
     // MARK: - Initializer
 
     init() {
+        decision = decisionTrigger.asObserver()
         searchBar = UISearchBar()
         searchBar.placeholder = "例: mstdn.jp"
         let inputs = SearchMastodonTableViewModelInput(searchBarText: searchBar.rx.text.asObservable())
@@ -44,9 +48,10 @@ final class SearchMastodonTableViewController: UITableViewController {
             .subscribe(onNext: { [unowned self] (instance) in
                 let alert = UIAlertController(title: "\(instance.name)\nこのインスタンスに設定します", message: nil, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: "OK", style: .default) { (_) in
-                    UserDefaults.set(instance.name, forKey: .mastodonHostname)
+                alert.addAction(UIAlertAction(title: "OK", style: .default) { [unowned self] (_) in
                     self.navigationController?.popViewController(animated: true)
+                    self.decisionTrigger.onNext(instance.name)
+                    self.decisionTrigger.onCompleted()
                 })
                 alert.preferredAction = alert.actions.last
                 self.present(alert, animated: true, completion: nil)

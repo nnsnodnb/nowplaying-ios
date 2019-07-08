@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		584E54B8BE9943C10025A548 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B230B4E800D2C82BD7BC8FF /* Pods_NowPlaying.framework */; };
+		AE3ECA914F1F041B6A7FC973 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7641B8EA4AF056D456EAFF0D /* Pods_NowPlaying.framework */; };
 		CF01C1D921023F1700DC1901 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF01C1D821023F1700DC1901 /* SnapKit.framework */; };
 		CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF0FA219206D3C3200647317 /* KeychainAccess.framework */; };
 		CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0FA21B206D4D5A00647317 /* PaymentManager.swift */; };
@@ -15,6 +15,10 @@
 		CF1611371F726D110027144D /* PlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF1611351F726D110027144D /* PlayViewController.xib */; };
 		CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1AAFE41F75459B00384000 /* Eureka.framework */; };
 		CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1AAFE91F75F2A600384000 /* Common.swift */; };
+		CF232DA922CC93E200820C1B /* SwifteriOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF232DA822CC93E100820C1B /* SwifteriOS.framework */; };
+		CF232DAB22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */; };
+		CF232DAD22CCD70400820C1B /* TwitterSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAC22CCD70400820C1B /* TwitterSessionControl.swift */; };
+		CF232DAF22CCD7F100820C1B /* MastodonSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
 		CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD7220A4AB630039217F /* libicucore.tbd */; };
 		CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF301D8C22B009C5007E675E /* APIKit.framework */; };
@@ -25,7 +29,6 @@
 		CF301D9E22B02343007E675E /* MastodonTootRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9D22B02343007E675E /* MastodonTootRequest.swift */; };
 		CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */; };
 		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
-		CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */; };
 		CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4D73D11F791D4300E72FBF /* StoreKit.framework */; };
 		CF531BF422A9495000D05896 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BF322A9495000D05896 /* SettingViewModel.swift */; };
 		CF531BFE22A9532400D05896 /* TwitterSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BFD22A9532400D05896 /* TwitterSettingViewModel.swift */; };
@@ -61,10 +64,25 @@
 		CF6F566922C4D0E300F517E9 /* ArtworkPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF6F566722C4D0E300F517E9 /* ArtworkPreviewViewController.xib */; };
 		CF6F566B22C4D61E00F517E9 /* Hero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566A22C4D61E00F517E9 /* Hero.framework */; };
 		CF6F566D22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F566C22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift */; };
+		CF6F567022CB168200F517E9 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566E22CB168000F517E9 /* RealmSwift.framework */; };
+		CF6F567122CB168200F517E9 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566F22CB168200F517E9 /* Realm.framework */; };
+		CF6F567422CB1CD800F517E9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567322CB1CD800F517E9 /* User.swift */; };
+		CF6F567622CB1E3C00F517E9 /* SecretCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567522CB1E3C00F517E9 /* SecretCredential.swift */; };
+		CF6F567A22CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */; };
+		CF6F567D22CB5C8300F517E9 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */; };
+		CF6F568222CB731A00F517E9 /* Keychain+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568122CB731A00F517E9 /* Keychain+Key.swift */; };
+		CF6F568E22CC6A7D00F517E9 /* AccountManageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568B22CC6A7D00F517E9 /* AccountManageViewModel.swift */; };
+		CF6F568F22CC6A7D00F517E9 /* AccountManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568C22CC6A7D00F517E9 /* AccountManageViewController.swift */; };
+		CF6F569022CC6A7D00F517E9 /* AccountManageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF6F568D22CC6A7D00F517E9 /* AccountManageViewController.xib */; };
+		CF6F569222CC6CD300F517E9 /* Realm+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */; };
+		CF6F569622CC740F00F517E9 /* AccountManageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F569422CC740F00F517E9 /* AccountManageTableViewCell.swift */; };
+		CF6F569722CC740F00F517E9 /* AccountManageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF6F569522CC740F00F517E9 /* AccountManageTableViewCell.xib */; };
 		CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */; };
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
 		CF6FFF29207E4CE4003FD38D /* TodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CF7E87D422CE480A00F10335 /* MastodonTokenRevokeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7E87D322CE480A00F10335 /* MastodonTokenRevokeRequest.swift */; };
+		CF7E87D622D22DBB00F10335 /* UIImageView+Nuke.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7E87D522D22DBB00F10335 /* UIImageView+Nuke.swift */; };
 		CF8C85E01F6F1B610051A0C7 /* .env in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85DF1F6F1B610051A0C7 /* .env */; };
 		CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85E11F6F1B6F0051A0C7 /* .env.sample */; };
 		CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */; };
@@ -118,8 +136,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4B230B4E800D2C82BD7BC8FF /* Pods_NowPlaying.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NowPlaying.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		50FC5A8BCC24D752D2A0D1AA /* Pods-NowPlaying.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.debug.xcconfig"; sourceTree = "<group>"; };
+		5C7BC8ED1C642ABDF0F723D2 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
+		7641B8EA4AF056D456EAFF0D /* Pods_NowPlaying.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NowPlaying.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF01C1D821023F1700DC1901 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		CF0FA219206D3C3200647317 /* KeychainAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainAccess.framework; path = Carthage/Build/iOS/KeychainAccess.framework; sourceTree = "<group>"; };
 		CF0FA21B206D4D5A00647317 /* PaymentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaymentManager.swift; path = Manager/PaymentManager.swift; sourceTree = "<group>"; };
@@ -127,6 +145,10 @@
 		CF1611351F726D110027144D /* PlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlayViewController.xib; path = Play/PlayViewController.xib; sourceTree = "<group>"; };
 		CF1AAFE41F75459B00384000 /* Eureka.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Eureka.framework; path = Carthage/Build/iOS/Eureka.framework; sourceTree = "<group>"; };
 		CF1AAFE91F75F2A600384000 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = Common/Common.swift; sourceTree = "<group>"; };
+		CF232DA822CC93E100820C1B /* SwifteriOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwifteriOS.framework; path = Carthage/Build/iOS/SwifteriOS.framework; sourceTree = "<group>"; };
+		CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonVerifyCredentialsRequest.swift; sourceTree = "<group>"; };
+		CF232DAC22CCD70400820C1B /* TwitterSessionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TwitterSessionControl.swift; path = Manager/TwitterSessionControl.swift; sourceTree = "<group>"; };
+		CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonSessionControl.swift; path = Manager/MastodonSessionControl.swift; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF2DBD7220A4AB630039217F /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		CF301D8C22B009C5007E675E /* APIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APIKit.framework; path = Carthage/Build/iOS/APIKit.framework; sourceTree = "<group>"; };
@@ -137,7 +159,6 @@
 		CF301D9D22B02343007E675E /* MastodonTootRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonTootRequest.swift; sourceTree = "<group>"; };
 		CF43E7DC1F733EC600A2A49A /* TweetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TweetViewController.swift; path = Tweet/TweetViewController.swift; sourceTree = "<group>"; };
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
-		CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterClient.swift; path = Manager/TwitterClient.swift; sourceTree = "<group>"; };
 		CF4D73D11F791D4300E72FBF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CF531BF322A9495000D05896 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingViewModel.swift; path = Setting/Top/SettingViewModel.swift; sourceTree = "<group>"; };
 		CF531BFD22A9532400D05896 /* TwitterSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TwitterSettingViewModel.swift; path = Setting/TwitterSetting/TwitterSettingViewModel.swift; sourceTree = "<group>"; };
@@ -176,11 +197,26 @@
 		CF6F566722C4D0E300F517E9 /* ArtworkPreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ArtworkPreviewViewController.xib; path = Preview/ArtworkPreviewViewController.xib; sourceTree = "<group>"; };
 		CF6F566A22C4D61E00F517E9 /* Hero.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Hero.framework; path = Carthage/Build/iOS/Hero.framework; sourceTree = "<group>"; };
 		CF6F566C22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ArtworkPreviewViewModel.swift; path = Preview/ArtworkPreviewViewModel.swift; sourceTree = "<group>"; };
+		CF6F566E22CB168000F517E9 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
+		CF6F566F22CB168200F517E9 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
+		CF6F567322CB1CD800F517E9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		CF6F567522CB1E3C00F517E9 /* SecretCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretCredential.swift; sourceTree = "<group>"; };
+		CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonUpdateCredentialsRequest.swift; sourceTree = "<group>"; };
+		CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModel.swift; sourceTree = "<group>"; };
+		CF6F568122CB731A00F517E9 /* Keychain+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+Key.swift"; sourceTree = "<group>"; };
+		CF6F568B22CC6A7D00F517E9 /* AccountManageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManageViewModel.swift; sourceTree = "<group>"; };
+		CF6F568C22CC6A7D00F517E9 /* AccountManageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManageViewController.swift; sourceTree = "<group>"; };
+		CF6F568D22CC6A7D00F517E9 /* AccountManageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountManageViewController.xib; sourceTree = "<group>"; };
+		CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Rx.swift"; sourceTree = "<group>"; };
+		CF6F569422CC740F00F517E9 /* AccountManageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManageTableViewCell.swift; sourceTree = "<group>"; };
+		CF6F569522CC740F00F517E9 /* AccountManageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountManageTableViewCell.xib; sourceTree = "<group>"; };
 		CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		CF6FFF24207E4CE4003FD38D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		CF6FFF26207E4CE4003FD38D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CF7E87D322CE480A00F10335 /* MastodonTokenRevokeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonTokenRevokeRequest.swift; sourceTree = "<group>"; };
+		CF7E87D522D22DBB00F10335 /* UIImageView+Nuke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Nuke.swift"; sourceTree = "<group>"; };
 		CF8C85DE1F6F1AC20051A0C7 /* NowPlaying.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NowPlaying.entitlements; sourceTree = "<group>"; };
 		CF8C85DF1F6F1B610051A0C7 /* .env */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env; sourceTree = "<group>"; };
 		CF8C85E11F6F1B6F0051A0C7 /* .env.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env.sample; sourceTree = "<group>"; };
@@ -210,7 +246,7 @@
 		CFD1D39020B9A176009C50ED /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonMediaRequest.swift; sourceTree = "<group>"; };
 		CFD6B2DF22B0332B00E5F2FC /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
-		F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
+		DBACA1B5A5D60EB389AAE13C /* Pods-NowPlaying.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.debug.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +254,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF232DA922CC93E200820C1B /* SwifteriOS.framework in Frameworks */,
+				CF6F567022CB168200F517E9 /* RealmSwift.framework in Frameworks */,
+				CF6F567122CB168200F517E9 /* Realm.framework in Frameworks */,
 				CF6F566B22C4D61E00F517E9 /* Hero.framework in Frameworks */,
 				CF6F566322C4C13400F517E9 /* DynamicBlurView.framework in Frameworks */,
 				CF6F566422C4C13400F517E9 /* PopupDialog.framework in Frameworks */,
@@ -233,7 +272,7 @@
 				CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */,
 				CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */,
 				CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */,
-				584E54B8BE9943C10025A548 /* Pods_NowPlaying.framework in Frameworks */,
+				AE3ECA914F1F041B6A7FC973 /* Pods_NowPlaying.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,9 +321,12 @@
 			isa = PBXGroup;
 			children = (
 				CF301D9722B01A59007E675E /* MastodonAppRequest.swift */,
+				CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */,
+				CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */,
 				CF301D9B22B01BE9007E675E /* MastodonGetTokenRequest.swift */,
 				CF301D9D22B02343007E675E /* MastodonTootRequest.swift */,
 				CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */,
+				CF7E87D322CE480A00F10335 /* MastodonTokenRevokeRequest.swift */,
 			);
 			path = Mastodon;
 			sourceTree = "<group>";
@@ -376,7 +418,7 @@
 				CF6FFF20207E4CE4003FD38D /* TodayExtension */,
 				CF615AEB1F56AB3B00315019 /* Products */,
 				CF615AFF1F56B04E00315019 /* Frameworks */,
-				EC7B05E3D377DC1195B61730 /* Pods */,
+				D4BB877FAC88DB2F77FEFD35 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -403,6 +445,9 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF232DA822CC93E100820C1B /* SwifteriOS.framework */,
+				CF6F566F22CB168200F517E9 /* Realm.framework */,
+				CF6F566E22CB168000F517E9 /* RealmSwift.framework */,
 				CF6F566A22C4D61E00F517E9 /* Hero.framework */,
 				CF6F566122C4C13400F517E9 /* DynamicBlurView.framework */,
 				CF6F566222C4C13400F517E9 /* PopupDialog.framework */,
@@ -418,8 +463,8 @@
 				CF1AAFE41F75459B00384000 /* Eureka.framework */,
 				CF615B061F56E89100315019 /* AVFoundation.framework */,
 				CF615B001F56B04E00315019 /* MediaPlayer.framework */,
-				4B230B4E800D2C82BD7BC8FF /* Pods_NowPlaying.framework */,
 				CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */,
+				7641B8EA4AF056D456EAFF0D /* Pods_NowPlaying.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -427,9 +472,10 @@
 		CF615B021F56E75900315019 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
-				CF615AED1F56AB3B00315019 /* AppDelegate.swift */,
 				CFD1D39020B9A176009C50ED /* R.generated.swift */,
+				CF6F567B22CB5C7000F517E9 /* AppDelegate */,
 				CFD1D37C20B88188009C50ED /* API */,
+				CF6F567222CB1CAA00F517E9 /* RealmObject */,
 				CF55B68D22A40ABB00D5C9E1 /* Model */,
 				CF8E487C2081E851003A5E70 /* Extension */,
 				CF1AAFE61F75F28400384000 /* Common */,
@@ -447,6 +493,7 @@
 			children = (
 				CF1611331F726CF20027144D /* Play */,
 				CF1AAFDD1F7544D800384000 /* Setting */,
+				CF6F568A22CC6A7D00F517E9 /* AccountManage */,
 				CF43E7D31F733C1F00A2A49A /* Tweet */,
 				CF6F566522C4D0C000F517E9 /* Preview */,
 				CF99DF5322BA0089006E3876 /* SearchMastodon */,
@@ -486,6 +533,43 @@
 			name = Preview;
 			sourceTree = "<group>";
 		};
+		CF6F567222CB1CAA00F517E9 /* RealmObject */ = {
+			isa = PBXGroup;
+			children = (
+				CF6F567322CB1CD800F517E9 /* User.swift */,
+				CF6F567522CB1E3C00F517E9 /* SecretCredential.swift */,
+			);
+			path = RealmObject;
+			sourceTree = "<group>";
+		};
+		CF6F567B22CB5C7000F517E9 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				CF615AED1F56AB3B00315019 /* AppDelegate.swift */,
+				CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */,
+			);
+			path = AppDelegate;
+			sourceTree = "<group>";
+		};
+		CF6F568A22CC6A7D00F517E9 /* AccountManage */ = {
+			isa = PBXGroup;
+			children = (
+				CF6F568C22CC6A7D00F517E9 /* AccountManageViewController.swift */,
+				CF6F568D22CC6A7D00F517E9 /* AccountManageViewController.xib */,
+				CF6F568B22CC6A7D00F517E9 /* AccountManageViewModel.swift */,
+			);
+			path = AccountManage;
+			sourceTree = "<group>";
+		};
+		CF6F569322CC73EC00F517E9 /* AccountManageTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				CF6F569422CC740F00F517E9 /* AccountManageTableViewCell.swift */,
+				CF6F569522CC740F00F517E9 /* AccountManageTableViewCell.xib */,
+			);
+			path = AccountManageTableViewCell;
+			sourceTree = "<group>";
+		};
 		CF6FFF20207E4CE4003FD38D /* TodayExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -500,8 +584,9 @@
 			isa = PBXGroup;
 			children = (
 				CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */,
-				CF43E7E01F7340CE00A2A49A /* TwitterClient.swift */,
 				CF0FA21B206D4D5A00647317 /* PaymentManager.swift */,
+				CF232DAC22CCD70400820C1B /* TwitterSessionControl.swift */,
+				CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -511,9 +596,12 @@
 			children = (
 				CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */,
 				CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */,
+				CF6F568122CB731A00F517E9 /* Keychain+Key.swift */,
 				CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */,
 				CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */,
 				CF301D9222B01841007E675E /* Reactive+Session.swift */,
+				CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */,
+				CF7E87D522D22DBB00F10335 /* UIImageView+Nuke.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -551,6 +639,7 @@
 			children = (
 				CFB5798422C39815001F3D13 /* MastodonSettingDomainCell */,
 				CFB5798322C39803001F3D13 /* MastodonDomainTableViewCell */,
+				CF6F569322CC73EC00F517E9 /* AccountManageTableViewCell */,
 			);
 			path = UITableViewCells;
 			sourceTree = "<group>";
@@ -584,13 +673,13 @@
 			path = API;
 			sourceTree = "<group>";
 		};
-		EC7B05E3D377DC1195B61730 /* Pods */ = {
+		D4BB877FAC88DB2F77FEFD35 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				50FC5A8BCC24D752D2A0D1AA /* Pods-NowPlaying.debug.xcconfig */,
-				F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */,
+				DBACA1B5A5D60EB389AAE13C /* Pods-NowPlaying.debug.xcconfig */,
+				5C7BC8ED1C642ABDF0F723D2 /* Pods-NowPlaying.release.xcconfig */,
 			);
-			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -600,7 +689,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CF615AFC1F56AB3B00315019 /* Build configuration list for PBXNativeTarget "NowPlaying" */;
 			buildPhases = (
-				2B302B8935A65A820A7DC1BE /* [CP] Check Pods Manifest.lock */,
+				97914D618D85106A3229A24D /* [CP] Check Pods Manifest.lock */,
 				CFD1D38F20B9A148009C50ED /* R.swift */,
 				CF531C3722A9969800D05896 /* SwiftLint */,
 				CF615AE61F56AB3B00315019 /* Sources */,
@@ -609,11 +698,10 @@
 				CF8C85E31F6F26260051A0C7 /* PlistBuddy (Info.plist) */,
 				CF615AE81F56AB3B00315019 /* Resources */,
 				CF63348A1F5AB6F200D80EB8 /* Carthage */,
-				DC4488FCE3B57E00C3DB2FFC /* [CP] Copy Pods Resources */,
 				CF4D73D31F7A979400E72FBF /* Crashlytics */,
 				CF28A83E1FD1C87D00E45F12 /* License-Plist */,
 				CF6FFF2D207E4CE4003FD38D /* Embed App Extensions */,
-				8A6A952692B78C7F109051EF /* [CP] Embed Pods Frameworks */,
+				083A8E5F0A27C503F7CE83BE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -702,6 +790,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF6F569722CC740F00F517E9 /* AccountManageTableViewCell.xib in Resources */,
 				CF531C0B22A953C900D05896 /* MastodonSettingViewController.xib in Resources */,
 				CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */,
 				CF99DF4B22B607C1006E3876 /* PostFormatHelpView.xib in Resources */,
@@ -717,6 +806,7 @@
 				CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */,
 				CFB5798222C38FA1001F3D13 /* MastodonDomainTableViewCell.xib in Resources */,
 				CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */,
+				CF6F569022CC6A7D00F517E9 /* AccountManageViewController.xib in Resources */,
 				CF99DF5722BA00EF006E3876 /* SearchMastodonTableViewController.xib in Resources */,
 				CF1611371F726D110027144D /* PlayViewController.xib in Resources */,
 			);
@@ -733,25 +823,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2B302B8935A65A820A7DC1BE /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-NowPlaying-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8A6A952692B78C7F109051EF /* [CP] Embed Pods Frameworks */ = {
+		083A8E5F0A27C503F7CE83BE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -766,6 +838,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97914D618D85106A3229A24D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NowPlaying-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CF28A83E1FD1C87D00E45F12 /* License-Plist */ = {
@@ -843,7 +937,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFileSource=\"${SRCROOT}/${INFOPLIST_FILE}\"\ninfoPlistFileDestination=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\nif [ \"${BITRISE_SOURCE_DIR}\" == \"\" ]; then\n. NowPlaying/Resources/.env\nfi\n\n$plistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 twitterkit-${TWITTER_CONSUMER_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :Fabric:APIKey ${FABRIC_API_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :GADApplicationIdentifier ${FIREBASE_ADMOB_APP_ID}\" \"${infoPlistFileDestination}\"\n";
+			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFileSource=\"${SRCROOT}/${INFOPLIST_FILE}\"\ninfoPlistFileDestination=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\nif [ \"${BITRISE_SOURCE_DIR}\" == \"\" ]; then\n. NowPlaying/Resources/.env\nfi\n\n$plistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 swifter-${TWITTER_CONSUMER_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :Fabric:APIKey ${FABRIC_API_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :GADApplicationIdentifier ${FIREBASE_ADMOB_APP_ID}\" \"${infoPlistFileDestination}\"\n";
 		};
 		CFB5798922C3A33F001F3D13 /* PlistBuddy (Settings.bundle Root.plist) */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -877,23 +971,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate --disable-input-output-files-validation \"$SRCROOT/NowPlaying/Scripts/R.generated.swift\"\n";
 		};
-		DC4488FCE3B57E00C3DB2FFC /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -907,22 +984,30 @@
 				CF1611361F726D110027144D /* PlayViewController.swift in Sources */,
 				CF6F566822C4D0E300F517E9 /* ArtworkPreviewViewController.swift in Sources */,
 				CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */,
+				CF6F568E22CC6A7D00F517E9 /* AccountManageViewModel.swift in Sources */,
 				CFB5797922C385A3001F3D13 /* Instance.swift in Sources */,
+				CF6F568222CB731A00F517E9 /* Keychain+Key.swift in Sources */,
 				CF99DF4922B607AE006E3876 /* PostFormatHelpView.swift in Sources */,
+				CF6F567622CB1E3C00F517E9 /* SecretCredential.swift in Sources */,
 				CF531C0022A9534F00D05896 /* SettingViewController.swift in Sources */,
 				CF99DF5622BA00EF006E3876 /* SearchMastodonTableViewController.swift in Sources */,
 				CF531C0722A953B200D05896 /* MastodonSettingViewModel.swift in Sources */,
 				CF531C3022A9827100D05896 /* SKProductsRequestDelegateProxy.swift in Sources */,
+				CF232DAB22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift in Sources */,
 				CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */,
+				CF6F569622CC740F00F517E9 /* AccountManageTableViewCell.swift in Sources */,
 				CF99DF5E22BA0C1F006E3876 /* InstancesSearchRequest.swift in Sources */,
 				CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */,
 				CF55B69922A41B8800D5C9E1 /* TweetViewModel.swift in Sources */,
 				CF531C0322A9536A00D05896 /* TwitterSettingViewController.swift in Sources */,
 				CF43E7DD1F733EC600A2A49A /* TweetViewController.swift in Sources */,
+				CF6F568F22CC6A7D00F517E9 /* AccountManageViewController.swift in Sources */,
 				CF301D9322B01841007E675E /* Reactive+Session.swift in Sources */,
 				CF531C3222A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift in Sources */,
+				CF6F567422CB1CD800F517E9 /* User.swift in Sources */,
 				CF55B68F22A40ACD00D5C9E1 /* PostContent.swift in Sources */,
 				CF531C2A22A980EA00D05896 /* RxSKPaymentTransactionObserver.swift in Sources */,
+				CF232DAD22CCD70400820C1B /* TwitterSessionControl.swift in Sources */,
 				CFB5797B22C385B4001F3D13 /* InstanceListRequest.swift in Sources */,
 				CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */,
 				CF99DF5222B8716B006E3876 /* Enumerates.swift in Sources */,
@@ -931,23 +1016,28 @@
 				CFD1D37420B87E94009C50ED /* AppInfoRequest.swift in Sources */,
 				CF301D9E22B02343007E675E /* MastodonTootRequest.swift in Sources */,
 				CF55B68822A3E22800D5C9E1 /* PlayViewModel.swift in Sources */,
+				CF6F567A22CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift in Sources */,
 				CF301D9822B01A59007E675E /* MastodonAppRequest.swift in Sources */,
+				CF7E87D422CE480A00F10335 /* MastodonTokenRevokeRequest.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
 				CF55B69722A418A100D5C9E1 /* Analytics+NowPlaying.swift in Sources */,
 				CF531C3A22AACEC800D05896 /* NowPlayingButtonRow.swift in Sources */,
 				CFB5798122C38FA1001F3D13 /* MastodonDomainTableViewCell.swift in Sources */,
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
 				CF531C2E22A9824100D05896 /* SKProductsRequest+Rx.swift in Sources */,
+				CF7E87D622D22DBB00F10335 /* UIImageView+Nuke.swift in Sources */,
 				CF301D9C22B01BE9007E675E /* MastodonGetTokenRequest.swift in Sources */,
 				CFD6B2E022B0332B00E5F2FC /* Requests.swift in Sources */,
+				CF6F567D22CB5C8300F517E9 /* AppDelegateViewModel.swift in Sources */,
 				CF6F566D22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift in Sources */,
 				CF301D9A22B01B84007E675E /* SwiftPrint.swift in Sources */,
 				CF531BF422A9495000D05896 /* SettingViewModel.swift in Sources */,
-				CF43E7E11F7340CE00A2A49A /* TwitterClient.swift in Sources */,
 				CF99DF5922BA05B7006E3876 /* SearchMastodonTableViewModel.swift in Sources */,
 				CF531C2C22A9817A00D05896 /* SKPaymentQueue+Rx.swift in Sources */,
 				CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */,
 				CF531C0A22A953C900D05896 /* MastodonSettingViewController.swift in Sources */,
+				CF6F569222CC6CD300F517E9 /* Realm+Rx.swift in Sources */,
+				CF232DAF22CCD7F100820C1B /* MastodonSessionControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1110,7 +1200,7 @@
 		};
 		CF615AFD1F56AB3B00315019 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 50FC5A8BCC24D752D2A0D1AA /* Pods-NowPlaying.debug.xcconfig */;
+			baseConfigurationReference = DBACA1B5A5D60EB389AAE13C /* Pods-NowPlaying.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1139,7 +1229,7 @@
 		};
 		CF615AFE1F56AB3B00315019 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F82321344DBDD605AAAB8E73 /* Pods-NowPlaying.release.xcconfig */;
+			baseConfigurationReference = 5C7BC8ED1C642ABDF0F723D2 /* Pods-NowPlaying.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

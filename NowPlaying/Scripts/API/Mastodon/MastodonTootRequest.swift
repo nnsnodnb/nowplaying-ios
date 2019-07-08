@@ -8,24 +8,25 @@
 
 import APIKit
 import Foundation
-import KeychainAccess
 
 struct MastodonTootRequest: MastodonRequest {
 
     typealias Response = Void
 
-    private let keychain = Keychain(service: keychainServiceKey)
-    private let hostname = "https://\(UserDefaults.string(forKey: .mastodonHostname)!)"
+    private let user: User
+    private let secretCredential: SecretCredential
     private let status: String
     private let mediaIDs: [String]?
 
-    init(status: String, mediaIDs: [String]?=nil) {
+    init(user: User, status: String, mediaIDs: [String]?=nil) {
+        self.user = user
+        self.secretCredential = user.secretCredentials.first!
         self.status = status
         self.mediaIDs = mediaIDs
     }
 
     var baseURL: URL {
-        return URL(string: hostname)!
+        return URL(string: "https://\(secretCredential.domainName)")!
     }
 
     var path: String {
@@ -45,9 +46,8 @@ struct MastodonTootRequest: MastodonRequest {
     }
 
     var headerFields: [String: String] {
-        guard let accessToken = try? keychain.getString(KeychainKey.mastodonAccessToken.rawValue) else { return [:] }
         return [
-            "Authorization": "Bearer \(accessToken)"
+            "Authorization": "Bearer \(secretCredential.authToken)"
         ]
     }
 

@@ -23,6 +23,8 @@ final class MastodonSettingViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Mastodon設定"
+        let backBarButtonItem = UIBarButtonItem(title: "戻る", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = backBarButtonItem
 
         viewModel = MastodonSettingViewModel(inputs: MastodonSettingViewModelInput(viewController: self))
 

@@ -14,7 +14,6 @@ import MediaPlayer
 import RxSwift
 import StoreKit
 import SVProgressHUD
-import TwitterKit
 import UIKit
 
 final class PlayViewController: UIViewController {
@@ -76,13 +75,33 @@ final class PlayViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let inputs = PlayViewModelInput(
-            previousButton: previousButton.rx.tap.asObservable(), playButton: playButton.rx.tap.asObservable(),
-            nextButton: nextButton.rx.tap.asObservable(), mastodonButton: mastodonButton.rx.tap.asObservable(),
-            twitterButton: twitterButton.rx.tap.asObservable()
-        )
+        let inputs = PlayViewModelInput(viewController: self, previousButton: previousButton.rx.tap.asObservable(),
+                                        playButton: playButton.rx.tap.asObservable(), nextButton: nextButton.rx.tap.asObservable(),
+                                        mastodonButton: mastodonButton.rx.tap.asObservable(), twitterButton: twitterButton.rx.tap.asObservable()
+            )
         viewModel = PlayViewModel(inputs: inputs)
 
+        subscribeViewModel()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard UserDefaults.bool(forKey: .isPurchasedRemoveAdMob) else { return }
+        bannerView.isHidden = true
+        bannerViewHeight.constant = 0
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Analytics.setScreenName("再生画面", screenClass: "PlayViewController")
+        Analytics.logEvent("screen_open", parameters: nil)
+        viewModel.countUpOpenCount()
+        viewModel.showSingleAccountToMultiAccountDialog()
+    }
+
+    // MARK: - Private method
+
+    private func subscribeViewModel() {
         viewModel.outputs.nowPlayingItem
             .drive(onNext: { [weak self] (item) in
                 guard let wself = self else { return }
@@ -125,22 +144,6 @@ final class PlayViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        guard UserDefaults.bool(forKey: .isPurchasedRemoveAdMob) else { return }
-        bannerView.isHidden = true
-        bannerViewHeight.constant = 0
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        Analytics.setScreenName("再生画面", screenClass: "PlayViewController")
-        Analytics.logEvent("screen_open", parameters: nil)
-        viewModel.countUpOpenCount()
-    }
-
-    // MARK: - Private method
 
     private func showError(error: Error) {
         let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)

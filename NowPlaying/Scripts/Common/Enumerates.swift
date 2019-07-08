@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Service {
+enum Service: String {
 
     case twitter
     case mastodon

@@ -63,23 +63,25 @@ final class TweetViewModel: TweetViewModelType {
         SVProgressHUD.show()
         switch postContent.service {
         case .twitter:
-            TwitterClient.shared.client?.sendTweet(withText: postMessage.value) { [weak self] (_, error) in
-                if let error = error {
-                    self?._failure.accept(error)
-                } else {
-                    self?._success.accept(())
-                }
-            }
+//            TwitterClient.shared.client?.sendTweet(withText: postMessage.value) { [weak self] (_, error) in
+//                if let error = error {
+//                    self?._failure.accept(error)
+//                } else {
+//                    self?._success.accept(())
+//                }
+//            }
+            // FIXME: ツイートを送信する
             Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
         case .mastodon:
-            Session.shared.rx.response(MastodonTootRequest(status: postMessage.value))
-                .subscribe(onSuccess: { [weak self] (_) in
-                    self?._success.accept(())
-                }, onError: { [weak self] (error) in
-                    print(error)
-                    self?._failure.accept(error)
-                })
-                .disposed(by: disposeBag)
+            // FIXME: User オブジェクトを取得する
+//            Session.shared.rx.response(MastodonTootRequest(status: postMessage.value))
+//                .subscribe(onSuccess: { [weak self] (_) in
+//                    self?._success.accept(())
+//                }, onError: { [weak self] (error) in
+//                    print(error)
+//                    self?._failure.accept(error)
+//                })
+//                .disposed(by: disposeBag)
             Analytics.Tweet.postTootMastodon(withHasImage: false, content: postContent)
         }
     }
@@ -89,26 +91,28 @@ final class TweetViewModel: TweetViewModelType {
         SVProgressHUD.show()
         switch postContent.service {
         case .twitter:
-            TwitterClient.shared.client?.sendTweet(withText: postMessage.value, image: image) { [weak self] (_, error) in
-                if let error = error {
-                    self?._failure.accept(error)
-                } else {
-                    self?._success.accept(())
-                }
-            }
+//            TwitterClient.shared.client?.sendTweet(withText: postMessage.value, image: image) { [weak self] (_, error) in
+//                if let error = error {
+//                    self?._failure.accept(error)
+//                } else {
+//                    self?._success.accept(())
+//                }
+//            }
+            // FIXME: 画像つきツイートを送信する
             Analytics.Tweet.postTweetTwitter(withHasImage: true, content: postContent)
         case .mastodon:
             guard let imageData = image.pngData() else {
                 _failure.accept(NSError(domain: "画像が見つかりませんでした", code: 400, userInfo: nil))
                 return
             }
-            Session.shared.rx.response(MastodonMediaRequest(imageData: imageData))
-                .subscribe(onSuccess: { [weak self] (response) in
-                    self?.tootWithMediaID(response.mediaID)
-                }, onError: { [weak self] (error) in
-                    self?._failure.accept(error)
-                })
-                .disposed(by: disposeBag)
+            // FIXME: User オブジェクトを取得する
+//            Session.shared.rx.response(MastodonMediaRequest(imageData: imageData))
+//                .subscribe(onSuccess: { [weak self] (response) in
+//                    self?.tootWithMediaID(response.mediaID)
+//                }, onError: { [weak self] (error) in
+//                    self?._failure.accept(error)
+//                })
+//                .disposed(by: disposeBag)
             Analytics.Tweet.postTootMastodon(withHasImage: true, content: postContent)
         }
     }
@@ -119,13 +123,14 @@ final class TweetViewModel: TweetViewModelType {
 extension TweetViewModel {
 
     private func tootWithMediaID(_ mediaID: String) {
-        Session.shared.rx.response(MastodonTootRequest(status: postMessage.value, mediaIDs: [mediaID]))
-            .subscribe(onSuccess: { [weak self] (_) in
-                self?._success.accept(())
-            }, onError: { [weak self] (error) in
-                self?._failure.accept(error)
-            })
-            .disposed(by: disposeBag)
+        // FIXME: User オブジェクトを取得する
+//        Session.shared.rx.response(MastodonTootRequest(status: postMessage.value, mediaIDs: [mediaID]))
+//            .subscribe(onSuccess: { [weak self] (_) in
+//                self?._success.accept(())
+//            }, onError: { [weak self] (error) in
+//                self?._failure.accept(error)
+//            })
+//            .disposed(by: disposeBag)
     }
 }
 

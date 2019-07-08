@@ -15,9 +15,9 @@ extension Session: ReactiveCompatible {}
 
 extension Reactive where Base: Session {
 
-    func response<T: Request>(_ request: T) -> Single<T.Response> {
+    func response<T: Request>(_ request: T, callbackQueue: CallbackQueue = .main) -> Single<T.Response> {
         return Single<T.Response>.create { [weak base] (observer) -> Disposable in
-            let task = base?.send(request, callbackQueue: .main) { (result) in
+            let task = base?.send(request, callbackQueue: callbackQueue) { (result) in
                 switch result {
                 case .success(let value):
                     observer(.success(value))

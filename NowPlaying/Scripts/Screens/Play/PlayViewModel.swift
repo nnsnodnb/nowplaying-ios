@@ -8,15 +8,18 @@
 
 import APIKit
 import FirebaseAnalytics
+import FirebaseAuth
+import KeychainAccess
 import MediaPlayer
+import PopupDialog
 import RxCocoa
 import RxSwift
 import StoreKit
-import TwitterKit
 import UIKit
 
 struct PlayViewModelInput {
 
+    let viewController: UIViewController
     let previousButton: Observable<Void>
     let playButton: Observable<Void>
     let nextButton: Observable<Void>
@@ -42,12 +45,15 @@ protocol PlayViewModelType {
     var outputs: PlayViewModelOutput { get }
     init(inputs: PlayViewModelInput)
     func countUpOpenCount()
+    func showSingleAccountToMultiAccountDialog()
 }
 
 final class PlayViewModel: PlayViewModelType {
 
     var outputs: PlayViewModelOutput { return self }
 
+    private let viewController: UIViewController
+    private let keychain = Keychain.nowPlaying
     private let isPlaying: BehaviorRelay<Bool>
     private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     private let disposeBag = DisposeBag()
@@ -57,6 +63,7 @@ final class PlayViewModel: PlayViewModelType {
     private let _requestDenied = PublishRelay<Void>()
 
     init(inputs: PlayViewModelInput) {
+        viewController = inputs.viewController
         isPlaying = BehaviorRelay(value: musicPlayer.playbackState == .playing)
 
         musicPlayer.beginGeneratingPlaybackNotifications()
@@ -72,6 +79,41 @@ final class PlayViewModel: PlayViewModelType {
         if count == 15 {
             SKStoreReviewController.requestReview()
             UserDefaults.set(0, forKey: .appOpenCount)
+        }
+    }
+
+    // シングルアカウントログインの頃にインストールされていた場合、ポップアップを表示する
+    @available(iOS, introduced: 2.4.0, deprecated: 2.4.1, message: "2.4.0以下のユーザは保証しないでいい")
+    func showSingleAccountToMultiAccountDialog() {
+        if UserDefaults.bool(forKey: .singleAccountToMultiAccounts) { return }
+        guard Auth.auth().currentUser != nil && !UserDefaults.bool(forKey: .isMastodonLogin) else {
+            UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)
+            return
+        }
+        let dialog = PopupDialog(title: "お知らせ", message: "アカウント切り替えに対応しました！\n左下の歯車ボタンからもう一度ログインをお願いします",
+                                 buttonAlignment: .horizontal, transitionStyle: .zoomIn, tapGestureDismissal: false,
+                                 panGestureDismissal: false, hideStatusBar: true, completion: nil)
+        let cancelButton = CancelButton(title: "あとで", action: nil)
+        let goSettingButton = DefaultButton(title: "設定する") { [unowned self] in
+            DispatchQueue.main.async {
+                let navi = UINavigationController(rootViewController: SettingViewController())
+                self.viewController.present(navi, animated: true, completion: nil)
+            }
+        }
+        dialog.addButtons([cancelButton, goSettingButton])
+        let dialogVC = dialog.viewController as! PopupDialogDefaultViewController
+        dialogVC.messageFont = .boldSystemFont(ofSize: 17)
+        dialogVC.messageColor = .black
+        AuthManager(authService: .twitter).logout {}  // Twitterログアウト (FirebaseAuth)
+        try? keychain.remove(.authToken)
+        try? keychain.remove(.authTokenSecret)
+        AuthManager(authService: .mastodon("")).mastodonLogout()  // Mastodonログアウト
+        UserDefaults.removeObject(forKey: .mastodonClientID)
+        UserDefaults.removeObject(forKey: .mastodonClientSecret)
+        UserDefaults.removeObject(forKey: .mastodonHostname)
+        UserDefaults.removeObject(forKey: .isMastodonLogin)
+        viewController.present(dialog, animated: true) {
+            UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)
         }
     }
 
@@ -146,11 +188,11 @@ final class PlayViewModel: PlayViewModelType {
 
         inputs.mastodonButton
             .subscribe(onNext: { [weak self] (_) in
-                if !UserDefaults.bool(forKey: .isMastodonLogin) {
+                defer { Analytics.Play.mastodonButton() }
+                if !User.isExists(service: .mastodon) {
                     self?.loginError.accept(())
                     return
                 }
-                Analytics.Play.mastodonButton()
 
                 self?.setNewPostContent(service: .mastodon)
             })
@@ -158,11 +200,11 @@ final class PlayViewModel: PlayViewModelType {
 
         inputs.twitterButton
             .subscribe(onNext: { [weak self] (_) in
-                if TWTRTwitter.sharedInstance().sessionStore.session() == nil {
+                defer { Analytics.Play.twitterButton() }
+                if !User.isExists(service: .twitter) {
                     self?.loginError.accept(())
                     return
                 }
-                Analytics.Play.twitterButton()
 
                 self?.setNewPostContent(service: .twitter)
             })
@@ -233,10 +275,12 @@ extension PlayViewModel {
     private func postTweet(_ content: PostContent) {
         guard UserDefaults.bool(forKey: .isAutoTweetPurchase) && UserDefaults.bool(forKey: .isAutoTweet) else { return }
         if let shareImage = content.shareImage {
-            TwitterClient.shared.client?.sendTweet(withText: content.postMessage, image: shareImage) { (_, _) in }
+//            TwitterClient.shared.client?.sendTweet(withText: content.postMessage, image: shareImage) { (_, _) in }
+            // FIXME: 画像つきツイートを送信する
             Analytics.AutoPost.withImageTweet(content)
         } else {
-            TwitterClient.shared.client?.sendTweet(withText: content.postMessage) { (_, _) in }
+//            TwitterClient.shared.client?.sendTweet(withText: content.postMessage) { (_, _) in }
+            // FIXME: ツイートを送信する
             Analytics.AutoPost.textOnlyTweet(content)
         }
     }
@@ -244,28 +288,30 @@ extension PlayViewModel {
     private func postMastodon(_ content: PostContent) {
         guard UserDefaults.bool(forKey: .isMastodonAutoToot) else { return }
         if let shareImage = content.shareImage, let data = shareImage.pngData() {
-            Session.shared.rx.response(MastodonMediaRequest(imageData: data))
-                .subscribe(onSuccess: { [weak self] (response) in
-                    guard let wself = self else { return }
-                    Session.shared.rx.response(MastodonTootRequest(status: content.postMessage, mediaIDs: [response.mediaID]))
-                        .subscribe(onSuccess: { (_) in
-                        }, onError: { (error) in
-                            print(error)
-                        })
-                        .disposed(by: wself.disposeBag)
-                }, onError: { (error) in
-                    print(error)
-                })
-                .disposed(by: disposeBag)
+            // FIXME: User オブジェクトを取得する
+//            Session.shared.rx.response(MastodonMediaRequest(imageData: data))
+//                .subscribe(onSuccess: { [weak self] (response) in
+//                    guard let wself = self else { return }
+//                    Session.shared.rx.response(MastodonTootRequest(status: content.postMessage, mediaIDs: [response.mediaID]))
+//                        .subscribe(onSuccess: { (_) in
+//                        }, onError: { (error) in
+//                            print(error)
+//                        })
+//                        .disposed(by: wself.disposeBag)
+//                }, onError: { (error) in
+//                    print(error)
+//                })
+//                .disposed(by: disposeBag)
             Analytics.AutoPost.withImageToot(content)
         } else {
-            Session.shared.rx.response(MastodonTootRequest(status: content.postMessage))
-                .subscribe(onSuccess: { (_) in
-
-                }, onError: { (error) in
-                    print(error)
-                })
-                .disposed(by: disposeBag)
+            // FIXME: User オブジェクトを取得する
+//            Session.shared.rx.response(MastodonTootRequest(status: content.postMessage))
+//                .subscribe(onSuccess: { (_) in
+//
+//                }, onError: { (error) in
+//                    print(error)
+//                })
+//                .disposed(by: disposeBag)
             Analytics.AutoPost.textOnlyToot(content)
         }
     }
