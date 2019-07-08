@@ -903,7 +903,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = ". NowPlaying/Resources/.env\n\n\"${PODS_ROOT}/Fabric/run\" ${FABRIC_API_KEY} ${FABRIC_BUILD_SECRET}\n";
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" ${FABRIC_API_KEY} ${FABRIC_BUILD_SECRET}\n";
 		};
 		CF531C3722A9969800D05896 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
