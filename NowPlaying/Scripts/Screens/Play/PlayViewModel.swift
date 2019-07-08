@@ -85,7 +85,7 @@ final class PlayViewModel: PlayViewModelType {
     // シングルアカウントログインの頃にインストールされていた場合、ポップアップを表示する
     func showSingleAccountToMultiAccountDialog() {
         if UserDefaults.bool(forKey: .singleAccountToMultiAccounts) { return }
-        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let version = Bundle.main.object(forInfoDictionaryKey: .bundleShortVersionString) as! String
         // バージョンが2.4.0のとき場合、表示対象にする
         if version.compare("2.4.0", options: .numeric) != .orderedSame {
             UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)

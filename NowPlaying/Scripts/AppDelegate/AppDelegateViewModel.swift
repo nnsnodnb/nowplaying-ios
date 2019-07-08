@@ -92,7 +92,7 @@ extension AppDelegateViewModel {
     }
 
     private func handleAppVersionResponse(_ response: AppInfoResponse) -> UIAlertController? {
-        let current = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let current = Bundle.main.object(forInfoDictionaryKey: .bundleShortVersionString) as! String
         if current.compare(response.appVersion.require, options: .numeric) == .orderedAscending {
             // 必須アップデート
             let alert = UIAlertController(title: "アップデートが必要です", message: nil, preferredStyle: .alert)

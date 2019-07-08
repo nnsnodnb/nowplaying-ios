@@ -18,8 +18,6 @@ enum EnvironmentKey: String {
 
 struct Environments {
 
-    static let environmentsPlistFile = R.file.environmentsPlist
-
     static var twitterConsumerKey: String {
         return Bundle.environments[key: .twitterConsumerKey] as! String
     }
@@ -44,7 +42,7 @@ struct Environments {
 extension Bundle {
 
     static let environments: [String: Any] = {
-        return NSDictionary(contentsOfFile: R.file.environmentsPlist.path()!)! as! [String: Any]
+        return Bundle.main.object(forInfoDictionaryKey: .environmentVariablesKey) as! [String: Any]
     }()
 }
 
