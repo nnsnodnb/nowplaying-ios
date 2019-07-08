@@ -25,8 +25,14 @@ $ carthage bootstrap --platform iOS --cache-builds
 $ open NowPlaying.xcworkspace
 ```
 
-Please change build system in this workspace.  
-[File] -> [Workspace Settings...] -> [Per-User Workspace Settings:] -> [Build System:] -> [Legacy Build System]
+Please copy **Configuration Settings Files**.
+
+```bash
+$ cp NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig.sample NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig
+$ cp NowPlaying/Resources/Config/NowPlaying-Release.xcconfig.sample NowPlaying/Resources/Config/NowPlaying-Release.xcconfig
+```
+
+And fill your environment variables.
 
 ## LICENSE
 
