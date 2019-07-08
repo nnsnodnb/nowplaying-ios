@@ -1087,7 +1087,6 @@
 /* Begin XCBuildConfiguration section */
 		CF615AFA1F56AB3B00315019 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF232DB022D3037600820C1B /* NowPlaying-Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1149,7 +1148,6 @@
 		};
 		CF615AFB1F56AB3B00315019 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF232DB022D3037600820C1B /* NowPlaying-Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1205,7 +1203,7 @@
 		};
 		CF615AFD1F56AB3B00315019 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DBACA1B5A5D60EB389AAE13C /* Pods-NowPlaying.debug.xcconfig */;
+			baseConfigurationReference = CF232DB022D3037600820C1B /* NowPlaying-Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1234,7 +1232,7 @@
 		};
 		CF615AFE1F56AB3B00315019 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5C7BC8ED1C642ABDF0F723D2 /* Pods-NowPlaying.release.xcconfig */;
+			baseConfigurationReference = CF232DB122D303D900820C1B /* NowPlaying-Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
