@@ -21,6 +21,7 @@
 		CF232DAF22CCD7F100820C1B /* MastodonSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */; };
 		CF232DB522D3079400820C1B /* NowPlaying-Debug.xcconfig.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF232DB322D3079400820C1B /* NowPlaying-Debug.xcconfig.sample */; };
 		CF232DB622D3079400820C1B /* NowPlaying-Release.xcconfig.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */; };
+		CF232DB822D30B2200820C1B /* Environments.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF232DB722D30B2200820C1B /* Environments.plist */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
 		CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD7220A4AB630039217F /* libicucore.tbd */; };
 		CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF301D8C22B009C5007E675E /* APIKit.framework */; };
@@ -89,7 +90,7 @@
 		CF8C85E21F6F1B6F0051A0C7 /* .env.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF8C85E11F6F1B6F0051A0C7 /* .env.sample */; };
 		CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */; };
 		CF8E487E2081E85C003A5E70 /* UserDefaults+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */; };
-		CF8E48802081EC75003A5E70 /* ProcessInfo+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */; };
+		CF8E48802081EC75003A5E70 /* Environments.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8E487F2081EC75003A5E70 /* Environments.swift */; };
 		CF918D071F7075110005B686 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF918D061F7075110005B686 /* Settings.bundle */; };
 		CF99DF4922B607AE006E3876 /* PostFormatHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99DF4822B607AE006E3876 /* PostFormatHelpView.swift */; };
 		CF99DF4B22B607C1006E3876 /* PostFormatHelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF99DF4A22B607C1006E3876 /* PostFormatHelpView.xib */; };
@@ -155,6 +156,7 @@
 		CF232DB122D303D900820C1B /* NowPlaying-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "NowPlaying-Release.xcconfig"; sourceTree = "<group>"; };
 		CF232DB322D3079400820C1B /* NowPlaying-Debug.xcconfig.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "NowPlaying-Debug.xcconfig.sample"; sourceTree = "<group>"; };
 		CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "NowPlaying-Release.xcconfig.sample"; sourceTree = "<group>"; };
+		CF232DB722D30B2200820C1B /* Environments.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Environments.plist; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF2DBD7220A4AB630039217F /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		CF301D8C22B009C5007E675E /* APIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APIKit.framework; path = Carthage/Build/iOS/APIKit.framework; sourceTree = "<group>"; };
@@ -228,7 +230,7 @@
 		CF8C85E11F6F1B6F0051A0C7 /* .env.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .env.sample; sourceTree = "<group>"; };
 		CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthManager.swift; path = Manager/AuthManager.swift; sourceTree = "<group>"; };
 		CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Key.swift"; sourceTree = "<group>"; };
-		CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProcessInfo+Key.swift"; sourceTree = "<group>"; };
+		CF8E487F2081EC75003A5E70 /* Environments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environments.swift; sourceTree = "<group>"; };
 		CF918D061F7075110005B686 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		CF99DF4822B607AE006E3876 /* PostFormatHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFormatHelpView.swift; sourceTree = "<group>"; };
 		CF99DF4A22B607C1006E3876 /* PostFormatHelpView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostFormatHelpView.xib; sourceTree = "<group>"; };
@@ -317,6 +319,7 @@
 			isa = PBXGroup;
 			children = (
 				CF1AAFE91F75F2A600384000 /* Common.swift */,
+				CF8E487F2081EC75003A5E70 /* Environments.swift */,
 				CF301D9922B01B84007E675E /* SwiftPrint.swift */,
 				CF99DF5122B8716B006E3876 /* Enumerates.swift */,
 			);
@@ -532,6 +535,7 @@
 				CF232DB222D303DD00820C1B /* Config */,
 				CF615AF41F56AB3B00315019 /* Assets.xcassets */,
 				CF615AF91F56AB3B00315019 /* Info.plist */,
+				CF232DB722D30B2200820C1B /* Environments.plist */,
 				CF8C85DF1F6F1B610051A0C7 /* .env */,
 				CF8C85E11F6F1B6F0051A0C7 /* .env.sample */,
 				CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */,
@@ -613,7 +617,6 @@
 			isa = PBXGroup;
 			children = (
 				CF8E487D2081E85C003A5E70 /* UserDefaults+Key.swift */,
-				CF8E487F2081EC75003A5E70 /* ProcessInfo+Key.swift */,
 				CF6F568122CB731A00F517E9 /* Keychain+Key.swift */,
 				CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */,
 				CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */,
@@ -713,7 +716,6 @@
 				CF615AE61F56AB3B00315019 /* Sources */,
 				CF615AE71F56AB3B00315019 /* Frameworks */,
 				CFB5798922C3A33F001F3D13 /* PlistBuddy (Settings.bundle Root.plist) */,
-				CF8C85E31F6F26260051A0C7 /* PlistBuddy (Info.plist) */,
 				CF615AE81F56AB3B00315019 /* Resources */,
 				CF63348A1F5AB6F200D80EB8 /* Carthage */,
 				CF4D73D31F7A979400E72FBF /* Crashlytics */,
@@ -818,6 +820,7 @@
 				CFB5798822C3982D001F3D13 /* MastodonSettingDomainTableViewCell.xib in Resources */,
 				CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */,
 				CF531C0422A9536A00D05896 /* TwitterSettingViewController.xib in Resources */,
+				CF232DB822D30B2200820C1B /* Environments.plist in Resources */,
 				CF232DB622D3079400820C1B /* NowPlaying-Release.xcconfig.sample in Resources */,
 				CF531C3622A9830B00D05896 /* LICENSE in Resources */,
 				CF6F566922C4D0E300F517E9 /* ArtworkPreviewViewController.xib in Resources */,
@@ -894,7 +897,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -e /usr/local/bin/license-plist ]; then\nexit 0\nfi\nif [ $CONFIGURATION = \"Debug\" ]; then\n${PODS_ROOT}/LicensePlist/license-plist --add-version-numbers --output-path ${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle --cartfile-path Cartfile --pods-path Pods --github-token \"${GITHUB_ACCESS_TOKEN}\" --config-path ${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml\nfi\n";
+			shellScript = "if [ ! -e /usr/local/bin/license-plist ]; then\nexit 0\nfi\nif [ $CONFIGURATION = \"Debug\" ]; then\n${PODS_ROOT}/LicensePlist/license-plist --output-path ${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle --cartfile-path Cartfile --pods-path Pods --github-token \"${GITHUB_ACCESS_TOKEN}\" --config-path ${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml\nfi\n";
 		};
 		CF4D73D31F7A979400E72FBF /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -945,20 +948,6 @@
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
-		CF8C85E31F6F26260051A0C7 /* PlistBuddy (Info.plist) */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "PlistBuddy (Info.plist)";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "plistBuddy=\"/usr/libexec/PlistBuddy\"\ninfoPlistFileSource=\"${SRCROOT}/${INFOPLIST_FILE}\"\ninfoPlistFileDestination=\"${TEMP_DIR}/Preprocessed-Info.plist\"\n\nif [ \"${BITRISE_SOURCE_DIR}\" == \"\" ]; then\n. NowPlaying/Resources/.env\nfi\n\n$plistBuddy -c \"Set :CFBundleURLTypes:0:CFBundleURLSchemes:0 swifter-${TWITTER_CONSUMER_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :Fabric:APIKey ${FABRIC_API_KEY}\" \"${infoPlistFileDestination}\"\n$plistBuddy -c \"Set :GADApplicationIdentifier ${FIREBASE_ADMOB_APP_ID}\" \"${infoPlistFileDestination}\"\n";
-		};
 		CFB5798922C3A33F001F3D13 /* PlistBuddy (Settings.bundle Root.plist) */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -983,13 +972,15 @@
 			files = (
 			);
 			inputPaths = (
+				"$(TEMP_DIR)/rswift-lastrun",
 			);
 			name = R.swift;
 			outputPaths = (
+				"$(SRCROOT)/NowPlaying/Scripts/R.generated.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate --disable-input-output-files-validation \"$SRCROOT/NowPlaying/Scripts/R.generated.swift\"\n";
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/NowPlaying/Scripts/R.generated.swift\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1031,7 +1022,7 @@
 				CFB5797B22C385B4001F3D13 /* InstanceListRequest.swift in Sources */,
 				CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */,
 				CF99DF5222B8716B006E3876 /* Enumerates.swift in Sources */,
-				CF8E48802081EC75003A5E70 /* ProcessInfo+Key.swift in Sources */,
+				CF8E48802081EC75003A5E70 /* Environments.swift in Sources */,
 				CFD1D37620B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift in Sources */,
 				CFD1D37420B87E94009C50ED /* AppInfoRequest.swift in Sources */,
 				CF301D9E22B02343007E675E /* MastodonTootRequest.swift in Sources */,

@@ -59,7 +59,7 @@ final class PlayViewController: UIViewController {
     @IBOutlet private weak var twitterButton: UIButton!
     @IBOutlet private weak var bannerView: GADBannerView! {
         didSet {
-            bannerView.adUnitID = ProcessInfo.processInfo.get(forKey: .firebaseAdmobBannerId)
+            bannerView.adUnitID = Environments.firebaseAdmobBannerID
             bannerView.adSize = kGADAdSizeBanner
             bannerView.rootViewController = self
             bannerView.load(GADRequest())
