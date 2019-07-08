@@ -37,9 +37,7 @@ final class AccountManageViewController: UIViewController {
                 .subscribe(onNext: {
                     let realm = try! Realm(configuration: realmConfiguration)
                     let user = realm.object(ofType: User.self, forPrimaryKey: $0.id)!
-                    try! realm.write {
-                        user.isDefault = true
-                    }
+                    user.isDefaultAccount = true
                 })
                 .disposed(by: disposeBag)
 
