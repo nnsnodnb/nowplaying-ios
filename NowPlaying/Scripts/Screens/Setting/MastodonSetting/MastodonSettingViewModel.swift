@@ -168,7 +168,7 @@ extension MastodonSettingViewModel {
             alert.addAction(UIAlertAction(title: "リセット", style: .destructive) { [unowned self] (_) in
                 guard let tweetFormatRow: TextAreaRow = self.form.rowBy(tag: "toot_format") else { return }
                 DispatchQueue.main.async {
-                    tweetFormatRow.baseValue = defaultPostFormat
+                    tweetFormatRow.baseValue = String.defaultPostFormat
                     tweetFormatRow.updateCell()
                 }
             })

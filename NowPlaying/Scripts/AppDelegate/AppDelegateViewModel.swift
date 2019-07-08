@@ -106,13 +106,13 @@ extension AppDelegateViewModel {
 
     private func setInitialData() {
         if UserDefaults.string(forKey: .tweetFormat) == nil {
-            UserDefaults.set(defaultPostFormat, forKey: .tweetFormat)
+            UserDefaults.set(.defaultPostFormat, forKey: .tweetFormat)
         }
         if UserDefaults.string(forKey: .tweetWithImageType) == nil {
             UserDefaults.set(WithImageType.onlyArtwork.rawValue, forKey: .tweetWithImageType)
         }
         if UserDefaults.string(forKey: .tootFormat) == nil {
-            UserDefaults.set(defaultPostFormat, forKey: .tootFormat)
+            UserDefaults.set(.defaultPostFormat, forKey: .tootFormat)
         }
         if UserDefaults.string(forKey: .tootWithImageType) == nil {
             UserDefaults.set(WithImageType.onlyArtwork.rawValue, forKey: .tootWithImageType)

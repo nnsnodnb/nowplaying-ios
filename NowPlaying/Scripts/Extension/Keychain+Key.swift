@@ -9,9 +9,16 @@
 import Foundation
 import KeychainAccess
 
+enum KeychainKey: String {
+    case authToken = "authToken"
+    case authTokenSecret = "authTokenSecret"
+    case mastodonAccessToken = "mastodon_access_token"
+    case realmEncryptionKey = "realm_encryption_key"
+}
+
 extension Keychain {
 
-    static let nowPlaying = Keychain(service: keychainServiceKey)
+    static let nowPlaying = Keychain(service: .keychainServiceKey)
 
     subscript(key: KeychainKey) -> String? {
         set {
