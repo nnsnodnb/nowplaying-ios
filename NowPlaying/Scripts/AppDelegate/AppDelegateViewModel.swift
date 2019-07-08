@@ -17,7 +17,6 @@ import UIKit
 protocol AppDelegateViewModelInput {
 
     var checkAppVersionTrigger: PublishSubject<Void> { get }
-    var loadEnvironmentsTrigger: PublishSubject<Void> { get }
 }
 
 // MARK: - AppDelegateViewModelOutput
@@ -41,7 +40,6 @@ final class AppDelegateViewModel: AppDelegateViewModelType {
 
     let presentAlert: Observable<UIAlertController>
     let checkAppVersionTrigger = PublishSubject<Void>()
-    let loadEnvironmentsTrigger = PublishSubject<Void>()
 
     var inputs: AppDelegateViewModelInput { return self }
     var outputs: AppDelegateViewModelOutput { return self }
@@ -64,11 +62,6 @@ final class AppDelegateViewModel: AppDelegateViewModelType {
         checkAppVersionTrigger
             .bind(to: checkAppVersionAction.inputs)
             .disposed(by: disposeBag)
-        loadEnvironmentsTrigger
-            .subscribe(onNext: { [unowned self] in
-                self.loadEnvironements()
-            })
-            .disposed(by: disposeBag)
 
         checkAppVersionAction.elements
             .subscribe(onNext: { [weak self] (response) in
@@ -82,27 +75,6 @@ final class AppDelegateViewModel: AppDelegateViewModelType {
 // MARK: - Private method
 
 extension AppDelegateViewModel {
-
-    private func loadEnvironements() {
-        guard let path = Bundle.main.path(forResource: R.file.env) else {
-            fatalError("Not found: 'Resources/.env'.\nPlease create .env file reference from .env.sample")
-        }
-        let url = URL(fileURLWithPath: path)
-        do {
-            let data = try Data(contentsOf: url)
-            let str = String(data: data, encoding: .utf8) ?? "Empty File"
-            let clean = str.replacingOccurrences(of: "\"", with: "").replacingOccurrences(of: "'", with: "")
-            let envVars = clean.components(separatedBy: "\n")
-            for envVar in envVars {
-                let keyVal = envVar.components(separatedBy: "=")
-                if keyVal.count == 2 {
-                    setenv(keyVal[0], keyVal[1], 1)
-                }
-            }
-        } catch {
-            fatalError(error.localizedDescription)
-        }
-    }
 
     private func setInitialData() {
         if UserDefaults.string(forKey: .tweetFormat) == nil {

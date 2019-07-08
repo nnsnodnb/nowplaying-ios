@@ -70,7 +70,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func commonSetup() {
         FirebaseApp.configure()
         SVProgressHUD.setDefaultMaskType(.black)
-        viewModel.inputs.loadEnvironmentsTrigger.onNext(())
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         window?.rootViewController = PlayViewController()

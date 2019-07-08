@@ -19,7 +19,7 @@ extension MastodonSocialRequest {
     }
 
     var headerFields: [String: String] {
-        let apiToken = ProcessInfo.processInfo.get(forKey: .mastodonInstancesApiToken)
+        let apiToken = Environments.mastodonInstancesApiToken
         return [
             "Authorization": "Bearer \(apiToken)"
         ]

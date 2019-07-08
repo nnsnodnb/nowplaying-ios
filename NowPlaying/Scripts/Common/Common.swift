@@ -39,12 +39,6 @@ extension String {
 
     static let keychainServiceKey = "moe.nnsnodnb.NowPlaying"
     static let defaultPostFormat = "__songtitle__ by __artist__ #NowPlaying"
-
-    static var twitterConsumerKey: String {
-        return ProcessInfo.processInfo.get(forKey: .twitterConsumerKey)
-    }
-
-    static var twitterConsumerSecret: String {
-        return ProcessInfo.processInfo.get(forKey: .twitterConsumerSecret)
-    }
+    static let twitterConsumerKey = Environments.twitterConsumerKey
+    static let twitterConsumerSecret = Environments.twitterConsumerSecret
 }
