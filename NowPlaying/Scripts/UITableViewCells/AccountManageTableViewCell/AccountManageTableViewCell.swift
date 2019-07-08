@@ -11,6 +11,7 @@ import UIKit
 final class AccountManageTableViewCell: UITableViewCell {
 
     @IBOutlet private weak var iconImageView: UIImageView!
+    @IBOutlet private weak var defaultAccountStarImageView: UIImageView!
     @IBOutlet private weak var usernameLabel: UILabel!
     @IBOutlet private weak var screenNameLabel: UILabel!
     @IBOutlet private weak var domainLabel: UILabel!
@@ -18,6 +19,7 @@ final class AccountManageTableViewCell: UITableViewCell {
     private(set) var user: User! {
         didSet {
             iconImageView.setImage(with: user.iconURL)
+            defaultAccountStarImageView.isHidden = !user.isDefault
             usernameLabel.text = user.name
             screenNameLabel.text = "@\(user.screenName)"
         }
