@@ -149,6 +149,8 @@
 		CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonVerifyCredentialsRequest.swift; sourceTree = "<group>"; };
 		CF232DAC22CCD70400820C1B /* TwitterSessionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TwitterSessionControl.swift; path = Manager/TwitterSessionControl.swift; sourceTree = "<group>"; };
 		CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonSessionControl.swift; path = Manager/MastodonSessionControl.swift; sourceTree = "<group>"; };
+		CF232DB022D3037600820C1B /* NowPlaying-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "NowPlaying-Debug.xcconfig"; sourceTree = "<group>"; };
+		CF232DB122D303D900820C1B /* NowPlaying-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "NowPlaying-Release.xcconfig"; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF2DBD7220A4AB630039217F /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		CF301D8C22B009C5007E675E /* APIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APIKit.framework; path = Carthage/Build/iOS/APIKit.framework; sourceTree = "<group>"; };
@@ -315,6 +317,15 @@
 				CF99DF5122B8716B006E3876 /* Enumerates.swift */,
 			);
 			name = Common;
+			sourceTree = "<group>";
+		};
+		CF232DB222D303DD00820C1B /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				CF232DB022D3037600820C1B /* NowPlaying-Debug.xcconfig */,
+				CF232DB122D303D900820C1B /* NowPlaying-Release.xcconfig */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 		CF301D9622B01A3D007E675E /* Mastodon */ = {
@@ -512,6 +523,7 @@
 		CF615B051F56E77700315019 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CF232DB222D303DD00820C1B /* Config */,
 				CF615AF41F56AB3B00315019 /* Assets.xcassets */,
 				CF615AF91F56AB3B00315019 /* Info.plist */,
 				CF8C85DF1F6F1B610051A0C7 /* .env */,
@@ -1084,6 +1096,7 @@
 /* Begin XCBuildConfiguration section */
 		CF615AFA1F56AB3B00315019 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF232DB022D3037600820C1B /* NowPlaying-Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1145,6 +1158,7 @@
 		};
 		CF615AFB1F56AB3B00315019 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF232DB022D3037600820C1B /* NowPlaying-Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
