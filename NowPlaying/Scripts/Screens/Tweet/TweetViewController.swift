@@ -19,24 +19,28 @@ final class TweetViewController: UIViewController {
     @IBOutlet private weak var textView: UITextView! {
         didSet {
             textView.becomeFirstResponder()
-            textView.text = postContent.postMessage
         }
     }
-    @IBOutlet private weak var textViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var iconImageButton: UIButton! {
+        didSet {
+            iconImageButton.imageView?.contentMode = .scaleAspectFit
+            iconImageButton.contentVerticalAlignment = .fill
+            iconImageButton.contentHorizontalAlignment = .fill
+        }
+    }
     @IBOutlet private weak var artworkImageButton: UIButton! {
         didSet {
             artworkImageButton.imageView?.contentMode = .scaleAspectFit
+            artworkImageButton.contentVerticalAlignment = .fill
+            artworkImageButton.contentHorizontalAlignment = .fill
             if shareImage == nil {
                 artworkImageButton.isHidden = true
                 return
             }
-            artworkImageButton.alpha = 0
-            artworkImageButton.imageView?.backgroundColor = .clear
             artworkImageButton.setImage(shareImage, for: .normal)
             artworkImageButton.rx.tap
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { [unowned self] (_) in
-                    self.textView.resignFirstResponder()
                     let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                     sheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel) { [unowned self] (_) in
                         self.forcusToTextView()
@@ -51,7 +55,6 @@ final class TweetViewController: UIViewController {
                             self?.artworkImageButton.alpha = 0.0
                         }, completion: { (_) in
                             self?.artworkImageButton.setImage(nil, for: .normal)
-                            self?.artworkImageButtonHeight.constant = 0
                             self?.resizeTextView()
                             Analytics.logEvent("delete_image", parameters: ["type": "action"])
                         })
@@ -62,12 +65,8 @@ final class TweetViewController: UIViewController {
                 .disposed(by: disposeBag)
         }
     }
-    @IBOutlet private weak var artworkImageButtonTopMargin: NSLayoutConstraint!
-    @IBOutlet private weak var artworkImageButtonHeight: NSLayoutConstraint! {
-        didSet {
-            if shareImage == nil { artworkImageButtonHeight.constant = 0 }
-        }
-    }
+    @IBOutlet private weak var addImageButton: UIButton!
+    // FIXME: 画像が添付されている場合は非表示にする
 
     private let postContent: PostContent
     private let disposeBag = DisposeBag()
@@ -97,29 +96,39 @@ final class TweetViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationBar()
 
-        RxKeyboard.instance.visibleHeight
-            .drive(onNext: { [weak self] (height) in
-                guard let wself = self else { return }
-                wself.keyboardHeight = height
-                wself.textViewHeight.constant = UIScreen.main.bounds.size.height - height - wself.artworkImageButtonHeight.constant - (wself.artworkImageButtonTopMargin.constant * 2)
-            })
-            .disposed(by: disposeBag)
+        textView.text = postContent.postMessage
 
-        RxKeyboard.instance.isHidden.asObservable()
-            .take(1)
-            .subscribe(onNext: { [weak self] (_) in
-                UIView.animate(withDuration: 0.5) {
-                    self?.artworkImageButton.alpha = 1
-                }
-            })
-            .disposed(by: disposeBag)
+//        RxKeyboard.instance.visibleHeight
+//            .drive(onNext: { [weak self] (height) in
+//                guard let wself = self else { return }
+//                wself.keyboardHeight = height
+//            })
+//            .disposed(by: disposeBag)
+//
+//        RxKeyboard.instance.isHidden.asObservable()
+//            .take(1)
+//            .subscribe(onNext: { [weak self] (_) in
+//                UIView.animate(withDuration: 0.5) {
+//                    self?.artworkImageButton.alpha = 1
+//                }
+//            })
+//            .disposed(by: disposeBag)
 
-        let inputs = TweetViewModelInput(postContent: postContent,
+        let inputs = TweetViewModelInput(iconImageButton: iconImageButton.rx.tap.asObservable(),
+                                         addImageButton: addImageButton.rx.tap.asObservable(),
+                                         postContent: postContent,
                                          textViewText: textView.rx.text.orEmpty.asObservable())
         viewModel = TweetViewModel(inputs: inputs)
 
         viewModel.outputs.isPostable
             .bind(to: navigationItem.rightBarButtonItem!.rx.isEnabled)
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.user
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { (user) in
+                self.iconImageButton.setImage(with: user.iconURL)
+            })
             .disposed(by: disposeBag)
 
         viewModel.outputs.successRequest
@@ -138,6 +147,8 @@ final class TweetViewController: UIViewController {
                 self?.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+
+        viewModel.getDefaultAccount()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -190,10 +201,10 @@ final class TweetViewController: UIViewController {
     }
 
     private func resizeTextView() {
-        textViewHeight.constant = UIScreen.main.bounds.size.height - keyboardHeight - artworkImageButtonHeight.constant - (artworkImageButtonTopMargin.constant * 2)
-        UIView.animate(withDuration: 0.5) { [unowned self] in
-            self.artworkImageButton.alpha = 1
-        }
+//        textViewHeight.constant = UIScreen.main.bounds.size.height - keyboardHeight - artworkImageButtonHeight.constant - (artworkImageButtonTopMargin.constant * 2)
+//        UIView.animate(withDuration: 0.5) { [unowned self] in
+//            self.artworkImageButton.alpha = 1
+//        }
     }
 
     private func showPreviewer() {

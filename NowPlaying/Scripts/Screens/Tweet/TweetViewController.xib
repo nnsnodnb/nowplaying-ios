@@ -11,11 +11,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TweetViewController" customModule="NowPlaying" customModuleProvider="target">
             <connections>
+                <outlet property="addImageButton" destination="TYK-Wu-KgR" id="wp3-qh-xNQ"/>
                 <outlet property="artworkImageButton" destination="5FN-5l-kq7" id="iIb-WW-tHw"/>
-                <outlet property="artworkImageButtonHeight" destination="aJm-cH-NX2" id="PUR-lv-f3s"/>
-                <outlet property="artworkImageButtonTopMargin" destination="dvl-yV-yg3" id="rM1-lv-NZJ"/>
+                <outlet property="iconImageButton" destination="Z2W-Ls-txs" id="S15-Bu-zWA"/>
                 <outlet property="textView" destination="nGx-0K-2b5" id="smC-Qn-hT7"/>
-                <outlet property="textViewHeight" destination="rHh-8c-5xX" id="VvS-40-t0n"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="M3L-c2-ERY"/>
             </connections>
         </placeholder>
@@ -24,39 +23,69 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="B9F-xC-qZV">
+                    <rect key="frame" x="14" y="34" width="60" height="208"/>
+                    <subviews>
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z2W-Ls-txs">
+                            <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="DyV-af-3wr"/>
+                                <constraint firstAttribute="height" constant="60" id="jwh-Kz-vn4"/>
+                            </constraints>
+                            <state key="normal">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="30"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5FN-5l-kq7" customClass="ShadowButton" customModule="NowPlaying" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="74" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="UIk-D5-a23"/>
+                                <constraint firstAttribute="width" constant="60" id="u5D-5Z-mDo"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="previewImageView"/>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYK-Wu-KgR">
+                            <rect key="frame" x="0.0" y="148" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="Qn4-oT-8AE"/>
+                                <constraint firstAttribute="width" constant="60" id="SQR-Rl-0ah"/>
+                            </constraints>
+                            <state key="normal" image="AddArtwork"/>
+                        </button>
+                    </subviews>
+                </stackView>
                 <textView clipsSubviews="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="nGx-0K-2b5">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="350"/>
+                    <rect key="frame" x="88" y="34" width="287" height="260"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="350" id="rHh-8c-5xX"/>
+                        <constraint firstAttribute="height" constant="260" id="rHg-pB-biK"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5FN-5l-kq7">
-                    <rect key="frame" x="8" y="358" width="70" height="70"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="70" id="0jt-hp-rMo"/>
-                        <constraint firstAttribute="height" constant="70" id="aJm-cH-NX2"/>
-                    </constraints>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="10"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="previewImageView"/>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="5FN-5l-kq7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="BgA-De-VVv"/>
-                <constraint firstAttribute="trailing" secondItem="nGx-0K-2b5" secondAttribute="trailing" id="JLw-9c-lLr"/>
-                <constraint firstItem="5FN-5l-kq7" firstAttribute="top" secondItem="nGx-0K-2b5" secondAttribute="bottom" constant="8" id="dvl-yV-yg3"/>
-                <constraint firstItem="nGx-0K-2b5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="nYI-4y-csK"/>
-                <constraint firstItem="nGx-0K-2b5" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="pOi-OE-yfw"/>
+                <constraint firstAttribute="trailing" secondItem="nGx-0K-2b5" secondAttribute="trailing" id="0RZ-kL-omt"/>
+                <constraint firstItem="B9F-xC-qZV" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="topMargin" constant="14" id="20U-JR-SQn"/>
+                <constraint firstItem="B9F-xC-qZV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="14" id="JFv-Xf-zP7"/>
+                <constraint firstItem="nGx-0K-2b5" firstAttribute="top" secondItem="B9F-xC-qZV" secondAttribute="top" id="SFg-lT-5sQ"/>
+                <constraint firstItem="nGx-0K-2b5" firstAttribute="leading" secondItem="B9F-xC-qZV" secondAttribute="trailing" constant="14" id="v3D-uN-8ps"/>
             </constraints>
-            <point key="canvasLocation" x="34.5" y="53.5"/>
+            <point key="canvasLocation" x="34.399999999999999" y="52.623688155922046"/>
         </view>
     </objects>
+    <resources>
+        <image name="AddArtwork" width="116" height="116"/>
+    </resources>
 </document>
