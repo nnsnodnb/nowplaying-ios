@@ -24,6 +24,7 @@ final class AccountManageViewController: UIViewController {
         didSet {
             tableView.register(R.nib.accountManageTableViewCell)
             tableView.tableFooterView = UIView()
+            tableView.rx.setDelegate(self).disposed(by: disposeBag)
 
             tableView.rx.itemSelected
                 .subscribe(onNext: { [tableView] (indexPath) in
@@ -140,6 +141,18 @@ final class AccountManageViewController: UIViewController {
         } catch {
             print(error)
         }
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension AccountManageViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteRowAction = UITableViewRowAction(style: .destructive, title: "ログアウト") { (_, indexPath) in
+            tableView.dataSource?.tableView?(tableView, commit: .delete, forRowAt: indexPath)
+        }
+        return [deleteRowAction]
     }
 }
 
