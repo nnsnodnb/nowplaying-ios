@@ -15,7 +15,6 @@
                 <outlet property="artworkImageButton" destination="5FN-5l-kq7" id="iIb-WW-tHw"/>
                 <outlet property="iconImageButton" destination="Z2W-Ls-txs" id="S15-Bu-zWA"/>
                 <outlet property="textView" destination="nGx-0K-2b5" id="smC-Qn-hT7"/>
-                <outlet property="textViewHeightConstraint" destination="rHg-pB-biK" id="HO3-GR-jny"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="M3L-c2-ERY"/>
             </connections>
         </placeholder>
@@ -67,9 +66,9 @@
                     </subviews>
                 </stackView>
                 <textView clipsSubviews="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="nGx-0K-2b5">
-                    <rect key="frame" x="88" y="34" width="287" height="62"/>
+                    <rect key="frame" x="88" y="34" width="287" height="260"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="62" id="rHg-pB-biK"/>
+                        <constraint firstAttribute="height" constant="260" id="rHg-pB-biK"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>

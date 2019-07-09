@@ -19,12 +19,8 @@ final class TweetViewController: UIViewController {
     @IBOutlet private weak var textView: UITextView! {
         didSet {
             textView.becomeFirstResponder()
-            textView.rx.setDelegate(self).disposed(by: disposeBag)
-
-            textView.text = postContent.postMessage
         }
     }
-    @IBOutlet private weak var textViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var iconImageButton: UIButton! {
         didSet {
             iconImageButton.imageView?.contentMode = .scaleAspectFit
@@ -100,11 +96,7 @@ final class TweetViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationBar()
 
-        textView.rx.didChange
-            .observeOn(MainScheduler.instance)
-            .map { self.textView.contentSize.height }
-            .bind(to: textViewHeightConstraint.rx.constant)
-            .disposed(by: disposeBag)
+        textView.text = postContent.postMessage
 
 //        RxKeyboard.instance.visibleHeight
 //            .drive(onNext: { [weak self] (height) in
@@ -221,7 +213,3 @@ final class TweetViewController: UIViewController {
         present(viewController, animated: true, completion: nil)
     }
 }
-
-// MARK: - UITextViewDelegate
-
-extension TweetViewController: UITextViewDelegate {}
