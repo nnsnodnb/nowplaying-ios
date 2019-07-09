@@ -35,9 +35,7 @@ final class AccountManageViewController: UIViewController {
                 .filter { !$0.isDefault }
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: {
-                    let realm = try! Realm(configuration: realmConfiguration)
-                    let user = realm.object(ofType: User.self, forPrimaryKey: $0.id)!
-                    user.isDefaultAccount = true
+                    $0.isDefaultAccount = true
                 })
                 .disposed(by: disposeBag)
 
