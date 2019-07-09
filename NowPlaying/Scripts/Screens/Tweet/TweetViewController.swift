@@ -198,6 +198,7 @@ final class TweetViewController: UIViewController {
 
     private func showPreviewer() {
         guard let shareImage = self.shareImage else { return }
+        textView.resignFirstResponder()
         let viewController = ArtworkPreviewViewController(image: shareImage, parent: self)
         present(viewController, animated: true, completion: nil)
     }
