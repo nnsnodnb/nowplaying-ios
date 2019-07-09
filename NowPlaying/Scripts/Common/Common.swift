@@ -41,4 +41,6 @@ extension String {
     static let defaultPostFormat = "__songtitle__ by __artist__ #NowPlaying"
     static let twitterConsumerKey = Environments.twitterConsumerKey
     static let twitterConsumerSecret = Environments.twitterConsumerSecret
+    static let bundleShortVersionString = "CFBundleShortVersionString"
+    static let environmentVariablesKey = "LSEnvironment"
 }

@@ -21,7 +21,6 @@
 		CF232DAF22CCD7F100820C1B /* MastodonSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */; };
 		CF232DB522D3079400820C1B /* NowPlaying-Debug.xcconfig.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF232DB322D3079400820C1B /* NowPlaying-Debug.xcconfig.sample */; };
 		CF232DB622D3079400820C1B /* NowPlaying-Release.xcconfig.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */; };
-		CF232DB822D30B2200820C1B /* Environments.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF232DB722D30B2200820C1B /* Environments.plist */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
 		CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD7220A4AB630039217F /* libicucore.tbd */; };
 		CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF301D8C22B009C5007E675E /* APIKit.framework */; };
@@ -154,7 +153,6 @@
 		CF232DB122D303D900820C1B /* NowPlaying-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "NowPlaying-Release.xcconfig"; sourceTree = "<group>"; };
 		CF232DB322D3079400820C1B /* NowPlaying-Debug.xcconfig.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "NowPlaying-Debug.xcconfig.sample"; sourceTree = "<group>"; };
 		CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "NowPlaying-Release.xcconfig.sample"; sourceTree = "<group>"; };
-		CF232DB722D30B2200820C1B /* Environments.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Environments.plist; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF2DBD7220A4AB630039217F /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		CF301D8C22B009C5007E675E /* APIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APIKit.framework; path = Carthage/Build/iOS/APIKit.framework; sourceTree = "<group>"; };
@@ -531,7 +529,6 @@
 				CF232DB222D303DD00820C1B /* Config */,
 				CF615AF41F56AB3B00315019 /* Assets.xcassets */,
 				CF615AF91F56AB3B00315019 /* Info.plist */,
-				CF232DB722D30B2200820C1B /* Environments.plist */,
 				CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */,
 				CF55B62C22A3DD8B00D5C9E1 /* Carthage.xcfilelist */,
 				CF918D061F7075110005B686 /* Settings.bundle */,
@@ -814,7 +811,6 @@
 				CFB5798822C3982D001F3D13 /* MastodonSettingDomainTableViewCell.xib in Resources */,
 				CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */,
 				CF531C0422A9536A00D05896 /* TwitterSettingViewController.xib in Resources */,
-				CF232DB822D30B2200820C1B /* Environments.plist in Resources */,
 				CF232DB622D3079400820C1B /* NowPlaying-Release.xcconfig.sample in Resources */,
 				CF531C3622A9830B00D05896 /* LICENSE in Resources */,
 				CF6F566922C4D0E300F517E9 /* ArtworkPreviewViewController.xib in Resources */,

@@ -84,6 +84,19 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>LSEnvironment</key>
+	<dict>
+		<key>TWITTER_CONSUMER_KEY</key>
+		<string>$(TWITTER_CONSUMER_KEY)</string>
+		<key>TWITTER_CONSUMER_SECRET</key>
+		<string>$(TWITTER_CONSUMER_SECRET)</string>
+		<key>FIREBASE_ADMOB_APP_ID</key>
+		<string>$(FIREBASE_ADMOB_APP_ID)</string>
+		<key>FIREBASE_ADMOB_BANNER_ID</key>
+		<string>$(FIREBASE_ADMOB_BANNER_ID)</string>
+		<key>MASTODON_INSTANCES_API_TOKEN</key>
+		<string>$(MASTODON_INSTANCES_API_TOKEN)</string>
+	</dict>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

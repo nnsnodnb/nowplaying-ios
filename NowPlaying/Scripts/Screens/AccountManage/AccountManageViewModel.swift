@@ -41,9 +41,12 @@ protocol AccountManageViewModelType {
 
     init(inputs: AccountManageViewModelInput)
     func tokenRevoke(secret: SecretCredential) -> Observable<Void>
+    func removeUserData(_ user: User) -> Observable<Void>
+    func applyNewDefaultAccount() -> Observable<UIAlertController>
 }
 
 enum LoginResult {
+    case initial(User)
     case success(User)
     case failure(Error)
     case duplicate
@@ -62,11 +65,13 @@ final class AccountManageViewModel: AccountManageViewModelType {
     private let mastodonTokenRevokeAction: Action<SecretCredential, Void> = Action {
         return Session.shared.rx.response(MastodonTokenRevokeRequest(secret: $0))
     }
+    private let service: Service
 
     private lazy var twitter = TwitterSessionControl()
     private lazy var mastodon = MastodonSessionControl()
 
     init(inputs: AccountManageViewModelInput) {
+        service = inputs.service
         switch inputs.service {
         case .twitter:
             title = Observable.just("Twitterアカウント")
@@ -97,6 +102,39 @@ final class AccountManageViewModel: AccountManageViewModelType {
                 .disposed(by: self.disposeBag)
 
             self.mastodonTokenRevokeAction.inputs.onNext(secret)
+            return Disposables.create()
+        }
+    }
+
+    func removeUserData(_ user: User) -> Observable<Void> {
+        return .create { (observer) -> Disposable in
+            let realm = try! Realm(configuration: realmConfiguration)
+            try! realm.write {
+                realm.delete(user.secretCredentials.first!)
+                realm.delete(user)
+            }
+            observer.onCompleted()
+
+            return Disposables.create()
+        }
+    }
+
+    func applyNewDefaultAccount() -> Observable<UIAlertController> {
+        return .create { [service] (observer) -> Disposable in
+            let realm = try! Realm(configuration: realmConfiguration)
+            guard let user = realm.objects(User.self).filter("serviceType = %@", service.rawValue)
+                .sorted(byKeyPath: "id", ascending: true).first else {
+                    observer.onCompleted()
+                    return Disposables.create()
+            }
+            try! realm.write {
+                user.isDefault = true
+            }
+            let alert = UIAlertController(title: "デフォルトアカウント変更", message: "\(user.name)に設定されました", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            observer.onNext(alert)
+            observer.onCompleted()
+
             return Disposables.create()
         }
     }
@@ -139,7 +177,7 @@ extension AccountManageViewModel {
     private func startTwitterLogin(inputs: AccountManageViewModelInput) {
         let twitterAuthURL = URL(string: "twitterauth://authorize")!
         if UIApplication.shared.canOpenURL(twitterAuthURL) {
-            twitter.tryAuthorizeSSO()
+            _ = twitter.tryAuthorizeSSO()
                 .subscribe(onNext: { [weak self] in
                     guard let wself = self else { return }
                     TwitterSessionControl.handleSuccessLogin($0)
@@ -148,10 +186,9 @@ extension AccountManageViewModel {
                     print($0)
                     self._loginResult.accept(.failure($0))
                 })
-                .disposed(by: disposeBag)
             return
         }
-        twitter.tryAuthorizeBrowser(presenting: inputs.viewController)
+        _ = twitter.tryAuthorizeBrowser(presenting: inputs.viewController)
             .subscribe(onNext: { [weak self] in
                 guard let wself = self else { return }
                 TwitterSessionControl.handleSuccessLogin($0)
@@ -160,7 +197,6 @@ extension AccountManageViewModel {
                 print(error)
                 self._loginResult.accept(.failure(error))
             })
-            .disposed(by: disposeBag)
     }
 
     private func twitterLoginHandle(_ callback: Observable<LoginCallback>) {
@@ -181,7 +217,10 @@ extension AccountManageViewModel {
                             realm.add(user, update: .error)
                             realm.add(credential, update: .error)
                         }
-                        result = .success(user)
+                        let isEmpty = realm.objects(User.self)
+                            .filter("serviceID != %@ AND serviceType = %@", user.serviceID, user.serviceType)
+                            .isEmpty
+                        result = isEmpty ? .initial(user) : .success(user)
                     }
                 } catch {
                     print(error)
@@ -208,7 +247,7 @@ extension AccountManageViewModel {
     }
 
     private func startAuthorizeMastodon(hostname: String) {
-        mastodon.authorize(hostname: hostname)
+        _ = mastodon.authorize(hostname: hostname)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] (secret) in
                 let user = User(serviceID: secret.userID, name: secret.name, screenName: secret.screenName,
@@ -225,7 +264,11 @@ extension AccountManageViewModel {
                         realm.add(user, update: .error)
                         realm.add(secretCredential, update: .error)
                     }
-                    self?._loginResult.accept(.success(user))
+                    let isEmpty = realm.objects(User.self)
+                        .filter("serviceID != %@ AND serviceType = %@", user.serviceID, user.serviceType)
+                        .isEmpty
+                    let result: LoginResult = isEmpty ? .initial(user) : .success(user)
+                    self?._loginResult.accept(result)
                 } catch {
                     print(error)
                     self?._loginResult.accept(.failure(error))
@@ -234,7 +277,6 @@ extension AccountManageViewModel {
                 print($0)
                 self?._loginResult.accept(.failure($0))
             })
-            .disposed(by: disposeBag)
     }
 }
 

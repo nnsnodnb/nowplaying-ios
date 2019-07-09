@@ -24,6 +24,21 @@ final class AccountManageViewController: UIViewController {
         didSet {
             tableView.register(R.nib.accountManageTableViewCell)
             tableView.tableFooterView = UIView()
+            tableView.rx.setDelegate(self).disposed(by: disposeBag)
+
+            tableView.rx.itemSelected
+                .subscribe(onNext: { [tableView] (indexPath) in
+                    tableView?.deselectRow(at: indexPath, animated: true)
+                })
+                .disposed(by: disposeBag)
+
+            tableView.rx.modelSelected(User.self)
+                .filter { !$0.isDefault }
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: {
+                    $0.isDefaultAccount = true
+                })
+                .disposed(by: disposeBag)
 
             tableView.rx.modelDeleted(User.self)
                 .subscribe(onNext: { [unowned self] in
@@ -34,7 +49,7 @@ final class AccountManageViewController: UIViewController {
                         self.removeUserData(user: user)
                         return
                     }
-                    self.viewModel.tokenRevoke(secret: user.secretCredentials.first!)
+                    _ = self.viewModel.tokenRevoke(secret: user.secretCredentials.first!)
                         .subscribe(onNext: { [weak self] (_) in
                             self?.removeUserData(user: user)
                         }, onError: { (error) in
@@ -42,7 +57,6 @@ final class AccountManageViewController: UIViewController {
                             SVProgressHUD.showError(withStatus: "ログアウトに失敗しました")
                             SVProgressHUD.dismiss(withDelay: 1)
                         })
-                        .disposed(by: self.disposeBag)
                 })
                 .disposed(by: disposeBag)
         }
@@ -68,9 +82,8 @@ final class AccountManageViewController: UIViewController {
 
         viewModel = AccountManageViewModel(inputs: inputs)
 
-        viewModel.outputs.title
+        _ = viewModel.outputs.title
             .bind(to: navigationItem.rx.title)
-            .disposed(by: disposeBag)
 
         viewModel.outputs.users
             .bind(to: tableView.rx.items(cellIdentifier: R.reuseIdentifier.accountManageTableViewCell.identifier)) {
@@ -81,7 +94,15 @@ final class AccountManageViewController: UIViewController {
 
         viewModel.outputs.loginResult
             .subscribe(onNext: { (result) in
+                var completion: SVProgressHUDDismissCompletion?
                 switch result {
+                case .initial(let user):
+                    completion = { [weak self] in
+                        let alert = UIAlertController(title: "デフォルトアカウント変更", message: "\(user.name)に設定されました", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self?.present(alert, animated: true, completion: nil)
+                    }
+                    fallthrough
                 case .success(let user):
                     SVProgressHUD.showSuccess(withStatus: "\(user.screenName)にログインしました")
                 case .failure:
@@ -89,7 +110,7 @@ final class AccountManageViewController: UIViewController {
                 case .duplicate:
                     SVProgressHUD.showInfo(withStatus: "すでにログインされているアカウントです")
                 }
-                SVProgressHUD.dismiss(withDelay: 1)
+                SVProgressHUD.dismiss(withDelay: 1, completion: completion)
             })
             .disposed(by: disposeBag)
     }
@@ -115,17 +136,29 @@ final class AccountManageViewController: UIViewController {
     }
 
     private func removeUserData(user: User) {
-        do {
-            let realm = try Realm(configuration: realmConfiguration)
-            try realm.write {
-                realm.delete(user.secretCredentials.first!)
-                realm.delete(user)
-            }
-            SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
-            SVProgressHUD.dismiss(withDelay: 1)
-        } catch {
-            print(error)
+        _ = viewModel.removeUserData(user)
+            .subscribe(onCompleted: {
+                SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
+                SVProgressHUD.dismiss(withDelay: 1) { [weak self] in
+                    _ = self?.viewModel.applyNewDefaultAccount()
+                        .observeOn(MainScheduler.instance)
+                        .subscribe(onNext: { (alert) in
+                            self?.present(alert, animated: true, completion: nil)
+                        })
+                }
+            })
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension AccountManageViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteRowAction = UITableViewRowAction(style: .destructive, title: "ログアウト") { (_, indexPath) in
+            tableView.dataSource?.tableView?(tableView, commit: .delete, forRowAt: indexPath)
         }
+        return [deleteRowAction]
     }
 }
 

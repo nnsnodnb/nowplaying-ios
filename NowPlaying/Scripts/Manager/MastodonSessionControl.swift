@@ -57,7 +57,7 @@ final class MastodonSessionControl {
                 observer.onError(AuthError.nullMe)
                 return Disposables.create()
             }
-            wself.mastodonRegisterApp(hostname)
+            _ = wself.mastodonRegisterApp(hostname)
                 .bind(to: wself.mastodonAuthorize)
                 .do(onNext: { (_) in
                     SVProgressHUD.show()
@@ -70,7 +70,6 @@ final class MastodonSessionControl {
                 }, onError: {
                     observer.onError($0)
                 })
-                .disposed(by: wself.disposeBag)
             return Disposables.create()
         }
     }
@@ -78,7 +77,7 @@ final class MastodonSessionControl {
     // アプリ登録
     private func mastodonRegisterApp(_ hostname: String) -> Observable<URL> {
         return .create { [unowned self] (observer) -> Disposable in
-            Session.shared.rx.response(MastodonAppRequest(hostname: hostname))
+            _ = Session.shared.rx.response(MastodonAppRequest(hostname: hostname))
                 .subscribe(onSuccess: { (response) in
                     let url = URL(string: "https://\(response.host)/oauth/authorize")!
                     var components = URLComponents(url: url, resolvingAgainstBaseURL: url.baseURL != nil)
@@ -99,7 +98,6 @@ final class MastodonSessionControl {
                 }, onError: { (error) in
                     observer.onError(error)
                 })
-                .disposed(by: self.disposeBag)
             return Disposables.create()
         }
     }
@@ -107,8 +105,8 @@ final class MastodonSessionControl {
     // ユーザ自身の操作による認証
     private func mastodonAuthorize(url: Observable<URL>) -> Observable<String> {
         var session: SFAuthenticationSession?
-        return .create { [unowned self] (observer) -> Disposable in
-            url.subscribe(onNext: { (url) in
+        return .create { (observer) -> Disposable in
+            _ = url.subscribe(onNext: { (url) in
                 session = SFAuthenticationSession(url: url, callbackURLScheme: "nowplaying-ios-nnsnodnb") { (url, error) in
                     guard let url = url else {
                         observer.onError(error!)
@@ -125,7 +123,6 @@ final class MastodonSessionControl {
             }, onError: { (error) in
                 observer.onError(error)
             })
-            .disposed(by: self.disposeBag)
             return Disposables.create { session?.cancel() }
         }
     }
@@ -137,10 +134,10 @@ final class MastodonSessionControl {
                 observer.onError(AuthError.nullMe)
                 return Disposables.create()
             }
-            authorizationCode.subscribe(onNext: {
+            _ = authorizationCode.subscribe(onNext: {
                 let inputs = MastodonGetTokenRequest.Input(hostname: wself.secret.domain, code: $0,
                                                            clientID: wself.secret.clientID, clientSecret: wself.secret.clientSecret)
-                Session.shared.rx.response(MastodonGetTokenRequest(inputs: inputs))
+                _ = Session.shared.rx.response(MastodonGetTokenRequest(inputs: inputs))
                     .subscribe(onSuccess: {
                         wself.secret.setAccessToken($0.accessToken)
                         observer.onNext($0.accessToken)
@@ -148,11 +145,9 @@ final class MastodonSessionControl {
                     }, onError: { (error) in
                         observer.onError(error)
                     })
-                    .disposed(by: wself.disposeBag)
             }, onError: {
                 observer.onError($0)
             })
-            .disposed(by: wself.disposeBag)
             return Disposables.create()
         }
     }
@@ -164,8 +159,8 @@ final class MastodonSessionControl {
                 observer.onError(AuthError.nullMe)
                 return Disposables.create()
             }
-            accessToken.subscribe(onNext: {
-                Session.shared.rx.response(MastodonVerifyCredentialsRequest(hostname: wself.secret.domain, accessToken: $0))
+            _ = accessToken.subscribe(onNext: {
+                _ = Session.shared.rx.response(MastodonVerifyCredentialsRequest(hostname: wself.secret.domain, accessToken: $0))
                     .subscribe(onSuccess: {
                         wself.secret.configureUser($0)
                         observer.onNext(wself.secret)
@@ -173,11 +168,9 @@ final class MastodonSessionControl {
                     }, onError: {
                         observer.onError($0)
                     })
-                    .disposed(by: wself.disposeBag)
             }, onError: {
                 observer.onError($0)
             })
-            .disposed(by: wself.disposeBag)
             return Disposables.create()
         }
     }
