@@ -52,6 +52,17 @@ final class AuthManager: NSObject {
 
 extension AuthManager {
 
+    static func oldLogout() {
+        AuthManager(authService: .twitter).logout {}  // Twitterログアウト (FirebaseAuth)
+        try? Keychain.nowPlaying.remove(.authToken)
+        try? Keychain.nowPlaying.remove(.authTokenSecret)
+        AuthManager(authService: .mastodon("")).mastodonLogout()  // Mastodonログアウト
+        UserDefaults.removeObject(forKey: .mastodonClientID)
+        UserDefaults.removeObject(forKey: .mastodonClientSecret)
+        UserDefaults.removeObject(forKey: .mastodonHostname)
+        UserDefaults.removeObject(forKey: .isMastodonLogin)
+    }
+
     @available(iOS, deprecated: 2.3.1)
     func logout(completion: () -> Void) {
         try? Auth.auth().signOut()

@@ -46,11 +46,11 @@ final class PlayViewController: UIViewController {
         didSet {
             gearButton.rx.tap
                 .observeOn(MainScheduler.instance)
-                .subscribe(onNext: { [weak self] (_) in
+                .subscribe(onNext: { [unowned self] (_) in
                     let viewController = SettingViewController()
                     let navi = UINavigationController(rootViewController: viewController)
+                    self.present(navi, animated: true, completion: nil)
                     Analytics.Play.gearButton()
-                    self?.present(navi, animated: true, completion: nil)
                 })
                 .disposed(by: disposeBag)
         }
@@ -75,10 +75,12 @@ final class PlayViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let inputs = PlayViewModelInput(viewController: self, previousButton: previousButton.rx.tap.asObservable(),
-                                        playButton: playButton.rx.tap.asObservable(), nextButton: nextButton.rx.tap.asObservable(),
-                                        mastodonButton: mastodonButton.rx.tap.asObservable(), twitterButton: twitterButton.rx.tap.asObservable()
-            )
+        let inputs = PlayViewModelInput(viewController: self,
+                                        previousButton: previousButton.rx.tap.asObservable(),
+                                        playButton: playButton.rx.tap.asObservable(),
+                                        nextButton: nextButton.rx.tap.asObservable(),
+                                        mastodonButton: mastodonButton.rx.tap.asObservable(),
+                                        twitterButton: twitterButton.rx.tap.asObservable())
         viewModel = PlayViewModel(inputs: inputs)
 
         subscribeViewModel()
@@ -108,6 +110,7 @@ final class PlayViewController: UIViewController {
                 wself.artworkImageView.image = item.artwork?.image(at: wself.artworkImageView.frame.size)
                 wself.songNameLabel.text = item.title
                 wself.artistNameLabel.text = item.artist
+                wself.viewModel.applyNowPlayItem()
             })
             .disposed(by: disposeBag)
 
@@ -118,29 +121,31 @@ final class PlayViewController: UIViewController {
             .disposed(by: disposeBag)
 
         viewModel.outputs.loginRequired
-            .subscribe(onNext: { [weak self] (_) in
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [unowned self] (_) in
                 let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
-                self?.present(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
 
         viewModel.outputs.postContent
-            .drive(onNext: { [weak self] (post) in
+            .drive(onNext: { [unowned self] (post) in
                 let viewController = TweetViewController(postContent: post)
                 let navi = UINavigationController(rootViewController: viewController)
-                self?.present(navi, animated: true, completion: nil)
+                self.present(navi, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
 
         viewModel.outputs.requestDenied
-            .subscribe(onNext: { [weak self] (_) in
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [unowned self] (_) in
                 let alert = UIAlertController(title: "アプリを使用するには\n許可が必要です", message: "設定しますか？", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
                 alert.addAction(UIAlertAction(title: "設定画面へ", style: .default) { _ in
                     UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
                 })
-                self?.present(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }

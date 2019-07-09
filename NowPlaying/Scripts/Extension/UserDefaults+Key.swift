@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 
 enum UserDefaultsKey: String {
     case appOpenCount = "app_open_count"
@@ -88,5 +90,14 @@ extension UserDefaults {
 
     class func object(forKey key: UserDefaultsKey) -> Any? {
         return UserDefaults.standard.object(forKey: key.rawValue)
+    }
+}
+
+extension Reactive where Base: UserDefaults {
+
+    func change<Element>(_ type: Element.Type, _ key: UserDefaultsKey,
+                         options: KeyValueObservingOptions = [.new, .initial],
+                         retainSelf: Bool = true) -> Observable<Element?> {
+        return base.rx.observe(type.self, key.rawValue)
     }
 }

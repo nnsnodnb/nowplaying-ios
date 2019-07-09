@@ -9,7 +9,6 @@
 import APIKit
 import FirebaseAnalytics
 import FirebaseAuth
-import KeychainAccess
 import MediaPlayer
 import PopupDialog
 import RxCocoa
@@ -45,6 +44,7 @@ protocol PlayViewModelType {
     var outputs: PlayViewModelOutput { get }
     init(inputs: PlayViewModelInput)
     func countUpOpenCount()
+    func applyNowPlayItem()
     func showSingleAccountToMultiAccountDialog()
 }
 
@@ -53,7 +53,6 @@ final class PlayViewModel: PlayViewModelType {
     var outputs: PlayViewModelOutput { return self }
 
     private let viewController: UIViewController
-    private let keychain = Keychain.nowPlaying
     private let isPlaying: BehaviorRelay<Bool>
     private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     private let disposeBag = DisposeBag()
@@ -61,6 +60,9 @@ final class PlayViewModel: PlayViewModelType {
     private let loginError = PublishRelay<Void>()
     private let _postContent = PublishRelay<PostContent>()
     private let _requestDenied = PublishRelay<Void>()
+
+    private var twitterPostContent: PostContent!
+    private var mastodonPostContent: PostContent!
 
     init(inputs: PlayViewModelInput) {
         viewController = inputs.viewController
@@ -70,6 +72,7 @@ final class PlayViewModel: PlayViewModelType {
 
         setupNotificationObserver()
         setupInputObserver(inputs)
+        setupUserDefaultsObserver()
     }
 
     func countUpOpenCount() {
@@ -80,6 +83,12 @@ final class PlayViewModel: PlayViewModelType {
             SKStoreReviewController.requestReview()
             UserDefaults.set(0, forKey: .appOpenCount)
         }
+    }
+
+    func applyNowPlayItem() {
+        twitterPostContent = createNewPostCotent(service: .twitter)
+        mastodonPostContent = createNewPostCotent(service: .mastodon)
+        autoPostControl(twitter: twitterPostContent, mastodon: mastodonPostContent)
     }
 
     // シングルアカウントログインの頃にインストールされていた場合、ポップアップを表示する
@@ -110,14 +119,7 @@ final class PlayViewModel: PlayViewModelType {
         let dialogVC = dialog.viewController as! PopupDialogDefaultViewController
         dialogVC.messageFont = .boldSystemFont(ofSize: 17)
         dialogVC.messageColor = .black
-        AuthManager(authService: .twitter).logout {}  // Twitterログアウト (FirebaseAuth)
-        try? keychain.remove(.authToken)
-        try? keychain.remove(.authTokenSecret)
-        AuthManager(authService: .mastodon("")).mastodonLogout()  // Mastodonログアウト
-        UserDefaults.removeObject(forKey: .mastodonClientID)
-        UserDefaults.removeObject(forKey: .mastodonClientSecret)
-        UserDefaults.removeObject(forKey: .mastodonHostname)
-        UserDefaults.removeObject(forKey: .isMastodonLogin)
+        AuthManager.oldLogout()
         viewController.present(dialog, animated: true) {
             UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)
         }
@@ -126,8 +128,11 @@ final class PlayViewModel: PlayViewModelType {
     deinit {
         musicPlayer.endGeneratingPlaybackNotifications()
     }
+}
 
-    // MARK: - Private method
+// MARK: - Private method (Subscribe)
+
+extension PlayViewModel {
 
     private func setupNotificationObserver() {
         // 再生状態の変更
@@ -140,9 +145,8 @@ final class PlayViewModel: PlayViewModelType {
         // 再生されている曲の変更
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
             .subscribe(onNext: { [weak self] (notification) in
-                guard let player = notification.object as? MPMusicPlayerController else { return }
-                self?._nowPlayingItem.accept(player.nowPlayingItem)
-                self?.autoPostControl()
+                guard let wself = self, let player = notification.object as? MPMusicPlayerController else { return }
+                wself._nowPlayingItem.accept(player.nowPlayingItem)
             })
             .disposed(by: disposeBag)
 
@@ -216,13 +220,40 @@ final class PlayViewModel: PlayViewModelType {
             })
             .disposed(by: disposeBag)
     }
+
+    private func setupUserDefaultsObserver() {
+        // ツイートに添付する画像タイプが変更 or ツイートフォーマットが変更
+        let twitterColletion = [
+            UserDefaults.standard.rx.change(String.self, .tweetWithImageType),
+            UserDefaults.standard.rx.change(String.self, .tweetFormat)
+        ]
+        Observable<Void>
+            .combineLatest(twitterColletion) { _ in }
+            .subscribe(onNext: { [weak self] in
+                self?.twitterPostContent = self?.createNewPostCotent(service: .twitter)
+            })
+            .disposed(by: disposeBag)
+
+        // トゥートに添付する画像タイプが変更 or トゥートフォーマットが変更
+        let mastodonCollection = [
+            UserDefaults.standard.rx.change(String.self, .tootWithImageType),
+            UserDefaults.standard.rx.change(String.self, .tootFormat)
+        ]
+        Observable<Void>
+            .combineLatest(mastodonCollection) { _ in }
+            .subscribe(onNext: { [weak self] in
+                self?.mastodonPostContent = self?.createNewPostCotent(service: .mastodon)
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 // MARK: - Private method (Utilities)
 
 extension PlayViewModel {
 
-    private func createnewPostCotent(service: Service) -> PostContent {
+    /* 再生されている曲が変わるたびに新しく生成 */
+    private func createNewPostCotent(service: Service) -> PostContent {
         guard let item = _nowPlayingItem.value else {
             return PostContent(postMessage: "", shareImage: nil, songTitle: "", artistName: "", service: service)
         }
@@ -240,6 +271,7 @@ extension PlayViewModel {
         return PostContent(postMessage: postText, shareImage: shareImage, songTitle: title, artistName: artist, service: service)
     }
 
+    /* 添付画像の取得 */
     private func getShareImage(service: Service, item: MPMediaItem) -> UIImage? {
         switch WithImageType(rawValue: UserDefaults.string(forKey: service.withImageTypeUserDefaultsKey)!)! {
         case .onlyArtwork:
@@ -258,20 +290,27 @@ extension PlayViewModel {
         }
     }
 
+    /* 実際に遷移先に持っていくコンテンツの設定 */
     private func setNewPostContent(service: Service) {
-        var content = createnewPostCotent(service: service)
-
-        let userDefaultsKey: UserDefaultsKey = service == .mastodon ? .isMastodonWithImage : .isWithImage
-        if !UserDefaults.bool(forKey: userDefaultsKey) {
-            content.removeShareImage()
+        var content: PostContent
+        let key: UserDefaultsKey
+        switch service {
+        case .twitter:
+            content = twitterPostContent
+            key = .isWithImage
+        case .mastodon:
+            content = mastodonPostContent
+            key = .isMastodonWithImage
         }
+        // 画像添付が設定されていないので画像を削除
+        if !UserDefaults.bool(forKey: key) { content.removeShareImage() }
         _postContent.accept(content)
     }
 
-    private func autoPostControl() {
+    private func autoPostControl(twitter: PostContent, mastodon: PostContent) {
         guard _nowPlayingItem.value != nil else { return }
-        var tweetContent = createnewPostCotent(service: .twitter)
-        var mastodonContent = createnewPostCotent(service: .mastodon)
+        var tweetContent = twitter
+        var mastodonContent = mastodon
         if !UserDefaults.bool(forKey: .isWithImage) { tweetContent.removeShareImage() }
         if !UserDefaults.bool(forKey: .isMastodonWithImage) { mastodonContent.removeShareImage() }
         postTweet(tweetContent)
