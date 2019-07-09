@@ -49,7 +49,7 @@ final class AccountManageViewController: UIViewController {
                         self.removeUserData(user: user)
                         return
                     }
-                    self.viewModel.tokenRevoke(secret: user.secretCredentials.first!)
+                    _ = self.viewModel.tokenRevoke(secret: user.secretCredentials.first!)
                         .subscribe(onNext: { [weak self] (_) in
                             self?.removeUserData(user: user)
                         }, onError: { (error) in
@@ -57,7 +57,6 @@ final class AccountManageViewController: UIViewController {
                             SVProgressHUD.showError(withStatus: "ログアウトに失敗しました")
                             SVProgressHUD.dismiss(withDelay: 1)
                         })
-                        .disposed(by: self.disposeBag)
                 })
                 .disposed(by: disposeBag)
         }
@@ -83,9 +82,8 @@ final class AccountManageViewController: UIViewController {
 
         viewModel = AccountManageViewModel(inputs: inputs)
 
-        viewModel.outputs.title
+        _ = viewModel.outputs.title
             .bind(to: navigationItem.rx.title)
-            .disposed(by: disposeBag)
 
         viewModel.outputs.users
             .bind(to: tableView.rx.items(cellIdentifier: R.reuseIdentifier.accountManageTableViewCell.identifier)) {
@@ -96,7 +94,15 @@ final class AccountManageViewController: UIViewController {
 
         viewModel.outputs.loginResult
             .subscribe(onNext: { (result) in
+                var completion: SVProgressHUDDismissCompletion?
                 switch result {
+                case .initial(let user):
+                    completion = { [weak self] in
+                        let alert = UIAlertController(title: "デフォルトアカウント変更", message: "\(user.name)に設定されました", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self?.present(alert, animated: true, completion: nil)
+                    }
+                    fallthrough
                 case .success(let user):
                     SVProgressHUD.showSuccess(withStatus: "\(user.screenName)にログインしました")
                 case .failure:
@@ -104,7 +110,7 @@ final class AccountManageViewController: UIViewController {
                 case .duplicate:
                     SVProgressHUD.showInfo(withStatus: "すでにログインされているアカウントです")
                 }
-                SVProgressHUD.dismiss(withDelay: 1)
+                SVProgressHUD.dismiss(withDelay: 1, completion: completion)
             })
             .disposed(by: disposeBag)
     }
