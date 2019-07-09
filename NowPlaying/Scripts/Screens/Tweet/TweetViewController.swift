@@ -179,6 +179,8 @@ final class TweetViewController: UIViewController {
         postButton.rx.tap
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] (_) in
+                self?.textView.resignFirstResponder()
+                SVProgressHUD.show()
                 if let shareImage = self?.shareImage {
                     self?.viewModel.preparePost(withImage: shareImage)
                 } else {

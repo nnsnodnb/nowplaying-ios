@@ -6,6 +6,7 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
+import Action
 import APIKit
 import FirebaseAnalytics
 import Foundation
@@ -13,6 +14,7 @@ import RealmSwift
 import RxCocoa
 import RxSwift
 import SVProgressHUD
+import SwifteriOS
 
 struct TweetViewModelInput {
 
@@ -52,8 +54,17 @@ final class TweetViewModel: TweetViewModelType {
     private let postContent: PostContent
     private let postMessage: BehaviorRelay<String>
     private let postUser: BehaviorRelay<User>
+    private let tweetStatusOnlyTextAction: Action<(SecretCredential, String), JSON>
+    private let tweetStatusWithMediaAction: Action<(SecretCredential, String, Data), JSON>
+    private let tootStatusOnlyTextAction: Action<(SecretCredential, String), Void>
+    // TODO: Mastodonへの画像つき投稿
+//    private let tootStatusWithMediaAction: Action<(SecretCredential, String,)>
     private let _success = PublishRelay<Void>()
     private let _failure = PublishRelay<Error>()
+
+    private var secretCredential: SecretCredential {
+        return postUser.value.secretCredentials.first!
+    }
 
     init(inputs: TweetViewModelInput) {
         let realm = try! Realm(configuration: realmConfiguration)
@@ -66,7 +77,22 @@ final class TweetViewModel: TweetViewModelType {
         postContent = inputs.postContent
         postMessage = BehaviorRelay<String>(value: inputs.postContent.postMessage)
 
+        // テキストのみのポストアクション (Twitter)
+        tweetStatusOnlyTextAction = Action {
+            return TwitterPostRequest(credential: $0.0).postTweet(status: $0.1)
+        }
+        // メディアこみのポストアクション (Mastodon)
+        tweetStatusWithMediaAction = Action {
+            return TwitterPostRequest(credential: $0.0).postTweet(status: $0.1, media: $0.2)
+        }
+        // テキストのみのポストアクション (Mastodon)
+        tootStatusOnlyTextAction = Action {
+            return Session.shared.rx.response(MastodonTootRequest(secret: $0.0, status: $0.1))
+        }
+        // TODO: メディアこみのポストアクション (Mastodon)
+
         subscribeInputs(inputs)
+        subscribeAction()
     }
 
     func getDefaultAccount() {
@@ -74,46 +100,24 @@ final class TweetViewModel: TweetViewModelType {
     }
 
     func preparePost() {
-//        UIApplication.shared.windows.forEach { $0.endEditing(true) }
-//        SVProgressHUD.show()
-//        switch postContent.service {
-//        case .twitter:
-//            TwitterClient.shared.client?.sendTweet(withText: postMessage.value) { [weak self] (_, error) in
-//                if let error = error {
-//                    self?._failure.accept(error)
-//                } else {
-//                    self?._success.accept(())
-//                }
-//            }
-            // FIXME: ツイートを送信する
-//            Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
-//        case .mastodon:
-            // FIXME: User オブジェクトを取得する
-//            Session.shared.rx.response(MastodonTootRequest(status: postMessage.value))
-//                .subscribe(onSuccess: { [weak self] (_) in
-//                    self?._success.accept(())
-//                }, onError: { [weak self] (error) in
-//                    print(error)
-//                    self?._failure.accept(error)
-//                })
-//                .disposed(by: disposeBag)
-//            Analytics.Tweet.postTootMastodon(withHasImage: false, content: postContent)
-//        }
+        switch postContent.service {
+        case .twitter:
+            tweetStatusOnlyTextAction.inputs.onNext((secretCredential, postMessage.value))
+            Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
+        case .mastodon:
+            tootStatusOnlyTextAction.inputs.onNext((secretCredential, postMessage.value))
+            Analytics.Tweet.postTootMastodon(withHasImage: false, content: postContent)
+        }
     }
 
     func preparePost(withImage image: UIImage) {
-        UIApplication.shared.windows.forEach { $0.endEditing(true) }
-        SVProgressHUD.show()
         switch postContent.service {
         case .twitter:
-//            TwitterClient.shared.client?.sendTweet(withText: postMessage.value, image: image) { [weak self] (_, error) in
-//                if let error = error {
-//                    self?._failure.accept(error)
-//                } else {
-//                    self?._success.accept(())
-//                }
-//            }
-            // FIXME: 画像つきツイートを送信する
+            guard let imageData = image.pngData() else {
+                _failure.accept(NSError(domain: "moe.nnsnodnb.NowPlaying", code: 400, userInfo: ["detail": "画像が見つかりません"]))
+                return
+            }
+            tweetStatusWithMediaAction.inputs.onNext((secretCredential, postMessage.value, imageData))
             Analytics.Tweet.postTweetTwitter(withHasImage: true, content: postContent)
         case .mastodon:
             guard let imageData = image.pngData() else {
@@ -151,6 +155,34 @@ extension TweetViewModel {
         inputs.addImageButton
             .subscribe(onNext: {
                 // TODO: アートワークかスクショにする選択するアクションシート (Must: アートワーク)
+            })
+            .disposed(by: disposeBag)
+    }
+
+    private func subscribeAction() {
+        tweetStatusOnlyTextAction.elements
+            .map { _ in }
+            .subscribe(onNext: { [weak self] in
+                self?._success.accept(())
+            }, onError: { [weak self] (error) in
+                self?._failure.accept(error)
+            })
+            .disposed(by: disposeBag)
+
+        tweetStatusWithMediaAction.elements
+            .map { _ in }
+            .subscribe(onNext: { [weak self] in
+                self?._success.accept(())
+            }, onError: { [weak self] (error) in
+                self?._failure.accept(error)
+            })
+            .disposed(by: disposeBag)
+
+        tootStatusOnlyTextAction.elements
+            .subscribe(onNext: { [weak self] in
+                self?._success.accept(())
+            }, onError: { [weak self] (error) in
+                self?._failure.accept(error)
             })
             .disposed(by: disposeBag)
     }

@@ -23,6 +23,7 @@
 		CF232DB622D3079400820C1B /* NowPlaying-Release.xcconfig.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */; };
 		CF232DBA22D483A300820C1B /* UIButton+Nuke.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DB922D483A300820C1B /* UIButton+Nuke.swift */; };
 		CF232DBE22D48B1000820C1B /* ShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DBD22D48B1000820C1B /* ShadowButton.swift */; };
+		CF232DC222D4B22600820C1B /* TwitterPostRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DC122D4B22600820C1B /* TwitterPostRequest.swift */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
 		CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD7220A4AB630039217F /* libicucore.tbd */; };
 		CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF301D8C22B009C5007E675E /* APIKit.framework */; };
@@ -157,6 +158,7 @@
 		CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "NowPlaying-Release.xcconfig.sample"; sourceTree = "<group>"; };
 		CF232DB922D483A300820C1B /* UIButton+Nuke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Nuke.swift"; sourceTree = "<group>"; };
 		CF232DBD22D48B1000820C1B /* ShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowButton.swift; sourceTree = "<group>"; };
+		CF232DC122D4B22600820C1B /* TwitterPostRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterPostRequest.swift; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF2DBD7220A4AB630039217F /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		CF301D8C22B009C5007E675E /* APIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APIKit.framework; path = Carthage/Build/iOS/APIKit.framework; sourceTree = "<group>"; };
@@ -341,6 +343,14 @@
 				CF232DBD22D48B1000820C1B /* ShadowButton.swift */,
 			);
 			path = UIButtons;
+			sourceTree = "<group>";
+		};
+		CF232DC022D4B21200820C1B /* Twitter */ = {
+			isa = PBXGroup;
+			children = (
+				CF232DC122D4B22600820C1B /* TwitterPostRequest.swift */,
+			);
+			path = Twitter;
 			sourceTree = "<group>";
 		};
 		CF301D9622B01A3D007E675E /* Mastodon */ = {
@@ -693,6 +703,7 @@
 			children = (
 				CFD1D37320B87E94009C50ED /* AppInfoRequest.swift */,
 				CFD6B2DF22B0332B00E5F2FC /* Requests.swift */,
+				CF232DC022D4B21200820C1B /* Twitter */,
 				CF301D9622B01A3D007E675E /* Mastodon */,
 				CF99DF5C22BA0B7F006E3876 /* Instances */,
 			);
@@ -1052,6 +1063,7 @@
 				CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */,
 				CF531C0A22A953C900D05896 /* MastodonSettingViewController.swift in Sources */,
 				CF6F569222CC6CD300F517E9 /* Realm+Rx.swift in Sources */,
+				CF232DC222D4B22600820C1B /* TwitterPostRequest.swift in Sources */,
 				CF232DAF22CCD7F100820C1B /* MastodonSessionControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
