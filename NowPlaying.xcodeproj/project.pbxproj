@@ -21,6 +21,8 @@
 		CF232DAF22CCD7F100820C1B /* MastodonSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */; };
 		CF232DB522D3079400820C1B /* NowPlaying-Debug.xcconfig.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF232DB322D3079400820C1B /* NowPlaying-Debug.xcconfig.sample */; };
 		CF232DB622D3079400820C1B /* NowPlaying-Release.xcconfig.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */; };
+		CF232DBA22D483A300820C1B /* UIButton+Nuke.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DB922D483A300820C1B /* UIButton+Nuke.swift */; };
+		CF232DBE22D48B1000820C1B /* ShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DBD22D48B1000820C1B /* ShadowButton.swift */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
 		CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD7220A4AB630039217F /* libicucore.tbd */; };
 		CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF301D8C22B009C5007E675E /* APIKit.framework */; };
@@ -153,6 +155,8 @@
 		CF232DB122D303D900820C1B /* NowPlaying-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "NowPlaying-Release.xcconfig"; sourceTree = "<group>"; };
 		CF232DB322D3079400820C1B /* NowPlaying-Debug.xcconfig.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "NowPlaying-Debug.xcconfig.sample"; sourceTree = "<group>"; };
 		CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "NowPlaying-Release.xcconfig.sample"; sourceTree = "<group>"; };
+		CF232DB922D483A300820C1B /* UIButton+Nuke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Nuke.swift"; sourceTree = "<group>"; };
+		CF232DBD22D48B1000820C1B /* ShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowButton.swift; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF2DBD7220A4AB630039217F /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		CF301D8C22B009C5007E675E /* APIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APIKit.framework; path = Carthage/Build/iOS/APIKit.framework; sourceTree = "<group>"; };
@@ -331,6 +335,14 @@
 			path = Config;
 			sourceTree = "<group>";
 		};
+		CF232DBC22D48AFB00820C1B /* UIButtons */ = {
+			isa = PBXGroup;
+			children = (
+				CF232DBD22D48B1000820C1B /* ShadowButton.swift */,
+			);
+			path = UIButtons;
+			sourceTree = "<group>";
+		};
 		CF301D9622B01A3D007E675E /* Mastodon */ = {
 			isa = PBXGroup;
 			children = (
@@ -496,6 +508,7 @@
 				CF8C85C81F6EB3AE0051A0C7 /* Manager */,
 				CF615B031F56E76200315019 /* Screens */,
 				CFB5797E22C38F59001F3D13 /* UITableViewCells */,
+				CF232DBC22D48AFB00820C1B /* UIButtons */,
 				CF531BF522A94A5D00D05896 /* Reactive */,
 				CF531C3822AACEA200D05896 /* Eureka */,
 			);
@@ -614,6 +627,7 @@
 				CF301D9222B01841007E675E /* Reactive+Session.swift */,
 				CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */,
 				CF7E87D522D22DBB00F10335 /* UIImageView+Nuke.swift */,
+				CF232DB922D483A300820C1B /* UIButton+Nuke.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -988,6 +1002,7 @@
 				CF6F568222CB731A00F517E9 /* Keychain+Key.swift in Sources */,
 				CF99DF4922B607AE006E3876 /* PostFormatHelpView.swift in Sources */,
 				CF6F567622CB1E3C00F517E9 /* SecretCredential.swift in Sources */,
+				CF232DBA22D483A300820C1B /* UIButton+Nuke.swift in Sources */,
 				CF531C0022A9534F00D05896 /* SettingViewController.swift in Sources */,
 				CF99DF5622BA00EF006E3876 /* SearchMastodonTableViewController.swift in Sources */,
 				CF531C0722A953B200D05896 /* MastodonSettingViewModel.swift in Sources */,
@@ -1019,6 +1034,7 @@
 				CF301D9822B01A59007E675E /* MastodonAppRequest.swift in Sources */,
 				CF7E87D422CE480A00F10335 /* MastodonTokenRevokeRequest.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
+				CF232DBE22D48B1000820C1B /* ShadowButton.swift in Sources */,
 				CF55B69722A418A100D5C9E1 /* Analytics+NowPlaying.swift in Sources */,
 				CF531C3A22AACEC800D05896 /* NowPlayingButtonRow.swift in Sources */,
 				CFB5798122C38FA1001F3D13 /* MastodonDomainTableViewCell.swift in Sources */,

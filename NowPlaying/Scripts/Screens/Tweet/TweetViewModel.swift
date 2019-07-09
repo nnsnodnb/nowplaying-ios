@@ -9,12 +9,15 @@
 import APIKit
 import FirebaseAnalytics
 import Foundation
+import RealmSwift
 import RxCocoa
 import RxSwift
 import SVProgressHUD
 
 struct TweetViewModelInput {
 
+    let iconImageButton: Observable<Void>
+    let addImageButton: Observable<Void>
     let postContent: PostContent
     let textViewText: Observable<String>
 }
@@ -24,6 +27,7 @@ struct TweetViewModelInput {
 protocol TweetViewModelOutput {
 
     var isPostable: Observable<Bool> { get }
+    var user: Observable<User> { get }
     var successRequest: Observable<Void> { get }
     var failureRequest: Observable<Error> { get }
 }
@@ -35,6 +39,7 @@ protocol TweetViewModelType {
     var outputs: TweetViewModelOutput { get }
 
     init(inputs: TweetViewModelInput)
+    func getDefaultAccount()
     func preparePost()
     func preparePost(withImage image: UIImage)
 }
@@ -46,23 +51,33 @@ final class TweetViewModel: TweetViewModelType {
     private let disposeBag = DisposeBag()
     private let postContent: PostContent
     private let postMessage: BehaviorRelay<String>
+    private let postUser: BehaviorRelay<User>
     private let _success = PublishRelay<Void>()
     private let _failure = PublishRelay<Error>()
 
     init(inputs: TweetViewModelInput) {
+        let realm = try! Realm(configuration: realmConfiguration)
+
+        let defaultUser = realm.objects(User.self)
+            .filter("serviceType = %@ AND isDefault = %@", inputs.postContent.service.rawValue, true)
+            .first!
+        postUser = BehaviorRelay<User>(value: defaultUser)
+
         postContent = inputs.postContent
         postMessage = BehaviorRelay<String>(value: inputs.postContent.postMessage)
 
-        inputs.textViewText
-            .bind(to: postMessage)
-            .disposed(by: disposeBag)
+        subscribeInputs(inputs)
+    }
+
+    func getDefaultAccount() {
+        postUser.accept(postUser.value)
     }
 
     func preparePost() {
-        UIApplication.shared.windows.forEach { $0.endEditing(true) }
-        SVProgressHUD.show()
-        switch postContent.service {
-        case .twitter:
+//        UIApplication.shared.windows.forEach { $0.endEditing(true) }
+//        SVProgressHUD.show()
+//        switch postContent.service {
+//        case .twitter:
 //            TwitterClient.shared.client?.sendTweet(withText: postMessage.value) { [weak self] (_, error) in
 //                if let error = error {
 //                    self?._failure.accept(error)
@@ -71,8 +86,8 @@ final class TweetViewModel: TweetViewModelType {
 //                }
 //            }
             // FIXME: ツイートを送信する
-            Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
-        case .mastodon:
+//            Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
+//        case .mastodon:
             // FIXME: User オブジェクトを取得する
 //            Session.shared.rx.response(MastodonTootRequest(status: postMessage.value))
 //                .subscribe(onSuccess: { [weak self] (_) in
@@ -82,8 +97,8 @@ final class TweetViewModel: TweetViewModelType {
 //                    self?._failure.accept(error)
 //                })
 //                .disposed(by: disposeBag)
-            Analytics.Tweet.postTootMastodon(withHasImage: false, content: postContent)
-        }
+//            Analytics.Tweet.postTootMastodon(withHasImage: false, content: postContent)
+//        }
     }
 
     func preparePost(withImage image: UIImage) {
@@ -122,6 +137,24 @@ final class TweetViewModel: TweetViewModelType {
 
 extension TweetViewModel {
 
+    private func subscribeInputs(_ inputs: TweetViewModelInput) {
+        inputs.textViewText
+            .bind(to: postMessage)
+            .disposed(by: disposeBag)
+
+        inputs.iconImageButton
+            .subscribe(onNext: {
+                // TODO: アカウント切り替え画面表示
+            })
+            .disposed(by: disposeBag)
+
+        inputs.addImageButton
+            .subscribe(onNext: {
+                // TODO: アートワークかスクショにする選択するアクションシート (Must: アートワーク)
+            })
+            .disposed(by: disposeBag)
+    }
+
     private func tootWithMediaID(_ mediaID: String) {
         // FIXME: User オブジェクトを取得する
 //        Session.shared.rx.response(MastodonTootRequest(status: postMessage.value, mediaIDs: [mediaID]))
@@ -138,18 +171,22 @@ extension TweetViewModel {
 
 extension TweetViewModel: TweetViewModelOutput {
 
+    var isPostable: Observable<Bool> {
+        return postMessage
+            .map { !$0.isEmpty }
+            .observeOn(MainScheduler.instance)
+            .asObservable()
+    }
+
+    var user: Observable<User> {
+        return postUser.asObservable()
+    }
+
     var successRequest: Observable<Void> {
         return _success.observeOn(MainScheduler.instance).asObservable()
     }
 
     var failureRequest: Observable<Error> {
         return _failure.observeOn(MainScheduler.instance).asObservable()
-    }
-
-    var isPostable: Observable<Bool> {
-        return postMessage
-            .map { !$0.isEmpty }
-            .observeOn(MainScheduler.instance)
-            .asObservable()
     }
 }
