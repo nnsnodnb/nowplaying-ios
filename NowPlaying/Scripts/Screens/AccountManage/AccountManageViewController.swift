@@ -130,16 +130,18 @@ final class AccountManageViewController: UIViewController {
     }
 
     private func removeUserData(user: User) {
-        do {
-            let realm = try Realm(configuration: realmConfiguration)
-            try realm.write {
-                realm.delete(user.secretCredentials.first!)
-                realm.delete(user)
-            }
-            SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
-            SVProgressHUD.dismiss(withDelay: 1)
-        } catch {
-            print(error)
+        let realm = try! Realm(configuration: realmConfiguration)
+        try! realm.write {
+            realm.delete(user.secretCredentials.first!)
+            realm.delete(user)
+        }
+        SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
+        SVProgressHUD.dismiss(withDelay: 1) { [unowned self] in
+            _ = self.viewModel.applyNewDefaultAccount()
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { [weak self] in
+                    self?.present($0, animated: true, completion: nil)
+                })
         }
     }
 }

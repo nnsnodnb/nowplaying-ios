@@ -41,6 +41,7 @@ protocol AccountManageViewModelType {
 
     init(inputs: AccountManageViewModelInput)
     func tokenRevoke(secret: SecretCredential) -> Observable<Void>
+    func applyNewDefaultAccount() -> Observable<UIAlertController>
 }
 
 enum LoginResult {
@@ -62,11 +63,13 @@ final class AccountManageViewModel: AccountManageViewModelType {
     private let mastodonTokenRevokeAction: Action<SecretCredential, Void> = Action {
         return Session.shared.rx.response(MastodonTokenRevokeRequest(secret: $0))
     }
+    private let service: Service
 
     private lazy var twitter = TwitterSessionControl()
     private lazy var mastodon = MastodonSessionControl()
 
     init(inputs: AccountManageViewModelInput) {
+        service = inputs.service
         switch inputs.service {
         case .twitter:
             title = Observable.just("Twitterアカウント")
@@ -97,6 +100,26 @@ final class AccountManageViewModel: AccountManageViewModelType {
                 .disposed(by: self.disposeBag)
 
             self.mastodonTokenRevokeAction.inputs.onNext(secret)
+            return Disposables.create()
+        }
+    }
+
+    func applyNewDefaultAccount() -> Observable<UIAlertController> {
+        return .create { [service] (observer) -> Disposable in
+            let realm = try! Realm(configuration: realmConfiguration)
+            guard let user = realm.objects(User.self).filter("serviceType = %@", service.rawValue)
+                .sorted(byKeyPath: "id", ascending: true).first else {
+                    observer.onCompleted()
+                    return Disposables.create()
+            }
+            try! realm.write {
+                user.isDefault = true
+            }
+            let alert = UIAlertController(title: "デフォルトアカウント変更", message: "\(user.name)に設定されました", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            observer.onNext(alert)
+            observer.onCompleted()
+
             return Disposables.create()
         }
     }
