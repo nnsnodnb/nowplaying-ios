@@ -48,8 +48,10 @@ final class TweetViewController: UIViewController {
                         self.showPreviewer()
                     }
                     sheet.addAction(previewAction)
-                    sheet.addAction(UIAlertAction(title: "添付画像を削除", style: .destructive) { (_) in
-                        // TODO: 画像を削除 & artworkImageButtonを非表示にする & addImageButtonを表示する
+                    sheet.addAction(UIAlertAction(title: "添付画像を削除", style: .destructive) { [unowned self] (_) in
+                        self.shareImage = nil
+                        self.artworkImageButton.isHidden = true
+                        self.addImageButton.isHidden = false
                         Analytics.logEvent("delete_image", parameters: ["type": "action"])
                     })
                     sheet.preferredAction = previewAction
@@ -58,8 +60,11 @@ final class TweetViewController: UIViewController {
                 .disposed(by: disposeBag)
         }
     }
-    @IBOutlet private weak var addImageButton: UIButton!
-    // FIXME: 画像が添付されている場合は非表示にする
+    @IBOutlet private weak var addImageButton: UIButton! {
+        didSet {
+            addImageButton.isHidden = shareImage != nil
+        }
+    }
 
     private let postContent: PostContent
     private let disposeBag = DisposeBag()
