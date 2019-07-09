@@ -98,6 +98,6 @@ extension Reactive where Base: UserDefaults {
     func change<Element>(_ type: Element.Type, _ key: UserDefaultsKey,
                          options: KeyValueObservingOptions = [.new, .initial],
                          retainSelf: Bool = true) -> Observable<Element?> {
-        return base.rx.observe(type.self, key.rawValue)
+        return base.rx.observe(type.self, key.rawValue, options: options, retainSelf: retainSelf)
     }
 }
