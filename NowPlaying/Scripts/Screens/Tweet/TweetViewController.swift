@@ -21,6 +21,7 @@ final class TweetViewController: UIViewController {
             textView.becomeFirstResponder()
         }
     }
+    @IBOutlet private weak var textViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var iconImageButton: UIButton! {
         didSet {
             iconImageButton.imageView?.contentMode = .scaleAspectFit
@@ -70,6 +71,7 @@ final class TweetViewController: UIViewController {
 
     private let postContent: PostContent
     private let disposeBag = DisposeBag()
+    private let initialTextViewBottomConstant: CGFloat = 14
 
     private var keyboardHeight: CGFloat = 0
     private var isMastodon: Bool {
@@ -98,21 +100,12 @@ final class TweetViewController: UIViewController {
 
         textView.text = postContent.postMessage
 
-//        RxKeyboard.instance.visibleHeight
-//            .drive(onNext: { [weak self] (height) in
-//                guard let wself = self else { return }
-//                wself.keyboardHeight = height
-//            })
-//            .disposed(by: disposeBag)
-//
-//        RxKeyboard.instance.isHidden.asObservable()
-//            .take(1)
-//            .subscribe(onNext: { [weak self] (_) in
-//                UIView.animate(withDuration: 0.5) {
-//                    self?.artworkImageButton.alpha = 1
-//                }
-//            })
-//            .disposed(by: disposeBag)
+        RxKeyboard.instance.frame
+            .drive(onNext: { [weak self] (frame) in
+                guard let wself = self else { return }
+                wself.textViewBottomConstraint.constant = wself.initialTextViewBottomConstant + frame.size.height
+            })
+            .disposed(by: disposeBag)
 
         let inputs = TweetViewModelInput(iconImageButton: iconImageButton.rx.tap.asObservable(),
                                          addImageButton: addImageButton.rx.tap.asObservable(),
