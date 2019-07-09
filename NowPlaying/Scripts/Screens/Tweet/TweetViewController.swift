@@ -189,13 +189,6 @@ final class TweetViewController: UIViewController {
         navigationItem.rightBarButtonItem = postButton
     }
 
-    private func resizeTextView() {
-//        textViewHeight.constant = UIScreen.main.bounds.size.height - keyboardHeight - artworkImageButtonHeight.constant - (artworkImageButtonTopMargin.constant * 2)
-//        UIView.animate(withDuration: 0.5) { [unowned self] in
-//            self.artworkImageButton.alpha = 1
-//        }
-    }
-
     private func showPreviewer() {
         guard let shareImage = self.shareImage else { return }
         textView.resignFirstResponder()
