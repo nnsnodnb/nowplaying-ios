@@ -41,6 +41,7 @@ protocol AccountManageViewModelType {
 
     init(inputs: AccountManageViewModelInput)
     func tokenRevoke(secret: SecretCredential) -> Observable<Void>
+    func removeUserData(_ user: User) -> Observable<Void>
     func applyNewDefaultAccount() -> Observable<UIAlertController>
 }
 
@@ -100,6 +101,19 @@ final class AccountManageViewModel: AccountManageViewModelType {
                 .disposed(by: self.disposeBag)
 
             self.mastodonTokenRevokeAction.inputs.onNext(secret)
+            return Disposables.create()
+        }
+    }
+
+    func removeUserData(_ user: User) -> Observable<Void> {
+        return .create { (observer) -> Disposable in
+            let realm = try! Realm(configuration: realmConfiguration)
+            try! realm.write {
+                realm.delete(user.secretCredentials.first!)
+                realm.delete(user)
+            }
+            observer.onCompleted()
+
             return Disposables.create()
         }
     }
