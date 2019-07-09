@@ -29,7 +29,7 @@ final class TweetViewController: UIViewController {
             iconImageButton.contentHorizontalAlignment = .fill
         }
     }
-    @IBOutlet private weak var artworkImageButton: UIButton! {
+    @IBOutlet private weak var artworkImageButton: ShadowButton! {
         didSet {
             artworkImageButton.imageView?.contentMode = .scaleAspectFit
             artworkImageButton.contentVerticalAlignment = .fill
@@ -43,22 +43,14 @@ final class TweetViewController: UIViewController {
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { [unowned self] (_) in
                     let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                    sheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel) { [unowned self] (_) in
-                        self.forcusToTextView()
-                    })
+                    sheet.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
                     let previewAction = UIAlertAction(title: "プレビュー", style: .default) { [unowned self] (_) in
                         self.showPreviewer()
                     }
                     sheet.addAction(previewAction)
-                    sheet.addAction(UIAlertAction(title: "添付画像を削除", style: .destructive) { [weak self] (_) in
-                        self?.shareImage = nil
-                        UIView.animate(withDuration: 0.3, animations: {
-                            self?.artworkImageButton.alpha = 0.0
-                        }, completion: { (_) in
-                            self?.artworkImageButton.setImage(nil, for: .normal)
-                            self?.resizeTextView()
-                            Analytics.logEvent("delete_image", parameters: ["type": "action"])
-                        })
+                    sheet.addAction(UIAlertAction(title: "添付画像を削除", style: .destructive) { (_) in
+                        // TODO: 画像を削除 & artworkImageButtonを非表示にする & addImageButtonを表示する
+                        Analytics.logEvent("delete_image", parameters: ["type": "action"])
                     })
                     sheet.preferredAction = previewAction
                     self.present(sheet, animated: true, completion: nil)
@@ -73,10 +65,9 @@ final class TweetViewController: UIViewController {
     private let disposeBag = DisposeBag()
     private let initialTextViewBottomConstant: CGFloat = 14
 
-    private var keyboardHeight: CGFloat = 0
-    private var isMastodon: Bool {
+    private lazy var isMastodon: Bool = {
         return postContent.service == .mastodon
-    }
+    }()
     private var shareImage: UIImage?
     private var viewModel: TweetViewModelType!
 
