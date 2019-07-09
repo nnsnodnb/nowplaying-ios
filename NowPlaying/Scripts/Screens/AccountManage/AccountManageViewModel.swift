@@ -265,7 +265,7 @@ extension AccountManageViewModel {
                         realm.add(secretCredential, update: .error)
                     }
                     let isEmpty = realm.objects(User.self)
-                        .filter("serviceID != %@ AND serviceType = %@", user.id, user.serviceType)
+                        .filter("serviceID != %@ AND serviceType = %@", user.serviceID, user.serviceType)
                         .isEmpty
                     let result: LoginResult = isEmpty ? .initial(user) : .success(user)
                     self?._loginResult.accept(result)
