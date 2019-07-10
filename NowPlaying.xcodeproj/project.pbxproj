@@ -73,7 +73,6 @@
 		CF6F567122CB168200F517E9 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566F22CB168200F517E9 /* Realm.framework */; };
 		CF6F567422CB1CD800F517E9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567322CB1CD800F517E9 /* User.swift */; };
 		CF6F567622CB1E3C00F517E9 /* SecretCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567522CB1E3C00F517E9 /* SecretCredential.swift */; };
-		CF6F567A22CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */; };
 		CF6F567D22CB5C8300F517E9 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */; };
 		CF6F568222CB731A00F517E9 /* Keychain+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568122CB731A00F517E9 /* Keychain+Key.swift */; };
 		CF6F568E22CC6A7D00F517E9 /* AccountManageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568B22CC6A7D00F517E9 /* AccountManageViewModel.swift */; };
@@ -211,7 +210,6 @@
 		CF6F566F22CB168200F517E9 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		CF6F567322CB1CD800F517E9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CF6F567522CB1E3C00F517E9 /* SecretCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretCredential.swift; sourceTree = "<group>"; };
-		CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonUpdateCredentialsRequest.swift; sourceTree = "<group>"; };
 		CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModel.swift; sourceTree = "<group>"; };
 		CF6F568122CB731A00F517E9 /* Keychain+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+Key.swift"; sourceTree = "<group>"; };
 		CF6F568B22CC6A7D00F517E9 /* AccountManageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManageViewModel.swift; sourceTree = "<group>"; };
@@ -358,7 +356,6 @@
 			children = (
 				CF301D9722B01A59007E675E /* MastodonAppRequest.swift */,
 				CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */,
-				CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */,
 				CF301D9B22B01BE9007E675E /* MastodonGetTokenRequest.swift */,
 				CF301D9D22B02343007E675E /* MastodonTootRequest.swift */,
 				CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */,
@@ -1041,7 +1038,6 @@
 				CFD1D37420B87E94009C50ED /* AppInfoRequest.swift in Sources */,
 				CF301D9E22B02343007E675E /* MastodonTootRequest.swift in Sources */,
 				CF55B68822A3E22800D5C9E1 /* PlayViewModel.swift in Sources */,
-				CF6F567A22CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift in Sources */,
 				CF301D9822B01A59007E675E /* MastodonAppRequest.swift in Sources */,
 				CF7E87D422CE480A00F10335 /* MastodonTokenRevokeRequest.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
