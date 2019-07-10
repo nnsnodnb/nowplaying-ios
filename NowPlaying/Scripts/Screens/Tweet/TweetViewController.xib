@@ -15,6 +15,7 @@
                 <outlet property="artworkImageButton" destination="5FN-5l-kq7" id="iIb-WW-tHw"/>
                 <outlet property="iconImageButton" destination="Z2W-Ls-txs" id="S15-Bu-zWA"/>
                 <outlet property="textView" destination="nGx-0K-2b5" id="smC-Qn-hT7"/>
+                <outlet property="textViewBottomConstraint" destination="Bgn-AK-ZvU" id="MAu-uf-qM3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="M3L-c2-ERY"/>
             </connections>
         </placeholder>
@@ -66,10 +67,7 @@
                     </subviews>
                 </stackView>
                 <textView clipsSubviews="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="nGx-0K-2b5">
-                    <rect key="frame" x="88" y="34" width="287" height="260"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="260" id="rHg-pB-biK"/>
-                    </constraints>
+                    <rect key="frame" x="88" y="34" width="287" height="619"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
@@ -78,6 +76,7 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="nGx-0K-2b5" secondAttribute="trailing" id="0RZ-kL-omt"/>
                 <constraint firstItem="B9F-xC-qZV" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="topMargin" constant="14" id="20U-JR-SQn"/>
+                <constraint firstAttribute="bottom" secondItem="nGx-0K-2b5" secondAttribute="bottom" constant="14" id="Bgn-AK-ZvU"/>
                 <constraint firstItem="B9F-xC-qZV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="14" id="JFv-Xf-zP7"/>
                 <constraint firstItem="nGx-0K-2b5" firstAttribute="top" secondItem="B9F-xC-qZV" secondAttribute="top" id="SFg-lT-5sQ"/>
                 <constraint firstItem="nGx-0K-2b5" firstAttribute="leading" secondItem="B9F-xC-qZV" secondAttribute="trailing" constant="14" id="v3D-uN-8ps"/>

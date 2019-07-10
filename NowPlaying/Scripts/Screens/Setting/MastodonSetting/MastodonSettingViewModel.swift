@@ -96,7 +96,7 @@ extension MastodonSettingViewModel {
         return NowPlayingButtonRow {
             $0.title = "アカウント管理"
         }.onCellSelection { [unowned self] (_, _) in
-            let viewController = AccountManageViewController(service: .mastodon)
+            let viewController = AccountManageViewController(service: .mastodon, screenType: .settings)
             self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
         }
     }

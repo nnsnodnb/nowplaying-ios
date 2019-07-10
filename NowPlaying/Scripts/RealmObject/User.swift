@@ -97,4 +97,9 @@ extension User {
         let realm = try! Realm(configuration: realmConfiguration)
         return !realm.objects(User.self).filter("serviceType = %@", service.rawValue).isEmpty
     }
+
+    class func getDefaultUser(service: Service) -> User? {
+        let realm = try! Realm(configuration: realmConfiguration)
+        return realm.objects(User.self).filter("serviceType = %@ AND isDefault = %@", service.rawValue, true).first
+    }
 }

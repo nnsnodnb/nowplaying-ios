@@ -13,19 +13,17 @@ struct MastodonMediaRequest: MastodonRequest {
 
     typealias Response = MastodonMediaResponse
 
-    private let user: User
-    private let secretCredential: SecretCredential
+    private let secret: SecretCredential
     private let imageData: Data
     private let fileName = "\(Date().timeIntervalSince1970).png"
 
-    init(user: User, imageData: Data) {
-        self.user = user
-        self.secretCredential = user.secretCredentials.first!
+    init(secret: SecretCredential, imageData: Data) {
+        self.secret = secret
         self.imageData = imageData
     }
 
     var baseURL: URL {
-        return URL(string: "https://\(secretCredential.domainName)")!
+        return URL(string: "https://\(secret.domainName)")!
     }
 
     var path: String {
@@ -43,7 +41,7 @@ struct MastodonMediaRequest: MastodonRequest {
 
     var headerFields: [String: String] {
         return [
-            "Authorization": "Bearer \(secretCredential.authToken)"
+            "Authorization": "Bearer \(secret.authToken)"
         ]
     }
 

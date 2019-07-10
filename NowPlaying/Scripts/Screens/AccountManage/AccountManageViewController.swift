@@ -16,7 +16,11 @@ import UIKit
 final class AccountManageViewController: UIViewController {
 
     private let service: Service
+    private let screenType: ScreenType
+    private let selectionTrigger = PublishSubject<User>()
     private let disposeBag = DisposeBag()
+
+    let selection: Observable<User>
 
     private var viewModel: AccountManageViewModelType!
 
@@ -33,10 +37,16 @@ final class AccountManageViewController: UIViewController {
                 .disposed(by: disposeBag)
 
             tableView.rx.modelSelected(User.self)
-                .filter { !$0.isDefault }
                 .observeOn(MainScheduler.instance)
-                .subscribe(onNext: {
-                    $0.isDefaultAccount = true
+                .subscribe(onNext: { [unowned self] in
+                    switch self.screenType {
+                    case .settings:
+                        if !$0.isDefault { $0.isDefaultAccount = true }
+                    case .selection:
+                        self.selectionTrigger.onNext($0)
+                        self.selectionTrigger.onCompleted()
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 })
                 .disposed(by: disposeBag)
 
@@ -64,8 +74,10 @@ final class AccountManageViewController: UIViewController {
 
     // MARK: - Initializer
 
-    init(service: Service) {
+    init(service: Service, screenType: ScreenType) {
         self.service = service
+        self.screenType = screenType
+        selection = selectionTrigger.asObserver()
         super.init(nibName: R.nib.accountManageViewController.name, bundle: R.nib.accountManageViewController.bundle)
     }
 
@@ -129,7 +141,9 @@ final class AccountManageViewController: UIViewController {
         let editAccountsBarButtonItem = UIBarButtonItem(title: "編集", style: .plain, target: nil, action: nil)
         editAccountsBarButtonItem.possibleTitles = ["編集", "完了"]
 
-        navigationItem.rightBarButtonItems = [editAccountsBarButtonItem, addAccountBarButtonItem]
+        if screenType == .settings {
+            navigationItem.rightBarButtonItems = [editAccountsBarButtonItem, addAccountBarButtonItem]
+        }
 
         return .init(service: service, addAccountBarButtonItem: addAccountBarButtonItem,
                      editAccountsBarButtonItem: editAccountsBarButtonItem, viewController: self)
@@ -155,6 +169,7 @@ final class AccountManageViewController: UIViewController {
 extension AccountManageViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        if screenType == .selection { return nil }
         let deleteRowAction = UITableViewRowAction(style: .destructive, title: "ログアウト") { (_, indexPath) in
             tableView.dataSource?.tableView?(tableView, commit: .delete, forRowAt: indexPath)
         }
@@ -169,5 +184,13 @@ extension AccountManageViewController: SFSafariViewControllerDelegate {
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         SVProgressHUD.showInfo(withStatus: "ログインをキャンセルしました")
         SVProgressHUD.dismiss(withDelay: 1)
+    }
+}
+
+extension AccountManageViewController {
+
+    enum ScreenType {
+        case settings
+        case selection
     }
 }

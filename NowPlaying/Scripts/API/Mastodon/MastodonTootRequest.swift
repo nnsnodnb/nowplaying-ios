@@ -13,20 +13,18 @@ struct MastodonTootRequest: MastodonRequest {
 
     typealias Response = Void
 
-    private let user: User
-    private let secretCredential: SecretCredential
+    private let secret: SecretCredential
     private let status: String
     private let mediaIDs: [String]?
 
-    init(user: User, status: String, mediaIDs: [String]?=nil) {
-        self.user = user
-        self.secretCredential = user.secretCredentials.first!
+    init(secret: SecretCredential, status: String, mediaIDs: [String]?=nil) {
+        self.secret = secret
         self.status = status
         self.mediaIDs = mediaIDs
     }
 
     var baseURL: URL {
-        return URL(string: "https://\(secretCredential.domainName)")!
+        return URL(string: "https://\(secret.domainName)")!
     }
 
     var path: String {
@@ -47,7 +45,7 @@ struct MastodonTootRequest: MastodonRequest {
 
     var headerFields: [String: String] {
         return [
-            "Authorization": "Bearer \(secretCredential.authToken)"
+            "Authorization": "Bearer \(secret.authToken)"
         ]
     }
 

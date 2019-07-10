@@ -6,6 +6,7 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
+import Action
 import APIKit
 import FirebaseAnalytics
 import Foundation
@@ -13,6 +14,7 @@ import RealmSwift
 import RxCocoa
 import RxSwift
 import SVProgressHUD
+import SwifteriOS
 
 struct TweetViewModelInput {
 
@@ -20,6 +22,7 @@ struct TweetViewModelInput {
     let addImageButton: Observable<Void>
     let postContent: PostContent
     let textViewText: Observable<String>
+    let viewController: UIViewController
 }
 
 // MARK: - TweetViewModelOutput
@@ -28,8 +31,8 @@ protocol TweetViewModelOutput {
 
     var isPostable: Observable<Bool> { get }
     var user: Observable<User> { get }
-    var successRequest: Observable<Void> { get }
-    var failureRequest: Observable<Error> { get }
+    var postResult: Observable<Void> { get }
+    var newShareImage: Observable<UIImage> { get }
 }
 
 // MARK: - TweetViewModelType
@@ -39,9 +42,8 @@ protocol TweetViewModelType {
     var outputs: TweetViewModelOutput { get }
 
     init(inputs: TweetViewModelInput)
-    func getDefaultAccount()
-    func preparePost()
-    func preparePost(withImage image: UIImage)
+    func getCurrentAccount()
+    func preparePost(image: UIImage?)
 }
 
 final class TweetViewModel: TweetViewModelType {
@@ -52,83 +54,63 @@ final class TweetViewModel: TweetViewModelType {
     private let postContent: PostContent
     private let postMessage: BehaviorRelay<String>
     private let postUser: BehaviorRelay<User>
-    private let _success = PublishRelay<Void>()
-    private let _failure = PublishRelay<Error>()
+    private let tweetStatusAction: Action<(SecretCredential, String, Data?), JSON>
+    private let tootStatusAction: Action<(SecretCredential, String, [String]?), Void>
+    private let tootUploadMediaAction: Action<(SecretCredential, Data), MastodonMediaResponse>
+    private let _postResult = PublishSubject<Void>()
+    private let _newShareImage = PublishSubject<UIImage>()
+
+    private var secretCredential: SecretCredential {
+        return postUser.value.secretCredentials.first!
+    }
 
     init(inputs: TweetViewModelInput) {
-        let realm = try! Realm(configuration: realmConfiguration)
-
-        let defaultUser = realm.objects(User.self)
-            .filter("serviceType = %@ AND isDefault = %@", inputs.postContent.service.rawValue, true)
-            .first!
+        let defaultUser = User.getDefaultUser(service: inputs.postContent.service)!
         postUser = BehaviorRelay<User>(value: defaultUser)
 
         postContent = inputs.postContent
         postMessage = BehaviorRelay<String>(value: inputs.postContent.postMessage)
 
+        // テキストのみ・メディア込みポストアクション (Twitter)
+        tweetStatusAction = Action {
+            return TwitterPostRequest(credential: $0.0).postTweet(status: $0.1, media: $0.2)
+        }
+        // テキストのみ・メディア込みポストアクション (Mastodon)
+        tootStatusAction = Action {
+            return Session.shared.rx.response(MastodonTootRequest(secret: $0.0, status: $0.1, mediaIDs: $0.2))
+        }
+        // メディアアップロードアクション (Mastodon)
+        tootUploadMediaAction = Action {
+            return Session.shared.rx.response(MastodonMediaRequest(secret: $0.0, imageData: $0.1))
+        }
+
         subscribeInputs(inputs)
+        subscribeAction()
     }
 
-    func getDefaultAccount() {
+    func getCurrentAccount() {
         postUser.accept(postUser.value)
     }
 
-    func preparePost() {
-//        UIApplication.shared.windows.forEach { $0.endEditing(true) }
-//        SVProgressHUD.show()
-//        switch postContent.service {
-//        case .twitter:
-//            TwitterClient.shared.client?.sendTweet(withText: postMessage.value) { [weak self] (_, error) in
-//                if let error = error {
-//                    self?._failure.accept(error)
-//                } else {
-//                    self?._success.accept(())
-//                }
-//            }
-            // FIXME: ツイートを送信する
-//            Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
-//        case .mastodon:
-            // FIXME: User オブジェクトを取得する
-//            Session.shared.rx.response(MastodonTootRequest(status: postMessage.value))
-//                .subscribe(onSuccess: { [weak self] (_) in
-//                    self?._success.accept(())
-//                }, onError: { [weak self] (error) in
-//                    print(error)
-//                    self?._failure.accept(error)
-//                })
-//                .disposed(by: disposeBag)
-//            Analytics.Tweet.postTootMastodon(withHasImage: false, content: postContent)
-//        }
-    }
-
-    func preparePost(withImage image: UIImage) {
-        UIApplication.shared.windows.forEach { $0.endEditing(true) }
-        SVProgressHUD.show()
-        switch postContent.service {
-        case .twitter:
-//            TwitterClient.shared.client?.sendTweet(withText: postMessage.value, image: image) { [weak self] (_, error) in
-//                if let error = error {
-//                    self?._failure.accept(error)
-//                } else {
-//                    self?._success.accept(())
-//                }
-//            }
-            // FIXME: 画像つきツイートを送信する
-            Analytics.Tweet.postTweetTwitter(withHasImage: true, content: postContent)
-        case .mastodon:
-            guard let imageData = image.pngData() else {
-                _failure.accept(NSError(domain: "画像が見つかりませんでした", code: 400, userInfo: nil))
-                return
+    func preparePost(image: UIImage?) {
+        if let image = image, let data = image.pngData() {
+            switch postContent.service {
+            case .twitter:
+                tweetStatusAction.inputs.onNext((secretCredential, postMessage.value, data))
+                Analytics.Tweet.postTweetTwitter(withHasImage: true, content: postContent)
+            case .mastodon:
+                tootUploadMediaAction.inputs.onNext((secretCredential, data))
+                Analytics.Tweet.postTootMastodon(withHasImage: true, content: postContent)
             }
-            // FIXME: User オブジェクトを取得する
-//            Session.shared.rx.response(MastodonMediaRequest(imageData: imageData))
-//                .subscribe(onSuccess: { [weak self] (response) in
-//                    self?.tootWithMediaID(response.mediaID)
-//                }, onError: { [weak self] (error) in
-//                    self?._failure.accept(error)
-//                })
-//                .disposed(by: disposeBag)
-            Analytics.Tweet.postTootMastodon(withHasImage: true, content: postContent)
+        } else {
+            switch postContent.service {
+            case .twitter:
+                tweetStatusAction.inputs.onNext((secretCredential, postMessage.value, nil))
+                Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
+            case .mastodon:
+                tootStatusAction.inputs.onNext((secretCredential, postMessage.value, nil))
+                Analytics.Tweet.postTootMastodon(withHasImage: false, content: postContent)
+            }
         }
     }
 }
@@ -143,27 +125,76 @@ extension TweetViewModel {
             .disposed(by: disposeBag)
 
         inputs.iconImageButton
-            .subscribe(onNext: {
-                // TODO: アカウント切り替え画面表示
+            .subscribe(onNext: { [unowned self] in
+                let viewController = AccountManageViewController(service: inputs.postContent.service, screenType: .selection)
+                _ = viewController.selection
+                    .bind(to: self.postUser)
+                inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
 
         inputs.addImageButton
             .subscribe(onNext: {
-                // TODO: アートワークかスクショにする選択するアクションシート (Must: アートワーク)
+                let actionSheet = UIAlertController(title: "画像を追加します", message: "どちらを追加しますか？", preferredStyle: .actionSheet)
+                actionSheet.addAction(UIAlertAction(title: "アートワーク", style: .default) { [unowned self] (_) in
+                    guard let artwork = inputs.postContent.item?.artwork, let image = artwork.image(at: artwork.bounds.size) else {
+                        let error = NSError(domain: "moe.nnsnodnb.NowPlaying", code: 404, userInfo: ["detail": "アートワークが見つかりませんでした"])
+                        self._newShareImage.onError(error)
+                        return
+                    }
+                    self._newShareImage.onNext(image)
+                })
+                actionSheet.addAction(UIAlertAction(title: "再生画面のスクリーンショット", style: .default) { (_) in
+                    let rect = UIScreen.main.bounds
+                    UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
+                    defer { UIGraphicsEndImageContext() }
+                    let context = UIGraphicsGetCurrentContext()!
+
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    appDelegate.window?.rootViewController?.view.layer.render(in: context)
+
+                    guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
+                        let error = NSError(domain: "moe.nnsnodnb.NowPlaying", code: 404, userInfo: ["detail": "アートワークが見つかりませんでした"])
+                        self._newShareImage.onError(error)
+                        return
+                    }
+                    self._newShareImage.onNext(image)
+                })
+                actionSheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+                inputs.viewController.present(actionSheet, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }
 
-    private func tootWithMediaID(_ mediaID: String) {
-        // FIXME: User オブジェクトを取得する
-//        Session.shared.rx.response(MastodonTootRequest(status: postMessage.value, mediaIDs: [mediaID]))
-//            .subscribe(onSuccess: { [weak self] (_) in
-//                self?._success.accept(())
-//            }, onError: { [weak self] (error) in
-//                self?._failure.accept(error)
-//            })
-//            .disposed(by: disposeBag)
+    private func subscribeAction() {
+        tweetStatusAction.elements
+            .map { _ in }
+            .subscribe(onNext: { [weak self] in
+                self?._postResult.onNext(())
+                self?._postResult.onCompleted()
+            }, onError: { [weak self] (error) in
+                self?._postResult.onError(error)
+            })
+            .disposed(by: disposeBag)
+
+        tootStatusAction.elements
+            .map { _ in }
+            .subscribe(onNext: { [weak self] in
+                self?._postResult.onNext(())
+                self?._postResult.onCompleted()
+            }, onError: { [weak self] (error) in
+                self?._postResult.onError(error)
+            })
+            .disposed(by: disposeBag)
+
+        tootUploadMediaAction.elements
+            .subscribe(onNext: { [weak self] (response) in
+                guard let wself = self else { return }
+                wself.tootStatusAction.inputs.onNext((wself.secretCredential, wself.postMessage.value, [response.mediaID]))
+            }, onError: { [weak self] (error) in
+                self?._postResult.onError(error)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -182,11 +213,11 @@ extension TweetViewModel: TweetViewModelOutput {
         return postUser.asObservable()
     }
 
-    var successRequest: Observable<Void> {
-        return _success.observeOn(MainScheduler.instance).asObservable()
+    var postResult: Observable<Void> {
+        return _postResult.observeOn(MainScheduler.instance).asObservable()
     }
 
-    var failureRequest: Observable<Error> {
-        return _failure.observeOn(MainScheduler.instance).asObservable()
+    var newShareImage: Observable<UIImage> {
+        return _newShareImage.observeOn(MainScheduler.instance).asObservable()
     }
 }

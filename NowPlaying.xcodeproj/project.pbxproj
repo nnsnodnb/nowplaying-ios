@@ -23,6 +23,7 @@
 		CF232DB622D3079400820C1B /* NowPlaying-Release.xcconfig.sample in Resources */ = {isa = PBXBuildFile; fileRef = CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */; };
 		CF232DBA22D483A300820C1B /* UIButton+Nuke.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DB922D483A300820C1B /* UIButton+Nuke.swift */; };
 		CF232DBE22D48B1000820C1B /* ShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DBD22D48B1000820C1B /* ShadowButton.swift */; };
+		CF232DC222D4B22600820C1B /* TwitterPostRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DC122D4B22600820C1B /* TwitterPostRequest.swift */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
 		CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD7220A4AB630039217F /* libicucore.tbd */; };
 		CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF301D8C22B009C5007E675E /* APIKit.framework */; };
@@ -72,7 +73,6 @@
 		CF6F567122CB168200F517E9 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566F22CB168200F517E9 /* Realm.framework */; };
 		CF6F567422CB1CD800F517E9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567322CB1CD800F517E9 /* User.swift */; };
 		CF6F567622CB1E3C00F517E9 /* SecretCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567522CB1E3C00F517E9 /* SecretCredential.swift */; };
-		CF6F567A22CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */; };
 		CF6F567D22CB5C8300F517E9 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */; };
 		CF6F568222CB731A00F517E9 /* Keychain+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568122CB731A00F517E9 /* Keychain+Key.swift */; };
 		CF6F568E22CC6A7D00F517E9 /* AccountManageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568B22CC6A7D00F517E9 /* AccountManageViewModel.swift */; };
@@ -157,6 +157,7 @@
 		CF232DB422D3079400820C1B /* NowPlaying-Release.xcconfig.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "NowPlaying-Release.xcconfig.sample"; sourceTree = "<group>"; };
 		CF232DB922D483A300820C1B /* UIButton+Nuke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Nuke.swift"; sourceTree = "<group>"; };
 		CF232DBD22D48B1000820C1B /* ShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowButton.swift; sourceTree = "<group>"; };
+		CF232DC122D4B22600820C1B /* TwitterPostRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterPostRequest.swift; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF2DBD7220A4AB630039217F /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		CF301D8C22B009C5007E675E /* APIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APIKit.framework; path = Carthage/Build/iOS/APIKit.framework; sourceTree = "<group>"; };
@@ -209,7 +210,6 @@
 		CF6F566F22CB168200F517E9 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		CF6F567322CB1CD800F517E9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CF6F567522CB1E3C00F517E9 /* SecretCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretCredential.swift; sourceTree = "<group>"; };
-		CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonUpdateCredentialsRequest.swift; sourceTree = "<group>"; };
 		CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModel.swift; sourceTree = "<group>"; };
 		CF6F568122CB731A00F517E9 /* Keychain+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+Key.swift"; sourceTree = "<group>"; };
 		CF6F568B22CC6A7D00F517E9 /* AccountManageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManageViewModel.swift; sourceTree = "<group>"; };
@@ -343,12 +343,19 @@
 			path = UIButtons;
 			sourceTree = "<group>";
 		};
+		CF232DC022D4B21200820C1B /* Twitter */ = {
+			isa = PBXGroup;
+			children = (
+				CF232DC122D4B22600820C1B /* TwitterPostRequest.swift */,
+			);
+			path = Twitter;
+			sourceTree = "<group>";
+		};
 		CF301D9622B01A3D007E675E /* Mastodon */ = {
 			isa = PBXGroup;
 			children = (
 				CF301D9722B01A59007E675E /* MastodonAppRequest.swift */,
 				CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */,
-				CF6F567922CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift */,
 				CF301D9B22B01BE9007E675E /* MastodonGetTokenRequest.swift */,
 				CF301D9D22B02343007E675E /* MastodonTootRequest.swift */,
 				CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */,
@@ -693,6 +700,7 @@
 			children = (
 				CFD1D37320B87E94009C50ED /* AppInfoRequest.swift */,
 				CFD6B2DF22B0332B00E5F2FC /* Requests.swift */,
+				CF232DC022D4B21200820C1B /* Twitter */,
 				CF301D9622B01A3D007E675E /* Mastodon */,
 				CF99DF5C22BA0B7F006E3876 /* Instances */,
 			);
@@ -1030,7 +1038,6 @@
 				CFD1D37420B87E94009C50ED /* AppInfoRequest.swift in Sources */,
 				CF301D9E22B02343007E675E /* MastodonTootRequest.swift in Sources */,
 				CF55B68822A3E22800D5C9E1 /* PlayViewModel.swift in Sources */,
-				CF6F567A22CB482200F517E9 /* MastodonUpdateCredentialsRequest.swift in Sources */,
 				CF301D9822B01A59007E675E /* MastodonAppRequest.swift in Sources */,
 				CF7E87D422CE480A00F10335 /* MastodonTokenRevokeRequest.swift in Sources */,
 				CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */,
@@ -1052,6 +1059,7 @@
 				CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */,
 				CF531C0A22A953C900D05896 /* MastodonSettingViewController.swift in Sources */,
 				CF6F569222CC6CD300F517E9 /* Realm+Rx.swift in Sources */,
+				CF232DC222D4B22600820C1B /* TwitterPostRequest.swift in Sources */,
 				CF232DAF22CCD7F100820C1B /* MastodonSessionControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
