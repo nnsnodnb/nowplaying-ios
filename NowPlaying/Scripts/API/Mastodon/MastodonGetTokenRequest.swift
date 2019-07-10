@@ -13,14 +13,23 @@ struct MastodonGetTokenRequest: MastodonRequest {
 
     typealias Response = MastodonGetTokenResponse
 
+    struct Input {
+        let hostname: String
+        let code: String
+        let clientID: String
+        let clientSecret: String
+    }
+
     private let hostname: String
     private let code: String
-    private let clientID = UserDefaults.string(forKey: .mastodonClientID)!
-    private let clientSecret = UserDefaults.string(forKey: .mastodonClientSecret)!
+    private let clientID: String
+    private let clientSecret: String
 
-    init(hostname: String, code: String) {
-        self.hostname = "https://\(hostname)"
-        self.code = code
+    init(inputs: Input) {
+        hostname = "https://\(inputs.hostname)"
+        code = inputs.code
+        clientID = inputs.clientID
+        clientSecret = inputs.clientSecret
     }
 
     var baseURL: URL {

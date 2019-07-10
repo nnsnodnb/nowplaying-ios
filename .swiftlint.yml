@@ -13,3 +13,8 @@ excluded:
 
 line_length: 200
 file_length: 450
+large_tuple: 3
+
+identifier_name:
+  excluded:
+    - id

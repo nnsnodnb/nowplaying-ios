@@ -26,6 +26,9 @@ final class TwitterSettingViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Twitter設定"
+        let backBarButtonItem = UIBarButtonItem(title: "戻る", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = backBarButtonItem
+
         let inputs = TwitterSettingViewModelInput(viewController: self)
         viewModel = TwitterSettingViewModel(inputs: inputs)
 

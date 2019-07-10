@@ -11,8 +11,8 @@ NowPlaying tweet & toot application for iOS.
 - Xcode 10.2.1
   - Swift 5.0.1
 - Ruby 2.5.3
-  - Bundler 2.0.1
-    - Cocoapods 1.7.1
+  - Bundler 2.0.2
+    - Cocoapods 1.7.4
 - Carthage 0.33.0 and higher
 
 ## Installation
@@ -25,8 +25,14 @@ $ carthage bootstrap --platform iOS --cache-builds
 $ open NowPlaying.xcworkspace
 ```
 
-Please change build system in this workspace.  
-[File] -> [Workspace Settings...] -> [Per-User Workspace Settings:] -> [Build System:] -> [Legacy Build System]
+Please copy **Configuration Settings Files**.
+
+```bash
+$ cp NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig.sample NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig
+$ cp NowPlaying/Resources/Config/NowPlaying-Release.xcconfig.sample NowPlaying/Resources/Config/NowPlaying-Release.xcconfig
+```
+
+And please fill your environment variables.
 
 ## LICENSE
 

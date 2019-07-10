@@ -6,6 +6,7 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
+import MediaPlayer
 import UIKit
 
 struct PostContent {
@@ -15,6 +16,7 @@ struct PostContent {
     let songTitle: String
     let artistName: String
     let service: Service
+    let item: MPMediaItem?
 
     mutating func removeShareImage() {
         shareImage = nil

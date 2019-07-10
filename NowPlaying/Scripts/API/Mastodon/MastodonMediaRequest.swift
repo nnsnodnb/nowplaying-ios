@@ -8,22 +8,22 @@
 
 import APIKit
 import Foundation
-import KeychainAccess
 
 struct MastodonMediaRequest: MastodonRequest {
 
     typealias Response = MastodonMediaResponse
 
+    private let secret: SecretCredential
     private let imageData: Data
     private let fileName = "\(Date().timeIntervalSince1970).png"
-    private let keychain = Keychain(service: keychainServiceKey)
 
-    init(imageData: Data) {
+    init(secret: SecretCredential, imageData: Data) {
+        self.secret = secret
         self.imageData = imageData
     }
 
     var baseURL: URL {
-        return URL(string: "https://\(UserDefaults.string(forKey: .mastodonHostname)!)")!
+        return URL(string: "https://\(secret.domainName)")!
     }
 
     var path: String {
@@ -40,9 +40,8 @@ struct MastodonMediaRequest: MastodonRequest {
     }
 
     var headerFields: [String: String] {
-        guard let accessToken = try? keychain.getString(KeychainKey.mastodonAccessToken.rawValue) else { return [:] }
         return [
-            "Authorization": "Bearer \(accessToken)"
+            "Authorization": "Bearer \(secret.authToken)"
         ]
     }
 

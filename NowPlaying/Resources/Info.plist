@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>ja_JP</string>
+	<key>CFBundleDisplayName</key>
+	<string>NowPlaying</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -19,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.3.1</string>
+	<string>2.4.0</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -27,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>twitterkit-[CONSUMER_KEY]</string>
+				<string>swifter-$(TWITTER_CONSUMER_KEY)</string>
 			</array>
 		</dict>
 		<dict>
@@ -40,11 +42,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>17</string>
+	<string>18</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
-		<string>[FABRIC_API_KEY]</string>
+		<string>$(FABRIC_API_KEY)</string>
 		<key>Kits</key>
 		<array>
 			<dict>
@@ -56,12 +58,25 @@
 		</array>
 	</dict>
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-hoge~foo</string>
+	<string>$(FIREBASE_ADMOB_APP_ID)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>twitter</string>
 		<string>twitterauth</string>
 	</array>
+	<key>LSEnvironment</key>
+	<dict>
+		<key>FIREBASE_ADMOB_APP_ID</key>
+		<string>$(FIREBASE_ADMOB_APP_ID)</string>
+		<key>FIREBASE_ADMOB_BANNER_ID</key>
+		<string>$(FIREBASE_ADMOB_BANNER_ID)</string>
+		<key>MASTODON_INSTANCES_API_TOKEN</key>
+		<string>$(MASTODON_INSTANCES_API_TOKEN)</string>
+		<key>TWITTER_CONSUMER_KEY</key>
+		<string>$(TWITTER_CONSUMER_KEY)</string>
+		<key>TWITTER_CONSUMER_SECRET</key>
+		<string>$(TWITTER_CONSUMER_SECRET)</string>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>

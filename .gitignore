@@ -63,4 +63,6 @@ Carthage/
 vendor/
 NowPlaying/Resources/GoogleService-Info.plist
 *.generated.swift
-com.mono0926.LicensePlist.latest_result.txt
+moe.nnsnodnb.NowPlaying.latest_result.txt
+NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig
+NowPlaying/Resources/Config/NowPlaying-Release.xcconfig

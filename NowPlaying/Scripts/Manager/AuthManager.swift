@@ -6,58 +6,74 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
-import UIKit
-import TwitterKit
+import Action
+import APIKit
 import FirebaseAuth
 import FirebaseDatabase
 import KeychainAccess
+import RxSwift
+import SafariServices
+import SwifteriOS
+import UIKit
+
+enum AuthError: Swift.Error {
+    case nullAccessToken
+    case internalError
+    case nullMe
+}
+
+struct LoginCallback {
+
+    let userID: String
+    let name: String
+    let screenName: String
+    let photoURL: URL
+    let accessToken: String
+    let accessTokenSecret: String
+}
 
 final class AuthManager: NSObject {
 
-    static let shared = AuthManager()
+    private let disposeBag = DisposeBag()
+    private let keychain = Keychain.nowPlaying
+    private let authService: AuthService
 
-    private let keychain = Keychain(service: keychainServiceKey)
+    enum AuthService: Equatable {
+        case twitter
+        case mastodon(String)
+    }
 
-    func login(completion: @escaping (Error?) -> Void) {
-        TWTRTwitter.sharedInstance().logIn { [weak self] (session, error) in
-            DispatchQueue.global().async {
-                guard let wself = self, let session = session else {
-                    completion(error)
-                    return
-                }
-                let credential = TwitterAuthProvider.credential(withToken: session.authToken, secret: session.authTokenSecret)
-                Auth.auth().signIn(with: credential) { (result, error) in
-                    guard let user = result?.user, error == nil else {
-                        completion(error)
-                        return
-                    }
-                    wself.keychain[KeychainKey.authToken.rawValue] = session.authToken
-                    wself.keychain[KeychainKey.authTokenSecret.rawValue] = session.authTokenSecret
+    init(authService: AuthService) {
+        self.authService = authService
+    }
+}
 
-                    DispatchQueue.global(qos: .utility).async {
-                        let ref = Database.database().reference(withPath: "twitter")
-                        ref.child(user.uid).setValue(["name": session.userName, "user_id": session.userID,
-                                                      "display_name": user.displayName])
-                    }
+// MARK: - Deprecated
 
-                    completion(nil)
-                }
-            }
-        }
+extension AuthManager {
+
+    static func oldLogout() {
+        AuthManager(authService: .twitter).logout {}  // Twitterログアウト (FirebaseAuth)
+        try? Keychain.nowPlaying.remove(.authToken)
+        try? Keychain.nowPlaying.remove(.authTokenSecret)
+        AuthManager(authService: .mastodon("")).mastodonLogout()  // Mastodonログアウト
+        UserDefaults.removeObject(forKey: .mastodonClientID)
+        UserDefaults.removeObject(forKey: .mastodonClientSecret)
+        UserDefaults.removeObject(forKey: .mastodonHostname)
+        UserDefaults.removeObject(forKey: .isMastodonLogin)
     }
 
     func logout(completion: () -> Void) {
         try? Auth.auth().signOut()
-        TWTRTwitter.sharedInstance().sessionStore.logOutUserID(TWTRTwitter.sharedInstance().sessionStore.session()!.userID)
-        keychain[KeychainKey.authToken.rawValue] = nil
-        keychain[KeychainKey.authTokenSecret.rawValue] = nil
+        keychain[.authToken] = nil
+        keychain[.authTokenSecret] = nil
         completion()
     }
 
     @discardableResult
     func mastodonLogout() -> Bool {
         do {
-            try keychain.remove(KeychainKey.mastodonAccessToken.rawValue)
+            try keychain.remove(.mastodonAccessToken)
             return true
         } catch {
             return false

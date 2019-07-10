@@ -6,199 +6,199 @@
 	<array>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/Action</string>
+			<string>moe.nnsnodnb.NowPlaying/Action</string>
 			<key>Title</key>
-			<string>Action (4.0.1)</string>
+			<string>Action</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/APIKit</string>
+			<string>moe.nnsnodnb.NowPlaying/APIKit</string>
 			<key>Title</key>
-			<string>APIKit (5.0.0)</string>
+			<string>APIKit</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/AutoScrollLabel</string>
+			<string>moe.nnsnodnb.NowPlaying/AutoScrollLabel</string>
 			<key>Title</key>
-			<string>AutoScrollLabel (0.4.3)</string>
+			<string>AutoScrollLabel</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/Crashlytics</string>
+			<string>moe.nnsnodnb.NowPlaying/Crashlytics</string>
 			<key>Title</key>
-			<string>Crashlytics (3.13.1)</string>
+			<string>Crashlytics</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/DTTJailbreakDetection</string>
+			<string>moe.nnsnodnb.NowPlaying/DTTJailbreakDetection</string>
 			<key>Title</key>
-			<string>DTTJailbreakDetection (0.4.0)</string>
+			<string>DTTJailbreakDetection</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/DynamicBlurView</string>
+			<string>moe.nnsnodnb.NowPlaying/DynamicBlurView</string>
 			<key>Title</key>
-			<string>DynamicBlurView (3.0.1)</string>
+			<string>DynamicBlurView</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/Eureka</string>
+			<string>moe.nnsnodnb.NowPlaying/Eureka</string>
 			<key>Title</key>
-			<string>Eureka (5.0.0)</string>
+			<string>Eureka</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/Fabric</string>
+			<string>moe.nnsnodnb.NowPlaying/Fabric</string>
 			<key>Title</key>
-			<string>Fabric (1.10.1)</string>
+			<string>Fabric</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/Firebase</string>
+			<string>moe.nnsnodnb.NowPlaying/Firebase</string>
 			<key>Title</key>
-			<string>Firebase (6.2.0)</string>
+			<string>Firebase</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/FirebaseAnalytics</string>
+			<string>moe.nnsnodnb.NowPlaying/FirebaseAnalytics</string>
 			<key>Title</key>
-			<string>FirebaseAnalytics (6.0.1)</string>
+			<string>FirebaseAnalytics</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/FirebaseAuth</string>
+			<string>moe.nnsnodnb.NowPlaying/FirebaseAuth</string>
 			<key>Title</key>
-			<string>FirebaseAuth (6.1.1)</string>
+			<string>FirebaseAuth</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/FirebaseAuthInterop</string>
+			<string>moe.nnsnodnb.NowPlaying/FirebaseAuthInterop</string>
 			<key>Title</key>
-			<string>FirebaseAuthInterop (1.0.0)</string>
+			<string>FirebaseAuthInterop</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/FirebaseCore</string>
+			<string>moe.nnsnodnb.NowPlaying/FirebaseCore</string>
 			<key>Title</key>
-			<string>FirebaseCore (6.0.2)</string>
+			<string>FirebaseCore</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/FirebaseDatabase</string>
+			<string>moe.nnsnodnb.NowPlaying/FirebaseDatabase</string>
 			<key>Title</key>
-			<string>FirebaseDatabase (6.0.0)</string>
+			<string>FirebaseDatabase</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/FirebaseInstanceID</string>
+			<string>moe.nnsnodnb.NowPlaying/FirebaseInstanceID</string>
 			<key>Title</key>
-			<string>FirebaseInstanceID (4.1.1)</string>
+			<string>FirebaseInstanceID</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/Google-Mobile-Ads-SDK</string>
+			<string>moe.nnsnodnb.NowPlaying/Google-Mobile-Ads-SDK</string>
 			<key>Title</key>
-			<string>Google-Mobile-Ads-SDK (7.44.0)</string>
+			<string>Google-Mobile-Ads-SDK</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/GoogleAppMeasurement</string>
+			<string>moe.nnsnodnb.NowPlaying/GoogleAppMeasurement</string>
 			<key>Title</key>
-			<string>GoogleAppMeasurement (6.0.1)</string>
+			<string>GoogleAppMeasurement</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/GoogleUtilities</string>
+			<string>moe.nnsnodnb.NowPlaying/GoogleUtilities</string>
 			<key>Title</key>
-			<string>GoogleUtilities (6.2.0)</string>
+			<string>GoogleUtilities</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/GTMSessionFetcher</string>
+			<string>moe.nnsnodnb.NowPlaying/GTMSessionFetcher</string>
 			<key>Title</key>
-			<string>GTMSessionFetcher (1.2.2)</string>
+			<string>GTMSessionFetcher</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/Hero</string>
+			<string>moe.nnsnodnb.NowPlaying/Hero</string>
 			<key>Title</key>
-			<string>Hero (1.4.0)</string>
+			<string>Hero</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/KeychainAccess</string>
+			<string>moe.nnsnodnb.NowPlaying/KeychainAccess</string>
 			<key>Title</key>
-			<string>KeychainAccess (v3.2.0)</string>
+			<string>KeychainAccess</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/leveldb-library</string>
+			<string>moe.nnsnodnb.NowPlaying/leveldb-library</string>
 			<key>Title</key>
-			<string>leveldb-library (1.20)</string>
+			<string>leveldb-library</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/LicensePlist</string>
+			<string>moe.nnsnodnb.NowPlaying/LicensePlist</string>
 			<key>Title</key>
-			<string>LicensePlist (2.5.0)</string>
+			<string>LicensePlist</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/nanopb</string>
+			<string>moe.nnsnodnb.NowPlaying/nanopb</string>
 			<key>Title</key>
-			<string>nanopb (0.3.901)</string>
+			<string>nanopb</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/NSURL+QueryDictionary</string>
+			<string>moe.nnsnodnb.NowPlaying/NSURL+QueryDictionary</string>
 			<key>Title</key>
 			<string>NSURL+QueryDictionary</string>
 			<key>Type</key>
@@ -206,89 +206,89 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/Nuke</string>
+			<string>moe.nnsnodnb.NowPlaying/Nuke</string>
 			<key>Title</key>
-			<string>Nuke (7.6.3)</string>
+			<string>Nuke</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/PopupDialog</string>
+			<string>moe.nnsnodnb.NowPlaying/PopupDialog</string>
 			<key>Title</key>
-			<string>PopupDialog (1.1.0)</string>
+			<string>PopupDialog</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/R.swift</string>
+			<string>moe.nnsnodnb.NowPlaying/R.swift</string>
 			<key>Title</key>
-			<string>R.swift (5.0.3)</string>
+			<string>R.swift</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/R.swift.Library</string>
+			<string>moe.nnsnodnb.NowPlaying/R.swift.Library</string>
 			<key>Title</key>
-			<string>R.swift.Library (5.0.1)</string>
+			<string>R.swift.Library</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/RxStoreKit</string>
+			<string>moe.nnsnodnb.NowPlaying/realm-cocoa</string>
 			<key>Title</key>
-			<string>RxStoreKit (1.2.1)</string>
+			<string>realm-cocoa</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/RxSwift</string>
+			<string>moe.nnsnodnb.NowPlaying/RxStoreKit</string>
 			<key>Title</key>
-			<string>RxSwift (5.0.1)</string>
+			<string>RxStoreKit</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/SnapKit</string>
+			<string>moe.nnsnodnb.NowPlaying/RxSwift</string>
 			<key>Title</key>
-			<string>SnapKit (5.0.0)</string>
+			<string>RxSwift</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/SVProgressHUD</string>
+			<string>moe.nnsnodnb.NowPlaying/SnapKit</string>
 			<key>Title</key>
-			<string>SVProgressHUD (2.2.5)</string>
+			<string>SnapKit</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/SwiftLint</string>
+			<string>moe.nnsnodnb.NowPlaying/SVProgressHUD</string>
 			<key>Title</key>
-			<string>SwiftLint (0.32.0)</string>
+			<string>SVProgressHUD</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/TwitterCore</string>
+			<string>moe.nnsnodnb.NowPlaying/Swifter</string>
 			<key>Title</key>
-			<string>TwitterCore (3.2.0)</string>
+			<string>Swifter</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>com.mono0926.LicensePlist/TwitterKit</string>
+			<string>moe.nnsnodnb.NowPlaying/SwiftLint</string>
 			<key>Title</key>
-			<string>TwitterKit (3.4.2)</string>
+			<string>SwiftLint</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
