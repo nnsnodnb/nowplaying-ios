@@ -18,7 +18,14 @@ import UIKit
 
 final class PlayViewController: UIViewController {
 
-    @IBOutlet private weak var artworkImageView: UIImageView!
+    @IBOutlet private weak var artworkImageView: UIImageView! {
+        didSet {
+            artworkImageView.layer.shadowColor = UIColor.black.cgColor
+            artworkImageView.layer.shadowOffset = CGSize(width: 0, height: 0)
+            artworkImageView.layer.shadowRadius = 20
+            artworkImageView.layer.shadowOpacity = 0.5
+        }
+    }
     @IBOutlet private weak var songNameLabel: CBAutoScrollLabel! {
         didSet {
             songNameLabel.textColor = .black
