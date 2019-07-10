@@ -63,11 +63,7 @@ final class TweetViewModel: TweetViewModelType {
     }
 
     init(inputs: TweetViewModelInput) {
-        let realm = try! Realm(configuration: realmConfiguration)
-
-        let defaultUser = realm.objects(User.self)
-            .filter("serviceType = %@ AND isDefault = %@", inputs.postContent.service.rawValue, true)
-            .first!
+        let defaultUser = User.getDefaultUser(service: inputs.postContent.service)!
         postUser = BehaviorRelay<User>(value: defaultUser)
 
         postContent = inputs.postContent

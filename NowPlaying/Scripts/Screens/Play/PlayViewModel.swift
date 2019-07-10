@@ -6,6 +6,7 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
+import Action
 import APIKit
 import FirebaseAnalytics
 import FirebaseAuth
@@ -14,6 +15,8 @@ import PopupDialog
 import RxCocoa
 import RxSwift
 import StoreKit
+import SVProgressHUD
+import SwifteriOS
 import UIKit
 
 struct PlayViewModelInput {
@@ -54,6 +57,9 @@ final class PlayViewModel: PlayViewModelType {
 
     private let viewController: UIViewController
     private let isPlaying: BehaviorRelay<Bool>
+    private let tweetStatusAction: Action<(SecretCredential, String, Data?), JSON>
+    private let tootStatusAction: Action<(SecretCredential, String, [String]?), Void>
+    private let tootUploadMediaAction: Action<(SecretCredential, Data), MastodonMediaResponse>
     private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     private let disposeBag = DisposeBag()
     private let _nowPlayingItem = BehaviorRelay<MPMediaItem?>(value: MPMusicPlayerController.systemMusicPlayer.nowPlayingItem)
@@ -68,9 +74,23 @@ final class PlayViewModel: PlayViewModelType {
         viewController = inputs.viewController
         isPlaying = BehaviorRelay(value: musicPlayer.playbackState == .playing)
 
+        // テキストのみ・メディア込みポストアクション (Twitter)
+        tweetStatusAction = Action {
+            return TwitterPostRequest(credential: $0.0).postTweet(status: $0.1, media: $0.2)
+        }
+        // テキストのみ・メディア込みポストアクション (Mastodon)
+        tootStatusAction = Action {
+            return Session.shared.rx.response(MastodonTootRequest(secret: $0.0, status: $0.1, mediaIDs: $0.2))
+        }
+        // メディアアップロードアクション (Mastodon)
+        tootUploadMediaAction = Action {
+            return Session.shared.rx.response(MastodonMediaRequest(secret: $0.0, imageData: $0.1))
+        }
+
         musicPlayer.beginGeneratingPlaybackNotifications()
 
         setupNotificationObserver()
+        setupActionObserver()
         setupInputObserver(inputs)
         setupUserDefaultsObserver()
     }
@@ -166,6 +186,44 @@ extension PlayViewModel {
                 break
             }
         }
+    }
+
+    private func setupActionObserver() {
+        let collection = [tweetStatusAction.executing, tootStatusAction.executing, tootUploadMediaAction.executing]
+        Observable<Bool>
+            .combineLatest(collection) { $0.first(where: { $0 }) ?? false }
+            .subscribe(onNext: { (executing) in
+                SVProgressHUD.setDefaultMaskType(executing ? .black : .none)
+            })
+            .disposed(by: disposeBag)
+
+        tweetStatusAction.elements
+            .map { _ in }
+            .subscribe(onNext: {
+                SVProgressHUD.dismiss()
+            }, onError: { (error) in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+
+        tootStatusAction.elements
+            .subscribe(onNext: {
+                SVProgressHUD.dismiss()
+            }, onError: { (error) in
+                print(error)
+            })
+            .disposed(by: disposeBag)
+
+        tootUploadMediaAction.elements
+            .subscribe(onNext: { [weak self] (response) in
+                guard let wself = self,
+                    let user = User.getDefaultUser(service: .mastodon),
+                    let secret = user.secretCredentials.first else { return }
+                wself.tootStatusAction.inputs.onNext((secret, wself.mastodonPostContent.postMessage, [response.mediaID]))
+            }, onError: { (error) in
+                print(error)
+            })
+            .disposed(by: disposeBag)
     }
 
     private func setupInputObserver(_ inputs: PlayViewModelInput) {
@@ -318,45 +376,27 @@ extension PlayViewModel {
     }
 
     private func postTweet(_ content: PostContent) {
-        guard UserDefaults.bool(forKey: .isAutoTweetPurchase) && UserDefaults.bool(forKey: .isAutoTweet) else { return }
-        if let shareImage = content.shareImage {
-//            TwitterClient.shared.client?.sendTweet(withText: content.postMessage, image: shareImage) { (_, _) in }
-            // FIXME: 画像つきツイートを送信する
+        guard UserDefaults.bool(forKey: .isAutoTweetPurchase) && UserDefaults.bool(forKey: .isAutoTweet),
+            let user = User.getDefaultUser(service: .twitter),
+            let secret = user.secretCredentials.first else { return }
+        if let shareImage = content.shareImage, let data = shareImage.pngData() {
+            tweetStatusAction.inputs.onNext((secret, content.postMessage, data))
             Analytics.AutoPost.withImageTweet(content)
         } else {
-//            TwitterClient.shared.client?.sendTweet(withText: content.postMessage) { (_, _) in }
-            // FIXME: ツイートを送信する
+            tweetStatusAction.inputs.onNext((secret, content.postMessage, nil))
             Analytics.AutoPost.textOnlyTweet(content)
         }
     }
 
     private func postMastodon(_ content: PostContent) {
-        guard UserDefaults.bool(forKey: .isMastodonAutoToot) else { return }
+        guard UserDefaults.bool(forKey: .isMastodonAutoToot),
+            let user = User.getDefaultUser(service: .mastodon),
+            let secret = user.secretCredentials.first else { return }
         if let shareImage = content.shareImage, let data = shareImage.pngData() {
-            // FIXME: User オブジェクトを取得する
-//            Session.shared.rx.response(MastodonMediaRequest(imageData: data))
-//                .subscribe(onSuccess: { [weak self] (response) in
-//                    guard let wself = self else { return }
-//                    Session.shared.rx.response(MastodonTootRequest(status: content.postMessage, mediaIDs: [response.mediaID]))
-//                        .subscribe(onSuccess: { (_) in
-//                        }, onError: { (error) in
-//                            print(error)
-//                        })
-//                        .disposed(by: wself.disposeBag)
-//                }, onError: { (error) in
-//                    print(error)
-//                })
-//                .disposed(by: disposeBag)
+            tootUploadMediaAction.inputs.onNext((secret, data))
             Analytics.AutoPost.withImageToot(content)
         } else {
-            // FIXME: User オブジェクトを取得する
-//            Session.shared.rx.response(MastodonTootRequest(status: content.postMessage))
-//                .subscribe(onSuccess: { (_) in
-//
-//                }, onError: { (error) in
-//                    print(error)
-//                })
-//                .disposed(by: disposeBag)
+            tootStatusAction.inputs.onNext((secret, content.postMessage, nil))
             Analytics.AutoPost.textOnlyToot(content)
         }
     }
