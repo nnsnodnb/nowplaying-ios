@@ -1,0 +1,130 @@
+name: AutoScrollLabel, nameSpecified: 
+body: MIT
+
+Copyright (c) 2…
+version: 0.4.3
+
+name: Crashlytics, nameSpecified: 
+body: Fabric: Copyright 20…
+version: 3.13.3
+
+name: DTTJailbreakDetection, nameSpecified: 
+body: The MIT License (MIT…
+version: 0.4.0
+
+name: Fabric, nameSpecified: 
+body: Fabric: Copyright 20…
+version: 1.10.2
+
+name: Firebase, nameSpecified: 
+body: Copyright 2019 Googl…
+version: 6.4.0
+
+name: FirebaseAnalytics, nameSpecified: 
+body: Copyright 2019 Googl…
+version: 6.0.3
+
+name: FirebaseAuth, nameSpecified: 
+body: 
+                   …
+version: 6.2.0
+
+name: FirebaseAuthInterop, nameSpecified: 
+body: 
+                   …
+version: 1.0.0
+
+name: FirebaseCore, nameSpecified: 
+body: 
+                   …
+version: 6.0.4
+
+name: FirebaseDatabase, nameSpecified: 
+body: 
+                   …
+version: 6.0.0
+
+name: FirebaseInstanceID, nameSpecified: 
+body: 
+                   …
+version: 4.2.1
+
+name: Google-Mobile-Ads-SDK, nameSpecified: 
+body: Copyright 2019 Googl…
+version: 7.46.0
+
+name: GoogleAppMeasurement, nameSpecified: 
+body: Copyright 2019 Googl…
+version: 6.0.3
+
+name: GoogleUtilities, nameSpecified: 
+body: 
+                   …
+version: 6.2.1
+
+name: GTMSessionFetcher, nameSpecified: 
+body: 
+                   …
+version: 1.2.2
+
+name: leveldb-library, nameSpecified: 
+body: Copyright (c) 2011 T…
+version: 1.20
+
+name: LicensePlist, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 2.5.0
+
+name: nanopb, nameSpecified: 
+body: Copyright (c) 2011 P…
+version: 0.3.901
+
+name: NSURL+QueryDictionary, nameSpecified: 
+body: The MIT License (MIT…
+version: 
+
+name: R.swift, nameSpecified: 
+body: The MIT License (MIT…
+version: 5.0.3
+
+name: R.swift.Library, nameSpecified: 
+body: The MIT License (MIT…
+version: 5.0.1
+
+name: SwiftLint, nameSpecified: 
+body: The MIT License (MIT…
+version: 0.33.1
+
+name: Action, nameSpecified: , owner: RxSwiftCommunity, version: 4.0.1
+
+name: APIKit, nameSpecified: , owner: ishkawa, version: 5.0.0
+
+name: DynamicBlurView, nameSpecified: , owner: KyoheiG3, version: 3.0.1
+
+name: Eureka, nameSpecified: , owner: xmartlabs, version: 5.0.0
+
+name: Hero, nameSpecified: , owner: HeroTransitions, version: 1.4.0
+
+name: KeychainAccess, nameSpecified: , owner: kishikawakatsumi, version: v3.2.0
+
+name: Nuke, nameSpecified: , owner: kean, version: 8.0
+
+name: PopupDialog, nameSpecified: , owner: Orderella, version: 1.1.0
+
+name: realm-cocoa, nameSpecified: , owner: realm, version: v3.17.0
+
+name: RxStoreKit, nameSpecified: , owner: glassonion1, version: 1.2.1
+
+name: RxSwift, nameSpecified: , owner: ReactiveX, version: 5.0.1
+
+name: SnapKit, nameSpecified: , owner: SnapKit, version: 5.0.0
+
+name: SVProgressHUD, nameSpecified: , owner: SVProgressHUD, version: 2.2.5
+
+name: Swifter, nameSpecified: , owner: noppefoxwolf, version: 4a2c0db
+
+add-version-numbers: false
+
+LicensePlist Version: 1.8.3
