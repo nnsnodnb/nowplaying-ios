@@ -132,7 +132,7 @@ final class TweetViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
-        viewModel.getDefaultAccount()
+        viewModel.getCurrentAccount()
     }
 
     override func viewDidAppear(_ animated: Bool) {

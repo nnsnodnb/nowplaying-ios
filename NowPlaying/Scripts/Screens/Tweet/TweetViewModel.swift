@@ -40,7 +40,7 @@ protocol TweetViewModelType {
     var outputs: TweetViewModelOutput { get }
 
     init(inputs: TweetViewModelInput)
-    func getDefaultAccount()
+    func getCurrentAccount()
     func preparePost(image: UIImage?)
 }
 
@@ -85,7 +85,7 @@ final class TweetViewModel: TweetViewModelType {
         subscribeAction()
     }
 
-    func getDefaultAccount() {
+    func getCurrentAccount() {
         postUser.accept(postUser.value)
     }
 
