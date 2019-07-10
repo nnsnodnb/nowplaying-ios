@@ -34,7 +34,7 @@ final class TweetViewController: UIViewController {
             artworkImageButton.imageView?.contentMode = .scaleAspectFit
             artworkImageButton.contentVerticalAlignment = .fill
             artworkImageButton.contentHorizontalAlignment = .fill
-            if shareImage == nil { artworkImageButton.isHidden = true }
+            artworkImageButton.isHidden = shareImage == nil
             artworkImageButton.setImage(shareImage, for: .normal)
             artworkImageButton.rx.tap
                 .observeOn(MainScheduler.instance)
@@ -107,43 +107,7 @@ final class TweetViewController: UIViewController {
                                          viewController: self)
         viewModel = TweetViewModel(inputs: inputs)
 
-        viewModel.outputs.isPostable
-            .bind(to: navigationItem.rightBarButtonItem!.rx.isEnabled)
-            .disposed(by: disposeBag)
-
-        viewModel.outputs.user
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (user) in
-                self.iconImageButton.setImage(with: user.iconURL)
-            })
-            .disposed(by: disposeBag)
-
-        viewModel.outputs.postResult
-            .subscribe(onNext: { [weak self] in
-                SVProgressHUD.dismiss()
-                self?.dismiss(animated: true, completion: nil)
-            }, onError: { [weak self] (error) in
-                let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                SVProgressHUD.dismiss()
-                self?.present(alert, animated: true, completion: nil)
-            })
-            .disposed(by: disposeBag)
-
-        viewModel.outputs.newShareImage
-            .subscribe(onNext: { [unowned self] (image) in
-                self.shareImage = image
-                self.artworkImageButton.setImage(image, for: .normal)
-                self.artworkImageButton.isHidden = false
-                self.addImageButton.isHidden = true
-            }, onError: { (error) in
-                let error = error as NSError
-                let detailMessage = error.userInfo["detail"] as! String
-                SVProgressHUD.showError(withStatus: detailMessage)
-                SVProgressHUD.dismiss(withDelay: 1)
-            })
-            .disposed(by: disposeBag)
-
+        subscribeViewModel()
         viewModel.getCurrentAccount()
     }
 
@@ -199,5 +163,44 @@ final class TweetViewController: UIViewController {
         textView.resignFirstResponder()
         let viewController = ArtworkPreviewViewController(image: shareImage, parent: self)
         present(viewController, animated: true, completion: nil)
+    }
+
+    private func subscribeViewModel() {
+        viewModel.outputs.isPostable
+            .bind(to: navigationItem.rightBarButtonItem!.rx.isEnabled)
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.user
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { (user) in
+                self.iconImageButton.setImage(with: user.iconURL)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.postResult
+            .subscribe(onNext: { [weak self] in
+                SVProgressHUD.dismiss()
+                self?.dismiss(animated: true, completion: nil)
+                }, onError: { [weak self] (error) in
+                    let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    SVProgressHUD.dismiss()
+                    self?.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.newShareImage
+            .subscribe(onNext: { [unowned self] (image) in
+                self.shareImage = image
+                self.artworkImageButton.setImage(image, for: .normal)
+                self.artworkImageButton.isHidden = false
+                self.addImageButton.isHidden = true
+                }, onError: { (error) in
+                    let error = error as NSError
+                    let detailMessage = error.userInfo["detail"] as! String
+                    SVProgressHUD.showError(withStatus: detailMessage)
+                    SVProgressHUD.dismiss(withDelay: 1)
+            })
+            .disposed(by: disposeBag)
     }
 }
