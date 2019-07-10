@@ -20,7 +20,20 @@ struct TwitterPostRequest {
                           oauthToken: credential.authToken, oauthTokenSecret: credential.authTokenSecret)
     }
 
-    func postTweet(status: String) -> Observable<JSON> {
+    func postTweet(status: String, media: Data?=nil) -> Observable<JSON> {
+        if let media = media {
+            return _postTweet(status: status, media: media)
+        } else {
+            return _postTweet(status: status)
+        }
+    }
+}
+
+// MARK: - Private method
+
+extension TwitterPostRequest {
+
+    private func _postTweet(status: String) -> Observable<JSON> {
         return .create { [swifter] (observer) -> Disposable in
             swifter.postTweet(status: status, tweetMode: .extended, success: { (json) in
                 observer.onNext(json)
@@ -33,7 +46,7 @@ struct TwitterPostRequest {
         }
     }
 
-    func postTweet(status: String, media: Data) -> Observable<JSON> {
+    private func _postTweet(status: String, media: Data) -> Observable<JSON> {
         return .create { [swifter] (observer) -> Disposable in
             swifter.postTweet(status: status, media: media, tweetMode: .extended, success: { (json) in
                 observer.onNext(json)

@@ -54,8 +54,7 @@ final class TweetViewModel: TweetViewModelType {
     private let postContent: PostContent
     private let postMessage: BehaviorRelay<String>
     private let postUser: BehaviorRelay<User>
-    private let tweetStatusOnlyTextAction: Action<(SecretCredential, String), JSON>
-    private let tweetStatusWithMediaAction: Action<(SecretCredential, String, Data), JSON>
+    private let tweetStatusAction: Action<(SecretCredential, String, Data?), JSON>
     private let tootStatusOnlyTextAction: Action<(SecretCredential, String), Void>
     private let tootUploadMediaAction: Action<(SecretCredential, Data), MastodonMediaResponse>
     private let tootStatusWithMediaAction: Action<(SecretCredential, String, [String]), Void>
@@ -77,12 +76,8 @@ final class TweetViewModel: TweetViewModelType {
         postContent = inputs.postContent
         postMessage = BehaviorRelay<String>(value: inputs.postContent.postMessage)
 
-        // テキストのみのポストアクション (Twitter)
-        tweetStatusOnlyTextAction = Action {
-            return TwitterPostRequest(credential: $0.0).postTweet(status: $0.1)
-        }
-        // メディアこみのポストアクション (Mastodon)
-        tweetStatusWithMediaAction = Action {
+        // テキストのみ・メディア込みポストアクション (Twitter)
+        tweetStatusAction = Action {
             return TwitterPostRequest(credential: $0.0).postTweet(status: $0.1, media: $0.2)
         }
         // テキストのみのポストアクション (Mastodon)
@@ -109,7 +104,7 @@ final class TweetViewModel: TweetViewModelType {
     func preparePost() {
         switch postContent.service {
         case .twitter:
-            tweetStatusOnlyTextAction.inputs.onNext((secretCredential, postMessage.value))
+            tweetStatusAction.inputs.onNext((secretCredential, postMessage.value, nil))
             Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
         case .mastodon:
             tootStatusOnlyTextAction.inputs.onNext((secretCredential, postMessage.value))
@@ -124,7 +119,7 @@ final class TweetViewModel: TweetViewModelType {
                 _failure.accept(NSError(domain: "moe.nnsnodnb.NowPlaying", code: 400, userInfo: ["detail": "画像が見つかりません"]))
                 return
             }
-            tweetStatusWithMediaAction.inputs.onNext((secretCredential, postMessage.value, imageData))
+            tweetStatusAction.inputs.onNext((secretCredential, postMessage.value, imageData))
             Analytics.Tweet.postTweetTwitter(withHasImage: true, content: postContent)
         case .mastodon:
             guard let imageData = image.pngData() else {
@@ -160,16 +155,7 @@ extension TweetViewModel {
     }
 
     private func subscribeAction() {
-        tweetStatusOnlyTextAction.elements
-            .map { _ in }
-            .subscribe(onNext: { [weak self] in
-                self?._success.accept(())
-            }, onError: { [weak self] (error) in
-                self?._failure.accept(error)
-            })
-            .disposed(by: disposeBag)
-
-        tweetStatusWithMediaAction.elements
+        tweetStatusAction.elements
             .map { _ in }
             .subscribe(onNext: { [weak self] in
                 self?._success.accept(())
