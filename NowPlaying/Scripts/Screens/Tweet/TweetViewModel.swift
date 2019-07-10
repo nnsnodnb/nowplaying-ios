@@ -41,8 +41,7 @@ protocol TweetViewModelType {
 
     init(inputs: TweetViewModelInput)
     func getDefaultAccount()
-    func preparePost()
-    func preparePost(withImage image: UIImage)
+    func preparePost(image: UIImage?)
 }
 
 final class TweetViewModel: TweetViewModelType {
@@ -90,33 +89,25 @@ final class TweetViewModel: TweetViewModelType {
         postUser.accept(postUser.value)
     }
 
-    func preparePost() {
-        switch postContent.service {
-        case .twitter:
-            tweetStatusAction.inputs.onNext((secretCredential, postMessage.value, nil))
-            Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
-        case .mastodon:
-            tootStatusAction.inputs.onNext((secretCredential, postMessage.value, nil))
-            Analytics.Tweet.postTootMastodon(withHasImage: false, content: postContent)
-        }
-    }
-
-    func preparePost(withImage image: UIImage) {
-        switch postContent.service {
-        case .twitter:
-            guard let imageData = image.pngData() else {
-                _postResult.onError(NSError(domain: "moe.nnsnodnb.NowPlaying", code: 400, userInfo: ["detail": "画像が見つかりません"]))
-                return
+    func preparePost(image: UIImage?) {
+        if let image = image, let data = image.pngData() {
+            switch postContent.service {
+            case .twitter:
+                tweetStatusAction.inputs.onNext((secretCredential, postMessage.value, data))
+                Analytics.Tweet.postTweetTwitter(withHasImage: true, content: postContent)
+            case .mastodon:
+                tootUploadMediaAction.inputs.onNext((secretCredential, data))
+                Analytics.Tweet.postTootMastodon(withHasImage: true, content: postContent)
             }
-            tweetStatusAction.inputs.onNext((secretCredential, postMessage.value, imageData))
-            Analytics.Tweet.postTweetTwitter(withHasImage: true, content: postContent)
-        case .mastodon:
-            guard let imageData = image.pngData() else {
-                _postResult.onError(NSError(domain: "moe.nnsnodnb.NowPlaying", code: 400, userInfo: ["detail": "画像が見つかりません"]))
-                return
+        } else {
+            switch postContent.service {
+            case .twitter:
+                tweetStatusAction.inputs.onNext((secretCredential, postMessage.value, nil))
+                Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
+            case .mastodon:
+                tootStatusAction.inputs.onNext((secretCredential, postMessage.value, nil))
+                Analytics.Tweet.postTootMastodon(withHasImage: false, content: postContent)
             }
-            tootUploadMediaAction.inputs.onNext((secretCredential, imageData))
-            Analytics.Tweet.postTootMastodon(withHasImage: true, content: postContent)
         }
     }
 }

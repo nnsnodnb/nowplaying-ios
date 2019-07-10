@@ -176,11 +176,7 @@ final class TweetViewController: UIViewController {
             .subscribe(onNext: { [weak self] (_) in
                 self?.textView.resignFirstResponder()
                 SVProgressHUD.show()
-                if let shareImage = self?.shareImage {
-                    self?.viewModel.preparePost(withImage: shareImage)
-                } else {
-                    self?.viewModel.preparePost()
-                }
+                self?.viewModel.preparePost(image: self?.shareImage)
             })
             .disposed(by: disposeBag)
         navigationItem.rightBarButtonItem = postButton
