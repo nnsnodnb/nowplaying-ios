@@ -50,6 +50,7 @@ final class AccountManageViewController: UIViewController {
                 })
                 .disposed(by: disposeBag)
 
+            if screenType == .selection { return }
             tableView.rx.modelDeleted(User.self)
                 .subscribe(onNext: { [unowned self] in
                     let realm = try! Realm(configuration: realmConfiguration)
