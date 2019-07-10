@@ -14,7 +14,7 @@ extension UIImageView {
     func setImage(with url: URL?, completion: ImageTask.Completion? = nil) {
         guard let url = url else {
             let error = NSError(domain: "moe.nnsnodnb.nowplaying", code: 0, userInfo: ["error": "url is nil."])
-            completion?(nil, ImagePipeline.Error.dataLoadingFailed(error))
+            completion?(.failure(ImagePipeline.Error.dataLoadingFailed(error)))
             return
         }
         var imageRequest = ImageRequest(url: url)
