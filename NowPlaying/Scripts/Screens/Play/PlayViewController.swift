@@ -127,6 +127,14 @@ final class PlayViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
+        viewModel.outputs.scale
+            .drive(onNext: { [weak self] (transform) in
+                UIView.animate(withDuration: 0.4) {
+                    self?.artworkImageView.transform = transform
+                }
+            })
+            .disposed(by: disposeBag)
+
         viewModel.outputs.loginRequired
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [unowned self] (_) in

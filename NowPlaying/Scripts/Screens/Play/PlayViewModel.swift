@@ -35,6 +35,7 @@ protocol PlayViewModelOutput {
 
     var nowPlayingItem: Driver<MPMediaItem> { get }
     var playButtonImage: Driver<UIImage?> { get }
+    var scale: Driver<CGAffineTransform> { get }
     var loginRequired: Observable<Void> { get }
     var postContent: Driver<PostContent> { get }
     var requestDenied: Observable<Void> { get }
@@ -418,6 +419,12 @@ extension PlayViewModel: PlayViewModelOutput {
             .map { $0 ? R.image.pause() : R.image.play() }
             .observeOn(MainScheduler.instance)
             .asDriver(onErrorJustReturn: nil)
+    }
+
+    var scale: SharedSequence<DriverSharingStrategy, CGAffineTransform> {
+        return isPlaying
+            .map { $0 ? .identity : .init(scaleX: 0.9, y: 0.9) }
+            .asDriver(onErrorJustReturn: .identity)
     }
 
     var loginRequired: Observable<Void> {
