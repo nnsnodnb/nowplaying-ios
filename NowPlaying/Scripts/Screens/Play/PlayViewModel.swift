@@ -313,7 +313,7 @@ extension PlayViewModel {
     /* 再生されている曲が変わるたびに新しく生成 */
     private func createNewPostCotent(service: Service) -> PostContent {
         guard let item = _nowPlayingItem.value else {
-            return PostContent(postMessage: "", shareImage: nil, songTitle: "", artistName: "", service: service)
+            return PostContent(postMessage: "", shareImage: nil, songTitle: "", artistName: "", service: service, item: nil)
         }
         var postText = UserDefaults.string(forKey: service.postTextFormatUserDefaultsKey)!
 
@@ -326,7 +326,7 @@ extension PlayViewModel {
 
         let shareImage = getShareImage(service: service, item: item)
 
-        return PostContent(postMessage: postText, shareImage: shareImage, songTitle: title, artistName: artist, service: service)
+        return PostContent(postMessage: postText, shareImage: shareImage, songTitle: title, artistName: artist, service: service, item: item)
     }
 
     /* 添付画像の取得 */

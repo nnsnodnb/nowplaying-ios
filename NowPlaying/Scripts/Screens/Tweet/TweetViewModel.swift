@@ -22,6 +22,7 @@ struct TweetViewModelInput {
     let addImageButton: Observable<Void>
     let postContent: PostContent
     let textViewText: Observable<String>
+    let viewController: UIViewController
 }
 
 // MARK: - TweetViewModelOutput
@@ -31,6 +32,7 @@ protocol TweetViewModelOutput {
     var isPostable: Observable<Bool> { get }
     var user: Observable<User> { get }
     var postResult: Observable<Void> { get }
+    var newShareImage: Observable<UIImage> { get }
 }
 
 // MARK: - TweetViewModelType
@@ -56,6 +58,7 @@ final class TweetViewModel: TweetViewModelType {
     private let tootStatusAction: Action<(SecretCredential, String, [String]?), Void>
     private let tootUploadMediaAction: Action<(SecretCredential, Data), MastodonMediaResponse>
     private let _postResult = PublishSubject<Void>()
+    private let _newShareImage = PublishSubject<UIImage>()
 
     private var secretCredential: SecretCredential {
         return postUser.value.secretCredentials.first!
@@ -129,7 +132,33 @@ extension TweetViewModel {
 
         inputs.addImageButton
             .subscribe(onNext: {
-                // TODO: アートワークかスクショにする選択するアクションシート (Must: アートワーク)
+                let actionSheet = UIAlertController(title: "画像を追加します", message: "どちらを追加しますか？", preferredStyle: .actionSheet)
+                actionSheet.addAction(UIAlertAction(title: "アートワーク", style: .default) { [unowned self] (_) in
+                    guard let artwork = inputs.postContent.item?.artwork, let image = artwork.image(at: artwork.bounds.size) else {
+                        let error = NSError(domain: "moe.nnsnodnb.NowPlaying", code: 404, userInfo: ["detail": "アートワークが見つかりませんでした"])
+                        self._newShareImage.onError(error)
+                        return
+                    }
+                    self._newShareImage.onNext(image)
+                })
+                actionSheet.addAction(UIAlertAction(title: "再生画面のスクリーンショット", style: .default) { (_) in
+                    let rect = UIScreen.main.bounds
+                    UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
+                    defer { UIGraphicsEndImageContext() }
+                    let context = UIGraphicsGetCurrentContext()!
+
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    appDelegate.window?.rootViewController?.view.layer.render(in: context)
+
+                    guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
+                        let error = NSError(domain: "moe.nnsnodnb.NowPlaying", code: 404, userInfo: ["detail": "アートワークが見つかりませんでした"])
+                        self._newShareImage.onError(error)
+                        return
+                    }
+                    self._newShareImage.onNext(image)
+                })
+                actionSheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+                inputs.viewController.present(actionSheet, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }
@@ -183,5 +212,9 @@ extension TweetViewModel: TweetViewModelOutput {
 
     var postResult: Observable<Void> {
         return _postResult.observeOn(MainScheduler.instance).asObservable()
+    }
+
+    var newShareImage: Observable<UIImage> {
+        return _newShareImage.observeOn(MainScheduler.instance).asObservable()
     }
 }

@@ -34,10 +34,7 @@ final class TweetViewController: UIViewController {
             artworkImageButton.imageView?.contentMode = .scaleAspectFit
             artworkImageButton.contentVerticalAlignment = .fill
             artworkImageButton.contentHorizontalAlignment = .fill
-            if shareImage == nil {
-                artworkImageButton.isHidden = true
-                return
-            }
+            if shareImage == nil { artworkImageButton.isHidden = true }
             artworkImageButton.setImage(shareImage, for: .normal)
             artworkImageButton.rx.tap
                 .observeOn(MainScheduler.instance)
@@ -106,7 +103,8 @@ final class TweetViewController: UIViewController {
         let inputs = TweetViewModelInput(iconImageButton: iconImageButton.rx.tap.asObservable(),
                                          addImageButton: addImageButton.rx.tap.asObservable(),
                                          postContent: postContent,
-                                         textViewText: textView.rx.text.orEmpty.asObservable())
+                                         textViewText: textView.rx.text.orEmpty.asObservable(),
+                                         viewController: self)
         viewModel = TweetViewModel(inputs: inputs)
 
         viewModel.outputs.isPostable
@@ -129,6 +127,20 @@ final class TweetViewController: UIViewController {
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 SVProgressHUD.dismiss()
                 self?.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.newShareImage
+            .subscribe(onNext: { [unowned self] (image) in
+                self.shareImage = image
+                self.artworkImageButton.setImage(image, for: .normal)
+                self.artworkImageButton.isHidden = false
+                self.addImageButton.isHidden = true
+            }, onError: { (error) in
+                let error = error as NSError
+                let detailMessage = error.userInfo["detail"] as! String
+                SVProgressHUD.showError(withStatus: detailMessage)
+                SVProgressHUD.dismiss(withDelay: 1)
             })
             .disposed(by: disposeBag)
 
