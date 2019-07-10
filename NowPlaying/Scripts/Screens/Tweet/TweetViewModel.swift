@@ -30,8 +30,7 @@ protocol TweetViewModelOutput {
 
     var isPostable: Observable<Bool> { get }
     var user: Observable<User> { get }
-    var successRequest: Observable<Void> { get }
-    var failureRequest: Observable<Error> { get }
+    var postResult: Observable<Void> { get }
 }
 
 // MARK: - TweetViewModelType
@@ -55,11 +54,9 @@ final class TweetViewModel: TweetViewModelType {
     private let postMessage: BehaviorRelay<String>
     private let postUser: BehaviorRelay<User>
     private let tweetStatusAction: Action<(SecretCredential, String, Data?), JSON>
-    private let tootStatusOnlyTextAction: Action<(SecretCredential, String), Void>
+    private let tootStatusAction: Action<(SecretCredential, String, [String]?), Void>
     private let tootUploadMediaAction: Action<(SecretCredential, Data), MastodonMediaResponse>
-    private let tootStatusWithMediaAction: Action<(SecretCredential, String, [String]), Void>
-    private let _success = PublishRelay<Void>()
-    private let _failure = PublishRelay<Error>()
+    private let _postResult = PublishSubject<Void>()
 
     private var secretCredential: SecretCredential {
         return postUser.value.secretCredentials.first!
@@ -80,17 +77,13 @@ final class TweetViewModel: TweetViewModelType {
         tweetStatusAction = Action {
             return TwitterPostRequest(credential: $0.0).postTweet(status: $0.1, media: $0.2)
         }
-        // テキストのみのポストアクション (Mastodon)
-        tootStatusOnlyTextAction = Action {
-            return Session.shared.rx.response(MastodonTootRequest(secret: $0.0, status: $0.1))
+        // テキストのみ・メディア込みポストアクション (Mastodon)
+        tootStatusAction = Action {
+            return Session.shared.rx.response(MastodonTootRequest(secret: $0.0, status: $0.1, mediaIDs: $0.2))
         }
         // メディアアップロードアクション (Mastodon)
         tootUploadMediaAction = Action {
             return Session.shared.rx.response(MastodonMediaRequest(secret: $0.0, imageData: $0.1))
-        }
-        // メディアこみのポストアクション (Mastodon)
-        tootStatusWithMediaAction = Action {
-            return Session.shared.rx.response(MastodonTootRequest(secret: $0.0, status: $0.1, mediaIDs: $0.2))
         }
 
         subscribeInputs(inputs)
@@ -107,7 +100,7 @@ final class TweetViewModel: TweetViewModelType {
             tweetStatusAction.inputs.onNext((secretCredential, postMessage.value, nil))
             Analytics.Tweet.postTweetTwitter(withHasImage: false, content: postContent)
         case .mastodon:
-            tootStatusOnlyTextAction.inputs.onNext((secretCredential, postMessage.value))
+            tootStatusAction.inputs.onNext((secretCredential, postMessage.value, nil))
             Analytics.Tweet.postTootMastodon(withHasImage: false, content: postContent)
         }
     }
@@ -116,14 +109,14 @@ final class TweetViewModel: TweetViewModelType {
         switch postContent.service {
         case .twitter:
             guard let imageData = image.pngData() else {
-                _failure.accept(NSError(domain: "moe.nnsnodnb.NowPlaying", code: 400, userInfo: ["detail": "画像が見つかりません"]))
+                _postResult.onError(NSError(domain: "moe.nnsnodnb.NowPlaying", code: 400, userInfo: ["detail": "画像が見つかりません"]))
                 return
             }
             tweetStatusAction.inputs.onNext((secretCredential, postMessage.value, imageData))
             Analytics.Tweet.postTweetTwitter(withHasImage: true, content: postContent)
         case .mastodon:
             guard let imageData = image.pngData() else {
-                _failure.accept(NSError(domain: "moe.nnsnodnb.NowPlaying", code: 400, userInfo: ["detail": "画像が見つかりません"]))
+                _postResult.onError(NSError(domain: "moe.nnsnodnb.NowPlaying", code: 400, userInfo: ["detail": "画像が見つかりません"]))
                 return
             }
             tootUploadMediaAction.inputs.onNext((secretCredential, imageData))
@@ -158,34 +151,29 @@ extension TweetViewModel {
         tweetStatusAction.elements
             .map { _ in }
             .subscribe(onNext: { [weak self] in
-                self?._success.accept(())
+                self?._postResult.onNext(())
+                self?._postResult.onCompleted()
             }, onError: { [weak self] (error) in
-                self?._failure.accept(error)
+                self?._postResult.onError(error)
             })
             .disposed(by: disposeBag)
 
-        tootStatusOnlyTextAction.elements
+        tootStatusAction.elements
+            .map { _ in }
             .subscribe(onNext: { [weak self] in
-                self?._success.accept(())
+                self?._postResult.onNext(())
+                self?._postResult.onCompleted()
             }, onError: { [weak self] (error) in
-                self?._failure.accept(error)
+                self?._postResult.onError(error)
             })
             .disposed(by: disposeBag)
 
         tootUploadMediaAction.elements
             .subscribe(onNext: { [weak self] (response) in
                 guard let wself = self else { return }
-                wself.tootStatusWithMediaAction.inputs.onNext((wself.secretCredential, wself.postMessage.value, [response.mediaID]))
+                wself.tootStatusAction.inputs.onNext((wself.secretCredential, wself.postMessage.value, [response.mediaID]))
             }, onError: { [weak self] (error) in
-                self?._failure.accept(error)
-            })
-            .disposed(by: disposeBag)
-
-        tootStatusWithMediaAction.elements
-            .subscribe(onNext: { [weak self] in
-                self?._success.accept(())
-            }, onError: { [weak self] (error) in
-                self?._failure.accept(error)
+                self?._postResult.onError(error)
             })
             .disposed(by: disposeBag)
     }
@@ -206,11 +194,7 @@ extension TweetViewModel: TweetViewModelOutput {
         return postUser.asObservable()
     }
 
-    var successRequest: Observable<Void> {
-        return _success.observeOn(MainScheduler.instance).asObservable()
-    }
-
-    var failureRequest: Observable<Error> {
-        return _failure.observeOn(MainScheduler.instance).asObservable()
+    var postResult: Observable<Void> {
+        return _postResult.observeOn(MainScheduler.instance).asObservable()
     }
 }

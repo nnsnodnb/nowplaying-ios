@@ -120,19 +120,14 @@ final class TweetViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
-        viewModel.outputs.successRequest
-            .subscribe(onNext: { [weak self] (_) in
+        viewModel.outputs.postResult
+            .subscribe(onNext: { [weak self] in
                 SVProgressHUD.dismiss()
-                self?.textView.resignFirstResponder()
                 self?.dismiss(animated: true, completion: nil)
-            })
-            .disposed(by: disposeBag)
-
-        viewModel.outputs.failureRequest
-            .subscribe(onNext: { [weak self] (error) in
-                SVProgressHUD.dismiss()
+            }, onError: { [weak self] (error) in
                 let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                SVProgressHUD.dismiss()
                 self?.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
