@@ -16,6 +16,7 @@ import UIKit
 final class AccountManageViewController: UIViewController {
 
     private let service: Service
+    private let screenType: ScreenType
     private let disposeBag = DisposeBag()
 
     private var viewModel: AccountManageViewModelType!
@@ -64,8 +65,9 @@ final class AccountManageViewController: UIViewController {
 
     // MARK: - Initializer
 
-    init(service: Service) {
+    init(service: Service, screenType: ScreenType) {
         self.service = service
+        self.screenType = screenType
         super.init(nibName: R.nib.accountManageViewController.name, bundle: R.nib.accountManageViewController.bundle)
     }
 
@@ -169,5 +171,13 @@ extension AccountManageViewController: SFSafariViewControllerDelegate {
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         SVProgressHUD.showInfo(withStatus: "ログインをキャンセルしました")
         SVProgressHUD.dismiss(withDelay: 1)
+    }
+}
+
+extension AccountManageViewController {
+
+    enum ScreenType {
+        case settings
+        case selection
     }
 }
