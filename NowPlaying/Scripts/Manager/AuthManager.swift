@@ -63,7 +63,6 @@ extension AuthManager {
         UserDefaults.removeObject(forKey: .isMastodonLogin)
     }
 
-    @available(iOS, deprecated: 2.3.1)
     func logout(completion: () -> Void) {
         try? Auth.auth().signOut()
         keychain[.authToken] = nil
@@ -71,7 +70,6 @@ extension AuthManager {
         completion()
     }
 
-    @available(iOS, deprecated: 2.3.1)
     @discardableResult
     func mastodonLogout() -> Bool {
         do {
