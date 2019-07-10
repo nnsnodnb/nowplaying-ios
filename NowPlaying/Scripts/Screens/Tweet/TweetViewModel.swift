@@ -57,8 +57,8 @@ final class TweetViewModel: TweetViewModelType {
     private let tweetStatusOnlyTextAction: Action<(SecretCredential, String), JSON>
     private let tweetStatusWithMediaAction: Action<(SecretCredential, String, Data), JSON>
     private let tootStatusOnlyTextAction: Action<(SecretCredential, String), Void>
-    // TODO: Mastodonへの画像つき投稿
-//    private let tootStatusWithMediaAction: Action<(SecretCredential, String,)>
+    private let tootUploadMediaAction: Action<(SecretCredential, Data), MastodonMediaResponse>
+    private let tootStatusWithMediaAction: Action<(SecretCredential, String, [String]), Void>
     private let _success = PublishRelay<Void>()
     private let _failure = PublishRelay<Error>()
 
@@ -89,7 +89,14 @@ final class TweetViewModel: TweetViewModelType {
         tootStatusOnlyTextAction = Action {
             return Session.shared.rx.response(MastodonTootRequest(secret: $0.0, status: $0.1))
         }
-        // TODO: メディアこみのポストアクション (Mastodon)
+        // メディアアップロードアクション (Mastodon)
+        tootUploadMediaAction = Action {
+            return Session.shared.rx.response(MastodonMediaRequest(secret: $0.0, imageData: $0.1))
+        }
+        // メディアこみのポストアクション (Mastodon)
+        tootStatusWithMediaAction = Action {
+            return Session.shared.rx.response(MastodonTootRequest(secret: $0.0, status: $0.1, mediaIDs: $0.2))
+        }
 
         subscribeInputs(inputs)
         subscribeAction()
@@ -121,17 +128,10 @@ final class TweetViewModel: TweetViewModelType {
             Analytics.Tweet.postTweetTwitter(withHasImage: true, content: postContent)
         case .mastodon:
             guard let imageData = image.pngData() else {
-                _failure.accept(NSError(domain: "画像が見つかりませんでした", code: 400, userInfo: nil))
+                _failure.accept(NSError(domain: "moe.nnsnodnb.NowPlaying", code: 400, userInfo: ["detail": "画像が見つかりません"]))
                 return
             }
-            // FIXME: User オブジェクトを取得する
-//            Session.shared.rx.response(MastodonMediaRequest(imageData: imageData))
-//                .subscribe(onSuccess: { [weak self] (response) in
-//                    self?.tootWithMediaID(response.mediaID)
-//                }, onError: { [weak self] (error) in
-//                    self?._failure.accept(error)
-//                })
-//                .disposed(by: disposeBag)
+            tootUploadMediaAction.inputs.onNext((secretCredential, imageData))
             Analytics.Tweet.postTootMastodon(withHasImage: true, content: postContent)
         }
     }
@@ -185,17 +185,23 @@ extension TweetViewModel {
                 self?._failure.accept(error)
             })
             .disposed(by: disposeBag)
-    }
 
-    private func tootWithMediaID(_ mediaID: String) {
-        // FIXME: User オブジェクトを取得する
-//        Session.shared.rx.response(MastodonTootRequest(status: postMessage.value, mediaIDs: [mediaID]))
-//            .subscribe(onSuccess: { [weak self] (_) in
-//                self?._success.accept(())
-//            }, onError: { [weak self] (error) in
-//                self?._failure.accept(error)
-//            })
-//            .disposed(by: disposeBag)
+        tootUploadMediaAction.elements
+            .subscribe(onNext: { [weak self] (response) in
+                guard let wself = self else { return }
+                wself.tootStatusWithMediaAction.inputs.onNext((wself.secretCredential, wself.postMessage.value, [response.mediaID]))
+            }, onError: { [weak self] (error) in
+                self?._failure.accept(error)
+            })
+            .disposed(by: disposeBag)
+
+        tootStatusWithMediaAction.elements
+            .subscribe(onNext: { [weak self] in
+                self?._success.accept(())
+            }, onError: { [weak self] (error) in
+                self?._failure.accept(error)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
