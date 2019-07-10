@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Nuke
 
 final class MastodonDomainTableViewCell: UITableViewCell {
 
@@ -17,9 +16,7 @@ final class MastodonDomainTableViewCell: UITableViewCell {
 
     var instance: Instance! {
         didSet {
-            if let url = instance.thumbnailURL {
-                loadImage(with: url, into: thumbnailImageView)
-            }
+            thumbnailImageView.setImage(with: instance.thumbnailURL)
             instanceNameLabel.text = instance.name
             instanceDescriptionLabel.text = instance.info?.shortDescription
         }

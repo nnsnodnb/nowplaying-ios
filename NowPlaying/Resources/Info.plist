@@ -29,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>twitterkit-[CONSUMER_KEY]</string>
+				<string>swifter-$(TWITTER_CONSUMER_KEY)</string>
 			</array>
 		</dict>
 		<dict>
@@ -46,7 +46,7 @@
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
-		<string>[FABRIC_API_KEY]</string>
+		<string>$(FABRIC_API_KEY)</string>
 		<key>Kits</key>
 		<array>
 			<dict>
@@ -58,7 +58,7 @@
 		</array>
 	</dict>
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-hoge~foo</string>
+	<string>$(FIREBASE_ADMOB_APP_ID)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>twitter</string>
@@ -84,6 +84,19 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>LSEnvironment</key>
+	<dict>
+		<key>TWITTER_CONSUMER_KEY</key>
+		<string>$(TWITTER_CONSUMER_KEY)</string>
+		<key>TWITTER_CONSUMER_SECRET</key>
+		<string>$(TWITTER_CONSUMER_SECRET)</string>
+		<key>FIREBASE_ADMOB_APP_ID</key>
+		<string>$(FIREBASE_ADMOB_APP_ID)</string>
+		<key>FIREBASE_ADMOB_BANNER_ID</key>
+		<string>$(FIREBASE_ADMOB_BANNER_ID)</string>
+		<key>MASTODON_INSTANCES_API_TOKEN</key>
+		<string>$(MASTODON_INSTANCES_API_TOKEN)</string>
+	</dict>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

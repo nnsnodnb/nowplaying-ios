@@ -17,6 +17,5 @@ target 'NowPlaying' do
   pod 'NSURL+QueryDictionary'
   pod 'R.swift'
   pod 'SwiftLint'
-  pod 'TwitterKit'
 
 end

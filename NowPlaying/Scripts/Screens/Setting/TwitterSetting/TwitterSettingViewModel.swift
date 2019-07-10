@@ -105,8 +105,7 @@ extension TwitterSettingViewModel {
     private func configureCells() {
         form
             +++ Section("Twitter")
-                <<< configureLogin()
-                <<< configureLogout()
+                <<< configureAccounts()
                 <<< configureWithImage()
                 <<< configureWithImageType()
                 <<< configurePurchase()
@@ -117,44 +116,12 @@ extension TwitterSettingViewModel {
                 <<< configureFormatReset()
     }
 
-    private func configureLogin() -> NowPlayingButtonRow {
+    private func configureAccounts() -> NowPlayingButtonRow {
         return NowPlayingButtonRow {
-            $0.title = "ログイン"
-            $0.tag = "twitter_login"
-            $0.hidden = Condition(booleanLiteral: TwitterClient.shared.isLogin)
-        }.onCellSelection { (_, _) in
-            SVProgressHUD.show()
-            AuthManager.shared.login { [weak self] (error) in
-                if let error = error {
-                    SVProgressHUD.showError(withStatus: error.localizedDescription)
-                    SVProgressHUD.dismiss(withDelay: 0.5)
-                    return
-                }
-                SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-                DispatchQueue.main.async {
-                    self?.changeTwitterLogState(didLogin: true)
-                }
-            }
-            Analytics.TwitterSetting.login()
-        }
-    }
-
-    private func configureLogout() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
-            $0.title = "ログアウト"
-            $0.tag = "twitter_logout"
-            $0.hidden = Condition(booleanLiteral: !TwitterClient.shared.isLogin)
-        }.onCellSelection { [weak self] (_, _) in
-            SVProgressHUD.show()
-            AuthManager.shared.logout {
-                SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-                DispatchQueue.main.async {
-                    self?.changeTwitterLogState(didLogin: false)
-                }
-            }
-            Analytics.TwitterSetting.logout()
+            $0.title = "アカウント管理"
+        }.onCellSelection { [unowned self] (_, _) in
+            let viewController = AccountManageViewController(service: .twitter, screenType: .settings)
+            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
         }
     }
 
@@ -244,7 +211,7 @@ extension TwitterSettingViewModel {
             alert.addAction(UIAlertAction(title: "リセット", style: .destructive) { [unowned self] (_) in
                 guard let tweetFormatRow: TextAreaRow = self.form.rowBy(tag: "tweet_format") else { return }
                 DispatchQueue.main.async {
-                    tweetFormatRow.baseValue = defaultPostFormat
+                    tweetFormatRow.baseValue = String.defaultPostFormat
                     tweetFormatRow.updateCell()
                 }
             })
@@ -265,16 +232,6 @@ extension TwitterSettingViewModel {
         autoTweetSwitchRow.hidden = Condition(booleanLiteral: false)
         purchaseButtonRow.evaluateHidden()
         autoTweetSwitchRow.evaluateHidden()
-    }
-
-    private func changeTwitterLogState(didLogin: Bool) {
-        if TwitterClient.shared.isLogin != didLogin { return }
-        guard let loginRow: NowPlayingButtonRow = form.rowBy(tag: "twitter_login"),
-            let logoutRow: NowPlayingButtonRow = form.rowBy(tag: "twitter_logout") else { return }
-        loginRow.hidden = Condition(booleanLiteral: didLogin)
-        logoutRow.hidden = Condition(booleanLiteral: !didLogin)
-        loginRow.evaluateHidden()
-        logoutRow.evaluateHidden()
     }
 }
 

@@ -113,7 +113,7 @@ extension SettingViewModel {
             +++ Section("アプリについて")
                 <<< configureDeveloper()
                 <<< configureSourceCode()
-                <<< configureReportBugs()
+                <<< configureFeatureReportBugs()
                 <<< configureHideAdmobPurchase()
                 <<< configureReview()
     }
@@ -156,11 +156,12 @@ extension SettingViewModel {
         }
     }
 
-    private func configureReportBugs() -> NowPlayingButtonRow {
+    private func configureFeatureReportBugs() -> NowPlayingButtonRow {
         return NowPlayingButtonRow {
-            $0.title = "バグ報告"
+            $0.title = "機能要望・バグ報告"
         }.onCellSelection { [unowned self] (_, _) in
-            let safariViewController = SFSafariViewController(url: URL(string: "https://goo.gl/forms/Ve9hPalUJD3DQW5y2")!)
+            let safariViewController = SFSafariViewController(url: URL(string: "https://forms.gle/gE5ms3bEM5A85kdVA")!)
+            safariViewController.dismissButtonStyle = .close
             self.inputs.viewController.present(safariViewController, animated: true, completion: nil)
         }
     }

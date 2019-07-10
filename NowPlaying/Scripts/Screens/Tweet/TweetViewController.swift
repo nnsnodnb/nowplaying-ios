@@ -12,7 +12,6 @@ import RxCocoa
 import RxKeyboard
 import RxSwift
 import SVProgressHUD
-import TwitterKit
 import UIKit
 
 final class TweetViewController: UIViewController {
@@ -20,42 +19,37 @@ final class TweetViewController: UIViewController {
     @IBOutlet private weak var textView: UITextView! {
         didSet {
             textView.becomeFirstResponder()
-            textView.text = postContent.postMessage
         }
     }
-    @IBOutlet private weak var textViewHeight: NSLayoutConstraint!
-    @IBOutlet private weak var artworkImageButton: UIButton! {
+    @IBOutlet private weak var textViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var iconImageButton: UIButton! {
+        didSet {
+            iconImageButton.imageView?.contentMode = .scaleAspectFit
+            iconImageButton.contentVerticalAlignment = .fill
+            iconImageButton.contentHorizontalAlignment = .fill
+        }
+    }
+    @IBOutlet private weak var artworkImageButton: ShadowButton! {
         didSet {
             artworkImageButton.imageView?.contentMode = .scaleAspectFit
-            if shareImage == nil {
-                artworkImageButton.isHidden = true
-                return
-            }
-            artworkImageButton.alpha = 0
-            artworkImageButton.imageView?.backgroundColor = .clear
+            artworkImageButton.contentVerticalAlignment = .fill
+            artworkImageButton.contentHorizontalAlignment = .fill
+            artworkImageButton.isHidden = shareImage == nil
             artworkImageButton.setImage(shareImage, for: .normal)
             artworkImageButton.rx.tap
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { [unowned self] (_) in
-                    self.textView.resignFirstResponder()
                     let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                    sheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel) { [unowned self] (_) in
-                        self.forcusToTextView()
-                    })
+                    sheet.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
                     let previewAction = UIAlertAction(title: "プレビュー", style: .default) { [unowned self] (_) in
                         self.showPreviewer()
                     }
                     sheet.addAction(previewAction)
-                    sheet.addAction(UIAlertAction(title: "添付画像を削除", style: .destructive) { [weak self] (_) in
-                        self?.shareImage = nil
-                        UIView.animate(withDuration: 0.3, animations: {
-                            self?.artworkImageButton.alpha = 0.0
-                        }, completion: { (_) in
-                            self?.artworkImageButton.setImage(nil, for: .normal)
-                            self?.artworkImageButtonHeight.constant = 0
-                            self?.resizeTextView()
-                            Analytics.logEvent("delete_image", parameters: ["type": "action"])
-                        })
+                    sheet.addAction(UIAlertAction(title: "添付画像を削除", style: .destructive) { [unowned self] (_) in
+                        self.shareImage = nil
+                        self.artworkImageButton.isHidden = true
+                        self.addImageButton.isHidden = false
+                        Analytics.logEvent("delete_image", parameters: ["type": "action"])
                     })
                     sheet.preferredAction = previewAction
                     self.present(sheet, animated: true, completion: nil)
@@ -63,20 +57,19 @@ final class TweetViewController: UIViewController {
                 .disposed(by: disposeBag)
         }
     }
-    @IBOutlet private weak var artworkImageButtonTopMargin: NSLayoutConstraint!
-    @IBOutlet private weak var artworkImageButtonHeight: NSLayoutConstraint! {
+    @IBOutlet private weak var addImageButton: UIButton! {
         didSet {
-            if shareImage == nil { artworkImageButtonHeight.constant = 0 }
+            addImageButton.isHidden = shareImage != nil
         }
     }
 
     private let postContent: PostContent
     private let disposeBag = DisposeBag()
+    private let initialTextViewBottomConstant: CGFloat = 14
 
-    private var keyboardHeight: CGFloat = 0
-    private var isMastodon: Bool {
+    private lazy var isMastodon: Bool = {
         return postContent.service == .mastodon
-    }
+    }()
     private var shareImage: UIImage?
     private var viewModel: TweetViewModelType!
 
@@ -98,47 +91,24 @@ final class TweetViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationBar()
 
-        RxKeyboard.instance.visibleHeight
-            .drive(onNext: { [weak self] (height) in
+        textView.text = postContent.postMessage
+
+        RxKeyboard.instance.frame
+            .drive(onNext: { [weak self] (frame) in
                 guard let wself = self else { return }
-                wself.keyboardHeight = height
-                wself.textViewHeight.constant = UIScreen.main.bounds.size.height - height - wself.artworkImageButtonHeight.constant - (wself.artworkImageButtonTopMargin.constant * 2)
+                wself.textViewBottomConstraint.constant = wself.initialTextViewBottomConstant + frame.size.height
             })
             .disposed(by: disposeBag)
 
-        RxKeyboard.instance.isHidden.asObservable()
-            .take(1)
-            .subscribe(onNext: { [weak self] (_) in
-                UIView.animate(withDuration: 0.5) {
-                    self?.artworkImageButton.alpha = 1
-                }
-            })
-            .disposed(by: disposeBag)
-
-        let inputs = TweetViewModelInput(postContent: postContent,
-                                         textViewText: textView.rx.text.orEmpty.asObservable())
+        let inputs = TweetViewModelInput(iconImageButton: iconImageButton.rx.tap.asObservable(),
+                                         addImageButton: addImageButton.rx.tap.asObservable(),
+                                         postContent: postContent,
+                                         textViewText: textView.rx.text.orEmpty.asObservable(),
+                                         viewController: self)
         viewModel = TweetViewModel(inputs: inputs)
 
-        viewModel.outputs.isPostable
-            .bind(to: navigationItem.rightBarButtonItem!.rx.isEnabled)
-            .disposed(by: disposeBag)
-
-        viewModel.outputs.successRequest
-            .subscribe(onNext: { [weak self] (_) in
-                SVProgressHUD.dismiss()
-                self?.textView.resignFirstResponder()
-                self?.dismiss(animated: true, completion: nil)
-            })
-            .disposed(by: disposeBag)
-
-        viewModel.outputs.failureRequest
-            .subscribe(onNext: { [weak self] (error) in
-                SVProgressHUD.dismiss()
-                let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self?.present(alert, animated: true, completion: nil)
-            })
-            .disposed(by: disposeBag)
+        subscribeViewModel()
+        viewModel.getCurrentAccount()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -180,26 +150,57 @@ final class TweetViewController: UIViewController {
         postButton.rx.tap
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] (_) in
-                if let shareImage = self?.shareImage {
-                    self?.viewModel.preparePost(withImage: shareImage)
-                } else {
-                    self?.viewModel.preparePost()
-                }
+                self?.textView.resignFirstResponder()
+                SVProgressHUD.show()
+                self?.viewModel.preparePost(image: self?.shareImage)
             })
             .disposed(by: disposeBag)
         navigationItem.rightBarButtonItem = postButton
     }
 
-    private func resizeTextView() {
-        textViewHeight.constant = UIScreen.main.bounds.size.height - keyboardHeight - artworkImageButtonHeight.constant - (artworkImageButtonTopMargin.constant * 2)
-        UIView.animate(withDuration: 0.5) { [unowned self] in
-            self.artworkImageButton.alpha = 1
-        }
-    }
-
     private func showPreviewer() {
         guard let shareImage = self.shareImage else { return }
+        textView.resignFirstResponder()
         let viewController = ArtworkPreviewViewController(image: shareImage, parent: self)
         present(viewController, animated: true, completion: nil)
+    }
+
+    private func subscribeViewModel() {
+        viewModel.outputs.isPostable
+            .bind(to: navigationItem.rightBarButtonItem!.rx.isEnabled)
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.user
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { (user) in
+                self.iconImageButton.setImage(with: user.iconURL)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.postResult
+            .subscribe(onNext: { [weak self] in
+                SVProgressHUD.dismiss()
+                self?.dismiss(animated: true, completion: nil)
+                }, onError: { [weak self] (error) in
+                    let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    SVProgressHUD.dismiss()
+                    self?.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.newShareImage
+            .subscribe(onNext: { [unowned self] (image) in
+                self.shareImage = image
+                self.artworkImageButton.setImage(image, for: .normal)
+                self.artworkImageButton.isHidden = false
+                self.addImageButton.isHidden = true
+                }, onError: { (error) in
+                    let error = error as NSError
+                    let detailMessage = error.userInfo["detail"] as! String
+                    SVProgressHUD.showError(withStatus: detailMessage)
+                    SVProgressHUD.dismiss(withDelay: 1)
+            })
+            .disposed(by: disposeBag)
     }
 }
