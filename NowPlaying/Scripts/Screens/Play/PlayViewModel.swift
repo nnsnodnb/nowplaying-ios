@@ -190,14 +190,6 @@ extension PlayViewModel {
     }
 
     private func setupActionObserver() {
-        let collection = [tweetStatusAction.executing, tootStatusAction.executing, tootUploadMediaAction.executing]
-        Observable<Bool>
-            .combineLatest(collection) { $0.first(where: { $0 }) ?? false }
-            .subscribe(onNext: { (executing) in
-                SVProgressHUD.setDefaultMaskType(executing ? .black : .none)
-            })
-            .disposed(by: disposeBag)
-
         tweetStatusAction.elements
             .map { _ in }
             .subscribe(onNext: {

@@ -16,9 +16,10 @@ import UIKit
 
 struct TwitterSessionControl {
 
+    private let swifter = Swifter(consumerKey: .twitterConsumerKey, consumerSecret: .twitterConsumerSecret)
+
     func tryAuthorizeSSO() -> Observable<Credential.OAuthAccessToken> {
-        return .create { (observer) -> Disposable in
-            let swifter = Swifter(consumerKey: .twitterConsumerKey, consumerSecret: .twitterConsumerSecret)
+        return .create { [swifter] (observer) -> Disposable in
             swifter.authorizeSSO(success: {
                 observer.onNext($0)
                 observer.onCompleted()
@@ -30,8 +31,7 @@ struct TwitterSessionControl {
     }
 
     func tryAuthorizeBrowser(presenting: UIViewController) -> Observable<Credential.OAuthAccessToken> {
-        return .create { (observer) -> Disposable in
-            let swifter = Swifter(consumerKey: .twitterConsumerKey, consumerSecret: .twitterConsumerSecret)
+        return .create { [swifter] (observer) -> Disposable in
             let callbackURL = URL(string: "nowplaying-ios-nnsnodnb://twitter/oauth/success")!
             swifter.authorize(
                 withCallback: callbackURL, presentingFrom: presenting, safariDelegate: presenting as? SFSafariViewControllerDelegate,
