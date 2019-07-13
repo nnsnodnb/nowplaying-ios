@@ -6,6 +6,7 @@
 //  Copyright © 2018年 Oka Yuya. All rights reserved.
 //
 
+import AutoScrollLabel
 import MediaPlayer
 import NotificationCenter
 import RxCocoa
