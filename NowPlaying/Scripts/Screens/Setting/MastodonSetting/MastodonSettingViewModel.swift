@@ -8,6 +8,7 @@
 
 import APIKit
 import Eureka
+import Feeder
 import FirebaseAnalytics
 import Foundation
 import KeychainAccess
@@ -60,18 +61,6 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
         error = _error.observeOn(MainScheduler.instance).asObservable()
 
         configureCells()
-
-        UserDefaults.standard.rx
-            .observe(String.self, UserDefaultsKey.mastodonHostname.rawValue)
-            .compactMap { $0 }
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                guard let wself = self,
-                    let domainRow = wself.form.rowBy(tag: "mastodon_domain") as? MastodonSettingDomainRow else { return }
-                domainRow.value = $0
-                domainRow.updateCell()
-            })
-            .disposed(by: disposeBag)
     }
 }
 
@@ -116,6 +105,8 @@ extension MastodonSettingViewModel {
             $0.title = "投稿時の画像"
             $0.options = ["アートワークのみ", "再生画面のスクリーンショット"]
             $0.value = UserDefaults.string(forKey: .tootWithImageType)!
+        }.onCellSelection { (_, _) in
+            Feeder.Impact(.light).impactOccurred()
         }.onChange {
             guard let value = $0.value, let type = WithImageType(rawValue: value) else { return }
             UserDefaults.set(type.rawValue, forKey: .tootWithImageType)
@@ -137,6 +128,7 @@ extension MastodonSettingViewModel {
             self.inputs.viewController.present(alert, animated: true) {
                 UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
             }
+            Feeder.Impact(.heavy).impactOccurred()
         }
     }
 
@@ -173,6 +165,7 @@ extension MastodonSettingViewModel {
                 }
             })
             self.inputs.viewController.present(alert, animated: true, completion: nil)
+            Feeder.Notification(.warning).notificationOccurred()
         }
     }
 }

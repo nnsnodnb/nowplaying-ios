@@ -111,6 +111,7 @@
 		CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39020B9A176009C50ED /* R.generated.swift */; };
 		CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */; };
 		CFD6B2E022B0332B00E5F2FC /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DF22B0332B00E5F2FC /* Requests.swift */; };
+		CFDFAD1A22D972150090CA9E /* Feeder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDFAD1922D972150090CA9E /* Feeder.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -252,6 +253,7 @@
 		CFD1D39020B9A176009C50ED /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonMediaRequest.swift; sourceTree = "<group>"; };
 		CFD6B2DF22B0332B00E5F2FC /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
+		CFDFAD1922D972150090CA9E /* Feeder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Feeder.framework; path = Carthage/Build/iOS/Feeder.framework; sourceTree = "<group>"; };
 		DBACA1B5A5D60EB389AAE13C /* Pods-NowPlaying.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.debug.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -260,6 +262,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFDFAD1A22D972150090CA9E /* Feeder.framework in Frameworks */,
 				CF232DA922CC93E200820C1B /* SwifteriOS.framework in Frameworks */,
 				CF6F567022CB168200F517E9 /* RealmSwift.framework in Frameworks */,
 				CF6F567122CB168200F517E9 /* Realm.framework in Frameworks */,
@@ -478,6 +481,7 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CFDFAD1922D972150090CA9E /* Feeder.framework */,
 				CF232DA822CC93E100820C1B /* SwifteriOS.framework */,
 				CF6F566F22CB168200F517E9 /* Realm.framework */,
 				CF6F566E22CB168000F517E9 /* RealmSwift.framework */,

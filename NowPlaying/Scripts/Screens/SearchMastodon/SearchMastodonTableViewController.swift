@@ -6,6 +6,7 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
+import Feeder
 import Nuke
 import RxCocoa
 import RxSwift
@@ -55,6 +56,7 @@ final class SearchMastodonTableViewController: UITableViewController {
                 })
                 alert.preferredAction = alert.actions.last
                 self.present(alert, animated: true, completion: nil)
+                Feeder.Impact(.light).impactOccurred()
             })
             .disposed(by: disposeBag)
 

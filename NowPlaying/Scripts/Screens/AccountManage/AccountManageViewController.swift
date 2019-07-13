@@ -6,6 +6,7 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
+import Feeder
 import RealmSwift
 import RxCocoa
 import RxSwift
@@ -39,6 +40,7 @@ final class AccountManageViewController: UIViewController {
             tableView.rx.modelSelected(User.self)
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { [unowned self] in
+                    Feeder.Selection().selectionChanged()
                     switch self.screenType {
                     case .settings:
                         if !$0.isDefault { $0.isDefaultAccount = true }
@@ -64,6 +66,7 @@ final class AccountManageViewController: UIViewController {
                         .subscribe(onNext: { [weak self] (_) in
                             self?.removeUserData(user: user)
                         }, onError: { (error) in
+                            Feeder.Notification(.error).notificationOccurred()
                             print(error)
                             SVProgressHUD.showError(withStatus: "ログアウトに失敗しました")
                             SVProgressHUD.dismiss(withDelay: 1)
@@ -117,10 +120,13 @@ final class AccountManageViewController: UIViewController {
                     }
                     fallthrough
                 case .success(let user):
+                    Feeder.Notification(.success).notificationOccurred()
                     SVProgressHUD.showSuccess(withStatus: "\(user.screenName)にログインしました")
                 case .failure:
+                    Feeder.Notification(.error).notificationOccurred()
                     SVProgressHUD.showError(withStatus: "ログインに失敗しました")
                 case .duplicate:
+                    Feeder.Notification(.warning).notificationOccurred()
                     SVProgressHUD.showInfo(withStatus: "すでにログインされているアカウントです")
                 }
                 SVProgressHUD.dismiss(withDelay: 1, completion: completion)
@@ -153,6 +159,7 @@ final class AccountManageViewController: UIViewController {
     private func removeUserData(user: User) {
         _ = viewModel.removeUserData(user)
             .subscribe(onCompleted: {
+                Feeder.Impact(.medium).impactOccurred()
                 SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
                 SVProgressHUD.dismiss(withDelay: 1) { [weak self] in
                     _ = self?.viewModel.applyNewDefaultAccount()
@@ -183,6 +190,7 @@ extension AccountManageViewController: UITableViewDelegate {
 extension AccountManageViewController: SFSafariViewControllerDelegate {
 
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        Feeder.Impact(.medium).impactOccurred()
         SVProgressHUD.showInfo(withStatus: "ログインをキャンセルしました")
         SVProgressHUD.dismiss(withDelay: 1)
     }
