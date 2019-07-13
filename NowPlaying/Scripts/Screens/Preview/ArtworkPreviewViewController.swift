@@ -6,9 +6,9 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
-import UIKit
 import RxSwift
 import SnapKit
+import UIKit
 
 final class ArtworkPreviewViewController: UIViewController {
 

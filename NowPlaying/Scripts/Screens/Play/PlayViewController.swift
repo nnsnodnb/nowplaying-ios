@@ -7,6 +7,7 @@
 //
 
 import AutoScrollLabel
+import Feeder
 import FirebaseAnalytics
 import Foundation
 import GoogleMobileAds

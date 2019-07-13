@@ -8,6 +8,7 @@
 
 import Action
 import APIKit
+import Feeder
 import RealmSwift
 import RxCocoa
 import RxSwift
@@ -133,6 +134,7 @@ final class AccountManageViewModel: AccountManageViewModelType {
             let alert = UIAlertController(title: "デフォルトアカウント変更", message: "\(user.name)に設定されました", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             observer.onNext(alert)
+            Feeder.Selection().selectionChanged()
             observer.onCompleted()
 
             return Disposables.create()
@@ -147,6 +149,7 @@ extension AccountManageViewModel {
     private func subscribeBarButtonItems(inputs: AccountManageViewModelInput) {
         inputs.addAccountBarButtonItem.rx.tap
             .subscribe(onNext: { [unowned self] in
+                Feeder.Impact(.light).impactOccurred()
                 switch inputs.service {
                 case .twitter:
                     SVProgressHUD.show()
