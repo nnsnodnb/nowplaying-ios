@@ -2,7 +2,7 @@
 
 [![Swift 5.0.1](https://img.shields.io/badge/language-Swift%205.0.1-orange.svg)](https://developer.apple.com/swift)
 ![GitHub](https://img.shields.io/github/license/nnsnodnb/nowplaying-ios.svg)
-[![Build Status](https://app.bitrise.io/app/46e890b35211fd70/status.svg?token=eG6YD8x7X8SU2glJTGMMGg&branch=deploygate)](https://app.bitrise.io/app/46e890b35211fd70)
+[![Build Status](https://app.bitrise.io/app/8eca75fbd7da8604/status.svg?token=yseu5iRESgLabX5CHEjvWg&branch=deploygate)](https://app.bitrise.io/app/8eca75fbd7da8604)
 
 NowPlaying tweet & toot application for iOS.
 
