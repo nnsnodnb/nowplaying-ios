@@ -19,3 +19,10 @@ target 'NowPlaying' do
   pod 'SwiftLint'
 
 end
+
+target 'TodayExtension' do
+  use_frameworks!
+
+  pod 'AutoScrollLabel'
+
+end

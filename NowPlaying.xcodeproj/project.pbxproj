@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		71D4EBFB1D37A5D062275A9E /* Pods_TodayExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE0B1AC730EB95C2F953F2B /* Pods_TodayExtension.framework */; };
 		AE3ECA914F1F041B6A7FC973 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7641B8EA4AF056D456EAFF0D /* Pods_NowPlaying.framework */; };
 		CF01C1D921023F1700DC1901 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF01C1D821023F1700DC1901 /* SnapKit.framework */; };
 		CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF0FA219206D3C3200647317 /* KeychainAccess.framework */; };
@@ -112,6 +113,7 @@
 		CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */; };
 		CFD6B2E022B0332B00E5F2FC /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DF22B0332B00E5F2FC /* Requests.swift */; };
 		CFDFAD1A22D972150090CA9E /* Feeder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDFAD1922D972150090CA9E /* Feeder.framework */; };
+		CFDFAD1D22DC17460090CA9E /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDFAD1C22DC17460090CA9E /* TodayViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -140,7 +142,10 @@
 
 /* Begin PBXFileReference section */
 		5C7BC8ED1C642ABDF0F723D2 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
+		72032E16E3E4DEED34DD85B5 /* Pods-TodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TodayExtension.debug.xcconfig"; path = "Target Support Files/Pods-TodayExtension/Pods-TodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		7641B8EA4AF056D456EAFF0D /* Pods_NowPlaying.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NowPlaying.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		79878F5C07923848E5C354DB /* Pods-TodayExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TodayExtension.release.xcconfig"; path = "Target Support Files/Pods-TodayExtension/Pods-TodayExtension.release.xcconfig"; sourceTree = "<group>"; };
+		8CE0B1AC730EB95C2F953F2B /* Pods_TodayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TodayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF01C1D821023F1700DC1901 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		CF0FA219206D3C3200647317 /* KeychainAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainAccess.framework; path = Carthage/Build/iOS/KeychainAccess.framework; sourceTree = "<group>"; };
 		CF0FA21B206D4D5A00647317 /* PaymentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaymentManager.swift; path = Manager/PaymentManager.swift; sourceTree = "<group>"; };
@@ -254,6 +259,7 @@
 		CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonMediaRequest.swift; sourceTree = "<group>"; };
 		CFD6B2DF22B0332B00E5F2FC /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
 		CFDFAD1922D972150090CA9E /* Feeder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Feeder.framework; path = Carthage/Build/iOS/Feeder.framework; sourceTree = "<group>"; };
+		CFDFAD1C22DC17460090CA9E /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
 		DBACA1B5A5D60EB389AAE13C /* Pods-NowPlaying.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.debug.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -290,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */,
+				71D4EBFB1D37A5D062275A9E /* Pods_TodayExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -502,6 +509,7 @@
 				CF615B001F56B04E00315019 /* MediaPlayer.framework */,
 				CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */,
 				7641B8EA4AF056D456EAFF0D /* Pods_NowPlaying.framework */,
+				8CE0B1AC730EB95C2F953F2B /* Pods_TodayExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -610,7 +618,7 @@
 		CF6FFF20207E4CE4003FD38D /* TodayExtension */ = {
 			isa = PBXGroup;
 			children = (
-				CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */,
+				CFDFAD1B22DC17230090CA9E /* Screen */,
 				CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */,
 				CF6FFF26207E4CE4003FD38D /* Info.plist */,
 			);
@@ -711,11 +719,22 @@
 			path = API;
 			sourceTree = "<group>";
 		};
+		CFDFAD1B22DC17230090CA9E /* Screen */ = {
+			isa = PBXGroup;
+			children = (
+				CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */,
+				CFDFAD1C22DC17460090CA9E /* TodayViewModel.swift */,
+			);
+			path = Screen;
+			sourceTree = "<group>";
+		};
 		D4BB877FAC88DB2F77FEFD35 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				DBACA1B5A5D60EB389AAE13C /* Pods-NowPlaying.debug.xcconfig */,
 				5C7BC8ED1C642ABDF0F723D2 /* Pods-NowPlaying.release.xcconfig */,
+				72032E16E3E4DEED34DD85B5 /* Pods-TodayExtension.debug.xcconfig */,
+				79878F5C07923848E5C354DB /* Pods-TodayExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -754,6 +773,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CF6FFF2C207E4CE4003FD38D /* Build configuration list for PBXNativeTarget "TodayExtension" */;
 			buildPhases = (
+				86E3C3FCC76026F4F858B9D4 /* [CP] Check Pods Manifest.lock */,
 				CF6FFF19207E4CE4003FD38D /* Sources */,
 				CF6FFF1A207E4CE4003FD38D /* Frameworks */,
 				CF6FFF1B207E4CE4003FD38D /* Resources */,
@@ -875,6 +895,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		86E3C3FCC76026F4F858B9D4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TodayExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		97914D618D85106A3229A24D /* [CP] Check Pods Manifest.lock */ = {
@@ -1072,6 +1114,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFDFAD1D22DC17460090CA9E /* TodayViewModel.swift in Sources */,
 				CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1285,6 +1328,7 @@
 		};
 		CF6FFF2A207E4CE4003FD38D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 72032E16E3E4DEED34DD85B5 /* Pods-TodayExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
@@ -1312,6 +1356,7 @@
 		};
 		CF6FFF2B207E4CE4003FD38D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 79878F5C07923848E5C354DB /* Pods-TodayExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
