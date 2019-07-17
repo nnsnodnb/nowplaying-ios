@@ -51,7 +51,7 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="dfF-u4-Zba">
                                     <rect key="frame" x="30" y="324" width="240" height="92"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ccL-cq-6gt" customClass="CBAutoScrollLabel">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ccL-cq-6gt" customClass="ScrollFlowLabel">
                                             <rect key="frame" x="0.0" y="0.0" width="240" height="39"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -59,7 +59,7 @@
                                                 <constraint firstAttribute="height" constant="39" id="phy-MR-dJh"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Tl-1g-kSO" customClass="CBAutoScrollLabel">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Tl-1g-kSO" customClass="ScrollFlowLabel">
                                             <rect key="frame" x="0.0" y="63" width="240" height="29"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
