@@ -6,13 +6,13 @@
 //  Copyright © 2017年 Oka Yuya. All rights reserved.
 //
 
-import AutoScrollLabel
 import Feeder
 import FirebaseAnalytics
 import Foundation
 import GoogleMobileAds
 import MediaPlayer
 import RxSwift
+import ScrollFlowLabel
 import StoreKit
 import SVProgressHUD
 import UIKit
@@ -27,24 +27,24 @@ final class PlayViewController: UIViewController {
             artworkImageView.layer.shadowOpacity = 0.5
         }
     }
-    @IBOutlet private weak var songNameLabel: CBAutoScrollLabel! {
+    @IBOutlet private weak var songNameLabel: ScrollFlowLabel! {
         didSet {
             songNameLabel.textColor = .black
             songNameLabel.textAlignment = .center
             songNameLabel.font = .boldSystemFont(ofSize: 21)
             songNameLabel.pauseInterval = 2
             songNameLabel.scrollDirection = .left
-            songNameLabel.observeApplicationNotifications()
+            songNameLabel.observeApplicationState()
         }
     }
-    @IBOutlet private weak var artistNameLabel: CBAutoScrollLabel! {
+    @IBOutlet private weak var artistNameLabel: ScrollFlowLabel! {
         didSet {
             artistNameLabel.textColor = .black
             artistNameLabel.textAlignment = .center
             artistNameLabel.font = .systemFont(ofSize: 16)
             artistNameLabel.pauseInterval = 2
             artistNameLabel.scrollDirection = .left
-            artistNameLabel.observeApplicationNotifications()
+            artistNameLabel.observeApplicationState()
         }
     }
     @IBOutlet private weak var previousButton: UIButton!
