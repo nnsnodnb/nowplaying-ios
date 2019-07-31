@@ -47,14 +47,14 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="OnT-iE-X21">
                                                 <rect key="frame" x="116" y="23" width="188" height="54"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iEL-ba-EiL" customClass="CBAutoScrollLabel">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iEL-ba-EiL" customClass="ScrollFlowLabel" customModule="ScrollFlowLabel">
                                                         <rect key="frame" x="0.0" y="0.0" width="188" height="23"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="23" id="tBX-eW-q5U"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gAP-Er-foi" customClass="CBAutoScrollLabel">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gAP-Er-foi" customClass="ScrollFlowLabel" customModule="ScrollFlowLabel">
                                                         <rect key="frame" x="0.0" y="31" width="188" height="23"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>

@@ -5,7 +5,6 @@ target 'NowPlaying' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'AutoScrollLabel'
   pod 'Crashlytics'
   pod 'DTTJailbreakDetection'
   pod 'Fabric'
@@ -16,6 +15,7 @@ target 'NowPlaying' do
   pod 'LicensePlist'
   pod 'NSURL+QueryDictionary'
   pod 'R.swift'
+  pod 'ScrollFlowLabel'
   pod 'SwiftLint'
 
 end
@@ -23,6 +23,6 @@ end
 target 'TodayExtension' do
   use_frameworks!
 
-  pod 'AutoScrollLabel'
+  pod 'ScrollFlowLabel'
 
 end

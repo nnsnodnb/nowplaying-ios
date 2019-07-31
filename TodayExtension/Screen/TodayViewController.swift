@@ -6,10 +6,10 @@
 //  Copyright © 2018年 Oka Yuya. All rights reserved.
 //
 
-import AutoScrollLabel
 import NotificationCenter
 import RxCocoa
 import RxSwift
+import ScrollFlowLabel
 import UIKit
 
 final class TodayViewController: UIViewController {
@@ -25,24 +25,24 @@ final class TodayViewController: UIViewController {
                 .disposed(by: disposeBag)
         }
     }
-    @IBOutlet private weak var songNameScrollLabel: CBAutoScrollLabel! {
+    @IBOutlet private weak var songNameScrollLabel: ScrollFlowLabel! {
         didSet {
             songNameScrollLabel.textColor = .black
             songNameScrollLabel.textAlignment = .center
             songNameScrollLabel.font = .boldSystemFont(ofSize: 20)
             songNameScrollLabel.pauseInterval = 2
             songNameScrollLabel.scrollDirection = .left
-            songNameScrollLabel.observeApplicationNotifications()
+            songNameScrollLabel.observeApplicationState()
         }
     }
-    @IBOutlet private weak var artistNameScrollLabel: CBAutoScrollLabel! {
+    @IBOutlet private weak var artistNameScrollLabel: ScrollFlowLabel! {
         didSet {
             artistNameScrollLabel.textColor = .black
             artistNameScrollLabel.textAlignment = .center
             artistNameScrollLabel.font = .systemFont(ofSize: 17)
             artistNameScrollLabel.pauseInterval = 2
             artistNameScrollLabel.scrollDirection = .left
-            artistNameScrollLabel.observeApplicationNotifications()
+            artistNameScrollLabel.observeApplicationState()
         }
     }
     @IBOutlet private weak var deniedView: UIView!
