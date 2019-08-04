@@ -17,9 +17,12 @@ final class TodayViewController: UIViewController {
     @IBOutlet private weak var commonView: UIView!
     @IBOutlet private weak var artworkImageButton: UIButton! {
         didSet {
+            artworkImageButton.imageView?.contentMode = .scaleAspectFit
+            artworkImageButton.contentHorizontalAlignment = .fill
+            artworkImageButton.contentVerticalAlignment = .fill
             artworkImageButton.rx.tap
                 .subscribe(onNext: { [unowned self] (_) in
-                    guard let url = URL(string: "nowplaying-ios-nnsnodnb://") else { return }
+                    let url = URL(string: "nowplaying-ios-nnsnodnb://")!
                     self.extensionContext?.open(url, completionHandler: nil)
                 })
                 .disposed(by: disposeBag)
@@ -28,7 +31,7 @@ final class TodayViewController: UIViewController {
     @IBOutlet private weak var songNameScrollLabel: ScrollFlowLabel! {
         didSet {
             songNameScrollLabel.textColor = .black
-            songNameScrollLabel.textAlignment = .center
+            songNameScrollLabel.textAlignment = .left
             songNameScrollLabel.font = .boldSystemFont(ofSize: 20)
             songNameScrollLabel.pauseInterval = 2
             songNameScrollLabel.scrollDirection = .left
@@ -38,7 +41,7 @@ final class TodayViewController: UIViewController {
     @IBOutlet private weak var artistNameScrollLabel: ScrollFlowLabel! {
         didSet {
             artistNameScrollLabel.textColor = .black
-            artistNameScrollLabel.textAlignment = .center
+            artistNameScrollLabel.textAlignment = .left
             artistNameScrollLabel.font = .systemFont(ofSize: 17)
             artistNameScrollLabel.pauseInterval = 2
             artistNameScrollLabel.scrollDirection = .left
@@ -55,8 +58,7 @@ final class TodayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.outputs.nowPlayingItem
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] (item) in
+            .drive(onNext: { [weak self] (item) in
                 guard let wself = self else { return }
                 let image = item.artwork?.image(at: wself.artworkImageButton.frame.size)
                 wself.artworkImageButton.setImage(image, for: .normal)
@@ -67,9 +69,9 @@ final class TodayViewController: UIViewController {
 
         viewModel.outputs.viewType
             .map { $0 == .common }
-            .subscribe(onNext: { [weak self] (isCommon) in
+            .drive(onNext: { [weak self] (isCommon) in
                 self?.commonView.isHidden = !isCommon
-                self?.deniedView.isHidden = !isCommon
+                self?.deniedView.isHidden = isCommon
             })
             .disposed(by: disposeBag)
     }
@@ -77,6 +79,7 @@ final class TodayViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewModel.inputs.accessMusicLibraryTrigger.accept(())
+        viewModel.inputs.getNowPlayingItem()
     }
 }
 

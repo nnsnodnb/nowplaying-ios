@@ -19,14 +19,15 @@ enum ViewType {
 protocol TodayViewModelInput {
 
     var accessMusicLibraryTrigger: PublishRelay<Void> { get }
+    func getNowPlayingItem()
 }
 
 // MARK: - TodayViewModelOutput
 
 protocol TodayViewModelOutput {
 
-    var nowPlayingItem: Observable<MPMediaItem> { get }
-    var viewType: Observable<ViewType> { get }
+    var nowPlayingItem: Driver<MPMediaItem> { get }
+    var viewType: Driver<ViewType> { get }
 }
 
 // MARK: - TodayViewModelType
@@ -44,8 +45,8 @@ final class TodayViewModel: TodayViewModelType {
     var outputs: TodayViewModelOutput { return self }
 
     let accessMusicLibraryTrigger = PublishRelay<Void>()
-    let nowPlayingItem: Observable<MPMediaItem>
-    let viewType: Observable<ViewType>
+    let nowPlayingItem: Driver<MPMediaItem>
+    let viewType: Driver<ViewType>
 
     private let disposeBag = DisposeBag()
     private let _nowPlayingItem = PublishSubject<MPMediaItem?>()
@@ -54,8 +55,9 @@ final class TodayViewModel: TodayViewModelType {
     init() {
         MPMusicPlayerController.systemMusicPlayer.beginGeneratingPlaybackNotifications()
 
-        nowPlayingItem = _nowPlayingItem.compactMap { $0 }.asObservable()
-        viewType = _viewType.observeOn(MainScheduler.instance).asObservable()
+        nowPlayingItem = _nowPlayingItem.compactMap { $0 }
+            .asDriver(onErrorDriveWith: .empty())
+        viewType = _viewType.asDriver(onErrorJustReturn: .denied)
 
         inputs.accessMusicLibraryTrigger
             .subscribe(onNext: { [weak self] in
@@ -75,6 +77,10 @@ final class TodayViewModel: TodayViewModelType {
 
     deinit {
         MPMusicPlayerController.systemMusicPlayer.endGeneratingPlaybackNotifications()
+    }
+
+    func getNowPlayingItem() {
+        _nowPlayingItem.onNext(MPMusicPlayerController.systemMusicPlayer.nowPlayingItem)
     }
 }
 
