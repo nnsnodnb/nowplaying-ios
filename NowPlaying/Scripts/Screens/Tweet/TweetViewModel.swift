@@ -8,6 +8,7 @@
 
 import Action
 import APIKit
+import Feeder
 import FirebaseAnalytics
 import Foundation
 import RealmSwift
@@ -162,6 +163,7 @@ extension TweetViewModel {
                 })
                 actionSheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
                 inputs.viewController.present(actionSheet, animated: true, completion: nil)
+                Feeder.Selection().selectionChanged()
             })
             .disposed(by: disposeBag)
     }

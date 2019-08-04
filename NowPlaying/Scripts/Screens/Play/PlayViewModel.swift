@@ -8,6 +8,7 @@
 
 import Action
 import APIKit
+import Feeder
 import FirebaseAnalytics
 import FirebaseAuth
 import MediaPlayer
@@ -132,6 +133,7 @@ final class PlayViewModel: PlayViewModelType {
         let cancelButton = CancelButton(title: "あとで", action: nil)
         let goSettingButton = DefaultButton(title: "設定する") { [unowned self] in
             DispatchQueue.main.async {
+                Feeder.Impact(.medium).impactOccurred()
                 let navi = UINavigationController(rootViewController: SettingViewController())
                 self.viewController.present(navi, animated: true, completion: nil)
             }
@@ -190,14 +192,6 @@ extension PlayViewModel {
     }
 
     private func setupActionObserver() {
-        let collection = [tweetStatusAction.executing, tootStatusAction.executing, tootUploadMediaAction.executing]
-        Observable<Bool>
-            .combineLatest(collection) { $0.first(where: { $0 }) ?? false }
-            .subscribe(onNext: { (executing) in
-                SVProgressHUD.setDefaultMaskType(executing ? .black : .none)
-            })
-            .disposed(by: disposeBag)
-
         tweetStatusAction.elements
             .map { _ in }
             .subscribe(onNext: {
@@ -243,6 +237,7 @@ extension PlayViewModel {
                 } else {
                     MPMusicPlayerController.systemMusicPlayer.play()
                 }
+                Feeder.Impact(.light).impactOccurred()
                 Analytics.Play.playButton(isPlaying: isPlay)
                 self?.isPlaying.accept(isPlay)
             })
@@ -428,7 +423,12 @@ extension PlayViewModel: PlayViewModelOutput {
     }
 
     var loginRequired: Observable<Void> {
-        return loginError.observeOn(MainScheduler.instance).asObservable()
+        return loginError
+            .observeOn(MainScheduler.instance)
+            .do(onNext: {
+                Feeder.Notification(.error).notificationOccurred()
+            })
+            .asObservable()
     }
 
     var postContent: SharedSequence<DriverSharingStrategy, PostContent> {
@@ -436,6 +436,11 @@ extension PlayViewModel: PlayViewModelOutput {
     }
 
     var requestDenied: Observable<Void> {
-        return _requestDenied.observeOn(MainScheduler.instance).asObservable()
+        return _requestDenied
+            .observeOn(MainScheduler.instance)
+            .do(onNext: {
+                Feeder.Notification(.warning).notificationOccurred()
+            })
+            .asObservable()
     }
 }

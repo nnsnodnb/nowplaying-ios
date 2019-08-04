@@ -8,6 +8,7 @@
 
 import Action
 import APIKit
+import Feeder
 import RealmSwift
 import RxCocoa
 import RxSwift
@@ -133,6 +134,7 @@ final class AccountManageViewModel: AccountManageViewModelType {
             let alert = UIAlertController(title: "デフォルトアカウント変更", message: "\(user.name)に設定されました", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             observer.onNext(alert)
+            Feeder.Selection().selectionChanged()
             observer.onCompleted()
 
             return Disposables.create()
@@ -147,6 +149,7 @@ extension AccountManageViewModel {
     private func subscribeBarButtonItems(inputs: AccountManageViewModelInput) {
         inputs.addAccountBarButtonItem.rx.tap
             .subscribe(onNext: { [unowned self] in
+                Feeder.Impact(.light).impactOccurred()
                 switch inputs.service {
                 case .twitter:
                     SVProgressHUD.show()
@@ -177,7 +180,7 @@ extension AccountManageViewModel {
     private func startTwitterLogin(inputs: AccountManageViewModelInput) {
         let twitterAuthURL = URL(string: "twitterauth://authorize")!
         if UIApplication.shared.canOpenURL(twitterAuthURL) {
-            _ = twitter.tryAuthorizeSSO()
+            twitter.tryAuthorizeSSO()
                 .subscribe(onNext: { [weak self] in
                     guard let wself = self else { return }
                     TwitterSessionControl.handleSuccessLogin($0)
@@ -186,9 +189,10 @@ extension AccountManageViewModel {
                     print($0)
                     self._loginResult.accept(.failure($0))
                 })
+                .disposed(by: disposeBag)
             return
         }
-        _ = twitter.tryAuthorizeBrowser(presenting: inputs.viewController)
+        twitter.tryAuthorizeBrowser(presenting: inputs.viewController)
             .subscribe(onNext: { [weak self] in
                 guard let wself = self else { return }
                 TwitterSessionControl.handleSuccessLogin($0)
@@ -197,6 +201,7 @@ extension AccountManageViewModel {
                 print(error)
                 self._loginResult.accept(.failure(error))
             })
+            .disposed(by: disposeBag)
     }
 
     private func twitterLoginHandle(_ callback: Observable<LoginCallback>) {

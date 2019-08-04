@@ -51,7 +51,7 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="dfF-u4-Zba">
                                     <rect key="frame" x="30" y="324" width="240" height="92"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ccL-cq-6gt" customClass="CBAutoScrollLabel">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ccL-cq-6gt" customClass="ScrollFlowLabel" customModule="ScrollFlowLabel">
                                             <rect key="frame" x="0.0" y="0.0" width="240" height="39"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -59,7 +59,7 @@
                                                 <constraint firstAttribute="height" constant="39" id="phy-MR-dJh"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Tl-1g-kSO" customClass="CBAutoScrollLabel">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Tl-1g-kSO" customClass="ScrollFlowLabel" customModule="ScrollFlowLabel">
                                             <rect key="frame" x="0.0" y="63" width="240" height="29"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -74,37 +74,33 @@
                                 <constraint firstAttribute="width" constant="300" id="AS8-30-QtK"/>
                             </constraints>
                         </stackView>
-                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cPV-yO-10a">
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cPV-yO-10a">
                             <rect key="frame" x="0.0" y="456" width="300" height="64"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-cW-baF">
-                                    <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-cW-baF">
+                                    <rect key="frame" x="0.0" y="12" width="60" height="40"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" secondItem="zQA-cW-baF" secondAttribute="height" multiplier="1:1" id="QR8-uu-KsC"/>
+                                        <constraint firstAttribute="width" constant="60" id="6dB-AJ-xfZ"/>
+                                        <constraint firstAttribute="height" constant="40" id="Ap6-2S-xZR"/>
                                     </constraints>
                                     <state key="normal" image="previous"/>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMi-NZ-cvB">
+                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMi-NZ-cvB">
                                     <rect key="frame" x="118" y="0.0" width="64" height="64"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="qMi-NZ-cvB" secondAttribute="height" multiplier="1:1" id="fYr-Vb-t1n"/>
                                     </constraints>
                                     <state key="normal" image="play"/>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crR-aX-F7g">
-                                    <rect key="frame" x="236" y="0.0" width="64" height="64"/>
+                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crR-aX-F7g">
+                                    <rect key="frame" x="240" y="12" width="60" height="40"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" secondItem="crR-aX-F7g" secondAttribute="height" multiplier="1:1" id="1PE-9s-i8S"/>
+                                        <constraint firstAttribute="width" constant="60" id="lce-iL-Dca"/>
+                                        <constraint firstAttribute="height" constant="40" id="w9U-aV-j90"/>
                                     </constraints>
                                     <state key="normal" image="next"/>
                                 </button>
                             </subviews>
-                            <constraints>
-                                <constraint firstItem="crR-aX-F7g" firstAttribute="width" secondItem="zQA-cW-baF" secondAttribute="width" id="MWh-5w-ozn"/>
-                                <constraint firstItem="qMi-NZ-cvB" firstAttribute="height" secondItem="zQA-cW-baF" secondAttribute="height" id="OcO-MV-TQp"/>
-                                <constraint firstItem="crR-aX-F7g" firstAttribute="height" secondItem="zQA-cW-baF" secondAttribute="height" id="hTh-fX-wJI"/>
-                                <constraint firstItem="qMi-NZ-cvB" firstAttribute="width" secondItem="zQA-cW-baF" secondAttribute="width" id="rJ4-Uz-6ER"/>
-                            </constraints>
                         </stackView>
                     </subviews>
                 </stackView>
@@ -180,9 +176,9 @@
         <image name="gear" width="128" height="124"/>
         <image name="mastodon" width="128" height="137"/>
         <image name="music" width="512" height="512"/>
-        <image name="next" width="64" height="64"/>
+        <image name="next" width="750" height="500"/>
         <image name="play" width="64" height="64"/>
-        <image name="previous" width="64" height="64"/>
+        <image name="previous" width="750" height="500"/>
         <image name="twitter" width="128" height="128"/>
     </resources>
 </document>

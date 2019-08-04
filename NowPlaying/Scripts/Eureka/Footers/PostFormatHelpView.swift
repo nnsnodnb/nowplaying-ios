@@ -6,9 +6,10 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
-import UIKit
+import Feeder
 import RxSwift
 import SVProgressHUD
+import UIKit
 
 final class PostFormatHelpView: UIView {
 
@@ -45,6 +46,7 @@ final class PostFormatHelpView: UIView {
     // MARK: - Private method
 
     private func setPasteboard(withText text: String) {
+        Feeder.Impact(.light).impactOccurred()
         UIPasteboard.general.string = text
         SVProgressHUD.showInfo(withStatus: "コピーしました")
         SVProgressHUD.dismiss(withDelay: 0.2)

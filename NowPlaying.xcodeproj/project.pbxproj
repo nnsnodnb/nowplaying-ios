@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AE3ECA914F1F041B6A7FC973 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7641B8EA4AF056D456EAFF0D /* Pods_NowPlaying.framework */; };
+		11080D9125318CEA00D3FD08 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6456D1CC406D6F7B03F18B93 /* Pods_NowPlaying.framework */; };
+		2A5223ED22EBB470DBA53A01 /* Pods_TodayExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4F017370E1F36C943F0FEEF /* Pods_TodayExtension.framework */; };
 		CF01C1D921023F1700DC1901 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF01C1D821023F1700DC1901 /* SnapKit.framework */; };
 		CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF0FA219206D3C3200647317 /* KeychainAccess.framework */; };
 		CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0FA21B206D4D5A00647317 /* PaymentManager.swift */; };
@@ -111,6 +112,8 @@
 		CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39020B9A176009C50ED /* R.generated.swift */; };
 		CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */; };
 		CFD6B2E022B0332B00E5F2FC /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DF22B0332B00E5F2FC /* Requests.swift */; };
+		CFDFAD1A22D972150090CA9E /* Feeder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDFAD1922D972150090CA9E /* Feeder.framework */; };
+		CFDFAD1D22DC17460090CA9E /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDFAD1C22DC17460090CA9E /* TodayViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,8 +141,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5C7BC8ED1C642ABDF0F723D2 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
-		7641B8EA4AF056D456EAFF0D /* Pods_NowPlaying.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NowPlaying.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D5979535D03FB0AE7724193 /* Pods-NowPlaying.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.debug.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.debug.xcconfig"; sourceTree = "<group>"; };
+		6456D1CC406D6F7B03F18B93 /* Pods_NowPlaying.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NowPlaying.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4F017370E1F36C943F0FEEF /* Pods_TodayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TodayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF4C1F9A8FD3B8698F9D401D /* Pods-TodayExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TodayExtension.release.xcconfig"; path = "Target Support Files/Pods-TodayExtension/Pods-TodayExtension.release.xcconfig"; sourceTree = "<group>"; };
 		CF01C1D821023F1700DC1901 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		CF0FA219206D3C3200647317 /* KeychainAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainAccess.framework; path = Carthage/Build/iOS/KeychainAccess.framework; sourceTree = "<group>"; };
 		CF0FA21B206D4D5A00647317 /* PaymentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaymentManager.swift; path = Manager/PaymentManager.swift; sourceTree = "<group>"; };
@@ -252,7 +257,10 @@
 		CFD1D39020B9A176009C50ED /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonMediaRequest.swift; sourceTree = "<group>"; };
 		CFD6B2DF22B0332B00E5F2FC /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
-		DBACA1B5A5D60EB389AAE13C /* Pods-NowPlaying.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.debug.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.debug.xcconfig"; sourceTree = "<group>"; };
+		CFDFAD1922D972150090CA9E /* Feeder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Feeder.framework; path = Carthage/Build/iOS/Feeder.framework; sourceTree = "<group>"; };
+		CFDFAD1C22DC17460090CA9E /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
+		F1A50B3F73DA3E1BA6CD17F2 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
+		FCD2C9F8E2BD4B871AAF7D71 /* Pods-TodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TodayExtension.debug.xcconfig"; path = "Target Support Files/Pods-TodayExtension/Pods-TodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +268,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFDFAD1A22D972150090CA9E /* Feeder.framework in Frameworks */,
 				CF232DA922CC93E200820C1B /* SwifteriOS.framework in Frameworks */,
 				CF6F567022CB168200F517E9 /* RealmSwift.framework in Frameworks */,
 				CF6F567122CB168200F517E9 /* Realm.framework in Frameworks */,
@@ -278,7 +287,7 @@
 				CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */,
 				CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */,
 				CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */,
-				AE3ECA914F1F041B6A7FC973 /* Pods_NowPlaying.framework in Frameworks */,
+				11080D9125318CEA00D3FD08 /* Pods_NowPlaying.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */,
+				2A5223ED22EBB470DBA53A01 /* Pods_TodayExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,6 +488,7 @@
 		CF615AFF1F56B04E00315019 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CFDFAD1922D972150090CA9E /* Feeder.framework */,
 				CF232DA822CC93E100820C1B /* SwifteriOS.framework */,
 				CF6F566F22CB168200F517E9 /* Realm.framework */,
 				CF6F566E22CB168000F517E9 /* RealmSwift.framework */,
@@ -497,7 +508,8 @@
 				CF615B061F56E89100315019 /* AVFoundation.framework */,
 				CF615B001F56B04E00315019 /* MediaPlayer.framework */,
 				CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */,
-				7641B8EA4AF056D456EAFF0D /* Pods_NowPlaying.framework */,
+				6456D1CC406D6F7B03F18B93 /* Pods_NowPlaying.framework */,
+				A4F017370E1F36C943F0FEEF /* Pods_TodayExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -606,7 +618,7 @@
 		CF6FFF20207E4CE4003FD38D /* TodayExtension */ = {
 			isa = PBXGroup;
 			children = (
-				CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */,
+				CFDFAD1B22DC17230090CA9E /* Screen */,
 				CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */,
 				CF6FFF26207E4CE4003FD38D /* Info.plist */,
 			);
@@ -707,11 +719,22 @@
 			path = API;
 			sourceTree = "<group>";
 		};
+		CFDFAD1B22DC17230090CA9E /* Screen */ = {
+			isa = PBXGroup;
+			children = (
+				CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */,
+				CFDFAD1C22DC17460090CA9E /* TodayViewModel.swift */,
+			);
+			path = Screen;
+			sourceTree = "<group>";
+		};
 		D4BB877FAC88DB2F77FEFD35 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DBACA1B5A5D60EB389AAE13C /* Pods-NowPlaying.debug.xcconfig */,
-				5C7BC8ED1C642ABDF0F723D2 /* Pods-NowPlaying.release.xcconfig */,
+				5D5979535D03FB0AE7724193 /* Pods-NowPlaying.debug.xcconfig */,
+				F1A50B3F73DA3E1BA6CD17F2 /* Pods-NowPlaying.release.xcconfig */,
+				FCD2C9F8E2BD4B871AAF7D71 /* Pods-TodayExtension.debug.xcconfig */,
+				AF4C1F9A8FD3B8698F9D401D /* Pods-TodayExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -723,7 +746,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CF615AFC1F56AB3B00315019 /* Build configuration list for PBXNativeTarget "NowPlaying" */;
 			buildPhases = (
-				97914D618D85106A3229A24D /* [CP] Check Pods Manifest.lock */,
+				C564A1180533C506C90BE7DC /* [CP] Check Pods Manifest.lock */,
 				CFD1D38F20B9A148009C50ED /* R.swift */,
 				CF531C3722A9969800D05896 /* SwiftLint */,
 				CF615AE61F56AB3B00315019 /* Sources */,
@@ -734,7 +757,7 @@
 				CF4D73D31F7A979400E72FBF /* Crashlytics */,
 				CF28A83E1FD1C87D00E45F12 /* License-Plist */,
 				CF6FFF2D207E4CE4003FD38D /* Embed App Extensions */,
-				083A8E5F0A27C503F7CE83BE /* [CP] Embed Pods Frameworks */,
+				879F7315BEAB3191D72D5E04 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -750,6 +773,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CF6FFF2C207E4CE4003FD38D /* Build configuration list for PBXNativeTarget "TodayExtension" */;
 			buildPhases = (
+				22B502772848DBA0DE09E72A /* [CP] Check Pods Manifest.lock */,
 				CF6FFF19207E4CE4003FD38D /* Sources */,
 				CF6FFF1A207E4CE4003FD38D /* Frameworks */,
 				CF6FFF1B207E4CE4003FD38D /* Resources */,
@@ -856,7 +880,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		083A8E5F0A27C503F7CE83BE /* [CP] Embed Pods Frameworks */ = {
+		22B502772848DBA0DE09E72A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TodayExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		879F7315BEAB3191D72D5E04 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -873,7 +919,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NowPlaying/Pods-NowPlaying-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		97914D618D85106A3229A24D /* [CP] Check Pods Manifest.lock */ = {
+		C564A1180533C506C90BE7DC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -907,7 +953,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -e /usr/local/bin/license-plist ]; then\nexit 0\nfi\nif [ $CONFIGURATION = \"Debug\" ]; then\n${PODS_ROOT}/LicensePlist/license-plist --output-path ${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle --github-token \"${GITHUB_ACCESS_TOKEN}\" --config-path ${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml --prefix moe.nnsnodnb.NowPlaying\nfi\n";
+			shellScript = "if [ ! -e /usr/local/bin/license-plist ]; then\nexit 0\nfi\nif [ $CONFIGURATION = \"Debug\" ]; then\n${PODS_ROOT}/LicensePlist/license-plist --output-path ${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle --github-token \"${GITHUB_ACCESS_TOKEN}\" --config-path ${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml --prefix moe.nnsnodnb.NowPlaying --force --suppress-opening-directory\nfi\n";
 		};
 		CF4D73D31F7A979400E72FBF /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1068,6 +1114,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFDFAD1D22DC17460090CA9E /* TodayViewModel.swift in Sources */,
 				CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1281,6 +1328,7 @@
 		};
 		CF6FFF2A207E4CE4003FD38D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FCD2C9F8E2BD4B871AAF7D71 /* Pods-TodayExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
@@ -1308,6 +1356,7 @@
 		};
 		CF6FFF2B207E4CE4003FD38D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AF4C1F9A8FD3B8698F9D401D /* Pods-TodayExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;

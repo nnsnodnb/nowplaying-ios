@@ -1,77 +1,76 @@
 PODS:
-  - AutoScrollLabel (0.4.3)
-  - Crashlytics (3.13.3):
+  - Crashlytics (3.13.4):
     - Fabric (~> 1.10.2)
   - DTTJailbreakDetection (0.4.0)
   - Fabric (1.10.2)
-  - Firebase/AdMob (6.4.0):
+  - Firebase/AdMob (6.5.0):
     - Firebase/CoreOnly
-    - Google-Mobile-Ads-SDK (~> 7.46)
-  - Firebase/Analytics (6.4.0):
+    - Google-Mobile-Ads-SDK (~> 7.47)
+  - Firebase/Analytics (6.5.0):
     - Firebase/Core
-  - Firebase/Auth (6.4.0):
+  - Firebase/Auth (6.5.0):
     - Firebase/CoreOnly
-    - FirebaseAuth (~> 6.2.0)
-  - Firebase/Core (6.4.0):
+    - FirebaseAuth (~> 6.2.1)
+  - Firebase/Core (6.5.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 6.0.3)
-  - Firebase/CoreOnly (6.4.0):
-    - FirebaseCore (= 6.0.4)
-  - Firebase/Database (6.4.0):
+    - FirebaseAnalytics (= 6.0.4)
+  - Firebase/CoreOnly (6.5.0):
+    - FirebaseCore (= 6.1.0)
+  - Firebase/Database (6.5.0):
     - Firebase/CoreOnly
     - FirebaseDatabase (~> 6.0.0)
-  - FirebaseAnalytics (6.0.3):
-    - FirebaseCore (~> 6.0)
+  - FirebaseAnalytics (6.0.4):
+    - FirebaseCore (~> 6.1)
     - FirebaseInstanceID (~> 4.2)
-    - GoogleAppMeasurement (= 6.0.3)
+    - GoogleAppMeasurement (= 6.0.4)
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
     - nanopb (~> 0.3)
-  - FirebaseAuth (6.2.0):
+  - FirebaseAuth (6.2.1):
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 6.2)
     - GoogleUtilities/Environment (~> 6.2)
     - GTMSessionFetcher/Core (~> 1.1)
   - FirebaseAuthInterop (1.0.0)
-  - FirebaseCore (6.0.4):
+  - FirebaseCore (6.1.0):
     - GoogleUtilities/Environment (~> 6.0)
     - GoogleUtilities/Logger (~> 6.0)
   - FirebaseDatabase (6.0.0):
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
     - leveldb-library (~> 1.18)
-  - FirebaseInstanceID (4.2.1):
+  - FirebaseInstanceID (4.2.2):
     - FirebaseCore (~> 6.0)
     - GoogleUtilities/Environment (~> 6.0)
     - GoogleUtilities/UserDefaults (~> 6.0)
-  - Google-Mobile-Ads-SDK (7.46.0):
+  - Google-Mobile-Ads-SDK (7.48.0):
     - GoogleAppMeasurement (~> 6.0)
-  - GoogleAppMeasurement (6.0.3):
+  - GoogleAppMeasurement (6.0.4):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
     - nanopb (~> 0.3)
-  - GoogleUtilities/AppDelegateSwizzler (6.2.1):
+  - GoogleUtilities/AppDelegateSwizzler (6.2.3):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (6.2.1)
-  - GoogleUtilities/Logger (6.2.1):
+  - GoogleUtilities/Environment (6.2.3)
+  - GoogleUtilities/Logger (6.2.3):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (6.2.1):
+  - GoogleUtilities/MethodSwizzler (6.2.3):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (6.2.1):
+  - GoogleUtilities/Network (6.2.3):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (6.2.1)"
-  - GoogleUtilities/Reachability (6.2.1):
+  - "GoogleUtilities/NSData+zlib (6.2.3)"
+  - GoogleUtilities/Reachability (6.2.3):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (6.2.1):
+  - GoogleUtilities/UserDefaults (6.2.3):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.2.2)
   - leveldb-library (1.20)
@@ -85,10 +84,10 @@ PODS:
   - R.swift (5.0.3):
     - R.swift.Library (~> 5.0.0)
   - R.swift.Library (5.0.1)
-  - SwiftLint (0.33.1)
+  - ScrollFlowLabel (1.0.0)
+  - SwiftLint (0.34.0)
 
 DEPENDENCIES:
-  - AutoScrollLabel
   - Crashlytics
   - DTTJailbreakDetection
   - Fabric
@@ -99,11 +98,11 @@ DEPENDENCIES:
   - LicensePlist
   - "NSURL+QueryDictionary"
   - R.swift
+  - ScrollFlowLabel
   - SwiftLint
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - AutoScrollLabel
     - Crashlytics
     - DTTJailbreakDetection
     - Fabric
@@ -124,23 +123,23 @@ SPEC REPOS:
     - "NSURL+QueryDictionary"
     - R.swift
     - R.swift.Library
+    - ScrollFlowLabel
     - SwiftLint
 
 SPEC CHECKSUMS:
-  AutoScrollLabel: bee53a1d4532569b49cbecaf9b80ca003bed3767
-  Crashlytics: 2aa08cd61fb1d62718c4e653169461d1d7377de2
+  Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
   DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
-  Firebase: 9445469655a98e9010737f4bc4720e5bda465873
-  FirebaseAnalytics: 69fe25866d2ec87c6f02d72c3c9a82bce9c065a0
-  FirebaseAuth: 68cfa47997f53d29ce978e7a615fb78d7925fcbe
+  Firebase: dedc9e48ea3f3649ad5f6b982f8a0c73508a14b5
+  FirebaseAnalytics: 3fb375bc9d13779add4039716f868d233a473fad
+  FirebaseAuth: a06ad63e9bf4c86165b54cceb1c14d4f4c38d419
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
-  FirebaseCore: 7ea99e200f0024262650be56623fbe6a7bef1707
+  FirebaseCore: aecf02fb2274ec361b9bebeac112f5daa18273bd
   FirebaseDatabase: f48e067716864be2b855cf716b927ef375d6cfa0
-  FirebaseInstanceID: 9782fcfb89e4d7da76cc28eac4b8543dc7be4a4b
-  Google-Mobile-Ads-SDK: 4bff3a7d621555f2317813e495fecce745681f7e
-  GoogleAppMeasurement: 1e45fa601e6280c180880d57010390f6679cd971
-  GoogleUtilities: c7a0b08bda3bf808be823ed151f0e28ac6866e71
+  FirebaseInstanceID: 662b8108a09fe9ed01aafdedba100fde8536b0f6
+  Google-Mobile-Ads-SDK: 709fa768c3ba8e8b260d8cb085c607097fd3f79d
+  GoogleAppMeasurement: 183bd916af7f80deb67c01888368f1108d641832
+  GoogleUtilities: d2b0e277a95962e09bb27f5cd42f5f0b6a506c7d
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   LicensePlist: e5f8f2e3465620e53ec4c669955a5a7d0692b9cb
@@ -148,8 +147,9 @@ SPEC CHECKSUMS:
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   R.swift: f5a87643b91ea569d23d6afb3eee9c743edde239
   R.swift.Library: cfe85d569d9bae6cb262922db130e7c3a7a5fad1
-  SwiftLint: 9fc1143bbacec37f94994a7d0d2a85b2154b6294
+  ScrollFlowLabel: 3c2aaff7030240745028425912a1c27aca53745d
+  SwiftLint: 79d48a17c6565dc286c37efb8322c7b450f95c67
 
-PODFILE CHECKSUM: f36473dd0ea12dc0f29dffe0e7a0e081a0a67d58
+PODFILE CHECKSUM: a67191c219c873dd98ef8ba5ad4da203c5e7174e
 
-COCOAPODS: 1.7.4
+COCOAPODS: 1.7.5

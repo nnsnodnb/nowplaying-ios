@@ -22,14 +22,6 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>moe.nnsnodnb.NowPlaying/AutoScrollLabel</string>
-			<key>Title</key>
-			<string>AutoScrollLabel</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/Crashlytics</string>
 			<key>Title</key>
 			<string>Crashlytics</string>
@@ -65,6 +57,14 @@
 			<string>moe.nnsnodnb.NowPlaying/Fabric</string>
 			<key>Title</key>
 			<string>Fabric</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/Feeder</string>
+			<key>Title</key>
+			<string>Feeder</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -257,6 +257,14 @@
 			<string>moe.nnsnodnb.NowPlaying/RxSwift</string>
 			<key>Title</key>
 			<string>RxSwift</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/ScrollFlowLabel</string>
+			<key>Title</key>
+			<string>ScrollFlowLabel</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
