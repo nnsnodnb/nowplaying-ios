@@ -27,7 +27,7 @@ protocol TodayViewModelInput {
 protocol TodayViewModelOutput {
 
     var nowPlayingItem: Driver<MPMediaItem> { get }
-    var viewType: Observable<ViewType> { get }
+    var viewType: Driver<ViewType> { get }
 }
 
 // MARK: - TodayViewModelType
@@ -46,7 +46,7 @@ final class TodayViewModel: TodayViewModelType {
 
     let accessMusicLibraryTrigger = PublishRelay<Void>()
     let nowPlayingItem: Driver<MPMediaItem>
-    let viewType: Observable<ViewType>
+    let viewType: Driver<ViewType>
 
     private let disposeBag = DisposeBag()
     private let _nowPlayingItem = PublishSubject<MPMediaItem?>()
@@ -57,7 +57,7 @@ final class TodayViewModel: TodayViewModelType {
 
         nowPlayingItem = _nowPlayingItem.compactMap { $0 }
             .asDriver(onErrorDriveWith: .empty())
-        viewType = _viewType.observeOn(MainScheduler.instance).asObservable()
+        viewType = _viewType.asDriver(onErrorJustReturn: .denied)
 
         inputs.accessMusicLibraryTrigger
             .subscribe(onNext: { [weak self] in
