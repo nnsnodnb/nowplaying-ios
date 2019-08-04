@@ -58,8 +58,7 @@ final class TodayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.outputs.nowPlayingItem
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] (item) in
+            .drive(onNext: { [weak self] (item) in
                 guard let wself = self else { return }
                 let image = item.artwork?.image(at: wself.artworkImageButton.frame.size)
                 wself.artworkImageButton.setImage(image, for: .normal)
