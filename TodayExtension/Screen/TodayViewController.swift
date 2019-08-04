@@ -79,6 +79,7 @@ final class TodayViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewModel.inputs.accessMusicLibraryTrigger.accept(())
+        viewModel.inputs.getNowPlayingItem()
     }
 }
 
