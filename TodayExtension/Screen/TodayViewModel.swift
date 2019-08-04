@@ -19,6 +19,7 @@ enum ViewType {
 protocol TodayViewModelInput {
 
     var accessMusicLibraryTrigger: PublishRelay<Void> { get }
+    func getNowPlayingItem()
 }
 
 // MARK: - TodayViewModelOutput
@@ -76,6 +77,10 @@ final class TodayViewModel: TodayViewModelType {
 
     deinit {
         MPMusicPlayerController.systemMusicPlayer.endGeneratingPlaybackNotifications()
+    }
+
+    func getNowPlayingItem() {
+        _nowPlayingItem.onNext(MPMusicPlayerController.systemMusicPlayer.nowPlayingItem)
     }
 }
 
