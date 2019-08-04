@@ -69,7 +69,7 @@ final class TodayViewController: UIViewController {
 
         viewModel.outputs.viewType
             .map { $0 == .common }
-            .subscribe(onNext: { [weak self] (isCommon) in
+            .drive(onNext: { [weak self] (isCommon) in
                 self?.commonView.isHidden = !isCommon
                 self?.deniedView.isHidden = isCommon
             })
