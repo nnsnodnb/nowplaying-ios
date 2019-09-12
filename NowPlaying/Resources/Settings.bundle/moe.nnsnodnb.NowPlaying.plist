@@ -6,6 +6,22 @@
 	<array>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/Action</string>
+			<key>Title</key>
+			<string>Action</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/APIKit</string>
+			<key>Title</key>
+			<string>APIKit</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/Crashlytics</string>
 			<key>Title</key>
 			<string>Crashlytics</string>
@@ -22,9 +38,33 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/DynamicBlurView</string>
+			<key>Title</key>
+			<string>DynamicBlurView</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/Eureka</string>
+			<key>Title</key>
+			<string>Eureka</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/Fabric</string>
 			<key>Title</key>
 			<string>Fabric</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/Feeder</string>
+			<key>Title</key>
+			<string>Feeder</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -150,6 +190,22 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/Hero</string>
+			<key>Title</key>
+			<string>Hero</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/KeychainAccess</string>
+			<key>Title</key>
+			<string>KeychainAccess</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/leveldb-library</string>
 			<key>Title</key>
 			<string>leveldb-library</string>
@@ -182,6 +238,22 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/Nuke</string>
+			<key>Title</key>
+			<string>Nuke</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/PopupDialog</string>
+			<key>Title</key>
+			<string>PopupDialog</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/R.swift</string>
 			<key>Title</key>
 			<string>R.swift</string>
@@ -198,9 +270,57 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/realm-cocoa</string>
+			<key>Title</key>
+			<string>realm-cocoa</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/RxStoreKit</string>
+			<key>Title</key>
+			<string>RxStoreKit</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/RxSwift</string>
+			<key>Title</key>
+			<string>RxSwift</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/ScrollFlowLabel</string>
 			<key>Title</key>
 			<string>ScrollFlowLabel</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/SnapKit</string>
+			<key>Title</key>
+			<string>SnapKit</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/SVProgressHUD</string>
+			<key>Title</key>
+			<string>SVProgressHUD</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/Swifter</string>
+			<key>Title</key>
+			<string>Swifter</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

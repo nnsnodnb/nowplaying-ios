@@ -2,3 +2,30 @@ github:
     - owner: glassonion1
       name: RxStoreKit
       version: 1.2.1
+    - owner: HeroTransitions
+      name: Hero
+      version: 1.4.0
+    - owner: ReactiveX
+      name: RxSwift
+      version: 5.0.1
+    - owner: RxSwiftCommunity
+      name: Action
+      version: 4.0.1
+    - owner: SnapKit
+      name: SnapKit
+      version: 5.0.1
+    - owner: ishkawa
+      name: APIKit
+      version: 5.0.0
+    - owner: kean
+      name: Nuke
+      version: 8.1.1
+    - owner: kishikawakatsumi
+      name: KeychainAccess
+      version: v3.2.0
+    - owner: mattdonnelly
+      name: Swifter
+      version: 2.3.0
+    - owner: realm
+      name: realm-cocoa
+      version: v3.17.3
