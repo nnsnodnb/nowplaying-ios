@@ -11,4 +11,3 @@ github "RxSwiftCommunity/Action" ~> 4.0
 github "SnapKit/SnapKit" ~> 5.0.0
 github "SVProgressHUD/SVProgressHUD"
 github "xmartlabs/Eureka" ~> 5.0
-binary "https://raw.githubusercontent.com/RxSwiftCommunity/RxKeyboard/master/RxKeyboard.json"

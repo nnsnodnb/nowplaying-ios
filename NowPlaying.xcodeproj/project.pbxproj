@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -57,7 +57,6 @@
 		CF55B68F22A40ACD00D5C9E1 /* PostContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B68E22A40ACD00D5C9E1 /* PostContent.swift */; };
 		CF55B69722A418A100D5C9E1 /* Analytics+NowPlaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */; };
 		CF55B69922A41B8800D5C9E1 /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B69822A41B8800D5C9E1 /* TweetViewModel.swift */; };
-		CF55B69B22A41D5800D5C9E1 /* RxKeyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF55B69A22A41D5800D5C9E1 /* RxKeyboard.framework */; };
 		CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF41F56AB3B00315019 /* Assets.xcassets */; };
 		CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */; };
 		CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B001F56B04E00315019 /* MediaPlayer.framework */; };
@@ -107,6 +106,7 @@
 		CFB5798222C38FA1001F3D13 /* MastodonDomainTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFB5798022C38FA1001F3D13 /* MastodonDomainTableViewCell.xib */; };
 		CFB5798722C3982D001F3D13 /* MastodonSettingDomainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB5798522C3982D001F3D13 /* MastodonSettingDomainTableViewCell.swift */; };
 		CFB5798822C3982D001F3D13 /* MastodonSettingDomainTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFB5798622C3982D001F3D13 /* MastodonSettingDomainTableViewCell.xib */; };
+		CFC5E4962329DFEE00F58F29 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4952329DFEE00F58F29 /* RxKeyboard */; };
 		CFD1D37420B87E94009C50ED /* AppInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37320B87E94009C50ED /* AppInfoRequest.swift */; };
 		CFD1D37620B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */; };
 		CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39020B9A176009C50ED /* R.generated.swift */; };
@@ -277,8 +277,8 @@
 				CF6F566422C4C13400F517E9 /* PopupDialog.framework in Frameworks */,
 				CFA2985F22BC7466002C94AC /* Nuke.framework in Frameworks */,
 				CF99DF5B22BA09D6006E3876 /* Action.framework in Frameworks */,
+				CFC5E4962329DFEE00F58F29 /* RxKeyboard in Frameworks */,
 				CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */,
-				CF55B69B22A41D5800D5C9E1 /* RxKeyboard.framework in Frameworks */,
 				CF01C1D921023F1700DC1901 /* SnapKit.framework in Frameworks */,
 				CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */,
 				CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */,
@@ -765,6 +765,9 @@
 				CF6FFF28207E4CE4003FD38D /* PBXTargetDependency */,
 			);
 			name = NowPlaying;
+			packageProductDependencies = (
+				CFC5E4952329DFEE00F58F29 /* RxKeyboard */,
+			);
 			productName = NowPlaying;
 			productReference = CF615AEA1F56AB3B00315019 /* NowPlaying.app */;
 			productType = "com.apple.product-type.application";
@@ -832,6 +835,9 @@
 				ja,
 			);
 			mainGroup = CF615AE11F56AB3B00315019;
+			packageReferences = (
+				CFC5E4942329DFEE00F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
+			);
 			productRefGroup = CF615AEB1F56AB3B00315019 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1413,6 +1419,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CFC5E4942329DFEE00F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CFC5E4952329DFEE00F58F29 /* RxKeyboard */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4942329DFEE00F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */;
+			productName = RxKeyboard;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CF615AE21F56AB3B00315019 /* Project object */;
 }
