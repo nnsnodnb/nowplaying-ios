@@ -29,7 +29,11 @@ final class PlayViewController: UIViewController {
     }
     @IBOutlet private weak var songNameLabel: ScrollFlowLabel! {
         didSet {
-            songNameLabel.textColor = .black
+            if #available(iOS 13.0, *) {
+                songNameLabel.textColor = .label
+            } else {
+                songNameLabel.textColor = .black
+            }
             songNameLabel.textAlignment = .center
             songNameLabel.font = .boldSystemFont(ofSize: 21)
             songNameLabel.pauseInterval = 2
@@ -39,7 +43,11 @@ final class PlayViewController: UIViewController {
     }
     @IBOutlet private weak var artistNameLabel: ScrollFlowLabel! {
         didSet {
-            artistNameLabel.textColor = .black
+            if #available(iOS 13.0, *) {
+                artistNameLabel.textColor = .label
+            } else {
+                artistNameLabel.textColor = .black
+            }
             artistNameLabel.textAlignment = .center
             artistNameLabel.font = .systemFont(ofSize: 16)
             artistNameLabel.pauseInterval = 2
