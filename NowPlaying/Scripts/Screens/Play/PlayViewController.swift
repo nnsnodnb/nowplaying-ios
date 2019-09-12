@@ -65,6 +65,7 @@ final class PlayViewController: UIViewController {
                 .subscribe(onNext: { [unowned self] (_) in
                     let viewController = SettingViewController()
                     let navi = UINavigationController(rootViewController: viewController)
+                    navi.modalPresentationStyle = .fullScreen
                     self.present(navi, animated: true, completion: nil)
                     Analytics.Play.gearButton()
                 })
@@ -157,6 +158,7 @@ final class PlayViewController: UIViewController {
             .drive(onNext: { [unowned self] (post) in
                 let viewController = TweetViewController(postContent: post)
                 let navi = UINavigationController(rootViewController: viewController)
+                navi.modalPresentationStyle = .fullScreen
                 self.present(navi, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
