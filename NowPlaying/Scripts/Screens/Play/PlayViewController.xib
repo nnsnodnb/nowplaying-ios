@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -75,27 +76,30 @@
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cPV-yO-10a">
                             <rect key="frame" x="0.0" y="456" width="300" height="64"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-cW-baF">
+                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-cW-baF">
                                     <rect key="frame" x="0.0" y="12" width="60" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="60" id="6dB-AJ-xfZ"/>
                                         <constraint firstAttribute="height" constant="40" id="Ap6-2S-xZR"/>
                                     </constraints>
+                                    <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <state key="normal" image="previous"/>
                                 </button>
-                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMi-NZ-cvB">
+                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMi-NZ-cvB">
                                     <rect key="frame" x="118" y="0.0" width="64" height="64"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="qMi-NZ-cvB" secondAttribute="height" multiplier="1:1" id="fYr-Vb-t1n"/>
                                     </constraints>
+                                    <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <state key="normal" image="play"/>
                                 </button>
-                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crR-aX-F7g">
+                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crR-aX-F7g">
                                     <rect key="frame" x="240" y="12" width="60" height="40"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="60" id="lce-iL-Dca"/>
                                         <constraint firstAttribute="height" constant="40" id="w9U-aV-j90"/>
                                     </constraints>
+                                    <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <state key="normal" image="next"/>
                                 </button>
                             </subviews>
@@ -105,13 +109,14 @@
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XJG-9e-16K">
                     <rect key="frame" x="37" y="670" width="301" height="50"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3aW-hZ-XIr">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3aW-hZ-XIr">
                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="MHr-TA-HJ4"/>
                                 <constraint firstAttribute="width" constant="50" id="Ya6-tK-lYk"/>
                                 <constraint firstAttribute="width" secondItem="3aW-hZ-XIr" secondAttribute="height" multiplier="1:1" id="pZU-wu-QFi"/>
                             </constraints>
+                            <color key="tintColor" name="GearButtonColor"/>
                             <state key="normal" image="gear"/>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Urp-xs-QIC">
@@ -178,5 +183,8 @@
         <image name="play" width="64" height="64"/>
         <image name="previous" width="750" height="500"/>
         <image name="twitter" width="128" height="128"/>
+        <namedColor name="GearButtonColor">
+            <color red="0.75663860103626945" green="0.75663860103626945" blue="0.75663860103626945" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
     </resources>
 </document>
