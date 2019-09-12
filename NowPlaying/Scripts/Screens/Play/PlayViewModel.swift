@@ -17,7 +17,7 @@ import RxCocoa
 import RxSwift
 import StoreKit
 import SVProgressHUD
-import SwifteriOS
+import Swifter
 import UIKit
 
 struct PlayViewModelInput {

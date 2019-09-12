@@ -9,14 +9,11 @@
 /* Begin PBXBuildFile section */
 		11080D9125318CEA00D3FD08 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6456D1CC406D6F7B03F18B93 /* Pods_NowPlaying.framework */; };
 		2A5223ED22EBB470DBA53A01 /* Pods_TodayExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4F017370E1F36C943F0FEEF /* Pods_TodayExtension.framework */; };
-		CF01C1D921023F1700DC1901 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF01C1D821023F1700DC1901 /* SnapKit.framework */; };
-		CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF0FA219206D3C3200647317 /* KeychainAccess.framework */; };
 		CF0FA21C206D4D5A00647317 /* PaymentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0FA21B206D4D5A00647317 /* PaymentManager.swift */; };
 		CF1611361F726D110027144D /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1611341F726D110027144D /* PlayViewController.swift */; };
 		CF1611371F726D110027144D /* PlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF1611351F726D110027144D /* PlayViewController.xib */; };
 		CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1AAFE41F75459B00384000 /* Eureka.framework */; };
 		CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1AAFE91F75F2A600384000 /* Common.swift */; };
-		CF232DA922CC93E200820C1B /* SwifteriOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF232DA822CC93E100820C1B /* SwifteriOS.framework */; };
 		CF232DAB22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */; };
 		CF232DAD22CCD70400820C1B /* TwitterSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAC22CCD70400820C1B /* TwitterSessionControl.swift */; };
 		CF232DAF22CCD7F100820C1B /* MastodonSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */; };
@@ -27,7 +24,6 @@
 		CF232DC222D4B22600820C1B /* TwitterPostRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DC122D4B22600820C1B /* TwitterPostRequest.swift */; };
 		CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */; };
 		CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2DBD7220A4AB630039217F /* libicucore.tbd */; };
-		CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF301D8C22B009C5007E675E /* APIKit.framework */; };
 		CF301D9322B01841007E675E /* Reactive+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9222B01841007E675E /* Reactive+Session.swift */; };
 		CF301D9822B01A59007E675E /* MastodonAppRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9722B01A59007E675E /* MastodonAppRequest.swift */; };
 		CF301D9A22B01B84007E675E /* SwiftPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF301D9922B01B84007E675E /* SwiftPrint.swift */; };
@@ -67,10 +63,7 @@
 		CF6F566422C4C13400F517E9 /* PopupDialog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566222C4C13400F517E9 /* PopupDialog.framework */; };
 		CF6F566822C4D0E300F517E9 /* ArtworkPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F566622C4D0E300F517E9 /* ArtworkPreviewViewController.swift */; };
 		CF6F566922C4D0E300F517E9 /* ArtworkPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF6F566722C4D0E300F517E9 /* ArtworkPreviewViewController.xib */; };
-		CF6F566B22C4D61E00F517E9 /* Hero.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566A22C4D61E00F517E9 /* Hero.framework */; };
 		CF6F566D22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F566C22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift */; };
-		CF6F567022CB168200F517E9 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566E22CB168000F517E9 /* RealmSwift.framework */; };
-		CF6F567122CB168200F517E9 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6F566F22CB168200F517E9 /* Realm.framework */; };
 		CF6F567422CB1CD800F517E9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567322CB1CD800F517E9 /* User.swift */; };
 		CF6F567622CB1E3C00F517E9 /* SecretCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567522CB1E3C00F517E9 /* SecretCredential.swift */; };
 		CF6F567D22CB5C8300F517E9 /* AppDelegateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */; };
@@ -97,9 +90,7 @@
 		CF99DF5622BA00EF006E3876 /* SearchMastodonTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99DF5422BA00EF006E3876 /* SearchMastodonTableViewController.swift */; };
 		CF99DF5722BA00EF006E3876 /* SearchMastodonTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF99DF5522BA00EF006E3876 /* SearchMastodonTableViewController.xib */; };
 		CF99DF5922BA05B7006E3876 /* SearchMastodonTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99DF5822BA05B7006E3876 /* SearchMastodonTableViewModel.swift */; };
-		CF99DF5B22BA09D6006E3876 /* Action.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF99DF5A22BA09D6006E3876 /* Action.framework */; };
 		CF99DF5E22BA0C1F006E3876 /* InstancesSearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99DF5D22BA0C1F006E3876 /* InstancesSearchRequest.swift */; };
-		CFA2985F22BC7466002C94AC /* Nuke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFA2985E22BC7466002C94AC /* Nuke.framework */; };
 		CFB5797922C385A3001F3D13 /* Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB5797822C385A3001F3D13 /* Instance.swift */; };
 		CFB5797B22C385B4001F3D13 /* InstanceListRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB5797A22C385B4001F3D13 /* InstanceListRequest.swift */; };
 		CFB5798122C38FA1001F3D13 /* MastodonDomainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB5797F22C38FA1001F3D13 /* MastodonDomainTableViewCell.swift */; };
@@ -107,6 +98,21 @@
 		CFB5798722C3982D001F3D13 /* MastodonSettingDomainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB5798522C3982D001F3D13 /* MastodonSettingDomainTableViewCell.swift */; };
 		CFB5798822C3982D001F3D13 /* MastodonSettingDomainTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFB5798622C3982D001F3D13 /* MastodonSettingDomainTableViewCell.xib */; };
 		CFC5E4962329DFEE00F58F29 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4952329DFEE00F58F29 /* RxKeyboard */; };
+		CFC5E4992329E16100F58F29 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4982329E16100F58F29 /* Hero */; };
+		CFC5E49C2329E1A400F58F29 /* APIKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E49B2329E1A400F58F29 /* APIKit */; };
+		CFC5E49F2329E1C000F58F29 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E49E2329E1C000F58F29 /* Nuke */; };
+		CFC5E4A22329E1DB00F58F29 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4A12329E1DB00F58F29 /* KeychainAccess */; };
+		CFC5E4A52329E22100F58F29 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4A42329E22100F58F29 /* Swifter */; };
+		CFC5E4A82329E27600F58F29 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4A72329E27600F58F29 /* RxSwift */; };
+		CFC5E4AC2329E27600F58F29 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4AB2329E27600F58F29 /* RxRelay */; };
+		CFC5E4AE2329E27600F58F29 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4AD2329E27600F58F29 /* RxCocoa */; };
+		CFC5E4B32329E2D300F58F29 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4B22329E2D300F58F29 /* Realm */; };
+		CFC5E4B52329E2D300F58F29 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4B42329E2D300F58F29 /* RealmSwift */; };
+		CFC5E4B82329E31800F58F29 /* Action in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4B72329E31800F58F29 /* Action */; };
+		CFC5E4BB2329E35000F58F29 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4BA2329E35000F58F29 /* SnapKit */; };
+		CFC5E4BF2329E44800F58F29 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4BE2329E44800F58F29 /* RxCocoa */; };
+		CFC5E4C12329E44800F58F29 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4C02329E44800F58F29 /* RxRelay */; };
+		CFC5E4C32329E44800F58F29 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4C22329E44800F58F29 /* RxSwift */; };
 		CFD1D37420B87E94009C50ED /* AppInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37320B87E94009C50ED /* AppInfoRequest.swift */; };
 		CFD1D37620B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */; };
 		CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39020B9A176009C50ED /* R.generated.swift */; };
@@ -268,25 +274,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFC5E4B82329E31800F58F29 /* Action in Frameworks */,
+				CFC5E4A52329E22100F58F29 /* Swifter in Frameworks */,
 				CFDFAD1A22D972150090CA9E /* Feeder.framework in Frameworks */,
-				CF232DA922CC93E200820C1B /* SwifteriOS.framework in Frameworks */,
-				CF6F567022CB168200F517E9 /* RealmSwift.framework in Frameworks */,
-				CF6F567122CB168200F517E9 /* Realm.framework in Frameworks */,
-				CF6F566B22C4D61E00F517E9 /* Hero.framework in Frameworks */,
+				CFC5E4A22329E1DB00F58F29 /* KeychainAccess in Frameworks */,
+				CFC5E4AC2329E27600F58F29 /* RxRelay in Frameworks */,
 				CF6F566322C4C13400F517E9 /* DynamicBlurView.framework in Frameworks */,
+				CFC5E49C2329E1A400F58F29 /* APIKit in Frameworks */,
 				CF6F566422C4C13400F517E9 /* PopupDialog.framework in Frameworks */,
-				CFA2985F22BC7466002C94AC /* Nuke.framework in Frameworks */,
-				CF99DF5B22BA09D6006E3876 /* Action.framework in Frameworks */,
+				CFC5E4AE2329E27600F58F29 /* RxCocoa in Frameworks */,
+				CFC5E4A82329E27600F58F29 /* RxSwift in Frameworks */,
+				CFC5E4B32329E2D300F58F29 /* Realm in Frameworks */,
+				CFC5E4B52329E2D300F58F29 /* RealmSwift in Frameworks */,
+				CFC5E49F2329E1C000F58F29 /* Nuke in Frameworks */,
+				CFC5E4BB2329E35000F58F29 /* SnapKit in Frameworks */,
 				CFC5E4962329DFEE00F58F29 /* RxKeyboard in Frameworks */,
-				CF301D8D22B009C5007E675E /* APIKit.framework in Frameworks */,
-				CF01C1D921023F1700DC1901 /* SnapKit.framework in Frameworks */,
 				CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */,
 				CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */,
-				CF0FA21A206D3C3200647317 /* KeychainAccess.framework in Frameworks */,
 				CF65C38D20A0983400E95640 /* SVProgressHUD.framework in Frameworks */,
 				CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */,
 				CF615B071F56E89100315019 /* AVFoundation.framework in Frameworks */,
 				CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */,
+				CFC5E4992329E16100F58F29 /* Hero in Frameworks */,
 				11080D9125318CEA00D3FD08 /* Pods_NowPlaying.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -295,7 +304,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFC5E4C32329E44800F58F29 /* RxSwift in Frameworks */,
+				CFC5E4C12329E44800F58F29 /* RxRelay in Frameworks */,
 				CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */,
+				CFC5E4BF2329E44800F58F29 /* RxCocoa in Frameworks */,
 				2A5223ED22EBB470DBA53A01 /* Pods_TodayExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -767,6 +779,18 @@
 			name = NowPlaying;
 			packageProductDependencies = (
 				CFC5E4952329DFEE00F58F29 /* RxKeyboard */,
+				CFC5E4982329E16100F58F29 /* Hero */,
+				CFC5E49B2329E1A400F58F29 /* APIKit */,
+				CFC5E49E2329E1C000F58F29 /* Nuke */,
+				CFC5E4A12329E1DB00F58F29 /* KeychainAccess */,
+				CFC5E4A42329E22100F58F29 /* Swifter */,
+				CFC5E4A72329E27600F58F29 /* RxSwift */,
+				CFC5E4AB2329E27600F58F29 /* RxRelay */,
+				CFC5E4AD2329E27600F58F29 /* RxCocoa */,
+				CFC5E4B22329E2D300F58F29 /* Realm */,
+				CFC5E4B42329E2D300F58F29 /* RealmSwift */,
+				CFC5E4B72329E31800F58F29 /* Action */,
+				CFC5E4BA2329E35000F58F29 /* SnapKit */,
 			);
 			productName = NowPlaying;
 			productReference = CF615AEA1F56AB3B00315019 /* NowPlaying.app */;
@@ -786,6 +810,11 @@
 			dependencies = (
 			);
 			name = TodayExtension;
+			packageProductDependencies = (
+				CFC5E4BE2329E44800F58F29 /* RxCocoa */,
+				CFC5E4C02329E44800F58F29 /* RxRelay */,
+				CFC5E4C22329E44800F58F29 /* RxSwift */,
+			);
 			productName = TodayExtension;
 			productReference = CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -837,6 +866,15 @@
 			mainGroup = CF615AE11F56AB3B00315019;
 			packageReferences = (
 				CFC5E4942329DFEE00F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
+				CFC5E4972329E16100F58F29 /* XCRemoteSwiftPackageReference "Hero" */,
+				CFC5E49A2329E1A400F58F29 /* XCRemoteSwiftPackageReference "APIKit" */,
+				CFC5E49D2329E1C000F58F29 /* XCRemoteSwiftPackageReference "Nuke" */,
+				CFC5E4A02329E1DB00F58F29 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				CFC5E4A32329E22100F58F29 /* XCRemoteSwiftPackageReference "Swifter" */,
+				CFC5E4A62329E27600F58F29 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				CFC5E4B12329E2D300F58F29 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				CFC5E4B62329E31800F58F29 /* XCRemoteSwiftPackageReference "Action" */,
+				CFC5E4B92329E35000F58F29 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = CF615AEB1F56AB3B00315019 /* Products */;
 			projectDirPath = "";
@@ -1429,6 +1467,78 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		CFC5E4972329E16100F58F29 /* XCRemoteSwiftPackageReference "Hero" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/HeroTransitions/Hero";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
+			};
+		};
+		CFC5E49A2329E1A400F58F29 /* XCRemoteSwiftPackageReference "APIKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ishkawa/APIKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		CFC5E49D2329E1C000F58F29 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.1;
+			};
+		};
+		CFC5E4A02329E1DB00F58F29 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.0;
+			};
+		};
+		CFC5E4A32329E22100F58F29 /* XCRemoteSwiftPackageReference "Swifter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/noppefoxwolf/Swifter";
+			requirement = {
+				branch = feature/SSO;
+				kind = branch;
+			};
+		};
+		CFC5E4A62329E27600F58F29 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+		CFC5E4B12329E2D300F58F29 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.17.3;
+			};
+		};
+		CFC5E4B62329E31800F58F29 /* XCRemoteSwiftPackageReference "Action" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/Action";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.1;
+			};
+		};
+		CFC5E4B92329E35000F58F29 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1436,6 +1546,81 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFC5E4942329DFEE00F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */;
 			productName = RxKeyboard;
+		};
+		CFC5E4982329E16100F58F29 /* Hero */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4972329E16100F58F29 /* XCRemoteSwiftPackageReference "Hero" */;
+			productName = Hero;
+		};
+		CFC5E49B2329E1A400F58F29 /* APIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E49A2329E1A400F58F29 /* XCRemoteSwiftPackageReference "APIKit" */;
+			productName = APIKit;
+		};
+		CFC5E49E2329E1C000F58F29 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E49D2329E1C000F58F29 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
+		};
+		CFC5E4A12329E1DB00F58F29 /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4A02329E1DB00F58F29 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
+		CFC5E4A42329E22100F58F29 /* Swifter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4A32329E22100F58F29 /* XCRemoteSwiftPackageReference "Swifter" */;
+			productName = Swifter;
+		};
+		CFC5E4A72329E27600F58F29 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4A62329E27600F58F29 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		CFC5E4AB2329E27600F58F29 /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4A62329E27600F58F29 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		CFC5E4AD2329E27600F58F29 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4A62329E27600F58F29 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		CFC5E4B22329E2D300F58F29 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4B12329E2D300F58F29 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		CFC5E4B42329E2D300F58F29 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4B12329E2D300F58F29 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+		CFC5E4B72329E31800F58F29 /* Action */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4B62329E31800F58F29 /* XCRemoteSwiftPackageReference "Action" */;
+			productName = Action;
+		};
+		CFC5E4BA2329E35000F58F29 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4B92329E35000F58F29 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		CFC5E4BE2329E44800F58F29 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4A62329E27600F58F29 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		CFC5E4C02329E44800F58F29 /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4A62329E27600F58F29 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		CFC5E4C22329E44800F58F29 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4A62329E27600F58F29 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

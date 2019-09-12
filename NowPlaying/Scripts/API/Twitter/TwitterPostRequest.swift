@@ -9,7 +9,7 @@
 import Foundation
 import RxCocoa
 import RxSwift
-import SwifteriOS
+import Swifter
 
 struct TwitterPostRequest {
 

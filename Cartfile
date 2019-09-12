@@ -1,13 +1,4 @@
-github "HeroTransitions/Hero"
-github "ishkawa/APIKit" ~> 5.0
-github "kean/Nuke" ~> 8.0
-github "kishikawakatsumi/KeychainAccess"
 github "nnsnodnb/Feeder" ~> 1.0
-github "noppefoxwolf/Swifter" "feature/SSO"
 github "Orderella/PopupDialog" ~> 1.1
-github "ReactiveX/RxSwift" ~> 5.0
-github "realm/realm-cocoa"
-github "RxSwiftCommunity/Action" ~> 4.0
-github "SnapKit/SnapKit" ~> 5.0.0
 github "SVProgressHUD/SVProgressHUD"
 github "xmartlabs/Eureka" ~> 5.0

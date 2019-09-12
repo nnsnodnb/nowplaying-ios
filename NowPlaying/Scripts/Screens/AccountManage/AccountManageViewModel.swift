@@ -14,7 +14,7 @@ import RxCocoa
 import RxSwift
 import SafariServices
 import SVProgressHUD
-import SwifteriOS
+import Swifter
 import UIKit
 
 struct AccountManageViewModelInput {
