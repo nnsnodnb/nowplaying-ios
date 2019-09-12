@@ -151,14 +151,11 @@
 		6456D1CC406D6F7B03F18B93 /* Pods_NowPlaying.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NowPlaying.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4F017370E1F36C943F0FEEF /* Pods_TodayExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TodayExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF4C1F9A8FD3B8698F9D401D /* Pods-TodayExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TodayExtension.release.xcconfig"; path = "Target Support Files/Pods-TodayExtension/Pods-TodayExtension.release.xcconfig"; sourceTree = "<group>"; };
-		CF01C1D821023F1700DC1901 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
-		CF0FA219206D3C3200647317 /* KeychainAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KeychainAccess.framework; path = Carthage/Build/iOS/KeychainAccess.framework; sourceTree = "<group>"; };
 		CF0FA21B206D4D5A00647317 /* PaymentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaymentManager.swift; path = Manager/PaymentManager.swift; sourceTree = "<group>"; };
 		CF1611341F726D110027144D /* PlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlayViewController.swift; path = Play/PlayViewController.swift; sourceTree = "<group>"; };
 		CF1611351F726D110027144D /* PlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlayViewController.xib; path = Play/PlayViewController.xib; sourceTree = "<group>"; };
 		CF1AAFE41F75459B00384000 /* Eureka.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Eureka.framework; path = Carthage/Build/iOS/Eureka.framework; sourceTree = "<group>"; };
 		CF1AAFE91F75F2A600384000 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = Common/Common.swift; sourceTree = "<group>"; };
-		CF232DA822CC93E100820C1B /* SwifteriOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwifteriOS.framework; path = Carthage/Build/iOS/SwifteriOS.framework; sourceTree = "<group>"; };
 		CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonVerifyCredentialsRequest.swift; sourceTree = "<group>"; };
 		CF232DAC22CCD70400820C1B /* TwitterSessionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TwitterSessionControl.swift; path = Manager/TwitterSessionControl.swift; sourceTree = "<group>"; };
 		CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonSessionControl.swift; path = Manager/MastodonSessionControl.swift; sourceTree = "<group>"; };
@@ -171,7 +168,6 @@
 		CF232DC122D4B22600820C1B /* TwitterPostRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterPostRequest.swift; sourceTree = "<group>"; };
 		CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF2DBD7220A4AB630039217F /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
-		CF301D8C22B009C5007E675E /* APIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APIKit.framework; path = Carthage/Build/iOS/APIKit.framework; sourceTree = "<group>"; };
 		CF301D9222B01841007E675E /* Reactive+Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reactive+Session.swift"; sourceTree = "<group>"; };
 		CF301D9722B01A59007E675E /* MastodonAppRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonAppRequest.swift; sourceTree = "<group>"; };
 		CF301D9922B01B84007E675E /* SwiftPrint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftPrint.swift; path = Common/SwiftPrint.swift; sourceTree = "<group>"; };
@@ -202,7 +198,6 @@
 		CF55B68E22A40ACD00D5C9E1 /* PostContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContent.swift; sourceTree = "<group>"; };
 		CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Analytics+NowPlaying.swift"; sourceTree = "<group>"; };
 		CF55B69822A41B8800D5C9E1 /* TweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TweetViewModel.swift; path = Tweet/TweetViewModel.swift; sourceTree = "<group>"; };
-		CF55B69A22A41D5800D5C9E1 /* RxKeyboard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxKeyboard.framework; path = Carthage/Build/iOS/RxKeyboard.framework; sourceTree = "<group>"; };
 		CF615AEA1F56AB3B00315019 /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF615AED1F56AB3B00315019 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF615AF41F56AB3B00315019 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -215,10 +210,7 @@
 		CF6F566222C4C13400F517E9 /* PopupDialog.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PopupDialog.framework; path = Carthage/Build/iOS/PopupDialog.framework; sourceTree = "<group>"; };
 		CF6F566622C4D0E300F517E9 /* ArtworkPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ArtworkPreviewViewController.swift; path = Preview/ArtworkPreviewViewController.swift; sourceTree = "<group>"; };
 		CF6F566722C4D0E300F517E9 /* ArtworkPreviewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ArtworkPreviewViewController.xib; path = Preview/ArtworkPreviewViewController.xib; sourceTree = "<group>"; };
-		CF6F566A22C4D61E00F517E9 /* Hero.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Hero.framework; path = Carthage/Build/iOS/Hero.framework; sourceTree = "<group>"; };
 		CF6F566C22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ArtworkPreviewViewModel.swift; path = Preview/ArtworkPreviewViewModel.swift; sourceTree = "<group>"; };
-		CF6F566E22CB168000F517E9 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
-		CF6F566F22CB168200F517E9 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		CF6F567322CB1CD800F517E9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CF6F567522CB1E3C00F517E9 /* SecretCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretCredential.swift; sourceTree = "<group>"; };
 		CF6F567C22CB5C8300F517E9 /* AppDelegateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateViewModel.swift; sourceTree = "<group>"; };
@@ -247,11 +239,9 @@
 		CF99DF5422BA00EF006E3876 /* SearchMastodonTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchMastodonTableViewController.swift; path = SearchMastodon/SearchMastodonTableViewController.swift; sourceTree = "<group>"; };
 		CF99DF5522BA00EF006E3876 /* SearchMastodonTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SearchMastodonTableViewController.xib; path = SearchMastodon/SearchMastodonTableViewController.xib; sourceTree = "<group>"; };
 		CF99DF5822BA05B7006E3876 /* SearchMastodonTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchMastodonTableViewModel.swift; path = SearchMastodon/SearchMastodonTableViewModel.swift; sourceTree = "<group>"; };
-		CF99DF5A22BA09D6006E3876 /* Action.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Action.framework; path = Carthage/Build/iOS/Action.framework; sourceTree = "<group>"; };
 		CF99DF5D22BA0C1F006E3876 /* InstancesSearchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstancesSearchRequest.swift; sourceTree = "<group>"; };
 		CF9AB0B522B0CEAC0088483D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		CF9AB0B622B0CEAC0088483D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/MainInterface.strings; sourceTree = "<group>"; };
-		CFA2985E22BC7466002C94AC /* Nuke.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nuke.framework; path = Carthage/Build/iOS/Nuke.framework; sourceTree = "<group>"; };
 		CFB5797822C385A3001F3D13 /* Instance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance.swift; sourceTree = "<group>"; };
 		CFB5797A22C385B4001F3D13 /* InstanceListRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceListRequest.swift; sourceTree = "<group>"; };
 		CFB5797F22C38FA1001F3D13 /* MastodonDomainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonDomainTableViewCell.swift; sourceTree = "<group>"; };
@@ -501,20 +491,10 @@
 			isa = PBXGroup;
 			children = (
 				CFDFAD1922D972150090CA9E /* Feeder.framework */,
-				CF232DA822CC93E100820C1B /* SwifteriOS.framework */,
-				CF6F566F22CB168200F517E9 /* Realm.framework */,
-				CF6F566E22CB168000F517E9 /* RealmSwift.framework */,
-				CF6F566A22C4D61E00F517E9 /* Hero.framework */,
 				CF6F566122C4C13400F517E9 /* DynamicBlurView.framework */,
 				CF6F566222C4C13400F517E9 /* PopupDialog.framework */,
-				CFA2985E22BC7466002C94AC /* Nuke.framework */,
-				CF99DF5A22BA09D6006E3876 /* Action.framework */,
 				CF2DBD7220A4AB630039217F /* libicucore.tbd */,
-				CF301D8C22B009C5007E675E /* APIKit.framework */,
-				CF55B69A22A41D5800D5C9E1 /* RxKeyboard.framework */,
-				CF01C1D821023F1700DC1901 /* SnapKit.framework */,
 				CF65C38C20A0983400E95640 /* SVProgressHUD.framework */,
-				CF0FA219206D3C3200647317 /* KeychainAccess.framework */,
 				CF4D73D11F791D4300E72FBF /* StoreKit.framework */,
 				CF1AAFE41F75459B00384000 /* Eureka.framework */,
 				CF615B061F56E89100315019 /* AVFoundation.framework */,
