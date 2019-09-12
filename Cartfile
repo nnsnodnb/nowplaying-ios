@@ -1,4 +1,4 @@
 github "nnsnodnb/Feeder" ~> 1.0
 github "Orderella/PopupDialog" ~> 1.1
 github "SVProgressHUD/SVProgressHUD"
-github "xmartlabs/Eureka" ~> 5.0
+github "xmartlabs/Eureka" "xcode11"
