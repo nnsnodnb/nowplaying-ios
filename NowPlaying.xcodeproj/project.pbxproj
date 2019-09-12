@@ -97,7 +97,6 @@
 		CFB5798222C38FA1001F3D13 /* MastodonDomainTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFB5798022C38FA1001F3D13 /* MastodonDomainTableViewCell.xib */; };
 		CFB5798722C3982D001F3D13 /* MastodonSettingDomainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB5798522C3982D001F3D13 /* MastodonSettingDomainTableViewCell.swift */; };
 		CFB5798822C3982D001F3D13 /* MastodonSettingDomainTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFB5798622C3982D001F3D13 /* MastodonSettingDomainTableViewCell.xib */; };
-		CFC5E4962329DFEE00F58F29 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4952329DFEE00F58F29 /* RxKeyboard */; };
 		CFC5E4992329E16100F58F29 /* Hero in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4982329E16100F58F29 /* Hero */; };
 		CFC5E49C2329E1A400F58F29 /* APIKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E49B2329E1A400F58F29 /* APIKit */; };
 		CFC5E49F2329E1C000F58F29 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E49E2329E1C000F58F29 /* Nuke */; };
@@ -113,6 +112,7 @@
 		CFC5E4BF2329E44800F58F29 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4BE2329E44800F58F29 /* RxCocoa */; };
 		CFC5E4C12329E44800F58F29 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4C02329E44800F58F29 /* RxRelay */; };
 		CFC5E4C32329E44800F58F29 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4C22329E44800F58F29 /* RxSwift */; };
+		CFC5E4CC2329EA4500F58F29 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4CB2329EA4500F58F29 /* RxKeyboard */; };
 		CFD1D37420B87E94009C50ED /* AppInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37320B87E94009C50ED /* AppInfoRequest.swift */; };
 		CFD1D37620B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */; };
 		CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39020B9A176009C50ED /* R.generated.swift */; };
@@ -265,6 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFC5E4B82329E31800F58F29 /* Action in Frameworks */,
+				CFC5E4CC2329EA4500F58F29 /* RxKeyboard in Frameworks */,
 				CFC5E4A52329E22100F58F29 /* Swifter in Frameworks */,
 				CFDFAD1A22D972150090CA9E /* Feeder.framework in Frameworks */,
 				CFC5E4A22329E1DB00F58F29 /* KeychainAccess in Frameworks */,
@@ -278,7 +279,6 @@
 				CFC5E4B52329E2D300F58F29 /* RealmSwift in Frameworks */,
 				CFC5E49F2329E1C000F58F29 /* Nuke in Frameworks */,
 				CFC5E4BB2329E35000F58F29 /* SnapKit in Frameworks */,
-				CFC5E4962329DFEE00F58F29 /* RxKeyboard in Frameworks */,
 				CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */,
 				CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */,
 				CF65C38D20A0983400E95640 /* SVProgressHUD.framework in Frameworks */,
@@ -758,7 +758,6 @@
 			);
 			name = NowPlaying;
 			packageProductDependencies = (
-				CFC5E4952329DFEE00F58F29 /* RxKeyboard */,
 				CFC5E4982329E16100F58F29 /* Hero */,
 				CFC5E49B2329E1A400F58F29 /* APIKit */,
 				CFC5E49E2329E1C000F58F29 /* Nuke */,
@@ -771,6 +770,7 @@
 				CFC5E4B42329E2D300F58F29 /* RealmSwift */,
 				CFC5E4B72329E31800F58F29 /* Action */,
 				CFC5E4BA2329E35000F58F29 /* SnapKit */,
+				CFC5E4CB2329EA4500F58F29 /* RxKeyboard */,
 			);
 			productName = NowPlaying;
 			productReference = CF615AEA1F56AB3B00315019 /* NowPlaying.app */;
@@ -836,16 +836,15 @@
 			};
 			buildConfigurationList = CF615AE51F56AB3B00315019 /* Build configuration list for PBXProject "NowPlaying" */;
 			compatibilityVersion = "Xcode 10.0";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				Base,
 				ja,
+				en,
 			);
 			mainGroup = CF615AE11F56AB3B00315019;
 			packageReferences = (
-				CFC5E4942329DFEE00F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				CFC5E4972329E16100F58F29 /* XCRemoteSwiftPackageReference "Hero" */,
 				CFC5E49A2329E1A400F58F29 /* XCRemoteSwiftPackageReference "APIKit" */,
 				CFC5E49D2329E1C000F58F29 /* XCRemoteSwiftPackageReference "Nuke" */,
@@ -855,6 +854,7 @@
 				CFC5E4B12329E2D300F58F29 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 				CFC5E4B62329E31800F58F29 /* XCRemoteSwiftPackageReference "Action" */,
 				CFC5E4B92329E35000F58F29 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				CFC5E4CA2329EA4500F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 			);
 			productRefGroup = CF615AEB1F56AB3B00315019 /* Products */;
 			projectDirPath = "";
@@ -1439,14 +1439,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CFC5E4942329DFEE00F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		CFC5E4972329E16100F58F29 /* XCRemoteSwiftPackageReference "Hero" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/HeroTransitions/Hero";
@@ -1519,14 +1511,17 @@
 				minimumVersion = 5.0.1;
 			};
 		};
+		CFC5E4CA2329EA4500F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CFC5E4952329DFEE00F58F29 /* RxKeyboard */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC5E4942329DFEE00F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */;
-			productName = RxKeyboard;
-		};
 		CFC5E4982329E16100F58F29 /* Hero */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CFC5E4972329E16100F58F29 /* XCRemoteSwiftPackageReference "Hero" */;
@@ -1601,6 +1596,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFC5E4A62329E27600F58F29 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
+		};
+		CFC5E4CB2329EA4500F58F29 /* RxKeyboard */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC5E4CA2329EA4500F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */;
+			productName = RxKeyboard;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
