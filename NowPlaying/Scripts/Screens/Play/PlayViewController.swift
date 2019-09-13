@@ -22,7 +22,7 @@ final class PlayViewController: UIViewController {
     @IBOutlet private weak var artworkImageView: UIImageView! {
         didSet {
             artworkImageView.layer.shadowColor = R.color.artworkShadowColor()!.cgColor
-            artworkImageView.layer.shadowOffset = CGSize(width: 0, height: 0)
+            artworkImageView.layer.shadowOffset = .zero
             artworkImageView.layer.shadowRadius = 20
             artworkImageView.layer.shadowOpacity = 0.5
         }

@@ -23,9 +23,16 @@ final class ShadowButton: UIButton {
     }
 
     private func commonInit() {
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 0)
+        layer.shadowColor = R.color.artworkShadowColor()!.cgColor
+        layer.shadowOffset = .zero
         layer.shadowRadius = shadowRadius
         layer.shadowOpacity = 0.5
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13.0, *), previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle {
+            layer.shadowColor = R.color.artworkShadowColor()!.cgColor
+        }
     }
 }
