@@ -118,6 +118,13 @@ final class PlayViewController: UIViewController {
         viewModel.showSingleAccountToMultiAccountDialog()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 12.0, *), previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle {
+            artworkImageView.layer.shadowColor = R.color.artworkShadowColor()!.cgColor
+        }
+    }
+
     // MARK: - Private method
 
     private func subscribeViewModel() {
