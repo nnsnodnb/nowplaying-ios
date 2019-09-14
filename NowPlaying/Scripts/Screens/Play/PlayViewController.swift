@@ -21,15 +21,19 @@ final class PlayViewController: UIViewController {
 
     @IBOutlet private weak var artworkImageView: UIImageView! {
         didSet {
-            artworkImageView.layer.shadowColor = UIColor.black.cgColor
-            artworkImageView.layer.shadowOffset = CGSize(width: 0, height: 0)
+            artworkImageView.layer.shadowColor = R.color.artworkShadowColor()!.cgColor
+            artworkImageView.layer.shadowOffset = .zero
             artworkImageView.layer.shadowRadius = 20
             artworkImageView.layer.shadowOpacity = 0.5
         }
     }
     @IBOutlet private weak var songNameLabel: ScrollFlowLabel! {
         didSet {
-            songNameLabel.textColor = .black
+            if #available(iOS 13.0, *) {
+                songNameLabel.textColor = .label
+            } else {
+                songNameLabel.textColor = .black
+            }
             songNameLabel.textAlignment = .center
             songNameLabel.font = .boldSystemFont(ofSize: 21)
             songNameLabel.pauseInterval = 2
@@ -39,7 +43,11 @@ final class PlayViewController: UIViewController {
     }
     @IBOutlet private weak var artistNameLabel: ScrollFlowLabel! {
         didSet {
-            artistNameLabel.textColor = .black
+            if #available(iOS 13.0, *) {
+                artistNameLabel.textColor = .label
+            } else {
+                artistNameLabel.textColor = .black
+            }
             artistNameLabel.textAlignment = .center
             artistNameLabel.font = .systemFont(ofSize: 16)
             artistNameLabel.pauseInterval = 2
@@ -57,6 +65,7 @@ final class PlayViewController: UIViewController {
                 .subscribe(onNext: { [unowned self] (_) in
                     let viewController = SettingViewController()
                     let navi = UINavigationController(rootViewController: viewController)
+                    navi.modalPresentationStyle = .fullScreen
                     self.present(navi, animated: true, completion: nil)
                     Analytics.Play.gearButton()
                 })
@@ -109,6 +118,13 @@ final class PlayViewController: UIViewController {
         viewModel.showSingleAccountToMultiAccountDialog()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 12.0, *), previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle {
+            artworkImageView.layer.shadowColor = R.color.artworkShadowColor()!.cgColor
+        }
+    }
+
     // MARK: - Private method
 
     private func subscribeViewModel() {
@@ -149,6 +165,7 @@ final class PlayViewController: UIViewController {
             .drive(onNext: { [unowned self] (post) in
                 let viewController = TweetViewController(postContent: post)
                 let navi = UINavigationController(rootViewController: viewController)
+                navi.modalPresentationStyle = .fullScreen
                 self.present(navi, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)

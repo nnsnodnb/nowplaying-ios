@@ -13,7 +13,7 @@ import FirebaseDatabase
 import KeychainAccess
 import RxSwift
 import SafariServices
-import SwifteriOS
+import Swifter
 import UIKit
 
 enum AuthError: Swift.Error {

@@ -7,6 +7,7 @@
 //
 
 import APIKit
+import Foundation
 
 protocol MastodonRequest: Request {}
 

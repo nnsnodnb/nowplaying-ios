@@ -17,7 +17,7 @@ import RxCocoa
 import RxSwift
 import StoreKit
 import SVProgressHUD
-import SwifteriOS
+import Swifter
 import UIKit
 
 struct PlayViewModelInput {
@@ -135,6 +135,7 @@ final class PlayViewModel: PlayViewModelType {
             DispatchQueue.main.async {
                 Feeder.Impact(.medium).impactOccurred()
                 let navi = UINavigationController(rootViewController: SettingViewController())
+                navi.modalPresentationStyle = .fullScreen
                 self.viewController.present(navi, animated: true, completion: nil)
             }
         }
@@ -143,6 +144,7 @@ final class PlayViewModel: PlayViewModelType {
         dialogVC.messageFont = .boldSystemFont(ofSize: 17)
         dialogVC.messageColor = .black
         AuthManager.oldLogout()
+        dialog.modalPresentationStyle = .fullScreen
         viewController.present(dialog, animated: true) {
             UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)
         }
