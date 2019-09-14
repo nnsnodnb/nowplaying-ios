@@ -16,9 +16,12 @@ import SafariServices
 import SVProgressHUD
 import UIKit
 
-struct SettingViewModelInput {
+// MARK: - SettingViewModelInput
 
-    let viewController: UIViewController
+protocol SettingViewModelInput {
+
+    var buyProductTrigger: PublishRelay<PaymentManager.Product> { get }
+    var restoreTrigger: PublishRelay<Void> { get }
 }
 
 // MARK: - SettingViewModelOutput
@@ -26,32 +29,39 @@ struct SettingViewModelInput {
 protocol SettingViewModelOutput {
 
     var startInAppPurchase: Observable<Void> { get }
+    var pushViewController: Driver<UIViewController> { get }
+    var presentViewController: Driver<UIViewController> { get }
 }
 
-// MARK: - SettingViewModelType
+// MARK: - SettingViewModel
 
-protocol SettingViewModelType {
+protocol SettingViewModel {
 
+    var inputs: SettingViewModelInput { get }
     var outputs: SettingViewModelOutput { get }
     var form: Form { get }
 
-    init(inputs: SettingViewModelInput)
-    func buyProduct(_ product: PaymentManager.Product)
-    func restore()
+    init()
 }
 
-final class SettingViewModel: SettingViewModelType {
+final class SettingViewModelImpl: SettingViewModel {
 
+    /* SettingViewModel */
     let form: Form
 
+    var inputs: SettingViewModelInput { return self }
     var outputs: SettingViewModelOutput { return self }
+
+    /* SettingViewModelInput */
+    let buyProductTrigger: PublishRelay<PaymentManager.Product> = .init()
+    let restoreTrigger: PublishRelay<Void> = .init()
 
     private let disposeBag = DisposeBag()
     private let _startInAppPurchase = PublishRelay<Void>()
-    private let inputs: SettingViewModelInput
+    private let _pushViewController = PublishRelay<UIViewController>()
+    private let _presentViewController = PublishRelay<UIViewController>()
 
-    init(inputs: SettingViewModelInput) {
-        self.inputs = inputs
+    init() {
         form = Form()
 
         if !UserDefaults.bool(forKey: .isPurchasedRemoveAdMob) {
@@ -63,52 +73,57 @@ final class SettingViewModel: SettingViewModelType {
                 .disposed(by: disposeBag)
         }
 
+        subscribeInputsObserver()
         configureCells()
-    }
-
-    func buyProduct(_ product: PaymentManager.Product) {
-        PaymentManager.shared.buyProduct(product)
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] (state) in
-                switch state {
-                case .purchased:
-                    Feeder.Notification(.success).notificationOccurred()
-                    SVProgressHUD.showSuccess(withStatus: "購入が完了しました！")
-                    SVProgressHUD.dismiss(withDelay: 0.5)
-                    product.finishPurchased()
-                    self?.changeStateAdMob()
-                case .purchasing:
-                    SVProgressHUD.show(withStatus: "購入処理中...")
-                }
-            }, onError: { (_) in
-                Feeder.Notification(.error).notificationOccurred()
-                SVProgressHUD.showError(withStatus: "購入が失敗しました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-            })
-            .disposed(by: disposeBag)
-    }
-
-    func restore() {
-        PaymentManager.shared.restore()
-            .subscribe(onNext: { [weak self] (products) in
-                products.forEach { $0.finishPurchased() }
-                Feeder.Notification(.success).notificationOccurred()
-                SVProgressHUD.showSuccess(withStatus: "復元が完了しました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-                if products.first(where: { $0 == .hideAdmob }) == nil { return }
-                self?.changeStateAdMob()
-            }, onError: { (_) in
-                Feeder.Notification(.error).notificationOccurred()
-                SVProgressHUD.showError(withStatus: "復元に失敗しました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-            })
-            .disposed(by: disposeBag)
     }
 }
 
 // MARK: - Private method
 
-extension SettingViewModel {
+extension SettingViewModelImpl {
+
+    private func subscribeInputsObserver() {
+        buyProductTrigger
+            .subscribe(onNext: { (product) in
+                _ = PaymentManager.shared.buyProduct(product)
+                    .observeOn(MainScheduler.instance)
+                    .subscribe(onNext: { [weak self] (state) in
+                        switch state {
+                        case .purchased:
+                            Feeder.Notification(.success).notificationOccurred()
+                            SVProgressHUD.showSuccess(withStatus: "購入が完了しました！")
+                            SVProgressHUD.dismiss(withDelay: 0.5)
+                            product.finishPurchased()
+                            self?.changeStateAdMob()
+                        case .purchasing:
+                            SVProgressHUD.show(withStatus: "購入処理中...")
+                        }
+                    }, onError: { (_) in
+                        Feeder.Notification(.error).notificationOccurred()
+                        SVProgressHUD.showError(withStatus: "購入が失敗しました")
+                        SVProgressHUD.dismiss(withDelay: 0.5)
+                    })
+            })
+            .disposed(by: disposeBag)
+
+        restoreTrigger
+            .subscribe(onNext: {
+                _ = PaymentManager.shared.restore()
+                    .subscribe(onNext: { [weak self] (products) in
+                        products.forEach { $0.finishPurchased() }
+                        Feeder.Notification(.success).notificationOccurred()
+                        SVProgressHUD.showSuccess(withStatus: "復元が完了しました")
+                        SVProgressHUD.dismiss(withDelay: 0.5)
+                        if products.first(where: { $0 == .hideAdmob }) == nil { return }
+                        self?.changeStateAdMob()
+                    }, onError: { (_) in
+                        Feeder.Notification(.error).notificationOccurred()
+                        SVProgressHUD.showError(withStatus: "復元に失敗しました")
+                        SVProgressHUD.dismiss(withDelay: 0.5)
+                    })
+            })
+            .disposed(by: disposeBag)
+    }
 
     private func configureCells() {
         form
@@ -128,7 +143,7 @@ extension SettingViewModel {
             $0.title = "Twitter設定"
         }.onCellSelection { [unowned self] (_, _) in
             let viewController = TwitterSettingViewController()
-            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
+            self._pushViewController.accept(viewController)
         }
     }
 
@@ -137,7 +152,7 @@ extension SettingViewModel {
             $0.title = "Mastodon設定"
         }.onCellSelection { [unowned self] (_, _) in
             let viewController = MastodonSettingViewController()
-            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
+            self._pushViewController.accept(viewController)
         }
     }
 
@@ -146,7 +161,7 @@ extension SettingViewModel {
             $0.title = "開発者(Twitter)"
         }.onCellSelection { [unowned self] (_, _) in
             let safariViewController = SFSafariViewController(url: URL(string: "https://twitter.com/nnsnodnb")!)
-            self.inputs.viewController.present(safariViewController, animated: true, completion: nil)
+            self._presentViewController.accept(safariViewController)
             Analytics.Setting.onTapDeveloper()
         }
     }
@@ -156,7 +171,7 @@ extension SettingViewModel {
             $0.title = "ソースコード(GitHub)"
         }.onCellSelection { [unowned self] (_, _) in
             let safariViewController = SFSafariViewController(url: URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!)
-            self.inputs.viewController.present(safariViewController, animated: true, completion: nil)
+            self._presentViewController.accept(safariViewController)
             Analytics.Setting.github()
         }
     }
@@ -167,7 +182,7 @@ extension SettingViewModel {
         }.onCellSelection { [unowned self] (_, _) in
             let safariViewController = SFSafariViewController(url: URL(string: "https://forms.gle/gE5ms3bEM5A85kdVA")!)
             safariViewController.dismissButtonStyle = .close
-            self.inputs.viewController.present(safariViewController, animated: true, completion: nil)
+            self._presentViewController.accept(safariViewController)
         }
     }
 
@@ -180,7 +195,7 @@ extension SettingViewModel {
             if DTTJailbreakDetection.isJailbroken() {
                 let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
-                self.inputs.viewController.present(alert, animated: true, completion: nil)
+                self._presentViewController.accept(alert)
                 return
             }
             self._startInAppPurchase.accept(())
@@ -201,7 +216,7 @@ extension SettingViewModel {
                 }
             })
             alert.preferredAction = alert.actions.last
-            self.inputs.viewController.present(alert, animated: true, completion: nil)
+            self._presentViewController.accept(alert)
         }
     }
 
@@ -213,11 +228,23 @@ extension SettingViewModel {
     }
 }
 
+// MARK: - SettingViewModelInput
+
+extension SettingViewModelImpl: SettingViewModelInput {}
+
 // MARK: - SettingViewModelOutput
 
-extension SettingViewModel: SettingViewModelOutput {
+extension SettingViewModelImpl: SettingViewModelOutput {
 
     var startInAppPurchase: Observable<Void> {
         return _startInAppPurchase.observeOn(MainScheduler.instance).asObservable()
+    }
+
+    var pushViewController: Driver<UIViewController> {
+        return _pushViewController.asDriver(onErrorDriveWith: .empty())
+    }
+
+    var presentViewController: Driver<UIViewController> {
+        return _presentViewController.asDriver(onErrorDriveWith: .empty())
     }
 }

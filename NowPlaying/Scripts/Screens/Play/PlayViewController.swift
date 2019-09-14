@@ -97,7 +97,7 @@ final class PlayViewController: UIViewController {
             gearButton.rx.tap
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { [unowned self] (_) in
-                    let viewController = SettingViewController()
+                    let viewController = SettingViewController(viewModel: SettingViewModelImpl())
                     let navi = UINavigationController(rootViewController: viewController)
                     navi.modalPresentationStyle = .fullScreen
                     self.present(navi, animated: true, completion: nil)
@@ -148,7 +148,7 @@ final class PlayViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
     private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
-    private let viewModel: PlayViewModel!
+    private let viewModel: PlayViewModel
 
     // MARK: - Initializer
 
