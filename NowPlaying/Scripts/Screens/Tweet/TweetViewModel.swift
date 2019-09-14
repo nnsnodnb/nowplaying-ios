@@ -15,7 +15,7 @@ import RealmSwift
 import RxCocoa
 import RxSwift
 import SVProgressHUD
-import SwifteriOS
+import Swifter
 
 struct TweetViewModelInput {
 

@@ -8,21 +8,8 @@
 # List file paths below; one per line. These paths will be considered inputs or outputs for the script phase.
 # Build settings will be expanded, e.g. $(SRCROOT)/fileName
 
-$(SRCROOT)/Carthage/Build/iOS/Action.framework
-$(SRCROOT)/Carthage/Build/iOS/APIKit.framework
 $(SRCROOT)/Carthage/Build/iOS/DynamicBlurView.framework
 $(SRCROOT)/Carthage/Build/iOS/Eureka.framework
 $(SRCROOT)/Carthage/Build/iOS/Feeder.framework
-$(SRCROOT)/Carthage/Build/iOS/Hero.framework
-$(SRCROOT)/Carthage/Build/iOS/KeychainAccess.framework
-$(SRCROOT)/Carthage/Build/iOS/Nuke.framework
 $(SRCROOT)/Carthage/Build/iOS/PopupDialog.framework
 $(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework
-$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework
-$(SRCROOT)/Carthage/Build/iOS/Realm.framework
-$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework
-$(SRCROOT)/Carthage/Build/iOS/RxKeyboard.framework
-$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework
-$(SRCROOT)/Carthage/Build/iOS/RxCocoa.framework
-$(SRCROOT)/Carthage/Build/iOS/RxRelay.framework
-$(SRCROOT)/Carthage/Build/iOS/SwifteriOS.framework

@@ -1,6 +1,6 @@
 # nowplaying-ios
 
-[![Swift 5.0.1](https://img.shields.io/badge/language-Swift%205.0.1-orange.svg)](https://developer.apple.com/swift)
+[![Swift 5.1](https://img.shields.io/badge/language-Swift5.1-orange.svg)](https://developer.apple.com/swift)
 ![GitHub](https://img.shields.io/github/license/nnsnodnb/nowplaying-ios.svg)
 [![Build Status](https://app.bitrise.io/app/8eca75fbd7da8604/status.svg?token=yseu5iRESgLabX5CHEjvWg&branch=deploygate)](https://app.bitrise.io/app/8eca75fbd7da8604)
 
@@ -8,8 +8,8 @@ NowPlaying tweet & toot application for iOS.
 
 ## Environments
 
-- Xcode 10.2.1
-  - Swift 5.0.1
+- Xcode 11 GM Seed
+  - Swift 5.1
 - Ruby 2.5.3
   - Bundler 2.0.2
     - Cocoapods 1.7.5

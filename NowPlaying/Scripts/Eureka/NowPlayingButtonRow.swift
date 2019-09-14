@@ -18,7 +18,11 @@ final class ButtonRowOf<T>: _ButtonRowOf<T>, RowType where T: Equatable {
 
         cellUpdate { (cell, _) in
             cell.textLabel?.textAlignment = .left
-            cell.textLabel?.textColor = .black
+            if #available(iOS 13.0, *) {
+                cell.textLabel?.textColor = .label
+            } else {
+                cell.textLabel?.textColor = .black
+            }
             cell.accessoryType = .disclosureIndicator
         }
     }

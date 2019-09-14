@@ -16,7 +16,7 @@ import KeychainAccess
 import RealmSwift
 import RxSwift
 import SVProgressHUD
-import SwifteriOS
+import Swifter
 import UIKit
 
 @UIApplicationMain
