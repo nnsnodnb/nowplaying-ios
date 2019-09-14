@@ -15,6 +15,10 @@ import RxCocoa
 import RxSwift
 import SVProgressHUD
 
+enum TwitterSettingTransition {
+    case manage, alert(AlertConfigurations)
+}
+
 // MARK: - TwitterSettingViewModelInput
 
 protocol TwitterSettingViewModelInput {
@@ -23,12 +27,12 @@ protocol TwitterSettingViewModelInput {
     var restoreTrigger: PublishRelay<Void> { get }
 }
 
-
 // MARK: - TwitterSettingViewModelOutput
 
 protocol TwitterSettingViewModelOutput {
 
     var startInAppPurchase: Observable<Void> { get }
+    var transition: Observable<TwitterSettingTransition> { get }
 }
 
 // MARK: - TwitterSettingViewModelType
@@ -56,6 +60,7 @@ final class TwitterSettingViewModelImpl: TwitterSettingViewModel {
 
     private let disposeBag = DisposeBag()
     private let _startInAppPurchase = PublishRelay<Void>()
+    private let _transition = PublishRelay<TwitterSettingTransition>()
 
     init() {
         form = Form()
@@ -138,12 +143,15 @@ extension TwitterSettingViewModelImpl {
     }
 
     private func configureAccounts() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
+        let row = NowPlayingButtonRow {
             $0.title = "アカウント管理"
-        }.onCellSelection { [unowned self] (_, _) in
-            let viewController = AccountManageViewController(service: .twitter, screenType: .settings)
-//            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
         }
+        row.rx.onCellSelection()
+            .subscribe(onNext: { [unowned self] (_, _) in
+                // TODO: AccountManageViewController
+            })
+            .disposed(by: disposeBag)
+        return row
     }
 
     private func configureWithImage() -> SwitchRow {
@@ -170,19 +178,24 @@ extension TwitterSettingViewModelImpl {
     }
 
     private func configurePurchase() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
+        let row = NowPlayingButtonRow {
             $0.title = "自動ツイートを購入"
             $0.tag = "auto_tweet_purchase"
             $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isAutoTweetPurchase))
-        }.onCellSelection { [weak self] (_, _) in
-            guard !DTTJailbreakDetection.isJailbroken() else {
-                let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
-//                self?.inputs.viewController.present(alert, animated: true, completion: nil)
-                return
-            }
-            self?._startInAppPurchase.accept(())
         }
+        row.rx.onCellSelection()
+            .subscribe(onNext: { (_, _) in
+                if !DTTJailbreakDetection.isJailbroken() {
+                    self._startInAppPurchase.accept(())
+                    return
+                }
+                // TODO: 脱獄検知アラート
+//                let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
+//                alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
+////                self?.inputs.viewController.present(alert, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        return row
     }
 
     private func configureAutoTweet() -> SwitchRow {
@@ -197,6 +210,7 @@ extension TwitterSettingViewModelImpl {
             UserDefaults.set($0.value!, forKey: .isAutoTweet)
             Analytics.TwitterSetting.changeAutoTweet($0.value!)
             if !$0.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) { return }
+            // TODO: アラート
             let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。",
                                           preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -227,21 +241,29 @@ extension TwitterSettingViewModelImpl {
     }
 
     private func configureFormatReset() -> ButtonRow {
-        return ButtonRow {
+        let row = ButtonRow {
             $0.title = "リセットする"
-        }.onCellSelection { [unowned self] (_, _) in
-            let alert = UIAlertController(title: "投稿フォーマットをリセットします", message: nil, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "リセット", style: .destructive) { [unowned self] (_) in
-                guard let tweetFormatRow: TextAreaRow = self.form.rowBy(tag: "tweet_format") else { return }
-                DispatchQueue.main.async {
-                    tweetFormatRow.baseValue = String.defaultPostFormat
-                    tweetFormatRow.updateCell()
-                }
-            })
-//            self.inputs.viewController.present(alert, animated: true, completion: nil)
-            Feeder.Notification(.warning).notificationOccurred()
         }
+        row.rx.onCellSelection()
+            .subscribe(onNext: { [unowned self] (_, _) in
+                // TODO: アラート表示
+                Feeder.Notification(.warning).notificationOccurred()
+            })
+            .disposed(by: disposeBag)
+        return row
+//        .onCellSelection { [unowned self] (_, _) in
+//            let alert = UIAlertController(title: "投稿フォーマットをリセットします", message: nil, preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+//            alert.addAction(UIAlertAction(title: "リセット", style: .destructive) { [unowned self] (_) in
+//                guard let tweetFormatRow: TextAreaRow = self.form.rowBy(tag: "tweet_format") else { return }
+//                DispatchQueue.main.async {
+//                    tweetFormatRow.baseValue = String.defaultPostFormat
+//                    tweetFormatRow.updateCell()
+//                }
+//            })
+////            self.inputs.viewController.present(alert, animated: true, completion: nil)
+//            Feeder.Notification(.warning).notificationOccurred()
+//        }
     }
 }
 
@@ -270,5 +292,9 @@ extension TwitterSettingViewModelImpl: TwitterSettingViewModelOutput {
 
     var startInAppPurchase: Observable<Void> {
         return _startInAppPurchase.observeOn(MainScheduler.instance).asObservable()
+    }
+
+    var transition: Observable<TwitterSettingTransition> {
+        return _transition.observeOn(MainScheduler.instance).asObservable()
     }
 }
