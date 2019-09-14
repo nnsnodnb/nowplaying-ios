@@ -53,6 +53,7 @@
 		CF55B68F22A40ACD00D5C9E1 /* PostContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B68E22A40ACD00D5C9E1 /* PostContent.swift */; };
 		CF55B69722A418A100D5C9E1 /* Analytics+NowPlaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */; };
 		CF55B69922A41B8800D5C9E1 /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B69822A41B8800D5C9E1 /* TweetViewModel.swift */; };
+		CF5FD9F0232CD91D00AA2236 /* SearchMastodonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF5FD9EF232CD91D00AA2236 /* SearchMastodonViewController.xib */; };
 		CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF41F56AB3B00315019 /* Assets.xcassets */; };
 		CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */; };
 		CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B001F56B04E00315019 /* MediaPlayer.framework */; };
@@ -87,9 +88,8 @@
 		CF99DF4922B607AE006E3876 /* PostFormatHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99DF4822B607AE006E3876 /* PostFormatHelpView.swift */; };
 		CF99DF4B22B607C1006E3876 /* PostFormatHelpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF99DF4A22B607C1006E3876 /* PostFormatHelpView.xib */; };
 		CF99DF5222B8716B006E3876 /* Enumerates.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99DF5122B8716B006E3876 /* Enumerates.swift */; };
-		CF99DF5622BA00EF006E3876 /* SearchMastodonTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99DF5422BA00EF006E3876 /* SearchMastodonTableViewController.swift */; };
-		CF99DF5722BA00EF006E3876 /* SearchMastodonTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF99DF5522BA00EF006E3876 /* SearchMastodonTableViewController.xib */; };
-		CF99DF5922BA05B7006E3876 /* SearchMastodonTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99DF5822BA05B7006E3876 /* SearchMastodonTableViewModel.swift */; };
+		CF99DF5622BA00EF006E3876 /* SearchMastodonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99DF5422BA00EF006E3876 /* SearchMastodonViewController.swift */; };
+		CF99DF5922BA05B7006E3876 /* SearchMastodonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99DF5822BA05B7006E3876 /* SearchMastodonViewModel.swift */; };
 		CF99DF5E22BA0C1F006E3876 /* InstancesSearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99DF5D22BA0C1F006E3876 /* InstancesSearchRequest.swift */; };
 		CFB5797922C385A3001F3D13 /* Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB5797822C385A3001F3D13 /* Instance.swift */; };
 		CFB5797B22C385B4001F3D13 /* InstanceListRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB5797A22C385B4001F3D13 /* InstanceListRequest.swift */; };
@@ -198,6 +198,7 @@
 		CF55B68E22A40ACD00D5C9E1 /* PostContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContent.swift; sourceTree = "<group>"; };
 		CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Analytics+NowPlaying.swift"; sourceTree = "<group>"; };
 		CF55B69822A41B8800D5C9E1 /* TweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TweetViewModel.swift; path = Tweet/TweetViewModel.swift; sourceTree = "<group>"; };
+		CF5FD9EF232CD91D00AA2236 /* SearchMastodonViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SearchMastodonViewController.xib; path = SearchMastodon/SearchMastodonViewController.xib; sourceTree = "<group>"; };
 		CF615AEA1F56AB3B00315019 /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF615AED1F56AB3B00315019 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF615AF41F56AB3B00315019 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -236,9 +237,8 @@
 		CF99DF4822B607AE006E3876 /* PostFormatHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFormatHelpView.swift; sourceTree = "<group>"; };
 		CF99DF4A22B607C1006E3876 /* PostFormatHelpView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostFormatHelpView.xib; sourceTree = "<group>"; };
 		CF99DF5122B8716B006E3876 /* Enumerates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Enumerates.swift; path = Common/Enumerates.swift; sourceTree = "<group>"; };
-		CF99DF5422BA00EF006E3876 /* SearchMastodonTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchMastodonTableViewController.swift; path = SearchMastodon/SearchMastodonTableViewController.swift; sourceTree = "<group>"; };
-		CF99DF5522BA00EF006E3876 /* SearchMastodonTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SearchMastodonTableViewController.xib; path = SearchMastodon/SearchMastodonTableViewController.xib; sourceTree = "<group>"; };
-		CF99DF5822BA05B7006E3876 /* SearchMastodonTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchMastodonTableViewModel.swift; path = SearchMastodon/SearchMastodonTableViewModel.swift; sourceTree = "<group>"; };
+		CF99DF5422BA00EF006E3876 /* SearchMastodonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchMastodonViewController.swift; path = SearchMastodon/SearchMastodonViewController.swift; sourceTree = "<group>"; };
+		CF99DF5822BA05B7006E3876 /* SearchMastodonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchMastodonViewModel.swift; path = SearchMastodon/SearchMastodonViewModel.swift; sourceTree = "<group>"; };
 		CF99DF5D22BA0C1F006E3876 /* InstancesSearchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstancesSearchRequest.swift; sourceTree = "<group>"; };
 		CF9AB0B522B0CEAC0088483D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		CF9AB0B622B0CEAC0088483D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/MainInterface.strings; sourceTree = "<group>"; };
@@ -655,9 +655,9 @@
 		CF99DF5322BA0089006E3876 /* SearchMastodon */ = {
 			isa = PBXGroup;
 			children = (
-				CF99DF5422BA00EF006E3876 /* SearchMastodonTableViewController.swift */,
-				CF99DF5522BA00EF006E3876 /* SearchMastodonTableViewController.xib */,
-				CF99DF5822BA05B7006E3876 /* SearchMastodonTableViewModel.swift */,
+				CF99DF5422BA00EF006E3876 /* SearchMastodonViewController.swift */,
+				CF5FD9EF232CD91D00AA2236 /* SearchMastodonViewController.xib */,
+				CF99DF5822BA05B7006E3876 /* SearchMastodonViewModel.swift */,
 			);
 			name = SearchMastodon;
 			sourceTree = "<group>";
@@ -879,6 +879,7 @@
 				CF918D071F7075110005B686 /* Settings.bundle in Resources */,
 				CF531C0D22A9540500D05896 /* SettingViewController.xib in Resources */,
 				CFB5798822C3982D001F3D13 /* MastodonSettingDomainTableViewCell.xib in Resources */,
+				CF5FD9F0232CD91D00AA2236 /* SearchMastodonViewController.xib in Resources */,
 				CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */,
 				CF531C0422A9536A00D05896 /* TwitterSettingViewController.xib in Resources */,
 				CF232DB622D3079400820C1B /* NowPlaying-Release.xcconfig.sample in Resources */,
@@ -888,7 +889,6 @@
 				CFB5798222C38FA1001F3D13 /* MastodonDomainTableViewCell.xib in Resources */,
 				CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */,
 				CF6F569022CC6A7D00F517E9 /* AccountManageViewController.xib in Resources */,
-				CF99DF5722BA00EF006E3876 /* SearchMastodonTableViewController.xib in Resources */,
 				CF1611371F726D110027144D /* PlayViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1082,7 +1082,7 @@
 				CF6F567622CB1E3C00F517E9 /* SecretCredential.swift in Sources */,
 				CF232DBA22D483A300820C1B /* UIButton+Nuke.swift in Sources */,
 				CF531C0022A9534F00D05896 /* SettingViewController.swift in Sources */,
-				CF99DF5622BA00EF006E3876 /* SearchMastodonTableViewController.swift in Sources */,
+				CF99DF5622BA00EF006E3876 /* SearchMastodonViewController.swift in Sources */,
 				CF531C0722A953B200D05896 /* MastodonSettingViewModel.swift in Sources */,
 				CF531C3022A9827100D05896 /* SKProductsRequestDelegateProxy.swift in Sources */,
 				CF232DAB22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift in Sources */,
@@ -1124,7 +1124,7 @@
 				CF6F566D22C4DE9700F517E9 /* ArtworkPreviewViewModel.swift in Sources */,
 				CF301D9A22B01B84007E675E /* SwiftPrint.swift in Sources */,
 				CF531BF422A9495000D05896 /* SettingViewModel.swift in Sources */,
-				CF99DF5922BA05B7006E3876 /* SearchMastodonTableViewModel.swift in Sources */,
+				CF99DF5922BA05B7006E3876 /* SearchMastodonViewModel.swift in Sources */,
 				CF531C2C22A9817A00D05896 /* SKPaymentQueue+Rx.swift in Sources */,
 				CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */,
 				CF531C0A22A953C900D05896 /* MastodonSettingViewController.swift in Sources */,
