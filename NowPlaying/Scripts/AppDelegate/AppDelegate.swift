@@ -80,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GADMobileAds.sharedInstance().start(completionHandler: nil)
 
         #if DEBUG
-        DeallocationChecker.shared.setup(with: .alert)
+        DeallocationChecker.shared.setup(with: .precondition)
         UIViewController.swizzleViewDidDisappear()
         Analytics.setAnalyticsCollectionEnabled(false)
         let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()

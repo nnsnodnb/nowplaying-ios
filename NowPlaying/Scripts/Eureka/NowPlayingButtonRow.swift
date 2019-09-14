@@ -8,6 +8,8 @@
 
 import Foundation
 import Eureka
+import RxCocoa
+import RxSwift
 
 typealias NowPlayingButtonRow = ButtonRowOf<String>
 
@@ -24,6 +26,20 @@ final class ButtonRowOf<T>: _ButtonRowOf<T>, RowType where T: Equatable {
                 cell.textLabel?.textColor = .black
             }
             cell.accessoryType = .disclosureIndicator
+        }
+    }
+}
+
+extension BaseRow: ReactiveCompatible {}
+
+extension Reactive where Base: BaseRow, Base: RowType {
+
+    func onCellSelection() -> Observable<(Base.Cell, Base)> {
+        return .create { [weak base] (observer) -> Disposable in
+            base?.onCellSelection { (cell, row) in
+                observer.onNext((cell, row))
+            }
+            return Disposables.create()
         }
     }
 }

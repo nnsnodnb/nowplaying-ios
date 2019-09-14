@@ -6,7 +6,7 @@
 //  Copyright © 2019 Oka Yuya. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum Service: String {
 
@@ -36,4 +36,10 @@ enum WithImageType: String {
 
     case onlyArtwork = "アートワークのみ"
     case playerScreenshot = "再生画面のスクリーンショット"
+}
+
+enum TransitionStyle {
+
+    case push
+    case modal(UIModalPresentationStyle)
 }

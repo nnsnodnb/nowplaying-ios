@@ -16,6 +16,10 @@ import SafariServices
 import SVProgressHUD
 import UIKit
 
+enum SettingTransitionConfig {
+    case twitter, mastodon, safari(URL), alert(AlertConfigurations)
+}
+
 // MARK: - SettingViewModelInput
 
 protocol SettingViewModelInput {
@@ -29,8 +33,7 @@ protocol SettingViewModelInput {
 protocol SettingViewModelOutput {
 
     var startInAppPurchase: Observable<Void> { get }
-    var pushViewController: Driver<UIViewController> { get }
-    var presentViewController: Driver<UIViewController> { get }
+    var transition: Observable<SettingTransitionConfig> { get }
 }
 
 // MARK: - SettingViewModel
@@ -58,8 +61,7 @@ final class SettingViewModelImpl: SettingViewModel {
 
     private let disposeBag = DisposeBag()
     private let _startInAppPurchase = PublishRelay<Void>()
-    private let _pushViewController = PublishRelay<UIViewController>()
-    private let _presentViewController = PublishRelay<UIViewController>()
+    private let _transition = PublishRelay<SettingTransitionConfig>()
 
     init() {
         form = Form()
@@ -139,85 +141,108 @@ extension SettingViewModelImpl {
     }
 
     private func configureTwitterSetting() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
+        let row = NowPlayingButtonRow {
             $0.title = "Twitter設定"
-        }.onCellSelection { [unowned self] (_, _) in
-            let viewController = TwitterSettingViewController()
-            self._pushViewController.accept(viewController)
         }
+        row.rx.onCellSelection()
+            .subscribe(onNext: { [unowned self] (_, _) in
+                self._transition.accept(.twitter)
+            })
+            .disposed(by: disposeBag)
+        return row
     }
 
     private func configureMastodonSetting() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
+        let row = NowPlayingButtonRow {
             $0.title = "Mastodon設定"
-        }.onCellSelection { [unowned self] (_, _) in
-            let viewController = MastodonSettingViewController()
-            self._pushViewController.accept(viewController)
         }
+        row.rx.onCellSelection()
+            .subscribe(onNext: { [unowned self] (_, _) in
+                self._transition.accept(.mastodon)
+            })
+            .disposed(by: disposeBag)
+        return row
     }
 
     private func configureDeveloper() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
+        let row = NowPlayingButtonRow {
             $0.title = "開発者(Twitter)"
-        }.onCellSelection { [unowned self] (_, _) in
-            let safariViewController = SFSafariViewController(url: URL(string: "https://twitter.com/nnsnodnb")!)
-            self._presentViewController.accept(safariViewController)
-            Analytics.Setting.onTapDeveloper()
         }
+        row.rx.onCellSelection()
+            .subscribe(onNext: { [unowned self] (_, _) in
+                self._transition.accept(.safari(URL(string: "https://twitter.com/nnsnodnb")!))
+                Analytics.Setting.onTapDeveloper()
+            })
+            .disposed(by: disposeBag)
+        return row
     }
 
     private func configureSourceCode() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
+        let row = NowPlayingButtonRow {
             $0.title = "ソースコード(GitHub)"
-        }.onCellSelection { [unowned self] (_, _) in
-            let safariViewController = SFSafariViewController(url: URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!)
-            self._presentViewController.accept(safariViewController)
-            Analytics.Setting.github()
         }
+        row.rx.onCellSelection()
+            .subscribe(onNext: { [unowned self] (_, _) in
+                self._transition.accept(.safari(URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!))
+                Analytics.Setting.github()
+            })
+            .disposed(by: disposeBag)
+        return row
     }
 
     private func configureFeatureReportBugs() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
+        let row = NowPlayingButtonRow {
             $0.title = "機能要望・バグ報告"
-        }.onCellSelection { [unowned self] (_, _) in
-            let safariViewController = SFSafariViewController(url: URL(string: "https://forms.gle/gE5ms3bEM5A85kdVA")!)
-            safariViewController.dismissButtonStyle = .close
-            self._presentViewController.accept(safariViewController)
         }
+        row.rx.onCellSelection()
+            .subscribe(onNext: { [unowned self] (_, _) in
+                self._transition.accept(.safari(URL(string: "https://forms.gle/gE5ms3bEM5A85kdVA")!))
+            })
+            .disposed(by: disposeBag)
+        return row
     }
 
     private func configureHideAdmobPurchase() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
+        let row = NowPlayingButtonRow {
             $0.title = "アプリ内広告削除(有料)"
             $0.tag = "remove_admob"
             $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isPurchasedRemoveAdMob))
-        }.onCellSelection { [unowned self] (_, _) in
-            if DTTJailbreakDetection.isJailbroken() {
-                let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
-                self._presentViewController.accept(alert)
-                return
-            }
-            self._startInAppPurchase.accept(())
         }
+        row.rx.onCellSelection()
+            .subscribe(onNext: { [unowned self] (_, _) in
+                if !DTTJailbreakDetection.isJailbroken() {
+                    self._startInAppPurchase.accept(())
+                    return
+                }
+                let actions: [AlertConfigurations.Action] = [
+                    AlertConfigurations.Action(title: "閉じる", style: .cancel, isPreferredAction: false, handler: nil)
+                ]
+                let config = AlertConfigurations(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません",
+                                                preferredStyle: .alert, actions: actions)
+                self._transition.accept(.alert(config))
+            })
+            .disposed(by: disposeBag)
+        return row
     }
 
     private func configureReview() -> NowPlayingButtonRow {
-        return NowPlayingButtonRow {
+        let row = NowPlayingButtonRow {
             $0.title = "レビューする"
-        }.onCellSelection { [unowned self] (_, _) in
-            Analytics.Setting.review()
-            let alert = UIAlertController(title: "AppStoreが開きます", message: nil, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "開く", style: .default) { (_) in
-                let reviewURL = URL(string: "\(websiteURL)&action=write-review")!
-                DispatchQueue.main.async {
-                    UIApplication.shared.open(reviewURL, options: [:], completionHandler: nil)
-                }
-            })
-            alert.preferredAction = alert.actions.last
-            self._presentViewController.accept(alert)
         }
+        row.rx.onCellSelection()
+            .subscribe(onNext: { [unowned self] (_, _) in
+                let actions: [AlertConfigurations.Action] = [
+                    .init(title: "キャンセル", style: .cancel),
+                    .init(title: "開く", style: .default, isPreferredAction: true) { (_) in
+                        let reviewURL = URL(string: "\(websiteURL)&action=write-review")!
+                        UIApplication.shared.open(reviewURL, options: [:], completionHandler: nil)
+                    }
+                ]
+                let config = AlertConfigurations(title: "AppStoreが開きます", message: nil, preferredStyle: .alert, actions: actions)
+                self._transition.accept(.alert(config))
+            })
+            .disposed(by: disposeBag)
+        return row
     }
 
     private func changeStateAdMob() {
@@ -240,11 +265,7 @@ extension SettingViewModelImpl: SettingViewModelOutput {
         return _startInAppPurchase.observeOn(MainScheduler.instance).asObservable()
     }
 
-    var pushViewController: Driver<UIViewController> {
-        return _pushViewController.asDriver(onErrorDriveWith: .empty())
-    }
-
-    var presentViewController: Driver<UIViewController> {
-        return _presentViewController.asDriver(onErrorDriveWith: .empty())
+    var transition: Observable<SettingTransitionConfig> {
+        return _transition.observeOn(MainScheduler.instance).asObservable()
     }
 }

@@ -18,8 +18,18 @@ import UIKit
 final class TwitterSettingViewController: FormViewController {
 
     private let disposeBag = DisposeBag()
+    private let viewModel: TwitterSettingViewModel
 
-    private var viewModel: TwitterSettingViewModelType!
+    // MARK: - Initializer
+
+    init(viewModel: TwitterSettingViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: R.nib.twitterSettingViewController.name, bundle: R.nib.twitterSettingViewController.bundle)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Life cycle
 
@@ -28,9 +38,6 @@ final class TwitterSettingViewController: FormViewController {
         title = "Twitter設定"
         let backBarButtonItem = UIBarButtonItem(title: "戻る", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
-
-        let inputs = TwitterSettingViewModelInput(viewController: self)
-        viewModel = TwitterSettingViewModel(inputs: inputs)
 
         form = viewModel.form
 
@@ -52,7 +59,7 @@ final class TwitterSettingViewController: FormViewController {
     private func showSelectPurchaseType() {
         let alert = UIAlertController(title: "復元しますか？購入しますか？", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "復元", style: .default) { [unowned self] (_) in
-            self.viewModel.restore()
+            self.viewModel.inputs.restoreTrigger.accept(())
         })
         let newPurchaseAction = UIAlertAction(title: "購入", style: .default) { [unowned self] (_) in
             self.showBeforePurchaseNote()
@@ -71,7 +78,7 @@ final class TwitterSettingViewController: FormViewController {
 
         let cancelButton = CancelButton(title: "キャンセル", action: nil)
         let purchaseButton = DefaultButton(title: "購入") { [unowned self] in
-            self.viewModel.buyProduct(.autoTweet)
+            self.viewModel.inputs.buyProductTrigger.accept(.autoTweet)
         }
         purchaseButton.titleFont = .boldSystemFont(ofSize: 15)
         dialog.addButtons([cancelButton, purchaseButton])

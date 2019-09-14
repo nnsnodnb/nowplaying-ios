@@ -9,6 +9,7 @@
 import Eureka
 import FirebaseAnalytics
 import RxSwift
+import SafariServices
 import StoreKit
 import UIKit
 
@@ -49,15 +50,21 @@ final class SettingViewController: FormViewController {
             })
             .disposed(by: disposeBag)
 
-        viewModel.outputs.pushViewController
-            .drive(onNext: { [weak self] (viewController) in
-                self?.navigationController?.pushViewController(viewController, animated: true)
-            })
-            .disposed(by: disposeBag)
-
-        viewModel.outputs.presentViewController
-            .drive(onNext: { [weak self] (viewController) in
-                self?.present(viewController, animated: true, completion: nil)
+        viewModel.outputs.transition
+            .subscribe(onNext: { [unowned self] (transition) in
+                switch transition {
+                case .twitter:
+                    let viewController = TwitterSettingViewController(viewModel: TwitterSettingViewModelImpl())
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                case .mastodon:
+                    let viewController = MastodonSettingViewController()
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                case .safari(let url):
+                    let viewController = SFSafariViewController(url: url)
+                    self.present(viewController, animated: true, completion: nil)
+                case .alert(let config):
+                    self.present(config.make(), animated: true, completion: nil)
+                }
             })
             .disposed(by: disposeBag)
     }

@@ -15,10 +15,14 @@ import RxCocoa
 import RxSwift
 import SVProgressHUD
 
-struct TwitterSettingViewModelInput {
+// MARK: - TwitterSettingViewModelInput
 
-    let viewController: UIViewController
+protocol TwitterSettingViewModelInput {
+
+    var buyProductTrigger: PublishRelay<PaymentManager.Product> { get }
+    var restoreTrigger: PublishRelay<Void> { get }
 }
+
 
 // MARK: - TwitterSettingViewModelOutput
 
@@ -29,75 +33,87 @@ protocol TwitterSettingViewModelOutput {
 
 // MARK: - TwitterSettingViewModelType
 
-protocol TwitterSettingViewModelType {
+protocol TwitterSettingViewModel {
 
+    var inputs: TwitterSettingViewModelInput { get }
     var outputs: TwitterSettingViewModelOutput { get }
     var form: Form { get }
 
-    init(inputs: TwitterSettingViewModelInput)
-    func buyProduct(_ product: PaymentManager.Product)
-    func restore()
+    init()
 }
 
-final class TwitterSettingViewModel: TwitterSettingViewModelType {
+final class TwitterSettingViewModelImpl: TwitterSettingViewModel {
 
+    /* TwitterSettingViewModel */
     let form: Form
 
+    var inputs: TwitterSettingViewModelInput { return self }
     var outputs: TwitterSettingViewModelOutput { return self }
+
+    /* TwitterSettingViewModelInput */
+    let buyProductTrigger: PublishRelay<PaymentManager.Product> = .init()
+    let restoreTrigger: PublishRelay<Void> = .init()
 
     private let disposeBag = DisposeBag()
     private let _startInAppPurchase = PublishRelay<Void>()
-    private let inputs: TwitterSettingViewModelInput
 
-    init(inputs: TwitterSettingViewModelInput) {
+    init() {
         form = Form()
-        self.inputs = inputs
 
         configureCells()
     }
+}
 
-    func buyProduct(_ product: PaymentManager.Product) {
-        PaymentManager.shared.buyProduct(product)
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] (state) in
-                switch state {
-                case .purchased:
-                    Feeder.Notification(.success).notificationOccurred()
-                    SVProgressHUD.showSuccess(withStatus: "購入が完了しました！")
-                    SVProgressHUD.dismiss(withDelay: 0.5)
-                    product.finishPurchased()
-                    self?.changeStateAutoTweet()
-                case .purchasing:
-                    SVProgressHUD.show(withStatus: "購入処理中...")
-                }
-            }, onError: { (_) in
-                Feeder.Notification(.error).notificationOccurred()
-                SVProgressHUD.showError(withStatus: "購入が失敗しました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
+// MARK: - Private method (Subscribe)
+
+extension TwitterSettingViewModelImpl {
+
+    private func subscribeInputs() {
+        buyProductTrigger
+            .subscribe(onNext: { (product) in
+                _ = PaymentManager.shared.buyProduct(product)
+                    .observeOn(MainScheduler.instance)
+                    .subscribe(onNext: { [weak self] (state) in
+                        switch state {
+                        case .purchased:
+                            Feeder.Notification(.success).notificationOccurred()
+                            SVProgressHUD.showSuccess(withStatus: "購入が完了しました！")
+                            SVProgressHUD.dismiss(withDelay: 0.5)
+                            product.finishPurchased()
+                            self?.changeStateAutoTweet()
+                        case .purchasing:
+                            SVProgressHUD.show(withStatus: "購入処理中...")
+                        }
+                    }, onError: { (_) in
+                        Feeder.Notification(.error).notificationOccurred()
+                        SVProgressHUD.showError(withStatus: "購入が失敗しました")
+                        SVProgressHUD.dismiss(withDelay: 0.5)
+                    })
             })
             .disposed(by: disposeBag)
-    }
 
-    func restore() {
-        PaymentManager.shared.restore()
-            .subscribe(onNext: { [weak self] (products) in
-                products.forEach {
-                    $0.finishPurchased()
-                    switch $0 {
-                    case .hideAdmob:
-                        // SettingViewModel に通知を送る
-                        NotificationCenter.default.post(name: .purchasedHideAdMobNotification, object: nil)
-                    case .autoTweet:
-                        self?.changeStateAutoTweet()
+        restoreTrigger
+            .subscribe(onNext: {
+                _ = PaymentManager.shared.restore()
+                .subscribe(onNext: { [weak self] (products) in
+                    products.forEach {
+                        $0.finishPurchased()
+                        switch $0 {
+                        case .hideAdmob:
+                            // SettingViewModel に通知を送る
+                            NotificationCenter.default.post(name: .purchasedHideAdMobNotification, object: nil)
+                        case .autoTweet:
+                            self?.changeStateAutoTweet()
+                        }
                     }
-                }
-                Feeder.Notification(.success).notificationOccurred()
-                SVProgressHUD.showSuccess(withStatus: "復元が完了しました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-            }, onError: { (_) in
-                Feeder.Notification(.error).notificationOccurred()
-                SVProgressHUD.showError(withStatus: "復元に失敗しました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
+                    Feeder.Notification(.success).notificationOccurred()
+                    SVProgressHUD.showSuccess(withStatus: "復元が完了しました")
+                    SVProgressHUD.dismiss(withDelay: 0.5)
+                }, onError: { (_) in
+                    Feeder.Notification(.error).notificationOccurred()
+                    SVProgressHUD.showError(withStatus: "復元に失敗しました")
+                    SVProgressHUD.dismiss(withDelay: 0.5)
+                })
             })
             .disposed(by: disposeBag)
     }
@@ -105,7 +121,7 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
 
 // MARK: - Private method (Form)
 
-extension TwitterSettingViewModel {
+extension TwitterSettingViewModelImpl {
 
     private func configureCells() {
         form
@@ -126,7 +142,7 @@ extension TwitterSettingViewModel {
             $0.title = "アカウント管理"
         }.onCellSelection { [unowned self] (_, _) in
             let viewController = AccountManageViewController(service: .twitter, screenType: .settings)
-            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
+//            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
         }
     }
 
@@ -162,7 +178,7 @@ extension TwitterSettingViewModel {
             guard !DTTJailbreakDetection.isJailbroken() else {
                 let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
-                self?.inputs.viewController.present(alert, animated: true, completion: nil)
+//                self?.inputs.viewController.present(alert, animated: true, completion: nil)
                 return
             }
             self?._startInAppPurchase.accept(())
@@ -184,9 +200,9 @@ extension TwitterSettingViewModel {
             let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。",
                                           preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.inputs.viewController.present(alert, animated: true) {
-                UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
-            }
+//            self.inputs.viewController.present(alert, animated: true) {
+//                UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
+//            }
             Feeder.Impact(.heavy).impactOccurred()
         }
     }
@@ -223,7 +239,7 @@ extension TwitterSettingViewModel {
                     tweetFormatRow.updateCell()
                 }
             })
-            self.inputs.viewController.present(alert, animated: true, completion: nil)
+//            self.inputs.viewController.present(alert, animated: true, completion: nil)
             Feeder.Notification(.warning).notificationOccurred()
         }
     }
@@ -231,7 +247,7 @@ extension TwitterSettingViewModel {
 
 // MARK: - Private method (Utilities)
 
-extension TwitterSettingViewModel {
+extension TwitterSettingViewModelImpl {
 
     private func changeStateAutoTweet() {
         if !UserDefaults.bool(forKey: .isAutoTweetPurchase) { return }
@@ -244,7 +260,13 @@ extension TwitterSettingViewModel {
     }
 }
 
-extension TwitterSettingViewModel: TwitterSettingViewModelOutput {
+// MARK: - TwitterSettingViewModelInput
+
+extension TwitterSettingViewModelImpl: TwitterSettingViewModelInput {}
+
+// MARK: - TwitterSettingViewModelOutput
+
+extension TwitterSettingViewModelImpl: TwitterSettingViewModelOutput {
 
     var startInAppPurchase: Observable<Void> {
         return _startInAppPurchase.observeOn(MainScheduler.instance).asObservable()
