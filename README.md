@@ -36,7 +36,7 @@ And please fill your environment variables.
 
 ## LICENSE
 
-[MIT LICENSE](LICENSE)
+This software is licensed under the MIT License (See [LICENSE](LICENSE)).
 
 ## Author
 
