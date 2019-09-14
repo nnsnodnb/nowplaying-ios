@@ -55,9 +55,43 @@ final class PlayViewController: UIViewController {
             artistNameLabel.observeApplicationState()
         }
     }
-    @IBOutlet private weak var previousButton: UIButton!
-    @IBOutlet private weak var playButton: UIButton!
-    @IBOutlet private weak var nextButton: UIButton!
+    @IBOutlet private weak var previousButton: UIButton! {
+        didSet {
+            previousButton.rx.tap
+                .subscribe(onNext: { [unowned self] in
+                    self.musicPlayer.skipToPreviousItem()
+                    Analytics.Play.previousButton()
+                })
+                .disposed(by: disposeBag)
+        }
+    }
+    @IBOutlet private weak var playButton: UIButton! {
+        didSet {
+            playButton.rx.tap
+                .subscribe(onNext: { [unowned self] in
+                    let isPlaying = self.musicPlayer.playbackState == .playing
+                    if isPlaying {
+                        self.musicPlayer.pause()
+                    } else {
+                        self.musicPlayer.play()
+                    }
+                    self.viewModel.inputs.playStateTrigger.accept(isPlaying)
+                    Feeder.Impact(.light).impactOccurred()
+                    Analytics.Play.playButton(isPlaying: isPlaying)
+                })
+                .disposed(by: disposeBag)
+        }
+    }
+    @IBOutlet private weak var nextButton: UIButton! {
+        didSet {
+            nextButton.rx.tap
+                .subscribe(onNext: { [unowned self] in
+                    self.musicPlayer.skipToNextItem()
+                    Analytics.Play.nextButton()
+                })
+                .disposed(by: disposeBag)
+        }
+    }
     @IBOutlet private weak var gearButton: UIButton! {
         didSet {
             gearButton.rx.tap
@@ -72,8 +106,36 @@ final class PlayViewController: UIViewController {
                 .disposed(by: disposeBag)
         }
     }
-    @IBOutlet private weak var mastodonButton: UIButton!
-    @IBOutlet private weak var twitterButton: UIButton!
+    @IBOutlet private weak var mastodonButton: UIButton! {
+        didSet {
+            mastodonButton.rx.tap
+                .subscribe(onNext: { [unowned self] in
+                    defer { Analytics.Play.mastodonButton() }
+                    if !User.isExists(service: .mastodon) {
+                        self.showLoginRequireAlert()
+                        return
+                    }
+
+                    self.viewModel.inputs.newPostContentTrigger.accept(.mastodon)
+                })
+                .disposed(by: disposeBag)
+        }
+    }
+    @IBOutlet private weak var twitterButton: UIButton! {
+        didSet {
+            twitterButton.rx.tap
+                .subscribe(onNext: { [unowned self] in
+                    defer { Analytics.Play.twitterButton() }
+                    if !User.isExists(service: .twitter) {
+                        self.showLoginRequireAlert()
+                        return
+                    }
+
+                    self.viewModel.inputs.newPostContentTrigger.accept(.twitter)
+                })
+                .disposed(by: disposeBag)
+        }
+    }
     @IBOutlet private weak var bannerView: GADBannerView! {
         didSet {
             bannerView.adUnitID = Environments.firebaseAdmobBannerID
@@ -85,21 +147,24 @@ final class PlayViewController: UIViewController {
     @IBOutlet private weak var bannerViewHeight: NSLayoutConstraint!
 
     private let disposeBag = DisposeBag()
+    private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
+    private let viewModel: PlayViewModel!
 
-    private var viewModel: PlayViewModelType!
+    // MARK: - Initializer
+
+    init(viewModel: PlayViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: R.nib.playViewController.name, bundle: R.nib.playViewController.bundle)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let inputs = PlayViewModelInput(viewController: self,
-                                        previousButton: previousButton.rx.tap.asObservable(),
-                                        playButton: playButton.rx.tap.asObservable(),
-                                        nextButton: nextButton.rx.tap.asObservable(),
-                                        mastodonButton: mastodonButton.rx.tap.asObservable(),
-                                        twitterButton: twitterButton.rx.tap.asObservable())
-        viewModel = PlayViewModel(inputs: inputs)
-
         subscribeViewModel()
     }
 
@@ -114,8 +179,7 @@ final class PlayViewController: UIViewController {
         super.viewDidAppear(animated)
         Analytics.setScreenName("再生画面", screenClass: "PlayViewController")
         Analytics.logEvent("screen_open", parameters: nil)
-        viewModel.countUpOpenCount()
-        viewModel.showSingleAccountToMultiAccountDialog()
+        viewModel.inputs.launchCountUpTrigger.accept(())
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -134,7 +198,6 @@ final class PlayViewController: UIViewController {
                 wself.artworkImageView.image = item.artwork?.image(at: wself.artworkImageView.frame.size)
                 wself.songNameLabel.text = item.title
                 wself.artistNameLabel.text = item.artist
-                wself.viewModel.applyNowPlayItem()
             })
             .disposed(by: disposeBag)
 
@@ -149,15 +212,6 @@ final class PlayViewController: UIViewController {
                 UIView.animate(withDuration: 0.4) {
                     self?.artworkImageView.transform = transform
                 }
-            })
-            .disposed(by: disposeBag)
-
-        viewModel.outputs.loginRequired
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [unowned self] (_) in
-                let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
 
@@ -187,5 +241,11 @@ final class PlayViewController: UIViewController {
         let alert = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
+    }
+
+    private func showLoginRequireAlert() {
+        let alert = UIAlertController(title: nil, message: "設定からログインしてください", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "閉じる", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 }

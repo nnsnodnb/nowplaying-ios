@@ -73,7 +73,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SVProgressHUD.setDefaultMaskType(.black)
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.rootViewController = PlayViewController()
+
+        window?.rootViewController = PlayViewController(viewModel: PlayViewModelImpl())
 
         Fabric.with([Crashlytics.self])
         GADMobileAds.sharedInstance().start(completionHandler: nil)

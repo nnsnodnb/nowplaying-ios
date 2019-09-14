@@ -20,14 +20,14 @@ import SVProgressHUD
 import Swifter
 import UIKit
 
-struct PlayViewModelInput {
+// MARK: PlayViewModelInput
 
-    let viewController: UIViewController
-    let previousButton: Observable<Void>
-    let playButton: Observable<Void>
-    let nextButton: Observable<Void>
-    let mastodonButton: Observable<Void>
-    let twitterButton: Observable<Void>
+protocol PlayViewModelInput {
+
+    var playStateTrigger: BehaviorRelay<Bool> { get }
+    var loginErrorTrigger: PublishRelay<Void> { get }
+    var newPostContentTrigger: PublishRelay<Service> { get }
+    var launchCountUpTrigger: PublishRelay<Void> { get }
 }
 
 // MARK: - PlayViewModelOutput
@@ -37,117 +37,66 @@ protocol PlayViewModelOutput {
     var nowPlayingItem: Driver<MPMediaItem> { get }
     var playButtonImage: Driver<UIImage?> { get }
     var scale: Driver<CGAffineTransform> { get }
-    var loginRequired: Observable<Void> { get }
     var postContent: Driver<PostContent> { get }
     var requestDenied: Observable<Void> { get }
 }
 
 // MARK: - PlayViewModelType
 
-protocol PlayViewModelType {
+protocol PlayViewModel {
 
+    var inputs: PlayViewModelInput { get }
     var outputs: PlayViewModelOutput { get }
-    init(inputs: PlayViewModelInput)
-    func countUpOpenCount()
-    func applyNowPlayItem()
-    func showSingleAccountToMultiAccountDialog()
+    init()
 }
 
-final class PlayViewModel: PlayViewModelType {
+final class PlayViewModelImpl: PlayViewModel {
 
+    /* PlayViewModel */
+    var inputs: PlayViewModelInput { return self }
     var outputs: PlayViewModelOutput { return self }
 
-    private let viewController: UIViewController
-    private let isPlaying: BehaviorRelay<Bool>
-    private let tweetStatusAction: Action<(SecretCredential, String, Data?), JSON>
-    private let tootStatusAction: Action<(SecretCredential, String, [String]?), Void>
-    private let tootUploadMediaAction: Action<(SecretCredential, Data), MastodonMediaResponse>
+    /* PlayViewModelInput */
+    let playStateTrigger: BehaviorRelay<Bool>
+    let loginErrorTrigger: PublishRelay<Void> = .init()
+    let newPostContentTrigger: PublishRelay<Service> = .init()
+    let launchCountUpTrigger: PublishRelay<Void> = .init()
+
+    /* Action */
+    // テキストのみ・メディア込みポストアクション (Twitter)
+    private let tweetStatusAction: Action<(SecretCredential, String, Data?), JSON> = .init {
+        return TwitterPostRequest(credential: $0.0).postTweet(status: $0.1, media: $0.2)
+    }
+    // テキストのみ・メディア込みポストアクション (Mastodon)
+    private let tootStatusAction: Action<(SecretCredential, String, [String]?), Void> = .init {
+        return Session.shared.rx.response(MastodonTootRequest(secret: $0.0, status: $0.1, mediaIDs: $0.2))
+    }
+    // メディアアップロードアクション (Mastodon)
+    private let tootUploadMediaAction: Action<(SecretCredential, Data), MastodonMediaResponse> = .init {
+        return Session.shared.rx.response(MastodonMediaRequest(secret: $0.0, imageData: $0.1))
+    }
+
+    /* Properties */
     private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     private let disposeBag = DisposeBag()
     private let _nowPlayingItem = BehaviorRelay<MPMediaItem?>(value: MPMusicPlayerController.systemMusicPlayer.nowPlayingItem)
-    private let loginError = PublishRelay<Void>()
     private let _postContent = PublishRelay<PostContent>()
     private let _requestDenied = PublishRelay<Void>()
 
     private var twitterPostContent: PostContent!
     private var mastodonPostContent: PostContent!
 
-    init(inputs: PlayViewModelInput) {
-        viewController = inputs.viewController
-        isPlaying = BehaviorRelay(value: musicPlayer.playbackState == .playing)
+    // MARK: - Life cycle
 
-        // テキストのみ・メディア込みポストアクション (Twitter)
-        tweetStatusAction = Action {
-            return TwitterPostRequest(credential: $0.0).postTweet(status: $0.1, media: $0.2)
-        }
-        // テキストのみ・メディア込みポストアクション (Mastodon)
-        tootStatusAction = Action {
-            return Session.shared.rx.response(MastodonTootRequest(secret: $0.0, status: $0.1, mediaIDs: $0.2))
-        }
-        // メディアアップロードアクション (Mastodon)
-        tootUploadMediaAction = Action {
-            return Session.shared.rx.response(MastodonMediaRequest(secret: $0.0, imageData: $0.1))
-        }
+    init() {
+        playStateTrigger = .init(value: musicPlayer.playbackState == .playing)
 
         musicPlayer.beginGeneratingPlaybackNotifications()
 
         setupNotificationObserver()
         setupActionObserver()
-        setupInputObserver(inputs)
+        setupInputObserver()
         setupUserDefaultsObserver()
-    }
-
-    func countUpOpenCount() {
-        var count = UserDefaults.integer(forKey: .appOpenCount)
-        count += 1
-        UserDefaults.set(count, forKey: .appOpenCount)
-        if count == 15 {
-            SKStoreReviewController.requestReview()
-            UserDefaults.set(0, forKey: .appOpenCount)
-        }
-    }
-
-    func applyNowPlayItem() {
-        twitterPostContent = createNewPostCotent(service: .twitter)
-        mastodonPostContent = createNewPostCotent(service: .mastodon)
-        autoPostControl(twitter: twitterPostContent, mastodon: mastodonPostContent)
-    }
-
-    // シングルアカウントログインの頃にインストールされていた場合、ポップアップを表示する
-    func showSingleAccountToMultiAccountDialog() {
-        if UserDefaults.bool(forKey: .singleAccountToMultiAccounts) { return }
-        let version = Bundle.main.object(forInfoDictionaryKey: .bundleShortVersionString) as! String
-        // バージョンが2.4.0のとき場合、表示対象にする
-        if version.compare("2.4.0", options: .numeric) != .orderedSame {
-            UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)
-            return
-        }
-
-        guard Auth.auth().currentUser != nil && !UserDefaults.bool(forKey: .isMastodonLogin) else {
-            UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)
-            return
-        }
-        let dialog = PopupDialog(title: "お知らせ", message: "アカウント切り替えに対応しました！\n左下の歯車ボタンからもう一度ログインをお願いします",
-                                 buttonAlignment: .horizontal, transitionStyle: .zoomIn, tapGestureDismissal: false,
-                                 panGestureDismissal: false, hideStatusBar: true, completion: nil)
-        let cancelButton = CancelButton(title: "あとで", action: nil)
-        let goSettingButton = DefaultButton(title: "設定する") { [unowned self] in
-            DispatchQueue.main.async {
-                Feeder.Impact(.medium).impactOccurred()
-                let navi = UINavigationController(rootViewController: SettingViewController())
-                navi.modalPresentationStyle = .fullScreen
-                self.viewController.present(navi, animated: true, completion: nil)
-            }
-        }
-        dialog.addButtons([cancelButton, goSettingButton])
-        let dialogVC = dialog.viewController as! PopupDialogDefaultViewController
-        dialogVC.messageFont = .boldSystemFont(ofSize: 17)
-        dialogVC.messageColor = .black
-        AuthManager.oldLogout()
-        dialog.modalPresentationStyle = .fullScreen
-        viewController.present(dialog, animated: true) {
-            UserDefaults.set(true, forKey: .singleAccountToMultiAccounts)
-        }
     }
 
     deinit {
@@ -157,13 +106,13 @@ final class PlayViewModel: PlayViewModelType {
 
 // MARK: - Private method (Subscribe)
 
-extension PlayViewModel {
+extension PlayViewModelImpl {
 
     private func setupNotificationObserver() {
         // 再生状態の変更
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
             .subscribe(onNext: { [weak self] (_) in
-                self?.isPlaying.accept(self?.musicPlayer.playbackState == .playing)
+                self?.playStateTrigger.accept(self?.musicPlayer.playbackState == .playing)
             })
             .disposed(by: disposeBag)
 
@@ -223,56 +172,23 @@ extension PlayViewModel {
             .disposed(by: disposeBag)
     }
 
-    private func setupInputObserver(_ inputs: PlayViewModelInput) {
-        inputs.previousButton
-            .subscribe(onNext: { () in
-                MPMusicPlayerController.systemMusicPlayer.skipToPreviousItem()
-                Analytics.Play.previousButton()
+    private func setupInputObserver() {
+        newPostContentTrigger
+            .subscribe(onNext: { [unowned self] (service) in
+                let content = self.createNewPostCotent(service: service)
+                self._postContent.accept(content)
             })
             .disposed(by: disposeBag)
 
-        inputs.playButton
-            .subscribe(onNext: { [weak self] (_) in
-                let isPlay = MPMusicPlayerController.systemMusicPlayer.playbackState == .playing
-                if isPlay {
-                    MPMusicPlayerController.systemMusicPlayer.pause()
-                } else {
-                    MPMusicPlayerController.systemMusicPlayer.play()
+        launchCountUpTrigger
+            .subscribe(onNext: {
+                var count = UserDefaults.integer(forKey: .appOpenCount)
+                count += 1
+                UserDefaults.set(count, forKey: .appOpenCount)
+                if count == 15 {
+                    SKStoreReviewController.requestReview()
+                    UserDefaults.set(0, forKey: .appOpenCount)
                 }
-                Feeder.Impact(.light).impactOccurred()
-                Analytics.Play.playButton(isPlaying: isPlay)
-                self?.isPlaying.accept(isPlay)
-            })
-            .disposed(by: disposeBag)
-
-        inputs.nextButton
-            .subscribe(onNext: { (_) in
-                MPMusicPlayerController.systemMusicPlayer.skipToNextItem()
-                Analytics.Play.nextButton()
-            })
-            .disposed(by: disposeBag)
-
-        inputs.mastodonButton
-            .subscribe(onNext: { [weak self] (_) in
-                defer { Analytics.Play.mastodonButton() }
-                if !User.isExists(service: .mastodon) {
-                    self?.loginError.accept(())
-                    return
-                }
-
-                self?.setNewPostContent(service: .mastodon)
-            })
-            .disposed(by: disposeBag)
-
-        inputs.twitterButton
-            .subscribe(onNext: { [weak self] (_) in
-                defer { Analytics.Play.twitterButton() }
-                if !User.isExists(service: .twitter) {
-                    self?.loginError.accept(())
-                    return
-                }
-
-                self?.setNewPostContent(service: .twitter)
             })
             .disposed(by: disposeBag)
     }
@@ -306,7 +222,13 @@ extension PlayViewModel {
 
 // MARK: - Private method (Utilities)
 
-extension PlayViewModel {
+extension PlayViewModelImpl {
+
+    private func applyNowPlayItem() {
+        twitterPostContent = createNewPostCotent(service: .twitter)
+        mastodonPostContent = createNewPostCotent(service: .mastodon)
+        autoPostControl(twitter: twitterPostContent, mastodon: mastodonPostContent)
+    }
 
     /* 再生されている曲が変わるたびに新しく生成 */
     private func createNewPostCotent(service: Service) -> PostContent {
@@ -400,37 +322,34 @@ extension PlayViewModel {
     }
 }
 
+// MARK: - PlayViewModelInput
+
+extension PlayViewModelImpl: PlayViewModelInput {}
+
 // MARK: - PlayViewModelOutput
 
-extension PlayViewModel: PlayViewModelOutput {
+extension PlayViewModelImpl: PlayViewModelOutput {
 
     var nowPlayingItem: SharedSequence<DriverSharingStrategy, MPMediaItem> {
         return _nowPlayingItem
             .compactMap { $0 }
+            .do(onNext: { [weak self] (_) in
+                self?.applyNowPlayItem()
+            })
             .observeOn(MainScheduler.instance)
             .asDriver(onErrorDriveWith: .empty())
     }
 
     var playButtonImage: SharedSequence<DriverSharingStrategy, UIImage?> {
-        return isPlaying
+        return playStateTrigger
             .map { $0 ? R.image.pause() : R.image.play() }
-            .observeOn(MainScheduler.instance)
             .asDriver(onErrorJustReturn: nil)
     }
 
     var scale: SharedSequence<DriverSharingStrategy, CGAffineTransform> {
-        return isPlaying
+        return playStateTrigger
             .map { $0 ? .identity : .init(scaleX: 0.9, y: 0.9) }
             .asDriver(onErrorJustReturn: .identity)
-    }
-
-    var loginRequired: Observable<Void> {
-        return loginError
-            .observeOn(MainScheduler.instance)
-            .do(onNext: {
-                Feeder.Notification(.error).notificationOccurred()
-            })
-            .asObservable()
     }
 
     var postContent: SharedSequence<DriverSharingStrategy, PostContent> {
