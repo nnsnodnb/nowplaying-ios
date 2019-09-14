@@ -14,7 +14,7 @@ import RxCocoa
 import RxSwift
 import SafariServices
 import SVProgressHUD
-import SwifteriOS
+import Swifter
 import UIKit
 
 struct AccountManageViewModelInput {
@@ -241,7 +241,7 @@ extension AccountManageViewModel {
     private func startMastodonLogin(inputs: AccountManageViewModelInput) -> Observable<String> {
         // ドメイン検索 → アプリ登録 → SFSafariViewControllerでのOAuth認証 → トークンを取得
         return .create { [unowned self] (observer) -> Disposable in
-            let viewController = SearchMastodonTableViewController()
+            let viewController = SearchMastodonViewController()
             viewController.decision
                 .bind(to: observer.asObserver())
                 .disposed(by: self.disposeBag)

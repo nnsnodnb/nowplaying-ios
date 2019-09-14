@@ -97,7 +97,7 @@ PODS:
     - R.swift.Library (~> 5.0.0)
   - R.swift.Library (5.0.1)
   - ScrollFlowLabel (1.0.0)
-  - SwiftLint (0.34.0)
+  - SwiftLint (0.35.0)
 
 DEPENDENCIES:
   - Crashlytics
@@ -168,7 +168,7 @@ SPEC CHECKSUMS:
   R.swift: f5a87643b91ea569d23d6afb3eee9c743edde239
   R.swift.Library: cfe85d569d9bae6cb262922db130e7c3a7a5fad1
   ScrollFlowLabel: 3c2aaff7030240745028425912a1c27aca53745d
-  SwiftLint: 79d48a17c6565dc286c37efb8322c7b450f95c67
+  SwiftLint: 5553187048b900c91aa03552807681bb6b027846
 
 PODFILE CHECKSUM: a67191c219c873dd98ef8ba5ad4da203c5e7174e
 

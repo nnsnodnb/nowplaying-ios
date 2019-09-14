@@ -1,0 +1,115 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Action",
+        "repositoryURL": "https://github.com/RxSwiftCommunity/Action",
+        "state": {
+          "branch": null,
+          "revision": "cdade63f7bbe1f5e1eff7779e5858a796dc2c001",
+          "version": "4.0.1"
+        }
+      },
+      {
+        "package": "APIKit",
+        "repositoryURL": "https://github.com/ishkawa/APIKit",
+        "state": {
+          "branch": null,
+          "revision": "862a8f80dd117693750c6ddaba2fe6a85b061a9a",
+          "version": "5.0.0"
+        }
+      },
+      {
+        "package": "DeallocationChecker",
+        "repositoryURL": "https://github.com/fastred/DeallocationChecker",
+        "state": {
+          "branch": null,
+          "revision": "a789361dee4ef3dabed156f6d91cc1f5719513e0",
+          "version": "3.0.1"
+        }
+      },
+      {
+        "package": "Hero",
+        "repositoryURL": "https://github.com/HeroTransitions/Hero",
+        "state": {
+          "branch": null,
+          "revision": "7d541ecbf8f53edc87bf51c54ab207bddc39e4cb",
+          "version": "1.4.0"
+        }
+      },
+      {
+        "package": "KeychainAccess",
+        "repositoryURL": "https://github.com/kishikawakatsumi/KeychainAccess",
+        "state": {
+          "branch": null,
+          "revision": "0046db4ab8fd7be31a59e57912dbb96639ad8ce9",
+          "version": "3.2.0"
+        }
+      },
+      {
+        "package": "Nuke",
+        "repositoryURL": "https://github.com/kean/Nuke",
+        "state": {
+          "branch": null,
+          "revision": "58543e405a5c7640d08109faf0e2060d9e9b44dd",
+          "version": "8.1.1"
+        }
+      },
+      {
+        "package": "Realm",
+        "repositoryURL": "https://github.com/realm/realm-cocoa",
+        "state": {
+          "branch": null,
+          "revision": "413515f82af5e2eda8901fd6cd20c8be2c67ed1c",
+          "version": "3.17.3"
+        }
+      },
+      {
+        "package": "RealmCore",
+        "repositoryURL": "https://github.com/realm/realm-core",
+        "state": {
+          "branch": null,
+          "revision": "341ccfccbd9758171a3f2aaa78604ce60553b7ca",
+          "version": "5.23.1"
+        }
+      },
+      {
+        "package": "RxKeyboard",
+        "repositoryURL": "https://github.com/RxSwiftCommunity/RxKeyboard",
+        "state": {
+          "branch": null,
+          "revision": "ed5940a7e29c3a4b4925b2d76260f793d311d58e",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "RxSwift",
+        "repositoryURL": "https://github.com/ReactiveX/RxSwift",
+        "state": {
+          "branch": null,
+          "revision": "b3e888b4972d9bc76495dd74d30a8c7fad4b9395",
+          "version": "5.0.1"
+        }
+      },
+      {
+        "package": "SnapKit",
+        "repositoryURL": "https://github.com/SnapKit/SnapKit",
+        "state": {
+          "branch": null,
+          "revision": "d458564516e5676af9c70b4f4b2a9178294f1bc6",
+          "version": "5.0.1"
+        }
+      },
+      {
+        "package": "Swifter",
+        "repositoryURL": "https://github.com/noppefoxwolf/Swifter",
+        "state": {
+          "branch": "feature/SSO",
+          "revision": "4a2c0db2ee21a798b0056e1bd97cc2da9e51792c",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

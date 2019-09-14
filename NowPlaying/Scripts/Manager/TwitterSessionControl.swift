@@ -11,7 +11,7 @@ import FirebaseDatabase
 import RxCocoa
 import RxSwift
 import SafariServices
-import SwifteriOS
+import Swifter
 import UIKit
 
 struct TwitterSessionControl {

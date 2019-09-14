@@ -1,5 +1,5 @@
 //
-//  SearchMastodonTableViewModel.swift
+//  SearchMastodonViewModel.swift
 //  NowPlaying
 //
 //  Created by Yuya Oka on 2019/06/19.
@@ -12,41 +12,41 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-// MARK: - SearchMastodonTableViewModelInput
+// MARK: - SearchMastodonViewModelInput
 
-struct SearchMastodonTableViewModelInput {
+struct SearchMastodonViewModelInput {
 
     let searchBarText: Observable<String?>
 }
 
 // MARK: - SearchMastodonTableViewModelOutput
 
-protocol SearchMastodonTableViewModelOutput {
+protocol SearchMastodonViewModelOutput {
 
     var mastodonInstances: Observable<[Instance]> { get }
     var isLoading: Observable<Bool> { get }
 }
 
-// MARK: - SearchMastodonTableViewModelType
+// MARK: - SearchMastodonViewModelType
 
-protocol SearchMastodonTableViewModelType {
+protocol SearchMastodonViewModelType {
 
-    var outputs: SearchMastodonTableViewModelOutput { get }
-    init(inputs: SearchMastodonTableViewModelInput)
+    var outputs: SearchMastodonViewModelOutput { get }
+    init(inputs: SearchMastodonViewModelInput)
 }
 
-final class SearchMastodonTableViewModel: SearchMastodonTableViewModelType {
+final class SearchMastodonViewModel: SearchMastodonViewModelType {
 
     let mastodonInstances: Observable<[Instance]>
     let isLoading: Observable<Bool>
 
-    var outputs: SearchMastodonTableViewModelOutput { return self }
+    var outputs: SearchMastodonViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
     private let initialAction: Action<Void, [Instance]>
     private let searchAction: Action<String, [Instance]>
 
-    init(inputs: SearchMastodonTableViewModelInput) {
+    init(inputs: SearchMastodonViewModelInput) {
         initialAction = Action {
             Session.shared.rx.response(InstanceListRequest()).map { $0.instances }
         }
@@ -83,4 +83,4 @@ final class SearchMastodonTableViewModel: SearchMastodonTableViewModelType {
 
 // MARK: - SearchMastodonTableViewModelOutput
 
-extension SearchMastodonTableViewModel: SearchMastodonTableViewModelOutput {}
+extension SearchMastodonViewModel: SearchMastodonViewModelOutput {}

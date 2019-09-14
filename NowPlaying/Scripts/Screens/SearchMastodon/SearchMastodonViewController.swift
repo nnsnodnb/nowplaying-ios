@@ -1,5 +1,5 @@
 //
-//  SearchMastodonTableViewController.swift
+//  SearchMastodonViewController.swift
 //  NowPlaying
 //
 //  Created by Yuya Oka on 2019/06/19.
@@ -13,12 +13,14 @@ import RxSwift
 import SVProgressHUD
 import UIKit
 
-final class SearchMastodonTableViewController: UITableViewController {
+final class SearchMastodonViewController: UIViewController {
+
+    @IBOutlet private weak var tableView: UITableView!
 
     private let disposeBag = DisposeBag()
     private let decisionTrigger = PublishSubject<String>()
     private let searchBar: UISearchBar
-    private let viewModel: SearchMastodonTableViewModelType
+    private let viewModel: SearchMastodonViewModelType
 
     let decision: Observable<String>
 
@@ -28,9 +30,9 @@ final class SearchMastodonTableViewController: UITableViewController {
         decision = decisionTrigger.asObserver()
         searchBar = UISearchBar()
         searchBar.placeholder = "例: mstdn.jp"
-        let inputs = SearchMastodonTableViewModelInput(searchBarText: searchBar.rx.text.asObservable())
-        viewModel = SearchMastodonTableViewModel(inputs: inputs)
-        super.init(nibName: R.nib.searchMastodonTableViewController.name, bundle: R.nib.searchMastodonTableViewController.bundle)
+        let inputs = SearchMastodonViewModelInput(searchBarText: searchBar.rx.text.asObservable())
+        viewModel = SearchMastodonViewModel(inputs: inputs)
+        super.init(nibName: R.nib.searchMastodonViewController.name, bundle: R.nib.searchMastodonViewController.bundle)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -43,6 +45,7 @@ final class SearchMastodonTableViewController: UITableViewController {
         super.viewDidLoad()
 
         tableView.register(R.nib.mastodonDomainTableViewCell)
+        tableView.rx.setDelegate(self).disposed(by: disposeBag)
 
         tableView.rx.modelSelected(Instance.self)
             .observeOn(MainScheduler.instance)
@@ -82,20 +85,15 @@ final class SearchMastodonTableViewController: UITableViewController {
     }
 }
 
-// MARK: - UITableViewDataSource
-
-extension SearchMastodonTableViewController {
-}
-
 // MARK: - UITableViewDelegate
 
-extension SearchMastodonTableViewController {
+extension SearchMastodonViewController: UITableViewDelegate {
 
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return searchBar
     }
 }
