@@ -54,6 +54,7 @@
 		CF55B69722A418A100D5C9E1 /* Analytics+NowPlaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */; };
 		CF55B69922A41B8800D5C9E1 /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF55B69822A41B8800D5C9E1 /* TweetViewModel.swift */; };
 		CF5FD9F0232CD91D00AA2236 /* SearchMastodonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF5FD9EF232CD91D00AA2236 /* SearchMastodonViewController.xib */; };
+		CF5FD9F3232CDF5900AA2236 /* DeallocationChecker in Frameworks */ = {isa = PBXBuildFile; productRef = CF5FD9F2232CDF5900AA2236 /* DeallocationChecker */; };
 		CF615AF51F56AB3B00315019 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF41F56AB3B00315019 /* Assets.xcassets */; };
 		CF615AF81F56AB3B00315019 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF615AF61F56AB3B00315019 /* LaunchScreen.storyboard */; };
 		CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF615B001F56B04E00315019 /* MediaPlayer.framework */; };
@@ -287,6 +288,7 @@
 				CF615B011F56B04E00315019 /* MediaPlayer.framework in Frameworks */,
 				CFC5E4992329E16100F58F29 /* Hero in Frameworks */,
 				11080D9125318CEA00D3FD08 /* Pods_NowPlaying.framework in Frameworks */,
+				CF5FD9F3232CDF5900AA2236 /* DeallocationChecker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -771,6 +773,7 @@
 				CFC5E4B72329E31800F58F29 /* Action */,
 				CFC5E4BA2329E35000F58F29 /* SnapKit */,
 				CFC5E4CB2329EA4500F58F29 /* RxKeyboard */,
+				CF5FD9F2232CDF5900AA2236 /* DeallocationChecker */,
 			);
 			productName = NowPlaying;
 			productReference = CF615AEA1F56AB3B00315019 /* NowPlaying.app */;
@@ -855,6 +858,7 @@
 				CFC5E4B62329E31800F58F29 /* XCRemoteSwiftPackageReference "Action" */,
 				CFC5E4B92329E35000F58F29 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				CFC5E4CA2329EA4500F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
+				CF5FD9F1232CDF5900AA2236 /* XCRemoteSwiftPackageReference "DeallocationChecker" */,
 			);
 			productRefGroup = CF615AEB1F56AB3B00315019 /* Products */;
 			projectDirPath = "";
@@ -1439,6 +1443,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CF5FD9F1232CDF5900AA2236 /* XCRemoteSwiftPackageReference "DeallocationChecker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fastred/DeallocationChecker";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.1;
+			};
+		};
 		CFC5E4972329E16100F58F29 /* XCRemoteSwiftPackageReference "Hero" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/HeroTransitions/Hero";
@@ -1522,6 +1534,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CF5FD9F2232CDF5900AA2236 /* DeallocationChecker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF5FD9F1232CDF5900AA2236 /* XCRemoteSwiftPackageReference "DeallocationChecker" */;
+			productName = DeallocationChecker;
+		};
 		CFC5E4982329E16100F58F29 /* Hero */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CFC5E4972329E16100F58F29 /* XCRemoteSwiftPackageReference "Hero" */;

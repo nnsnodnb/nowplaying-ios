@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "DeallocationChecker",
+        "repositoryURL": "https://github.com/fastred/DeallocationChecker",
+        "state": {
+          "branch": null,
+          "revision": "a789361dee4ef3dabed156f6d91cc1f5719513e0",
+          "version": "3.0.1"
+        }
+      },
+      {
         "package": "Hero",
         "repositoryURL": "https://github.com/HeroTransitions/Hero",
         "state": {

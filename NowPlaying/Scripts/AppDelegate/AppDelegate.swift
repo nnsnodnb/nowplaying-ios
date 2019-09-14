@@ -8,6 +8,7 @@
 
 import APIKit
 import Crashlytics
+import DeallocationChecker
 import Fabric
 import FirebaseCore
 import FirebaseAnalytics
@@ -78,6 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GADMobileAds.sharedInstance().start(completionHandler: nil)
 
         #if DEBUG
+        DeallocationChecker.shared.setup(with: .alert)
         Analytics.setAnalyticsCollectionEnabled(false)
         let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()
         print("🔑 Realm encryption key: \(realmEncryptionKeyString)")
