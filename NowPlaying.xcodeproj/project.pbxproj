@@ -34,7 +34,7 @@
 		CF43E7DF1F733EDB00A2A49A /* TweetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */; };
 		CF4D73D21F791D4300E72FBF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF4D73D11F791D4300E72FBF /* StoreKit.framework */; };
 		CF531BF422A9495000D05896 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BF322A9495000D05896 /* SettingViewModel.swift */; };
-		CF531BFE22A9532400D05896 /* TwitterSettingViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BFD22A9532400D05896 /* TwitterSettingViewModelImpl.swift */; };
+		CF531BFE22A9532400D05896 /* TwitterSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BFD22A9532400D05896 /* TwitterSettingViewModel.swift */; };
 		CF531C0022A9534F00D05896 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531BFF22A9534F00D05896 /* SettingViewController.swift */; };
 		CF531C0322A9536A00D05896 /* TwitterSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF531C0122A9536A00D05896 /* TwitterSettingViewController.swift */; };
 		CF531C0422A9536A00D05896 /* TwitterSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF531C0222A9536A00D05896 /* TwitterSettingViewController.xib */; };
@@ -181,7 +181,7 @@
 		CF43E7DE1F733EDB00A2A49A /* TweetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TweetViewController.xib; path = Tweet/TweetViewController.xib; sourceTree = "<group>"; };
 		CF4D73D11F791D4300E72FBF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CF531BF322A9495000D05896 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingViewModel.swift; path = Setting/Top/SettingViewModel.swift; sourceTree = "<group>"; };
-		CF531BFD22A9532400D05896 /* TwitterSettingViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TwitterSettingViewModelImpl.swift; path = Setting/TwitterSetting/TwitterSettingViewModelImpl.swift; sourceTree = "<group>"; };
+		CF531BFD22A9532400D05896 /* TwitterSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TwitterSettingViewModel.swift; path = Setting/TwitterSetting/TwitterSettingViewModel.swift; sourceTree = "<group>"; };
 		CF531BFF22A9534F00D05896 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingViewController.swift; path = Setting/Top/SettingViewController.swift; sourceTree = "<group>"; };
 		CF531C0122A9536A00D05896 /* TwitterSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwitterSettingViewController.swift; path = Setting/TwitterSetting/TwitterSettingViewController.swift; sourceTree = "<group>"; };
 		CF531C0222A9536A00D05896 /* TwitterSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TwitterSettingViewController.xib; path = Setting/TwitterSetting/TwitterSettingViewController.xib; sourceTree = "<group>"; };
@@ -423,7 +423,7 @@
 			children = (
 				CF531C0122A9536A00D05896 /* TwitterSettingViewController.swift */,
 				CF531C0222A9536A00D05896 /* TwitterSettingViewController.xib */,
-				CF531BFD22A9532400D05896 /* TwitterSettingViewModelImpl.swift */,
+				CF531BFD22A9532400D05896 /* TwitterSettingViewModel.swift */,
 			);
 			name = TwitterSetting;
 			sourceTree = "<group>";
@@ -1088,7 +1088,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFB5798722C3982D001F3D13 /* MastodonSettingDomainTableViewCell.swift in Sources */,
-				CF531BFE22A9532400D05896 /* TwitterSettingViewModelImpl.swift in Sources */,
+				CF531BFE22A9532400D05896 /* TwitterSettingViewModel.swift in Sources */,
 				CF531C3422A982BE00D05896 /* SKReceiptRefreshRequestDelegateProxy.swift in Sources */,
 				CF1611361F726D110027144D /* PlayViewController.swift in Sources */,
 				CF6F566822C4D0E300F517E9 /* ArtworkPreviewViewController.swift in Sources */,
