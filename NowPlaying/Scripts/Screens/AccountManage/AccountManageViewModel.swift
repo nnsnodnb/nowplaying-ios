@@ -22,6 +22,8 @@ import UIKit
 protocol AccountManageViewModelInput {
 
     var twitterLoginTrigger: PublishRelay<UIViewController> { get }
+    var removeUserDataTrigger: PublishRelay<User> { get }
+    var newDefaultAccountTrigger: PublishRelay<Void> { get }
 }
 
 // MARK: - AccountManageViewModelOutput
@@ -30,6 +32,8 @@ protocol AccountManageViewModelOutput {
 
     var title: Observable<String> { get }
     var loginResult: Observable<LoginResult> { get }
+    var removeResult: Observable<Void> { get }
+    var newDefaultAccount: Observable<UIAlertController> { get }
 }
 
 // MARK: - AccountManageViewModelType
@@ -41,8 +45,6 @@ protocol AccountManageViewModelType {
 
     init(service: Service)
     func tokenRevoke(secret: SecretCredential) -> Observable<Void>
-    func removeUserData(_ user: User) -> Observable<Void>
-    func applyNewDefaultAccount() -> Observable<UIAlertController>
 }
 
 enum LoginResult {
@@ -55,14 +57,20 @@ enum LoginResult {
 final class AccountManageViewModelImpl: AccountManageViewModelType {
 
     let twitterLoginTrigger: PublishRelay<UIViewController> = .init()
+    let removeUserDataTrigger: PublishRelay<User> = .init()
+    let newDefaultAccountTrigger: PublishRelay<Void> = .init()
     let title: Observable<String>
     let loginResult: Observable<LoginResult>
+    let removeResult: Observable<Void>
+    let newDefaultAccount: Observable<UIAlertController>
 
     var inputs: AccountManageViewModelInput { return self }
     var outputs: AccountManageViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
     private let _loginResult = PublishRelay<LoginResult>()
+    private let _removeResult = PublishSubject<Void>()
+    private let _newDefaultAccount = PublishRelay<UIAlertController>()
     private let mastodonTokenRevokeAction: Action<SecretCredential, Void> = Action {
         return Session.shared.rx.response(MastodonTokenRevokeRequest(secret: $0))
     }
@@ -81,10 +89,24 @@ final class AccountManageViewModelImpl: AccountManageViewModelType {
         }
 
         loginResult = _loginResult.asObservable()
+        removeResult = _removeResult.asObservable()
+        newDefaultAccount = _newDefaultAccount.asObservable()
 
         twitterLoginTrigger
             .subscribe(onNext: { [unowned self] in
                 self.startTwitterLogin($0)
+            })
+            .disposed(by: disposeBag)
+
+        removeUserDataTrigger
+            .subscribe(onNext: { [unowned self] (user) in
+                self.removeUserData(user)
+            })
+            .disposed(by: disposeBag)
+
+        newDefaultAccountTrigger
+            .subscribe(onNext: { [unowned self] in
+                self.applyNewDefaultAccount()
             })
             .disposed(by: disposeBag)
     }
@@ -104,45 +126,39 @@ final class AccountManageViewModelImpl: AccountManageViewModelType {
             return Disposables.create()
         }
     }
-
-    func removeUserData(_ user: User) -> Observable<Void> {
-        return .create { (observer) -> Disposable in
-            let realm = try! Realm(configuration: realmConfiguration)
-            try! realm.write {
-                realm.delete(user.secretCredentials.first!)
-                realm.delete(user)
-            }
-            observer.onCompleted()
-
-            return Disposables.create()
-        }
-    }
-
-    func applyNewDefaultAccount() -> Observable<UIAlertController> {
-        return .create { [service] (observer) -> Disposable in
-            let realm = try! Realm(configuration: realmConfiguration)
-            guard let user = realm.objects(User.self).filter("serviceType = %@", service.rawValue)
-                .sorted(byKeyPath: "id", ascending: true).first else {
-                    observer.onCompleted()
-                    return Disposables.create()
-            }
-            try! realm.write {
-                user.isDefault = true
-            }
-            let alert = UIAlertController(title: "デフォルトアカウント変更", message: "\(user.name)に設定されました", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            observer.onNext(alert)
-            Feeder.Selection().selectionChanged()
-            observer.onCompleted()
-
-            return Disposables.create()
-        }
-    }
 }
 
 // MARK: - Private method
 
 extension AccountManageViewModelImpl {
+
+    private func removeUserData(_ user: User) {
+        do {
+            let realm = try Realm(configuration: realmConfiguration)
+            try realm.write {
+                realm.delete(user.secretCredentials.first!)
+                realm.delete(user)
+            }
+            _removeResult.onCompleted()
+        } catch {
+            _removeResult.onError(error)
+        }
+    }
+
+    private func applyNewDefaultAccount() {
+        let realm = try! Realm(configuration: realmConfiguration)
+        guard let user = realm.objects(User.self).filter("serviceType = %@", service.rawValue)
+            .sorted(byKeyPath: "id", ascending: true).first, !user.isDefault else {
+                return
+        }
+        try! realm.write {
+            user.isDefault = true
+        }
+        let alert = UIAlertController(title: "デフォルトアカウント変更", message: "\(user.name)に設定されました", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        Feeder.Selection().selectionChanged()
+        _newDefaultAccount.accept(alert)
+    }
 
     private func startTwitterLogin(_ viewController: UIViewController) {
         let twitterAuthURL = URL(string: "twitterauth://authorize")!

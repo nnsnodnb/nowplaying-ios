@@ -76,30 +76,7 @@ final class AccountManageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
-        viewModel.outputs.loginResult
-            .subscribe(onNext: { [unowned self] (result) in
-                var completion: SVProgressHUDDismissCompletion?
-                switch result {
-                case .initial(let user):
-                    completion = { [weak self] in
-                        let alert = UIAlertController(title: "デフォルトアカウント変更", message: "\(user.name)に設定されました", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                        self?.present(alert, animated: true, completion: nil)
-                    }
-                    fallthrough
-                case .success(let user):
-                    Feeder.Notification(.success).notificationOccurred()
-                    SVProgressHUD.showSuccess(withStatus: "\(user.screenName)にログインしました")
-                case .failure:
-                    Feeder.Notification(.error).notificationOccurred()
-                    SVProgressHUD.showError(withStatus: "ログインに失敗しました")
-                case .duplicate:
-                    Feeder.Notification(.warning).notificationOccurred()
-                    SVProgressHUD.showInfo(withStatus: "すでにログインされているアカウントです")
-                }
-                SVProgressHUD.dismiss(withDelay: 1, completion: completion)
-            })
-            .disposed(by: disposeBag)
+        subscribeViewModelOutput()
     }
 
     // MARK: - Override method
@@ -144,18 +121,49 @@ final class AccountManageViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 
-    private func removeUserData(user: User) {
-        viewModel.removeUserData(user)
-            .subscribe(onCompleted: { [unowned self] in
+    private func subscribeViewModelOutput() {
+        viewModel.outputs.loginResult
+            .subscribe(onNext: { [unowned self] (result) in
+                var completion: SVProgressHUDDismissCompletion?
+                switch result {
+                case .initial(let user):
+                    completion = { [weak self] in
+                        let alert = UIAlertController(title: "デフォルトアカウント変更", message: "\(user.name)に設定されました", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self?.present(alert, animated: true, completion: nil)
+                    }
+                    fallthrough
+                case .success(let user):
+                    Feeder.Notification(.success).notificationOccurred()
+                    SVProgressHUD.showSuccess(withStatus: "\(user.screenName)にログインしました")
+                case .failure:
+                    Feeder.Notification(.error).notificationOccurred()
+                    SVProgressHUD.showError(withStatus: "ログインに失敗しました")
+                case .duplicate:
+                    Feeder.Notification(.warning).notificationOccurred()
+                    SVProgressHUD.showInfo(withStatus: "すでにログインされているアカウントです")
+                }
+                SVProgressHUD.dismiss(withDelay: 1, completion: completion)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.removeResult
+            .subscribe(onError: { (error) in
+                print(error)
+                SVProgressHUD.showError(withStatus: "ログアウトに失敗しました")
+            }, onCompleted: { [weak self] in
                 Feeder.Impact(.medium).impactOccurred()
                 SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
                 SVProgressHUD.dismiss(withDelay: 1) { [weak self] in
-                    _ = self?.viewModel.applyNewDefaultAccount()
-                        .observeOn(MainScheduler.instance)
-                        .subscribe(onNext: { (alert) in
-                            self?.present(alert, animated: true, completion: nil)
-                        })
+                    self?.viewModel.inputs.newDefaultAccountTrigger.accept(())
                 }
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.newDefaultAccount
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [unowned self] (alert) in
+                self.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }
@@ -186,12 +194,12 @@ extension AccountManageViewController: UITableViewDataSource {
         let user = realm.object(ofType: User.self, forPrimaryKey: users[indexPath.row].id)!
         SVProgressHUD.show()
         if user.isTwitterUser {
-            removeUserData(user: user)
+            viewModel.inputs.removeUserDataTrigger.accept(user)
             return
         }
         _ = viewModel.tokenRevoke(secret: user.secretCredentials.first!)
             .subscribe(onNext: { [weak self] (_) in
-                self?.removeUserData(user: user)
+                self?.viewModel.inputs.removeUserDataTrigger.accept(user)
             }, onError: { (error) in
                 Feeder.Notification(.error).notificationOccurred()
                 print(error)
