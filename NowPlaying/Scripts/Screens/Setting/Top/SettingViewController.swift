@@ -57,7 +57,7 @@ final class SettingViewController: FormViewController {
                     let viewController = TwitterSettingViewController(viewModel: TwitterSettingViewModelImpl())
                     self.navigationController?.pushViewController(viewController, animated: true)
                 case .mastodon:
-                    let viewController = MastodonSettingViewController()
+                    let viewController = MastodonSettingViewController(viewModel: MastodonSettingViewModelImpl())
                     self.navigationController?.pushViewController(viewController, animated: true)
                 case .safari(let url):
                     let viewController = SFSafariViewController(url: url)

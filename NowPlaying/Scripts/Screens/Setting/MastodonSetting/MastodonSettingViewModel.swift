@@ -17,48 +17,56 @@ import RxSwift
 import SVProgressHUD
 import NSURL_QueryDictionary
 
-struct MastodonSettingViewModelInput {
-
-    let viewController: UIViewController
+enum MastodonSettingTransition {
+    case manage, alert(AlertConfigurations)
 }
+
+// MARK: - MastodonSettingViewModelInput
+
+protocol MastodonSettingViewModelInput {}
 
 // MARK: - MastodonSettingViewModelOutput
 
 protocol MastodonSettingViewModelOutput {
 
+    var form: Form { get }
     var error: Observable<Void> { get }
+    var transition: Observable<MastodonSettingTransition> { get }
 }
 
 // MARK: - MastodonSettingViewModelType
 
 protocol MastodonSettingViewModelType {
 
+    var inputs: MastodonSettingViewModelInput { get }
     var outputs: MastodonSettingViewModelOutput { get }
-    var form: Form { get }
 
-    init(inputs: MastodonSettingViewModelInput)
+    init()
 }
 
-final class MastodonSettingViewModel: MastodonSettingViewModelType {
+final class MastodonSettingViewModelImpl: MastodonSettingViewModelType {
 
+    /* Output */
     let form: Form
     let error: Observable<Void>
+    let transition: Observable<MastodonSettingTransition>
 
+    var inputs: MastodonSettingViewModelInput { return self }
     var outputs: MastodonSettingViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
-    private let inputs: MastodonSettingViewModelInput
     private let keychain = Keychain.nowPlaying
     private let _error = PublishRelay<Void>()
+    private let _transition = PublishRelay<MastodonSettingTransition>()
 
     private var isMastodonLogin: Bool {
         return UserDefaults.bool(forKey: .isMastodonLogin)
     }
 
-    init(inputs: MastodonSettingViewModelInput) {
-        self.inputs = inputs
+    init() {
         form = Form()
         error = _error.observeOn(MainScheduler.instance).asObservable()
+        transition = _transition.observeOn(MainScheduler.instance).asObservable()
 
         configureCells()
     }
@@ -66,7 +74,7 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
 
 // MARK: - Private method (Form)
 
-extension MastodonSettingViewModel {
+extension MastodonSettingViewModelImpl {
 
     private func configureCells() {
         form
@@ -85,9 +93,7 @@ extension MastodonSettingViewModel {
         return NowPlayingButtonRow {
             $0.title = "アカウント管理"
         }.onCellSelection { [unowned self] (_, _) in
-            // TODO: AccountManageViewController
-//            let viewController = AccountManageViewController(service: .mastodon, screenType: .settings)
-//            self.inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
+            self._transition.accept(.manage)
         }
     }
 
@@ -124,11 +130,10 @@ extension MastodonSettingViewModel {
             if !$0.value! || UserDefaults.bool(forKey: .isMastodonShowAutoTweetAlert) {
                 return
             }
-            let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもトゥートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.inputs.viewController.present(alert, animated: true) {
-                UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
-            }
+            let action = AlertConfigurations.Action(title: "OK", style: .default)
+            let configuration = AlertConfigurations(title: "お知らせ", message: "バックグラウンドでもトゥートされますが、iOS上での制約のため長時間には対応できません。", preferredStyle: .alert, actions: [action])
+            self._transition.accept(.alert(configuration))
+            UserDefaults.set(true, forKey: .isMastodonShowAutoTweetAlert)
             Feeder.Impact(.heavy).impactOccurred()
         }
     }
@@ -156,21 +161,25 @@ extension MastodonSettingViewModel {
         return ButtonRow {
             $0.title = "リセットする"
         }.onCellSelection { [unowned self] (_, _) in
-            let alert = UIAlertController(title: "投稿フォーマットをリセットします", message: nil, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "リセット", style: .destructive) { [unowned self] (_) in
-                guard let tweetFormatRow: TextAreaRow = self.form.rowBy(tag: "toot_format") else { return }
+            let cancel = AlertConfigurations.Action(title: "キャンセル", style: .cancel)
+            let reset = AlertConfigurations.Action(title: "リセット", style: .destructive) { [unowned self] (_) in
                 DispatchQueue.main.async {
-                    tweetFormatRow.baseValue = String.defaultPostFormat
-                    tweetFormatRow.updateCell()
+                    guard let tootFormatRow: TextAreaRow = self.form.rowBy(tag: "toot_format") else { return }
+                    tootFormatRow.baseValue = String.defaultPostFormat
+                    tootFormatRow.updateCell()
                 }
-            })
-            self.inputs.viewController.present(alert, animated: true, completion: nil)
+            }
+            let configuration = AlertConfigurations(title: "投稿フォーマットをリセットします", message: nil, preferredStyle: .alert, actions: [cancel, reset])
+            self._transition.accept(.alert(configuration))
             Feeder.Notification(.warning).notificationOccurred()
         }
     }
 }
 
+// MARK: - MastodonSettingViewModelInput
+
+extension MastodonSettingViewModelImpl: MastodonSettingViewModelInput {}
+
 // MARK: - MastodonSettingViewModelOutput
 
-extension MastodonSettingViewModel: MastodonSettingViewModelOutput {}
+extension MastodonSettingViewModelImpl: MastodonSettingViewModelOutput {}

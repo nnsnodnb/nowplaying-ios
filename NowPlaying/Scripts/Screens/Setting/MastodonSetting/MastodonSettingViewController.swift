@@ -15,8 +15,18 @@ import UIKit
 final class MastodonSettingViewController: FormViewController {
 
     private let disposeBag = DisposeBag()
+    private let viewModel: MastodonSettingViewModelType
 
-    private var viewModel: MastodonSettingViewModelType!
+    // MARK: - Initializer
+
+    init(viewModel: MastodonSettingViewModelType) {
+        self.viewModel = viewModel
+        super.init(nibName: R.nib.mastodonSettingViewController.name, bundle: R.nib.mastodonSettingViewController.bundle)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - Life cycle
 
@@ -26,13 +36,24 @@ final class MastodonSettingViewController: FormViewController {
         let backBarButtonItem = UIBarButtonItem(title: "戻る", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
 
-        viewModel = MastodonSettingViewModel(inputs: MastodonSettingViewModelInput(viewController: self))
-
-        form = viewModel.form
+        form = viewModel.outputs.form
 
         viewModel.outputs.error
             .subscribe(onNext: { [weak self] (_) in
                 self?.showMastodonError()
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.transition
+            .subscribe(onNext: { [unowned self] (transition) in
+                switch transition {
+                case .manage:
+                    let viewController = AccountManageViewController(viewModel: AccountManageViewModelImpl(service: .mastodon),
+                                                                     service: .mastodon, screenType: .settings)
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                case .alert(let configuration):
+                    self.present(configuration.make(), animated: true, completion: nil)
+                }
             })
             .disposed(by: disposeBag)
     }
