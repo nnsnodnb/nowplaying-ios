@@ -75,7 +75,6 @@
 		CF6F568E22CC6A7D00F517E9 /* AccountManageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568B22CC6A7D00F517E9 /* AccountManageViewModel.swift */; };
 		CF6F568F22CC6A7D00F517E9 /* AccountManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F568C22CC6A7D00F517E9 /* AccountManageViewController.swift */; };
 		CF6F569022CC6A7D00F517E9 /* AccountManageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF6F568D22CC6A7D00F517E9 /* AccountManageViewController.xib */; };
-		CF6F569222CC6CD300F517E9 /* Realm+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */; };
 		CF6F569622CC740F00F517E9 /* AccountManageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6F569422CC740F00F517E9 /* AccountManageTableViewCell.swift */; };
 		CF6F569722CC740F00F517E9 /* AccountManageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF6F569522CC740F00F517E9 /* AccountManageTableViewCell.xib */; };
 		CF6FFF1F207E4CE4003FD38D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF6FFF1E207E4CE4003FD38D /* NotificationCenter.framework */; };
@@ -227,7 +226,6 @@
 		CF6F568B22CC6A7D00F517E9 /* AccountManageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManageViewModel.swift; sourceTree = "<group>"; };
 		CF6F568C22CC6A7D00F517E9 /* AccountManageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManageViewController.swift; sourceTree = "<group>"; };
 		CF6F568D22CC6A7D00F517E9 /* AccountManageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountManageViewController.xib; sourceTree = "<group>"; };
-		CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Rx.swift"; sourceTree = "<group>"; };
 		CF6F569422CC740F00F517E9 /* AccountManageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManageTableViewCell.swift; sourceTree = "<group>"; };
 		CF6F569522CC740F00F517E9 /* AccountManageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountManageTableViewCell.xib; sourceTree = "<group>"; };
 		CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -659,7 +657,6 @@
 				CFD1D37520B87FC5009C50ED /* HTTPURLResponse+StatusCode.swift */,
 				CF55B69622A418A100D5C9E1 /* Analytics+NowPlaying.swift */,
 				CF301D9222B01841007E675E /* Reactive+Session.swift */,
-				CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */,
 				CF7E87D522D22DBB00F10335 /* UIImageView+Nuke.swift */,
 				CF232DB922D483A300820C1B /* UIButton+Nuke.swift */,
 				CFF594B723392A770074521B /* UITableView+Changeset.swift */,
@@ -1160,7 +1157,6 @@
 				CF531C2C22A9817A00D05896 /* SKPaymentQueue+Rx.swift in Sources */,
 				CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */,
 				CF531C0A22A953C900D05896 /* MastodonSettingViewController.swift in Sources */,
-				CF6F569222CC6CD300F517E9 /* Realm+Rx.swift in Sources */,
 				CF232DC222D4B22600820C1B /* TwitterPostRequest.swift in Sources */,
 				CF232DAF22CCD7F100820C1B /* MastodonSessionControl.swift in Sources */,
 			);
