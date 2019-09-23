@@ -84,7 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GADMobileAds.sharedInstance().start(completionHandler: nil)
 
         #if DEBUG
-        DeallocationChecker.shared.setup(with: .precondition)
+        DeallocationChecker.shared.setup(with: .callback(memoryLeakCallback()))
         UIViewController.swizzleViewDidDisappear()
         Analytics.setAnalyticsCollectionEnabled(false)
         let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()
@@ -102,5 +102,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self?.window?.rootViewController?.present($0, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+    }
+
+    private func memoryLeakCallback() -> DeallocationChecker.Callback {
+        return { (state, viewControllerType) in
+            switch state {
+            case .leaked:
+                print("🤯 Memory Leaked: \(viewControllerType)")
+            case .notLeaked:
+                break
+            }
+        }
     }
 }

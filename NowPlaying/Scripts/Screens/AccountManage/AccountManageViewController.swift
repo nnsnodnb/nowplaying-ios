@@ -9,6 +9,7 @@
 import Feeder
 import RealmSwift
 import RxCocoa
+import RxRealm
 import RxSwift
 import SafariServices
 import SVProgressHUD
@@ -24,54 +25,19 @@ final class AccountManageViewController: UIViewController {
 
     let selection: Observable<User>
 
+    private lazy var users: Results<User> = {
+        let realm = try! Realm(configuration: realmConfiguration)
+        return realm.objects(User.self)
+            .filter("serviceType = %@", service.rawValue)
+            .sorted(byKeyPath: "id", ascending: true)
+    }()
+
     @IBOutlet private weak var tableView: UITableView! {
         didSet {
             tableView.register(R.nib.accountManageTableViewCell)
             tableView.tableFooterView = UIView()
+            tableView.rx.setDataSource(self).disposed(by: disposeBag)
             tableView.rx.setDelegate(self).disposed(by: disposeBag)
-
-            tableView.rx.itemSelected
-                .subscribe(onNext: { [tableView] (indexPath) in
-                    tableView?.deselectRow(at: indexPath, animated: true)
-                })
-                .disposed(by: disposeBag)
-
-            tableView.rx.modelSelected(User.self)
-                .observeOn(MainScheduler.instance)
-                .subscribe(onNext: { [unowned self] in
-                    Feeder.Selection().selectionChanged()
-                    switch self.screenType {
-                    case .settings:
-                        if !$0.isDefault { $0.isDefaultAccount = true }
-                    case .selection:
-                        self.selectionTrigger.onNext($0)
-                        self.selectionTrigger.onCompleted()
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                })
-                .disposed(by: disposeBag)
-
-            if screenType == .selection { return }
-            tableView.rx.modelDeleted(User.self)
-                .subscribe(onNext: { [unowned self] in
-                    let realm = try! Realm(configuration: realmConfiguration)
-                    let user = realm.object(ofType: User.self, forPrimaryKey: $0.id)!
-                    SVProgressHUD.show()
-                    if user.isTwitterUser {
-                        self.removeUserData(user: user)
-                        return
-                    }
-                    _ = self.viewModel.tokenRevoke(secret: user.secretCredentials.first!)
-                        .subscribe(onNext: { [weak self] (_) in
-                            self?.removeUserData(user: user)
-                        }, onError: { (error) in
-                            Feeder.Notification(.error).notificationOccurred()
-                            print(error)
-                            SVProgressHUD.showError(withStatus: "ログアウトに失敗しました")
-                            SVProgressHUD.dismiss(withDelay: 1)
-                        })
-                })
-                .disposed(by: disposeBag)
         }
     }
 
@@ -96,18 +62,22 @@ final class AccountManageViewController: UIViewController {
 
         setupNavigationBar()
 
-        _ = viewModel.outputs.title
+        viewModel.outputs.title
             .bind(to: navigationItem.rx.title)
+            .disposed(by: disposeBag)
 
-        viewModel.outputs.users
-            .bind(to: tableView.rx.items(cellIdentifier: R.reuseIdentifier.accountManageTableViewCell.identifier)) {
-                guard let cell = $2 as? AccountManageTableViewCell else { return }
-                cell.configure(user: $1, secret: $1.secretCredentials.first)
-            }
+        Observable.changeset(from: users)
+            .subscribe(onNext: { [tableView] (_, changes) in
+                if let changes = changes {
+                    tableView?.applyChangeset(changes)
+                } else {
+                    tableView?.reloadData()
+                }
+            })
             .disposed(by: disposeBag)
 
         viewModel.outputs.loginResult
-            .subscribe(onNext: { (result) in
+            .subscribe(onNext: { [unowned self] (result) in
                 var completion: SVProgressHUDDismissCompletion?
                 switch result {
                 case .initial(let user):
@@ -156,7 +126,7 @@ final class AccountManageViewController: UIViewController {
                 switch self.service {
                 case .twitter:
                     SVProgressHUD.show()
-                    // TODO: Twitterログインスタート
+                    self.viewModel.inputs.twitterLoginTrigger.accept(self)
                 case .mastodon:
                     // TODO: Mastodonログインスタート
                     break
@@ -175,7 +145,7 @@ final class AccountManageViewController: UIViewController {
     }
 
     private func removeUserData(user: User) {
-        _ = viewModel.removeUserData(user)
+        viewModel.removeUserData(user)
             .subscribe(onCompleted: { [unowned self] in
                 Feeder.Impact(.medium).impactOccurred()
                 SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
@@ -187,12 +157,67 @@ final class AccountManageViewController: UIViewController {
                         })
                 }
             })
+            .disposed(by: disposeBag)
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension AccountManageViewController: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return users.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.accountManageTableViewCell, for: indexPath)!
+        let user = users[indexPath.row]
+        cell.configure(user: user, secret: user.secretCredentials.first!)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return screenType == .settings ? .delete : .none
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle != .delete { return }
+        let realm = try! Realm(configuration: realmConfiguration)
+        let user = realm.object(ofType: User.self, forPrimaryKey: users[indexPath.row].id)!
+        SVProgressHUD.show()
+        if user.isTwitterUser {
+            removeUserData(user: user)
+            return
+        }
+        _ = viewModel.tokenRevoke(secret: user.secretCredentials.first!)
+            .subscribe(onNext: { [weak self] (_) in
+                self?.removeUserData(user: user)
+            }, onError: { (error) in
+                Feeder.Notification(.error).notificationOccurred()
+                print(error)
+                SVProgressHUD.showError(withStatus: "ログアウトに失敗しました")
+                SVProgressHUD.dismiss(withDelay: 1)
+            })
     }
 }
 
 // MARK: - UITableViewDelegate
 
 extension AccountManageViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        Feeder.Selection().selectionChanged()
+        let user = users[indexPath.row]
+        switch screenType {
+        case .settings:
+            if !user.isDefault { user.isDefaultAccount = true }
+        case .selection:
+            selectionTrigger.onNext(user)
+            selectionTrigger.onCompleted()
+            navigationController?.popViewController(animated: true)
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         if screenType == .selection { return nil }

@@ -29,7 +29,6 @@ protocol AccountManageViewModelInput {
 protocol AccountManageViewModelOutput {
 
     var title: Observable<String> { get }
-    var users: Observable<Results<User>> { get }
     var loginResult: Observable<LoginResult> { get }
 }
 
@@ -57,7 +56,6 @@ final class AccountManageViewModelImpl: AccountManageViewModelType {
 
     let twitterLoginTrigger: PublishRelay<UIViewController> = .init()
     let title: Observable<String>
-    let users: Observable<Results<User>>
     let loginResult: Observable<LoginResult>
 
     var inputs: AccountManageViewModelInput { return self }
@@ -81,12 +79,6 @@ final class AccountManageViewModelImpl: AccountManageViewModelType {
         case .mastodon:
             title = Observable.just("Mastodonアカウント")
         }
-        let realm = try! Realm(configuration: realmConfiguration)
-        users = realm.objects(User.self)
-            .filter("serviceType = %@", service.rawValue)
-            .sorted(byKeyPath: "id", ascending: true)
-            .response()
-            .asObservable()
 
         loginResult = _loginResult.asObservable()
 
@@ -160,9 +152,9 @@ extension AccountManageViewModelImpl {
                     guard let wself = self else { return }
                     TwitterSessionControl.handleSuccessLogin($0)
                         .bind(to: wself.twitterLoginHandle)
-                }, onError: { [unowned self] in
+                }, onError: { [weak self] in
                     print($0)
-                    self._loginResult.accept(.failure($0))
+                    self?._loginResult.accept(.failure($0))
                 })
                 .disposed(by: disposeBag)
             return
@@ -172,9 +164,9 @@ extension AccountManageViewModelImpl {
                 guard let wself = self else { return }
                 TwitterSessionControl.handleSuccessLogin($0)
                     .bind(to: wself.twitterLoginHandle)
-            }, onError: { [unowned self] (error) in
+            }, onError: { [weak self] (error) in
                 print(error)
-                self._loginResult.accept(.failure(error))
+                self?._loginResult.accept(.failure(error))
             })
             .disposed(by: disposeBag)
     }
@@ -217,9 +209,8 @@ extension AccountManageViewModelImpl {
         // ドメイン検索 → アプリ登録 → SFSafariViewControllerでのOAuth認証 → トークンを取得
         return .create { [unowned self] (observer) -> Disposable in
             let viewController = SearchMastodonViewController()
-            viewController.decision
+            _ = viewController.decision
                 .bind(to: observer.asObserver())
-                .disposed(by: self.disposeBag)
 
 //            inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
             return Disposables.create()

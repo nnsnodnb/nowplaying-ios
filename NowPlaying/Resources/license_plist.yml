@@ -29,3 +29,6 @@ github:
     - owner: realm
       name: realm-cocoa
       version: v3.17.3
+    - owner: RxSwiftCommunity
+      name: RxRealm
+      version: 1.0.1

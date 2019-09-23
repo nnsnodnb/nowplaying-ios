@@ -123,6 +123,9 @@
 		CFD6B2E022B0332B00E5F2FC /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DF22B0332B00E5F2FC /* Requests.swift */; };
 		CFDFAD1A22D972150090CA9E /* Feeder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDFAD1922D972150090CA9E /* Feeder.framework */; };
 		CFDFAD1D22DC17460090CA9E /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDFAD1C22DC17460090CA9E /* TodayViewModel.swift */; };
+		CFF594B22339269C0074521B /* RxRealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFF594B12339269C0074521B /* RxRealm */; };
+		CFF594B4233926B20074521B /* license_plist.yml in Resources */ = {isa = PBXBuildFile; fileRef = CFF594B3233926B20074521B /* license_plist.yml */; };
+		CFF594B823392A770074521B /* UITableView+Changeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF594B723392A770074521B /* UITableView+Changeset.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -260,6 +263,8 @@
 		CFD6B2DF22B0332B00E5F2FC /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
 		CFDFAD1922D972150090CA9E /* Feeder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Feeder.framework; path = Carthage/Build/iOS/Feeder.framework; sourceTree = "<group>"; };
 		CFDFAD1C22DC17460090CA9E /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
+		CFF594B3233926B20074521B /* license_plist.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = license_plist.yml; sourceTree = "<group>"; };
+		CFF594B723392A770074521B /* UITableView+Changeset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Changeset.swift"; sourceTree = "<group>"; };
 		F1A50B3F73DA3E1BA6CD17F2 /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
 		FCD2C9F8E2BD4B871AAF7D71 /* Pods-TodayExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TodayExtension.debug.xcconfig"; path = "Target Support Files/Pods-TodayExtension/Pods-TodayExtension.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -293,6 +298,7 @@
 				CFC5E4992329E16100F58F29 /* Hero in Frameworks */,
 				11080D9125318CEA00D3FD08 /* Pods_NowPlaying.framework in Frameworks */,
 				CF5FD9F3232CDF5900AA2236 /* DeallocationChecker in Frameworks */,
+				CFF594B22339269C0074521B /* RxRealm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,6 +577,7 @@
 				CF615AF91F56AB3B00315019 /* Info.plist */,
 				CF28A8441FD299BE00E45F12 /* GoogleService-Info.plist */,
 				CF55B62C22A3DD8B00D5C9E1 /* Carthage.xcfilelist */,
+				CFF594B3233926B20074521B /* license_plist.yml */,
 				CF918D061F7075110005B686 /* Settings.bundle */,
 			);
 			path = Resources;
@@ -655,6 +662,7 @@
 				CF6F569122CC6CD300F517E9 /* Realm+Rx.swift */,
 				CF7E87D522D22DBB00F10335 /* UIImageView+Nuke.swift */,
 				CF232DB922D483A300820C1B /* UIButton+Nuke.swift */,
+				CFF594B723392A770074521B /* UITableView+Changeset.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -788,6 +796,7 @@
 				CFC5E4BA2329E35000F58F29 /* SnapKit */,
 				CFC5E4CB2329EA4500F58F29 /* RxKeyboard */,
 				CF5FD9F2232CDF5900AA2236 /* DeallocationChecker */,
+				CFF594B12339269C0074521B /* RxRealm */,
 			);
 			productName = NowPlaying;
 			productReference = CF615AEA1F56AB3B00315019 /* NowPlaying.app */;
@@ -873,6 +882,7 @@
 				CFC5E4B92329E35000F58F29 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				CFC5E4CA2329EA4500F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				CF5FD9F1232CDF5900AA2236 /* XCRemoteSwiftPackageReference "DeallocationChecker" */,
+				CFF594B02339269C0074521B /* XCRemoteSwiftPackageReference "RxRealm" */,
 			);
 			productRefGroup = CF615AEB1F56AB3B00315019 /* Products */;
 			projectDirPath = "";
@@ -896,6 +906,7 @@
 				CF99DF4B22B607C1006E3876 /* PostFormatHelpView.xib in Resources */,
 				CF918D071F7075110005B686 /* Settings.bundle in Resources */,
 				CF531C0D22A9540500D05896 /* SettingViewController.xib in Resources */,
+				CFF594B4233926B20074521B /* license_plist.yml in Resources */,
 				CFB5798822C3982D001F3D13 /* MastodonSettingDomainTableViewCell.xib in Resources */,
 				CF5FD9F0232CD91D00AA2236 /* SearchMastodonViewController.xib in Resources */,
 				CF28A8451FD299BE00E45F12 /* GoogleService-Info.plist in Resources */,
@@ -1116,6 +1127,7 @@
 				CF531C3222A9829F00D05896 /* SKReceiptRefreshRequest+Rx.swift in Sources */,
 				CF6F567422CB1CD800F517E9 /* User.swift in Sources */,
 				CF55B68F22A40ACD00D5C9E1 /* PostContent.swift in Sources */,
+				CFF594B823392A770074521B /* UITableView+Changeset.swift in Sources */,
 				CF531C2A22A980EA00D05896 /* RxSKPaymentTransactionObserver.swift in Sources */,
 				CF232DAD22CCD70400820C1B /* TwitterSessionControl.swift in Sources */,
 				CFB5797B22C385B4001F3D13 /* InstanceListRequest.swift in Sources */,
@@ -1547,6 +1559,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		CFF594B02339269C0074521B /* XCRemoteSwiftPackageReference "RxRealm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxRealm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1634,6 +1654,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFC5E4CA2329EA4500F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */;
 			productName = RxKeyboard;
+		};
+		CFF594B12339269C0074521B /* RxRealm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFF594B02339269C0074521B /* XCRemoteSwiftPackageReference "RxRealm" */;
+			productName = RxRealm;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
