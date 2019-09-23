@@ -24,6 +24,7 @@ protocol AccountManageViewModelInput {
     var twitterLoginTrigger: PublishRelay<UIViewController> { get }
     var removeUserDataTrigger: PublishRelay<User> { get }
     var newDefaultAccountTrigger: PublishRelay<Void> { get }
+    var tokenRevokeTrigger: PublishRelay<SecretCredential> { get }
 }
 
 // MARK: - AccountManageViewModelOutput
@@ -34,6 +35,7 @@ protocol AccountManageViewModelOutput {
     var loginResult: Observable<LoginResult> { get }
     var removeResult: Observable<Void> { get }
     var newDefaultAccount: Observable<UIAlertController> { get }
+    var tokenRevokeResult: Observable<User> { get }
 }
 
 // MARK: - AccountManageViewModelType
@@ -44,7 +46,6 @@ protocol AccountManageViewModelType {
     var outputs: AccountManageViewModelOutput { get }
 
     init(service: Service)
-    func tokenRevoke(secret: SecretCredential) -> Observable<Void>
 }
 
 enum LoginResult {
@@ -56,13 +57,17 @@ enum LoginResult {
 
 final class AccountManageViewModelImpl: AccountManageViewModelType {
 
+    /* Input */
     let twitterLoginTrigger: PublishRelay<UIViewController> = .init()
     let removeUserDataTrigger: PublishRelay<User> = .init()
     let newDefaultAccountTrigger: PublishRelay<Void> = .init()
+    let tokenRevokeTrigger: PublishRelay<SecretCredential> = .init()
+    /* Output */
     let title: Observable<String>
     let loginResult: Observable<LoginResult>
     let removeResult: Observable<Void>
     let newDefaultAccount: Observable<UIAlertController>
+    let tokenRevokeResult: Observable<User>
 
     var inputs: AccountManageViewModelInput { return self }
     var outputs: AccountManageViewModelOutput { return self }
@@ -71,6 +76,7 @@ final class AccountManageViewModelImpl: AccountManageViewModelType {
     private let _loginResult = PublishRelay<LoginResult>()
     private let _removeResult = PublishSubject<Void>()
     private let _newDefaultAccount = PublishRelay<UIAlertController>()
+    private let _tokenRevokeResult = PublishSubject<User>()
     private let mastodonTokenRevokeAction: Action<SecretCredential, Void> = Action {
         return Session.shared.rx.response(MastodonTokenRevokeRequest(secret: $0))
     }
@@ -91,6 +97,7 @@ final class AccountManageViewModelImpl: AccountManageViewModelType {
         loginResult = _loginResult.asObservable()
         removeResult = _removeResult.asObservable()
         newDefaultAccount = _newDefaultAccount.asObservable()
+        tokenRevokeResult = _tokenRevokeResult.asObservable()
 
         twitterLoginTrigger
             .subscribe(onNext: { [unowned self] in
@@ -109,22 +116,12 @@ final class AccountManageViewModelImpl: AccountManageViewModelType {
                 self.applyNewDefaultAccount()
             })
             .disposed(by: disposeBag)
-    }
 
-    func tokenRevoke(secret: SecretCredential) -> Observable<Void> {
-        return .create { [unowned self] (observer) -> Disposable in
-            self.mastodonTokenRevokeAction.elements
-                .subscribe(onNext: {
-                    observer.onNext(())
-                    observer.onCompleted()
-                }, onError: {
-                    observer.onError($0)
-                })
-                .disposed(by: self.disposeBag)
-
-            self.mastodonTokenRevokeAction.inputs.onNext(secret)
-            return Disposables.create()
-        }
+        tokenRevokeTrigger
+            .subscribe(onNext: { [unowned self] (secret) in
+                self.tokenRevoke(secret: secret)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -158,6 +155,19 @@ extension AccountManageViewModelImpl {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         Feeder.Selection().selectionChanged()
         _newDefaultAccount.accept(alert)
+    }
+
+    private func tokenRevoke(secret: SecretCredential) {
+        mastodonTokenRevokeAction.elements
+            .subscribe(onNext: { [weak self] in
+                self?._tokenRevokeResult.onNext(secret.user!)
+                self?._tokenRevokeResult.onCompleted()
+            }, onError: { [weak self] in
+                self?._tokenRevokeResult.onError($0)
+            })
+            .disposed(by: self.disposeBag)
+
+        mastodonTokenRevokeAction.inputs.onNext(secret)
     }
 
     private func startTwitterLogin(_ viewController: UIViewController) {

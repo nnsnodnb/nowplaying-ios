@@ -166,6 +166,17 @@ final class AccountManageViewController: UIViewController {
                 self.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+
+        viewModel.outputs.tokenRevokeResult
+            .subscribe(onNext: { [weak self] (user) in
+                self?.viewModel.inputs.removeUserDataTrigger.accept(user)
+            }, onError: { (error) in
+                Feeder.Notification(.error).notificationOccurred()
+                print(error)
+                SVProgressHUD.showError(withStatus: "ログアウトに失敗しました")
+                SVProgressHUD.dismiss(withDelay: 1)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -197,15 +208,7 @@ extension AccountManageViewController: UITableViewDataSource {
             viewModel.inputs.removeUserDataTrigger.accept(user)
             return
         }
-        _ = viewModel.tokenRevoke(secret: user.secretCredentials.first!)
-            .subscribe(onNext: { [weak self] (_) in
-                self?.viewModel.inputs.removeUserDataTrigger.accept(user)
-            }, onError: { (error) in
-                Feeder.Notification(.error).notificationOccurred()
-                print(error)
-                SVProgressHUD.showError(withStatus: "ログアウトに失敗しました")
-                SVProgressHUD.dismiss(withDelay: 1)
-            })
+        viewModel.inputs.tokenRevokeTrigger.accept(user.secretCredentials.first!)
     }
 }
 
