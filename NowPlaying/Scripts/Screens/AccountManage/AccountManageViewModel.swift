@@ -17,12 +17,12 @@ import SVProgressHUD
 import Swifter
 import UIKit
 
-struct AccountManageViewModelInput {
+// MARK: - AccountManageViewModelInput
 
-    let service: Service
-    let addAccountBarButtonItem: UIBarButtonItem
-    let editAccountsBarButtonItem: UIBarButtonItem
-    let viewController: UIViewController
+protocol AccountManageViewModelInput {
+
+    var twitterLoginTrigger: PublishRelay<Void> { get }
+
 }
 
 // MARK: - AccountManageViewModelOutput
@@ -38,9 +38,10 @@ protocol AccountManageViewModelOutput {
 
 protocol AccountManageViewModelType {
 
+    var inputs: AccountManageViewModelInput { get }
     var outputs: AccountManageViewModelOutput { get }
 
-    init(inputs: AccountManageViewModelInput)
+    init(service: Service)
     func tokenRevoke(secret: SecretCredential) -> Observable<Void>
     func removeUserData(_ user: User) -> Observable<Void>
     func applyNewDefaultAccount() -> Observable<UIAlertController>
@@ -53,12 +54,14 @@ enum LoginResult {
     case duplicate
 }
 
-final class AccountManageViewModel: AccountManageViewModelType {
+final class AccountManageViewModelImpl: AccountManageViewModelType {
 
+    let twitterLoginTrigger: PublishRelay<Void> = .init()
     let title: Observable<String>
     let users: Observable<Results<User>>
     let loginResult: Observable<LoginResult>
 
+    var inputs: AccountManageViewModelInput { return self }
     var outputs: AccountManageViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
@@ -71,9 +74,9 @@ final class AccountManageViewModel: AccountManageViewModelType {
     private lazy var twitter = TwitterSessionControl()
     private lazy var mastodon = MastodonSessionControl()
 
-    init(inputs: AccountManageViewModelInput) {
-        service = inputs.service
-        switch inputs.service {
+    init(service: Service) {
+        self.service = service
+        switch service {
         case .twitter:
             title = Observable.just("Twitterアカウント")
         case .mastodon:
@@ -81,14 +84,18 @@ final class AccountManageViewModel: AccountManageViewModelType {
         }
         let realm = try! Realm(configuration: realmConfiguration)
         users = realm.objects(User.self)
-            .filter("serviceType = %@", inputs.service.rawValue)
+            .filter("serviceType = %@", service.rawValue)
             .sorted(byKeyPath: "id", ascending: true)
             .response()
             .asObservable()
 
         loginResult = _loginResult.asObservable()
 
-        subscribeBarButtonItems(inputs: inputs)
+        twitterLoginTrigger
+            .subscribe(onNext: { [unowned self] in
+                self.startTwitterLogin()
+            })
+            .disposed(by: disposeBag)
     }
 
     func tokenRevoke(secret: SecretCredential) -> Observable<Void> {
@@ -144,43 +151,12 @@ final class AccountManageViewModel: AccountManageViewModelType {
 
 // MARK: - Private method
 
-extension AccountManageViewModel {
-
-    private func subscribeBarButtonItems(inputs: AccountManageViewModelInput) {
-        inputs.addAccountBarButtonItem.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                Feeder.Impact(.light).impactOccurred()
-                switch inputs.service {
-                case .twitter:
-                    SVProgressHUD.show()
-                    self.startTwitterLogin(inputs: inputs)
-                case .mastodon:
-                    self.startMastodonLogin(inputs: inputs)
-                        .subscribe(onNext: { (hostname) in
-                            self.startAuthorizeMastodon(hostname: hostname)
-                        }, onError: { (error) in
-                            print(error)
-                            self._loginResult.accept(.failure(error))
-                        })
-                        .disposed(by: self.disposeBag)
-                }
-            })
-            .disposed(by: disposeBag)
-
-        inputs.editAccountsBarButtonItem.rx.tap
-            .subscribe(onNext: {
-                let isEditing = !inputs.viewController.isEditing
-                inputs.viewController.setEditing(isEditing, animated: true)
-                let newTitle = isEditing ? "完了" : "編集"
-                inputs.editAccountsBarButtonItem.title = newTitle
-            })
-            .disposed(by: disposeBag)
-    }
+extension AccountManageViewModelImpl {
 
     private func startTwitterLogin(inputs: AccountManageViewModelInput) {
         let twitterAuthURL = URL(string: "twitterauth://authorize")!
         if UIApplication.shared.canOpenURL(twitterAuthURL) {
-            twitter.tryAuthorizeSSO()
+            _ = twitter.tryAuthorizeSSO()
                 .subscribe(onNext: { [weak self] in
                     guard let wself = self else { return }
                     TwitterSessionControl.handleSuccessLogin($0)
@@ -189,7 +165,6 @@ extension AccountManageViewModel {
                     print($0)
                     self._loginResult.accept(.failure($0))
                 })
-                .disposed(by: disposeBag)
             return
         }
         twitter.tryAuthorizeBrowser(presenting: inputs.viewController)
@@ -285,6 +260,10 @@ extension AccountManageViewModel {
     }
 }
 
+// MARK: - AccountManageViewModelInput
+
+extension AccountManageViewModelImpl: AccountManageViewModelInput {}
+
 // MARK: - AccountManageViewModelOutput
 
-extension AccountManageViewModel: AccountManageViewModelOutput {}
+extension AccountManageViewModelImpl: AccountManageViewModelOutput {}

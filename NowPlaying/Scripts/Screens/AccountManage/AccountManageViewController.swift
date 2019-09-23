@@ -16,14 +16,19 @@ import UIKit
 
 final class AccountManageViewController: UIViewController {
 
+    struct Input {
+        let viewModel: AccountManageViewModelType
+        let service: Service
+        let screenType: ScreenType
+    }
+
+    private let viewModel: AccountManageViewModelType
     private let service: Service
     private let screenType: ScreenType
     private let selectionTrigger = PublishSubject<User>()
     private let disposeBag = DisposeBag()
 
     let selection: Observable<User>
-
-    private var viewModel: AccountManageViewModelType!
 
     @IBOutlet private weak var tableView: UITableView! {
         didSet {
@@ -78,9 +83,10 @@ final class AccountManageViewController: UIViewController {
 
     // MARK: - Initializer
 
-    init(service: Service, screenType: ScreenType) {
-        self.service = service
-        self.screenType = screenType
+    init(input: Input) {
+        viewModel = input.viewModel
+        service = input.service
+        screenType = input.screenType
         selection = selectionTrigger.asObserver()
         super.init(nibName: R.nib.accountManageViewController.name, bundle: R.nib.accountManageViewController.bundle)
     }
@@ -94,9 +100,7 @@ final class AccountManageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let inputs = setupNavigationBar()
-
-        viewModel = AccountManageViewModel(inputs: inputs)
+        setupNavigationBar()
 
         _ = viewModel.outputs.title
             .bind(to: navigationItem.rx.title)
@@ -143,7 +147,7 @@ final class AccountManageViewController: UIViewController {
 
     // MARK: - Private method
 
-    private func setupNavigationBar() -> AccountManageViewModelInput {
+    private func setupNavigationBar() {
         let addAccountBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
         let editAccountsBarButtonItem = UIBarButtonItem(title: "編集", style: .plain, target: nil, action: nil)
         editAccountsBarButtonItem.possibleTitles = ["編集", "完了"]
@@ -152,8 +156,28 @@ final class AccountManageViewController: UIViewController {
             navigationItem.rightBarButtonItems = [editAccountsBarButtonItem, addAccountBarButtonItem]
         }
 
-        return .init(service: service, addAccountBarButtonItem: addAccountBarButtonItem,
-                     editAccountsBarButtonItem: editAccountsBarButtonItem, viewController: self)
+        addAccountBarButtonItem.rx.tap
+            .subscribe(onNext: { [unowned self] in
+                Feeder.Impact(.light).impactOccurred()
+                switch self.service {
+                case .twitter:
+                    SVProgressHUD.show()
+                    // TODO: Twitterログインスタート
+                case .mastodon:
+                    // TODO: Mastodonログインスタート
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+
+        editAccountsBarButtonItem.rx.tap
+            .subscribe(onNext: { [unowned self] in
+                let isEditing = !self.isEditing
+                self.setEditing(isEditing, animated: true)
+                let newTitle = isEditing ? "完了" : "編集"
+                editAccountsBarButtonItem.title = newTitle
+            })
+            .disposed(by: disposeBag)
     }
 
     private func removeUserData(user: User) {
