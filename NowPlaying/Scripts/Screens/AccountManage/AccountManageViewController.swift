@@ -16,12 +16,6 @@ import UIKit
 
 final class AccountManageViewController: UIViewController {
 
-    struct Input {
-        let viewModel: AccountManageViewModelType
-        let service: Service
-        let screenType: ScreenType
-    }
-
     private let viewModel: AccountManageViewModelType
     private let service: Service
     private let screenType: ScreenType
@@ -63,7 +57,7 @@ final class AccountManageViewController: UIViewController {
                     let realm = try! Realm(configuration: realmConfiguration)
                     let user = realm.object(ofType: User.self, forPrimaryKey: $0.id)!
                     SVProgressHUD.show()
-                    if user.isTwitetrUser {
+                    if user.isTwitterUser {
                         self.removeUserData(user: user)
                         return
                     }
@@ -83,10 +77,10 @@ final class AccountManageViewController: UIViewController {
 
     // MARK: - Initializer
 
-    init(input: Input) {
-        viewModel = input.viewModel
-        service = input.service
-        screenType = input.screenType
+    init(viewModel: AccountManageViewModelType, service: Service, screenType: ScreenType) {
+        self.viewModel = viewModel
+        self.service = service
+        self.screenType = screenType
         selection = selectionTrigger.asObserver()
         super.init(nibName: R.nib.accountManageViewController.name, bundle: R.nib.accountManageViewController.bundle)
     }
@@ -182,7 +176,7 @@ final class AccountManageViewController: UIViewController {
 
     private func removeUserData(user: User) {
         _ = viewModel.removeUserData(user)
-            .subscribe(onCompleted: {
+            .subscribe(onCompleted: { [unowned self] in
                 Feeder.Impact(.medium).impactOccurred()
                 SVProgressHUD.showSuccess(withStatus: "ログアウトしました")
                 SVProgressHUD.dismiss(withDelay: 1) { [weak self] in

@@ -21,8 +21,7 @@ import UIKit
 
 protocol AccountManageViewModelInput {
 
-    var twitterLoginTrigger: PublishRelay<Void> { get }
-
+    var twitterLoginTrigger: PublishRelay<UIViewController> { get }
 }
 
 // MARK: - AccountManageViewModelOutput
@@ -56,7 +55,7 @@ enum LoginResult {
 
 final class AccountManageViewModelImpl: AccountManageViewModelType {
 
-    let twitterLoginTrigger: PublishRelay<Void> = .init()
+    let twitterLoginTrigger: PublishRelay<UIViewController> = .init()
     let title: Observable<String>
     let users: Observable<Results<User>>
     let loginResult: Observable<LoginResult>
@@ -93,7 +92,7 @@ final class AccountManageViewModelImpl: AccountManageViewModelType {
 
         twitterLoginTrigger
             .subscribe(onNext: { [unowned self] in
-                self.startTwitterLogin()
+                self.startTwitterLogin($0)
             })
             .disposed(by: disposeBag)
     }
@@ -153,10 +152,10 @@ final class AccountManageViewModelImpl: AccountManageViewModelType {
 
 extension AccountManageViewModelImpl {
 
-    private func startTwitterLogin(inputs: AccountManageViewModelInput) {
+    private func startTwitterLogin(_ viewController: UIViewController) {
         let twitterAuthURL = URL(string: "twitterauth://authorize")!
         if UIApplication.shared.canOpenURL(twitterAuthURL) {
-            _ = twitter.tryAuthorizeSSO()
+            twitter.tryAuthorizeSSO()
                 .subscribe(onNext: { [weak self] in
                     guard let wself = self else { return }
                     TwitterSessionControl.handleSuccessLogin($0)
@@ -165,9 +164,10 @@ extension AccountManageViewModelImpl {
                     print($0)
                     self._loginResult.accept(.failure($0))
                 })
+                .disposed(by: disposeBag)
             return
         }
-        twitter.tryAuthorizeBrowser(presenting: inputs.viewController)
+        twitter.tryAuthorizeBrowser(presenting: viewController)
             .subscribe(onNext: { [weak self] in
                 guard let wself = self else { return }
                 TwitterSessionControl.handleSuccessLogin($0)
@@ -221,7 +221,7 @@ extension AccountManageViewModelImpl {
                 .bind(to: observer.asObserver())
                 .disposed(by: self.disposeBag)
 
-            inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
+//            inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
             return Disposables.create()
         }
     }

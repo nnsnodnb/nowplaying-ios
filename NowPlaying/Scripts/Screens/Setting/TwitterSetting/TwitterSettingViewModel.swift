@@ -148,7 +148,7 @@ extension TwitterSettingViewModelImpl {
         }
         row.rx.onCellSelection()
             .subscribe(onNext: { [unowned self] (_, _) in
-                // TODO: AccountManageViewController
+                self._transition.accept(.manage)
             })
             .disposed(by: disposeBag)
         return row
@@ -184,15 +184,15 @@ extension TwitterSettingViewModelImpl {
             $0.hidden = Condition(booleanLiteral: UserDefaults.bool(forKey: .isAutoTweetPurchase))
         }
         row.rx.onCellSelection()
-            .subscribe(onNext: { (_, _) in
+            .subscribe(onNext: { [unowned self] (_, _) in
                 if !DTTJailbreakDetection.isJailbroken() {
                     self._startInAppPurchase.accept(())
                     return
                 }
-                // TODO: 脱獄検知アラート
-//                let alert = UIAlertController(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
-//                alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
-////                self?.inputs.viewController.present(alert, animated: true, completion: nil)
+                let action = AlertConfigurations.Action(title: "閉じる", style: .cancel)
+                let configuration = AlertConfigurations(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません",
+                                                        preferredStyle: .alert, actions: [action])
+                self._transition.accept(.alert(configuration))
             })
             .disposed(by: disposeBag)
         return row
@@ -210,13 +210,10 @@ extension TwitterSettingViewModelImpl {
             UserDefaults.set($0.value!, forKey: .isAutoTweet)
             Analytics.TwitterSetting.changeAutoTweet($0.value!)
             if !$0.value! || UserDefaults.bool(forKey: .isShowAutoTweetAlert) { return }
-            // TODO: アラート
-            let alert = UIAlertController(title: "お知らせ", message: "バッググラウンドでもツイートされますが、iOS上での制約のため長時間には対応できません。",
-                                          preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//            self.inputs.viewController.present(alert, animated: true) {
-//                UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
-//            }
+            let action = AlertConfigurations.Action(title: "OK", style: .default)
+            let configuration = AlertConfigurations(title: "お知らせ", message: "バックグランドでもツイートできますが、iOS上の成約のため長時間には対応できません。", preferredStyle: .alert, actions: [action])
+            self._transition.accept(.alert(configuration))
+            UserDefaults.set(true, forKey: .isShowAutoTweetAlert)
             Feeder.Impact(.heavy).impactOccurred()
         }
     }
@@ -246,24 +243,20 @@ extension TwitterSettingViewModelImpl {
         }
         row.rx.onCellSelection()
             .subscribe(onNext: { [unowned self] (_, _) in
-                // TODO: アラート表示
+                let cancel = AlertConfigurations.Action(title: "キャンセル", style: .cancel)
+                let reset = AlertConfigurations.Action(title: "リセット", style: .destructive) { [unowned self] (_) in
+                    DispatchQueue.main.async {
+                        guard let tweetFormatRow: TextAreaRow = self.form.rowBy(tag: "tweet_format") else { return }
+                        tweetFormatRow.baseValue = String.defaultPostFormat
+                        tweetFormatRow.updateCell()
+                    }
+                }
+                let configuration = AlertConfigurations(title: "投稿フォーマットをリセットします", message: nil, preferredStyle: .alert, actions: [cancel, reset])
+                self._transition.accept(.alert(configuration))
                 Feeder.Notification(.warning).notificationOccurred()
             })
             .disposed(by: disposeBag)
         return row
-//        .onCellSelection { [unowned self] (_, _) in
-//            let alert = UIAlertController(title: "投稿フォーマットをリセットします", message: nil, preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-//            alert.addAction(UIAlertAction(title: "リセット", style: .destructive) { [unowned self] (_) in
-//                guard let tweetFormatRow: TextAreaRow = self.form.rowBy(tag: "tweet_format") else { return }
-//                DispatchQueue.main.async {
-//                    tweetFormatRow.baseValue = String.defaultPostFormat
-//                    tweetFormatRow.updateCell()
-//                }
-//            })
-////            self.inputs.viewController.present(alert, animated: true, completion: nil)
-//            Feeder.Notification(.warning).notificationOccurred()
-//        }
     }
 }
 

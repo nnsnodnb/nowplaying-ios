@@ -38,7 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]=[:]) -> Bool {
-        return Swifter.application(application, open: url, options: options)
+        let callbackURL = URL(string: "swifter-\(Environments.twitterConsumerKey)://")!
+        if Swifter.handleOpenUrlSSO(url, callbackUrl: callbackURL) {
+            return true
+        }
+        return Swifter.handleOpenUrl(url, callbackUrl: callbackURL)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

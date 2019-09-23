@@ -127,10 +127,11 @@ extension TweetViewModel {
 
         inputs.iconImageButton
             .subscribe(onNext: { [unowned self] in
-                let viewController = AccountManageViewController(service: inputs.postContent.service, screenType: .selection)
-                _ = viewController.selection
-                    .bind(to: self.postUser)
-                inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
+//                let viewController = AccountManageViewController(service: inputs.postContent.service, screenType: .selection)
+//                _ = viewController.selection
+//                    .bind(to: self.postUser)
+//                inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
+                // TODO: AccountManageViewController
             })
             .disposed(by: disposeBag)
 

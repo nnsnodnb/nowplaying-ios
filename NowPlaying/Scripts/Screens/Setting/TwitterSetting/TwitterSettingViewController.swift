@@ -46,6 +46,19 @@ final class TwitterSettingViewController: FormViewController {
                 self?.showSelectPurchaseType()
             })
             .disposed(by: disposeBag)
+
+        viewModel.outputs.transition
+            .subscribe(onNext: { [unowned self] (transition) in
+                switch transition {
+                case .manage:
+                    let viewController = AccountManageViewController(viewModel: AccountManageViewModelImpl(service: .twitter),
+                                                                     service: .twitter, screenType: .settings)
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                case .alert(let configuration):
+                    self.present(configuration.make(), animated: true, completion: nil)
+                }
+            })
+            .disposed(by: disposeBag)
     }
 
     override func viewDidAppear(_ animated: Bool) {

@@ -104,8 +104,8 @@
         "package": "Swifter",
         "repositoryURL": "https://github.com/noppefoxwolf/Swifter",
         "state": {
-          "branch": "feature/SSO",
-          "revision": "4a2c0db2ee21a798b0056e1bd97cc2da9e51792c",
+          "branch": null,
+          "revision": "63e8928ff59609c7c92138368a5acf09cb7520ed",
           "version": null
         }
       }

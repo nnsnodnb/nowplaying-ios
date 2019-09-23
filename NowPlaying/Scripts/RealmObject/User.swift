@@ -53,7 +53,7 @@ extension User {
         return URL(string: iconURLString)!
     }
 
-    var isTwitetrUser: Bool {
+    var isTwitterUser: Bool {
         guard let service = Service(rawValue: serviceType) else {
             return false
         }
@@ -61,7 +61,7 @@ extension User {
     }
 
     var isMastodonUser: Bool {
-        return !isTwitetrUser
+        return !isTwitterUser
     }
 
     var isDefaultAccount: Bool {

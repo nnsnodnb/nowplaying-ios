@@ -1503,8 +1503,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/noppefoxwolf/Swifter";
 			requirement = {
-				branch = feature/SSO;
-				kind = branch;
+				kind = revision;
+				revision = 63e8928ff59609c7c92138368a5acf09cb7520ed;
 			};
 		};
 		CFC5E4A62329E27600F58F29 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
