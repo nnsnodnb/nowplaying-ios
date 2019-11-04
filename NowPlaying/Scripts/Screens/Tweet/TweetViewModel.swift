@@ -19,21 +19,14 @@ import Swifter
 
 struct TweetViewModelInput {
 
-    let iconImageButton: Observable<Void>
-    let addImageButton: Observable<Void>
     let postContent: PostContent
-    let textViewText: Observable<String>
-    let viewController: UIViewController
 }
 
 // MARK: - TweetViewModelOutput
 
 protocol TweetViewModelOutput {
 
-    var isPostable: Observable<Bool> { get }
-    var user: Observable<User> { get }
     var postResult: Observable<Void> { get }
-    var newShareImage: Observable<UIImage> { get }
 }
 
 // MARK: - TweetViewModelType
@@ -59,7 +52,6 @@ final class TweetViewModel: TweetViewModelType {
     private let tootStatusAction: Action<(SecretCredential, String, [String]?), Void>
     private let tootUploadMediaAction: Action<(SecretCredential, Data), MastodonMediaResponse>
     private let _postResult = PublishSubject<Void>()
-    private let _newShareImage = PublishSubject<UIImage>()
 
     private var secretCredential: SecretCredential {
         return postUser.value.secretCredentials.first!
@@ -85,7 +77,6 @@ final class TweetViewModel: TweetViewModelType {
             return Session.shared.rx.response(MastodonMediaRequest(secret: $0.0, imageData: $0.1))
         }
 
-        subscribeInputs(inputs)
         subscribeAction()
     }
 
@@ -119,55 +110,6 @@ final class TweetViewModel: TweetViewModelType {
 // MARK: - Private method
 
 extension TweetViewModel {
-
-    private func subscribeInputs(_ inputs: TweetViewModelInput) {
-        inputs.textViewText
-            .bind(to: postMessage)
-            .disposed(by: disposeBag)
-
-        inputs.iconImageButton
-            .subscribe(onNext: { [unowned self] in
-//                let viewController = AccountManageViewController(service: inputs.postContent.service, screenType: .selection)
-//                _ = viewController.selection
-//                    .bind(to: self.postUser)
-//                inputs.viewController.navigationController?.pushViewController(viewController, animated: true)
-                // TODO: AccountManageViewController
-            })
-            .disposed(by: disposeBag)
-
-        inputs.addImageButton
-            .subscribe(onNext: {
-                let actionSheet = UIAlertController(title: "画像を追加します", message: "どちらを追加しますか？", preferredStyle: .actionSheet)
-                actionSheet.addAction(UIAlertAction(title: "アートワーク", style: .default) { [unowned self] (_) in
-                    guard let artwork = inputs.postContent.item?.artwork, let image = artwork.image(at: artwork.bounds.size) else {
-                        let error = NSError(domain: "moe.nnsnodnb.NowPlaying", code: 404, userInfo: ["detail": "アートワークが見つかりませんでした"])
-                        self._newShareImage.onError(error)
-                        return
-                    }
-                    self._newShareImage.onNext(image)
-                })
-                actionSheet.addAction(UIAlertAction(title: "再生画面のスクリーンショット", style: .default) { (_) in
-                    let rect = UIScreen.main.bounds
-                    UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
-                    defer { UIGraphicsEndImageContext() }
-                    let context = UIGraphicsGetCurrentContext()!
-
-                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    appDelegate.window?.rootViewController?.view.layer.render(in: context)
-
-                    guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
-                        let error = NSError(domain: "moe.nnsnodnb.NowPlaying", code: 404, userInfo: ["detail": "アートワークが見つかりませんでした"])
-                        self._newShareImage.onError(error)
-                        return
-                    }
-                    self._newShareImage.onNext(image)
-                })
-                actionSheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-                inputs.viewController.present(actionSheet, animated: true, completion: nil)
-                Feeder.Selection().selectionChanged()
-            })
-            .disposed(by: disposeBag)
-    }
 
     private func subscribeAction() {
         tweetStatusAction.elements
@@ -205,22 +147,7 @@ extension TweetViewModel {
 
 extension TweetViewModel: TweetViewModelOutput {
 
-    var isPostable: Observable<Bool> {
-        return postMessage
-            .map { !$0.isEmpty }
-            .observeOn(MainScheduler.instance)
-            .asObservable()
-    }
-
-    var user: Observable<User> {
-        return postUser.asObservable()
-    }
-
     var postResult: Observable<Void> {
         return _postResult.observeOn(MainScheduler.instance).asObservable()
-    }
-
-    var newShareImage: Observable<UIImage> {
-        return _newShareImage.observeOn(MainScheduler.instance).asObservable()
     }
 }

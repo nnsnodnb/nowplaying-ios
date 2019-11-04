@@ -1005,7 +1005,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ $CONFIGURATION = \"Debug\" ]; then\n\"${PODS_ROOT}/LicensePlist/license-plist\" \"--output-path\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle\" \"--github-token\" \"${GITHUB_ACCESS_TOKEN}\" \"--config-path\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml\" \"--package-path\" \"${SRCROOT}/${PRODUCT_NAME}.xcworkspace/xcshareddata/swiftpm/Package.resolved\" \"--prefix\" \"moe.nnsnodnb.NowPlaying\" \"--suppress-opening-directory\" \"--force\"\nfi\n";
+			shellScript = "if [ $CONFIGURATION = \"Debug\" ]; then\n\"${PODS_ROOT}/LicensePlist/license-plist\" \"--output-path\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle\" \"--github-token\" \"${GITHUB_ACCESS_TOKEN}\" \"--config-path\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml\" \"--package-path\" \"${SRCROOT}/${PRODUCT_NAME}.xcworkspace/xcshareddata/swiftpm/Package.resolved\" \"--prefix\" \"moe.nnsnodnb.NowPlaying\" \"--suppress-opening-directory\"\nfi\n";
 		};
 		CF4D73D31F7A979400E72FBF /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
