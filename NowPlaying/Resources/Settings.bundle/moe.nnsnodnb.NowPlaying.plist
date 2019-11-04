@@ -5,6 +5,12 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
+			<key>Title</key>
+			<string>Licenses</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
 			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/Action</string>
 			<key>Title</key>
@@ -25,6 +31,14 @@
 			<string>moe.nnsnodnb.NowPlaying/Crashlytics</string>
 			<key>Title</key>
 			<string>Crashlytics</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/DeallocationChecker</string>
+			<key>Title</key>
+			<string>DeallocationChecker</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -273,6 +287,22 @@
 			<string>moe.nnsnodnb.NowPlaying/realm-cocoa</string>
 			<key>Title</key>
 			<string>realm-cocoa</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/realm-core</string>
+			<key>Title</key>
+			<string>realm-core</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/RxKeyboard</string>
+			<key>Title</key>
+			<string>RxKeyboard</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

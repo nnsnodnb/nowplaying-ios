@@ -14,6 +14,7 @@
 		CF1611371F726D110027144D /* PlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF1611351F726D110027144D /* PlayViewController.xib */; };
 		CF1AAFE51F75459B00384000 /* Eureka.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1AAFE41F75459B00384000 /* Eureka.framework */; };
 		CF1AAFEA1F75F2A600384000 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1AAFE91F75F2A600384000 /* Common.swift */; };
+		CF1D0973232CF3060017DBDB /* UIViewController+Dealloc.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1D0972232CF3060017DBDB /* UIViewController+Dealloc.swift */; };
 		CF232DAB22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */; };
 		CF232DAD22CCD70400820C1B /* TwitterSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAC22CCD70400820C1B /* TwitterSessionControl.swift */; };
 		CF232DAF22CCD7F100820C1B /* MastodonSessionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */; };
@@ -157,6 +158,7 @@
 		CF1611351F726D110027144D /* PlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlayViewController.xib; path = Play/PlayViewController.xib; sourceTree = "<group>"; };
 		CF1AAFE41F75459B00384000 /* Eureka.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Eureka.framework; path = Carthage/Build/iOS/Eureka.framework; sourceTree = "<group>"; };
 		CF1AAFE91F75F2A600384000 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = Common/Common.swift; sourceTree = "<group>"; };
+		CF1D0972232CF3060017DBDB /* UIViewController+Dealloc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Dealloc.swift"; sourceTree = "<group>"; };
 		CF232DAA22CCD45D00820C1B /* MastodonVerifyCredentialsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonVerifyCredentialsRequest.swift; sourceTree = "<group>"; };
 		CF232DAC22CCD70400820C1B /* TwitterSessionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TwitterSessionControl.swift; path = Manager/TwitterSessionControl.swift; sourceTree = "<group>"; };
 		CF232DAE22CCD7F100820C1B /* MastodonSessionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MastodonSessionControl.swift; path = Manager/MastodonSessionControl.swift; sourceTree = "<group>"; };
@@ -336,6 +338,14 @@
 				CF99DF5122B8716B006E3876 /* Enumerates.swift */,
 			);
 			name = Common;
+			sourceTree = "<group>";
+		};
+		CF1D0971232CF2E70017DBDB /* MethodSwizzling */ = {
+			isa = PBXGroup;
+			children = (
+				CF1D0972232CF3060017DBDB /* UIViewController+Dealloc.swift */,
+			);
+			path = MethodSwizzling;
 			sourceTree = "<group>";
 		};
 		CF232DB222D303DD00820C1B /* Config */ = {
@@ -524,6 +534,7 @@
 				CF232DBC22D48AFB00820C1B /* UIButtons */,
 				CF531BF522A94A5D00D05896 /* Reactive */,
 				CF531C3822AACEA200D05896 /* Eureka */,
+				CF1D0971232CF2E70017DBDB /* MethodSwizzling */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -981,7 +992,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ $CONFIGURATION = \"Debug\" ]; then\n\"${PODS_ROOT}/LicensePlist/license-plist\" \"--output-path\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle\" \"--github-token\" \"${GITHUB_ACCESS_TOKEN}\" \"--config-path\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml\" \"--prefix\" \"moe.nnsnodnb.NowPlaying\" \"--suppress-opening-directory\"\nfi\n";
+			shellScript = "if [ $CONFIGURATION = \"Debug\" ]; then\n\"${PODS_ROOT}/LicensePlist/license-plist\" \"--output-path\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle\" \"--github-token\" \"${GITHUB_ACCESS_TOKEN}\" \"--config-path\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml\" \"--package-path\" \"${SRCROOT}/${PRODUCT_NAME}.xcworkspace/xcshareddata/swiftpm/Package.resolved\" \"--prefix\" \"moe.nnsnodnb.NowPlaying\" \"--suppress-opening-directory\"\nfi\n";
 		};
 		CF4D73D31F7A979400E72FBF /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1122,6 +1133,7 @@
 				CF615B0A1F56EA3900315019 /* AppDelegate.swift in Sources */,
 				CF531C2E22A9824100D05896 /* SKProductsRequest+Rx.swift in Sources */,
 				CF7E87D622D22DBB00F10335 /* UIImageView+Nuke.swift in Sources */,
+				CF1D0973232CF3060017DBDB /* UIViewController+Dealloc.swift in Sources */,
 				CF301D9C22B01BE9007E675E /* MastodonGetTokenRequest.swift in Sources */,
 				CFD6B2E022B0332B00E5F2FC /* Requests.swift in Sources */,
 				CF6F567D22CB5C8300F517E9 /* AppDelegateViewModel.swift in Sources */,
@@ -1304,6 +1316,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NowPlaying/NowPlaying.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 21;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 99649YXF6E;
 				ENABLE_BITCODE = YES;
@@ -1318,6 +1331,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 2.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1333,6 +1347,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = NowPlaying/NowPlaying.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 21;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 99649YXF6E;
 				ENABLE_BITCODE = YES;
@@ -1347,6 +1362,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 2.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1362,6 +1378,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 21;
 				DEVELOPMENT_TEAM = 99649YXF6E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1374,6 +1391,7 @@
 					"$(inherited)",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 2.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1390,6 +1408,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 21;
 				DEVELOPMENT_TEAM = 99649YXF6E;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1402,6 +1421,7 @@
 					"$(inherited)",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 2.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying.TodayExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
