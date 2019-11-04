@@ -234,8 +234,7 @@ extension AccountManageViewModelImpl {
     private func startMastodonLogin(inputs: AccountManageViewModelInput) -> Observable<String> {
         // ドメイン検索 → アプリ登録 → SFSafariViewControllerでのOAuth認証 → トークンを取得
         return .create { [unowned self] (observer) -> Disposable in
-            // TODO: SearchMastodonViewController
-            let viewController = SearchMastodonViewController()
+            let viewController = SearchMastodonViewController(viewModel: SearchMastodonViewModel())
             _ = viewController.decision
                 .bind(to: observer.asObserver())
 

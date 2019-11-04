@@ -105,8 +105,11 @@ final class AccountManageViewController: UIViewController {
                     SVProgressHUD.show()
                     self.viewModel.inputs.twitterLoginTrigger.accept(self)
                 case .mastodon:
-                    // TODO: Mastodonログインスタート
-                    break
+                    let viewController = SearchMastodonViewController(viewModel: SearchMastodonViewModel())
+                    _ = viewController.decision
+                        .subscribe(onNext: { [unowned self] (hostname) in
+                            
+                        })
                 }
             })
             .disposed(by: disposeBag)

@@ -26,12 +26,11 @@ final class SearchMastodonViewController: UIViewController {
 
     // MARK: - Initializer
 
-    init() {
+    init(viewModel: SearchMastodonViewModelType) {
+        self.viewModel = viewModel
         decision = decisionTrigger.asObserver()
         searchBar = UISearchBar()
         searchBar.placeholder = "例: mstdn.jp"
-        let inputs = SearchMastodonViewModelInput(searchBarText: searchBar.rx.text.asObservable())
-        viewModel = SearchMastodonViewModel(inputs: inputs)
         super.init(nibName: R.nib.searchMastodonViewController.name, bundle: R.nib.searchMastodonViewController.bundle)
     }
 
@@ -67,6 +66,16 @@ final class SearchMastodonViewController: UIViewController {
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [unowned self] in
                 self.tableView.deselectRow(at: $0, animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        searchBar.rx.text
+            .subscribe(onNext: { [unowned self] in
+                if let text = $0, !text.isEmpty {
+//                    self.searchAction.inputs.onNext(text)
+                } else {
+//                    self.initialAction.inputs.onNext(())
+                }
             })
             .disposed(by: disposeBag)
 
