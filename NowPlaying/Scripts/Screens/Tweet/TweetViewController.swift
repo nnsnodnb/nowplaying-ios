@@ -20,6 +20,13 @@ final class TweetViewController: UIViewController {
     @IBOutlet private weak var textView: UITextView! {
         didSet {
             textView.becomeFirstResponder()
+            guard let rightBarButtonItem = navigationItem.rightBarButtonItem else { return }
+            textView.rx.text
+                .compactMap { $0 }
+                .map { !$0.isEmpty }
+                .observeOn(MainScheduler.instance)
+                .bind(to: rightBarButtonItem.rx.isEnabled)
+                .disposed(by: disposeBag)
         }
     }
     @IBOutlet private weak var textViewBottomConstraint: NSLayoutConstraint!
@@ -28,6 +35,18 @@ final class TweetViewController: UIViewController {
             iconImageButton.imageView?.contentMode = .scaleAspectFit
             iconImageButton.contentVerticalAlignment = .fill
             iconImageButton.contentHorizontalAlignment = .fill
+            iconImageButton.rx.tap
+                .subscribe(onNext: { [unowned self] in
+                    let viewModel = AccountManageViewModelImpl(service: self.postContent.service)
+                    let viewController = AccountManageViewController(viewModel: viewModel, service: self.postContent.service, screenType: .selection)
+                    _ = viewController.selection
+                        .observeOn(MainScheduler.instance)
+                        .subscribe(onNext: { (user) in
+                            self.iconImageButton.setImage(with: user.iconURL)
+                        })
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                })
+                .disposed(by: disposeBag)
         }
     }
     @IBOutlet private weak var artworkImageButton: ShadowButton! {
@@ -63,6 +82,44 @@ final class TweetViewController: UIViewController {
     @IBOutlet private weak var addImageButton: UIButton! {
         didSet {
             addImageButton.isHidden = shareImage != nil
+            addImageButton.rx.tap
+                .subscribe(onNext: { [unowned self] in
+                    let actionSheet = UIAlertController(title: "画像を追加します", message: "どちらを追加しますか？", preferredStyle: .actionSheet)
+                    actionSheet.addAction(UIAlertAction(title: "アートワーク", style: .default) { [unowned self] (_) in
+                        guard let artwork = self.postContent.item?.artwork, let image = artwork.image(at: artwork.bounds.size) else {
+                            SVProgressHUD.showError(withStatus: "アートワークが見つかりませんでした")
+                            SVProgressHUD.dismiss(withDelay: 1)
+                            return
+                        }
+                        self.shareImage = image
+                        self.artworkImageButton.setImage(image, for: .normal)
+                        self.artworkImageButton.isHidden = false
+                        self.addImageButton.isHidden = true
+                    })
+                    actionSheet.addAction(UIAlertAction(title: "再生画面のスクリーンショット", style: .default) { (_) in
+                        let rect = UIScreen.main.bounds
+                        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
+                        defer { UIGraphicsEndImageContext() }
+                        let context = UIGraphicsGetCurrentContext()!
+
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        appDelegate.window?.rootViewController?.view.layer.render(in: context)
+
+                        guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
+                            SVProgressHUD.showError(withStatus: "アートワークが見つかりませんでした")
+                            SVProgressHUD.dismiss(withDelay: 1)
+                            return
+                        }
+                        self.shareImage = image
+                        self.artworkImageButton.setImage(image, for: .normal)
+                        self.artworkImageButton.isHidden = false
+                        self.addImageButton.isHidden = true
+                    })
+                    actionSheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+                    self.present(actionSheet, animated: true, completion: nil)
+                    Feeder.Selection().selectionChanged()
+                })
+                .disposed(by: disposeBag)
         }
     }
 
@@ -103,10 +160,10 @@ final class TweetViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
-        viewModel = TweetViewModel(inputs: .init(postContent: postContent))
-
+        viewModel = TweetViewModel(postContent)
         subscribeViewModel()
-        viewModel.getCurrentAccount()
+
+        viewModel.inputs.currentUserTrigger.accept(())
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -128,18 +185,15 @@ final class TweetViewController: UIViewController {
     // MARK: - Private method
 
     private func setupNavigationBar() {
-        guard navigationController != nil else {
-            return
-        }
+        guard navigationController != nil else { return }
         title = isMastodon ? "トゥート" : "ツイート"
         let cancelButton = UIBarButtonItem(title: "閉じる", style: .plain, target: nil, action: nil)
         cancelButton.rx.tap
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] (_) in
-                guard let wself = self else { return }
-                wself.textView.resignFirstResponder()
-                Analytics.Tweet.cancelPost(isMastodon: wself.isMastodon)
-                wself.dismiss(animated: true, completion: nil)
+            .subscribe(onNext: { [unowned self] (_) in
+                self.textView.resignFirstResponder()
+                Analytics.Tweet.cancelPost(isMastodon: self.isMastodon)
+                self.dismiss(animated: true, completion: nil)
                 Feeder.Impact(.light).impactOccurred()
             })
             .disposed(by: disposeBag)
@@ -148,11 +202,11 @@ final class TweetViewController: UIViewController {
         let postButton = UIBarButtonItem(title: isMastodon ? "トゥート" : "ツイート", style: .done, target: nil, action: nil)
         postButton.rx.tap
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] (_) in
-                self?.textView.resignFirstResponder()
+            .subscribe(onNext: { [unowned self] (_) in
+                self.textView.resignFirstResponder()
                 SVProgressHUD.show()
                 Feeder.Impact(.medium).impactOccurred()
-                self?.viewModel.preparePost(image: self?.shareImage)
+                self.viewModel.preparePost(image: self.shareImage)
             })
             .disposed(by: disposeBag)
         navigationItem.rightBarButtonItem = postButton
@@ -165,68 +219,13 @@ final class TweetViewController: UIViewController {
         present(viewController, animated: true, completion: nil)
     }
 
-    private func subscribeUIParts() {
-        textView.rx.text
-            .compactMap { $0 }
-            .map { !$0.isEmpty }
-            .observeOn(MainScheduler.instance)
-            .bind(to: navigationItem.rightBarButtonItem!.rx.isEnabled)
-            .disposed(by: disposeBag)
-
-        iconImageButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                let viewModel = AccountManageViewModelImpl(service: self.postContent.service)
-                let viewController = AccountManageViewController(viewModel: viewModel, service: self.postContent.service, screenType: .selection)
-                _ = viewController.selection
-                    .observeOn(MainScheduler.instance)
-                    .subscribe(onNext: { (user) in
-                        self.iconImageButton.setImage(with: user.iconURL)
-                    })
-                self.navigationController?.pushViewController(viewController, animated: true)
-            })
-            .disposed(by: disposeBag)
-
-        addImageButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                let actionSheet = UIAlertController(title: "画像を追加します", message: "どちらを追加しますか？", preferredStyle: .actionSheet)
-                actionSheet.addAction(UIAlertAction(title: "アートワーク", style: .default) { [unowned self] (_) in
-                    guard let artwork = self.postContent.item?.artwork, let image = artwork.image(at: artwork.bounds.size) else {
-                        SVProgressHUD.showError(withStatus: "アートワークが見つかりませんでした")
-                        SVProgressHUD.dismiss(withDelay: 1)
-                        return
-                    }
-                    self.shareImage = image
-                    self.artworkImageButton.setImage(image, for: .normal)
-                    self.artworkImageButton.isHidden = false
-                    self.addImageButton.isHidden = true
-                })
-                actionSheet.addAction(UIAlertAction(title: "再生画面のスクリーンショット", style: .default) { (_) in
-                    let rect = UIScreen.main.bounds
-                    UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
-                    defer { UIGraphicsEndImageContext() }
-                    let context = UIGraphicsGetCurrentContext()!
-
-                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    appDelegate.window?.rootViewController?.view.layer.render(in: context)
-
-                    guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
-                        SVProgressHUD.showError(withStatus: "アートワークが見つかりませんでした")
-                        SVProgressHUD.dismiss(withDelay: 1)
-                        return
-                    }
-                    self.shareImage = image
-                    self.artworkImageButton.setImage(image, for: .normal)
-                    self.artworkImageButton.isHidden = false
-                    self.addImageButton.isHidden = true
-                })
-                actionSheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-                self.present(actionSheet, animated: true, completion: nil)
-                Feeder.Selection().selectionChanged()
-            })
-            .disposed(by: disposeBag)
-    }
-
     private func subscribeViewModel() {
+        viewModel.outputs.user
+            .subscribe(onNext: { [unowned self] (user) in
+                self.iconImageButton.setImage(with: user.iconURL)
+            })
+            .disposed(by: disposeBag)
+
         viewModel.outputs.postResult
             .subscribe(onNext: { [weak self] in
                 SVProgressHUD.dismiss()

@@ -17,15 +17,18 @@ import RxSwift
 import SVProgressHUD
 import Swifter
 
-struct TweetViewModelInput {
+// MARK: - TweetViewModelInput
 
-    let postContent: PostContent
+protocol TweetViewModelInput {
+
+    var currentUserTrigger: PublishRelay<Void> { get }
 }
 
 // MARK: - TweetViewModelOutput
 
 protocol TweetViewModelOutput {
 
+    var user: Observable<User> { get }
     var postResult: Observable<Void> { get }
 }
 
@@ -33,15 +36,18 @@ protocol TweetViewModelOutput {
 
 protocol TweetViewModelType {
 
+    var inputs: TweetViewModelInput { get }
     var outputs: TweetViewModelOutput { get }
 
-    init(inputs: TweetViewModelInput)
-    func getCurrentAccount()
+    init(_ postContent: PostContent)
     func preparePost(image: UIImage?)
 }
 
 final class TweetViewModel: TweetViewModelType {
 
+    let currentUserTrigger: PublishRelay<Void> = .init()
+
+    var inputs: TweetViewModelInput { return self }
     var outputs: TweetViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
@@ -57,12 +63,12 @@ final class TweetViewModel: TweetViewModelType {
         return postUser.value.secretCredentials.first!
     }
 
-    init(inputs: TweetViewModelInput) {
-        let defaultUser = User.getDefaultUser(service: inputs.postContent.service)!
+    init(_ postContent: PostContent) {
+        let defaultUser = User.getDefaultUser(service: postContent.service)!
         postUser = BehaviorRelay<User>(value: defaultUser)
 
-        postContent = inputs.postContent
-        postMessage = BehaviorRelay<String>(value: inputs.postContent.postMessage)
+        self.postContent = postContent
+        postMessage = BehaviorRelay<String>(value: postContent.postMessage)
 
         // テキストのみ・メディア込みポストアクション (Twitter)
         tweetStatusAction = Action {
@@ -77,11 +83,13 @@ final class TweetViewModel: TweetViewModelType {
             return Session.shared.rx.response(MastodonMediaRequest(secret: $0.0, imageData: $0.1))
         }
 
-        subscribeAction()
-    }
+        currentUserTrigger
+            .subscribe(onNext: { [postUser] in
+                postUser.accept(postUser.value)
+            })
+            .disposed(by: disposeBag)
 
-    func getCurrentAccount() {
-        postUser.accept(postUser.value)
+        subscribeAction()
     }
 
     func preparePost(image: UIImage?) {
@@ -143,9 +151,17 @@ extension TweetViewModel {
     }
 }
 
-// MARK: - TweetViewModelType
+// MARK: TweetViewModelInput
+
+extension TweetViewModel: TweetViewModelInput {}
+
+// MARK: - TweetViewModelOutput
 
 extension TweetViewModel: TweetViewModelOutput {
+
+    var user: Observable<User> {
+        return postUser.observeOn(MainScheduler.instance).asObservable()
+    }
 
     var postResult: Observable<Void> {
         return _postResult.observeOn(MainScheduler.instance).asObservable()
