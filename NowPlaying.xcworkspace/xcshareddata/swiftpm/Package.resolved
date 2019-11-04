@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/kishikawakatsumi/KeychainAccess",
         "state": {
           "branch": null,
-          "revision": "0046db4ab8fd7be31a59e57912dbb96639ad8ce9",
-          "version": "3.2.0"
+          "revision": "8d33ffd6f74b3bcfc99af759d4204c6395a3f918",
+          "version": "3.2.1"
         }
       },
       {
@@ -105,7 +105,7 @@
         "repositoryURL": "https://github.com/noppefoxwolf/Swifter",
         "state": {
           "branch": "feature/SSO",
-          "revision": "4a2c0db2ee21a798b0056e1bd97cc2da9e51792c",
+          "revision": "2631f6ba8612b1df93d0b32ccc43081cd69dfe2f",
           "version": null
         }
       }
