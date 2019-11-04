@@ -31,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private var backgroundTaskID: UIBackgroundTaskIdentifier = .init(rawValue: 0)
 
+    static let shared: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         commonSetup()
         subscribeViewModel()

@@ -84,40 +84,7 @@ final class TweetViewController: UIViewController {
             addImageButton.isHidden = shareImage != nil
             addImageButton.rx.tap
                 .subscribe(onNext: { [unowned self] in
-                    let actionSheet = UIAlertController(title: "画像を追加します", message: "どちらを追加しますか？", preferredStyle: .actionSheet)
-                    actionSheet.addAction(UIAlertAction(title: "アートワーク", style: .default) { [unowned self] (_) in
-                        guard let artwork = self.postContent.item?.artwork, let image = artwork.image(at: artwork.bounds.size) else {
-                            SVProgressHUD.showError(withStatus: "アートワークが見つかりませんでした")
-                            SVProgressHUD.dismiss(withDelay: 1)
-                            return
-                        }
-                        self.shareImage = image
-                        self.artworkImageButton.setImage(image, for: .normal)
-                        self.artworkImageButton.isHidden = false
-                        self.addImageButton.isHidden = true
-                    })
-                    actionSheet.addAction(UIAlertAction(title: "再生画面のスクリーンショット", style: .default) { [unowned self] (_) in
-                        let rect = UIScreen.main.bounds
-                        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
-                        defer { UIGraphicsEndImageContext() }
-                        let context = UIGraphicsGetCurrentContext()!
-
-                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        appDelegate.window?.rootViewController?.view.layer.render(in: context)
-
-                        guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
-                            SVProgressHUD.showError(withStatus: "アートワークが見つかりませんでした")
-                            SVProgressHUD.dismiss(withDelay: 1)
-                            return
-                        }
-                        self.shareImage = image
-                        self.artworkImageButton.setImage(image, for: .normal)
-                        self.artworkImageButton.isHidden = false
-                        self.addImageButton.isHidden = true
-                    })
-                    actionSheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-                    self.present(actionSheet, animated: true, completion: nil)
-                    Feeder.Selection().selectionChanged()
+                    self.showActionSheet()
                 })
                 .disposed(by: disposeBag)
         }
@@ -136,7 +103,7 @@ final class TweetViewController: UIViewController {
     // MARK: - Initializer
 
     init(viewModel: TweetViewModelType, postContent: PostContent) {
-        self.viewModel = TweetViewModel(postContent)
+        self.viewModel = viewModel
         self.postContent = postContent
         super.init(nibName: R.nib.tweetViewController.name, bundle: R.nib.tweetViewController.bundle)
         shareImage = postContent.shareImage
@@ -238,5 +205,45 @@ final class TweetViewController: UIViewController {
                 self?.present(alert, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+    }
+
+    private func showActionSheet() {
+
+        func showError() {
+            SVProgressHUD.showError(withStatus: "アートワークが見つかりません")
+            SVProgressHUD.dismiss(withDelay: 1)
+        }
+
+        func applyNewImage(_ image: UIImage) {
+            shareImage = image
+            artworkImageButton.setImage(image, for: .normal)
+            artworkImageButton.isHidden = false
+            addImageButton.isHidden = true
+        }
+
+        let actionSheet = UIAlertController(title: "画像を追加します", message: "どちらを追加しますか？", preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "アートワーク", style: .default) { [unowned self] (_) in
+            guard let artwork = self.postContent.item?.artwork, let image = artwork.image(at: artwork.bounds.size) else {
+                showError()
+                return
+            }
+            applyNewImage(image)
+        })
+        actionSheet.addAction(UIAlertAction(title: "再生画面のスクリーンショット", style: .default) { (_) in
+            let rect = UIScreen.main.bounds
+            UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
+            defer { UIGraphicsEndImageContext() }
+            let context = UIGraphicsGetCurrentContext()!
+
+            AppDelegate.shared.window?.rootViewController?.view.layer.render(in: context)
+            guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
+                showError()
+                return
+            }
+            applyNewImage(image)
+        })
+        actionSheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
+        present(actionSheet, animated: true, completion: nil)
+        Feeder.Selection().selectionChanged()
     }
 }
