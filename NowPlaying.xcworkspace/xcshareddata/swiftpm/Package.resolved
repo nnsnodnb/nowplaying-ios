@@ -29,6 +29,15 @@
         }
       },
       {
+        "package": "Feeder",
+        "repositoryURL": "https://github.com/nnsnodnb/Feeder",
+        "state": {
+          "branch": null,
+          "revision": "cb3cb3794b1b7a45f3545424d51a23fd3c9b37ee",
+          "version": "1.0.1"
+        }
+      },
+      {
         "package": "Hero",
         "repositoryURL": "https://github.com/HeroTransitions/Hero",
         "state": {
@@ -42,8 +51,8 @@
         "repositoryURL": "https://github.com/kishikawakatsumi/KeychainAccess",
         "state": {
           "branch": null,
-          "revision": "0046db4ab8fd7be31a59e57912dbb96639ad8ce9",
-          "version": "3.2.0"
+          "revision": "8d33ffd6f74b3bcfc99af759d4204c6395a3f918",
+          "version": "3.2.1"
         }
       },
       {
@@ -111,10 +120,10 @@
       },
       {
         "package": "Swifter",
-        "repositoryURL": "https://github.com/noppefoxwolf/Swifter",
+        "repositoryURL": "https://github.com/mattdonnelly/Swifter",
         "state": {
           "branch": null,
-          "revision": "63e8928ff59609c7c92138368a5acf09cb7520ed",
+          "revision": "e02a4657e059a652c1effd9e22910a532d458d8e",
           "version": null
         }
       }

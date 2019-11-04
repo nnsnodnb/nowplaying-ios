@@ -86,7 +86,7 @@ PODS:
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.2.2)
   - leveldb-library (1.22)
-  - LicensePlist (2.5.8)
+  - LicensePlist (2.9.0)
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
     - nanopb/encode (= 0.3.901)
@@ -134,13 +134,14 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMSessionFetcher
     - leveldb-library
-    - LicensePlist
     - nanopb
     - "NSURL+QueryDictionary"
     - R.swift
     - R.swift.Library
     - ScrollFlowLabel
     - SwiftLint
+  trunk:
+    - LicensePlist
 
 SPEC CHECKSUMS:
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
@@ -162,7 +163,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 9c2c544202301110b29f7974a82e77fdcf12bf51
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
-  LicensePlist: 3ad60988ec640a2aeae74cdd2e6d01531c03b7cd
+  LicensePlist: 94c2f54bb9cc5427797addaeb716cfaba3544e89
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   R.swift: f5a87643b91ea569d23d6afb3eee9c743edde239

@@ -103,7 +103,6 @@
 		CFC5E49C2329E1A400F58F29 /* APIKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E49B2329E1A400F58F29 /* APIKit */; };
 		CFC5E49F2329E1C000F58F29 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E49E2329E1C000F58F29 /* Nuke */; };
 		CFC5E4A22329E1DB00F58F29 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4A12329E1DB00F58F29 /* KeychainAccess */; };
-		CFC5E4A52329E22100F58F29 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4A42329E22100F58F29 /* Swifter */; };
 		CFC5E4A82329E27600F58F29 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4A72329E27600F58F29 /* RxSwift */; };
 		CFC5E4AC2329E27600F58F29 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4AB2329E27600F58F29 /* RxRelay */; };
 		CFC5E4AE2329E27600F58F29 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CFC5E4AD2329E27600F58F29 /* RxCocoa */; };
@@ -120,11 +119,12 @@
 		CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39020B9A176009C50ED /* R.generated.swift */; };
 		CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */; };
 		CFD6B2E022B0332B00E5F2FC /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DF22B0332B00E5F2FC /* Requests.swift */; };
-		CFDFAD1A22D972150090CA9E /* Feeder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDFAD1922D972150090CA9E /* Feeder.framework */; };
 		CFDFAD1D22DC17460090CA9E /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDFAD1C22DC17460090CA9E /* TodayViewModel.swift */; };
 		CFF594B22339269C0074521B /* RxRealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFF594B12339269C0074521B /* RxRealm */; };
 		CFF594B4233926B20074521B /* license_plist.yml in Resources */ = {isa = PBXBuildFile; fileRef = CFF594B3233926B20074521B /* license_plist.yml */; };
 		CFF594B823392A770074521B /* UITableView+Changeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF594B723392A770074521B /* UITableView+Changeset.swift */; };
+		CFF9A6B12370A4180094A4D9 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = CFF9A6B02370A4180094A4D9 /* Swifter */; };
+		CFF9A6B42370A4AD0094A4D9 /* Feeder in Frameworks */ = {isa = PBXBuildFile; productRef = CFF9A6B32370A4AD0094A4D9 /* Feeder */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -274,9 +274,8 @@
 			files = (
 				CFC5E4B82329E31800F58F29 /* Action in Frameworks */,
 				CFC5E4CC2329EA4500F58F29 /* RxKeyboard in Frameworks */,
-				CFC5E4A52329E22100F58F29 /* Swifter in Frameworks */,
-				CFDFAD1A22D972150090CA9E /* Feeder.framework in Frameworks */,
 				CFC5E4A22329E1DB00F58F29 /* KeychainAccess in Frameworks */,
+				CFF9A6B12370A4180094A4D9 /* Swifter in Frameworks */,
 				CFC5E4AC2329E27600F58F29 /* RxRelay in Frameworks */,
 				CF6F566322C4C13400F517E9 /* DynamicBlurView.framework in Frameworks */,
 				CFC5E49C2329E1A400F58F29 /* APIKit in Frameworks */,
@@ -285,6 +284,7 @@
 				CFC5E4A82329E27600F58F29 /* RxSwift in Frameworks */,
 				CFC5E4B32329E2D300F58F29 /* Realm in Frameworks */,
 				CFC5E4B52329E2D300F58F29 /* RealmSwift in Frameworks */,
+				CFF9A6B42370A4AD0094A4D9 /* Feeder in Frameworks */,
 				CFC5E49F2329E1C000F58F29 /* Nuke in Frameworks */,
 				CFC5E4BB2329E35000F58F29 /* SnapKit in Frameworks */,
 				CF2DBD7320A4AB630039217F /* libicucore.tbd in Frameworks */,
@@ -783,7 +783,6 @@
 				CFC5E49B2329E1A400F58F29 /* APIKit */,
 				CFC5E49E2329E1C000F58F29 /* Nuke */,
 				CFC5E4A12329E1DB00F58F29 /* KeychainAccess */,
-				CFC5E4A42329E22100F58F29 /* Swifter */,
 				CFC5E4A72329E27600F58F29 /* RxSwift */,
 				CFC5E4AB2329E27600F58F29 /* RxRelay */,
 				CFC5E4AD2329E27600F58F29 /* RxCocoa */,
@@ -794,6 +793,8 @@
 				CFC5E4CB2329EA4500F58F29 /* RxKeyboard */,
 				CF5FD9F2232CDF5900AA2236 /* DeallocationChecker */,
 				CFF594B12339269C0074521B /* RxRealm */,
+				CFF9A6B02370A4180094A4D9 /* Swifter */,
+				CFF9A6B32370A4AD0094A4D9 /* Feeder */,
 			);
 			productName = NowPlaying;
 			productReference = CF615AEA1F56AB3B00315019 /* NowPlaying.app */;
@@ -872,7 +873,6 @@
 				CFC5E49A2329E1A400F58F29 /* XCRemoteSwiftPackageReference "APIKit" */,
 				CFC5E49D2329E1C000F58F29 /* XCRemoteSwiftPackageReference "Nuke" */,
 				CFC5E4A02329E1DB00F58F29 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
-				CFC5E4A32329E22100F58F29 /* XCRemoteSwiftPackageReference "Swifter" */,
 				CFC5E4A62329E27600F58F29 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				CFC5E4B12329E2D300F58F29 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 				CFC5E4B62329E31800F58F29 /* XCRemoteSwiftPackageReference "Action" */,
@@ -880,6 +880,8 @@
 				CFC5E4CA2329EA4500F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				CF5FD9F1232CDF5900AA2236 /* XCRemoteSwiftPackageReference "DeallocationChecker" */,
 				CFF594B02339269C0074521B /* XCRemoteSwiftPackageReference "RxRealm" */,
+				CFF9A6AF2370A4180094A4D9 /* XCRemoteSwiftPackageReference "Swifter" */,
+				CFF9A6B22370A4AC0094A4D9 /* XCRemoteSwiftPackageReference "Feeder" */,
 			);
 			productRefGroup = CF615AEB1F56AB3B00315019 /* Products */;
 			projectDirPath = "";
@@ -1003,7 +1005,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ $CONFIGURATION = \"Debug\" ]; then\n\"${PODS_ROOT}/LicensePlist/license-plist\" \"--output-path\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle\" \"--github-token\" \"${GITHUB_ACCESS_TOKEN}\" \"--config-path\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml\" \"--prefix\" \"moe.nnsnodnb.NowPlaying\" \"--suppress-opening-directory\"\nfi\n";
+			shellScript = "if [ $CONFIGURATION = \"Debug\" ]; then\n\"${PODS_ROOT}/LicensePlist/license-plist\" \"--output-path\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/Settings.bundle\" \"--github-token\" \"${GITHUB_ACCESS_TOKEN}\" \"--config-path\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/license_plist.yml\" \"--package-path\" \"${SRCROOT}/${PRODUCT_NAME}.xcworkspace/xcshareddata/swiftpm/Package.resolved\" \"--prefix\" \"moe.nnsnodnb.NowPlaying\" \"--suppress-opening-directory\" \"--force\"\nfi\n";
 		};
 		CF4D73D31F7A979400E72FBF /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1507,14 +1509,6 @@
 				minimumVersion = 3.2.0;
 			};
 		};
-		CFC5E4A32329E22100F58F29 /* XCRemoteSwiftPackageReference "Swifter" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/noppefoxwolf/Swifter";
-			requirement = {
-				kind = revision;
-				revision = 63e8928ff59609c7c92138368a5acf09cb7520ed;
-			};
-		};
 		CFC5E4A62329E27600F58F29 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
@@ -1563,6 +1557,22 @@
 				minimumVersion = 1.0.1;
 			};
 		};
+		CFF9A6AF2370A4180094A4D9 /* XCRemoteSwiftPackageReference "Swifter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mattdonnelly/Swifter";
+			requirement = {
+				kind = revision;
+				revision = e02a4657e059a652c1effd9e22910a532d458d8e;
+			};
+		};
+		CFF9A6B22370A4AC0094A4D9 /* XCRemoteSwiftPackageReference "Feeder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nnsnodnb/Feeder";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1590,11 +1600,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFC5E4A02329E1DB00F58F29 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
-		};
-		CFC5E4A42329E22100F58F29 /* Swifter */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC5E4A32329E22100F58F29 /* XCRemoteSwiftPackageReference "Swifter" */;
-			productName = Swifter;
 		};
 		CFC5E4A72329E27600F58F29 /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1655,6 +1660,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFF594B02339269C0074521B /* XCRemoteSwiftPackageReference "RxRealm" */;
 			productName = RxRealm;
+		};
+		CFF9A6B02370A4180094A4D9 /* Swifter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFF9A6AF2370A4180094A4D9 /* XCRemoteSwiftPackageReference "Swifter" */;
+			productName = Swifter;
+		};
+		CFF9A6B32370A4AD0094A4D9 /* Feeder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFF9A6B22370A4AC0094A4D9 /* XCRemoteSwiftPackageReference "Feeder" */;
+			productName = Feeder;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
