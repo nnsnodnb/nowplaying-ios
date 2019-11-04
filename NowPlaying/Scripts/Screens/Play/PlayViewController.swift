@@ -217,7 +217,7 @@ final class PlayViewController: UIViewController {
 
         viewModel.outputs.postContent
             .drive(onNext: { [unowned self] (post) in
-                let viewController = TweetViewController(postContent: post)
+                let viewController = TweetViewController(viewModel: TweetViewModel(post), postContent: post)
                 let navi = UINavigationController(rootViewController: viewController)
                 navi.modalPresentationStyle = .fullScreen
                 self.present(navi, animated: true, completion: nil)

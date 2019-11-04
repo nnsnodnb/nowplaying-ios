@@ -41,7 +41,7 @@ final class TweetViewController: UIViewController {
                     let viewController = AccountManageViewController(viewModel: viewModel, service: self.postContent.service, screenType: .selection)
                     _ = viewController.selection
                         .observeOn(MainScheduler.instance)
-                        .subscribe(onNext: { (user) in
+                        .subscribe(onNext: { [unowned self] (user) in
                             self.iconImageButton.setImage(with: user.iconURL)
                         })
                     self.navigationController?.pushViewController(viewController, animated: true)
@@ -96,7 +96,7 @@ final class TweetViewController: UIViewController {
                         self.artworkImageButton.isHidden = false
                         self.addImageButton.isHidden = true
                     })
-                    actionSheet.addAction(UIAlertAction(title: "再生画面のスクリーンショット", style: .default) { (_) in
+                    actionSheet.addAction(UIAlertAction(title: "再生画面のスクリーンショット", style: .default) { [unowned self] (_) in
                         let rect = UIScreen.main.bounds
                         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
                         defer { UIGraphicsEndImageContext() }
@@ -123,6 +123,7 @@ final class TweetViewController: UIViewController {
         }
     }
 
+    private let viewModel: TweetViewModelType
     private let postContent: PostContent
     private let disposeBag = DisposeBag()
     private let initialTextViewBottomConstant: CGFloat = 14
@@ -131,11 +132,11 @@ final class TweetViewController: UIViewController {
         return postContent.service == .mastodon
     }()
     private var shareImage: UIImage?
-    private var viewModel: TweetViewModelType!
 
     // MARK: - Initializer
 
-    init(postContent: PostContent) {
+    init(viewModel: TweetViewModelType, postContent: PostContent) {
+        self.viewModel = TweetViewModel(postContent)
         self.postContent = postContent
         super.init(nibName: R.nib.tweetViewController.name, bundle: R.nib.tweetViewController.bundle)
         shareImage = postContent.shareImage
@@ -160,9 +161,7 @@ final class TweetViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
-        viewModel = TweetViewModel(postContent)
         subscribeViewModel()
-
         viewModel.inputs.currentUserTrigger.accept(())
     }
 
