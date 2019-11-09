@@ -29,12 +29,21 @@
         }
       },
       {
+        "package": "Feeder",
+        "repositoryURL": "https://github.com/nnsnodnb/Feeder",
+        "state": {
+          "branch": null,
+          "revision": "cb3cb3794b1b7a45f3545424d51a23fd3c9b37ee",
+          "version": "1.0.1"
+        }
+      },
+      {
         "package": "Hero",
         "repositoryURL": "https://github.com/HeroTransitions/Hero",
         "state": {
           "branch": null,
-          "revision": "7d541ecbf8f53edc87bf51c54ab207bddc39e4cb",
-          "version": "1.4.0"
+          "revision": "ae951b89f23485de8a7b95aaa5cead7f78ab1df0",
+          "version": "1.5.0"
         }
       },
       {
@@ -42,8 +51,8 @@
         "repositoryURL": "https://github.com/kishikawakatsumi/KeychainAccess",
         "state": {
           "branch": null,
-          "revision": "8d33ffd6f74b3bcfc99af759d4204c6395a3f918",
-          "version": "3.2.1"
+          "revision": "b920ad7df3c73189dcdd4aa05c540849b2010dbf",
+          "version": "4.1.0"
         }
       },
       {
@@ -51,8 +60,8 @@
         "repositoryURL": "https://github.com/kean/Nuke",
         "state": {
           "branch": null,
-          "revision": "58543e405a5c7640d08109faf0e2060d9e9b44dd",
-          "version": "8.1.1"
+          "revision": "cd495310d8bb0ef73a726d77db19fe7f5530d080",
+          "version": "8.3.1"
         }
       },
       {

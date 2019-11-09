@@ -10,6 +10,5 @@
 
 $(SRCROOT)/Carthage/Build/iOS/DynamicBlurView.framework
 $(SRCROOT)/Carthage/Build/iOS/Eureka.framework
-$(SRCROOT)/Carthage/Build/iOS/Feeder.framework
 $(SRCROOT)/Carthage/Build/iOS/PopupDialog.framework
 $(SRCROOT)/Carthage/Build/iOS/SVProgressHUD.framework

@@ -43,20 +43,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>Fabric</key>
-	<dict>
-		<key>APIKey</key>
-		<string>$(FABRIC_API_KEY)</string>
-		<key>Kits</key>
-		<array>
-			<dict>
-				<key>KitInfo</key>
-				<dict/>
-				<key>KitName</key>
-				<string>Crashlytics</string>
-			</dict>
-		</array>
-	</dict>
 	<key>GADApplicationIdentifier</key>
 	<string>$(FIREBASE_ADMOB_APP_ID)</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -81,8 +67,6 @@
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>音楽再生のためミュージックライブラリにアクセスします</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>投稿時に位置情報をしようします</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
