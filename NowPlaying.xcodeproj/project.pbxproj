@@ -1000,13 +1000,14 @@
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
 			);
 			name = Crashlytics;
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" ${FABRIC_API_KEY} ${FABRIC_BUILD_SECRET}\n";
+			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
 		};
 		CF531C3722A9969800D05896 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
