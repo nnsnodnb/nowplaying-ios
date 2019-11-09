@@ -67,8 +67,6 @@
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>音楽再生のためミュージックライブラリにアクセスします</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>投稿時に位置情報をしようします</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
