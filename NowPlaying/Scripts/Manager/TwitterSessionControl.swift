@@ -32,7 +32,7 @@ struct TwitterSessionControl {
 
     func tryAuthorizeBrowser(presenting: UIViewController) -> Observable<Credential.OAuthAccessToken> {
         return .create { [swifter] (observer) -> Disposable in
-            let callbackURL = URL(string: "nowplaying-ios-nnsnodnb://twitter/oauth/success")!
+            let callbackURL = URL(string: "swifter-\(Environments.twitterConsumerKey)://")!
             swifter.authorize(
                 withCallback: callbackURL, presentingFrom: presenting, safariDelegate: presenting as? SFSafariViewControllerDelegate,
                 success: { (accessToken, _) in
