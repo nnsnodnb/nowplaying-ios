@@ -1511,7 +1511,7 @@
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 3.2.0;
+				minimumVersion = 4.1.0;
 			};
 		};
 		CFC5E4A32329E22100F58F29 /* XCRemoteSwiftPackageReference "Swifter" */ = {
