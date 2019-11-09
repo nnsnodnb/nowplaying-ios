@@ -1487,7 +1487,7 @@
 			repositoryURL = "https://github.com/HeroTransitions/Hero";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 1.4.0;
+				minimumVersion = 1.5.0;
 			};
 		};
 		CFC5E49A2329E1A400F58F29 /* XCRemoteSwiftPackageReference "APIKit" */ = {
