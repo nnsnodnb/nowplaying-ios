@@ -38,7 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]=[:]) -> Bool {
-        return Swifter.application(application, open: url, options: options)
+        let callbackURL = URL(string: "swifter-\(Environments.twitterConsumerKey)://")!
+        Swifter.handleOpenURL(url, callbackURL: callbackURL, isSSO: true)
+        return Swifter.handleOpenURL(url, callbackURL: callbackURL)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -80,6 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         #if DEBUG
         DeallocationChecker.shared.setup(with: .alert)
+        UIViewController.swizzleViewDidDisappear()
         Analytics.setAnalyticsCollectionEnabled(false)
         let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()
         print("🔑 Realm encryption key: \(realmEncryptionKeyString)")
