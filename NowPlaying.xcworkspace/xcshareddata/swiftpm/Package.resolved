@@ -29,6 +29,15 @@
         }
       },
       {
+        "package": "Feeder",
+        "repositoryURL": "https://github.com/nnsnodnb/Feeder",
+        "state": {
+          "branch": null,
+          "revision": "cb3cb3794b1b7a45f3545424d51a23fd3c9b37ee",
+          "version": "1.0.1"
+        }
+      },
+      {
         "package": "Hero",
         "repositoryURL": "https://github.com/HeroTransitions/Hero",
         "state": {
