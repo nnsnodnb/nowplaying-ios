@@ -81,6 +81,7 @@
 		CF6FFF22207E4CE4003FD38D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF6FFF21207E4CE4003FD38D /* TodayViewController.swift */; };
 		CF6FFF25207E4CE4003FD38D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF6FFF23207E4CE4003FD38D /* MainInterface.storyboard */; };
 		CF6FFF29207E4CE4003FD38D /* TodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CF6FFF1D207E4CE4003FD38D /* TodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CF753E17237777D90093196B /* Feeder in Frameworks */ = {isa = PBXBuildFile; productRef = CF753E16237777D90093196B /* Feeder */; };
 		CF7E87D422CE480A00F10335 /* MastodonTokenRevokeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7E87D322CE480A00F10335 /* MastodonTokenRevokeRequest.swift */; };
 		CF7E87D622D22DBB00F10335 /* UIImageView+Nuke.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7E87D522D22DBB00F10335 /* UIImageView+Nuke.swift */; };
 		CF8C85E51F6F2A520051A0C7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C85E41F6F2A520051A0C7 /* AuthManager.swift */; };
@@ -120,7 +121,6 @@
 		CFD1D39120B9A176009C50ED /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD1D39020B9A176009C50ED /* R.generated.swift */; };
 		CFD6B2DE22B02A7200E5F2FC /* MastodonMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DD22B02A7200E5F2FC /* MastodonMediaRequest.swift */; };
 		CFD6B2E022B0332B00E5F2FC /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD6B2DF22B0332B00E5F2FC /* Requests.swift */; };
-		CFDFAD1A22D972150090CA9E /* Feeder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDFAD1922D972150090CA9E /* Feeder.framework */; };
 		CFDFAD1D22DC17460090CA9E /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDFAD1C22DC17460090CA9E /* TodayViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -267,10 +267,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF753E17237777D90093196B /* Feeder in Frameworks */,
 				CFC5E4B82329E31800F58F29 /* Action in Frameworks */,
 				CFC5E4CC2329EA4500F58F29 /* RxKeyboard in Frameworks */,
 				CFC5E4A52329E22100F58F29 /* Swifter in Frameworks */,
-				CFDFAD1A22D972150090CA9E /* Feeder.framework in Frameworks */,
 				CFC5E4A22329E1DB00F58F29 /* KeychainAccess in Frameworks */,
 				CFC5E4AC2329E27600F58F29 /* RxRelay in Frameworks */,
 				CF6F566322C4C13400F517E9 /* DynamicBlurView.framework in Frameworks */,
@@ -785,6 +785,7 @@
 				CFC5E4BA2329E35000F58F29 /* SnapKit */,
 				CFC5E4CB2329EA4500F58F29 /* RxKeyboard */,
 				CF5FD9F2232CDF5900AA2236 /* DeallocationChecker */,
+				CF753E16237777D90093196B /* Feeder */,
 			);
 			productName = NowPlaying;
 			productReference = CF615AEA1F56AB3B00315019 /* NowPlaying.app */;
@@ -870,6 +871,7 @@
 				CFC5E4B92329E35000F58F29 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				CFC5E4CA2329EA4500F58F29 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				CF5FD9F1232CDF5900AA2236 /* XCRemoteSwiftPackageReference "DeallocationChecker" */,
+				CF753E15237777D90093196B /* XCRemoteSwiftPackageReference "Feeder" */,
 			);
 			productRefGroup = CF615AEB1F56AB3B00315019 /* Products */;
 			projectDirPath = "";
@@ -1000,13 +1002,14 @@
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
 			);
 			name = Crashlytics;
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" ${FABRIC_API_KEY} ${FABRIC_BUILD_SECRET}\n";
+			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
 		};
 		CF531C3722A9969800D05896 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1467,23 +1470,31 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/fastred/DeallocationChecker";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 3.0.1;
+			};
+		};
+		CF753E15237777D90093196B /* XCRemoteSwiftPackageReference "Feeder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nnsnodnb/Feeder";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.0.1;
 			};
 		};
 		CFC5E4972329E16100F58F29 /* XCRemoteSwiftPackageReference "Hero" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/HeroTransitions/Hero";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.0;
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.5.0;
 			};
 		};
 		CFC5E49A2329E1A400F58F29 /* XCRemoteSwiftPackageReference "APIKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ishkawa/APIKit";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 5.0.0;
 			};
 		};
@@ -1491,16 +1502,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/Nuke";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 8.1.1;
+				kind = upToNextMinorVersion;
+				minimumVersion = 8.3.0;
 			};
 		};
 		CFC5E4A02329E1DB00F58F29 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.2.0;
+				kind = upToNextMinorVersion;
+				minimumVersion = 4.1.0;
 			};
 		};
 		CFC5E4A32329E22100F58F29 /* XCRemoteSwiftPackageReference "Swifter" */ = {
@@ -1515,7 +1526,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 5.0.1;
 			};
 		};
@@ -1523,7 +1534,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-cocoa";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 3.17.3;
 			};
 		};
@@ -1531,7 +1542,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/Action";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 4.0.1;
 			};
 		};
@@ -1539,7 +1550,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 5.0.1;
 			};
 		};
@@ -1547,7 +1558,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 1.0.0;
 			};
 		};
@@ -1558,6 +1569,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CF5FD9F1232CDF5900AA2236 /* XCRemoteSwiftPackageReference "DeallocationChecker" */;
 			productName = DeallocationChecker;
+		};
+		CF753E16237777D90093196B /* Feeder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF753E15237777D90093196B /* XCRemoteSwiftPackageReference "Feeder" */;
+			productName = Feeder;
 		};
 		CFC5E4982329E16100F58F29 /* Hero */ = {
 			isa = XCSwiftPackageProductDependency;
