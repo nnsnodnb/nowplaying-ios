@@ -1,0 +1,178 @@
+name: NowPlaying
+
+attributes:
+    ORGANIZATIONNAME: Yuya Oka
+
+configs:
+    Debug: debug
+    Release: release
+
+include:
+    - swiftpm.yml
+
+options:
+    bundleIdPrefix: moe.nnsnodnb
+    developmentLanguage: ja
+    usesTabs: false
+    indentWidth: 4
+    xcodeVersion: 11.1
+    deploymentTarget:
+        iOS: 11.0
+
+settings:
+    base:
+        ENABLE_BITCODE: true
+        DEVELOPMENT_TEAM: 99649YXF6E
+        VALID_ARCHS: arm64
+        SWIFT_VERSION: 5.1
+
+targets:
+    # Application
+    NowPlaying:
+        type: application
+        platform: iOS
+        configFiles:
+            Debug: NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig
+            Release: NowPlaying/Resources/Config/NowPlaying-Release.xcconfig
+        info:
+            path: NowPlaying/Resources/Info.plist
+            properties:
+                CFBundleDevelopmentRegion: ja_JP
+                CFBundleDisplayName: NowPlaying
+                CFBundleExecutable: $(EXECUTABLE_NAME)
+                CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+                CFBundleLocalizations:
+                    - ja
+                CFBundleName: $(PRODUCT_NAME)
+                CFBundlePackageType: APPL
+                CFBundleShortVersionString: 2.4.2
+                CFBundleURLTypes:
+                    - CFBundleTypeRole: Editor
+                      CFBundleURLSchemes:
+                          - swifter-$(TWITTER_CONSUMER_KEY)
+                    - CFBundleTypeRole: Editor
+                      CFBundleURLSchemes:
+                          - nowplaying-ios-nnsnodnb
+                CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+                GADApplicationIdentifier: $(FIREBASE_ADMOB_APP_ID)
+                LSApplicationQueriesSchemes:
+                    - twitter
+                    - twitterauth
+                LSEnvironment:
+                    FIREBASE_ADMOB_APP_ID: $(FIREBASE_ADMOB_APP_ID)
+                    FIREBASE_ADMOB_BANNER_ID: $(FIREBASE_ADMOB_BANNER_ID)
+                    MASTODON_INSTANCES_API_TOKEN: $(MASTODON_INSTANCES_API_TOKEN)
+                    TWITTER_CONSUMER_KEY: $(TWITTER_CONSUMER_KEY)
+                    TWITTER_CONSUMER_SECRET: $(TWITTER_CONSUMER_SECRET)
+                LSRequiresIPhoneOS: true
+                NSAppleMusicUsageDescription: 音楽再生のためミュージックライブラリにアクセスします
+                UIBackgroundModes:
+                    - audio
+                UILaunchStoryboardName: LaunchScreen
+                UIRequiredDeviceCapabilities:
+                    - arm64
+                UISupportedInterfaceOrientations:
+                    - UIInterfaceOrientationPortrait
+                UISupportedInterfaceOrientations~ipad:
+                    - UIInterfaceOrientationPortrait
+                    - UIInterfaceOrientationPortraitUpsideDown
+                    - UIInterfaceOrientationLandscapeLeft
+                    - UIInterfaceOrientationLandscapeRight
+        settings:
+            base:
+                ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+                TARGETED_DEVICE_FAMILY: 1
+                DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+                CODE_SIGN_ENTITLEMENTS: NowPlaying/NowPlaying.entitlements
+            configs:
+                Debug:
+                    OTHER_SWIFT_FLAGS: $(inherited) -D DEBUG
+                Release:
+                    OTHER_SWIFT_FLAGS: $(inherited) -D RELEASE
+        sources:
+            - path: NowPlaying
+              excludes:
+                  - Resources/Config/NowPlaying-Debug.xcconfig.sample
+                  - Resources/Config/NowPlaying-Release.xcconfig.sample
+            - path: NowPlaying/Scripts/R.generated.swift
+              optional: true
+              type: file
+            - path: NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig
+              optiona: true
+              type: file
+            - path: NowPlaying/Resources/Config/NowPlaying-Release.xcconfig
+              optional: true
+              type: file
+        requiresObjCLinking: true
+        dependencies:
+            - package: APIKit
+            - package: DeallocationChecker
+            - package: Feeder
+            - package: KeychainAccess
+            - package: Hero
+            - package: Nuke
+            - package: RealmSwift
+            - package: SnapKit
+            - package: Swifter
+            - carthage: DynamicBlurView
+            - carthage: PopupDialog
+            - carthage: Eureka
+            - carthage: SVProgressHUD
+            - target: Umbrella
+            - target: TodayExtension
+              codeSign: false
+              embed: true
+        preBuildScripts:
+            - script: "\"${PODS_ROOT}/R.swift/rswift\" generate \"${SRCROOT}/NowPlaying/Scripts/R.generated.swift\""
+              name: R.swift
+              inputFiles:
+                  - $(TEMP_DIR)/rswift-lastrun
+              outputFiles:
+                  - $(SRCROOT)/NowPlaying/Scripts/R.generated.swift
+        postBuildScripts:
+            - script: "${PODS_ROOT}/Fabric/run"
+              name: Crashlytics
+              inputFiles:
+                  - $(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)
+
+    # TodayExtension
+    TodayExtension:
+        type: app-extension
+        platform: iOS
+        sources:
+            - path: TodayExtension
+        info:
+            path: TodayExtension/Info.plist
+            properties:
+                CFBundleDisplayName: 再生中の音楽
+                NSExtension:
+                    NSExtensionMainStoryboard: MainInterface
+                    NSExtensionPointIdentifier: com.apple.widget-extension
+        dependencies:
+            - sdk: NotificationCenter.framework
+            - target: Umbrella
+        settings:
+            base:
+                PRODUCT_BUNDLE_IDENTIFIER: moe.nnsnodnb.NowPlaying.TodayExtension
+                APPLICATION_EXTENSION_API_ONLY: false
+
+    # Umbrella
+    Umbrella:
+        type: framework
+        platform: iOS
+        sources:
+            - path: Umbrella
+        dependencies:
+            - package: Action
+            - package: RxSwift
+            - package: RxKeyboard
+
+schemes:
+    NowPlaying:
+        build:
+            targets:
+                NowPlaying: all
+    TodayExtension:
+        build:
+            targets:
+                TodayExtension: all

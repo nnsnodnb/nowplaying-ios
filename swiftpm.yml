@@ -1,0 +1,37 @@
+packages:
+    Hero:
+        url: https://github.com/HeroTransitions/Hero
+        minorVersion: 1.5.0
+    APIKit:
+        url: https://github.com/ishkawa/APIKit
+        minorVersion: 5.0.0
+    Nuke:
+        url: https://github.com/kean/Nuke
+        minorVersion: 8.3.0
+    KeychainAccess:
+        url: https://github.com/kishikawakatsumi/KeychainAccess
+        minorVersion: 4.1.0
+    Swifter:
+        url: https://github.com/noppefoxwolf/Swifter
+        branch: feature/SSO
+    RxSwift:
+        url: https://github.com/ReactiveX/RxSwift
+        minorVersion: 5.0.1
+    RealmSwift:
+        url: https://github.com/realm/realm-cocoa
+        minorVersion: 3.17.3
+    Action:
+        url: https://github.com/RxSwiftCommunity/Action
+        minorVersion: 4.0.1
+    SnapKit:
+        url: https://github.com/SnapKit/SnapKit
+        minorVersion: 5.0.1
+    RxKeyboard:
+        url: https://github.com/RxSwiftCommunity/RxKeyboard
+        minorVersion: 1.0.0
+    DeallocationChecker:
+        url: https://github.com/fastred/DeallocationChecker
+        minorVersion: 3.0.1
+    Feeder:
+        url: https://github.com/nnsnodnb/Feeder
+        minorVersion: 1.0.1
