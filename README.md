@@ -8,18 +8,20 @@ NowPlaying tweet & toot application for iOS.
 
 ## Environments
 
-- Xcode 11.1
-  - Swift 5.1
-- Ruby 2.6.3
+- Xcode 11.3.1
+  - Swift 5.1.3
+- Ruby 2.6.5
   - Bundler 2.0.2
     - Cocoapods 1.8.4
 - Carthage 0.34.0 and higher
+- XcodeGen
 
 ## Installation
 
 ```bash
 $ gem install bundler -N
 $ bundle install --path vendor/bundle
+$ xcodegen generate
 $ bundle exec pod install --repo-update
 $ carthage bootstrap --platform iOS --cache-builds
 $ open NowPlaying.xcworkspace
