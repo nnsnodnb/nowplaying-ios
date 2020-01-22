@@ -101,7 +101,6 @@ targets:
               type: file
         requiresObjCLinking: true
         dependencies:
-            - package: Action
             - package: APIKit
             - package: DeallocationChecker
             - package: Feeder
@@ -109,14 +108,13 @@ targets:
             - package: Hero
             - package: Nuke
             - package: Realm
-            - package: RxSwift
-            - package: RxKeyboard
             - package: SnapKit
             - package: Swifter
             - carthage: DynamicBlurView
             - carthage: PopupDialog
             - carthage: Eureka
             - carthage: SVProgressHUD
+            - target: Umbrella
             - target: TodayExtension
         preBuildScripts:
             - script: "\"${PODS_ROOT}/R.swift/rswift\" generate \"${SRCROOT}/NowPlaying/Scripts/R.generated.swift\""
@@ -145,8 +143,19 @@ targets:
         sources:
             - path: TodayExtension
         dependencies:
-            - package: RxSwift
             - sdk: NotificationCenter.framework
+            - target: Umbrella
+
+    # Umbrella
+    Umbrella:
+        type: framework
+        platform: iOS
+        sources:
+            - path: Umbrella
+        dependencies:
+            - package: Action
+            - package: RxSwift
+            - package: RxKeyboard
 
 schemes:
     NowPlaying:
