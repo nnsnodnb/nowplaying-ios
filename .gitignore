@@ -53,14 +53,14 @@ Temporary Items
 .apdisk
 
 ## Xcode Patch
-#*.xcodeproj/*
-#*.xcodeproj/project.pbxproj
-#*.xcodeproj/xcshareddata/
-#*.xcworkspace/contents.xcworkspacedata
-#/*.gcno
+*.xcodeproj/*
+*.xcodeproj/project.pbxproj
+*.xcodeproj/xcshareddata/
+*.xcworkspace/contents.xcworkspacedata
+/*.gcno
 
 ### Xcode Patch ###
-#**/xcshareddata/WorkspaceSettings.xcsettings
+**/xcshareddata/WorkspaceSettings.xcsettings
 
 # CocoaPods
 Pods/

@@ -84,7 +84,11 @@ targets:
                 TARGETED_DEVICE_FAMILY: 1
                 DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
                 CODE_SIGN_ENTITLEMENTS: NowPlaying/NowPlaying.entitlements
-                OTHER_SWIFT_FLAGS: $(inherited) -D
+            configs:
+                Debug:
+                    OTHER_SWIFT_FLAGS: $(inherited) -D DEBUG
+                Release:
+                    OTHER_SWIFT_FLAGS: $(inherited) -D RELEASE
         sources:
             - path: NowPlaying
               excludes:
@@ -107,7 +111,7 @@ targets:
             - package: KeychainAccess
             - package: Hero
             - package: Nuke
-            - package: Realm
+            - package: RealmSwift
             - package: SnapKit
             - package: Swifter
             - carthage: DynamicBlurView
@@ -116,6 +120,8 @@ targets:
             - carthage: SVProgressHUD
             - target: Umbrella
             - target: TodayExtension
+              codeSign: false
+              embed: true
         preBuildScripts:
             - script: "\"${PODS_ROOT}/R.swift/rswift\" generate \"${SRCROOT}/NowPlaying/Scripts/R.generated.swift\""
               name: R.swift
@@ -123,13 +129,13 @@ targets:
                   - $(TEMP_DIR)/rswift-lastrun
               outputFiles:
                   - $(SRCROOT)/NowPlaying/Scripts/R.generated.swift
-        postCompileScripts:
-            - script: "${PODS_ROOT}/SwiftLint/swiftlint"
-              name: SwiftLint
-            - script: |
-                "APP_VERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" $PRODUCT_SETTINGS_PATH)"
-                "/usr/libexec/PlistBuddy -c \"Set :PreferenceSpecifiers:1:DefaultValue ${APP_VERSION}\" \"${SRCROOT}/NowPlaying/Resources/Settings.bundle/Root.plist\""
-              name: PlistBuddy (Settings.bundle Root.plist)
+#         postCompileScripts:
+#             - script: "${PODS_ROOT}/SwiftLint/swiftlint"
+#               name: SwiftLint
+#             - script: |
+#                 "APP_VERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" $PRODUCT_SETTINGS_PATH)"
+#                 "/usr/libexec/PlistBuddy -c \"Set :PreferenceSpecifiers:1:DefaultValue ${APP_VERSION}\" \"${SRCROOT}/NowPlaying/Resources/Settings.bundle/Root.plist\""
+#               name: PlistBuddy (Settings.bundle Root.plist)
         postBuildScripts:
             - script: "${PODS_ROOT}/Fabric/run"
               name: Crashlytics
@@ -142,9 +148,20 @@ targets:
         platform: iOS
         sources:
             - path: TodayExtension
+        info:
+            path: TodayExtension/Info.plist
+            properties:
+                CFBundleDisplayName: 再生中の音楽
+                NSExtension:
+                    NSExtensionMainStoryboard: MainInterface
+                    NSExtensionPointIdentifier: com.apple.widget-extension
         dependencies:
             - sdk: NotificationCenter.framework
             - target: Umbrella
+        settings:
+            base:
+                PRODUCT_BUNDLE_IDENTIFIER: moe.nnsnodnb.NowPlaying.TodayExtension
+                APPLICATION_EXTENSION_API_ONLY: false
 
     # Umbrella
     Umbrella:
