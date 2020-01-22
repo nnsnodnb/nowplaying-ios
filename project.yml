@@ -129,13 +129,6 @@ targets:
                   - $(TEMP_DIR)/rswift-lastrun
               outputFiles:
                   - $(SRCROOT)/NowPlaying/Scripts/R.generated.swift
-#         postCompileScripts:
-#             - script: "${PODS_ROOT}/SwiftLint/swiftlint"
-#               name: SwiftLint
-#             - script: |
-#                 "APP_VERSION=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" $PRODUCT_SETTINGS_PATH)"
-#                 "/usr/libexec/PlistBuddy -c \"Set :PreferenceSpecifiers:1:DefaultValue ${APP_VERSION}\" \"${SRCROOT}/NowPlaying/Resources/Settings.bundle/Root.plist\""
-#               name: PlistBuddy (Settings.bundle Root.plist)
         postBuildScripts:
             - script: "${PODS_ROOT}/Fabric/run"
               name: Crashlytics
