@@ -199,6 +199,11 @@ schemes:
     NowPlaying:
         build:
             targets:
+                NowPlayingTests: [test]
+
+    NowPlayingDev:
+        build:
+            targets:
                 NowPlaying: all
                 NowPlayingTests: [test]
         run:
