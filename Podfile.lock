@@ -1,0 +1,20 @@
+PODS:
+  - LicensePlist (2.12.0)
+  - SwiftLint (0.38.2)
+
+DEPENDENCIES:
+  - LicensePlist
+  - SwiftLint
+
+SPEC REPOS:
+  trunk:
+    - LicensePlist
+    - SwiftLint
+
+SPEC CHECKSUMS:
+  LicensePlist: 58cf605015acb4397095c8e7115c786d37ad8fbc
+  SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
+
+PODFILE CHECKSUM: 13c58c505b6e8c1662151f046be6deccbf00bacd
+
+COCOAPODS: 1.8.4
