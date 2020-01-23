@@ -143,6 +143,25 @@ targets:
               name: Crashlytics
               inputFiles:
                   - $(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)
+        scheme:
+            testTargets:
+                - NowPlayingTests
+
+    # UnitTest
+    NowPlayingTests:
+        type: bundle.unit-test
+        platform: iOS
+        sources:
+            - path: NowPlayingTests
+              excludes:
+                  - ReferenceImages_*/*
+                  - FailureDiffs/*
+        dependencies:
+            - target: NowPlaying
+            - target: Umbrella
+        settings:
+            base:
+                VALID_ARCHS: x86_64
 
     # TodayExtension
     TodayExtension:
@@ -181,6 +200,17 @@ schemes:
         build:
             targets:
                 NowPlaying: all
+                NowPlayingTests: [test]
+        run:
+            config: Debug
+            environmentVariables:
+                FB_REFERENCE_IMAGE_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/ReferenceImages
+                IMAGE_DIFF_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/FailureDiffs
+        test:
+            config: Debug
+            targets:
+                - NowPlayingTests
+
     TodayExtension:
         build:
             targets:
