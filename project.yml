@@ -94,6 +94,7 @@ targets:
               excludes:
                   - Resources/Config/NowPlaying-Debug.xcconfig.sample
                   - Resources/Config/NowPlaying-Release.xcconfig.sample
+                  - Resources/Settings.bundle/moe.nnsnodnb.NowPlaying.latest_result.txt
             - path: NowPlaying/Scripts/R.generated.swift
               optional: true
               type: file
@@ -128,7 +129,16 @@ targets:
                   - $(TEMP_DIR)/rswift-lastrun
               outputFiles:
                   - $(SRCROOT)/NowPlaying/Scripts/R.generated.swift
+        postCompileScripts:
+            - script: "${PODS_ROOT}/SwiftLint/swiftlint"
+              name: SwiftLint
         postBuildScripts:
+            - script: |
+                if [[ $CONFIGURATION = "Debug" ]]; then
+                  ${PODS_ROOT}/LicensePlist/license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle --github-token ${GITHUB_ACCESS_TOKEN} \
+                  --package-path ${SRCROOT}/NowPlaying.xcworkspace/xsshareddata/swiftpm/Package.swift --prefix moe.nnsnodnb.NowPlaying --suppress-opening-directory
+                fi
+              name: "LicensePlist"
             - script: "${PODS_ROOT}/Fabric/run"
               name: Crashlytics
               inputFiles:

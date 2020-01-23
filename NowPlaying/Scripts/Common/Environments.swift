@@ -8,8 +8,6 @@
 
 import Foundation
 
-import Foundation
-
 enum EnvironmentKey: String {
     case twitterConsumerKey = "TWITTER_CONSUMER_KEY"
     case twitterConsumerSecret = "TWITTER_CONSUMER_SECRET"

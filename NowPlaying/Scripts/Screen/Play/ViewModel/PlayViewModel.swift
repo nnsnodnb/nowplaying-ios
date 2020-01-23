@@ -143,7 +143,7 @@ final class PlayViewModel: PlayViewModelType {
                         self?.playbackState.accept(self?.musicPlayer.playbackState ?? .paused)
                     })
             case .denied:
-                // TODO: - アラート表示
+                // TODO: アラート表示
                 break
             case .notDetermined, .restricted:
                 break
