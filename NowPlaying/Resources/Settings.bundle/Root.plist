@@ -13,16 +13,6 @@
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
-			<key>DefaultValue</key>
-			<string>2.4.1</string>
-			<key>Key</key>
-			<string>sbVersion</string>
-			<key>Title</key>
-			<string>Version</string>
-			<key>Type</key>
-			<string>PSTitleValueSpecifier</string>
-		</dict>
-		<dict>
 			<key>Title</key>
 			<string>Copyright</string>
 			<key>Type</key>
