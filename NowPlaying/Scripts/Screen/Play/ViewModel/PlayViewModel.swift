@@ -10,6 +10,7 @@ import Foundation
 import MediaPlayer
 import RxCocoa
 import RxSwift
+import StoreKit
 
 protocol PlayViewModelInput {
 
@@ -109,7 +110,13 @@ final class PlayViewModel: PlayViewModelType {
 
         countUpTrigger
             .subscribe(onNext: {
-                // TODO: カウントアップ
+                var count = UserDefaults.standard.integer(forKey: .appOpenCount)
+                count += 1
+                UserDefaults.standard.set(count, forKey: .appOpenCount)
+                if count == 15 {
+                    SKStoreReviewController.requestReview()
+                    UserDefaults.standard.set(0, forKey: .appOpenCount)
+                }
             })
             .disposed(by: disposeBag)
 
