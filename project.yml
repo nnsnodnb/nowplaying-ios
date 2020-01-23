@@ -53,7 +53,6 @@ targets:
                     - CFBundleTypeRole: Editor
                       CFBundleURLSchemes:
                           - nowplaying-ios-nnsnodnb
-                CFBundleVersion: $(CURRENT_PROJECT_VERSION)
                 GADApplicationIdentifier: $(FIREBASE_ADMOB_APP_ID)
                 LSApplicationQueriesSchemes:
                     - twitter
@@ -200,6 +199,11 @@ schemes:
         build:
             targets:
                 NowPlayingTests: [test]
+        test:
+            config: Debug
+            environmentVariables:
+                FB_REFERENCE_IMAGE_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/ReferenceImages
+                IMAGE_DIFF_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/FailureDiffs
 
     NowPlayingDev:
         build:
