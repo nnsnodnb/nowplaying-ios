@@ -16,6 +16,7 @@ final class PlayViewController: UIViewController {
 
     @IBOutlet private weak var artworkImageView: UIImageView! {
         didSet {
+            artworkImageView.layer.shadowColor = R.color.artworkShadowColor()!.cgColor
             artworkImageView.layer.shadowOffset = .zero
             artworkImageView.layer.shadowRadius = 20
             artworkImageView.layer.shadowOpacity = 0.5
@@ -77,6 +78,36 @@ final class PlayViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        viewModel.output.artworkImage
+            .drive(onNext: { [weak self] in
+                self?.artworkImageView.image = $0
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.output.songName
+            .drive(onNext: { [weak self] in
+                self?.songNameLabel.text = $0
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.output.artistName
+            .drive(onNext: { [weak self] in
+                self?.artistNameLabel.text = $0
+            })
+            .disposed(by: disposeBag)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.input.countUpTrigger.accept(())
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 12.0, *), previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle {
+            artworkImageView.layer.shadowColor = R.color.artworkShadowColor()!.cgColor
+        }
     }
 }
 
