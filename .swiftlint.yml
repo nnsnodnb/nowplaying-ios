@@ -7,8 +7,6 @@ included:
 
 excluded:
   - NowPlaying/Scripts/R.generated.swift
-  - NowPlaying/Scripts/Reactive/RxStoreKit/*.swift
-  - Carthage
   - Pods
 
 line_length: 200
