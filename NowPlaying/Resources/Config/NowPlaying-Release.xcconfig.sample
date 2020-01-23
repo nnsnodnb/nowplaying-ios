@@ -1,0 +1,19 @@
+//
+//  NowPlaying-Release.xcconfig
+//  NowPlaying
+//
+//  Created by Oka Yuya on 2020/01/23.
+//  Copyright © 2020 Yuya Oka. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"
+
+TWITTER_CONSUMER_KEY =
+TWITTER_CONSUMER_SECRET =
+FIREBASE_ADMOB_APP_ID =
+FIREBASE_ADMOB_BANNER_ID =
+GITHUB_ACCESS_TOKEN =
+MASTODON_INSTANCES_API_TOKEN =
