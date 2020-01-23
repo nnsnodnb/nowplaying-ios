@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  SettingViewController.swift
 //  NowPlaying
 //
 //  Created by Oka Yuya on 2020/01/23.
@@ -8,13 +8,11 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class SettingViewController: UIViewController {
+
+    // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
-
-
 }
-
