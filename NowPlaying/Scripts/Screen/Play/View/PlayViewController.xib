@@ -39,7 +39,8 @@
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="music" translatesAutoresizingMaskIntoConstraints="NO" id="hQk-D4-a1j">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" secondItem="hQk-D4-a1j" secondAttribute="height" multiplier="1:1" id="zeg-ew-BD1"/>
+                                        <constraint firstAttribute="height" constant="300" id="PLX-7E-O9O"/>
+                                        <constraint firstAttribute="width" constant="300" id="YOn-pi-gJe"/>
                                     </constraints>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -178,13 +179,13 @@
     <resources>
         <image name="gear" width="128" height="124"/>
         <image name="mastodon" width="128" height="137"/>
-        <image name="music" width="512" height="512"/>
+        <image name="music" width="410" height="419"/>
         <image name="next" width="750" height="500"/>
         <image name="play" width="64" height="64"/>
         <image name="previous" width="750" height="500"/>
-        <image name="twitter" width="128" height="128"/>
+        <image name="twitter" width="64" height="64"/>
         <namedColor name="GearButtonColor">
-            <color red="0.75663860103626945" green="0.75663860103626945" blue="0.75663860103626945" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.14901960784313725" green="0.19607843137254902" blue="0.24705882352941178" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

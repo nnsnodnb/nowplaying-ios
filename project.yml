@@ -53,7 +53,6 @@ targets:
                     - CFBundleTypeRole: Editor
                       CFBundleURLSchemes:
                           - nowplaying-ios-nnsnodnb
-                CFBundleVersion: $(CURRENT_PROJECT_VERSION)
                 GADApplicationIdentifier: $(FIREBASE_ADMOB_APP_ID)
                 LSApplicationQueriesSchemes:
                     - twitter
@@ -94,6 +93,7 @@ targets:
               excludes:
                   - Resources/Config/NowPlaying-Debug.xcconfig.sample
                   - Resources/Config/NowPlaying-Release.xcconfig.sample
+                  - Resources/Settings.bundle/moe.nnsnodnb.NowPlaying.latest_result.txt
             - path: NowPlaying/Scripts/R.generated.swift
               optional: true
               type: file
@@ -128,11 +128,39 @@ targets:
                   - $(TEMP_DIR)/rswift-lastrun
               outputFiles:
                   - $(SRCROOT)/NowPlaying/Scripts/R.generated.swift
+        postCompileScripts:
+            - script: "${PODS_ROOT}/SwiftLint/swiftlint"
+              name: SwiftLint
         postBuildScripts:
+            - script: |
+                if [[ $CONFIGURATION = "Debug" ]]; then
+                  ${PODS_ROOT}/LicensePlist/license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle --github-token ${GITHUB_ACCESS_TOKEN} \
+                  --package-path ${SRCROOT}/NowPlaying.xcworkspace/xsshareddata/swiftpm/Package.swift --prefix moe.nnsnodnb.NowPlaying --suppress-opening-directory
+                fi
+              name: "LicensePlist"
             - script: "${PODS_ROOT}/Fabric/run"
               name: Crashlytics
               inputFiles:
                   - $(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)
+        scheme:
+            testTargets:
+                - NowPlayingTests
+
+    # UnitTest
+    NowPlayingTests:
+        type: bundle.unit-test
+        platform: iOS
+        sources:
+            - path: NowPlayingTests
+              excludes:
+                  - ReferenceImages_*/*
+                  - FailureDiffs/*
+        dependencies:
+            - target: NowPlaying
+            - target: Umbrella
+        settings:
+            base:
+                VALID_ARCHS: x86_64
 
     # TodayExtension
     TodayExtension:
@@ -170,7 +198,28 @@ schemes:
     NowPlaying:
         build:
             targets:
+                NowPlayingTests: [test]
+        test:
+            config: Debug
+            environmentVariables:
+                FB_REFERENCE_IMAGE_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/ReferenceImages
+                IMAGE_DIFF_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/FailureDiffs
+
+    NowPlayingDev:
+        build:
+            targets:
                 NowPlaying: all
+                NowPlayingTests: [test]
+        run:
+            config: Debug
+            environmentVariables:
+                FB_REFERENCE_IMAGE_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/ReferenceImages
+                IMAGE_DIFF_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/FailureDiffs
+        test:
+            config: Debug
+            targets:
+                - NowPlayingTests
+
     TodayExtension:
         build:
             targets:

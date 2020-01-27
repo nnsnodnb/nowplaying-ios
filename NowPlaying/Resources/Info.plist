@@ -42,7 +42,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<string>1</string>
 	<key>GADApplicationIdentifier</key>
 	<string>$(FIREBASE_ADMOB_APP_ID)</string>
 	<key>LSApplicationQueriesSchemes</key>

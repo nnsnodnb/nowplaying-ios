@@ -17,4 +17,8 @@ target 'NowPlaying' do
   pod 'SVProgressHUD'
   pod 'SwiftLint'
 
+  target 'NowPlayingTests' do
+    pod 'iOSSnapshotTestCase'
+  end
+
 end
