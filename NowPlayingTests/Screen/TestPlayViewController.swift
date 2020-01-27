@@ -97,6 +97,7 @@ final class TestPlayViewController: FBSnapshotTestCase {
             let viewController = PlayViewController()
             let viewModel = PlayViewModelStub(artwork: config.artwork, scale: config.scale, song: config.song, artist: config.artist, image: config.image)
             viewController.inject(dependency: .init(viewModel: viewModel))
+            viewController.view.frame = .init(origin: .zero, size: UIScreen.main.bounds.size)
 
             FBSnapshotVerifyView(viewController.view, identifier: config.identifier)
         }
