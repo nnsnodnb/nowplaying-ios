@@ -148,6 +148,7 @@ targets:
                 NSExtension:
                     NSExtensionMainStoryboard: MainInterface
                     NSExtensionPointIdentifier: com.apple.widget-extension
+                CFBundleShortVersionString: 2.4.3
         dependencies:
             - sdk: NotificationCenter.framework
             - target: Umbrella
