@@ -80,17 +80,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Fabric.with([Crashlytics.self])
         GADMobileAds.sharedInstance().start(completionHandler: nil)
 
-        #if DEBUG
-        DeallocationChecker.shared.setup(with: .alert)
-        UIViewController.swizzleViewDidDisappear()
-        Analytics.setAnalyticsCollectionEnabled(false)
-        let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()
-        print("🔑 Realm encryption key: \(realmEncryptionKeyString)")
+//        #if DEBUG
+//        DeallocationChecker.shared.setup(with: .alert)
+//        UIViewController.swizzleViewDidDisappear()
+//        Analytics.setAnalyticsCollectionEnabled(false)
+//        let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()
+//        print("🔑 Realm encryption key: \(realmEncryptionKeyString)")
 //        let realm = try! Realm(configuration: realmConfiguration)
 //        try! realm.write {
 //            realm.deleteAll()
 //        }
-        #endif
+//        #endif
     }
 
     private func subscribeViewModel() {
