@@ -45,11 +45,11 @@ extension ReceiptError: CustomStringConvertible {
 
 extension SKPaymentQueue {
     func verifyReceipt(transaction: SKPaymentTransaction, excludeOldTransaction: Bool = false) -> Observable<SKPaymentTransaction> {
-//        #if DEBUG
-//        let verifyReceiptURLString = "https://sandbox.itunes.apple.com/verifyReceipt"
-//        #else
+        #if DEBUG
+        let verifyReceiptURLString = "https://sandbox.itunes.apple.com/verifyReceipt"
+        #else
         let verifyReceiptURLString = "https://buy.itunes.apple.com/verifyReceipt"
-//        #endif
+        #endif
         let url = URL(string: verifyReceiptURLString)!
         do {
             let receiptURL = Bundle.main.appStoreReceiptURL
