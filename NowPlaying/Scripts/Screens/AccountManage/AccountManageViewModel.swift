@@ -178,20 +178,20 @@ extension AccountManageViewModel {
     }
 
     private func startTwitterLogin(inputs: AccountManageViewModelInput) {
-        let twitterAuthURL = URL(string: "twitterauth://authorize")!
-        if UIApplication.shared.canOpenURL(twitterAuthURL) {
-            twitter.tryAuthorizeSSO()
-                .subscribe(onNext: { [weak self] in
-                    guard let wself = self else { return }
-                    TwitterSessionControl.handleSuccessLogin($0)
-                        .bind(to: wself.twitterLoginHandle)
-                }, onError: { [unowned self] in
-                    print($0)
-                    self._loginResult.accept(.failure($0))
-                })
-                .disposed(by: disposeBag)
-            return
-        }
+//        let twitterAuthURL = URL(string: "twitterauth://authorize")!
+//        if UIApplication.shared.canOpenURL(twitterAuthURL) {
+//            twitter.tryAuthorizeSSO()
+//                .subscribe(onNext: { [weak self] in
+//                    guard let wself = self else { return }
+//                    TwitterSessionControl.handleSuccessLogin($0)
+//                        .bind(to: wself.twitterLoginHandle)
+//                }, onError: { [unowned self] in
+//                    print($0)
+//                    self._loginResult.accept(.failure($0))
+//                })
+//                .disposed(by: disposeBag)
+//            return
+//        }
         twitter.tryAuthorizeBrowser(presenting: inputs.viewController)
             .subscribe(onNext: { [weak self] in
                 guard let wself = self else { return }
