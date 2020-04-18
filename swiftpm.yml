@@ -16,7 +16,7 @@ packages:
         minorVersion: 2.3.0
     RxSwift:
         url: https://github.com/ReactiveX/RxSwift
-        minorVersion: 5.0.1
+        minorVersion: 5.1.1
     RealmSwift:
         url: https://github.com/realm/realm-cocoa
         minorVersion: 4.3.1
