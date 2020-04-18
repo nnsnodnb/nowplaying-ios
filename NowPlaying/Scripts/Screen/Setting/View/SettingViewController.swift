@@ -17,10 +17,25 @@ final class SettingViewController: FormViewController {
 
     private(set) var viewModel: SettingViewModelType!
 
+    // MARK: - Class method
+
+    class func makeInstance() -> SettingViewController {
+        let viewController = SettingViewController()
+        let router = SettingRouterImpl(view: viewController)
+        let viewModel = SettingViewModel(router: router)
+        viewController.inject(dependency: .init(viewModel: viewModel))
+
+        return viewController
+    }
+
     // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "設定"
+        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: nil, action: nil)
+        rightBarButtonItem.rx.tap.bind(to: viewModel.input.closeTrigger).disposed(by: disposeBag)
+        navigationItem.rightBarButtonItem = rightBarButtonItem
     }
 }
 
@@ -32,7 +47,7 @@ extension SettingViewController {
         let viewModel: SettingViewModelType
     }
 
-    func inject() {
-        
+    func inject(dependency: Dependency) {
+        viewModel = dependency.viewModel
     }
 }

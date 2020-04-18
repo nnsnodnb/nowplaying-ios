@@ -13,6 +13,7 @@ protocol SettingViewer: UIViewController {}
 protocol SettingRouter: AnyObject {
 
     init(view: SettingViewer)
+    func close()
 }
 
 final class SettingRouterImpl: SettingRouter {
@@ -21,5 +22,9 @@ final class SettingRouterImpl: SettingRouter {
 
     init(view: SettingViewer) {
         self.view = view
+    }
+
+    func close() {
+        view.dismiss(animated: true, completion: nil)
     }
 }
