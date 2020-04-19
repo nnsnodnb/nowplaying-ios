@@ -9,6 +9,7 @@
 import RxCocoa
 import RxDataSources
 import RxSwift
+import SafariServices
 import UIKit
 
 final class AccountManageViewController: UIViewController {
@@ -55,6 +56,10 @@ final class AccountManageViewController: UIViewController {
 
 extension AccountManageViewController: AccountManageViewer {}
 
+// MARK: - SFSafariViewControllerDelegate
+
+extension AccountManageViewController: SFSafariViewControllerDelegate {}
+
 extension AccountManageViewController {
 
     struct Dependency {
@@ -68,7 +73,7 @@ extension AccountManageViewController {
 
         switch service {
         case .twitter:
-            router = AccountManageRouterImpl(view: viewController)
+            router = TwitterAccountManageRouterImpl(view: viewController)
             viewModel = TwitterAccountManageViewModel(router: router)
         case .mastodon:
             router = AccountManageRouterImpl(view: viewController)
