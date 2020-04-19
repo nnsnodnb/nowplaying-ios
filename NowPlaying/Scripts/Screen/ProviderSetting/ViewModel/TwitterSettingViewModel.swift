@@ -11,26 +11,13 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-protocol TwitterSettingViewModelInput {}
+final class TwitterSettingViewModel: ProviderSettingViewModelType {
 
-protocol TwitterSettingViewModelOutput {
-
-    var form: Form { get }
-}
-
-protocol TwitterSettingViewModelType: AnyObject {
-
-    var input: TwitterSettingViewModelInput { get }
-    var output: TwitterSettingViewModelOutput { get }
-    init(router: TwitterSettingRouter)
-}
-
-final class TwitterSettingViewModel: TwitterSettingViewModelType {
-
+    let title: Observable<String>
     let form: Form
 
-    var input: TwitterSettingViewModelInput { return self }
-    var output: TwitterSettingViewModelOutput { return self }
+    var input: ProviderSettingViewModelInput { return self }
+    var output: ProviderSettingViewModelOutput { return self }
 
     private lazy var postFormatHelpViewFooter: (Section) -> Void = {
         return {
@@ -40,7 +27,8 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
         }
     }()
 
-    init(router: TwitterSettingRouter) {
+    init(router: ProviderSettingRouter) {
+        title = .just("Twitter設定")
         form = Form()
 
         configureForm()
@@ -70,10 +58,10 @@ extension TwitterSettingViewModel {
     }
 }
 
-// MARK: - TwitterSettingViewModelInput
+// MARK: - ProviderSettingViewModelInput
 
-extension TwitterSettingViewModel: TwitterSettingViewModelInput {}
+extension TwitterSettingViewModel: ProviderSettingViewModelInput {}
 
 // MARK: - TwitterSettingViewModelOutput
 
-extension TwitterSettingViewModel: TwitterSettingViewModelOutput {}
+extension TwitterSettingViewModel: ProviderSettingViewModelOutput {}
