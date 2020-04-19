@@ -6,16 +6,29 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import RxCocoa
+import RxSwift
 import UIKit
 
 final class AccountManageViewController: UIViewController {
 
-    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var tableView: UITableView! {
+        didSet {
+            tableView.tableFooterView = UIView()
+        }
+    }
+
+    private let disposeBag = DisposeBag()
 
     private(set) var viewModel: AccountManageViewModelType!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "アカウント管理"
+
+        let editBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: nil, action: nil)
+        let addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
+        navigationItem.rightBarButtonItems = [editBarButtonItem, addBarButtonItem]
     }
 }
 
