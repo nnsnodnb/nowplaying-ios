@@ -10,7 +10,11 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-protocol AccountManageViewModelInput {}
+protocol AccountManageViewModelInput {
+
+    var addTrigger: PublishRelay<Void> { get }
+    var editTrigger: PublishRelay<Void> { get }
+}
 
 protocol AccountManageViewModelOutput {}
 
@@ -23,8 +27,13 @@ protocol AccountManageViewModelType: AnyObject {
 
 final class AccountManageViewModel: AccountManageViewModelType {
 
+    let addTrigger: PublishRelay<Void> = .init()
+    let editTrigger: PublishRelay<Void> = .init()
+
     var input: AccountManageViewModelInput { return self }
     var output: AccountManageViewModelOutput { return self }
+
+    private let disposeBag = DisposeBag()
 
     init(router: AccountManageRouter) {
 

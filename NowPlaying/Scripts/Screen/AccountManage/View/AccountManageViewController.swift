@@ -27,8 +27,10 @@ final class AccountManageViewController: UIViewController {
         super.viewDidLoad()
         title = "アカウント管理"
 
-        let editBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: nil, action: nil)
         let addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
+        let editBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: nil, action: nil)
+        addBarButtonItem.rx.tap.bind(to: viewModel.input.addTrigger).disposed(by: disposeBag)
+        editBarButtonItem.rx.tap.bind(to: viewModel.input.editTrigger).disposed(by: disposeBag)
         navigationItem.rightBarButtonItems = [editBarButtonItem, addBarButtonItem]
     }
 }
