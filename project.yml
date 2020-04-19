@@ -193,7 +193,9 @@ targets:
             - path: Umbrella
         dependencies:
             - carthage: Action
+            - carthage: Differentiator
             - carthage: RxCocoa
+            - carthage: RxDataSources
             - carthage: RxRelay
             - carthage: RxSwift
             - carthage: ScrollFlowLabel
