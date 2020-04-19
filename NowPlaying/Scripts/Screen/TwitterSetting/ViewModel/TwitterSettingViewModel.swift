@@ -57,6 +57,8 @@ extension TwitterSettingViewModel {
                 })
                 <<< configureCell(row: .autoTweetSwitch)
             +++ Section("自動フォーマット")
+                <<< configureCell(row: .tweetFormat)
+                <<< configureCell(row: .tweetFormatResetButton)
     }
 }
 

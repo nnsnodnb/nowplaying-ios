@@ -17,6 +17,8 @@ enum TwitterSettingRow {
     case attachedImageType
     case purchaseAutoTweet((StoreKitAction) -> Void)
     case autoTweetSwitch
+    case tweetFormat
+    case tweetFormatResetButton
 
     var rawValue: String {
         switch self {
@@ -30,6 +32,10 @@ enum TwitterSettingRow {
             return "purchase_auto_tweet"
         case .autoTweetSwitch:
             return "auto_tweet_switch"
+        case .tweetFormat:
+            return "tweet_format"
+        case .tweetFormatResetButton:
+            return "tweet_format_reset_button"
         }
     }
 
@@ -79,6 +85,17 @@ enum TwitterSettingRow {
             return SwitchRow(tag) {
                 $0.title = "自動ツイート"
                 $0.value = UserDefaults.standard.bool(forKey: .isAutoTweet)
+            }
+
+        case .tweetFormat:
+            return TextAreaRow(tag) {
+                $0.placeholder = "ツイートフォーマット"
+                $0.value = UserDefaults.standard.string(forKey: .tweetFormat)
+            }
+
+        case .tweetFormatResetButton:
+            return ButtonRow(tag) {
+                $0.title = "リセットする"
             }
         }
     }
