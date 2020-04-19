@@ -83,29 +83,8 @@ enum SettingRow {
             return getSFSafariViewControllerCallback(string: "https://forms.gle/gE5ms3bEM5A85kdVA")
 
         case .purchaseHideAdMob(let callback):
-            let alert: UIAlertController
-            if DTTJailbreakDetection.isJailbroken() {
-                alert = .init(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
-                alert.addAction(.init(title: "閉じる", style: .cancel, handler: nil))
-            } else {
-                alert = .init(title: "復元しますか？購入しますか？", message: nil, preferredStyle: .alert)
-                let restoreAction = UIAlertAction(title: "復元", style: .default) { (_) in
-                    callback(.restore) // 復元
-                }
-                let purchaseAction = UIAlertAction(title: "購入", style: .default) { (_) in
-                    callback(.purchase) // 購入
-                }
-                let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel) { (_) in
-                    callback(.userCancel)
-                }
-                alert.addAction(restoreAction)
-                alert.addAction(purchaseAction)
-                alert.addAction(cancelAction)
-                alert.preferredAction = purchaseAction
-            }
-
             return .presentModally(controllerProvider: .callback {
-                return alert
+                return DTTJailbreakDetection.isJailbroken() ? UIAlertController.jailBreak() : StoreKitAction.createAlert(callback: callback)
             }, onDismiss: nil)
 
         case .review:
