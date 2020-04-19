@@ -6,13 +6,17 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import Eureka
 import Foundation
 import RxCocoa
 import RxSwift
 
 protocol TwitterSettingViewModelInput {}
 
-protocol TwitterSettingViewModelOutput {}
+protocol TwitterSettingViewModelOutput {
+
+    var form: Form { get }
+}
 
 protocol TwitterSettingViewModelType: AnyObject {
 
@@ -23,11 +27,36 @@ protocol TwitterSettingViewModelType: AnyObject {
 
 final class TwitterSettingViewModel: TwitterSettingViewModelType {
 
+    let form: Form
+
     var input: TwitterSettingViewModelInput { return self }
     var output: TwitterSettingViewModelOutput { return self }
 
     init(router: TwitterSettingRouter) {
+        form = Form()
 
+        configureForm()
+    }
+}
+
+// MARK: - Private method
+
+extension TwitterSettingViewModel {
+
+    private func configureForm() {
+
+        func configureCell(row: TwitterSettingRow) -> BaseRow { return row.row }
+
+        form
+            +++ Section("Twitter")
+                <<< configureCell(row: .accounts)
+                <<< configureCell(row: .attachedImageSwitch)
+                <<< configureCell(row: .attachedImageType)
+                <<< configureCell(row: .purchaseAutoTweet {
+                    print($0) // TODO: Implementation
+                })
+                <<< configureCell(row: .autoTweetSwitch)
+            +++ Section("自動フォーマット")
     }
 }
 

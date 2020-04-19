@@ -16,6 +16,8 @@ final class TwitterSettingViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Twitter設定"
+
+        form = viewModel.output.form
     }
 }
 
