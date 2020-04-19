@@ -115,6 +115,7 @@ targets:
             - carthage: Realm
             - carthage: RealmSwift
             - carthage: SnapKit
+            - carthage: SVProgressHUD
             - carthage: SwifteriOS
             - target: Umbrella
             - target: TodayExtension
@@ -135,7 +136,10 @@ targets:
                 if [[ $CONFIGURATION = "Debug" ]]; then
                   ${PODS_ROOT}/LicensePlist/license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle \
                   --github-token ${GITHUB_ACCESS_TOKEN} \
-                  --prefix moe.nnsnodnb.NowPlaying --suppress-opening-directory
+                  --cartfile-path Cartfile \
+                  --prefix moe.nnsnodnb.NowPlaying \
+                  --suppress-opening-directory \
+                  --force
                 fi
               name: "LicensePlist"
             - script: "${PODS_ROOT}/Fabric/run"
@@ -194,6 +198,7 @@ targets:
             - carthage: RxCocoa
             - carthage: RxRelay
             - carthage: RxSwift
+            - carthage: ScrollFlowLabel
 
 schemes:
     NowPlaying:

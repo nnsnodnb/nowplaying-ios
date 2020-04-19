@@ -101,8 +101,6 @@ PODS:
   - R.swift (5.1.0):
     - R.swift.Library (~> 5.1.0)
   - R.swift.Library (5.1.0)
-  - ScrollFlowLabel (1.0.0)
-  - SVProgressHUD (2.2.5)
   - SwiftLint (0.38.2)
 
 DEPENDENCIES:
@@ -117,8 +115,6 @@ DEPENDENCIES:
   - LicensePlist
   - PopupDialog
   - R.swift
-  - ScrollFlowLabel
-  - SVProgressHUD
   - SwiftLint
 
 SPEC REPOS:
@@ -150,8 +146,6 @@ SPEC REPOS:
     - PromisesObjC
     - R.swift
     - R.swift.Library
-    - ScrollFlowLabel
-    - SVProgressHUD
     - SwiftLint
 
 SPEC CHECKSUMS:
@@ -182,10 +176,8 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   R.swift: 8cbc4fc69b740305b6a17c8a8ed968eb788962d9
   R.swift.Library: fa85ce1e0d0b7e818cd9e080df910ba54d2776cc
-  ScrollFlowLabel: 3c2aaff7030240745028425912a1c27aca53745d
-  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
 
-PODFILE CHECKSUM: 38ea47ff027b1b5b44939d2da46055b39342d385
+PODFILE CHECKSUM: db6b1d7a3573f39a24c525ba21790fbbd9a26af4
 
 COCOAPODS: 1.8.4
