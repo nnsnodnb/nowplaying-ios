@@ -7,6 +7,7 @@
 //
 
 import RxCocoa
+import RxDataSources
 import RxSwift
 import UIKit
 
@@ -23,6 +24,19 @@ final class AccountManageViewController: UIViewController {
 
     private(set) var viewModel: AccountManageViewModelType!
 
+    private lazy var decideViewTransition: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel>.DecideViewTransition = { (dataSource, tableView, changesets) in
+        if dataSource[0].items.isEmpty || changesets.isEmpty || changesets[0].movedItems.isEmpty { return .reload }
+        return .animated
+    }
+    private lazy var configureCell: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel>.ConfigureCell = { (_, tableView, indexPath, item) in
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.accountManageTableViewCell, for: indexPath)!
+        print(item)
+        return cell
+    }
+    private lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel> = .init(
+        decideViewTransition: decideViewTransition, configureCell: configureCell
+    )
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "アカウント管理"
@@ -32,6 +46,8 @@ final class AccountManageViewController: UIViewController {
         addBarButtonItem.rx.tap.bind(to: viewModel.input.addTrigger).disposed(by: disposeBag)
         editBarButtonItem.rx.tap.bind(to: viewModel.input.editTrigger).disposed(by: disposeBag)
         navigationItem.rightBarButtonItems = [editBarButtonItem, addBarButtonItem]
+
+        viewModel.output.dataSources.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
     }
 }
 
