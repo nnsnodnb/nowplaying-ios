@@ -49,18 +49,16 @@ enum SettingRow: String {
         case .mastodon:
             // FIXME: Mastodon設定画面
             break
+
         case .developer:
-            return .presentModally(controllerProvider: .callback {
-                return SFSafariViewController(url: URL(string: "https://twitter.com/nnsnodnb")!)
-            }, onDismiss: nil)
+            return getSFSafariViewControllerCallback(string: "https://twitter.com/nnsnodnb")
+
         case .sourceCode:
-            return .presentModally(controllerProvider: .callback {
-                return SFSafariViewController(url: URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!)
-            }, onDismiss: nil)
+            return getSFSafariViewControllerCallback(string: "https://github.com/nnsnodnb/nowplaying-ios")
+
         case .featureReportsAndBugs:
-            return .presentModally(controllerProvider: .callback {
-                return SFSafariViewController(url: URL(string: "https://forms.gle/gE5ms3bEM5A85kdVA")!)
-            }, onDismiss: nil)
+            return getSFSafariViewControllerCallback(string: "https://forms.gle/gE5ms3bEM5A85kdVA")
+
         case .review:
             return .presentModally(controllerProvider: .callback {
                 let alert = UIAlertController(title: "AppStoreが開きます", message: nil, preferredStyle: .alert)
@@ -75,8 +73,14 @@ enum SettingRow: String {
                 return alert
             }, onDismiss: nil)
         }
-        return .show(controllerProvider: .callback {
-            return SFSafariViewController(url: URL(string: "https://twitter.com/nnsnodnb")!)
+
+        // TODO: TwitterとMastodon設定画面実装後に削除する
+        return getSFSafariViewControllerCallback(string: "https://www.google.com")
+    }
+
+    private func getSFSafariViewControllerCallback(string: String) -> PresentationMode<UIViewController> {
+        return .presentModally(controllerProvider: .callback {
+            return SFSafariViewController(url: URL(string: string)!)
         }, onDismiss: nil)
     }
 }
