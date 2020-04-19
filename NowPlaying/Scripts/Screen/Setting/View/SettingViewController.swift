@@ -9,6 +9,7 @@
 import Eureka
 import RxCocoa
 import RxSwift
+import SafariServices
 import UIKit
 
 final class SettingViewController: FormViewController {
@@ -36,6 +37,8 @@ final class SettingViewController: FormViewController {
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: nil, action: nil)
         rightBarButtonItem.rx.tap.bind(to: viewModel.input.closeTrigger).disposed(by: disposeBag)
         navigationItem.rightBarButtonItem = rightBarButtonItem
+
+        form = viewModel.output.form
     }
 }
 

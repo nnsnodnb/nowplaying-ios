@@ -46,6 +46,33 @@ final class SettingViewModel: SettingViewModelType {
                 router.close()
             })
             .disposed(by: disposeBag)
+
+        configureForm()
+    }
+}
+
+// MARK: - Private method
+
+extension SettingViewModel {
+
+    private func configureForm() {
+
+        func configureCell(row: SettingRow) -> ButtonRow {
+            return .init(row.tag) {
+                $0.title = row.title
+                $0.presentationMode = row.presentationMode
+            }
+        }
+
+        form
+            +++ Section("SNS設定")
+                <<< configureCell(row: .twitter)
+                <<< configureCell(row: .mastodon)
+            +++ Section("アプリについて")
+                <<< configureCell(row: .developer)
+                <<< configureCell(row: .sourceCode)
+                <<< configureCell(row: .featureReportsAndBugs)
+                <<< configureCell(row: .review)
     }
 }
 
