@@ -72,8 +72,9 @@ enum SettingRow {
             }, onDismiss: nil)
 
         case .mastodon:
-            // FIXME: Mastodon設定画面
-            break
+            return .show(controllerProvider: .callback {
+                return ProviderSettingViewController.makeInstance(provider: .mastodon)
+            }, onDismiss: nil)
 
         case .developer:
             return getSFSafariViewControllerCallback(string: "https://twitter.com/nnsnodnb")
@@ -103,9 +104,6 @@ enum SettingRow {
                 return alert
             }, onDismiss: nil)
         }
-
-        // TODO: TwitterとMastodon設定画面実装後に削除する
-        return getSFSafariViewControllerCallback(string: "https://www.google.com")
     }
 
     var hidden: Condition? {

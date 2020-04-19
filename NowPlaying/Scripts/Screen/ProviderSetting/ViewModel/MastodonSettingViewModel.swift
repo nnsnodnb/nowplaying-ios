@@ -1,5 +1,5 @@
 //
-//  TwitterSettingViewModel.swift
+//  MastodonSettingViewModel.swift
 //  NowPlaying
 //
 //  Created by Oka Yuya on 2020/04/19.
@@ -11,7 +11,7 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-final class TwitterSettingViewModel: ProviderSettingViewModelType {
+final class MastodonSettingViewModel: ProviderSettingViewModelType {
 
     let title: Observable<String>
     let form: Form
@@ -28,34 +28,32 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
     }()
 
     init(router: ProviderSettingRouter) {
-        title = .just("Twitter設定")
-        form = .init()
+        title = .just("Mastodon設定")
+        form = Form()
 
         configureForm()
     }
 
     func configureForm() {
-        func configureCell(row: TwitterSettingRow) -> BaseRow { return row.row }
+
+        func configureCell(row: MastodonSettingRow) -> BaseRow { return row.row }
 
         form
-            +++ Section("Twitter")
+            +++ Section("Mastodon")
                 <<< configureCell(row: .accounts)
                 <<< configureCell(row: .attachedImageSwitch)
                 <<< configureCell(row: .attachedImageType)
-                <<< configureCell(row: .purchaseAutoTweet {
-                    print($0) // TODO: Implementation
-                })
-                <<< configureCell(row: .autoTweetSwitch)
-            +++ Section("自動フォーマット", postFormatHelpViewFooter)
-                <<< configureCell(row: .tweetFormat)
-                <<< configureCell(row: .tweetFormatResetButton)
+                <<< configureCell(row: .autoToot)
+            +++ Section("投稿フォーマット", postFormatHelpViewFooter)
+                <<< configureCell(row: .tootFormat)
+                <<< configureCell(row: .tootFormatResetButton)
     }
 }
 
 // MARK: - ProviderSettingViewModelInput
 
-extension TwitterSettingViewModel: ProviderSettingViewModelInput {}
+extension MastodonSettingViewModel: ProviderSettingViewModelInput {}
 
-// MARK: - TwitterSettingViewModelOutput
+// MARK: - ProviderSettingViewModelOutput
 
-extension TwitterSettingViewModel: ProviderSettingViewModelOutput {}
+extension MastodonSettingViewModel: ProviderSettingViewModelOutput {}

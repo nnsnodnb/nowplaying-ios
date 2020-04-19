@@ -15,7 +15,7 @@ final class ProviderSettingViewController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        _ = viewModel.output.title.bind(to: rx.title)
         form = viewModel.output.form
     }
 }
@@ -45,7 +45,8 @@ extension ProviderSettingViewController {
             router = TwitterSettingRouterImpl(view: viewController)
             viewModel = TwitterSettingViewModel(router: router)
         case .mastodon:
-            fatalError("Not Implementation")
+            router = MastodonSettingRouterImpl(view: viewController)
+            viewModel = MastodonSettingViewModel(router: router)
         }
 
         viewController.inject(dependency: .init(viewModel: viewModel))

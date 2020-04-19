@@ -20,3 +20,12 @@ final class TwitterSettingRouterImpl: ProviderSettingRouter {
         self.view = view
     }
 }
+
+final class MastodonSettingRouterImpl: ProviderSettingRouter {
+
+    private(set) weak var view: ProviderSettingViewer!
+
+    init(view: ProviderSettingViewer) {
+        self.view = view
+    }
+}
