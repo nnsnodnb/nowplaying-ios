@@ -48,9 +48,8 @@ enum TwitterSettingRow {
         case .accounts:
             return ButtonRow(tag) {
                 $0.title = "アカウント管理"
-                // FIXME
-                $0.presentationMode = .presentModally(controllerProvider: .callback {
-                    return UIViewController()
+                $0.presentationMode = .show(controllerProvider: .callback {
+                    return AccountManageViewController.makeInstance(provider: .twitter)
                 }, onDismiss: nil)
             }
 
