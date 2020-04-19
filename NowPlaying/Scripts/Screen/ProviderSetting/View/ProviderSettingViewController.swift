@@ -26,21 +26,16 @@ extension ProviderSettingViewController: ProviderSettingViewer {}
 
 extension ProviderSettingViewController {
 
-    enum Provider {
-        case twitter
-        case mastodon
-    }
-
     struct Dependency {
         let viewModel: ProviderSettingViewModelType
     }
 
-    class func makeInstance(provider: Provider) -> ProviderSettingViewController {
+    class func makeInstance(service: Service) -> ProviderSettingViewController {
         let viewController = ProviderSettingViewController()
         let router: ProviderSettingRouter
         let viewModel: ProviderSettingViewModelType
 
-        switch provider {
+        switch service {
         case .twitter:
             router = TwitterSettingRouterImpl(view: viewController)
             viewModel = TwitterSettingViewModel(router: router)

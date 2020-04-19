@@ -6,6 +6,7 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import RealmSwift
 import UIKit
 
 @UIApplicationMain
@@ -21,6 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         applicationCoordinator.start()
+
+        #if DEBUG
+        let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()
+        print("🔑 Realm encryption key: \(realmEncryptionKeyString)")
+        #endif
         return true
     }
 }
