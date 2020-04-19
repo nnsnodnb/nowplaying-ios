@@ -67,8 +67,10 @@ enum SettingRow {
     var presentationMode: PresentationMode<UIViewController>? {
         switch self {
         case .twitter:
-            // FIXME: Twitter設定画面
-            break
+            return .show(controllerProvider: .callback {
+                return TwitterSettingViewController.makeInstance()
+            }, onDismiss: nil)
+
         case .mastodon:
             // FIXME: Mastodon設定画面
             break
