@@ -6,6 +6,7 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import DTTJailbreakDetection
 import Eureka
 import Foundation
 
@@ -41,7 +42,10 @@ enum TwitterSettingRow {
         case .accounts:
             return ButtonRow(tag) {
                 $0.title = "アカウント管理"
-                // FIXME: presentationMode
+                // FIXME
+                $0.presentationMode = .presentModally(controllerProvider: .callback {
+                    return UIViewController()
+                }, onDismiss: nil)
             }
 
         case .attachedImageSwitch:
@@ -62,10 +66,12 @@ enum TwitterSettingRow {
                 }
             }
 
-        case .purchaseAutoTweet:
+        case .purchaseAutoTweet(let callback):
             return ButtonRow(tag) {
                 $0.title = "自動ツイートを購入"
-                // FIXME: presentationMode
+                $0.presentationMode = .presentModally(controllerProvider: .callback {
+                    return DTTJailbreakDetection.isJailbroken() ? UIAlertController.jailBreak() : StoreKitAction.createAlert(callback: callback)
+                }, onDismiss: nil)
                 $0.hidden = Condition(booleanLiteral: UserDefaults.standard.bool(forKey: .isAutoTweetPurchase))
             }
 
