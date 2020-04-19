@@ -6,6 +6,7 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import Differentiator
 import Foundation
 import RealmSwift
 
@@ -96,5 +97,14 @@ extension User {
     class func getDefaultUser(service: Service) -> User? {
         let realm = try! Realm(configuration: realmConfiguration)
         return realm.objects(User.self).filter("serviceType = %@ AND isDefault = %@", service.rawValue, true).first
+    }
+}
+
+// MARK: - Identifiable
+
+extension User: IdentifiableType {
+
+    var identity: Int {
+        return id
     }
 }

@@ -63,8 +63,18 @@ extension AccountManageViewController {
 
     class func makeInstance(service: Service) -> AccountManageViewController {
         let viewController = AccountManageViewController()
-        let router = AccountManageRouterImpl(view: viewController)
-        let viewModel = AccountManageViewModel(router: router)
+        let router: AccountManageRouter
+        let viewModel: AccountManageViewModelType
+
+        switch service {
+        case .twitter:
+            router = AccountManageRouterImpl(view: viewController)
+            viewModel = TwitterAccountManageViewModel(router: router)
+        case .mastodon:
+            router = AccountManageRouterImpl(view: viewController)
+            viewModel = AccountManageViewModel(router: router)
+        }
+
         viewController.inject(dependency: .init(viewModel: viewModel))
         return viewController
     }
