@@ -57,6 +57,7 @@ targets:
                 LSApplicationQueriesSchemes:
                     - twitter
                     - twitterauth
+                    - cydia
                 LSEnvironment:
                     FIREBASE_ADMOB_APP_ID: $(FIREBASE_ADMOB_APP_ID)
                     FIREBASE_ADMOB_BANNER_ID: $(FIREBASE_ADMOB_BANNER_ID)

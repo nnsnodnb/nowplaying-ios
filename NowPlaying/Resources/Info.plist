@@ -49,6 +49,7 @@
 	<array>
 		<string>twitter</string>
 		<string>twitterauth</string>
+		<string>cydia</string>
 	</array>
 	<key>LSEnvironment</key>
 	<dict>

@@ -1,6 +1,7 @@
 PODS:
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
+  - DTTJailbreakDetection (0.4.0)
   - DynamicBlurView (4.0.0)
   - Eureka (5.1.0)
   - Fabric (1.10.2)
@@ -106,6 +107,7 @@ PODS:
 
 DEPENDENCIES:
   - Crashlytics
+  - DTTJailbreakDetection
   - Eureka
   - Fabric
   - Firebase/AdMob
@@ -122,6 +124,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Crashlytics
+    - DTTJailbreakDetection
     - DynamicBlurView
     - Eureka
     - Fabric
@@ -153,6 +156,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
+  DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
   DynamicBlurView: ccf9acd2b20c883cc2c72e3524a04d8d3ee20533
   Eureka: 18a5076dcf0c41f9cd9748aa1c42f4d11434bdae
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
@@ -182,6 +186,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
 
-PODFILE CHECKSUM: b9c3a5ed788ba2cfdc69865235ed0a73710ca905
+PODFILE CHECKSUM: 38ea47ff027b1b5b44939d2da46055b39342d385
 
 COCOAPODS: 1.8.4
