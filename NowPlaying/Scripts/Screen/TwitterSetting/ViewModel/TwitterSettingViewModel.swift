@@ -32,6 +32,14 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
     var input: TwitterSettingViewModelInput { return self }
     var output: TwitterSettingViewModelOutput { return self }
 
+    private lazy var postFormatHelpViewFooter: (Section) -> Void = {
+        return {
+            $0.footer = HeaderFooterView<PostFormatHelpView>(.callback {
+                return R.nib.postFormatHelpView(owner: nil)!
+            })
+        }
+    }()
+
     init(router: TwitterSettingRouter) {
         form = Form()
 
@@ -56,7 +64,7 @@ extension TwitterSettingViewModel {
                     print($0) // TODO: Implementation
                 })
                 <<< configureCell(row: .autoTweetSwitch)
-            +++ Section("自動フォーマット")
+            +++ Section("自動フォーマット", postFormatHelpViewFooter)
                 <<< configureCell(row: .tweetFormat)
                 <<< configureCell(row: .tweetFormatResetButton)
     }
