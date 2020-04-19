@@ -68,12 +68,12 @@ enum SettingRow {
         switch self {
         case .twitter:
             return .show(controllerProvider: .callback {
-                return ProviderSettingViewController.makeInstance(provider: .twitter)
+                return ProviderSettingViewController.makeInstance(service: .twitter)
             }, onDismiss: nil)
 
         case .mastodon:
             return .show(controllerProvider: .callback {
-                return ProviderSettingViewController.makeInstance(provider: .mastodon)
+                return ProviderSettingViewController.makeInstance(service: .mastodon)
             }, onDismiss: nil)
 
         case .developer:

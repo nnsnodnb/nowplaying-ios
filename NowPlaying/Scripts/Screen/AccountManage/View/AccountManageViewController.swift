@@ -57,16 +57,11 @@ extension AccountManageViewController: AccountManageViewer {}
 
 extension AccountManageViewController {
 
-    enum Provider {
-        case twitter
-        case mastodon
-    }
-
     struct Dependency {
         let viewModel: AccountManageViewModelType
     }
 
-    class func makeInstance(provider: Provider) -> AccountManageViewController {
+    class func makeInstance(service: Service) -> AccountManageViewController {
         let viewController = AccountManageViewController()
         let router = AccountManageRouterImpl(view: viewController)
         let viewModel = AccountManageViewModel(router: router)

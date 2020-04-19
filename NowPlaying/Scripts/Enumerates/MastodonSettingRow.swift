@@ -28,7 +28,7 @@ enum MastodonSettingRow: String {
             return ButtonRow(tag) {
                 $0.title = "アカウント管理"
                 $0.presentationMode = .show(controllerProvider: .callback {
-                    return AccountManageViewController.makeInstance(provider: .mastodon)
+                    return AccountManageViewController.makeInstance(service: .mastodon)
                 }, onDismiss: nil)
             }
 
