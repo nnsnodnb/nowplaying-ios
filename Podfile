@@ -14,8 +14,6 @@ target 'NowPlaying' do
   pod 'LicensePlist'
   pod 'PopupDialog'
   pod 'R.swift'
-  pod 'ScrollFlowLabel'
-  pod 'SVProgressHUD'
   pod 'SwiftLint'
 
   target 'NowPlayingTests' do
