@@ -27,9 +27,8 @@ final class PlayRouterImpl: PlayRouter {
     }
 
     func openSetting() {
-        let viewController = SettingViewController()
+        let viewController = SettingViewController.makeInstance()
         let navi = UINavigationController(rootViewController: viewController)
-        navi.modalPresentationStyle = .fullScreen
         view.present(navi, animated: true, completion: nil)
     }
 

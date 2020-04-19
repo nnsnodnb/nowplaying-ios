@@ -21,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.4.2</string>
+	<string>2.4.4</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -49,6 +49,7 @@
 	<array>
 		<string>twitter</string>
 		<string>twitterauth</string>
+		<string>cydia</string>
 	</array>
 	<key>LSEnvironment</key>
 	<dict>
