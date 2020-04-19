@@ -6,19 +6,40 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import DTTJailbreakDetection
 import Eureka
 import Foundation
 import SafariServices
 import StoreKit
 
-enum SettingRow: String {
+enum SettingRow {
 
     case twitter
     case mastodon
     case developer
     case sourceCode
     case featureReportsAndBugs
+    case purchaseHideAdMob((StoreKitAction) -> Void)
     case review
+
+    var rawValue: String {
+        switch self {
+        case .twitter:
+            return "twitter"
+        case .mastodon:
+            return "mastodon"
+        case .developer:
+            return "developer"
+        case .sourceCode:
+            return "source_code"
+        case .featureReportsAndBugs:
+            return "feature_reports_and_bugs"
+        case .purchaseHideAdMob:
+            return "purchase_hide_admob"
+        case .review:
+            return "review"
+        }
+    }
 
     var tag: String {
         return rawValue
@@ -36,6 +57,8 @@ enum SettingRow: String {
             return "ソースコード(GitHub)"
         case .featureReportsAndBugs:
             return "機能要望・バグ報告"
+        case .purchaseHideAdMob:
+            return "アプリ内広告削除(有料)"
         case .review:
             return "レビューする"
         }
@@ -59,6 +82,32 @@ enum SettingRow: String {
         case .featureReportsAndBugs:
             return getSFSafariViewControllerCallback(string: "https://forms.gle/gE5ms3bEM5A85kdVA")
 
+        case .purchaseHideAdMob(let callback):
+            let alert: UIAlertController
+            if DTTJailbreakDetection.isJailbroken() {
+                alert = .init(title: "脱獄が検知されました", message: "脱獄された端末ではこの操作はできません", preferredStyle: .alert)
+                alert.addAction(.init(title: "閉じる", style: .cancel, handler: nil))
+            } else {
+                alert = .init(title: "復元しますか？購入しますか？", message: nil, preferredStyle: .alert)
+                let restoreAction = UIAlertAction(title: "復元", style: .default) { (_) in
+                    callback(.restore) // 復元
+                }
+                let purchaseAction = UIAlertAction(title: "購入", style: .default) { (_) in
+                    callback(.purchase) // 購入
+                }
+                let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel) { (_) in
+                    callback(.userCancel)
+                }
+                alert.addAction(restoreAction)
+                alert.addAction(purchaseAction)
+                alert.addAction(cancelAction)
+                alert.preferredAction = purchaseAction
+            }
+
+            return .presentModally(controllerProvider: .callback {
+                return alert
+            }, onDismiss: nil)
+
         case .review:
             return .presentModally(controllerProvider: .callback {
                 let alert = UIAlertController(title: "AppStoreが開きます", message: nil, preferredStyle: .alert)
@@ -76,6 +125,15 @@ enum SettingRow: String {
 
         // TODO: TwitterとMastodon設定画面実装後に削除する
         return getSFSafariViewControllerCallback(string: "https://www.google.com")
+    }
+
+    var hidden: Condition? {
+        switch self {
+        case .purchaseHideAdMob:
+            return .init(booleanLiteral: UserDefaults.standard.bool(forKey: .isPurchasedRemoveAdMob))
+        default:
+            return nil
+        }
     }
 
     private func getSFSafariViewControllerCallback(string: String) -> PresentationMode<UIViewController> {

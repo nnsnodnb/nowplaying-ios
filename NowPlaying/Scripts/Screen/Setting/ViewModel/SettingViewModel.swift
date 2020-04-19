@@ -61,6 +61,7 @@ extension SettingViewModel {
             return .init(row.tag) {
                 $0.title = row.title
                 $0.presentationMode = row.presentationMode
+                $0.hidden = row.hidden
             }
         }
 
@@ -72,6 +73,10 @@ extension SettingViewModel {
                 <<< configureCell(row: .developer)
                 <<< configureCell(row: .sourceCode)
                 <<< configureCell(row: .featureReportsAndBugs)
+                <<< configureCell(row: .purchaseHideAdMob { (action) in
+                    // TODO: Implementation
+                    print(action)
+                })
                 <<< configureCell(row: .review)
     }
 }
