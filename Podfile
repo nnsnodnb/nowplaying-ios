@@ -12,7 +12,6 @@ target 'NowPlaying' do
   pod 'Firebase/Analytics'
   pod 'Firebase/Database'
   pod 'LicensePlist'
-  pod 'PopupDialog'
   pod 'R.swift'
   pod 'SwiftLint'
 
