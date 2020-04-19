@@ -136,10 +136,8 @@ targets:
                 if [[ $CONFIGURATION = "Debug" ]]; then
                   ${PODS_ROOT}/LicensePlist/license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle \
                   --github-token ${GITHUB_ACCESS_TOKEN} \
-                  --cartfile-path Cartfile \
                   --prefix moe.nnsnodnb.NowPlaying \
-                  --suppress-opening-directory \
-                  --force
+                  --suppress-opening-directory
                 fi
               name: "LicensePlist"
             - script: "${PODS_ROOT}/Fabric/run"
