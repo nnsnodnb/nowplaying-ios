@@ -15,6 +15,7 @@ final class AccountManageViewController: UIViewController {
     @IBOutlet private weak var tableView: UITableView! {
         didSet {
             tableView.tableFooterView = UIView()
+            tableView.register(R.nib.accountManageTableViewCell)
         }
     }
 
