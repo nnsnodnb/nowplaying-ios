@@ -26,7 +26,7 @@ final class User: Object {
     }
 
     override class func ignoredProperties() -> [String] {
-        return ["iconURL", "isTwitterUser", "isMastodonUser", "isDefaultAccount"]
+        return ["iconURL", "isTwitterUser", "isMastodonUser"]
     }
 
     class func getLastestPrimaryKey() -> Int? {
@@ -64,24 +64,19 @@ extension User {
         return !isTwitetrUser
     }
 
-    var isDefaultAccount: Bool {
-        get {
-            return isDefault
+    func changeDefaultAccount(to isDefault: Bool) {
+        let realm = try! Realm(configuration: realmConfiguration)
+        defer {
+            try! realm.write { self.isDefault = isDefault }
         }
-        set {
-            let realm = try! Realm(configuration: realmConfiguration)
-            defer {
-                try! realm.write { isDefault = newValue }
-            }
 
-            // 新しい値と同じ OR デフォルトアカウントではない場合無視
-            if newValue == isDefault || !newValue { return }
-            // 自分以外の同じサービスのユーザの isDefault を偽にする
-            let users = realm.objects(User.self)
-                .filter("id != %@ AND serviceType = %@ AND isDefault = %@", id, serviceType, true)
-            try! realm.write {
-                users.setValue(false, forKey: "isDefault")
-            }
+        // 新しい値と同じ OR デフォルトアカウントではない場合無視
+        if isDefault == self.isDefault || !isDefault { return }
+        // 自分以外の同じサービスのユーザの isDefault を偽にする
+        let users = realm.objects(User.self)
+            .filter("id != %@ AND serviceType = %@ AND isDefault = %@", id, serviceType, true)
+        try! realm.write {
+            users.setValue(false, forKey: "isDefault")
         }
     }
 
