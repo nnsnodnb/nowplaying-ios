@@ -7,9 +7,6 @@ configs:
     Debug: debug
     Release: release
 
-include:
-    - swiftpm.yml
-
 options:
     bundleIdPrefix: moe.nnsnodnb
     developmentLanguage: ja
@@ -109,15 +106,16 @@ targets:
               type: file
         requiresObjCLinking: true
         dependencies:
-            - package: APIKit
-            - package: DeallocationChecker
-            - package: Feeder
-            - package: KeychainAccess
-            - package: Hero
-            - package: Nuke
-            - package: RealmSwift
-            - package: SnapKit
-            - package: Swifter
+            - carthage: APIKit
+            - carthage: DeallocationChecker
+            - carthage: Feeder
+            - carthage: KeychainAccess
+            - carthage: Hero
+            - carthage: Nuke
+            - carthage: Realm
+            - carthage: RealmSwift
+            - carthage: SnapKit
+            - carthage: SwifteriOS
             - target: Umbrella
             - target: TodayExtension
               codeSign: false
@@ -135,8 +133,9 @@ targets:
         postBuildScripts:
             - script: |
                 if [[ $CONFIGURATION = "Debug" ]]; then
-                  ${PODS_ROOT}/LicensePlist/license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle --github-token ${GITHUB_ACCESS_TOKEN} \
-                  --package-path ${SRCROOT}/NowPlaying.xcworkspace/xsshareddata/swiftpm/Package.swift --prefix moe.nnsnodnb.NowPlaying --suppress-opening-directory
+                  ${PODS_ROOT}/LicensePlist/license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle \
+                  --github-token ${GITHUB_ACCESS_TOKEN} \
+                  --prefix moe.nnsnodnb.NowPlaying --suppress-opening-directory
                 fi
               name: "LicensePlist"
             - script: "${PODS_ROOT}/Fabric/run"
@@ -191,9 +190,10 @@ targets:
         sources:
             - path: Umbrella
         dependencies:
-            - package: Action
-            - package: RxSwift
-            - package: RxKeyboard
+            - carthage: Action
+            - carthage: RxCocoa
+            - carthage: RxRelay
+            - carthage: RxSwift
 
 schemes:
     NowPlaying:
