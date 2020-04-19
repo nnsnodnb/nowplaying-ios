@@ -82,11 +82,6 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.5.0):
     - GoogleUtilities/Logger
-  - iOSSnapshotTestCase (6.2.0):
-    - iOSSnapshotTestCase/SwiftSupport (= 6.2.0)
-  - iOSSnapshotTestCase/Core (6.2.0)
-  - iOSSnapshotTestCase/SwiftSupport (6.2.0):
-    - iOSSnapshotTestCase/Core
   - leveldb-library (1.22)
   - LicensePlist (2.12.0)
   - nanopb (0.3.9011):
@@ -108,7 +103,6 @@ DEPENDENCIES:
   - Firebase/AdMob
   - Firebase/Analytics
   - Firebase/Database
-  - iOSSnapshotTestCase
   - LicensePlist
   - R.swift
   - SwiftLint
@@ -133,7 +127,6 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
-    - iOSSnapshotTestCase
     - leveldb-library
     - LicensePlist
     - nanopb
@@ -161,7 +154,6 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 574a983e829327d7c18f2627f65d9e80164ea8a4
   GoogleDataTransportCCTSupport: cad3cd6cdbdbad6b5c2c9206ec413402755faaaa
   GoogleUtilities: f8de7ddf8c706f58e9b405d53e38bbdaa2731e5a
-  iOSSnapshotTestCase: 9ab44cb5aa62b84d31847f40680112e15ec579a6
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   LicensePlist: 58cf605015acb4397095c8e7115c786d37ad8fbc
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
@@ -170,6 +162,6 @@ SPEC CHECKSUMS:
   R.swift.Library: fa85ce1e0d0b7e818cd9e080df910ba54d2776cc
   SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
 
-PODFILE CHECKSUM: 58d5fe5633358ee8e83a8659487bc9b29c8c2fd9
+PODFILE CHECKSUM: 8b54322988953b47eee45d8510b7d4c0e62237c9
 
 COCOAPODS: 1.8.4

@@ -158,6 +158,7 @@ targets:
                   - ReferenceImages_*/*
                   - FailureDiffs/*
         dependencies:
+            - carthage: FBSnapshotTestCase
             - target: NowPlaying
             - target: Umbrella
         settings:

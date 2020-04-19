@@ -15,8 +15,4 @@ target 'NowPlaying' do
   pod 'R.swift'
   pod 'SwiftLint'
 
-  target 'NowPlayingTests' do
-    pod 'iOSSnapshotTestCase'
-  end
-
 end
