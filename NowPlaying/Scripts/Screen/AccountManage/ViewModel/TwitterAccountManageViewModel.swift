@@ -68,6 +68,13 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
         changedDefaultAccount = newDefaultAccount.asObservable()
 
         addTrigger.bind(to: login).disposed(by: disposeBag)
+
+        editTrigger
+            .subscribe(onNext: {
+                router.setEditing()
+            })
+            .disposed(by: disposeBag)
+
         changeDefaultAccount.bind(to: changeDefaultAction.inputs).disposed(by: disposeBag)
 
         fetchUsersAction.elements.map { $0.map { $0 } }.bind(to: accounts).disposed(by: disposeBag)

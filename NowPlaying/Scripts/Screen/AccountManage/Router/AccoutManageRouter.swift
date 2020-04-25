@@ -24,6 +24,7 @@ protocol AccountManageRouter: AnyObject {
 
     init(view: AccountManageViewer)
     func login() -> Observable<AuthAccessToken>
+    func setEditing()
 }
 
 final class TwitterAccountManageRouterImpl: AccountManageRouter {
@@ -51,6 +52,10 @@ final class TwitterAccountManageRouterImpl: AccountManageRouter {
             return Disposables.create()
         }
     }
+
+    func setEditing() {
+        view.setEditing(!view.isEditing, animated: true)
+    }
 }
 
 final class AccountManageRouterImpl: AccountManageRouter {
@@ -62,6 +67,10 @@ final class AccountManageRouterImpl: AccountManageRouter {
     }
 
     func login() -> Observable<AuthAccessToken> {
+        fatalError("Not implementation")
+    }
+
+    func setEditing() {
         fatalError("Not implementation")
     }
 }

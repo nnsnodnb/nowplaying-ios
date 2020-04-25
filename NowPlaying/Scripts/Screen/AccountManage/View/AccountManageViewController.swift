@@ -7,6 +7,7 @@
 //
 
 import Feeder
+import RealmSwift
 import RxCocoa
 import RxDataSources
 import RxSwift
@@ -20,6 +21,7 @@ final class AccountManageViewController: UIViewController {
         didSet {
             tableView.tableFooterView = UIView()
             tableView.register(R.nib.accountManageTableViewCell)
+            tableView.rx.setDelegate(self).disposed(by: disposeBag)
 
             tableView.rx.itemSelected
                 .do(onNext: { (_) in
@@ -31,6 +33,11 @@ final class AccountManageViewController: UIViewController {
                 .disposed(by: disposeBag)
 
             tableView.rx.modelSelected(User.self).bind(to: viewModel.input.changeDefaultAccount).disposed(by: disposeBag)
+
+            tableView.rx.modelDeleted(User.self)
+                .subscribe(onNext: { (user) in
+                })
+                .disposed(by: disposeBag)
         }
     }
 
@@ -43,14 +50,20 @@ final class AccountManageViewController: UIViewController {
         cell.user = item
         return cell
     }
-    private lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel> = .init(configureCell: configureCell)
+    private lazy var canEditRowAtIndexPath: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel>.CanEditRowAtIndexPath = { (_, _) in
+        return true
+    }
+    private lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel> = .init(
+        configureCell: configureCell, canEditRowAtIndexPath: canEditRowAtIndexPath
+    )
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "アカウント管理"
 
         let addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
-        let editBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: nil, action: nil)
+        let editBarButtonItem = UIBarButtonItem(title: "編集", style: .plain, target: nil, action: nil)
+        editBarButtonItem.possibleTitles = ["編集", "完了"]
         addBarButtonItem.rx.tap.bind(to: viewModel.input.addTrigger).disposed(by: disposeBag)
         editBarButtonItem.rx.tap.bind(to: viewModel.input.editTrigger).disposed(by: disposeBag)
         navigationItem.rightBarButtonItems = [editBarButtonItem, addBarButtonItem]
@@ -85,17 +98,32 @@ final class AccountManageViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        tableView.isEditing = isEditing
+        navigationItem.rightBarButtonItems?.first?.title = isEditing ? "完了" : "編集"
+    }
 }
 
-// MARK: - AccountManageViewer
+// MARK: - UITableViewDelegate
 
-extension AccountManageViewController: AccountManageViewer {}
+extension AccountManageViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteRowAction = UITableViewRowAction(style: .destructive, title: "ログアウト") { (_, indexPath) in
+            tableView.dataSource?.tableView?(tableView, commit: .delete, forRowAt: indexPath)
+        }
+        return [deleteRowAction]
+    }
+}
 
 // MARK: - SFSafariViewControllerDelegate
 
 extension AccountManageViewController: SFSafariViewControllerDelegate {
 
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        Feeder.Impact(.medium).impactOccurred()
         SVProgressHUD.showInfo(withStatus: "ログインをキャンセルしました")
         SVProgressHUD.dismiss(withDelay: 1)
     }
@@ -129,3 +157,7 @@ extension AccountManageViewController {
         viewModel = dependency.viewModel
     }
 }
+
+// MARK: - AccountManageViewer
+
+extension AccountManageViewController: AccountManageViewer {}
