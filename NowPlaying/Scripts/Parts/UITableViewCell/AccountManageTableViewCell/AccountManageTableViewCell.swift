@@ -21,7 +21,7 @@ final class AccountManageTableViewCell: UITableViewCell {
             iconImageView.setImage(with: user.iconURL)
             defaultAccountStartImageView.isHidden = !user.isDefault
             usernameLabel.text = user.name
-            screenNameLabel.text = user.screenName
+            screenNameLabel.text = "@\(user.screenName)"
             domainLabel.isHidden = user.isTwitetrUser
             guard let secret = user.secretCredentials.first else { return }
             domainLabel.text = secret.domainName

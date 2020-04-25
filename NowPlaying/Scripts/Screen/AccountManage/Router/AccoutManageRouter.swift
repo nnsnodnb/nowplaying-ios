@@ -13,10 +13,17 @@ import UIKit
 
 protocol AccountManageViewer: UIViewController {}
 
+struct AuthAccessToken {
+
+    let key: String
+    let secret: String
+    let userID: String
+}
+
 protocol AccountManageRouter: AnyObject {
 
     init(view: AccountManageViewer)
-    func login() -> Single<Credential.OAuthAccessToken>
+    func login() -> Observable<AuthAccessToken>
 }
 
 final class TwitterAccountManageRouterImpl: AccountManageRouter {
@@ -29,8 +36,20 @@ final class TwitterAccountManageRouterImpl: AccountManageRouter {
         self.view = view
     }
 
-    func login() -> Single<Credential.OAuthAccessToken> {
-        return swifter.rx.authorizeBrowser(presentingFrom: view)
+    func login() -> Observable<AuthAccessToken> {
+        return .create { [weak self] (observer) -> Disposable in
+            self?.swifter.authorize(withCallback: .twitterCallbackURL, presentingFrom: self?.view, success: { (token, _) in
+                guard let token = token, let userID = token.userID else {
+                    observer.onError(AuthError.unknown)
+                    return
+                }
+                observer.onNext(.init(key: token.key, secret: token.secret, userID: userID))
+                observer.onCompleted()
+            }, failure: {
+                observer.onError($0)
+            })
+            return Disposables.create()
+        }
     }
 }
 
@@ -42,7 +61,7 @@ final class AccountManageRouterImpl: AccountManageRouter {
         self.view = view
     }
 
-    func login() -> Single<Credential.OAuthAccessToken> {
+    func login() -> Observable<AuthAccessToken> {
         fatalError("Not implementation")
     }
 }

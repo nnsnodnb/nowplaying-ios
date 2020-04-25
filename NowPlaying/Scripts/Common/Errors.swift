@@ -10,5 +10,11 @@ import Foundation
 
 enum AuthError: Error {
 
+    case cancel
     case unknown
+}
+
+enum APIError: Error {
+
+    case valueError
 }

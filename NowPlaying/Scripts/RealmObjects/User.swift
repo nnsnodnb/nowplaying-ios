@@ -35,16 +35,16 @@ final class User: Object {
         return realm?.objects(User.self).sorted(byKeyPath: "id", ascending: false).first?.id
     }
 
-    convenience init(serviceID: String, name: String="", screenName: String="", iconURL: URL, serviceType: Service) {
+    convenience init(serviceID: String, name: String="", screenName: String="", iconURLString: String, service: Service) {
         self.init()
         let latestPrimaryKey = User.getLastestPrimaryKey() ?? 0
         id = latestPrimaryKey + 1
         self.serviceID = serviceID
         self.name = name
         self.screenName = screenName
-        iconURLString = iconURL.absoluteString
-        self.serviceType = serviceType.rawValue
-        isDefault = !User.isExists(service: serviceType)
+        self.iconURLString = iconURLString
+        serviceType = service.rawValue
+        isDefault = !User.isExists(service: service)
     }
 }
 

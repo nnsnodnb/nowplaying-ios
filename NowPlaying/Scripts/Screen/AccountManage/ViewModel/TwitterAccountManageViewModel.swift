@@ -27,35 +27,50 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     private let disposeBag = DisposeBag()
     private let router: AccountManageRouter
     private let accounts: BehaviorSubject<[User]> = .init(value: [])
-    private let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret, appOnly: true)
+    private let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret)
 
-    private lazy var loginAction: Action<Void, Credential.OAuthAccessToken> = .init { [unowned self] in
-        return self.router.login()
+    private lazy var fetchUsersAction: Action<Service, [User]> = .init {
+        let realm = try! Realm(configuration: realmConfiguration)
+        return .just(realm.objects(User.self).filter("serviceType = %@", $0.rawValue).map { $0 })
     }
 
     init(router: AccountManageRouter) {
         self.router = router
         dataSources = accounts.map { [AccountManageSectionModel(model: "", items: $0)] }.asObservable()
 
-        addTrigger.bind(to: loginAction.inputs).disposed(by: disposeBag)
+        addTrigger.bind(to: login).disposed(by: disposeBag)
 
-        loginAction.elements
-            .subscribe(onNext: {
-                print($0.key)
-                print($0.secret)
-            })
-            .disposed(by: disposeBag)
+        fetchUsersAction.elements.bind(to: accounts).disposed(by: disposeBag)
+        fetchUsersAction.execute(service)
+    }
 
-        loginAction.errors
-            .subscribe(onNext: { (error) in
-                print(error)
-            })
-            .disposed(by: disposeBag)
+    private var login: Binder<Void> {
+        return .init(self) { (base, _) in
+            _ = base.router.login()
+                .subscribe(onNext: { (token) in
+                    let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret,
+                                          oauthToken: token.key, oauthTokenSecret: token.secret)
+                    _ = swifter.rx.showUser(tag: .id(token.userID))
+                        .subscribe(onSuccess: { (twitterUser) in
+                            let user = User(serviceID: twitterUser.userID, name: twitterUser.name, screenName: twitterUser.screenName,
+                                            iconURLString: twitterUser.iconURLString, service: .twitter)
+                            let secret = SecretCredential(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret,
+                                                          authToken: token.key, authTokenSecret: token.secret, domainName: "", user: user)
 
-        let realm = try! Realm(configuration: realmConfiguration)
+                            let realm = try! Realm(configuration: realmConfiguration)
+                            try! realm.write {
+                                realm.add(user, update: .all)
+                                realm.add(secret, update: .all)
+                            }
 
-        let users = realm.objects(User.self).filter("serviceType = %@", service.rawValue)
-        accounts.onNext(users.map { $0 })
+                        }, onError: { (error) in
+                            print(error)
+                        })
+
+                }, onError: { (error) in
+                    print(error)
+                })
+        }
     }
 }
 
