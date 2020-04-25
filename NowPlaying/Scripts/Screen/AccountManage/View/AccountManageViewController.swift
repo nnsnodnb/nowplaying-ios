@@ -50,6 +50,16 @@ final class AccountManageViewController: UIViewController {
         navigationItem.rightBarButtonItems = [editBarButtonItem, addBarButtonItem]
 
         viewModel.output.dataSources.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        viewModel.output.loginError
+            .do(onNext: {
+                print($0)
+            })
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { (_) in
+                SVProgressHUD.showError(withStatus: "ログインエラーが発生しました")
+                SVProgressHUD.dismiss(withDelay: 1)
+            })
+            .disposed(by: disposeBag)
     }
 }
 

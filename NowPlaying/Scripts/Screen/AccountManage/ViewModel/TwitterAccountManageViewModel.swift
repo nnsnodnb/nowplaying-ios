@@ -19,6 +19,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     let addTrigger: PublishRelay<Void> = .init()
     let editTrigger: PublishRelay<Void> = .init()
     let dataSources: Observable<[AccountManageSectionModel]>
+    let loginError: Observable<Error>
     let service: Service = .twitter
 
     var input: AccountManageViewModelInput { return self }
@@ -28,6 +29,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     private let router: AccountManageRouter
     private let accounts: BehaviorSubject<[User]> = .init(value: [])
     private let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret)
+    private let loginErrorTrigger: PublishRelay<Error> = .init()
 
     private lazy var fetchUsersAction: Action<Service, [User]> = .init {
         let realm = try! Realm(configuration: realmConfiguration)
@@ -37,6 +39,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     init(router: AccountManageRouter) {
         self.router = router
         dataSources = accounts.map { [AccountManageSectionModel(model: "", items: $0)] }.asObservable()
+        loginError = loginErrorTrigger.asObservable()
 
         addTrigger.bind(to: login).disposed(by: disposeBag)
 
@@ -46,6 +49,10 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
 
     private var login: Binder<Void> {
         return .init(self) { (base, _) in
+            let onError: (Error) -> Void = { [weak base] (error) in
+                base?.loginErrorTrigger.accept(error)
+            }
+
             _ = base.router.login()
                 .subscribe(onNext: { (token) in
                     let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret,
@@ -63,13 +70,9 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
                                 realm.add(secret, update: .all)
                             }
 
-                        }, onError: { (error) in
-                            print(error)
-                        })
+                        }, onError: onError)
 
-                }, onError: { (error) in
-                    print(error)
-                })
+                }, onError: onError)
         }
     }
 }
