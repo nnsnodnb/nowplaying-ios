@@ -7,6 +7,7 @@
 //
 
 import RealmSwift
+import SwifteriOS
 import UIKit
 
 @UIApplicationMain
@@ -28,5 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("🔑 Realm encryption key: \(realmEncryptionKeyString)")
         #endif
         return true
+    }
+
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        return Swifter.handleOpenURL(url, callbackURL: .twitterCallbackURL)
     }
 }

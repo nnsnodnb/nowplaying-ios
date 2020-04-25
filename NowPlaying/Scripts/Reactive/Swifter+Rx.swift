@@ -18,12 +18,11 @@ extension Reactive where Base: Swifter {
 
     func authorizeBrowser(presentingFrom presenting: UIViewController?) -> Single<Credential.OAuthAccessToken> {
         return .create { [weak base] (observer) -> Disposable in
-            let callbackURL = URL(string: "swifter-\(Environments.twitterConsumerKey)://")!
-            base?.authorize(withCallback: callbackURL, presentingFrom: presenting, success: { (accessToken, _) in
+            base?.authorize(withCallback: .twitterCallbackURL, presentingFrom: presenting, success: { (accessToken, _) in
                 if let token = accessToken {
                     observer(.success(token))
                 } else {
-                    fatalError()
+                    observer(.error(AuthError.unknown))
                 }
             }, failure: {
                 observer(.error($0))

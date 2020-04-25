@@ -10,6 +10,7 @@ import RxCocoa
 import RxDataSources
 import RxSwift
 import SafariServices
+import SVProgressHUD
 import UIKit
 
 final class AccountManageViewController: UIViewController {
@@ -58,7 +59,13 @@ extension AccountManageViewController: AccountManageViewer {}
 
 // MARK: - SFSafariViewControllerDelegate
 
-extension AccountManageViewController: SFSafariViewControllerDelegate {}
+extension AccountManageViewController: SFSafariViewControllerDelegate {
+
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        SVProgressHUD.showInfo(withStatus: "ログインをキャンセルしました")
+        SVProgressHUD.dismiss(withDelay: 1)
+    }
+}
 
 extension AccountManageViewController {
 
