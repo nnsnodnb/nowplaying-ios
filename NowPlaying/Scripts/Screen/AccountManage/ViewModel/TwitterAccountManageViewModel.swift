@@ -57,7 +57,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
             } else {
                 return "ログインエラーが発生しました"
             }
-    }.observeOn(MainScheduler.instance).asObservable()
+        }.observeOn(MainScheduler.instance).asObservable()
 
         addTrigger.bind(to: login).disposed(by: disposeBag)
 
