@@ -31,7 +31,7 @@ final class AccountManageViewController: UIViewController {
     }
     private lazy var configureCell: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel>.ConfigureCell = { (_, tableView, indexPath, item) in
         let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.accountManageTableViewCell, for: indexPath)!
-        print(item)
+        cell.user = item
         return cell
     }
     private lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel> = .init(
