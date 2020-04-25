@@ -99,7 +99,7 @@
                 <outlet property="screenNameLabel" destination="w6E-6c-0kI" id="9c8-en-ONv"/>
                 <outlet property="usernameLabel" destination="FoW-YX-E1L" id="tvf-QI-Pbp"/>
             </connections>
-            <point key="canvasLocation" x="50.724637681159422" y="43.861607142857139"/>
+            <point key="canvasLocation" x="50.724637681159422" y="43.526785714285715"/>
         </tableViewCell>
     </objects>
     <resources>

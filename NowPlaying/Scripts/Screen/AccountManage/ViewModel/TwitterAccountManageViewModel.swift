@@ -11,6 +11,7 @@ import Foundation
 import RealmSwift
 import RxCocoa
 import RxDataSources
+import RxRealm
 import RxSwift
 import SwifteriOS
 
@@ -31,9 +32,10 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     private let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret)
     private let loginErrorTrigger: PublishRelay<Error> = .init()
 
-    private lazy var fetchUsersAction: Action<Service, [User]> = .init {
+    private lazy var fetchUsersAction: Action<Service, Results<User>> = .init {
         let realm = try! Realm(configuration: realmConfiguration)
-        return .just(realm.objects(User.self).filter("serviceType = %@", $0.rawValue).map { $0 })
+        let users = realm.objects(User.self).filter("serviceType = %@", $0.rawValue)
+        return Observable.collection(from: users, synchronousStart: true)
     }
 
     init(router: AccountManageRouter) {
@@ -43,7 +45,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
 
         addTrigger.bind(to: login).disposed(by: disposeBag)
 
-        fetchUsersAction.elements.bind(to: accounts).disposed(by: disposeBag)
+        fetchUsersAction.elements.map { $0.map { $0 } }.bind(to: accounts).disposed(by: disposeBag)
         fetchUsersAction.execute(service)
     }
 
@@ -65,10 +67,8 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
                                                           authToken: token.key, authTokenSecret: token.secret, domainName: "", user: user)
 
                             let realm = try! Realm(configuration: realmConfiguration)
-                            try! realm.write {
-                                realm.add(user, update: .all)
-                                realm.add(secret, update: .all)
-                            }
+                            _ = Observable.from([user, secret])
+                                .bind(to: realm.rx.add())
 
                         }, onError: onError)
 
