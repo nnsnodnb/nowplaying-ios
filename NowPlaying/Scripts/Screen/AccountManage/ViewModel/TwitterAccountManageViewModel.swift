@@ -19,9 +19,11 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
 
     let addTrigger: PublishRelay<Void> = .init()
     let editTrigger: PublishRelay<Void> = .init()
+    let changeDefaultAccount: PublishRelay<User> = .init()
     let dataSources: Observable<[AccountManageSectionModel]>
     let loginSuccess: Observable<String>
     let loginError: Observable<String>
+    let changedDefaultAccount: Observable<User>
     let service: Service = .twitter
 
     var input: AccountManageViewModelInput { return self }
@@ -34,10 +36,13 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     private let loginSuccessTrigger: PublishRelay<String> = .init()
     private let loginErrorTrigger: PublishRelay<Error> = .init()
 
-    private lazy var fetchUsersAction: Action<Service, Results<User>> = .init {
+    private lazy var fetchUsersAction: Action<Void, Results<User>> = .init {
         let realm = try! Realm(configuration: realmConfiguration)
-        let users = realm.objects(User.self).filter("serviceType = %@", $0.rawValue)
+        let users = realm.objects(User.self).filter("serviceType = %@", Service.twitter.rawValue)
         return Observable.collection(from: users, synchronousStart: true)
+    }
+    private lazy var changeDefaultAction: Action<User, User> = .init {
+        return User.changeDefault(toUser: $0)
     }
 
     init(router: AccountManageRouter) {
@@ -59,10 +64,16 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
             }
         }.observeOn(MainScheduler.instance).asObservable()
 
+        let newDefaultAccount: PublishRelay<User> = .init()
+        changedDefaultAccount = newDefaultAccount.asObservable()
+
         addTrigger.bind(to: login).disposed(by: disposeBag)
+        changeDefaultAccount.bind(to: changeDefaultAction.inputs).disposed(by: disposeBag)
 
         fetchUsersAction.elements.map { $0.map { $0 } }.bind(to: accounts).disposed(by: disposeBag)
-        fetchUsersAction.execute(service)
+        fetchUsersAction.execute(())
+
+        changeDefaultAction.elements.bind(to: newDefaultAccount).disposed(by: disposeBag)
     }
 
     private var login: Binder<Void> {

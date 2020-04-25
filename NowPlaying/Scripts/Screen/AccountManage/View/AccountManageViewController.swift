@@ -6,6 +6,7 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import Feeder
 import RxCocoa
 import RxDataSources
 import RxSwift
@@ -21,16 +22,15 @@ final class AccountManageViewController: UIViewController {
             tableView.register(R.nib.accountManageTableViewCell)
 
             tableView.rx.itemSelected
+                .do(onNext: { (_) in
+                    Feeder.Selection().selectionChanged()
+                })
                 .subscribe(onNext: { [unowned tableView] in
                     tableView?.deselectRow(at: $0, animated: true)
                 })
                 .disposed(by: disposeBag)
 
-            tableView.rx.modelSelected(User.self)
-                .subscribe(onNext: { (user) in
-                    print(user)
-                })
-                .disposed(by: disposeBag)
+            tableView.rx.modelSelected(User.self).bind(to: viewModel.input.changeDefaultAccount).disposed(by: disposeBag)
         }
     }
 
@@ -57,6 +57,9 @@ final class AccountManageViewController: UIViewController {
 
         viewModel.output.dataSources.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         viewModel.output.loginSuccess
+            .do(onNext: { (_) in
+                Feeder.Notification(.success).notificationOccurred()
+            })
             .subscribe(onNext: { (screenName) in
                 SVProgressHUD.showSuccess(withStatus: "\(screenName)さんでログインしました！")
                 SVProgressHUD.dismiss(withDelay: 1)
@@ -66,10 +69,19 @@ final class AccountManageViewController: UIViewController {
         viewModel.output.loginError
             .do(onNext: {
                 print($0)
+                Feeder.Notification(.error).notificationOccurred()
             })
             .subscribe(onNext: { (message) in
                 SVProgressHUD.showError(withStatus: message)
                 SVProgressHUD.dismiss(withDelay: 1)
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.output.changedDefaultAccount
+            .map { _ in }
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.tableView.reloadSections([0], animationStyle: .none)
             })
             .disposed(by: disposeBag)
     }
