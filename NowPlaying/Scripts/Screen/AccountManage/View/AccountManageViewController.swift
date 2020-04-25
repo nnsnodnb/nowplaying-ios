@@ -38,18 +38,12 @@ final class AccountManageViewController: UIViewController {
 
     private(set) var viewModel: AccountManageViewModelType!
 
-    private lazy var decideViewTransition: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel>.DecideViewTransition = { (dataSource, tableView, changesets) in
-        if dataSource[0].items.isEmpty || changesets.isEmpty || changesets[0].movedItems.isEmpty { return .reload }
-        return .animated
-    }
     private lazy var configureCell: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel>.ConfigureCell = { (_, tableView, indexPath, item) in
         let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.accountManageTableViewCell, for: indexPath)!
         cell.user = item
         return cell
     }
-    private lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel> = .init(
-        decideViewTransition: decideViewTransition, configureCell: configureCell
-    )
+    private lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel> = .init(configureCell: configureCell)
 
     override func viewDidLoad() {
         super.viewDidLoad()
