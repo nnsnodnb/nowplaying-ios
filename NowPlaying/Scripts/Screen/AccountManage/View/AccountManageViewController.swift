@@ -62,25 +62,18 @@ final class AccountManageViewController: UIViewController {
         navigationItem.rightBarButtonItems = [editBarButtonItem, addBarButtonItem]
 
         viewModel.output.dataSources.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        viewModel.output.loginSuccess
+            .subscribe(onNext: { (screenName) in
+                SVProgressHUD.showSuccess(withStatus: "\(screenName)さんでログインしました！")
+                SVProgressHUD.dismiss(withDelay: 1)
+            })
+            .disposed(by: disposeBag)
+
         viewModel.output.loginError
             .do(onNext: {
                 print($0)
             })
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (error) in
-                let message: String
-                if let authError = error as? AuthError {
-                    switch authError {
-                    case .cancel:
-                        message = "ログインをキャンセルしました"
-                    case .alreadyUser:
-                        message = "既にログインされているユーザです"
-                    case .unknown:
-                        message = "不明なエラーが発生しました: \(error.localizedDescription)"
-                    }
-                } else {
-                    message = "ログインエラーが発生しました"
-                }
+            .subscribe(onNext: { (message) in
                 SVProgressHUD.showError(withStatus: message)
                 SVProgressHUD.dismiss(withDelay: 1)
             })

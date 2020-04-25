@@ -23,7 +23,8 @@ protocol AccountManageViewModelInput {
 protocol AccountManageViewModelOutput {
 
     var dataSources: Observable<[AccountManageSectionModel]> { get }
-    var loginError: Observable<Error> { get }
+    var loginSuccess: Observable<String> { get }
+    var loginError: Observable<String> { get }
 }
 
 protocol AccountManageViewModelType: AnyObject {
@@ -39,7 +40,8 @@ final class AccountManageViewModel: AccountManageViewModelType {
     let addTrigger: PublishRelay<Void> = .init()
     let editTrigger: PublishRelay<Void> = .init()
     let dataSources: Observable<[AccountManageSectionModel]>
-    let loginError: Observable<Error>
+    let loginSuccess: Observable<String>
+    let loginError: Observable<String>
     let service: Service = .mastodon
 
     var input: AccountManageViewModelInput { return self }
@@ -50,6 +52,7 @@ final class AccountManageViewModel: AccountManageViewModelType {
 
     init(router: AccountManageRouter) {
         dataSources = accounts.map { [AccountManageSectionModel(model: "", items: $0)] }.asObservable()
+        loginSuccess = .empty()
         loginError = .empty()
     }
 }

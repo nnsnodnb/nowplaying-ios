@@ -20,7 +20,8 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     let addTrigger: PublishRelay<Void> = .init()
     let editTrigger: PublishRelay<Void> = .init()
     let dataSources: Observable<[AccountManageSectionModel]>
-    let loginError: Observable<Error>
+    let loginSuccess: Observable<String>
+    let loginError: Observable<String>
     let service: Service = .twitter
 
     var input: AccountManageViewModelInput { return self }
@@ -30,6 +31,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     private let router: AccountManageRouter
     private let accounts: BehaviorSubject<[User]> = .init(value: [])
     private let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret)
+    private let loginSuccessTrigger: PublishRelay<String> = .init()
     private let loginErrorTrigger: PublishRelay<Error> = .init()
 
     private lazy var fetchUsersAction: Action<Service, Results<User>> = .init {
@@ -41,7 +43,21 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     init(router: AccountManageRouter) {
         self.router = router
         dataSources = accounts.map { [AccountManageSectionModel(model: "", items: $0)] }.asObservable()
-        loginError = loginErrorTrigger.asObservable()
+        loginSuccess = loginSuccessTrigger.map { "@\($0)" }.observeOn(MainScheduler.instance).asObservable()
+        loginError = loginErrorTrigger.map { (error) -> String in
+            if let authError = error as? AuthError {
+                switch authError {
+                case .cancel:
+                    return "ログインをキャンセルしました"
+                case .alreadyUser:
+                    return "既にログインされているユーザです"
+                case .unknown:
+                    return "不明なエラーが発生しました: \(error.localizedDescription)"
+                }
+            } else {
+                return "ログインエラーが発生しました"
+            }
+    }.observeOn(MainScheduler.instance).asObservable()
 
         addTrigger.bind(to: login).disposed(by: disposeBag)
 
@@ -75,6 +91,8 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
                             let realm = try! Realm(configuration: realmConfiguration)
                             _ = Observable.from([user, secret])
                                 .bind(to: realm.rx.add())
+
+                            base?.loginSuccessTrigger.accept(user.screenName)
 
                         }, onError: onError)
 
