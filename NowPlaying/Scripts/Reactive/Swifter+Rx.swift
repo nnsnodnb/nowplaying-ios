@@ -49,10 +49,11 @@ extension Reactive where Base: Swifter {
                 guard let userID = $0["id_str"].string,
                     let name = $0["name"].string,
                     let screenName = $0["screen_name"].string,
-                    let iconURLString = $0["profile_image_url_https"].string else {
+                    var iconURLString = $0["profile_image_url_https"].string else {
                         observer(.error(APIError.valueError))
                         return
                 }
+                iconURLString = iconURLString.replacingOccurrences(of: "_normal", with: "")
                 let object = TwitterUser(userID: userID, name: name, screenName: screenName, iconURLString: iconURLString)
                 observer(.success(object))
             }, failure: {
