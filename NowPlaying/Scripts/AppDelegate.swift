@@ -7,6 +7,7 @@
 //
 
 import RealmSwift
+import SVProgressHUD
 import SwifteriOS
 import UIKit
 
@@ -23,6 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         applicationCoordinator.start()
+
+        SVProgressHUD.setDefaultMaskType(.black)
 
         #if DEBUG
         let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()
