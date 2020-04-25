@@ -11,6 +11,7 @@ import Foundation
 enum AuthError: Error {
 
     case cancel
+    case alreadyUser
     case unknown
 }
 

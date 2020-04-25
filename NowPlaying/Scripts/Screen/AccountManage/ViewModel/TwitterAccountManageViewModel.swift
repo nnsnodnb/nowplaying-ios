@@ -56,7 +56,13 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
             }
 
             _ = base.router.login()
-                .subscribe(onNext: { (token) in
+                .withLatestFrom(base.accounts) { ($0, $1) }
+                .subscribe(onNext: { [weak base] (token, accounts) in
+                    guard accounts.first(where: { $0.serviceID == token.userID }) == nil else {
+                        // すでに登録されている
+                        base?.loginErrorTrigger.accept(AuthError.alreadyUser)
+                        return
+                    }
                     let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret,
                                           oauthToken: token.key, oauthTokenSecret: token.secret)
                     _ = swifter.rx.showUser(tag: .id(token.userID))

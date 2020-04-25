@@ -67,8 +67,21 @@ final class AccountManageViewController: UIViewController {
                 print($0)
             })
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (_) in
-                SVProgressHUD.showError(withStatus: "ログインエラーが発生しました")
+            .subscribe(onNext: { (error) in
+                let message: String
+                if let authError = error as? AuthError {
+                    switch authError {
+                    case .cancel:
+                        message = "ログインをキャンセルしました"
+                    case .alreadyUser:
+                        message = "既にログインされているユーザです"
+                    case .unknown:
+                        message = "不明なエラーが発生しました: \(error.localizedDescription)"
+                    }
+                } else {
+                    message = "ログインエラーが発生しました"
+                }
+                SVProgressHUD.showError(withStatus: message)
                 SVProgressHUD.dismiss(withDelay: 1)
             })
             .disposed(by: disposeBag)
