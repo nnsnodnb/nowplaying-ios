@@ -19,6 +19,18 @@ final class AccountManageViewController: UIViewController {
         didSet {
             tableView.tableFooterView = UIView()
             tableView.register(R.nib.accountManageTableViewCell)
+
+            tableView.rx.itemSelected
+                .subscribe(onNext: { [unowned tableView] in
+                    tableView?.deselectRow(at: $0, animated: true)
+                })
+                .disposed(by: disposeBag)
+
+            tableView.rx.modelSelected(User.self)
+                .subscribe(onNext: { (user) in
+                    print(user)
+                })
+                .disposed(by: disposeBag)
         }
     }
 
