@@ -11,7 +11,6 @@ import Foundation
 import RealmSwift
 import RxCocoa
 import RxDataSources
-import RxRealm
 import RxSwift
 import SwifteriOS
 
@@ -32,23 +31,19 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
 
     private let disposeBag = DisposeBag()
     private let router: AccountManageRouter
-    private let accounts: BehaviorSubject<[User]> = .init(value: [])
     private let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret)
     private let loginSuccessTrigger: PublishRelay<String> = .init()
     private let loginErrorTrigger: PublishRelay<Error> = .init()
+    private let accounts: BehaviorSubject<[User]> = .init(value: [])
 
-    private lazy var fetchUsersAction: Action<Void, Results<User>> = .init {
-        let realm = try! Realm(configuration: realmConfiguration)
-        let users = realm.objects(User.self).filter("serviceType = %@", Service.twitter.rawValue)
-        return .collection(from: users, synchronousStart: true)
-    }
     private lazy var changeDefaultAction: Action<User, User> = .init {
         return User.changeDefault(toUser: $0)
     }
 
     init(router: AccountManageRouter) {
         self.router = router
-        dataSources = accounts.map { [AccountManageSectionModel(model: "", items: $0)] }.asObservable()
+        dataSources = accounts.map { [.init(model: "", items: $0.map { $0 })] }.asObservable()
+
         loginSuccess = loginSuccessTrigger.map { "@\($0)" }.observeOn(MainScheduler.instance).asObservable()
         loginError = loginErrorTrigger.map { (error) -> String in
             if let authError = error as? AuthError {
@@ -68,6 +63,10 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
         let newDefaultAccount: PublishRelay<User> = .init()
         changedDefaultAccount = newDefaultAccount.asObservable()
 
+        let realm = try! Realm(configuration: realmConfiguration)
+        let users = realm.objects(User.self).filter("serviceType = %@", service.rawValue).sorted(byKeyPath: "id", ascending: true)
+        accounts.onNext(users.map { $0 })
+
         addTrigger.bind(to: login).disposed(by: disposeBag)
 
         editTrigger
@@ -77,24 +76,25 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
             .disposed(by: disposeBag)
 
         deleteTrigger
-            .subscribe(onNext: { (user) in
-                let realm = try! Realm(configuration: realmConfiguration)
-                try! realm.write {
-                    let user = realm.object(ofType: User.self, forPrimaryKey: user.id)!
-                    print("realm.isInWriteTransaction: \(realm.isInWriteTransaction)")
-                    print(#line, user.isInvalidated)
-                    realm.delete(user.secretCredentials.first!)
-                    print(#line, user.isInvalidated)
-                    realm.delete(user)
-                    print(#line, user.isInvalidated)
+            .subscribe(onNext: {
+                do {
+                    let realm = try Realm(configuration: realmConfiguration)
+                    guard let user = realm.object(ofType: User.self, forPrimaryKey: $0.id) else {
+                        print("Not found User: \($0.id)")
+                        return
+                    }
+                    let secrets = user.secretCredentials
+                    try realm.write {
+                        realm.delete(secrets)
+                        realm.delete(user)
+                    }
+                } catch let error as NSError {
+                    print(error)
                 }
             })
             .disposed(by: disposeBag)
 
         cellSelected.bind(to: changeDefaultAction.inputs).disposed(by: disposeBag)
-
-        fetchUsersAction.elements.map { $0.map { $0 } }.bind(to: accounts).disposed(by: disposeBag)
-        fetchUsersAction.inputs.onNext(())
 
         changeDefaultAction.elements.bind(to: newDefaultAccount).disposed(by: disposeBag)
     }
@@ -106,9 +106,9 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
             }
 
             _ = base.router.login()
-                .withLatestFrom(base.accounts) { ($0, $1) }
-                .subscribe(onNext: { [weak base] (token, accounts) in
-                    guard accounts.first(where: { $0.serviceID == token.userID }) == nil else {
+                .subscribe(onNext: { [weak base] (token) in
+                    let realm = try! Realm(configuration: realmConfiguration)
+                    guard realm.objects(User.self).filter("serviceID = %@ AND serviceType = %@", token.userID, "twitter").first == nil else {
                         // すでに登録されている
                         base?.loginErrorTrigger.accept(AuthError.alreadyUser)
                         return
