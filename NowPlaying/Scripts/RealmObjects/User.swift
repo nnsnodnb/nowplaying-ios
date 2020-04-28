@@ -29,7 +29,7 @@ final class User: Object {
     }
 
     override class func ignoredProperties() -> [String] {
-        return ["iconURL", "isTwitterUser", "isMastodonUser"]
+        return ["iconURL", "isTwitterUser", "isMastodonUser", "identity"]
     }
 
     class func getLastestPrimaryKey() -> Int? {

@@ -32,12 +32,8 @@ final class AccountManageViewController: UIViewController {
                 })
                 .disposed(by: disposeBag)
 
-            tableView.rx.modelSelected(User.self).bind(to: viewModel.input.changeDefaultAccount).disposed(by: disposeBag)
-
-            tableView.rx.modelDeleted(User.self)
-                .subscribe(onNext: { (user) in
-                })
-                .disposed(by: disposeBag)
+            tableView.rx.modelSelected(User.self).bind(to: viewModel.input.cellSelected).disposed(by: disposeBag)
+            tableView.rx.modelDeleted(User.self).bind(to: viewModel.input.deleteTrigger).disposed(by: disposeBag)
         }
     }
 

@@ -18,7 +18,8 @@ protocol AccountManageViewModelInput {
 
     var addTrigger: PublishRelay<Void> { get }
     var editTrigger: PublishRelay<Void> { get }
-    var changeDefaultAccount: PublishRelay<User> { get }
+    var deleteTrigger: PublishRelay<User> { get }
+    var cellSelected: PublishRelay<User> { get }
 }
 
 protocol AccountManageViewModelOutput {
@@ -41,7 +42,8 @@ final class AccountManageViewModel: AccountManageViewModelType {
 
     let addTrigger: PublishRelay<Void> = .init()
     let editTrigger: PublishRelay<Void> = .init()
-    let changeDefaultAccount: PublishRelay<User> = .init()
+    let deleteTrigger: PublishRelay<User> = .init()
+    let cellSelected: PublishRelay<User> = .init()
     let dataSources: Observable<[AccountManageSectionModel]>
     let loginSuccess: Observable<String>
     let loginError: Observable<String>

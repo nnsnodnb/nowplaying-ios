@@ -19,7 +19,8 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
 
     let addTrigger: PublishRelay<Void> = .init()
     let editTrigger: PublishRelay<Void> = .init()
-    let changeDefaultAccount: PublishRelay<User> = .init()
+    let deleteTrigger: PublishRelay<User> = .init()
+    let cellSelected: PublishRelay<User> = .init()
     let dataSources: Observable<[AccountManageSectionModel]>
     let loginSuccess: Observable<String>
     let loginError: Observable<String>
@@ -39,7 +40,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     private lazy var fetchUsersAction: Action<Void, Results<User>> = .init {
         let realm = try! Realm(configuration: realmConfiguration)
         let users = realm.objects(User.self).filter("serviceType = %@", Service.twitter.rawValue)
-        return Observable.collection(from: users, synchronousStart: true)
+        return .collection(from: users, synchronousStart: true)
     }
     private lazy var changeDefaultAction: Action<User, User> = .init {
         return User.changeDefault(toUser: $0)
@@ -75,10 +76,25 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
             })
             .disposed(by: disposeBag)
 
-        changeDefaultAccount.bind(to: changeDefaultAction.inputs).disposed(by: disposeBag)
+        deleteTrigger
+            .subscribe(onNext: { (user) in
+                let realm = try! Realm(configuration: realmConfiguration)
+                try! realm.write {
+                    let user = realm.object(ofType: User.self, forPrimaryKey: user.id)!
+                    print("realm.isInWriteTransaction: \(realm.isInWriteTransaction)")
+                    print(#line, user.isInvalidated)
+                    realm.delete(user.secretCredentials.first!)
+                    print(#line, user.isInvalidated)
+                    realm.delete(user)
+                    print(#line, user.isInvalidated)
+                }
+            })
+            .disposed(by: disposeBag)
+
+        cellSelected.bind(to: changeDefaultAction.inputs).disposed(by: disposeBag)
 
         fetchUsersAction.elements.map { $0.map { $0 } }.bind(to: accounts).disposed(by: disposeBag)
-        fetchUsersAction.execute(())
+        fetchUsersAction.inputs.onNext(())
 
         changeDefaultAction.elements.bind(to: newDefaultAccount).disposed(by: disposeBag)
     }
@@ -107,8 +123,10 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
                                                           authToken: token.key, authTokenSecret: token.secret, domainName: "", user: user)
 
                             let realm = try! Realm(configuration: realmConfiguration)
-                            _ = Observable.from([user, secret])
-                                .bind(to: realm.rx.add())
+                            try! realm.write {
+                                realm.add(user, update: .error)
+                                realm.add(secret, update: .error)
+                            }
 
                             base?.loginSuccessTrigger.accept(user.screenName)
 
