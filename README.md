@@ -1,6 +1,6 @@
 # nowplaying-ios
 
-[![Swift 5.1](https://img.shields.io/badge/language-Swift5.1-orange.svg)](https://developer.apple.com/swift)
+[![Swift 5.2](https://img.shields.io/badge/language-Swift5.2-orange.svg)](https://developer.apple.com/swift)
 ![GitHub](https://img.shields.io/github/license/nnsnodnb/nowplaying-ios.svg)
 
 NowPlaying tweet & toot application for iOS
@@ -21,7 +21,7 @@ NowPlaying tweet & toot application for iOS
 ## Installation
 
 ```bash
-$ git clone --recursive https://github.com/nnsnodnb/nowplaying.ios
+$ git clone --recursive https://github.com/nnsnodnb/nowplaying-ios.git
 ```
 
 Please copy **Configuration Settings Files**.
