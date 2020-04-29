@@ -20,7 +20,7 @@ struct AuthAccessToken {
     let userID: String
 }
 
-protocol AccountManageRouter: AnyObject {
+protocol AccountManageRoutable: AnyObject {
 
     init(view: AccountManageViewer)
     func login() -> Observable<AuthAccessToken>
@@ -28,7 +28,7 @@ protocol AccountManageRouter: AnyObject {
     func completeChangedDefaultAccount(user: User)
 }
 
-final class TwitterAccountManageRouterImpl: AccountManageRouter {
+final class TwitterAccountManageRouter: AccountManageRoutable {
 
     private(set) weak var view: AccountManageViewer!
 
@@ -65,7 +65,7 @@ final class TwitterAccountManageRouterImpl: AccountManageRouter {
     }
 }
 
-final class AccountManageRouterImpl: AccountManageRouter {
+final class MastodonAccountManageRouter: AccountManageRoutable {
 
     private(set) weak var view: AccountManageViewer!
 
