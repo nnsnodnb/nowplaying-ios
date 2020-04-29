@@ -1,0 +1,3 @@
+[submodule "NowPlaying/Scripts/Vendors/RxRealmDataSources"]
+	path = NowPlaying/Scripts/Vendors/RxRealmDataSources
+	url = git@github.com:RxSwiftCommunity/RxRealmDataSources.git
