@@ -2,7 +2,7 @@ github "HeroTransitions/Hero" ~> 1.5.0
 github "ishkawa/APIKit" ~> 5.1.0
 github "kean/Nuke" == 8.3.0
 github "kishikawakatsumi/KeychainAccess" ~> 4.1.0
-github "mattdonnelly/Swifter" "8889232f27784f6f33cb689c77f233b578124a53"
+github "mattdonnelly/Swifter" ~> 2.3.0
 github "ReactiveX/RxSwift" ~> 5.1.1
 github "realm/realm-cocoa" ~> 4.4.1
 github "RxSwiftCommunity/Action" ~> 4.0.1

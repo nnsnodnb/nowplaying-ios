@@ -35,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        return Swifter.handleOpenURL(url, callbackURL: .twitterCallbackURL)
+        Swifter.handleOpenURL(url)
+        return true
     }
 }
