@@ -13,3 +13,4 @@ github "SVProgressHUD/SVProgressHUD" ~> 2.2.5
 github "nnsnodnb/ScrollFlowLabel" ~> 1.0.0
 github "RxSwiftCommunity/RxDataSources" ~> 4.0.1
 github "RxSwiftCommunity/RxRealm" ~> 2.0.0
+github "MastodonKit/MastodonKit" ~> 2.0.0
