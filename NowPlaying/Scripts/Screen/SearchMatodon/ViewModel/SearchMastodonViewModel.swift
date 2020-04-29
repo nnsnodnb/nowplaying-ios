@@ -16,6 +16,7 @@ protocol SearchMastodonViewModelInput {
 
     var searchText: PublishRelay<String> { get }
     var cancelButtonClicked: PublishRelay<Void> { get }
+    var selectInstance: PublishRelay<Instance> { get }
 }
 
 protocol SearchMastodonViewModelOutput {
@@ -34,6 +35,7 @@ final class SearchMastodonViewModel: SearchMastodonViewModelType {
 
     let searchText: PublishRelay<String> = .init()
     let cancelButtonClicked: PublishRelay<Void> = .init()
+    let selectInstance: PublishRelay<Instance> = .init()
     let dataSource: Observable<[InstanceAnimatableSectionModel]>
 
     var input: SearchMastodonViewModelInput { return self }
@@ -72,6 +74,11 @@ final class SearchMastodonViewModel: SearchMastodonViewModelType {
             .disposed(by: disposeBag)
 
         cancelButtonClicked.bind(to: fetchListAction.inputs).disposed(by: disposeBag)
+        selectInstance
+            .subscribe(onNext: {
+                router.showConfirm(toInstance: $0)
+            })
+            .disposed(by: disposeBag)
 
         fetchListAction.execute(())
     }

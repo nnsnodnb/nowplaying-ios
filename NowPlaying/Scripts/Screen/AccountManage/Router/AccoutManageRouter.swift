@@ -74,11 +74,14 @@ final class MastodonAccountManageRouter: AccountManageRoutable {
     }
 
     func login() -> Observable<AuthAccessToken> {
-        return .create { [weak self] (observer) -> Disposable in
-            let viewController = SearchMastodonViewController.makeInstance()
-            self?.view.navigationController?.pushViewController(viewController, animated: true)
-            return Disposables.create()
-        }
+        let viewController = SearchMastodonViewController.makeInstance()
+        view.navigationController?.pushViewController(viewController, animated: true)
+        return .empty()
+//        return .create { [weak self] (observer) -> Disposable in
+//            let viewController = SearchMastodonViewController.makeInstance()
+//            self?.view.navigationController?.pushViewController(viewController, animated: true)
+//            return Disposables.create()
+//        }
     }
 
     func setEditing() {

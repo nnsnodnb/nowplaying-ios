@@ -19,6 +19,14 @@ final class SearchMastodonViewController: UIViewController {
             tableView.register(R.nib.searchMastodonTableViewCell)
             tableView.tableHeaderView = searchController.searchBar
 
+            tableView.rx.itemSelected
+                .subscribe(onNext: { [unowned self] in
+                    self.tableView.deselectRow(at: $0, animated: true)
+                })
+                .disposed(by: disposeBag)
+
+            tableView.rx.modelSelected(Instance.self).bind(to: viewModel.input.selectInstance).disposed(by: disposeBag)
+
             searchController.searchBar.rx.cancelButtonClicked
                 .bind(to: viewModel.input.cancelButtonClicked).disposed(by: disposeBag)
 

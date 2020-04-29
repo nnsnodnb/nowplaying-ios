@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MastodonKit
 import RealmSwift
 
 final class SecretCredential: Object {
@@ -44,6 +45,13 @@ final class SecretCredential: Object {
     class func createTwitter(authToken: String, authTokenSecret: String, user: User?) -> SecretCredential {
         let secret = self.init(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret,
                                authToken: authToken, authTokenSecret: authTokenSecret, domainName: "", user: user)
+        return secret
+    }
+
+    class func createMastodon(application: ClientApplication, accessToken: String, hostname: String, user: User?) -> SecretCredential {
+        let domainName = hostname.replacingOccurrences(of: "https://", with: "")
+        let secret = self.init(consumerKey: application.clientID, consumerSecret: application.clientSecret, authToken: accessToken,
+                               authTokenSecret: "", domainName: domainName, user: user)
         return secret
     }
 }

@@ -78,6 +78,12 @@ final class AccountManageViewController: UIViewController {
                 SVProgressHUD.dismiss(withDelay: 1)
             })
             .disposed(by: disposeBag)
+
+        NotificationCenter.default.rx.notification(.selectedMastodonInstance)
+            .subscribe(onNext: { (_) in
+                SVProgressHUD.show()
+            })
+            .disposed(by: disposeBag)
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
