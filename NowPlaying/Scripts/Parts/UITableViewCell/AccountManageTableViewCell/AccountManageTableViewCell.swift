@@ -16,12 +16,25 @@ final class AccountManageTableViewCell: UITableViewCell {
     @IBOutlet private weak var screenNameLabel: UILabel!
     @IBOutlet private weak var domainLabel: UILabel!
 
+    var user: User! {
+        didSet {
+            iconImageView.setImage(with: user.iconURL)
+            defaultAccountStartImageView.isHidden = !user.isDefault
+            usernameLabel.text = user.name
+            screenNameLabel.text = "@\(user.screenName)"
+            domainLabel.isHidden = user.isTwitetrUser
+            guard let secret = user.secretCredentials.first else { return }
+            domainLabel.text = secret.domainName
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }
 
     override func prepareForReuse() {
         iconImageView.image = nil
+        domainLabel.text = nil
         super.prepareForReuse()
     }
 

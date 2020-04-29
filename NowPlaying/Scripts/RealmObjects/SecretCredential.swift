@@ -40,4 +40,10 @@ final class SecretCredential: Object {
         self.domainName = domainName
         self.user = user
     }
+
+    class func createTwitter(authToken: String, authTokenSecret: String, user: User?) -> SecretCredential {
+        let secret = self.init(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret,
+                               authToken: authToken, authTokenSecret: authTokenSecret, domainName: "", user: user)
+        return secret
+    }
 }

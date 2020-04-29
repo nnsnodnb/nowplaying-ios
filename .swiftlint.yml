@@ -7,6 +7,7 @@ included:
 
 excluded:
   - NowPlaying/Scripts/R.generated.swift
+  - NowPlaying/Scripts/Vendors
   - Pods
 
 line_length: 200

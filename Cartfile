@@ -1,10 +1,10 @@
 github "HeroTransitions/Hero" ~> 1.5.0
 github "ishkawa/APIKit" ~> 5.1.0
-github "kean/Nuke" ~> 8.3.0
+github "kean/Nuke" == 8.3.0
 github "kishikawakatsumi/KeychainAccess" ~> 4.1.0
-github "mattdonnelly/Swifter" ~> 2.3.0
+github "mattdonnelly/Swifter" "8889232f27784f6f33cb689c77f233b578124a53"
 github "ReactiveX/RxSwift" ~> 5.1.1
-github "realm/realm-cocoa" ~> 4.3.1
+github "realm/realm-cocoa" ~> 4.4.1
 github "RxSwiftCommunity/Action" ~> 4.0.1
 github "SnapKit/SnapKit" ~> 5.0.1
 github "fastred/DeallocationChecker" ~> 3.0.1
@@ -12,3 +12,4 @@ github "nnsnodnb/Feeder" ~> 1.0.1
 github "SVProgressHUD/SVProgressHUD" ~> 2.2.5
 github "nnsnodnb/ScrollFlowLabel" ~> 1.0.0
 github "RxSwiftCommunity/RxDataSources" ~> 4.0.1
+github "RxSwiftCommunity/RxRealm" ~> 2.0.0

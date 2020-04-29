@@ -7,8 +7,8 @@ NowPlaying tweet & toot application for iOS
 
 ## Environments
 
-- Xcode 11.3.1
-  - Swift 5.1.3
+- Xcode 11.4.1
+  - Swift 5.2.2
 - Ruby 2.6.5
   - Bundler 2.0.2
     - Cocoapods 1.8.4
@@ -16,6 +16,10 @@ NowPlaying tweet & toot application for iOS
 - XcodeGen
 
 ## Installation
+
+```bash
+$ git clone --recursive https://github.com/nnsnodnb/nowplaying.ios
+```
 
 Please copy **Configuration Settings Files**.
 
@@ -42,4 +46,3 @@ This software is licensed under the MIT License (See [LICENSE](LICENSE)).
 ## Author
 
 Yuya Oka ([nnsnodnb](https://github.com/nnsnodnb))
-

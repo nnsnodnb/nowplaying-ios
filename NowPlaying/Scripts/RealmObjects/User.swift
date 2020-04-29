@@ -8,6 +8,8 @@
 
 import Foundation
 import RealmSwift
+import RxCocoa
+import RxSwift
 
 final class User: Object {
 
@@ -25,25 +27,21 @@ final class User: Object {
         return "id"
     }
 
-    override class func ignoredProperties() -> [String] {
-        return ["iconURL", "isTwitterUser", "isMastodonUser"]
-    }
-
     class func getLastestPrimaryKey() -> Int? {
         let realm = try? Realm(configuration: realmConfiguration)
         return realm?.objects(User.self).sorted(byKeyPath: "id", ascending: false).first?.id
     }
 
-    convenience init(serviceID: String, name: String="", screenName: String="", iconURL: URL, serviceType: Service) {
+    convenience init(serviceID: String, name: String="", screenName: String="", iconURLString: String, service: Service) {
         self.init()
         let latestPrimaryKey = User.getLastestPrimaryKey() ?? 0
         id = latestPrimaryKey + 1
         self.serviceID = serviceID
         self.name = name
         self.screenName = screenName
-        iconURLString = iconURL.absoluteString
-        self.serviceType = serviceType.rawValue
-        isDefault = !User.isExists(service: serviceType)
+        self.iconURLString = iconURLString
+        serviceType = service.rawValue
+        isDefault = !User.isExists(service: service)
     }
 }
 
@@ -64,25 +62,27 @@ extension User {
         return !isTwitetrUser
     }
 
-    func changeDefaultAccount(to isDefault: Bool) {
-        let realm = try! Realm(configuration: realmConfiguration)
-        defer {
-            try! realm.write { self.isDefault = isDefault }
-        }
-
-        // 新しい値と同じ OR デフォルトアカウントではない場合無視
-        if isDefault == self.isDefault || !isDefault { return }
-        // 自分以外の同じサービスのユーザの isDefault を偽にする
-        let users = realm.objects(User.self)
-            .filter("id != %@ AND serviceType = %@ AND isDefault = %@", id, serviceType, true)
-        try! realm.write {
-            users.setValue(false, forKey: "isDefault")
-        }
-    }
-
     func isExists() throws -> Bool {
         let realm = try Realm(configuration: realmConfiguration)
         return !realm.objects(User.self).filter("serviceID = %@", serviceID).isEmpty
+    }
+}
+
+extension User {
+
+    static func changeDefault(toUser user: User) -> Observable<User> {
+        if user.isDefault { return .empty() }
+
+        // 自分以外の同じサービスのユーザの isDefault を偽にする
+        let realm = try! Realm(configuration: realmConfiguration)
+        let users = realm.objects(User.self)
+            .filter("id != %@ AND serviceType = %@ AND isDefault = %@", user.id, user.serviceType, true)
+        try! realm.write {
+            users.setValue(false, forKey: "isDefault")
+            user.isDefault = true
+        }
+
+        return .just(user)
     }
 }
 

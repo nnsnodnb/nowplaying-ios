@@ -136,6 +136,7 @@ targets:
                 if [[ $CONFIGURATION = "Debug" ]]; then
                   ${PODS_ROOT}/LicensePlist/license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle \
                   --github-token ${GITHUB_ACCESS_TOKEN} \
+                  --config-path ${SRCROOT}/NowPlaying/Resources/license_plist.yml \
                   --prefix moe.nnsnodnb.NowPlaying \
                   --suppress-opening-directory
                 fi
@@ -192,11 +193,17 @@ targets:
         platform: iOS
         sources:
             - path: Umbrella
+              excludes:
+                  - Vendors
+            - path: Umbrella/Vendors/RxRealmDataSources/Pod/Classes
+              group: Umbrella/Vendors/RxRealmDataSources
+              type: group
         dependencies:
             - carthage: Action
             - carthage: Differentiator
             - carthage: RxCocoa
             - carthage: RxDataSources
+            - carthage: RxRealm
             - carthage: RxRelay
             - carthage: RxSwift
             - carthage: ScrollFlowLabel

@@ -32,3 +32,8 @@ extension String {
 
     static let keychainServiceKey = "moe.nnsnodnb.NowPlaying"
 }
+
+extension URL {
+
+    static let twitterCallbackURL = URL(string: "swifter-\(Environments.twitterConsumerKey)://success")!
+}
