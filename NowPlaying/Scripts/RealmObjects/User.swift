@@ -6,7 +6,6 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
-import Differentiator
 import Foundation
 import RealmSwift
 import RxCocoa
@@ -26,10 +25,6 @@ final class User: Object {
 
     override class func primaryKey() -> String? {
         return "id"
-    }
-
-    override class func ignoredProperties() -> [String] {
-        return ["iconURL", "isTwitterUser", "isMastodonUser", "identity"]
     }
 
     class func getLastestPrimaryKey() -> Int? {
@@ -101,14 +96,5 @@ extension User {
     class func getDefaultUser(service: Service) -> User? {
         let realm = try! Realm(configuration: realmConfiguration)
         return realm.objects(User.self).filter("serviceType = %@ AND isDefault = %@", service.rawValue, true).first
-    }
-}
-
-// MARK: - Identifiable
-
-extension User: IdentifiableType {
-
-    var identity: Int {
-        return id
     }
 }

@@ -11,6 +11,7 @@ import Foundation
 import RealmSwift
 import RxCocoa
 import RxDataSources
+import RxRealm
 import RxSwift
 import SwifteriOS
 
@@ -20,7 +21,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     let editTrigger: PublishRelay<Void> = .init()
     let deleteTrigger: PublishRelay<User> = .init()
     let cellSelected: PublishRelay<User> = .init()
-    let dataSources: Observable<[AccountManageSectionModel]>
+    let dataSource: Observable<(AnyRealmCollection<User>, RealmChangeset?)>
     let loginSuccess: Observable<String>
     let loginError: Observable<String>
     let changedDefaultAccount: Observable<User>
@@ -34,7 +35,6 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     private let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret)
     private let loginSuccessTrigger: PublishRelay<String> = .init()
     private let loginErrorTrigger: PublishRelay<Error> = .init()
-    private let accounts: BehaviorSubject<[User]> = .init(value: [])
 
     private lazy var changeDefaultAction: Action<User, User> = .init {
         return User.changeDefault(toUser: $0)
@@ -42,7 +42,10 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
 
     init(router: AccountManageRouter) {
         self.router = router
-        dataSources = accounts.map { [.init(model: "", items: $0)] }.asObservable()
+
+        let realm = try! Realm(configuration: realmConfiguration)
+        let results = realm.objects(User.self).filter("serviceType = %@", service.rawValue).sorted(byKeyPath: "id", ascending: true)
+        dataSource = Observable.changeset(from: results)
 
         loginSuccess = loginSuccessTrigger.map { "@\($0)" }.observeOn(MainScheduler.instance).asObservable()
         loginError = loginErrorTrigger.map { (error) -> String in
@@ -63,10 +66,6 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
         let newDefaultAccount: PublishRelay<User> = .init()
         changedDefaultAccount = newDefaultAccount.asObservable()
 
-        let realm = try! Realm(configuration: realmConfiguration)
-        let users = realm.objects(User.self).filter("serviceType = %@", service.rawValue).sorted(byKeyPath: "id", ascending: true)
-        accounts.onNext(users.map { $0 })
-
         addTrigger.bind(to: login).disposed(by: disposeBag)
 
         editTrigger
@@ -75,24 +74,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
             })
             .disposed(by: disposeBag)
 
-        deleteTrigger
-            .subscribe(onNext: {
-                do {
-                    let realm = try Realm(configuration: realmConfiguration)
-                    guard let user = realm.object(ofType: User.self, forPrimaryKey: $0.id) else {
-                        print("Not found User: \($0.id)")
-                        return
-                    }
-                    let secrets = user.secretCredentials
-                    try realm.write {
-                        realm.delete(secrets)
-                        realm.delete(user)
-                    }
-                } catch let error as NSError {
-                    print(error)
-                }
-            })
-            .disposed(by: disposeBag)
+        deleteTrigger.map { $0.id }.bind(to: deleteUser).disposed(by: disposeBag)
 
         cellSelected.bind(to: changeDefaultAction.inputs).disposed(by: disposeBag)
 
@@ -133,6 +115,18 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
                         }, onError: onError)
 
                 }, onError: onError)
+        }
+    }
+
+    private var deleteUser: Binder<Int> {
+        return .init(self) { (base, identifier) in
+            let realm = try! Realm(configuration: realmConfiguration)
+            guard let user = realm.object(ofType: User.self, forPrimaryKey: identifier) else { return }
+            let secrets = user.secretCredentials
+            try! realm.write {
+                realm.delete(secrets)
+                realm.delete(user)
+            }
         }
     }
 }

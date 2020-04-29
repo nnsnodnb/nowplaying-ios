@@ -10,9 +10,8 @@ import Foundation
 import RealmSwift
 import RxCocoa
 import RxDataSources
+import RxRealm
 import RxSwift
-
-typealias AccountManageSectionModel = AnimatableSectionModel<String, User>
 
 protocol AccountManageViewModelInput {
 
@@ -24,7 +23,7 @@ protocol AccountManageViewModelInput {
 
 protocol AccountManageViewModelOutput {
 
-    var dataSources: Observable<[AccountManageSectionModel]> { get }
+    var dataSource: Observable<(AnyRealmCollection<User>, RealmChangeset?)> { get }
     var loginSuccess: Observable<String> { get }
     var loginError: Observable<String> { get }
     var changedDefaultAccount: Observable<User> { get }
@@ -44,7 +43,7 @@ final class AccountManageViewModel: AccountManageViewModelType {
     let editTrigger: PublishRelay<Void> = .init()
     let deleteTrigger: PublishRelay<User> = .init()
     let cellSelected: PublishRelay<User> = .init()
-    let dataSources: Observable<[AccountManageSectionModel]>
+    let dataSource: Observable<(AnyRealmCollection<User>, RealmChangeset?)>
     let loginSuccess: Observable<String>
     let loginError: Observable<String>
     let changedDefaultAccount: Observable<User>
@@ -57,7 +56,7 @@ final class AccountManageViewModel: AccountManageViewModelType {
     private let accounts: BehaviorSubject<[User]> = .init(value: [])
 
     init(router: AccountManageRouter) {
-        dataSources = accounts.map { [AccountManageSectionModel(model: "", items: $0)] }.asObservable()
+        dataSource = .empty()
         loginSuccess = .empty()
         loginError = .empty()
         changedDefaultAccount = .empty()

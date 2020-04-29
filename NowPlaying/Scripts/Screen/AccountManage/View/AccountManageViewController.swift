@@ -9,11 +9,11 @@
 import Feeder
 import RealmSwift
 import RxCocoa
-import RxDataSources
 import RxSwift
 import SafariServices
 import SVProgressHUD
 import UIKit
+import Umbrella
 
 final class AccountManageViewController: UIViewController {
 
@@ -32,8 +32,7 @@ final class AccountManageViewController: UIViewController {
                 })
                 .disposed(by: disposeBag)
 
-            tableView.rx.modelSelected(User.self).bind(to: viewModel.input.cellSelected).disposed(by: disposeBag)
-            tableView.rx.modelDeleted(User.self).bind(to: viewModel.input.deleteTrigger).disposed(by: disposeBag)
+            tableView.rx.realmModelSelected(User.self).bind(to: viewModel.input.cellSelected).disposed(by: disposeBag)
         }
     }
 
@@ -41,17 +40,11 @@ final class AccountManageViewController: UIViewController {
 
     private(set) var viewModel: AccountManageViewModelType!
 
-    private lazy var configureCell: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel>.ConfigureCell = { (_, tableView, indexPath, item) in
-        let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.accountManageTableViewCell, for: indexPath)!
-        cell.user = item
-        return cell
-    }
-    private lazy var canEditRowAtIndexPath: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel>.CanEditRowAtIndexPath = { (_, _) in
-        return true
-    }
-    private lazy var dataSource: RxTableViewSectionedAnimatedDataSource<AccountManageSectionModel> = .init(
-        configureCell: configureCell, canEditRowAtIndexPath: canEditRowAtIndexPath
-    )
+    private lazy var dataSource: RxTableViewRealmDataSource<User> = {
+        return .init(cellIdentifier: R.reuseIdentifier.accountManageTableViewCell.identifier, cellType: AccountManageTableViewCell.self) {
+            $0.user = $2
+        }
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +57,7 @@ final class AccountManageViewController: UIViewController {
         editBarButtonItem.rx.tap.bind(to: viewModel.input.editTrigger).disposed(by: disposeBag)
         navigationItem.rightBarButtonItems = [editBarButtonItem, addBarButtonItem]
 
-        viewModel.output.dataSources.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        viewModel.output.dataSource.bind(to: tableView.rx.realmChanges(dataSource)).disposed(by: disposeBag)
         viewModel.output.loginSuccess
             .do(onNext: { (_) in
                 Feeder.Notification(.success).notificationOccurred()
@@ -85,14 +78,6 @@ final class AccountManageViewController: UIViewController {
                 SVProgressHUD.dismiss(withDelay: 1)
             })
             .disposed(by: disposeBag)
-
-        viewModel.output.changedDefaultAccount
-            .map { _ in }
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                self?.tableView.reloadSections([0], animationStyle: .none)
-            })
-            .disposed(by: disposeBag)
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -107,7 +92,9 @@ final class AccountManageViewController: UIViewController {
 extension AccountManageViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteRowAction = UITableViewRowAction(style: .destructive, title: "ログアウト") { (_, indexPath) in
+        let deleteRowAction = UITableViewRowAction(style: .destructive, title: "ログアウト") { [unowned self] (_, indexPath) in
+            let user = self.dataSource.model(at: indexPath)
+            self.viewModel.input.deleteTrigger.accept(user)
             tableView.dataSource?.tableView?(tableView, commit: .delete, forRowAt: indexPath)
         }
         return [deleteRowAction]
