@@ -197,6 +197,7 @@ targets:
             - carthage: Differentiator
             - carthage: RxCocoa
             - carthage: RxDataSources
+            - carthage: RxRealm
             - carthage: RxRelay
             - carthage: RxSwift
             - carthage: ScrollFlowLabel

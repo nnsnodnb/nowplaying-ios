@@ -42,7 +42,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
 
     init(router: AccountManageRouter) {
         self.router = router
-        dataSources = accounts.map { [.init(model: "", items: $0.map { $0 })] }.asObservable()
+        dataSources = accounts.map { [.init(model: "", items: $0)] }.asObservable()
 
         loginSuccess = loginSuccessTrigger.map { "@\($0)" }.observeOn(MainScheduler.instance).asObservable()
         loginError = loginErrorTrigger.map { (error) -> String in
