@@ -28,6 +28,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/Carthage</string>
+			<key>Title</key>
+			<string>Carthage</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/Crashlytics</string>
 			<key>Title</key>
 			<string>Crashlytics</string>
@@ -343,6 +351,14 @@
 			<string>moe.nnsnodnb.NowPlaying/SwiftLint</string>
 			<key>Title</key>
 			<string>SwiftLint</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/XcodeGen</string>
+			<key>Title</key>
+			<string>XcodeGen</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

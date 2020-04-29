@@ -9,6 +9,7 @@ configs:
 
 options:
     bundleIdPrefix: moe.nnsnodnb
+    carthageExecutablePath: mint run carthage
     developmentLanguage: ja
     usesTabs: false
     indentWidth: 4
@@ -129,12 +130,12 @@ targets:
               outputFiles:
                   - $(SRCROOT)/NowPlaying/Scripts/R.generated.swift
         postCompileScripts:
-            - script: "${PODS_ROOT}/SwiftLint/swiftlint"
+            - script: "mint run swiftlint"
               name: SwiftLint
         postBuildScripts:
             - script: |
                 if [[ $CONFIGURATION = "Debug" ]]; then
-                  ${PODS_ROOT}/LicensePlist/license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle \
+                  mint run LicensePlist license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle \
                   --github-token ${GITHUB_ACCESS_TOKEN} \
                   --config-path ${SRCROOT}/NowPlaying/Resources/license_plist.yml \
                   --prefix moe.nnsnodnb.NowPlaying \

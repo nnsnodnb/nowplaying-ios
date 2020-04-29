@@ -11,8 +11,6 @@ target 'NowPlaying' do
   pod 'Firebase/AdMob'
   pod 'Firebase/Analytics'
   pod 'Firebase/Database'
-  pod 'LicensePlist'
   pod 'R.swift'
-  pod 'SwiftLint'
 
 end
