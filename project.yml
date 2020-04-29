@@ -92,7 +92,6 @@ targets:
                   - Resources/Config/NowPlaying-Debug.xcconfig.sample
                   - Resources/Config/NowPlaying-Release.xcconfig.sample
                   - Resources/Settings.bundle/moe.nnsnodnb.NowPlaying.latest_result.txt
-                  - Scripts/Vendors
             - path: NowPlaying/Scripts/R.generated.swift
               optional: true
               type: file
@@ -105,9 +104,6 @@ targets:
             - path: NowPlaying/Resources/GoogleService-Info.plist
               optional: true
               type: file
-            - path: NowPlaying/Scripts/Vendors/RxRealmDataSources/Pod/Classes
-              group: NowPlaying/Scripts/Vendors/RxRealmDataSources
-              type: group
         requiresObjCLinking: true
         dependencies:
             - carthage: APIKit
@@ -197,6 +193,11 @@ targets:
         platform: iOS
         sources:
             - path: Umbrella
+              excludes:
+                  - Vendors
+            - path: Umbrella/Vendors/RxRealmDataSources/Pod/Classes
+              group: Umbrella/Vendors/RxRealmDataSources
+              type: group
         dependencies:
             - carthage: Action
             - carthage: Differentiator
