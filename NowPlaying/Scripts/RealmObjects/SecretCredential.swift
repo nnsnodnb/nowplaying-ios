@@ -49,9 +49,8 @@ final class SecretCredential: Object {
     }
 
     class func createMastodon(application: ClientApplication, accessToken: String, hostname: String, user: User?) -> SecretCredential {
-        let domainName = hostname.replacingOccurrences(of: "https://", with: "")
         let secret = self.init(consumerKey: application.clientID, consumerSecret: application.clientSecret, authToken: accessToken,
-                               authTokenSecret: "", domainName: domainName, user: user)
+                               authTokenSecret: "", domainName: hostname, user: user)
         return secret
     }
 }

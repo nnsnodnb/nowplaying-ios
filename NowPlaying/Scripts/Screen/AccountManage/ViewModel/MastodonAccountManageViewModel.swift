@@ -63,7 +63,7 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
         // インスタンスの選択で通知される
         NotificationCenter.default.rx.notification(.selectedMastodonInstance)
             .compactMap { $0.object as? Instance }
-            .map { "https://\($0.name)" }
+            .map { $0.name }
             .bind(to: hostname)
             .disposed(by: disposeBag)
 

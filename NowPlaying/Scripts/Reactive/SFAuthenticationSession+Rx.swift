@@ -22,7 +22,7 @@ extension Reactive where Base == SFAuthenticationSession {
 
     static func authorize(hostname: String, application: ClientApplication) -> Single<String> {
         return .create { (observer) -> Disposable in
-            let url = URL(string: "\(hostname)/oauth/authorize")!
+            let url = URL(string: "https://\(hostname)/oauth/authorize")!
             var components = URLComponents(url: url, resolvingAgainstBaseURL: url.baseURL != nil)
             components?.queryItems = [
                 .init(name: "client_id", value: application.clientID),

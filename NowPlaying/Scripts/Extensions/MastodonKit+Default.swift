@@ -12,7 +12,7 @@ import MastodonKit
 extension Client {
 
     static func create(baseURL: String, accessToken: String? = nil) -> Client {
-        return .init(baseURL: baseURL, accessToken: accessToken)
+        return .init(baseURL: "https://\(baseURL)", accessToken: accessToken)
     }
 }
 
