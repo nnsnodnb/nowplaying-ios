@@ -6,6 +6,7 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import Differentiator
 import Foundation
 
 struct Instance: Codable {
@@ -20,6 +21,24 @@ struct Instance: Codable {
         case name
         case info
         case thumbnailURL = "thumbnail"
+    }
+}
+
+// MARK: - Equatable
+
+extension Instance: Equatable {
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.instanceID == rhs.instanceID
+    }
+}
+
+// MARK: - IdentifiableType
+
+extension Instance: IdentifiableType {
+
+    var identity: String {
+        return instanceID
     }
 }
 

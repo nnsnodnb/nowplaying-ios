@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchMastodonTableViewCell" rowHeight="44" id="RAR-vU-c8g" customClass="SearchMastodonTableViewCell" customModule="NowPlaying" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RAR-vU-c8g" id="VE3-rc-uVM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="RI8-AQ-jJz">
+                        <rect key="frame" x="16" y="0.0" width="296" height="44"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="amd-Qo-qd3">
+                                <rect key="frame" x="0.0" y="0.0" width="87" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="87" id="q3p-m1-k6u"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xN1-c3-KZg">
+                                <rect key="frame" x="95" y="0.0" width="201" height="44"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4jh-Jk-pGM">
+                                        <rect key="frame" x="0.0" y="0.0" width="201" height="25"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="25" id="6eG-kD-hfy"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jyo-E2-OKI">
+                                        <rect key="frame" x="0.0" y="25" width="201" height="19"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="fYb-cl-8a8"/>
+                        </constraints>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="RI8-AQ-jJz" firstAttribute="leading" secondItem="VE3-rc-uVM" secondAttribute="leading" constant="16" id="UIq-51-Gxp"/>
+                    <constraint firstItem="RI8-AQ-jJz" firstAttribute="top" secondItem="VE3-rc-uVM" secondAttribute="top" id="WIQ-2d-PI0"/>
+                    <constraint firstAttribute="trailing" secondItem="RI8-AQ-jJz" secondAttribute="trailing" constant="8" id="X1b-YO-12w"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="5bo-G4-XnD"/>
+            <connections>
+                <outlet property="instanceDescriptionLabel" destination="jyo-E2-OKI" id="ROA-y6-8eA"/>
+                <outlet property="instanceNameLabel" destination="4jh-Jk-pGM" id="a9Q-6t-oMn"/>
+                <outlet property="thumbnailImageView" destination="amd-Qo-qd3" id="CU9-O1-Noh"/>
+            </connections>
+            <point key="canvasLocation" x="47.826086956521742" y="35.491071428571423"/>
+        </tableViewCell>
+    </objects>
+</document>

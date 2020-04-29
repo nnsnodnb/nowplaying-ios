@@ -6,6 +6,9 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import RxCocoa
+import RxDataSources
+import RxSwift
 import UIKit
 
 final class SearchMastodonViewController: UIViewController {
@@ -13,12 +16,23 @@ final class SearchMastodonViewController: UIViewController {
     @IBOutlet private weak var tableView: UITableView! {
         didSet {
             tableView.tableFooterView = UIView()
+            tableView.register(R.nib.searchMastodonTableViewCell)
             tableView.tableHeaderView = searchController.searchBar
         }
     }
 
+    private let disposeBag = DisposeBag()
+
     private(set) var viewModel: SearchMastodonViewModelType!
 
+    private lazy var configureCell: RxTableViewSectionedAnimatedDataSource<InstanceAnimatableSectionModel>.ConfigureCell = {
+        let cell = $1.dequeueReusableCell(withIdentifier: R.nib.searchMastodonTableViewCell, for: $2)!
+        cell.instance = $3
+        return cell
+    }
+    private lazy var dataSource: RxTableViewSectionedAnimatedDataSource<InstanceAnimatableSectionModel> = {
+        return .init(configureCell: configureCell)
+    }()
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = "例: mstdn.jp"
@@ -29,6 +43,8 @@ final class SearchMastodonViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        viewModel.output.dataSource.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
     }
 }
 
