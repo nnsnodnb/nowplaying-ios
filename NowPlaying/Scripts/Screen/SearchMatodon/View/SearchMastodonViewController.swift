@@ -18,6 +18,14 @@ final class SearchMastodonViewController: UIViewController {
             tableView.tableFooterView = UIView()
             tableView.register(R.nib.searchMastodonTableViewCell)
             tableView.tableHeaderView = searchController.searchBar
+
+            searchController.searchBar.rx.cancelButtonClicked
+                .bind(to: viewModel.input.cancelButtonClicked).disposed(by: disposeBag)
+
+            searchController.searchBar.rx.text.orEmpty
+                .distinctUntilChanged()
+                .bind(to: viewModel.input.searchText)
+                .disposed(by: disposeBag)
         }
     }
 

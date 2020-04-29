@@ -11,15 +11,13 @@ import Foundation
 
 struct InstanceSearchRequest: InstancesSocialRequst {
 
-    typealias Response = InstanceResponse
-
     let path: String = "/api/1.0/instances/search"
     let query: String
 
     var queryParameters: [String: Any]? {
         return [
             "count": 20,
-            "query": query,
+            "q": query,
             "name": true
         ]
     }

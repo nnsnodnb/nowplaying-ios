@@ -11,8 +11,6 @@ import Foundation
 
 struct InstanceListRequest: InstancesSocialRequst {
 
-    typealias Response = InstanceResponse
-
     let path: String = "/api/1.0/instances/list"
     let queryParameters: [String: Any]? = ["sort_by": "users", "sort_order": "desc"]
 }

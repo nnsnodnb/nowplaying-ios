@@ -9,7 +9,7 @@
 import APIKit
 import Foundation
 
-protocol InstancesSocialRequst: Request {}
+protocol InstancesSocialRequst: Request where Response == InstanceResponse {}
 
 extension InstancesSocialRequst {
 
