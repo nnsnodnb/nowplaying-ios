@@ -6,11 +6,9 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
-import Action
 import Foundation
 import RealmSwift
 import RxCocoa
-import RxDataSources
 import RxRealm
 import RxSwift
 import SwifteriOS
@@ -31,7 +29,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
 
     private let disposeBag = DisposeBag()
     private let router: AccountManageRouter
-    private let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret)
+    private let swifter = Swifter.nowPlaying()
     private let loginSuccessTrigger: PublishRelay<String> = .init()
     private let loginErrorTrigger: PublishRelay<Error> = .init()
 
@@ -94,14 +92,12 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
                         base?.loginErrorTrigger.accept(AuthError.alreadyUser)
                         return
                     }
-                    let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret,
-                                          oauthToken: token.key, oauthTokenSecret: token.secret)
+                    let swifter = Swifter.nowPlaying(oauthToken: token.key, oauthTokenSecret: token.secret)
                     _ = swifter.rx.showUser(tag: .id(token.userID))
                         .subscribe(onSuccess: { (twitterUser) in
                             let user = User(serviceID: twitterUser.userID, name: twitterUser.name, screenName: twitterUser.screenName,
                                             iconURLString: twitterUser.iconURLString, service: .twitter)
-                            let secret = SecretCredential(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret,
-                                                          authToken: token.key, authTokenSecret: token.secret, domainName: "", user: user)
+                            let secret = SecretCredential.createTwitter(authToken: token.key, authTokenSecret: token.secret, user: user)
 
                             let realm = try! Realm(configuration: realmConfiguration)
                             try! realm.write {
