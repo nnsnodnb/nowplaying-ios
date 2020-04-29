@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MastodonKit
 import RealmSwift
 import RxCocoa
 import RxRealm
@@ -27,12 +28,23 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
     var output: AccountManageViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
-    private let accounts: BehaviorSubject<[User]> = .init(value: [])
 
     init(router: AccountManageRoutable) {
-        dataSource = .empty()
+        let realm = try! Realm(configuration: realmConfiguration)
+        let results = realm.objects(User.self).filter("serviceType = %@", service.rawValue).sorted(byKeyPath: "id", ascending: true)
+        dataSource = Observable.changeset(from: results)
+
         loginSuccess = .empty()
         loginError = .empty()
+
+        addTrigger
+            .subscribe(onNext: {
+                _ = router.login()
+                    .subscribe(onNext: { (accessToken) in
+                        print(accessToken.key)
+                    })
+            })
+            .disposed(by: disposeBag)
     }
 }
 

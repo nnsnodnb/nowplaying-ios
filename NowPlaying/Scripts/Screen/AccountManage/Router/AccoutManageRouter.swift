@@ -74,7 +74,11 @@ final class MastodonAccountManageRouter: AccountManageRoutable {
     }
 
     func login() -> Observable<AuthAccessToken> {
-        fatalError("Not implementation")
+        return .create { [weak self] (observer) -> Disposable in
+            let viewController = SearchMastodonViewController.makeInstance()
+            self?.view.navigationController?.pushViewController(viewController, animated: true)
+            return Disposables.create()
+        }
     }
 
     func setEditing() {
