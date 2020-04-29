@@ -13,10 +13,19 @@ final class SearchMastodonViewController: UIViewController {
     @IBOutlet private weak var tableView: UITableView! {
         didSet {
             tableView.tableFooterView = UIView()
+            tableView.tableHeaderView = searchController.searchBar
         }
     }
 
     private(set) var viewModel: SearchMastodonViewModelType!
+
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = "例: mstdn.jp"
+        searchController.searchBar.searchBarStyle = .default
+        searchController.obscuresBackgroundDuringPresentation = false
+        return searchController
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
