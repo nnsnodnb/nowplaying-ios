@@ -24,7 +24,6 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     let dataSource: Observable<(AnyRealmCollection<User>, RealmChangeset?)>
     let loginSuccess: Observable<String>
     let loginError: Observable<String>
-    let changedDefaultAccount: Observable<User>
     let service: Service = .twitter
 
     var input: AccountManageViewModelInput { return self }
@@ -35,10 +34,6 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     private let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret)
     private let loginSuccessTrigger: PublishRelay<String> = .init()
     private let loginErrorTrigger: PublishRelay<Error> = .init()
-
-    private lazy var changeDefaultAction: Action<User, User> = .init {
-        return User.changeDefault(toUser: $0)
-    }
 
     init(router: AccountManageRouter) {
         self.router = router
@@ -63,9 +58,6 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
             }
         }.observeOn(MainScheduler.instance).asObservable()
 
-        let newDefaultAccount: PublishRelay<User> = .init()
-        changedDefaultAccount = newDefaultAccount.asObservable()
-
         addTrigger.bind(to: login).disposed(by: disposeBag)
 
         editTrigger
@@ -76,9 +68,16 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
 
         deleteTrigger.map { $0.id }.bind(to: deleteUser).disposed(by: disposeBag)
 
-        cellSelected.bind(to: changeDefaultAction.inputs).disposed(by: disposeBag)
-
-        changeDefaultAction.elements.bind(to: newDefaultAccount).disposed(by: disposeBag)
+        cellSelected
+            .subscribe(onNext: { [unowned self] (user) in
+                let realm = try! Realm(configuration: realmConfiguration)
+                let others = realm.objects(User.self).filter("id != %@ AND serviceType = %@", user.id, self.service.rawValue)
+                try! realm.write {
+                    user.isDefault = true
+                    others.setValue(false, forKey: "isDefault")
+                }
+            })
+            .disposed(by: disposeBag)
     }
 
     private var login: Binder<Void> {
@@ -123,9 +122,22 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
             let realm = try! Realm(configuration: realmConfiguration)
             guard let user = realm.object(ofType: User.self, forPrimaryKey: identifier) else { return }
             let secrets = user.secretCredentials
+
+            let defaultUser: User?
+            if user.isDefault {
+                defaultUser = realm.objects(User.self).filter("id != %@ AND serviceType = %@", user.id, base.service.rawValue).first
+            } else {
+                defaultUser = nil
+            }
+
             try! realm.write {
                 realm.delete(secrets)
                 realm.delete(user)
+                defaultUser?.isDefault = true
+            }
+
+            if let newDefaultUser = defaultUser, newDefaultUser.isDefault {
+                base.router.completeChangedDefaultAccount(user: newDefaultUser)
             }
         }
     }

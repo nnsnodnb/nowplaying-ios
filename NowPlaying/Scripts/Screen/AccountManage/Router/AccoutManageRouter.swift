@@ -25,6 +25,7 @@ protocol AccountManageRouter: AnyObject {
     init(view: AccountManageViewer)
     func login() -> Observable<AuthAccessToken>
     func setEditing()
+    func completeChangedDefaultAccount(user: User)
 }
 
 final class TwitterAccountManageRouterImpl: AccountManageRouter {
@@ -56,6 +57,12 @@ final class TwitterAccountManageRouterImpl: AccountManageRouter {
     func setEditing() {
         view.setEditing(!view.isEditing, animated: true)
     }
+
+    func completeChangedDefaultAccount(user: User) {
+        let alert = UIAlertController(title: "デフォルトアカウントの変更", message: "\(user.name)に変更されました", preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default, handler: nil))
+        view.present(alert, animated: true, completion: nil)
+    }
 }
 
 final class AccountManageRouterImpl: AccountManageRouter {
@@ -71,6 +78,10 @@ final class AccountManageRouterImpl: AccountManageRouter {
     }
 
     func setEditing() {
+        fatalError("Not implementation")
+    }
+
+    func completeChangedDefaultAccount(user: User) {
         fatalError("Not implementation")
     }
 }

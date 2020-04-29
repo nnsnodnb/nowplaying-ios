@@ -26,7 +26,6 @@ protocol AccountManageViewModelOutput {
     var dataSource: Observable<(AnyRealmCollection<User>, RealmChangeset?)> { get }
     var loginSuccess: Observable<String> { get }
     var loginError: Observable<String> { get }
-    var changedDefaultAccount: Observable<User> { get }
 }
 
 protocol AccountManageViewModelType: AnyObject {
@@ -46,7 +45,6 @@ final class AccountManageViewModel: AccountManageViewModelType {
     let dataSource: Observable<(AnyRealmCollection<User>, RealmChangeset?)>
     let loginSuccess: Observable<String>
     let loginError: Observable<String>
-    let changedDefaultAccount: Observable<User>
     let service: Service = .mastodon
 
     var input: AccountManageViewModelInput { return self }
@@ -59,7 +57,6 @@ final class AccountManageViewModel: AccountManageViewModelType {
         dataSource = .empty()
         loginSuccess = .empty()
         loginError = .empty()
-        changedDefaultAccount = .empty()
     }
 }
 
