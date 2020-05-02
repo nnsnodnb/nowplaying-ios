@@ -110,6 +110,7 @@ targets:
             - carthage: APIKit
             - carthage: DeallocationChecker
             - carthage: DTTJailbreakDetection
+            - carthage: Eureka
             - carthage: Feeder
             - carthage: KeychainAccess
             - carthage: Hero

@@ -1,7 +1,6 @@
 PODS:
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
-  - Eureka (5.1.0)
   - Fabric (1.10.2)
   - Firebase/AdMob (6.15.0):
     - Firebase/CoreOnly
@@ -91,7 +90,6 @@ PODS:
 
 DEPENDENCIES:
   - Crashlytics
-  - Eureka
   - Fabric
   - Firebase/AdMob
   - Firebase/Analytics
@@ -100,7 +98,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Crashlytics
-    - Eureka
     - Fabric
     - Firebase
     - FirebaseAnalytics
@@ -122,7 +119,6 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
-  Eureka: 18a5076dcf0c41f9cd9748aa1c42f4d11434bdae
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Firebase: 5d77105d9740a07ca6b16927ca971db7e860faaf
   FirebaseAnalytics: e83e64b1231dedcd9ddd4bdecd9bcfd6ba341679
@@ -142,6 +138,6 @@ SPEC CHECKSUMS:
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
 
-PODFILE CHECKSUM: 70ada4db50c2182e9def4b51615fde8c6581632e
+PODFILE CHECKSUM: 768ae47479ffe5b2d2e1b7771a86db4f50721192
 
 COCOAPODS: 1.8.4
