@@ -85,6 +85,17 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
 
         deleteTrigger.map { $0.id }.bind(to: deleteUser).disposed(by: disposeBag)
 
+        cellSelected
+            .subscribe(onNext: { [unowned self] (user) in
+                let realm = try! Realm(configuration: realmConfiguration)
+                let others = realm.objects(User.self).filter("id != %@ AND serviceType = %@", user.id, self.service.rawValue)
+                try! realm.write {
+                    user.isDefault = true
+                    others.setValue(false, forKey: "isDefault")
+                }
+            })
+            .disposed(by: disposeBag)
+
         // インスタンスの選択で通知される
         NotificationCenter.default.rx.notification(.selectedMastodonInstance)
             .compactMap { $0.object as? Instance }
