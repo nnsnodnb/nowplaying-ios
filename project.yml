@@ -112,6 +112,7 @@ targets:
             - carthage: Feeder
             - carthage: KeychainAccess
             - carthage: Hero
+            - carthage: MastodonKit
             - carthage: Nuke
             - carthage: Realm
             - carthage: RealmSwift

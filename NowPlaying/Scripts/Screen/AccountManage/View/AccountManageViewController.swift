@@ -75,7 +75,13 @@ final class AccountManageViewController: UIViewController {
             })
             .subscribe(onNext: { (message) in
                 SVProgressHUD.showError(withStatus: message)
-                SVProgressHUD.dismiss(withDelay: 1)
+                SVProgressHUD.dismiss(withDelay: 2)
+            })
+            .disposed(by: disposeBag)
+
+        NotificationCenter.default.rx.notification(.selectedMastodonInstance)
+            .subscribe(onNext: { (_) in
+                SVProgressHUD.show()
             })
             .disposed(by: disposeBag)
     }
@@ -120,16 +126,16 @@ extension AccountManageViewController {
 
     class func makeInstance(service: Service) -> AccountManageViewController {
         let viewController = AccountManageViewController()
-        let router: AccountManageRouter
+        let router: AccountManageRoutable
         let viewModel: AccountManageViewModelType
 
         switch service {
         case .twitter:
-            router = TwitterAccountManageRouterImpl(view: viewController)
+            router = TwitterAccountManageRouter(view: viewController)
             viewModel = TwitterAccountManageViewModel(router: router)
         case .mastodon:
-            router = AccountManageRouterImpl(view: viewController)
-            viewModel = AccountManageViewModel(router: router)
+            router = MastodonAccountManageRouter(view: viewController)
+            viewModel = MastodonAccountManageViewModel(router: router)
         }
 
         viewController.inject(dependency: .init(viewModel: viewModel))

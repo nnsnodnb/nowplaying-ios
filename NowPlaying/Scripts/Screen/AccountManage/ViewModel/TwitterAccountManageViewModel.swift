@@ -28,12 +28,11 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
     var output: AccountManageViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
-    private let router: AccountManageRouter
-    private let swifter = Swifter.nowPlaying()
+    private let router: AccountManageRoutable
     private let loginSuccessTrigger: PublishRelay<String> = .init()
     private let loginErrorTrigger: PublishRelay<Error> = .init()
 
-    init(router: AccountManageRouter) {
+    init(router: AccountManageRoutable) {
         self.router = router
 
         let realm = try! Realm(configuration: realmConfiguration)

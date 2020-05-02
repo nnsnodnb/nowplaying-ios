@@ -20,7 +20,7 @@ struct AuthAccessToken {
     let userID: String
 }
 
-protocol AccountManageRouter: AnyObject {
+protocol AccountManageRoutable: AnyObject {
 
     init(view: AccountManageViewer)
     func login() -> Observable<AuthAccessToken>
@@ -28,7 +28,7 @@ protocol AccountManageRouter: AnyObject {
     func completeChangedDefaultAccount(user: User)
 }
 
-final class TwitterAccountManageRouterImpl: AccountManageRouter {
+final class TwitterAccountManageRouter: AccountManageRoutable {
 
     private(set) weak var view: AccountManageViewer!
 
@@ -65,7 +65,7 @@ final class TwitterAccountManageRouterImpl: AccountManageRouter {
     }
 }
 
-final class AccountManageRouterImpl: AccountManageRouter {
+final class MastodonAccountManageRouter: AccountManageRoutable {
 
     private(set) weak var view: AccountManageViewer!
 
@@ -74,14 +74,18 @@ final class AccountManageRouterImpl: AccountManageRouter {
     }
 
     func login() -> Observable<AuthAccessToken> {
-        fatalError("Not implementation")
+        let viewController = SearchMastodonViewController.makeInstance()
+        view.navigationController?.pushViewController(viewController, animated: true)
+        return .empty()
     }
 
     func setEditing() {
-        fatalError("Not implementation")
+        view.setEditing(!view.isEditing, animated: true)
     }
 
     func completeChangedDefaultAccount(user: User) {
-        fatalError("Not implementation")
+        let alert = UIAlertController(title: "デフォルトアカウントの変更", message: "\(user.name)に変更されました", preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default, handler: nil))
+        view.present(alert, animated: true, completion: nil)
     }
 }

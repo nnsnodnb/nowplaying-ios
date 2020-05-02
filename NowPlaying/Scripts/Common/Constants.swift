@@ -37,3 +37,8 @@ extension URL {
 
     static let twitterCallbackURL = URL(string: "swifter-\(Environments.twitterConsumerKey)://success")!
 }
+
+extension Notification.Name {
+
+    static let selectedMastodonInstance = Notification.Name("selected_mastodon_instance")
+}

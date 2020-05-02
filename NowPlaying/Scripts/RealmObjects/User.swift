@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MastodonKit
 import RealmSwift
 import RxCocoa
 import RxSwift
@@ -96,5 +97,9 @@ extension User {
     class func getDefaultUser(service: Service) -> User? {
         let realm = try! Realm(configuration: realmConfiguration)
         return realm.objects(User.self).filter("serviceType = %@ AND isDefault = %@", service.rawValue, true).first
+    }
+
+    class func createMastodon(_ account: Account) -> User {
+        return User(serviceID: account.id, name: account.displayName, screenName: account.username, iconURLString: account.avatar, service: .mastodon)
     }
 }
