@@ -1,21 +1,3 @@
-PODS:
-  - Crashlytics (3.14.0):
-    - Fabric (~> 1.10.2)
-  - Fabric (1.10.2)
-
-DEPENDENCIES:
-  - Crashlytics
-  - Fabric
-
-SPEC REPOS:
-  trunk:
-    - Crashlytics
-    - Fabric
-
-SPEC CHECKSUMS:
-  Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
-  Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
-
-PODFILE CHECKSUM: 0dc021aa0a1a0634fe774f414e86f568229cf668
+PODFILE CHECKSUM: b4059b9eba6bf6e306fcc3ae4b08ffb657334ac1
 
 COCOAPODS: 1.8.4

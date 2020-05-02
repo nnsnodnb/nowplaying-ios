@@ -76,3 +76,5 @@ NowPlaying/Resources/GoogleService-Info.plist
 moe.nnsnodnb.NowPlaying.latest_result.txt
 NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig
 NowPlaying/Resources/Config/NowPlaying-Release.xcconfig
+NowPlaying/Resources/Crashlytics
+!NowPlaying/Resources/Crashlytics/.gitkeep

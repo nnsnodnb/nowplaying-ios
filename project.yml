@@ -94,6 +94,7 @@ targets:
                   - Resources/Config/NowPlaying-Debug.xcconfig.sample
                   - Resources/Config/NowPlaying-Release.xcconfig.sample
                   - Resources/Settings.bundle/moe.nnsnodnb.NowPlaying.latest_result.txt
+                  - Resources/Crashlytics
             - path: NowPlaying/Scripts/R.generated.swift
               optional: true
               type: file
@@ -165,6 +166,19 @@ targets:
                   - $(TEMP_DIR)/rswift-lastrun
               outputFiles:
                   - $(SRCROOT)/NowPlaying/Scripts/R.generated.swift
+            - script: |
+                if [[ ! -f "${SRCROOT}/NowPlaying/Resources/Crashlytics/run" ]]; then
+                  curl -sSL "https://github.com/firebase/firebase-ios-sdk/raw/master/Crashlytics/run" -o "${SRCROOT}/NowPlaying/Resources/Crashlytics/run"
+                  chmod +x "${SRCROOT}/NowPlaying/Resources/Crashlytics/run"
+                fi
+                if [[ ! -f "${SRCROOT}/NowPlaying/Resources/Crashlytics/upload-symbols" ]]; then
+                  curl -sSL "https://github.com/firebase/firebase-ios-sdk/raw/master/Crashlytics/upload-symbols" -o "${SRCROOT}/NowPlaying/Resources/Crashlytics/upload-symbols"
+                  chmod +x "${SRCROOT}/NowPlaying/Resources/Crashlytics/upload-symbols"
+                fi
+              name: Download Crashlytics' scripts
+              outputFiles:
+                  - $(SRCROOT)/NowPlaying/Resources/Crashlytics/run
+                  - $(SRCROOT)/NowPlaying/Resources/Crashlytics/upload-symbols
         postCompileScripts:
             - script: "mint run swiftlint"
               name: SwiftLint
@@ -178,10 +192,11 @@ targets:
                   --suppress-opening-directory
                 fi
               name: "LicensePlist"
-            - script: "${PODS_ROOT}/Fabric/run"
+            - script: "${SRCROOT}/NowPlaying/Resources/Crashlytics/run"
               name: Crashlytics
               inputFiles:
-                  - $(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)
+                  - ${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}
+                  - ${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}
         scheme:
             testTargets:
                 - NowPlayingTests

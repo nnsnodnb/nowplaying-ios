@@ -4,7 +4,4 @@ platform :ios, '11.0'
 target 'NowPlaying' do
   use_frameworks!
 
-  pod 'Crashlytics'
-  pod 'Fabric'
-
 end
