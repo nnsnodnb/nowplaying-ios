@@ -75,6 +75,12 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
             })
             .disposed(by: disposeBag)
 
+        editTrigger
+            .subscribe(onNext: {
+                router.setEditing()
+            })
+            .disposed(by: disposeBag)
+
         // インスタンスの選択で通知される
         NotificationCenter.default.rx.notification(.selectedMastodonInstance)
             .compactMap { $0.object as? Instance }

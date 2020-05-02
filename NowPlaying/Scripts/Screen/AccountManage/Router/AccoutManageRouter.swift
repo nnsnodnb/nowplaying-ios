@@ -80,7 +80,7 @@ final class MastodonAccountManageRouter: AccountManageRoutable {
     }
 
     func setEditing() {
-        fatalError("Not implementation")
+        view.setEditing(!view.isEditing, animated: true)
     }
 
     func completeChangedDefaultAccount(user: User) {
