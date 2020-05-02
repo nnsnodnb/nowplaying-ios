@@ -65,7 +65,11 @@ final class SearchMastodonViewModel: SearchMastodonViewModelType {
         dataSource = instances.map { [.init(model: "", items: $0)] }.asObservable()
 
         fetchListAction.elements.map { $0.instances }.bind(to: instances).disposed(by: disposeBag)
-        fetchSearchAction.elements.map { $0.instances }.bind(to: instances).disposed(by: disposeBag)
+        fetchSearchAction.elements
+            .withLatestFrom(searchText) { ($0.instances, $1) }
+            .map { !$1.isEmpty && $0.isEmpty ? [.notFound(hostname: $1)] : $0 }
+            .bind(to: instances)
+            .disposed(by: disposeBag)
 
         searchText
             .skip(1)

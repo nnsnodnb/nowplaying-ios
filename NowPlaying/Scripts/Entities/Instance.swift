@@ -22,6 +22,10 @@ struct Instance: Codable {
         case info
         case thumbnailURL = "thumbnail"
     }
+
+    static func notFound(hostname: String) -> Instance {
+        return .init(instanceID: "empty_\(hostname)", name: hostname, info: .init(shortDescription: "もしかして？"), thumbnailURL: nil)
+    }
 }
 
 // MARK: - Equatable

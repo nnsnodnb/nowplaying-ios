@@ -1,8 +1,8 @@
 //
-//  SectionModels.swift
+//  InstanceAnimatable.swift
 //  NowPlaying
 //
-//  Created by Oka Yuya on 2020/04/29.
+//  Created by Oka Yuya on 2020/05/02.
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 

@@ -21,6 +21,7 @@ final class SearchMastodonViewController: UIViewController {
 
             tableView.rx.itemSelected
                 .subscribe(onNext: { [unowned self] in
+                    self.searchController.dismiss(animated: true, completion: nil)
                     self.tableView.deselectRow(at: $0, animated: true)
                 })
                 .disposed(by: disposeBag)
