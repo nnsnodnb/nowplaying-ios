@@ -6,8 +6,5 @@ target 'NowPlaying' do
 
   pod 'Crashlytics'
   pod 'Fabric'
-  pod 'Firebase/AdMob'
-  pod 'Firebase/Analytics'
-  pod 'Firebase/Database'
 
 end

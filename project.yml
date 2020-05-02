@@ -82,6 +82,7 @@ targets:
                 TARGETED_DEVICE_FAMILY: 1
                 DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
                 CODE_SIGN_ENTITLEMENTS: NowPlaying/Resources/NowPlaying.entitlements
+                OTHER_LDFLAGS: $(inherited) -ObjC
             configs:
                 Debug:
                     OTHER_SWIFT_FLAGS: $(inherited) -D DEBUG
@@ -122,6 +123,37 @@ targets:
             - carthage: SnapKit
             - carthage: SVProgressHUD
             - carthage: SwifteriOS
+            - carthage: GoogleDataTransport
+              linkType: static
+            - carthage: GoogleDataTransportCCTSupport
+              linkType: static
+            - carthage: leveldb-library
+              linkType: static
+            - carthage: FIRAnalyticsConnector
+              linkType: static
+            - carthage: FirebaseAnalytics
+              linkType: static
+            - carthage: FirebaseCore
+              linkType: static
+            - carthage: FirebaseCoreDiagnostics
+              linkType: static
+            - carthage: FirebaseDatabase
+              linkType: static
+            - carthage: FirebaseInstallations
+              linkType: static
+            - carthage: GoogleAppMeasurement
+              linkType: static
+            - carthage: GoogleUtilities
+              linkType: static
+            - carthage: nanopb
+              linkType: static
+            - carthage: PromisesObjC
+              linkType: static
+            - carthage: GoogleMobileAds
+              linkType: static
+            - sdk: StoreKit.framework
+            - sdk: libc++.tbd
+            - sdk: libsqlite3.tbd
             - target: Umbrella
             - target: TodayExtension
               codeSign: false
