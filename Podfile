@@ -10,6 +10,5 @@ target 'NowPlaying' do
   pod 'Firebase/AdMob'
   pod 'Firebase/Analytics'
   pod 'Firebase/Database'
-  pod 'R.swift'
 
 end

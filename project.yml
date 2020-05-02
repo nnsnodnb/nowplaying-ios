@@ -117,6 +117,7 @@ targets:
             - carthage: Nuke
             - carthage: Realm
             - carthage: RealmSwift
+            - carthage: Rswift
             - carthage: SnapKit
             - carthage: SVProgressHUD
             - carthage: SwifteriOS
@@ -125,7 +126,7 @@ targets:
               codeSign: false
               embed: true
         preBuildScripts:
-            - script: "\"${PODS_ROOT}/R.swift/rswift\" generate \"${SRCROOT}/NowPlaying/Scripts/R.generated.swift\""
+            - script: "mint run R.swift generate ${SRCROOT}/NowPlaying/Scripts/R.generated.swift"
               name: R.swift
               inputFiles:
                   - $(TEMP_DIR)/rswift-lastrun

@@ -88,9 +88,6 @@ PODS:
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
   - PromisesObjC (1.2.8)
-  - R.swift (5.1.0):
-    - R.swift.Library (~> 5.1.0)
-  - R.swift.Library (5.1.0)
 
 DEPENDENCIES:
   - Crashlytics
@@ -99,7 +96,6 @@ DEPENDENCIES:
   - Firebase/AdMob
   - Firebase/Analytics
   - Firebase/Database
-  - R.swift
 
 SPEC REPOS:
   trunk:
@@ -123,8 +119,6 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
-    - R.swift
-    - R.swift.Library
 
 SPEC CHECKSUMS:
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
@@ -147,9 +141,7 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
-  R.swift: 8cbc4fc69b740305b6a17c8a8ed968eb788962d9
-  R.swift.Library: fa85ce1e0d0b7e818cd9e080df910ba54d2776cc
 
-PODFILE CHECKSUM: 44583dcba4ed632aabab6ba2ec4be209bb9589e5
+PODFILE CHECKSUM: 70ada4db50c2182e9def4b51615fde8c6581632e
 
 COCOAPODS: 1.8.4
