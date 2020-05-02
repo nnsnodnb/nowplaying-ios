@@ -1,3 +1,4 @@
 [submodule "Umbrella/Vendors/RxRealmDataSources"]
 	path = Umbrella/Vendors/RxRealmDataSources
-	url = git@github.com:RxSwiftCommunity/RxRealmDataSources.git
+	url = https://github.com/RxSwiftCommunity/RxRealmDataSources.git
+    shallow = true
