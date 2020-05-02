@@ -77,11 +77,6 @@ final class MastodonAccountManageRouter: AccountManageRoutable {
         let viewController = SearchMastodonViewController.makeInstance()
         view.navigationController?.pushViewController(viewController, animated: true)
         return .empty()
-//        return .create { [weak self] (observer) -> Disposable in
-//            let viewController = SearchMastodonViewController.makeInstance()
-//            self?.view.navigationController?.pushViewController(viewController, animated: true)
-//            return Disposables.create()
-//        }
     }
 
     func setEditing() {

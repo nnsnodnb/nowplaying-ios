@@ -75,7 +75,7 @@ final class AccountManageViewController: UIViewController {
             })
             .subscribe(onNext: { (message) in
                 SVProgressHUD.showError(withStatus: message)
-                SVProgressHUD.dismiss(withDelay: 1)
+                SVProgressHUD.dismiss(withDelay: 2)
             })
             .disposed(by: disposeBag)
 

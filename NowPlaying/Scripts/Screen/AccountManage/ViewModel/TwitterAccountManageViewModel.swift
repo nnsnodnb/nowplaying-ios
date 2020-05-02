@@ -29,7 +29,6 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
 
     private let disposeBag = DisposeBag()
     private let router: AccountManageRoutable
-    private let swifter = Swifter.nowPlaying()
     private let loginSuccessTrigger: PublishRelay<String> = .init()
     private let loginErrorTrigger: PublishRelay<Error> = .init()
 

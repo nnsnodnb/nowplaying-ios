@@ -32,6 +32,8 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
 
     private let disposeBag = DisposeBag()
     private let hostname: PublishRelay<String> = .init()
+    private let loginSuccessTrigger: PublishRelay<String> = .init()
+    private let loginErrorTrigger: PublishRelay<Error> = .init()
 
     private lazy var registerAppAction: Action<String, ClientApplication> = .init {
         return Client.create(baseURL: $0).rx.response(Clients.registerNowPlaying())
@@ -51,8 +53,21 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
         let results = realm.objects(User.self).filter("serviceType = %@", service.rawValue).sorted(byKeyPath: "id", ascending: true)
         dataSource = Observable.changeset(from: results)
 
-        loginSuccess = .empty()
-        loginError = .empty()
+        loginSuccess = loginSuccessTrigger.map { "@\($0)" }.observeOn(MainScheduler.instance).asObservable()
+        loginError = loginErrorTrigger.map { (error) -> String in
+            if let authError = error as? AuthError {
+                switch authError {
+                case .cancel:
+                    return "ログインをキャンセルしました"
+                case .alreadyUser:
+                    return "既にログインされているユーザです"
+                case .unknown:
+                    return "不明なエラーが発生しました: \(error.localizedDescription)"
+                }
+            } else {
+                return "ログインエラーが発生しました: \(error.localizedDescription)"
+            }
+        }.observeOn(MainScheduler.instance).asObservable()
 
         addTrigger
             .subscribe(onNext: {
@@ -70,6 +85,17 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
         // ホストネームが設定されたのでインスタンスにアプリケーションを登録する
         hostname.bind(to: registerAppAction.inputs).disposed(by: disposeBag)
 
+        subscribeActions()
+
+        Observable.merge(registerAppAction.errors, authorizeAction.errors, loginAppAction.errors, verifyTokenAction.errors)
+            .map { if case let .underlyingError(error) = $0 { return error } else { return AuthError.unknown } }
+            .bind(to: loginErrorTrigger)
+            .disposed(by: disposeBag)
+    }
+
+    // MARK: - Private method
+
+    private func subscribeActions() {
         // インスタンスにアプリケーションの登録がされたのでブラウザでログインをする
         registerAppAction.elements.withLatestFrom(hostname) { ($1, $0) }.bind(to: authorizeAction.inputs).disposed(by: disposeBag)
 
@@ -88,12 +114,13 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
         // ユーザを取得できたのでRealmに保存する
         verifyTokenAction.elements
             .withLatestFrom(Observable.combineLatest(hostname, registerAppAction.elements, loginAppAction.elements)) { ($0, $1.0, $1.1, $1.2.accessToken) }
-            .subscribe(onNext: { (account, hostname, application, accessToken) in
+            .subscribe(onNext: { [weak self] (account, hostname, application, accessToken) in
                 let realm = try! Realm(configuration: realmConfiguration)
                 if realm.objects(User.self)
                     .filter("serviceID = %@ AND serviceType = %@", account.id, Service.mastodon.rawValue)
                     .first != nil {
                     // すでに登録されている
+                    self?.loginErrorTrigger.accept(AuthError.alreadyUser)
                     return
                 }
 
@@ -104,16 +131,7 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
                     realm.add(user, update: .error)
                     realm.add(secret, update: .error)
                 }
-                SVProgressHUD.showSuccess(withStatus: "ログインしました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-            })
-            .disposed(by: disposeBag)
-
-        Observable.concat(registerAppAction.errors, authorizeAction.errors, loginAppAction.errors, verifyTokenAction.errors)
-            .subscribe(onNext: { (error) in
-                SVProgressHUD.showError(withStatus: "エラーが発生しました")
-                SVProgressHUD.dismiss(withDelay: 0.5)
-                print(error)
+                self?.loginSuccessTrigger.accept(user.screenName)
             })
             .disposed(by: disposeBag)
     }
