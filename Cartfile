@@ -1,7 +1,11 @@
+binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAnalyticsBinary.json"
+binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseDatabaseBinary.json"
+binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAdMobBinary.json"
+binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseCrashlyticsBinary.json"
 github "HeroTransitions/Hero" ~> 1.5.0
 github "ishkawa/APIKit" ~> 5.1.0
-github "kean/Nuke" == 8.3.0
-github "kishikawakatsumi/KeychainAccess" ~> 4.1.0
+github "kean/Nuke" ~> 8.4.1
+github "kishikawakatsumi/KeychainAccess" ~> 4.2.0
 github "mattdonnelly/Swifter" ~> 2.3.0
 github "ReactiveX/RxSwift" ~> 5.1.1
 github "realm/realm-cocoa" ~> 4.4.1
@@ -14,3 +18,6 @@ github "nnsnodnb/ScrollFlowLabel" ~> 1.0.0
 github "RxSwiftCommunity/RxDataSources" ~> 4.0.1
 github "RxSwiftCommunity/RxRealm" ~> 2.0.0
 github "MastodonKit/MastodonKit" ~> 2.0.0
+github "thii/DTTJailbreakDetection" "35c3fafabff7f28f1142471ed31a0616a024ae2f"
+github "mac-cain13/R.swift.Library" ~> 5.2.0
+github "xmartlabs/Eureka" ~> 5.2.1

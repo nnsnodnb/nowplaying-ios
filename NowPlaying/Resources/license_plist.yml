@@ -2,3 +2,6 @@ github:
   - owner: RxSwiftCommunity
     name: RxRealmDataSources
     version: 0.2.10
+  - owner: firebase
+    name: firebase-ios-sdk
+    version: 6.23.0
