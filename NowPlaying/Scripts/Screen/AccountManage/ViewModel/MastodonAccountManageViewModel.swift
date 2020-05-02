@@ -30,6 +30,7 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
     var input: AccountManageViewModelInput { return self }
     var output: AccountManageViewModelOutput { return self }
 
+    private let router: AccountManageRoutable
     private let disposeBag = DisposeBag()
     private let hostname: PublishRelay<String> = .init()
     private let loginSuccessTrigger: PublishRelay<String> = .init()
@@ -49,6 +50,7 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
     }
 
     init(router: AccountManageRoutable) {
+        self.router = router
         let realm = try! Realm(configuration: realmConfiguration)
         let results = realm.objects(User.self).filter("serviceType = %@", service.rawValue).sorted(byKeyPath: "id", ascending: true)
         dataSource = Observable.changeset(from: results)
@@ -80,6 +82,8 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
                 router.setEditing()
             })
             .disposed(by: disposeBag)
+
+        deleteTrigger.map { $0.id }.bind(to: deleteUser).disposed(by: disposeBag)
 
         // インスタンスの選択で通知される
         NotificationCenter.default.rx.notification(.selectedMastodonInstance)
@@ -140,6 +144,31 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
                 self?.loginSuccessTrigger.accept(user.screenName)
             })
             .disposed(by: disposeBag)
+    }
+
+    private var deleteUser: Binder<Int> {
+        return .init(self) { (base, identifier) in
+            let realm = try! Realm(configuration: realmConfiguration)
+            guard let user = realm.object(ofType: User.self, forPrimaryKey: identifier) else { return }
+            let secrets = user.secretCredentials
+
+            let defaultUser: User?
+            if user.isDefault {
+                defaultUser = realm.objects(User.self).filter("id != %@ AND serviceType = %@", user.id, base.service.rawValue).first
+            } else {
+                defaultUser = nil
+            }
+
+            try! realm.write {
+                realm.delete(secrets)
+                realm.delete(user)
+                defaultUser?.isDefault = true
+            }
+
+            if let newDefaultUser = defaultUser, newDefaultUser.isDefault {
+                base.router.completeChangedDefaultAccount(user: newDefaultUser)
+            }
+        }
     }
 }
 

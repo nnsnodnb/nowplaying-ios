@@ -84,6 +84,8 @@ final class MastodonAccountManageRouter: AccountManageRoutable {
     }
 
     func completeChangedDefaultAccount(user: User) {
-        fatalError("Not implementation")
+        let alert = UIAlertController(title: "デフォルトアカウントの変更", message: "\(user.name)に変更されました", preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default, handler: nil))
+        view.present(alert, animated: true, completion: nil)
     }
 }
