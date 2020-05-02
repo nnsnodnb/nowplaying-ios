@@ -109,6 +109,7 @@ targets:
         dependencies:
             - carthage: APIKit
             - carthage: DeallocationChecker
+            - carthage: DTTJailbreakDetection
             - carthage: Feeder
             - carthage: KeychainAccess
             - carthage: Hero

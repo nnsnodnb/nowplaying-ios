@@ -5,7 +5,6 @@ target 'NowPlaying' do
   use_frameworks!
 
   pod 'Crashlytics'
-  pod 'DTTJailbreakDetection'
   pod 'Eureka'
   pod 'Fabric'
   pod 'Firebase/AdMob'
