@@ -9,9 +9,6 @@ NowPlaying tweet & toot application for iOS
 
 - Xcode 11.4.1
   - Swift 5.2.2
-- Ruby 2.6.5
-  - Bundler 2.0.2
-    - Cocoapods 1.8.4
 - Mint 0.14.2
   - Carthage 0.34.0
   - LicensePlist 2.15.1
@@ -36,10 +33,7 @@ And please fill your environment variables.
 ```bash
 $ mint bootstrap
 $ mint run carthage bootstrap --platform iOS --cache-builds --no-use-binaries
-$ gem install bundler -N
-$ bundle install --path vendor/bundle
 $ mint run xcodegen generate
-$ bundle exec pod install --repo-update
 $ open NowPlaying.xcworkspace
 ```
 
