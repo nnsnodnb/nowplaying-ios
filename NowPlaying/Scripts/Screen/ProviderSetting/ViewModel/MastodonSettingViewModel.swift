@@ -56,7 +56,7 @@ final class MastodonSettingViewModel: ProviderSettingViewModelType {
                         row?.value = .defaultPostFormat
                         row?.updateCell()
                     }
-                    self.router.present(viewControllerToPresent: alert, animated: true, completion: nil)
+                    self.router.present(alert, animated: true, completion: nil)
                 })
     }
 }

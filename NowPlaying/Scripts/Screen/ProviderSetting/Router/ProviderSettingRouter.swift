@@ -12,7 +12,7 @@ protocol ProviderSettingViewer: UIViewController {}
 
 protocol ProviderSettingRoutable: AnyObject {
 
-    func present(viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?)
+    func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?)
 }
 
 final class TwitterSettingRouter: ProviderSettingRoutable {
@@ -23,7 +23,7 @@ final class TwitterSettingRouter: ProviderSettingRoutable {
         self.view = view
     }
 
-    func present(viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?) {
+    func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?) {
         view.present(viewControllerToPresent, animated: animated, completion: completion)
     }
 }
@@ -36,7 +36,7 @@ final class MastodonSettingRouter: ProviderSettingRoutable {
         self.view = view
     }
 
-    func present(viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?) {
+    func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?) {
         view.present(viewControllerToPresent, animated: animated, completion: completion)
     }
 }
