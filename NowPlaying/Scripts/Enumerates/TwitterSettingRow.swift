@@ -17,7 +17,7 @@ enum TwitterSettingRow {
     case attachedImageType
     case purchaseAutoTweet((StoreKitAction) -> Void)
     case autoTweetSwitch
-    case tweetFormat((String) -> Void)
+    case tweetFormat
     case tweetFormatResetButton
 
     var rawValue: String {
@@ -86,12 +86,13 @@ enum TwitterSettingRow {
                 $0.value = UserDefaults.standard.bool(forKey: .isAutoTweet)
             }
 
-        case .tweetFormat(let text):
+        case .tweetFormat:
             return TextAreaRow(tag) {
                 $0.placeholder = "ツイートフォーマット"
-                $0.value = Service.twitter.postFormat
+                $0.value = Service.getPostFormat(.twitter)
             }.onChange {
-                text($0.value ?? "")
+                let text = $0.value ?? ""
+                Service.setPostFormat(.twitter, format: text)
             }
 
         case .tweetFormatResetButton:

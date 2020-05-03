@@ -15,7 +15,7 @@ enum MastodonSettingRow {
     case attachedImageSwitch
     case attachedImageType
     case autoToot
-    case tootFormat((String) -> Void)
+    case tootFormat
     case tootFormatResetButton
 
     var rawValue: String {
@@ -73,12 +73,13 @@ enum MastodonSettingRow {
                 $0.value = UserDefaults.standard.bool(forKey: .isMastodonAutoToot)
             }
 
-        case .tootFormat(let text):
+        case .tootFormat:
             return TextAreaRow(tag) {
                 $0.placeholder = "トゥートフォーマット"
-                $0.value = Service.mastodon.postFormat
+                $0.value = Service.getPostFormat(.mastodon)
             }.onChange {
-                text($0.value ?? "")
+                let text = $0.value ?? ""
+                Service.setPostFormat(.mastodon, format: text)
             }
 
         case .tootFormatResetButton:

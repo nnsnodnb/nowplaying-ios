@@ -47,10 +47,7 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
                 })
                 <<< configureCell(row: .autoTweetSwitch)
             +++ Section("自動フォーマット", postFormatHelpViewFooter)
-                <<< configureCell(row: .tweetFormat {
-                    var service: Service = .twitter
-                    service.postFormat = $0
-                })
+                <<< configureCell(row: .tweetFormat)
                 <<< configureCell(row: .tweetFormatResetButton)
     }
 }
