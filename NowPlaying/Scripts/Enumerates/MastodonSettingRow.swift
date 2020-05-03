@@ -59,7 +59,7 @@ enum MastodonSettingRow: String {
         case .tootFormat:
             return TextAreaRow(tag) {
                 $0.placeholder = "トゥートフォーマット"
-                $0.value = UserDefaults.standard.string(forKey: .tootFormat)
+                $0.value = Service.mastodon.postFormat
             }
 
         case .tootFormatResetButton:

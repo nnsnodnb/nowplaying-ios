@@ -89,7 +89,7 @@ enum TwitterSettingRow {
         case .tweetFormat:
             return TextAreaRow(tag) {
                 $0.placeholder = "ツイートフォーマット"
-                $0.value = UserDefaults.standard.string(forKey: .tweetFormat)
+                $0.value = Service.twitter.postFormat
             }
 
         case .tweetFormatResetButton:
