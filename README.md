@@ -12,6 +12,7 @@ NowPlaying tweet & toot application for iOS
 - Mint 0.14.2
   - Carthage 0.34.0
   - LicensePlist 2.15.1
+  - R.swift v5.2.0
   - SwiftLint 0.39.2
   - XcodeGen 2.15.1
 
