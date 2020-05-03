@@ -250,6 +250,11 @@ targets:
             - path: Umbrella/Vendors/RxRealmDataSources/Pod/Classes
               group: Umbrella/Vendors/RxRealmDataSources
               type: group
+            - path: Umbrella/Vendors/RxStoreKit/Sources
+              group: Umbrella/Vendors/RxStoreKit
+              type: group
+              excludes:
+                  - Info.plist
         dependencies:
             - carthage: Action
             - carthage: Differentiator

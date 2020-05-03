@@ -2,3 +2,7 @@
 	path = Umbrella/Vendors/RxRealmDataSources
 	url = https://github.com/RxSwiftCommunity/RxRealmDataSources.git
     shallow = true
+[submodule "Umbrella/Vendors/RxStoreKit"]
+	path = Umbrella/Vendors/RxStoreKit
+	url = https://github.com/glassonion1/RxStoreKit
+	shallow = true

@@ -5,3 +5,5 @@ github:
   - owner: firebase
     name: firebase-ios-sdk
     version: 6.23.0
+  - owner: glassonion1
+    name: RxStoreKit
