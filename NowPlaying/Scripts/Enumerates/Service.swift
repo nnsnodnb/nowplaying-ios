@@ -14,19 +14,24 @@ enum Service: String {
     case mastodon
 
     var postFormat: String {
-        switch self {
-        case .twitter:
-            if let text = UserDefaults.standard.string(forKey: .tweetFormat) {
-                return text
+        set {
+            UserDefaults.standard.set(newValue, forKey: .tweetFormat)
+        }
+        get {
+            switch self {
+            case .twitter:
+                if let text = UserDefaults.standard.string(forKey: .tweetFormat) {
+                    return text
+                }
+                UserDefaults.standard.set(.defaultPostFormat, forKey: .tweetFormat)
+                return .defaultPostFormat
+            case .mastodon:
+                if let text = UserDefaults.standard.string(forKey: .tootFormat) {
+                    return text
+                }
+                UserDefaults.standard.set(.defaultPostFormat, forKey: .tootFormat)
+                return .defaultPostFormat
             }
-            UserDefaults.standard.set(.defaultPostFormat, forKey: .tweetFormat)
-            return .defaultPostFormat
-        case .mastodon:
-            if let text = UserDefaults.standard.string(forKey: .tootFormat) {
-                return text
-            }
-            UserDefaults.standard.set(.defaultPostFormat, forKey: .tootFormat)
-            return .defaultPostFormat
         }
     }
 }

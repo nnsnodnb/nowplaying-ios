@@ -9,14 +9,31 @@
 import Eureka
 import Foundation
 
-enum MastodonSettingRow: String {
+enum MastodonSettingRow {
 
     case accounts
     case attachedImageSwitch
     case attachedImageType
     case autoToot
-    case tootFormat
+    case tootFormat((String) -> Void)
     case tootFormatResetButton
+
+    var rawValue: String {
+        switch self {
+        case .accounts:
+            return "accounts"
+        case .attachedImageSwitch:
+            return "attached_image_switch"
+        case .attachedImageType:
+            return "attached_image_type"
+        case .autoToot:
+            return "auto_toot"
+        case .tootFormat:
+            return "toot_format"
+        case .tootFormatResetButton:
+            return "toot_format_reset_button"
+        }
+    }
 
     var tag: String {
         return rawValue
@@ -56,10 +73,12 @@ enum MastodonSettingRow: String {
                 $0.value = UserDefaults.standard.bool(forKey: .isMastodonAutoToot)
             }
 
-        case .tootFormat:
+        case .tootFormat(let text):
             return TextAreaRow(tag) {
                 $0.placeholder = "トゥートフォーマット"
                 $0.value = Service.mastodon.postFormat
+            }.onChange {
+                text($0.value ?? "")
             }
 
         case .tootFormatResetButton:

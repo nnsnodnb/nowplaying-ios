@@ -45,7 +45,10 @@ final class MastodonSettingViewModel: ProviderSettingViewModelType {
                 <<< configureCell(row: .attachedImageType)
                 <<< configureCell(row: .autoToot)
             +++ Section("投稿フォーマット", postFormatHelpViewFooter)
-                <<< configureCell(row: .tootFormat)
+                <<< configureCell(row: .tootFormat {
+                    var service: Service = .mastodon
+                    service.postFormat = $0
+                })
                 <<< configureCell(row: .tootFormatResetButton)
     }
 }
