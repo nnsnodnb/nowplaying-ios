@@ -255,6 +255,7 @@ targets:
               type: group
               excludes:
                   - Info.plist
+                  - RxStoreKit.h
         dependencies:
             - carthage: Action
             - carthage: Differentiator
