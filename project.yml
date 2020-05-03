@@ -124,34 +124,34 @@ targets:
             - carthage: SnapKit
             - carthage: SVProgressHUD
             - carthage: SwifteriOS
-            - carthage: GoogleDataTransport
-              linkType: static
-            - carthage: GoogleDataTransportCCTSupport
-              linkType: static
-            - carthage: leveldb-library
-              linkType: static
-            - carthage: FIRAnalyticsConnector
-              linkType: static
-            - carthage: FirebaseAnalytics
-              linkType: static
-            - carthage: FirebaseCore
-              linkType: static
-            - carthage: FirebaseCoreDiagnostics
-              linkType: static
-            - carthage: FirebaseDatabase
-              linkType: static
-            - carthage: FirebaseInstallations
-              linkType: static
-            - carthage: GoogleAppMeasurement
-              linkType: static
-            - carthage: GoogleUtilities
-              linkType: static
-            - carthage: nanopb
-              linkType: static
-            - carthage: PromisesObjC
-              linkType: static
-            - carthage: GoogleMobileAds
-              linkType: static
+            - framework: Carthage/Build/iOS/GoogleDataTransport.framework
+              embed: false
+            - framework: Carthage/Build/iOS/GoogleDataTransportCCTSupport.framework
+              embed: false
+            - framework: Carthage/Build/iOS/leveldb-library.framework
+              embed: false
+            - framework: Carthage/Build/iOS/FIRAnalyticsConnector.framework
+              embed: false
+            - framework: Carthage/Build/iOS/FirebaseAnalytics.framework
+              embed: false
+            - framework: Carthage/Build/iOS/FirebaseCore.framework
+              embed: false
+            - framework: Carthage/Build/iOS/FirebaseCoreDiagnostics.framework
+              embed: false
+            - framework: Carthage/Build/iOS/FirebaseDatabase.framework
+              embed: false
+            - framework: Carthage/Build/iOS/FirebaseInstallations.framework
+              embed: false
+            - framework: Carthage/Build/iOS/GoogleAppMeasurement.framework
+              embed: false
+            - framework: Carthage/Build/iOS/GoogleUtilities.framework
+              embed: false
+            - framework: Carthage/Build/iOS/nanopb.framework
+              embed: false
+            - framework: Carthage/Build/iOS/PromisesObjC.framework
+              embed: false
+            - framework: Carthage/Build/iOS/GoogleMobileAds.framework
+              embed: false
             - sdk: StoreKit.framework
             - sdk: libc++.tbd
             - sdk: libsqlite3.tbd
