@@ -14,30 +14,15 @@ enum Service: String {
     case mastodon
 
     static func setPostFormat(_ service: Service, format: String) {
-        switch service {
-        case .twitter:
-            UserDefaults.standard.set(format, forKey: .tweetFormat)
-        case .mastodon:
-            UserDefaults.standard.set(format, forKey: .tootFormat)
-        }
+        let key: UserDefaults.Key = service == .twitter ? .tweetFormat : .tootFormat
+        UserDefaults.standard.set(format, forKey: key)
     }
 
     static func getPostFormat(_ service: Service) -> String {
-        switch service {
-        case .twitter:
-            if let text = UserDefaults.standard.string(forKey: .tweetFormat) {
-                return text
-            }
-            UserDefaults.standard.set(.defaultPostFormat, forKey: .tweetFormat)
-            return .defaultPostFormat
-
-        case .mastodon:
-            if let text = UserDefaults.standard.string(forKey: .tootFormat) {
-                return text
-            }
-            UserDefaults.standard.set(.defaultPostFormat, forKey: .tootFormat)
-            return .defaultPostFormat
-        }
+        let key: UserDefaults.Key = service == .twitter ? .tweetFormat : .tootFormat
+        if let text = UserDefaults.standard.string(forKey: key) { return text }
+        UserDefaults.standard.set(.defaultPostFormat, forKey: key)
+        return .defaultPostFormat
     }
 
     static func resetPostFormat(_ service: Service) {
