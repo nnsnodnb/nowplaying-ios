@@ -6,6 +6,7 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import DeallocationChecker
 import RealmSwift
 import SVProgressHUD
 import SwifteriOS
@@ -30,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if DEBUG
         let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()
         print("🔑 Realm encryption key: \(realmEncryptionKeyString)")
+
+        DeallocationChecker.shared.setup()
         #endif
         return true
     }
