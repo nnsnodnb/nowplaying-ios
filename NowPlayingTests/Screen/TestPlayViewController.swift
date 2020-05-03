@@ -45,7 +45,7 @@ final class PlayViewModelStub: PlayViewModelType {
     private let artist: Observable<String>
     private let image: Observable<UIImage>
 
-    init(router: PlayRouter) {
+    init(router: PlayRoutable) {
         artwork = .empty()
         scale = .empty()
         song = .empty()

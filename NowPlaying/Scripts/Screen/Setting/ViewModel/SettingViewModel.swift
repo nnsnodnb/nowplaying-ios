@@ -25,7 +25,7 @@ protocol SettingViewModelType {
 
     var input: SettingViewModelInput { get }
     var output: SettingViewModelOutput { get }
-    init(router: SettingRouter)
+    init(router: SettingRoutable)
 }
 
 final class SettingViewModel: SettingViewModelType {
@@ -38,7 +38,7 @@ final class SettingViewModel: SettingViewModelType {
 
     private let disposeBag = DisposeBag()
 
-    init(router: SettingRouter) {
+    init(router: SettingRoutable) {
         form = Form()
 
         closeTrigger

@@ -22,7 +22,7 @@ final class SettingViewController: FormViewController {
 
     class func makeInstance() -> SettingViewController {
         let viewController = SettingViewController()
-        let router = SettingRouterImpl(view: viewController)
+        let router = SettingRouter(view: viewController)
         let viewModel = SettingViewModel(router: router)
         viewController.inject(dependency: .init(viewModel: viewModel))
 

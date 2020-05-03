@@ -18,7 +18,7 @@ final class ApplicationCoordinator {
 
     func start() {
         let viewController = PlayViewController()
-        let router = PlayRouterImpl(view: viewController)
+        let router = PlayRouter(view: viewController)
         let viewModel = PlayViewModel(router: router)
         viewController.inject(dependency: .init(viewModel: viewModel))
         window.rootViewController = viewController

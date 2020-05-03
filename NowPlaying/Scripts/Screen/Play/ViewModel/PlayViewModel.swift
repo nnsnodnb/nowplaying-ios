@@ -34,7 +34,7 @@ protocol PlayViewModelType {
 
     var input: PlayViewModelInput { get }
     var output: PlayViewModelOutput { get }
-    init(router: PlayRouter)
+    init(router: PlayRoutable)
 }
 
 final class PlayViewModel: PlayViewModelType {
@@ -72,7 +72,7 @@ final class PlayViewModel: PlayViewModelType {
     private let _songName: PublishRelay<String> = .init()
     private let _artistName: PublishRelay<String> = .init()
 
-    init(router: PlayRouter) {
+    init(router: PlayRoutable) {
         nowPlayingItem = .init(value: musicPlayer.nowPlayingItem)
         playbackState = .init(value: musicPlayer.playbackState)
 

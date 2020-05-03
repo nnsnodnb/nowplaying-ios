@@ -10,7 +10,7 @@ import UIKit
 
 protocol PlayViewer: UIViewController {}
 
-protocol PlayRouter: AnyObject {
+protocol PlayRoutable: AnyObject {
 
     init(view: PlayViewer)
     func openSetting()
@@ -18,7 +18,7 @@ protocol PlayRouter: AnyObject {
     func openTwitter()
 }
 
-final class PlayRouterImpl: PlayRouter {
+final class PlayRouter: PlayRoutable {
 
     private(set) weak var view: PlayViewer!
 

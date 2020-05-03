@@ -10,13 +10,13 @@ import UIKit
 
 protocol SettingViewer: UIViewController {}
 
-protocol SettingRouter: AnyObject {
+protocol SettingRoutable: AnyObject {
 
     init(view: SettingViewer)
     func close()
 }
 
-final class SettingRouterImpl: SettingRouter {
+final class SettingRouter: SettingRoutable {
 
     private(set) weak var view: SettingViewer!
 
