@@ -16,7 +16,7 @@ enum MastodonSettingRow {
     case attachedImageType
     case autoToot
     case tootFormat
-    case tootFormatResetButton
+    case tootFormatResetButton(() -> Void)
 
     var rawValue: String {
         switch self {
@@ -82,9 +82,11 @@ enum MastodonSettingRow {
                 Service.setPostFormat(.mastodon, format: text)
             }
 
-        case .tootFormatResetButton:
+        case .tootFormatResetButton(let callback):
             return ButtonRow(tag) {
                 $0.title = "リセットする"
+            }.onCellSelection { (_, _) in
+                callback()
             }
         }
     }

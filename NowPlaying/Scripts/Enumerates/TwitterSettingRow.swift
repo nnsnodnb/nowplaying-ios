@@ -18,7 +18,7 @@ enum TwitterSettingRow {
     case purchaseAutoTweet((StoreKitAction) -> Void)
     case autoTweetSwitch
     case tweetFormat
-    case tweetFormatResetButton
+    case tweetFormatResetButton(() -> Void)
 
     var rawValue: String {
         switch self {
@@ -95,9 +95,11 @@ enum TwitterSettingRow {
                 Service.setPostFormat(.twitter, format: text)
             }
 
-        case .tweetFormatResetButton:
+        case .tweetFormatResetButton(let callback):
             return ButtonRow(tag) {
                 $0.title = "リセットする"
+            }.onCellSelection { (_, _) in
+                callback()
             }
         }
     }

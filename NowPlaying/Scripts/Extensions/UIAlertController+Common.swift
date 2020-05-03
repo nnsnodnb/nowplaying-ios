@@ -16,4 +16,13 @@ extension UIAlertController {
         alert.addAction(.init(title: "閉じる", style: .cancel, handler: nil))
         return alert
     }
+
+    class func resetPostFormat(confirmHandler: (() -> Void)?) -> UIAlertController {
+        let alert = UIAlertController(title: "投稿フォーマットをリセットします", message: nil, preferredStyle: .alert)
+        alert.addAction(.init(title: "キャンセル", style: .cancel, handler: nil))
+        alert.addAction(.init(title: "リセット", style: .destructive) { (_) in
+            confirmHandler?()
+        })
+        return alert
+    }
 }

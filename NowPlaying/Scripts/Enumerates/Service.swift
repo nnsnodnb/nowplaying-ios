@@ -39,4 +39,8 @@ enum Service: String {
             return .defaultPostFormat
         }
     }
+
+    static func resetPostFormat(_ service: Service) {
+        Service.setPostFormat(service, format: .defaultPostFormat)
+    }
 }
