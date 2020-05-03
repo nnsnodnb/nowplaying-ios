@@ -10,22 +10,33 @@ import UIKit
 
 protocol ProviderSettingViewer: UIViewController {}
 
-protocol ProviderSettingRouter: AnyObject {}
+protocol ProviderSettingRoutable: AnyObject {
 
-final class TwitterSettingRouterImpl: ProviderSettingRouter {
+    func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?)
+}
+
+final class TwitterSettingRouter: ProviderSettingRoutable {
 
     private(set) weak var view: ProviderSettingViewer!
 
     init(view: ProviderSettingViewer) {
         self.view = view
     }
+
+    func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?) {
+        view.present(viewControllerToPresent, animated: animated, completion: completion)
+    }
 }
 
-final class MastodonSettingRouterImpl: ProviderSettingRouter {
+final class MastodonSettingRouter: ProviderSettingRoutable {
 
     private(set) weak var view: ProviderSettingViewer!
 
     init(view: ProviderSettingViewer) {
         self.view = view
+    }
+
+    func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?) {
+        view.present(viewControllerToPresent, animated: animated, completion: completion)
     }
 }

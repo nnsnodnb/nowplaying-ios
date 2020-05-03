@@ -31,6 +31,7 @@ var realmConfiguration: Realm.Configuration {
 extension String {
 
     static let keychainServiceKey = "moe.nnsnodnb.NowPlaying"
+    static let defaultPostFormat = "__songtitle__ by __artist__ #NowPlaying"
 }
 
 extension URL {

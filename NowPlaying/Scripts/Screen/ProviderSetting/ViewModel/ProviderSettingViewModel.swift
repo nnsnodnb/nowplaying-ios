@@ -23,6 +23,6 @@ protocol ProviderSettingViewModelType: AnyObject {
 
     var input: ProviderSettingViewModelInput { get }
     var output: ProviderSettingViewModelOutput { get }
-    init(router: ProviderSettingRouter)
+    init(router: ProviderSettingRoutable)
     func configureForm()
 }

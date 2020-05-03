@@ -32,15 +32,15 @@ extension ProviderSettingViewController {
 
     class func makeInstance(service: Service) -> ProviderSettingViewController {
         let viewController = ProviderSettingViewController()
-        let router: ProviderSettingRouter
+        let router: ProviderSettingRoutable
         let viewModel: ProviderSettingViewModelType
 
         switch service {
         case .twitter:
-            router = TwitterSettingRouterImpl(view: viewController)
+            router = TwitterSettingRouter(view: viewController)
             viewModel = TwitterSettingViewModel(router: router)
         case .mastodon:
-            router = MastodonSettingRouterImpl(view: viewController)
+            router = MastodonSettingRouter(view: viewController)
             viewModel = MastodonSettingViewModel(router: router)
         }
 

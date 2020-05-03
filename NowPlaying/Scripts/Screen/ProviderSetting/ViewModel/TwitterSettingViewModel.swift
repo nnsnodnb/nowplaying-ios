@@ -19,6 +19,8 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
     var input: ProviderSettingViewModelInput { return self }
     var output: ProviderSettingViewModelOutput { return self }
 
+    private let router: ProviderSettingRoutable
+
     private lazy var postFormatHelpViewFooter: (Section) -> Void = {
         return {
             $0.footer = HeaderFooterView<PostFormatHelpView>(.callback {
@@ -27,7 +29,8 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
         }
     }()
 
-    init(router: ProviderSettingRouter) {
+    init(router: ProviderSettingRoutable) {
+        self.router = router
         title = .just("Twitter設定")
         form = .init()
 
@@ -48,7 +51,15 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
                 <<< configureCell(row: .autoTweetSwitch)
             +++ Section("自動フォーマット", postFormatHelpViewFooter)
                 <<< configureCell(row: .tweetFormat)
-                <<< configureCell(row: .tweetFormatResetButton)
+                <<< configureCell(row: .tweetFormatResetButton { [unowned self] in
+                    let alert = UIAlertController.resetPostFormat { [weak self] in
+                        Service.resetPostFormat(.twitter)
+                        let row = self?.form.rowBy(tag: TwitterSettingRow.tweetFormat.tag) as? TextAreaRow
+                        row?.value = .defaultPostFormat
+                        row?.updateCell()
+                    }
+                    self.router.present(alert, animated: true, completion: nil)
+                })
     }
 }
 
