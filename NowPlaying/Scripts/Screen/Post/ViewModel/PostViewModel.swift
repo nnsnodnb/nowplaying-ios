@@ -12,6 +12,7 @@ import RxSwift
 
 protocol PostViewModelInput {
 
+    var postText: BehaviorRelay<String> { get }
     var dismissTrigger: PublishRelay<Void> { get }
     var postTrigger: PublishRelay<Void> { get }
 }

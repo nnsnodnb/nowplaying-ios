@@ -12,6 +12,7 @@ import RxSwift
 
 final class TootPostViewModel: PostViewModelType {
 
+    let postText: BehaviorRelay<String> = .init(value: "")
     let dismissTrigger: PublishRelay<Void> = .init()
     let postTrigger: PublishRelay<Void> = .init()
     let title: Observable<String>
@@ -20,13 +21,17 @@ final class TootPostViewModel: PostViewModelType {
     var outputs: PostViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
+    private let didEdit: BehaviorRelay<Bool> = .init(value: false)
 
     init(router: PostRoutable) {
         title = .just("トゥート")
 
+        postText.skip(1).map { _ in true }.distinctUntilChanged().bind(to: didEdit).disposed(by: disposeBag)
+
         dismissTrigger
+            .withLatestFrom(didEdit)
             .subscribe(onNext: {
-                router.dismissConfirm(didEdit: true)
+                router.dismissConfirm(didEdit: $0)
             })
             .disposed(by: disposeBag)
     }
