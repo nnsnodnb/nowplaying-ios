@@ -15,6 +15,7 @@ final class TootPostViewModel: PostViewModelType {
     let postText: BehaviorRelay<String> = .init(value: "")
     let dismissTrigger: PublishRelay<Void> = .init()
     let postTrigger: PublishRelay<Void> = .init()
+    let changeAccount: PublishRelay<Void> = .init()
     let title: Observable<String>
 
     var inputs: PostViewModelInput { return self }
@@ -32,6 +33,12 @@ final class TootPostViewModel: PostViewModelType {
             .withLatestFrom(didEdit)
             .subscribe(onNext: {
                 router.dismissConfirm(didEdit: $0)
+            })
+            .disposed(by: disposeBag)
+
+        changeAccount
+            .subscribe(onNext: {
+
             })
             .disposed(by: disposeBag)
     }
