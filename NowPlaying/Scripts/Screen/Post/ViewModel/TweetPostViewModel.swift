@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MediaPlayer
 import RxCocoa
 import RxSwift
 
@@ -24,7 +25,7 @@ final class TweetPostViewModel: PostViewModelType {
     private let disposeBag = DisposeBag()
     private let didEdit: BehaviorRelay<Bool> = .init(value: false)
 
-    init(router: PostRoutable) {
+    init(router: PostRoutable, item: MPMediaItem) {
         title = .just("ツイート")
 
         postText.skip(2).map { _ in true }.distinctUntilChanged().bind(to: didEdit).disposed(by: disposeBag)

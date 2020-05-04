@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MediaPlayer
 import RxCocoa
 import RxSwift
 
@@ -26,5 +27,5 @@ protocol PostViewModelOutput {
 protocol PostViewModelType {
     var inputs: PostViewModelInput { get }
     var outputs: PostViewModelOutput { get }
-    init(router: PostRoutable)
+    init(router: PostRoutable, item: MPMediaItem)
 }

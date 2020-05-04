@@ -113,14 +113,18 @@ final class PlayViewModel: PlayViewModelType {
             .disposed(by: disposeBag)
 
         mastodonButtonTrigger
+            .withLatestFrom(nowPlayingItem)
+            .compactMap { $0 }
             .subscribe(onNext: {
-                router.openPostView(service: .mastodon)
+                router.openPostView(service: .mastodon, item: $0)
             })
             .disposed(by: disposeBag)
 
         twitterButtonTrigger
+            .withLatestFrom(nowPlayingItem)
+            .compactMap { $0 }
             .subscribe(onNext: {
-                router.openPostView(service: .twitter)
+                router.openPostView(service: .twitter, item: $0)
             })
             .disposed(by: disposeBag)
 

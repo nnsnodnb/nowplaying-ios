@@ -6,6 +6,7 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import MediaPlayer
 import RxCocoa
 import RxSwift
 import UIKit
@@ -69,10 +70,16 @@ extension PostViewController {
         let viewModel: PostViewModelType
     }
 
-    class func makeInstance(service: Service) -> PostViewController {
+    class func makeInstance(service: Service, item: MPMediaItem) -> PostViewController {
         let viewController = PostViewController()
         let router = PostRouter(view: viewController)
-        let viewModel: PostViewModelType = service == .twitter ? TweetPostViewModel(router: router) : TootPostViewModel(router: router)
+        let viewModel: PostViewModelType// = service == .twitter ? TweetPostViewModel(router: router) : TootPostViewModel(router: router)
+        switch service {
+        case .twitter:
+            viewModel = TweetPostViewModel(router: router, item: item)
+        case .mastodon:
+            viewModel = TootPostViewModel(router: router, item: item)
+        }
         viewController.inject(dependency: .init(viewModel: viewModel))
         return viewController
     }

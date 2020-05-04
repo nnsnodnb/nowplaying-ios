@@ -6,6 +6,7 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import MediaPlayer
 import UIKit
 
 protocol PlayViewer: UIViewController {}
@@ -14,7 +15,7 @@ protocol PlayRoutable: AnyObject {
 
     init(view: PlayViewer)
     func openSetting()
-    func openPostView(service: Service)
+    func openPostView(service: Service, item: MPMediaItem)
 }
 
 final class PlayRouter: PlayRoutable {
@@ -31,8 +32,8 @@ final class PlayRouter: PlayRoutable {
         view.present(navi, animated: true, completion: nil)
     }
 
-    func openPostView(service: Service) {
-        let viewController = PostViewController.makeInstance(service: service)
+    func openPostView(service: Service, item: MPMediaItem) {
+        let viewController = PostViewController.makeInstance(service: service, item: item)
         let navi = UINavigationController(rootViewController: viewController)
         view.present(navi, animated: true, completion: nil)
     }
