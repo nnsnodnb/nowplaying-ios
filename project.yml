@@ -13,7 +13,7 @@ options:
     developmentLanguage: ja
     usesTabs: false
     indentWidth: 4
-    xcodeVersion: 11.1
+    xcodeVersion: 11.4
     deploymentTarget:
         iOS: 11.0
 
