@@ -70,8 +70,16 @@ final class PlayViewController: UIViewController {
             gearButton.rx.tap.bind(to: viewModel.input.gearButtonTrigger).disposed(by: disposeBag)
         }
     }
-    @IBOutlet private weak var mastodonButton: UIButton!
-    @IBOutlet private weak var twitterButton: UIButton!
+    @IBOutlet private weak var mastodonButton: UIButton! {
+        didSet {
+            mastodonButton.rx.tap.bind(to: viewModel.input.mastodonButtonTrigger).disposed(by: disposeBag)
+        }
+    }
+    @IBOutlet private weak var twitterButton: UIButton! {
+        didSet {
+            twitterButton.rx.tap.bind(to: viewModel.input.twitterButtonTrigger).disposed(by: disposeBag)
+        }
+    }
     @IBOutlet private weak var bannerView: GADBannerView!
     @IBOutlet private weak var bannerViewHeight: NSLayoutConstraint! {
         didSet {

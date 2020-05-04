@@ -14,8 +14,7 @@ protocol PlayRoutable: AnyObject {
 
     init(view: PlayViewer)
     func openSetting()
-    func openMastodon()
-    func openTwitter()
+    func openPostView(service: Service)
 }
 
 final class PlayRouter: PlayRoutable {
@@ -32,11 +31,9 @@ final class PlayRouter: PlayRoutable {
         view.present(navi, animated: true, completion: nil)
     }
 
-    func openMastodon() {
-
-    }
-
-    func openTwitter() {
-
+    func openPostView(service: Service) {
+        let viewController = PostViewController.makeInstance(service: service)
+        let navi = UINavigationController(rootViewController: viewController)
+        view.present(navi, animated: true, completion: nil)
     }
 }

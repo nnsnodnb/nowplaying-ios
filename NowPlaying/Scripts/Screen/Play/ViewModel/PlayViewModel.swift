@@ -18,6 +18,8 @@ protocol PlayViewModelInput {
     var previousButtonTrigger: PublishRelay<Void> { get }
     var nextButtonTrigger: PublishRelay<Void> { get }
     var gearButtonTrigger: PublishRelay<Void> { get }
+    var mastodonButtonTrigger: PublishRelay<Void> { get }
+    var twitterButtonTrigger: PublishRelay<Void> { get }
     var countUpTrigger: PublishRelay<Void> { get }
 }
 
@@ -43,6 +45,8 @@ final class PlayViewModel: PlayViewModelType {
     let previousButtonTrigger: PublishRelay<Void> = .init()
     let nextButtonTrigger: PublishRelay<Void> = .init()
     let gearButtonTrigger: PublishRelay<Void> = .init()
+    let mastodonButtonTrigger: PublishRelay<Void> = .init()
+    let twitterButtonTrigger: PublishRelay<Void> = .init()
     let countUpTrigger: PublishRelay<Void> = .init()
 
     var input: PlayViewModelInput { return self }
@@ -105,6 +109,18 @@ final class PlayViewModel: PlayViewModelType {
         gearButtonTrigger
             .subscribe(onNext: {
                 router.openSetting()
+            })
+            .disposed(by: disposeBag)
+
+        mastodonButtonTrigger
+            .subscribe(onNext: {
+                router.openPostView(service: .mastodon)
+            })
+            .disposed(by: disposeBag)
+
+        twitterButtonTrigger
+            .subscribe(onNext: {
+                router.openPostView(service: .twitter)
             })
             .disposed(by: disposeBag)
 
