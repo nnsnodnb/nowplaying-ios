@@ -22,7 +22,7 @@ settings:
         ENABLE_BITCODE: true
         DEVELOPMENT_TEAM: 99649YXF6E
         VALID_ARCHS: arm64
-        SWIFT_VERSION: 5.1
+        SWIFT_VERSION: 5.2
 
 targets:
     # Application
