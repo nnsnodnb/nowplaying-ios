@@ -26,7 +26,7 @@ final class TweetPostViewModel: PostViewModelType {
     init(router: PostRoutable) {
         title = .just("ツイート")
 
-        postText.skip(1).map { _ in true }.distinctUntilChanged().bind(to: didEdit).disposed(by: disposeBag)
+        postText.skip(2).map { _ in true }.distinctUntilChanged().bind(to: didEdit).disposed(by: disposeBag)
 
         dismissTrigger
             .withLatestFrom(didEdit)

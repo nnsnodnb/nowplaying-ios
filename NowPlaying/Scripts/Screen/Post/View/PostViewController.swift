@@ -12,6 +12,29 @@ import UIKit
 
 final class PostViewController: UIViewController {
 
+    @IBOutlet private weak var textView: UITextView! {
+        didSet {
+            textView.textContainerInset = .init(top: 14, left: 14 * 2 + 60, bottom: 0, right: 14)
+            textView.becomeFirstResponder()
+            textView.rx.text.orEmpty.bind(to: viewModel.inputs.postText).disposed(by: disposeBag)
+        }
+    }
+    @IBOutlet private weak var iconImageButton: UIButton! {
+        didSet {
+            iconImageButton.imageView?.contentMode = .scaleAspectFit
+            iconImageButton.contentVerticalAlignment = .fill
+            iconImageButton.contentHorizontalAlignment = .fill
+        }
+    }
+    @IBOutlet private weak var attachmentImageButton: UIButton! {
+        didSet {
+            attachmentImageButton.imageView?.contentMode = .scaleAspectFit
+            attachmentImageButton.contentVerticalAlignment = .fill
+            attachmentImageButton.contentHorizontalAlignment = .fill
+        }
+    }
+    @IBOutlet private weak var addImageButton: UIButton!
+
     private let disposeBag = DisposeBag()
 
     private(set) var viewModel: PostViewModelType!
