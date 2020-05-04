@@ -7,10 +7,19 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 
-protocol PostViewModelInput {}
+protocol PostViewModelInput {
 
-protocol PostViewModelOutput {}
+    var dismissTrigger: PublishRelay<Void> { get }
+    var postTrigger: PublishRelay<Void> { get }
+}
+
+protocol PostViewModelOutput {
+
+    var title: Observable<String> { get }
+}
 
 protocol PostViewModelType {
     var inputs: PostViewModelInput { get }

@@ -6,14 +6,33 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import RxCocoa
+import RxSwift
 import UIKit
 
 final class PostViewController: UIViewController {
+
+    private let disposeBag = DisposeBag()
 
     private(set) var viewModel: PostViewModelType!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        _ = viewModel.outputs.title.bind(to: rx.title)
+
+        setupNavigationBar()
+    }
+
+    // MARK: - Private method
+
+    private func setupNavigationBar() {
+        let leftBarButtonItem = UIBarButtonItem(title: "閉じる", style: .plain, target: nil, action: nil)
+        let rightBarButtonItem = UIBarButtonItem(title: title, style: .done, target: nil, action: nil)
+        navigationItem.leftBarButtonItem = leftBarButtonItem
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+
+        leftBarButtonItem.rx.tap.bind(to: viewModel.inputs.dismissTrigger).disposed(by: disposeBag)
+        rightBarButtonItem.rx.tap.bind(to: viewModel.inputs.postTrigger).disposed(by: disposeBag)
     }
 }
 
