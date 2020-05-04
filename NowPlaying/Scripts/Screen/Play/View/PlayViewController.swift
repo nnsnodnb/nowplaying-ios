@@ -80,8 +80,7 @@ final class PlayViewController: UIViewController {
             twitterButton.rx.tap.bind(to: viewModel.input.twitterButtonTrigger).disposed(by: disposeBag)
         }
     }
-    @IBOutlet private weak var bannerView: GADBannerView!
-    @IBOutlet private weak var bannerViewHeight: NSLayoutConstraint! {
+    @IBOutlet private weak var bannerView: GADBannerView! {
         didSet {
             bannerView.adUnitID = Environments.firebaseAdmobBannerID
             bannerView.adSize = kGADAdSizeBanner
@@ -89,6 +88,7 @@ final class PlayViewController: UIViewController {
             bannerView.load(GADRequest())
         }
     }
+    @IBOutlet private weak var bannerViewHeight: NSLayoutConstraint!
 
     private(set) var viewModel: PlayViewModelType!
 
