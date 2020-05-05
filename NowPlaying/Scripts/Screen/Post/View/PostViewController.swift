@@ -56,6 +56,15 @@ final class PostViewController: UIViewController {
         viewModel.outputs.attachment.map { $0 != nil }.bind(to: addImageButton.rx.isHidden).disposed(by: disposeBag)
 
         setupNavigationBar()
+
+        if #available(iOS 13.0, *) {
+            navigationController?.presentationController?.delegate = self
+
+            viewModel.outputs.didChangePostText
+                .observeOn(MainScheduler.instance)
+                .bind(to: rx.isModalInPresentation)
+                .disposed(by: disposeBag)
+        }
     }
 
     // MARK: - Private method
@@ -68,6 +77,16 @@ final class PostViewController: UIViewController {
 
         leftBarButtonItem.rx.tap.bind(to: viewModel.inputs.dismissTrigger).disposed(by: disposeBag)
         rightBarButtonItem.rx.tap.bind(to: viewModel.inputs.postTrigger).disposed(by: disposeBag)
+    }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension PostViewController: UIAdaptivePresentationControllerDelegate {
+
+    @available(iOS 13.0, *)
+    func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+        viewModel.inputs.didAttemptToDismiss.accept(())
     }
 }
 

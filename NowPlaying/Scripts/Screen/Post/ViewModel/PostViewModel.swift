@@ -20,12 +20,14 @@ protocol PostViewModelInput {
     var changeAccount: PublishRelay<Void> { get }
     var selectAttachment: PublishRelay<Void> { get }
     var addAttachment: PublishRelay<Void> { get }
+    var didAttemptToDismiss: PublishRelay<Void> { get }
 }
 
 protocol PostViewModelOutput {
 
     var title: Observable<String> { get }
     var initialPostText: Observable<String> { get }
+    var didChangePostText: Observable<Bool> { get }
     var account: Observable<User> { get }
     var attachment: Observable<UIImage?> { get }
 }
@@ -46,6 +48,7 @@ class PostViewModel: PostViewModelType {
     let changeAccount: PublishRelay<Void> = .init()
     let selectAttachment: PublishRelay<Void> = .init()
     let addAttachment: PublishRelay<Void> = .init()
+    let didAttemptToDismiss: PublishRelay<Void> = .init()
     /* Outputs */
     let attachment: Observable<UIImage?>
 
@@ -56,6 +59,9 @@ class PostViewModel: PostViewModelType {
     }
     var initialPostText: Observable<String> {
         return .just(Service.getPostText(service, item: item))
+    }
+    var didChangePostText: Observable<Bool> {
+        return didEdit.filter { $0 }.asObservable()
     }
     var account: Observable<User> {
         return selectAccount.asObservable()
@@ -121,10 +127,15 @@ class PostViewModel: PostViewModelType {
                         self.attachmentImage.accept(self.item.artwork?.image)
                     case .screenshot:
                         self.attachmentImage.accept(self.screenshot)
-                        // TODO: スクリーンショットを取得
                         return
                     }
                 }
+            })
+            .disposed(by: disposeBag)
+
+        didAttemptToDismiss
+            .subscribe(onNext: {
+                router.dismissConfirm(didEdit: true)
             })
             .disposed(by: disposeBag)
     }
