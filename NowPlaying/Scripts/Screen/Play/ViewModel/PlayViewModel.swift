@@ -92,12 +92,12 @@ final class PlayViewModel: PlayViewModelType {
         nowPlayingItem = .init(value: musicPlayer.nowPlayingItem)
         playbackState = .init(value: musicPlayer.playbackState)
 
-        musicPlayer.beginGeneratingPlaybackNotifications()
+        musicPlayer.beginGeneratingPlayback().disposed(by: disposeBag)
 
         playPauseButtonTrigger
             .withLatestFrom(playbackState) { $1 }
             .map { $0 == .playing }
-            .bind(to: musicPlayer.isPlay)
+            .bind(to: musicPlayer.playing)
             .disposed(by: disposeBag)
 
         previousButtonTrigger.bind(to: musicPlayer.skipToPreviousItem).disposed(by: disposeBag)
@@ -125,12 +125,11 @@ final class PlayViewModel: PlayViewModelType {
 
         countUpTrigger
             .subscribe(onNext: {
-                var count = UserDefaults.standard.integer(forKey: .appOpenCount)
-                count += 1
-                UserDefaults.standard.set(count, forKey: .appOpenCount)
+                var count = UserDefaults.standard.integer(forKey: .appOpenCount) + 1
+                defer { UserDefaults.standard.set(count, forKey: .appOpenCount) }
                 if count == 15 {
                     SKStoreReviewController.requestReview()
-                    UserDefaults.standard.set(0, forKey: .appOpenCount)
+                    count = 0
                 }
             })
             .disposed(by: disposeBag)
@@ -143,10 +142,6 @@ final class PlayViewModel: PlayViewModelType {
 
         checkMediaLibraryAuthorization()
         subscribeNotifications()
-    }
-
-    deinit {
-        musicPlayer.endGeneratingPlaybackNotifications()
     }
 
     // MARK: - Private method

@@ -12,12 +12,19 @@ import RxSwift
 
 extension MPMusicPlayerController {
 
-    var isPlay: Binder<Bool> {
-        return .init(self) { (player, isPlay) in
-            if isPlay {
-                player.play()
-            } else {
+    func beginGeneratingPlayback() -> Disposable {
+        beginGeneratingPlaybackNotifications()
+        return Disposables.create { [weak self] in
+            self?.endGeneratingPlaybackNotifications()
+        }
+    }
+
+    var playing: Binder<Bool> {
+        return .init(self) { (player, isPlaying) in
+            if isPlaying {
                 player.pause()
+            } else {
+                player.play()
             }
         }
     }
