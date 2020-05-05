@@ -23,6 +23,7 @@ protocol PostViewModelOutput {
 
     var title: Observable<String> { get }
     var initialPostText: Observable<String> { get }
+    var account: Observable<User> { get }
 }
 
 protocol PostViewModelType {

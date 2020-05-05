@@ -15,7 +15,7 @@ final class PostViewController: UIViewController {
 
     @IBOutlet private weak var textView: UITextView! {
         didSet {
-            textView.textContainerInset = .init(top: 14, left: 14 * 2 + 60, bottom: 0, right: 14)
+            textView.textContainerInset = .init(top: 0, left: 14 * 2 + 60, bottom: 0, right: 14)
             textView.becomeFirstResponder()
             textView.rx.text.orEmpty.bind(to: viewModel.inputs.postText).disposed(by: disposeBag)
         }
@@ -44,6 +44,8 @@ final class PostViewController: UIViewController {
         super.viewDidLoad()
         _ = viewModel.outputs.title.bind(to: rx.title)
         _ = viewModel.outputs.initialPostText.bind(to: textView.rx.text)
+
+        viewModel.outputs.account.map { $0.iconURL }.bind(to: iconImageButton.rx.url).disposed(by: disposeBag)
 
         setupNavigationBar()
     }
