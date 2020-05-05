@@ -97,26 +97,11 @@ final class PlayViewModel: PlayViewModelType {
         playPauseButtonTrigger
             .withLatestFrom(playbackState) { $1 }
             .map { $0 == .playing }
-            .subscribe(onNext: { [unowned self] in
-                if $0 {
-                    self.musicPlayer.pause()
-                } else {
-                    self.musicPlayer.play()
-                }
-            })
+            .bind(to: musicPlayer.isPlay)
             .disposed(by: disposeBag)
 
-        previousButtonTrigger
-            .subscribe(onNext: { [unowned self] in
-                self.musicPlayer.skipToPreviousItem()
-            })
-            .disposed(by: disposeBag)
-
-        nextButtonTrigger
-            .subscribe(onNext: { [unowned self] in
-                self.musicPlayer.skipToNextItem()
-            })
-            .disposed(by: disposeBag)
+        previousButtonTrigger.bind(to: musicPlayer.skipToPreviousItem).disposed(by: disposeBag)
+        nextButtonTrigger.bind(to: musicPlayer.skipToNextItem).disposed(by: disposeBag)
 
         gearButtonTrigger
             .subscribe(onNext: {
@@ -156,6 +141,38 @@ final class PlayViewModel: PlayViewModelType {
         nowPlayingItem.map { $0?.title ?? "" }.bind(to: _songName).disposed(by: disposeBag)
         nowPlayingItem.map { $0?.artist ?? "" }.bind(to: _artistName).disposed(by: disposeBag)
 
+        checkMediaLibraryAuthorization()
+        subscribeNotifications()
+    }
+
+    deinit {
+        musicPlayer.endGeneratingPlaybackNotifications()
+    }
+
+    // MARK: - Private method
+
+    private func checkMediaLibraryAuthorization() {
+        MPMediaLibrary.rx.requestAuthorization()
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (status) in
+                guard let wself = self else { return }
+                switch status {
+                case .authorized:
+                    wself.nowPlayingItem.accept(wself.musicPlayer.nowPlayingItem)
+                    wself.playbackState.accept(wself.musicPlayer.playbackState)
+                case .denied:
+                    // TODO: アラート表示
+                    break
+                case .notDetermined, .restricted:
+                    break
+                @unknown default:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+
+    private func subscribeNotifications() {
         // 曲が変更されたら通知される
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
             .compactMap { $0.object as? MPMusicPlayerController }
@@ -169,29 +186,6 @@ final class PlayViewModel: PlayViewModelType {
             .map { $0.playbackState }
             .bind(to: playbackState)
             .disposed(by: disposeBag)
-
-        MPMediaLibrary.requestAuthorization { (status) in
-            switch status {
-            case .authorized:
-                _ = Observable<Int>.timer(.milliseconds(500), scheduler: MainScheduler.instance)
-                    .map { _ in }
-                    .subscribe(onNext: { [weak self] in
-                        self?.nowPlayingItem.accept(self?.musicPlayer.nowPlayingItem)
-                        self?.playbackState.accept(self?.musicPlayer.playbackState ?? .paused)
-                    })
-            case .denied:
-                // TODO: アラート表示
-                break
-            case .notDetermined, .restricted:
-                break
-            @unknown default:
-                break
-            }
-        }
-    }
-
-    deinit {
-        musicPlayer.endGeneratingPlaybackNotifications()
     }
 }
 
