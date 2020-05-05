@@ -52,32 +52,32 @@ final class PlayViewController: UIViewController {
     }
     @IBOutlet private weak var playButton: UIButton! {
         didSet {
-            playButton.rx.tap.bind(to: viewModel.input.playPauseButtonTrigger).disposed(by: disposeBag)
+            playButton.rx.tap.bind(to: viewModel.inputs.playPauseButtonTrigger).disposed(by: disposeBag)
         }
     }
     @IBOutlet private weak var previousButton: UIButton! {
         didSet {
-            previousButton.rx.tap.bind(to: viewModel.input.previousButtonTrigger).disposed(by: disposeBag)
+            previousButton.rx.tap.bind(to: viewModel.inputs.previousButtonTrigger).disposed(by: disposeBag)
         }
     }
     @IBOutlet private weak var nextButton: UIButton! {
         didSet {
-            nextButton.rx.tap.bind(to: viewModel.input.nextButtonTrigger).disposed(by: disposeBag)
+            nextButton.rx.tap.bind(to: viewModel.inputs.nextButtonTrigger).disposed(by: disposeBag)
         }
     }
     @IBOutlet private weak var gearButton: UIButton! {
         didSet {
-            gearButton.rx.tap.bind(to: viewModel.input.gearButtonTrigger).disposed(by: disposeBag)
+            gearButton.rx.tap.bind(to: viewModel.inputs.gearButtonTrigger).disposed(by: disposeBag)
         }
     }
     @IBOutlet private weak var mastodonButton: UIButton! {
         didSet {
-            mastodonButton.rx.tap.bind(to: viewModel.input.mastodonButtonTrigger).disposed(by: disposeBag)
+            mastodonButton.rx.tap.bind(to: viewModel.inputs.mastodonButtonTrigger).disposed(by: disposeBag)
         }
     }
     @IBOutlet private weak var twitterButton: UIButton! {
         didSet {
-            twitterButton.rx.tap.bind(to: viewModel.input.twitterButtonTrigger).disposed(by: disposeBag)
+            twitterButton.rx.tap.bind(to: viewModel.inputs.twitterButtonTrigger).disposed(by: disposeBag)
         }
     }
     @IBOutlet private weak var bannerView: GADBannerView! {
@@ -99,13 +99,13 @@ final class PlayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.output.artworkImage
+        viewModel.outputs.artworkImage
             .drive(onNext: { [weak self] in
                 self?.artworkImageView.image = $0
             })
             .disposed(by: disposeBag)
 
-        viewModel.output.artworkScale
+        viewModel.outputs.artworkScale
             .drive(onNext: { [weak self] in
                 let transform: CGAffineTransform = $0 == 1 ? .identity : .init(scaleX: $0, y: $0)
                 UIView.animate(withDuration: 0.3) { [weak self] in
@@ -114,28 +114,38 @@ final class PlayViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
-        viewModel.output.songName
+        viewModel.outputs.songName
             .drive(onNext: { [weak self] in
                 self?.songNameLabel.text = $0
             })
             .disposed(by: disposeBag)
 
-        viewModel.output.artistName
+        viewModel.outputs.artistName
             .drive(onNext: { [weak self] in
                 self?.artistNameLabel.text = $0
             })
             .disposed(by: disposeBag)
 
-        viewModel.output.playButtonImage
+        viewModel.outputs.playButtonImage
             .drive(onNext: { [weak self] in
                 self?.playButton.setImage($0, for: .normal)
             })
+            .disposed(by: disposeBag)
+
+        viewModel.outputs.takeScreenshot
+            .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+            .map {
+                UIGraphicsImageRenderer(bounds: UIScreen.main.bounds).image { [weak self] in
+                    self?.view.layer.render(in: $0.cgContext)
+                }
+            }
+            .bind(to: viewModel.inputs.tookScreenshot)
             .disposed(by: disposeBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.input.countUpTrigger.accept(())
+        viewModel.inputs.countUpTrigger.accept(())
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

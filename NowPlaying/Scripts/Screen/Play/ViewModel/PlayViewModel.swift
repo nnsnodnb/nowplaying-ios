@@ -21,6 +21,7 @@ protocol PlayViewModelInput {
     var mastodonButtonTrigger: PublishRelay<Void> { get }
     var twitterButtonTrigger: PublishRelay<Void> { get }
     var countUpTrigger: PublishRelay<Void> { get }
+    var tookScreenshot: PublishRelay<UIImage> { get }
 }
 
 protocol PlayViewModelOutput {
@@ -30,12 +31,13 @@ protocol PlayViewModelOutput {
     var songName: Driver<String> { get }
     var artistName: Driver<String> { get }
     var playButtonImage: Driver<UIImage> { get }
+    var takeScreenshot: Observable<Void> { get }
 }
 
 protocol PlayViewModelType {
 
-    var input: PlayViewModelInput { get }
-    var output: PlayViewModelOutput { get }
+    var inputs: PlayViewModelInput { get }
+    var outputs: PlayViewModelOutput { get }
     init(router: PlayRoutable)
 }
 
@@ -48,9 +50,10 @@ final class PlayViewModel: PlayViewModelType {
     let mastodonButtonTrigger: PublishRelay<Void> = .init()
     let twitterButtonTrigger: PublishRelay<Void> = .init()
     let countUpTrigger: PublishRelay<Void> = .init()
+    let tookScreenshot: PublishRelay<UIImage> = .init()
 
-    var input: PlayViewModelInput { return self }
-    var output: PlayViewModelOutput { return self }
+    var inputs: PlayViewModelInput { return self }
+    var outputs: PlayViewModelOutput { return self }
     var artworkImage: Driver<UIImage> {
         return _artworkImage.asDriver(onErrorJustReturn: R.image.music()!)
     }
@@ -65,6 +68,9 @@ final class PlayViewModel: PlayViewModelType {
     }
     var playButtonImage: Driver<UIImage> {
         return playbackState.map { $0 == .playing ? R.image.pause()! : R.image.play()! }.asDriver(onErrorJustReturn: R.image.pause()!)
+    }
+    var takeScreenshot: Observable<Void> {
+        return nowPlayingItem.compactMap { $0 }.distinctUntilChanged().map { _ in }.asObservable()
     }
 
     private let router: PlayRoutable
@@ -94,6 +100,21 @@ final class PlayViewModel: PlayViewModelType {
 
         musicPlayer.beginGeneratingPlayback().disposed(by: disposeBag)
 
+        subscribeInputs(router: router)
+
+        playbackState.map { $0 == .playing ? 1 : 0.9 }.bind(to: _artworkScale).disposed(by: disposeBag)
+
+        nowPlayingItem.map { $0?.artwork?.image ?? R.image.music()! }.bind(to: _artworkImage).disposed(by: disposeBag)
+        nowPlayingItem.map { $0?.title ?? "" }.bind(to: _songName).disposed(by: disposeBag)
+        nowPlayingItem.map { $0?.artist ?? "" }.bind(to: _artistName).disposed(by: disposeBag)
+
+        checkMediaLibraryAuthorization()
+        subscribeNotifications()
+    }
+
+    // MARK: - Private method
+
+    private func subscribeInputs(router: PlayRoutable) {
         playPauseButtonTrigger
             .withLatestFrom(playbackState) { $1 }
             .map { $0 == .playing }
@@ -133,18 +154,7 @@ final class PlayViewModel: PlayViewModelType {
                 }
             })
             .disposed(by: disposeBag)
-
-        playbackState.map { $0 == .playing ? 1 : 0.9 }.bind(to: _artworkScale).disposed(by: disposeBag)
-
-        nowPlayingItem.map { $0?.artwork?.image ?? R.image.music()! }.bind(to: _artworkImage).disposed(by: disposeBag)
-        nowPlayingItem.map { $0?.title ?? "" }.bind(to: _songName).disposed(by: disposeBag)
-        nowPlayingItem.map { $0?.artist ?? "" }.bind(to: _artistName).disposed(by: disposeBag)
-
-        checkMediaLibraryAuthorization()
-        subscribeNotifications()
     }
-
-    // MARK: - Private method
 
     private func checkMediaLibraryAuthorization() {
         MPMediaLibrary.rx.requestAuthorization()
