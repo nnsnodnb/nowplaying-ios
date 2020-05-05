@@ -13,7 +13,7 @@ import RxSwift
 
 protocol PostViewModelInput {
 
-    var postText: BehaviorRelay<String> { get }
+    var postText: PublishRelay<String> { get }
     var dismissTrigger: PublishRelay<Void> { get }
     var postTrigger: PublishRelay<Void> { get }
     var changeAccount: PublishRelay<Void> { get }
@@ -22,6 +22,7 @@ protocol PostViewModelInput {
 protocol PostViewModelOutput {
 
     var title: Observable<String> { get }
+    var initialPostText: Observable<String> { get }
 }
 
 protocol PostViewModelType {

@@ -13,11 +13,12 @@ import RxSwift
 
 final class TootPostViewModel: PostViewModelType {
 
-    let postText: BehaviorRelay<String> = .init(value: "")
+    let postText: PublishRelay<String> = .init()
     let dismissTrigger: PublishRelay<Void> = .init()
     let postTrigger: PublishRelay<Void> = .init()
     let changeAccount: PublishRelay<Void> = .init()
     let title: Observable<String>
+    let initialPostText: Observable<String>
 
     var inputs: PostViewModelInput { return self }
     var outputs: PostViewModelOutput { return self }
@@ -27,6 +28,7 @@ final class TootPostViewModel: PostViewModelType {
 
     init(router: PostRoutable, item: MPMediaItem) {
         title = .just("トゥート")
+        initialPostText = .just(Service.getPostText(.mastodon, item: item))
 
         postText.skip(2).map { _ in true }.distinctUntilChanged().bind(to: didEdit).disposed(by: disposeBag)
 

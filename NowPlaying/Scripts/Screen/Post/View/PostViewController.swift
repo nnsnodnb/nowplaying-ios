@@ -43,6 +43,7 @@ final class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         _ = viewModel.outputs.title.bind(to: rx.title)
+        _ = viewModel.outputs.initialPostText.bind(to: textView.rx.text)
 
         setupNavigationBar()
     }
