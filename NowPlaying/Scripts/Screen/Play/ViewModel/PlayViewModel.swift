@@ -67,6 +67,7 @@ final class PlayViewModel: PlayViewModelType {
         return playbackState.map { $0 == .playing ? R.image.pause()! : R.image.play()! }.asDriver(onErrorJustReturn: R.image.pause()!)
     }
 
+    private let router: PlayRoutable
     private let disposeBag = DisposeBag()
     private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     private let nowPlayingItem: BehaviorRelay<MPMediaItem?>
@@ -76,7 +77,18 @@ final class PlayViewModel: PlayViewModelType {
     private let _songName: PublishRelay<String> = .init()
     private let _artistName: PublishRelay<String> = .init()
 
+    private var isExistUser: Binder<(Service, MPMediaItem)> {
+        return .init(self) {
+            if User.isExists(service: $1.0) {
+                $0.router.openPostView(service: $1.0, item: $1.1)
+            } else {
+                $0.router.notExistServiceUser()
+            }
+        }
+    }
+
     init(router: PlayRoutable) {
+        self.router = router
         nowPlayingItem = .init(value: musicPlayer.nowPlayingItem)
         playbackState = .init(value: musicPlayer.playbackState)
 
@@ -115,17 +127,15 @@ final class PlayViewModel: PlayViewModelType {
         mastodonButtonTrigger
             .withLatestFrom(nowPlayingItem)
             .compactMap { $0 }
-            .subscribe(onNext: {
-                router.openPostView(service: .mastodon, item: $0)
-            })
+            .map { (.mastodon, $0) }
+            .bind(to: isExistUser)
             .disposed(by: disposeBag)
 
         twitterButtonTrigger
             .withLatestFrom(nowPlayingItem)
             .compactMap { $0 }
-            .subscribe(onNext: {
-                router.openPostView(service: .twitter, item: $0)
-            })
+            .map { (.twitter, $0) }
+            .bind(to: isExistUser)
             .disposed(by: disposeBag)
 
         countUpTrigger

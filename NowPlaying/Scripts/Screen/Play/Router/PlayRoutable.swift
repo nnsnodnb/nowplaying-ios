@@ -16,6 +16,7 @@ protocol PlayRoutable: AnyObject {
     init(view: PlayViewer)
     func openSetting()
     func openPostView(service: Service, item: MPMediaItem)
+    func notExistServiceUser()
 }
 
 final class PlayRouter: PlayRoutable {
@@ -36,5 +37,11 @@ final class PlayRouter: PlayRoutable {
         let viewController = PostViewController.makeInstance(service: service, item: item)
         let navi = UINavigationController(rootViewController: viewController)
         view.present(navi, animated: true, completion: nil)
+    }
+
+    func notExistServiceUser() {
+        let alert = UIAlertController(title: "設定からログインしてください", message: nil, preferredStyle: .alert)
+        alert.addAction(.init(title: "閉じる", style: .default, handler: nil))
+        view.present(alert, animated: true, completion: nil)
     }
 }
