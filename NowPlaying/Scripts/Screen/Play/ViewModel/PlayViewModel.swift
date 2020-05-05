@@ -18,7 +18,10 @@ protocol PlayViewModelInput {
     var previousButtonTrigger: PublishRelay<Void> { get }
     var nextButtonTrigger: PublishRelay<Void> { get }
     var gearButtonTrigger: PublishRelay<Void> { get }
+    var mastodonButtonTrigger: PublishRelay<Void> { get }
+    var twitterButtonTrigger: PublishRelay<Void> { get }
     var countUpTrigger: PublishRelay<Void> { get }
+    var tookScreenshot: PublishRelay<UIImage> { get }
 }
 
 protocol PlayViewModelOutput {
@@ -28,12 +31,13 @@ protocol PlayViewModelOutput {
     var songName: Driver<String> { get }
     var artistName: Driver<String> { get }
     var playButtonImage: Driver<UIImage> { get }
+    var takeScreenshot: Observable<Void> { get }
 }
 
 protocol PlayViewModelType {
 
-    var input: PlayViewModelInput { get }
-    var output: PlayViewModelOutput { get }
+    var inputs: PlayViewModelInput { get }
+    var outputs: PlayViewModelOutput { get }
     init(router: PlayRoutable)
 }
 
@@ -43,10 +47,13 @@ final class PlayViewModel: PlayViewModelType {
     let previousButtonTrigger: PublishRelay<Void> = .init()
     let nextButtonTrigger: PublishRelay<Void> = .init()
     let gearButtonTrigger: PublishRelay<Void> = .init()
+    let mastodonButtonTrigger: PublishRelay<Void> = .init()
+    let twitterButtonTrigger: PublishRelay<Void> = .init()
     let countUpTrigger: PublishRelay<Void> = .init()
+    let tookScreenshot: PublishRelay<UIImage> = .init()
 
-    var input: PlayViewModelInput { return self }
-    var output: PlayViewModelOutput { return self }
+    var inputs: PlayViewModelInput { return self }
+    var outputs: PlayViewModelOutput { return self }
     var artworkImage: Driver<UIImage> {
         return _artworkImage.asDriver(onErrorJustReturn: R.image.music()!)
     }
@@ -62,7 +69,11 @@ final class PlayViewModel: PlayViewModelType {
     var playButtonImage: Driver<UIImage> {
         return playbackState.map { $0 == .playing ? R.image.pause()! : R.image.play()! }.asDriver(onErrorJustReturn: R.image.pause()!)
     }
+    var takeScreenshot: Observable<Void> {
+        return nowPlayingItem.compactMap { $0 }.distinctUntilChanged().map { _ in }.asObservable()
+    }
 
+    private let router: PlayRoutable
     private let disposeBag = DisposeBag()
     private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     private let nowPlayingItem: BehaviorRelay<MPMediaItem?>
@@ -72,53 +83,24 @@ final class PlayViewModel: PlayViewModelType {
     private let _songName: PublishRelay<String> = .init()
     private let _artistName: PublishRelay<String> = .init()
 
+    private var isExistUser: Binder<(Service, MPMediaItem, UIImage)> {
+        return .init(self) {
+            if User.isExists(service: $1.0) {
+                $0.router.openPostView(service: $1.0, item: $1.1, screenshot: $1.2)
+            } else {
+                $0.router.notExistServiceUser()
+            }
+        }
+    }
+
     init(router: PlayRoutable) {
+        self.router = router
         nowPlayingItem = .init(value: musicPlayer.nowPlayingItem)
         playbackState = .init(value: musicPlayer.playbackState)
 
-        musicPlayer.beginGeneratingPlaybackNotifications()
+        musicPlayer.beginGeneratingPlayback().disposed(by: disposeBag)
 
-        playPauseButtonTrigger
-            .withLatestFrom(playbackState) { $1 }
-            .map { $0 == .playing }
-            .subscribe(onNext: { [unowned self] in
-                if $0 {
-                    self.musicPlayer.pause()
-                } else {
-                    self.musicPlayer.play()
-                }
-            })
-            .disposed(by: disposeBag)
-
-        previousButtonTrigger
-            .subscribe(onNext: { [unowned self] in
-                self.musicPlayer.skipToPreviousItem()
-            })
-            .disposed(by: disposeBag)
-
-        nextButtonTrigger
-            .subscribe(onNext: { [unowned self] in
-                self.musicPlayer.skipToNextItem()
-            })
-            .disposed(by: disposeBag)
-
-        gearButtonTrigger
-            .subscribe(onNext: {
-                router.openSetting()
-            })
-            .disposed(by: disposeBag)
-
-        countUpTrigger
-            .subscribe(onNext: {
-                var count = UserDefaults.standard.integer(forKey: .appOpenCount)
-                count += 1
-                UserDefaults.standard.set(count, forKey: .appOpenCount)
-                if count == 15 {
-                    SKStoreReviewController.requestReview()
-                    UserDefaults.standard.set(0, forKey: .appOpenCount)
-                }
-            })
-            .disposed(by: disposeBag)
+        subscribeInputs(router: router)
 
         playbackState.map { $0 == .playing ? 1 : 0.9 }.bind(to: _artworkScale).disposed(by: disposeBag)
 
@@ -126,6 +108,78 @@ final class PlayViewModel: PlayViewModelType {
         nowPlayingItem.map { $0?.title ?? "" }.bind(to: _songName).disposed(by: disposeBag)
         nowPlayingItem.map { $0?.artist ?? "" }.bind(to: _artistName).disposed(by: disposeBag)
 
+        checkMediaLibraryAuthorization()
+        subscribeNotifications()
+    }
+
+    // MARK: - Private method
+
+    private func subscribeInputs(router: PlayRoutable) {
+        playPauseButtonTrigger
+            .withLatestFrom(playbackState) { $1 }
+            .map { $0 == .playing }
+            .bind(to: musicPlayer.playing)
+            .disposed(by: disposeBag)
+
+        previousButtonTrigger.bind(to: musicPlayer.skipToPreviousItem).disposed(by: disposeBag)
+        nextButtonTrigger.bind(to: musicPlayer.skipToNextItem).disposed(by: disposeBag)
+
+        gearButtonTrigger
+            .subscribe(onNext: {
+                router.openSetting()
+            })
+            .disposed(by: disposeBag)
+
+        mastodonButtonTrigger
+            .withLatestFrom(nowPlayingItem)
+            .compactMap { $0 }
+            .withLatestFrom(tookScreenshot) { ($0, $1) }
+            .map { (.mastodon, $0, $1) }
+            .bind(to: isExistUser)
+            .disposed(by: disposeBag)
+
+        twitterButtonTrigger
+            .withLatestFrom(nowPlayingItem)
+            .compactMap { $0 }
+            .withLatestFrom(tookScreenshot) { ($0, $1) }
+            .map { (.twitter, $0, $1) }
+            .bind(to: isExistUser)
+            .disposed(by: disposeBag)
+
+        countUpTrigger
+            .subscribe(onNext: {
+                var count = UserDefaults.standard.integer(forKey: .appOpenCount) + 1
+                defer { UserDefaults.standard.set(count, forKey: .appOpenCount) }
+                if count == 15 {
+                    SKStoreReviewController.requestReview()
+                    count = 0
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+
+    private func checkMediaLibraryAuthorization() {
+        MPMediaLibrary.rx.requestAuthorization()
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (status) in
+                guard let wself = self else { return }
+                switch status {
+                case .authorized:
+                    wself.nowPlayingItem.accept(wself.musicPlayer.nowPlayingItem)
+                    wself.playbackState.accept(wself.musicPlayer.playbackState)
+                case .denied:
+                    // TODO: アラート表示
+                    break
+                case .notDetermined, .restricted:
+                    break
+                @unknown default:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+
+    private func subscribeNotifications() {
         // 曲が変更されたら通知される
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
             .compactMap { $0.object as? MPMusicPlayerController }
@@ -139,29 +193,6 @@ final class PlayViewModel: PlayViewModelType {
             .map { $0.playbackState }
             .bind(to: playbackState)
             .disposed(by: disposeBag)
-
-        MPMediaLibrary.requestAuthorization { (status) in
-            switch status {
-            case .authorized:
-                _ = Observable<Int>.timer(.milliseconds(500), scheduler: MainScheduler.instance)
-                    .map { _ in }
-                    .subscribe(onNext: { [weak self] in
-                        self?.nowPlayingItem.accept(self?.musicPlayer.nowPlayingItem)
-                        self?.playbackState.accept(self?.musicPlayer.playbackState ?? .paused)
-                    })
-            case .denied:
-                // TODO: アラート表示
-                break
-            case .notDetermined, .restricted:
-                break
-            @unknown default:
-                break
-            }
-        }
-    }
-
-    deinit {
-        musicPlayer.endGeneratingPlaybackNotifications()
     }
 }
 

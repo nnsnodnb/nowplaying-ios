@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MediaPlayer
 
 enum Service: String {
 
@@ -23,6 +24,13 @@ enum Service: String {
         if let text = UserDefaults.standard.string(forKey: key) { return text }
         UserDefaults.standard.set(.defaultPostFormat, forKey: key)
         return .defaultPostFormat
+    }
+
+    static func getPostText(_ service: Service, item: MPMediaItem) -> String {
+        return getPostFormat(service)
+            .replacingOccurrences(of: "__songtitle__", with: item.title ?? "")
+            .replacingOccurrences(of: "__artist__", with: item.artist ?? "")
+            .replacingOccurrences(of: "__album__", with: item.albumTitle ?? "")
     }
 
     static func resetPostFormat(_ service: Service) {
