@@ -14,6 +14,9 @@ import RxSwift
 extension Reactive where Base: MPMediaLibrary {
 
     static func requestAuthorization() -> Observable<MPMediaLibraryAuthorizationStatus> {
+        if MPMediaLibrary.authorizationStatus() == .authorized {
+            return .just(.authorized, scheduler: MainScheduler.instance)
+        }
         return .create { (observer) -> Disposable in
             MPMediaLibrary.requestAuthorization { (status) in
                 observer.onNext(status)
