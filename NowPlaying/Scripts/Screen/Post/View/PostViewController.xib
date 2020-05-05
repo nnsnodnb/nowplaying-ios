@@ -44,13 +44,18 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yfa-Oq-EZF">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yfa-Oq-EZF" customClass="ShadowButton" customModule="NowPlaying" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="74" width="60" height="60"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="60" id="i0v-aa-HNk"/>
                                 <constraint firstAttribute="width" constant="60" id="qwu-s7-gRP"/>
                             </constraints>
                             <state key="normal" title="Button"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </button>
                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SdD-Q2-0a5">
                             <rect key="frame" x="0.0" y="148" width="60" height="60"/>

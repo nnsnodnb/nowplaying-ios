@@ -46,6 +46,8 @@ final class PostViewController: UIViewController {
         _ = viewModel.outputs.initialPostText.bind(to: textView.rx.text)
 
         viewModel.outputs.account.map { $0.iconURL }.bind(to: iconImageButton.rx.url).disposed(by: disposeBag)
+        viewModel.outputs.attachment.bind(to: attachmentImageButton.rx.image(for: .normal)).disposed(by: disposeBag)
+        viewModel.outputs.attachment.map { $0 != nil }.bind(to: addImageButton.rx.isHidden).disposed(by: disposeBag)
 
         setupNavigationBar()
     }

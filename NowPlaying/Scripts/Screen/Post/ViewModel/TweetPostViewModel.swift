@@ -21,6 +21,7 @@ final class TweetPostViewModel: PostViewModelType {
     let title: Observable<String>
     let initialPostText: Observable<String>
     let account: Observable<User>
+    let attachment: Observable<UIImage?>
 
     var inputs: PostViewModelInput { return self }
     var outputs: PostViewModelOutput { return self }
@@ -28,6 +29,7 @@ final class TweetPostViewModel: PostViewModelType {
     private let disposeBag = DisposeBag()
     private let didEdit: BehaviorRelay<Bool> = .init(value: false)
     private let selectAccount: BehaviorRelay<User>
+    private let attachmentImage: BehaviorRelay<UIImage?> = .init(value: nil)
 
     init(router: PostRoutable, item: MPMediaItem) {
         title = .just("ツイート")
@@ -36,6 +38,11 @@ final class TweetPostViewModel: PostViewModelType {
         let user = realm.objects(User.self).filter("serviceType = %@ AND isDefault = %@", Service.twitter.rawValue, true).first!
         selectAccount = .init(value: user)
         account = selectAccount.asObservable()
+        attachment = attachmentImage.asObservable().share(replay: 1, scope: .whileConnected)
+
+        if UserDefaults.standard.bool(forKey: .isWithImage) {
+            attachmentImage.accept(item.artwork?.image)
+        }
 
         postText.skip(2).map { _ in true }.distinctUntilChanged().bind(to: didEdit).disposed(by: disposeBag)
 
