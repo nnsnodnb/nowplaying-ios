@@ -34,7 +34,7 @@ protocol PostViewModelType {
 
     var inputs: PostViewModelInput { get }
     var outputs: PostViewModelOutput { get }
-    init(router: PostRoutable, item: MPMediaItem)
+    init(router: PostRoutable, item: MPMediaItem, screenshot: UIImage)
 }
 
 class PostViewModel: PostViewModelType {
@@ -63,6 +63,7 @@ class PostViewModel: PostViewModelType {
     var service: Service { fatalError("Required override") }
 
     private let item: MPMediaItem
+    private let screenshot: UIImage
     private let disposeBag = DisposeBag()
     private let didEdit: BehaviorRelay<Bool> = .init(value: false)
     private let attachmentImage: BehaviorRelay<UIImage?> = .init(value: nil)
@@ -73,11 +74,12 @@ class PostViewModel: PostViewModelType {
         return .init(value: user)
     }()
 
-    required init(router: PostRoutable, item: MPMediaItem) {
+    required init(router: PostRoutable, item: MPMediaItem, screenshot: UIImage) {
         self.item = item
+        self.screenshot = screenshot
         attachment = attachmentImage.asObservable().share(replay: 2, scope: .whileConnected)
 
-        postText.skip(2).map { _ in true }.distinctUntilChanged().bind(to: didEdit).disposed(by: disposeBag)
+        postText.skip(2).take(1).map { _ in true }.bind(to: didEdit).disposed(by: disposeBag)
 
         subscribeInputs(router: router)
 
@@ -118,6 +120,7 @@ class PostViewModel: PostViewModelType {
                     case .artwork:
                         self.attachmentImage.accept(self.item.artwork?.image)
                     case .screenshot:
+                        self.attachmentImage.accept(self.screenshot)
                         // TODO: スクリーンショットを取得
                         return
                     }

@@ -15,7 +15,7 @@ protocol PlayRoutable: AnyObject {
 
     init(view: PlayViewer)
     func openSetting()
-    func openPostView(service: Service, item: MPMediaItem)
+    func openPostView(service: Service, item: MPMediaItem, screenshot: UIImage)
     func notExistServiceUser()
 }
 
@@ -33,8 +33,8 @@ final class PlayRouter: PlayRoutable {
         view.present(navi, animated: true, completion: nil)
     }
 
-    func openPostView(service: Service, item: MPMediaItem) {
-        let viewController = PostViewController.makeInstance(service: service, item: item)
+    func openPostView(service: Service, item: MPMediaItem, screenshot: UIImage) {
+        let viewController = PostViewController.makeInstance(service: service, item: item, screenshot: screenshot)
         let navi = UINavigationController(rootViewController: viewController)
         view.present(navi, animated: true, completion: nil)
     }

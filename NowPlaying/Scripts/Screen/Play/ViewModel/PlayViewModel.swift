@@ -83,10 +83,10 @@ final class PlayViewModel: PlayViewModelType {
     private let _songName: PublishRelay<String> = .init()
     private let _artistName: PublishRelay<String> = .init()
 
-    private var isExistUser: Binder<(Service, MPMediaItem)> {
+    private var isExistUser: Binder<(Service, MPMediaItem, UIImage)> {
         return .init(self) {
             if User.isExists(service: $1.0) {
-                $0.router.openPostView(service: $1.0, item: $1.1)
+                $0.router.openPostView(service: $1.0, item: $1.1, screenshot: $1.2)
             } else {
                 $0.router.notExistServiceUser()
             }
@@ -133,14 +133,16 @@ final class PlayViewModel: PlayViewModelType {
         mastodonButtonTrigger
             .withLatestFrom(nowPlayingItem)
             .compactMap { $0 }
-            .map { (.mastodon, $0) }
+            .withLatestFrom(tookScreenshot) { ($0, $1) }
+            .map { (.mastodon, $0, $1) }
             .bind(to: isExistUser)
             .disposed(by: disposeBag)
 
         twitterButtonTrigger
             .withLatestFrom(nowPlayingItem)
             .compactMap { $0 }
-            .map { (.twitter, $0) }
+            .withLatestFrom(tookScreenshot) { ($0, $1) }
+            .map { (.twitter, $0, $1) }
             .bind(to: isExistUser)
             .disposed(by: disposeBag)
 

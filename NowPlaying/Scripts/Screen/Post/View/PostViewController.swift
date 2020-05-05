@@ -81,15 +81,15 @@ extension PostViewController {
         let viewModel: PostViewModelType
     }
 
-    class func makeInstance(service: Service, item: MPMediaItem) -> PostViewController {
+    class func makeInstance(service: Service, item: MPMediaItem, screenshot: UIImage) -> PostViewController {
         let viewController = PostViewController()
         let router = PostRouter(view: viewController)
         let viewModel: PostViewModelType// = service == .twitter ? TweetPostViewModel(router: router) : TootPostViewModel(router: router)
         switch service {
         case .twitter:
-            viewModel = TweetPostViewModel(router: router, item: item)
+            viewModel = TweetPostViewModel(router: router, item: item, screenshot: screenshot)
         case .mastodon:
-            viewModel = TootPostViewModel(router: router, item: item)
+            viewModel = TootPostViewModel(router: router, item: item, screenshot: screenshot)
         }
         viewController.inject(dependency: .init(viewModel: viewModel))
         return viewController
