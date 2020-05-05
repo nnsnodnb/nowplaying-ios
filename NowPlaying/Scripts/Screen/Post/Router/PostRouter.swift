@@ -10,10 +10,17 @@ import UIKit
 
 protocol PostViewer: UIViewController {}
 
+enum AttachmentType {
+
+    case artwork
+    case screenshot
+}
+
 protocol PostRoutable: AnyObject {
 
     func dismissConfirm(didEdit: Bool)
-    func presentAttachmentActions(withImage image: UIImage, deletionHandler: (() -> Void)?)
+    func presentAttachmentActions(withImage image: UIImage, deletionHandler: @escaping () -> Void)
+    func presentAddAttachmentActions(handler: @escaping (AttachmentType) -> Void)
 }
 
 final class PostRouter: PostRoutable {
@@ -38,15 +45,27 @@ final class PostRouter: PostRoutable {
         view.present(alert, animated: true, completion: nil)
     }
 
-    func presentAttachmentActions(withImage image: UIImage, deletionHandler: (() -> Void)?) {
+    func presentAttachmentActions(withImage image: UIImage, deletionHandler: @escaping () -> Void) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         actionSheet.addAction(.init(title: "プレビュー", style: .default) { (_) in
             // TODO: プレビュー
         })
         actionSheet.addAction(.init(title: "添付画像を削除", style: .destructive) { (_) in
-            deletionHandler?()
+            deletionHandler()
         })
         actionSheet.addAction(.init(title: "閉じる", style: .cancel, handler: nil))
+        view.present(actionSheet, animated: true, completion: nil)
+    }
+
+    func presentAddAttachmentActions(handler: @escaping (AttachmentType) -> Void) {
+        let actionSheet = UIAlertController(title: "画像を追加します", message: "どちらを追加しますか？", preferredStyle: .actionSheet)
+        actionSheet.addAction(.init(title: "アートワーク", style: .default) { (_) in
+            handler(.artwork)
+        })
+        actionSheet.addAction(.init(title: "再生画面のスクリーンショット", style: .default) { (_) in
+            handler(.screenshot)
+        })
+        actionSheet.addAction(.init(title: "キャンセル", style: .cancel, handler: nil))
         view.present(actionSheet, animated: true, completion: nil)
     }
 }

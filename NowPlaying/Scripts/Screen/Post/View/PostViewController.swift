@@ -35,7 +35,11 @@ final class PostViewController: UIViewController {
             attachmentImageButton.rx.tap.bind(to: viewModel.inputs.selectAttachment).disposed(by: disposeBag)
         }
     }
-    @IBOutlet private weak var addImageButton: UIButton!
+    @IBOutlet private weak var addImageButton: UIButton! {
+        didSet {
+            addImageButton.rx.tap.bind(to: viewModel.inputs.addAttachment).disposed(by: disposeBag)
+        }
+    }
 
     private let disposeBag = DisposeBag()
 
