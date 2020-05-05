@@ -17,6 +17,7 @@ protocol PostViewModelInput {
     var dismissTrigger: PublishRelay<Void> { get }
     var postTrigger: PublishRelay<Void> { get }
     var changeAccount: PublishRelay<Void> { get }
+    var selectAttachment: PublishRelay<Void> { get }
 }
 
 protocol PostViewModelOutput {
@@ -28,6 +29,7 @@ protocol PostViewModelOutput {
 }
 
 protocol PostViewModelType {
+
     var inputs: PostViewModelInput { get }
     var outputs: PostViewModelOutput { get }
     init(router: PostRoutable, item: MPMediaItem)

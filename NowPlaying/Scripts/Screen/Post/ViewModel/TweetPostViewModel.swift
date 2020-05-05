@@ -18,6 +18,7 @@ final class TweetPostViewModel: PostViewModelType {
     let dismissTrigger: PublishRelay<Void> = .init()
     let postTrigger: PublishRelay<Void> = .init()
     let changeAccount: PublishRelay<Void> = .init()
+    let selectAttachment: PublishRelay<Void> = .init()
     let title: Observable<String>
     let initialPostText: Observable<String>
     let account: Observable<User>
@@ -38,7 +39,7 @@ final class TweetPostViewModel: PostViewModelType {
         let user = realm.objects(User.self).filter("serviceType = %@ AND isDefault = %@", Service.twitter.rawValue, true).first!
         selectAccount = .init(value: user)
         account = selectAccount.asObservable()
-        attachment = attachmentImage.asObservable().share(replay: 1, scope: .whileConnected)
+        attachment = attachmentImage.asObservable().share(replay: 2, scope: .whileConnected)
 
         if UserDefaults.standard.bool(forKey: .isWithImage) {
             attachmentImage.accept(item.artwork?.image)
@@ -56,6 +57,16 @@ final class TweetPostViewModel: PostViewModelType {
         changeAccount
             .subscribe(onNext: {
 
+            })
+            .disposed(by: disposeBag)
+
+        selectAttachment
+            .withLatestFrom(attachmentImage)
+            .compactMap { $0 }
+            .subscribe(onNext: {
+                router.presentAttachmentActions(withImage: $0) { [unowned self] in
+                    self.attachmentImage.accept(nil)
+                }
             })
             .disposed(by: disposeBag)
     }

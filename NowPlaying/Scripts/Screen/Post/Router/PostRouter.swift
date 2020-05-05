@@ -13,6 +13,7 @@ protocol PostViewer: UIViewController {}
 protocol PostRoutable: AnyObject {
 
     func dismissConfirm(didEdit: Bool)
+    func presentAttachmentActions(withImage image: UIImage, deletionHandler: (() -> Void)?)
 }
 
 final class PostRouter: PostRoutable {
@@ -35,5 +36,17 @@ final class PostRouter: PostRoutable {
         })
         alert.preferredAction = alert.actions.last
         view.present(alert, animated: true, completion: nil)
+    }
+
+    func presentAttachmentActions(withImage image: UIImage, deletionHandler: (() -> Void)?) {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(.init(title: "プレビュー", style: .default) { (_) in
+            // TODO: プレビュー
+        })
+        actionSheet.addAction(.init(title: "添付画像を削除", style: .destructive) { (_) in
+            deletionHandler?()
+        })
+        actionSheet.addAction(.init(title: "閉じる", style: .cancel, handler: nil))
+        view.present(actionSheet, animated: true, completion: nil)
     }
 }

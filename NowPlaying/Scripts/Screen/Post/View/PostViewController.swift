@@ -32,6 +32,7 @@ final class PostViewController: UIViewController {
             attachmentImageButton.imageView?.contentMode = .scaleAspectFit
             attachmentImageButton.contentVerticalAlignment = .fill
             attachmentImageButton.contentHorizontalAlignment = .fill
+            attachmentImageButton.rx.tap.bind(to: viewModel.inputs.selectAttachment).disposed(by: disposeBag)
         }
     }
     @IBOutlet private weak var addImageButton: UIButton!
@@ -47,6 +48,7 @@ final class PostViewController: UIViewController {
 
         viewModel.outputs.account.map { $0.iconURL }.bind(to: iconImageButton.rx.url).disposed(by: disposeBag)
         viewModel.outputs.attachment.bind(to: attachmentImageButton.rx.image(for: .normal)).disposed(by: disposeBag)
+        viewModel.outputs.attachment.map { $0 == nil }.bind(to: attachmentImageButton.rx.isHidden).disposed(by: disposeBag)
         viewModel.outputs.attachment.map { $0 != nil }.bind(to: addImageButton.rx.isHidden).disposed(by: disposeBag)
 
         setupNavigationBar()
