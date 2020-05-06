@@ -6,10 +6,14 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import Action
 import Eureka
 import RxCocoa
 import RxSwift
+import StoreKit
+import SVProgressHUD
 import UIKit
+import Umbrella
 
 protocol SettingViewModelInput {
 
@@ -38,6 +42,10 @@ final class SettingViewModel: SettingViewModelType {
 
     private let disposeBag = DisposeBag()
 
+    private lazy var restoreAction: Action<Void, SKPaymentQueue> = .init {
+        return SKPaymentQueue.default().rx.restoreCompletedTransactions()
+    }
+
     init(router: SettingRoutable) {
         form = Form()
 
@@ -48,6 +56,7 @@ final class SettingViewModel: SettingViewModelType {
             .disposed(by: disposeBag)
 
         configureForm()
+        subscribeActions()
     }
 }
 
@@ -73,11 +82,47 @@ extension SettingViewModel {
                 <<< configureCell(row: .developer)
                 <<< configureCell(row: .sourceCode)
                 <<< configureCell(row: .featureReportsAndBugs)
-                <<< configureCell(row: .purchaseHideAdMob { (action) in
-                    // TODO: Implementation
-                    print(action)
+                <<< configureCell(row: .purchaseHideAdMob { [unowned self] (action) in
+                    switch action {
+                    case .purchase:
+                        SVProgressHUD.show()
+                    case .restore:
+                        SVProgressHUD.show()
+                        self.restoreAction.execute()
+                    case .userCancel:
+                        return
+                    }
                 })
                 <<< configureCell(row: .review)
+    }
+
+    private func subscribeActions() {
+        restoreAction.elements
+            .map { $0.transactions.map { PaymentProduct(rawValue: $0.payment.productIdentifier) } }
+            .subscribe(onNext: { [weak self] in
+                if $0.isEmpty {
+                    SVProgressHUD.showInfo(withStatus: "復元するものがありません")
+                    SVProgressHUD.dismiss(withDelay: 1)
+                    return
+                }
+                $0.forEach { $0?.finishPurchased() }
+                defer {
+                    SVProgressHUD.showSuccess(withStatus: "復元に成功しました")
+                    SVProgressHUD.dismiss(withDelay: 1)
+                }
+                guard $0.first(where: { $0 == .hideAdMob }) != nil else { return }
+                guard let wself = self, let row = wself.form.rowBy(tag: "purchase_hide_admob") else { return }
+                row.hidden = .init(booleanLiteral: true)
+                row.evaluateHidden()
+            })
+            .disposed(by: disposeBag)
+
+        restoreAction.errors
+            .subscribe(onNext: { (actionError) in
+                print(actionError)
+                SVProgressHUD.showError(withStatus: "エラーが発生しました: \(actionError)")
+            })
+            .disposed(by: disposeBag)
     }
 }
 
