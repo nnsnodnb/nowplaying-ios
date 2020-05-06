@@ -57,6 +57,8 @@ enum TwitterSettingRow {
             return SwitchRow(tag) {
                 $0.title = "画像を添付"
                 $0.value = UserDefaults.standard.bool(forKey: .isWithImage)
+            }.onChange { (row) in
+                UserDefaults.standard.set(row.value, forKey: .isWithImage)
             }
 
         case .attachedImageType:
@@ -69,6 +71,8 @@ enum TwitterSettingRow {
                     $0.value = $0.options!.first
                     UserDefaults.standard.set($0.value, forKey: .tweetWithImageType)
                 }
+            }.onChange { (row) in
+                UserDefaults.standard.set(row.value, forKey: .tweetWithImageType)
             }
 
         case .purchaseAutoTweet(let callback):
@@ -84,6 +88,8 @@ enum TwitterSettingRow {
             return SwitchRow(tag) {
                 $0.title = "自動ツイート"
                 $0.value = UserDefaults.standard.bool(forKey: .isAutoTweet)
+            }.onChange { (row) in
+                UserDefaults.standard.set(row.value, forKey: .isAutoTweet)
             }
 
         case .tweetFormat:

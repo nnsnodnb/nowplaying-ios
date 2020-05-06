@@ -18,17 +18,6 @@ final class SettingViewController: FormViewController {
 
     private(set) var viewModel: SettingViewModelType!
 
-    // MARK: - Class method
-
-    class func makeInstance() -> SettingViewController {
-        let viewController = SettingViewController()
-        let router = SettingRouter(view: viewController)
-        let viewModel = SettingViewModel(router: router)
-        viewController.inject(dependency: .init(viewModel: viewModel))
-
-        return viewController
-    }
-
     // MARK: - Life cycle
 
     override func viewDidLoad() {
@@ -48,6 +37,15 @@ extension SettingViewController {
 
     struct Dependency {
         let viewModel: SettingViewModelType
+    }
+
+    class func makeInstance() -> SettingViewController {
+        let viewController = SettingViewController()
+        let router = SettingRouter(view: viewController)
+        let viewModel = SettingViewModel(router: router)
+        viewController.inject(dependency: .init(viewModel: viewModel))
+
+        return viewController
     }
 
     func inject(dependency: Dependency) {

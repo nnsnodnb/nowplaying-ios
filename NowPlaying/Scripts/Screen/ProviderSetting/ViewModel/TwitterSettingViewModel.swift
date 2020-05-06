@@ -46,7 +46,14 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
                 <<< configureCell(row: .attachedImageSwitch)
                 <<< configureCell(row: .attachedImageType)
                 <<< configureCell(row: .purchaseAutoTweet {
-                    print($0) // TODO: Implementation
+                    switch $0 {
+                    case .purchase:
+                        break
+                    case .restore:
+                        break
+                    case .userCancel:
+                        return
+                    }
                 })
                 <<< configureCell(row: .autoTweetSwitch)
             +++ Section("自動フォーマット", postFormatHelpViewFooter)

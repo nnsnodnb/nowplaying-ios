@@ -53,6 +53,8 @@ enum MastodonSettingRow {
             return SwitchRow(tag) {
                 $0.title = "画像を添付"
                 $0.value = UserDefaults.standard.bool(forKey: .isMastodonWithImage)
+            }.onChange { (row) in
+                UserDefaults.standard.set(row.value, forKey: .isMastodonWithImage)
             }
 
         case .attachedImageType:
@@ -65,12 +67,16 @@ enum MastodonSettingRow {
                     $0.value = $0.options!.first
                     UserDefaults.standard.set($0.value, forKey: .tootWithImageType)
                 }
+            }.onChange { (row) in
+                UserDefaults.standard.set(row.value, forKey: .tootWithImageType)
             }
 
         case .autoToot:
             return SwitchRow(tag) {
                 $0.title = "自動トゥート"
                 $0.value = UserDefaults.standard.bool(forKey: .isMastodonAutoToot)
+            }.onChange { (row) in
+                UserDefaults.standard.set(row.value, forKey: .isMastodonAutoToot)
             }
 
         case .tootFormat:
