@@ -111,7 +111,7 @@ extension SettingViewModel {
                     SVProgressHUD.dismiss(withDelay: 1)
                 }
                 guard $0.first(where: { $0 == .hideAdMob }) != nil else { return }
-                guard let wself = self, let row = wself.form.rowBy(tag: "purchase_hide_admob") else { return }
+                guard let wself = self, let row = wself.form.rowBy(tag: SettingRow.purchaseHideAdMob { _ in }.tag) else { return }
                 row.hidden = .init(booleanLiteral: true)
                 row.evaluateHidden()
             })
