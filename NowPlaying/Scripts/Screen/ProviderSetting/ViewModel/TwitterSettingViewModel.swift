@@ -59,8 +59,11 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
                 <<< configureCell(row: .purchaseAutoTweet { [unowned self] in
                     switch $0 {
                     case .purchase:
-                        SVProgressHUD.show()
-                        self.purchaseAction.execute(.autoTweet)
+                        let alert = UIAlertController.confirmAutoTweetUsageInformation { [weak self] in
+                            SVProgressHUD.show()
+                            self?.purchaseAction.execute(.autoTweet)
+                        }
+                        self.router.present(alert, animated: true, completion: nil)
                     case .restore:
                         SVProgressHUD.show()
                         self.restoreAction.execute(())

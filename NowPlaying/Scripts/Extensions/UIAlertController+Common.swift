@@ -25,4 +25,15 @@ extension UIAlertController {
         })
         return alert
     }
+
+    class func confirmAutoTweetUsageInformation(confirmHandler: @escaping () -> Void) -> UIAlertController {
+        let alert = UIAlertController(title: "iOS上での制約のため\n長時間には対応できません\n1〜2曲ごとにアプリを起動することで\n自動投稿可能です",
+                                      message: nil, preferredStyle: .alert)
+        alert.addAction(.init(title: "キャンセル", style: .cancel, handler: nil))
+        alert.addAction(.init(title: "購入する", style: .default) { (_) in
+            confirmHandler()
+        })
+        alert.preferredAction = alert.actions.last
+        return alert
+    }
 }
