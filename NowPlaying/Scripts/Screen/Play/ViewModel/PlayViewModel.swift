@@ -26,11 +26,11 @@ protocol PlayViewModelInput {
 
 protocol PlayViewModelOutput {
 
-    var artworkImage: Driver<UIImage> { get }
-    var artworkScale: Driver<CGFloat> { get }
-    var songName: Driver<String> { get }
-    var artistName: Driver<String> { get }
-    var playButtonImage: Driver<UIImage> { get }
+    var artworkImage: Observable<UIImage> { get }
+    var artworkScale: Observable<CGFloat> { get }
+    var songName: Observable<String> { get }
+    var artistName: Observable<String> { get }
+    var playButtonImage: Observable<UIImage> { get }
     var takeScreenshot: Observable<Void> { get }
     var hideAdMob: Observable<Bool> { get }
 }
@@ -55,20 +55,20 @@ final class PlayViewModel: PlayViewModelType {
 
     var inputs: PlayViewModelInput { return self }
     var outputs: PlayViewModelOutput { return self }
-    var artworkImage: Driver<UIImage> {
-        return _artworkImage.asDriver(onErrorJustReturn: R.image.music()!)
+    var artworkImage: Observable<UIImage> {
+        return nowPlayingItem.map { $0?.artwork?.image ?? R.image.music()! }.observeOn(MainScheduler.instance)
     }
-    var artworkScale: Driver<CGFloat> {
-        return _artworkScale.asDriver(onErrorJustReturn: 1)
+    var artworkScale: Observable<CGFloat> {
+        return playbackState.map { $0 == .playing ? 1 : 0.9 }.observeOn(MainScheduler.instance)
     }
-    var songName: Driver<String> {
-        return _songName.asDriver(onErrorJustReturn: "")
+    var songName: Observable<String> {
+        return nowPlayingItem.map { $0?.title ?? "" }.observeOn(MainScheduler.instance)
     }
-    var artistName: Driver<String> {
-        return _artistName.asDriver(onErrorJustReturn: "")
+    var artistName: Observable<String> {
+        return nowPlayingItem.map { $0?.artist ?? "" }.observeOn(MainScheduler.instance)
     }
-    var playButtonImage: Driver<UIImage> {
-        return playbackState.map { $0 == .playing ? R.image.pause()! : R.image.play()! }.asDriver(onErrorJustReturn: R.image.pause()!)
+    var playButtonImage: Observable<UIImage> {
+        return playbackState.map { $0 == .playing ? R.image.pause()! : R.image.play()! }.observeOn(MainScheduler.instance)
     }
     var takeScreenshot: Observable<Void> {
         return nowPlayingItem.compactMap { $0 }.distinctUntilChanged().map { _ in }.asObservable()
@@ -88,10 +88,6 @@ final class PlayViewModel: PlayViewModelType {
     private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     private let nowPlayingItem: BehaviorRelay<MPMediaItem?>
     private let playbackState: BehaviorRelay<MPMusicPlaybackState>
-    private let _artworkImage: PublishRelay<UIImage> = .init()
-    private let _artworkScale: PublishRelay<CGFloat> = .init()
-    private let _songName: PublishRelay<String> = .init()
-    private let _artistName: PublishRelay<String> = .init()
 
     private var isExistUser: Binder<(Service, MPMediaItem, UIImage)> {
         return .init(self) {
@@ -111,12 +107,6 @@ final class PlayViewModel: PlayViewModelType {
         musicPlayer.beginGeneratingPlayback().disposed(by: disposeBag)
 
         subscribeInputs(router: router)
-
-        playbackState.map { $0 == .playing ? 1 : 0.9 }.bind(to: _artworkScale).disposed(by: disposeBag)
-
-        nowPlayingItem.map { $0?.artwork?.image ?? R.image.music()! }.bind(to: _artworkImage).disposed(by: disposeBag)
-        nowPlayingItem.map { $0?.title ?? "" }.bind(to: _songName).disposed(by: disposeBag)
-        nowPlayingItem.map { $0?.artist ?? "" }.bind(to: _artistName).disposed(by: disposeBag)
 
         checkMediaLibraryAuthorization()
         subscribeNotifications()
