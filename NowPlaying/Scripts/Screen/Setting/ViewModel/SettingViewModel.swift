@@ -60,6 +60,7 @@ final class SettingViewModel: SettingViewModelType {
 
         configureForm()
         subscribeActions()
+        subscribeUserDefaults()
     }
 }
 
@@ -103,10 +104,9 @@ extension SettingViewModel {
     private func subscribeActions() {
         purchaseAction.elements
             .filter { $0 == .purchased }
-            .map { _ in }
-            .subscribe(onNext: { [weak self] in
-                UserDefaults.standard.set(true, forKey: .isPurchasedRemoveAdMob)
-                self?.hiddenAdMobCell()
+            .map { _ in PaymentProduct.hideAdMob }
+            .subscribe(onNext: {
+                $0.finishPurchased()
                 SVProgressHUD.showSuccess(withStatus: "アプリ内広告削除を購入しました")
                 SVProgressHUD.dismiss(withDelay: 1)
             })
@@ -120,19 +120,14 @@ extension SettingViewModel {
             .disposed(by: disposeBag)
 
         restoreAction.elements
-            .subscribe(onNext: { [weak self] in
+            .subscribe(onNext: {
+                defer { SVProgressHUD.dismiss(withDelay: 1) }
                 if $0.isEmpty {
                     SVProgressHUD.showInfo(withStatus: "復元するものがありません")
-                    SVProgressHUD.dismiss(withDelay: 1)
                     return
                 }
                 $0.forEach { $0.finishPurchased() }
-                defer {
-                    SVProgressHUD.showSuccess(withStatus: "復元に成功しました")
-                    SVProgressHUD.dismiss(withDelay: 1)
-                }
-                guard $0.first(where: { $0 == .hideAdMob }) != nil else { return }
-                self?.hiddenAdMobCell()
+                SVProgressHUD.showSuccess(withStatus: "復元に成功しました")
             })
             .disposed(by: disposeBag)
 
@@ -144,11 +139,19 @@ extension SettingViewModel {
             .disposed(by: disposeBag)
     }
 
-    private func hiddenAdMobCell() {
-        guard UserDefaults.standard.bool(forKey: .isPurchasedRemoveAdMob),
-            let row = form.rowBy(tag: SettingRow.purchaseHideAdMob { _ in }.tag) else { return }
-        row.hidden = .init(booleanLiteral: true)
-        row.evaluateHidden()
+    private func subscribeUserDefaults() {
+        if UserDefaults.standard.bool(forKey: .isPurchasedRemoveAdMob) { return }
+        UserDefaults.standard.rx.change(type: Bool.self, key: .isPurchasedRemoveAdMob)
+            .compactMap { $0 }
+            .distinctUntilChanged()
+            .filter { $0 }
+            .compactMap { [weak self] _ in self?.form.rowBy(tag: SettingRow.purchaseHideAdMob { _ in }.tag) }
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { (row) in
+                row.hidden = .init(booleanLiteral: true)
+                row.evaluateHidden()
+            })
+            .disposed(by: disposeBag)
     }
 }
 
