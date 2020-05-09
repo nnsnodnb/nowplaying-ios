@@ -30,6 +30,7 @@ protocol PostViewModelOutput {
     var didChangePostText: Observable<Bool> { get }
     var account: Observable<User> { get }
     var attachment: Observable<UIImage?> { get }
+    var keyboardHeight: Observable<CGFloat> { get }
 }
 
 protocol PostViewModelType {
@@ -65,6 +66,15 @@ class PostViewModel: PostViewModelType {
     }
     var account: Observable<User> {
         return selectAccount.asObservable()
+    }
+    var keyboardHeight: Observable<CGFloat> {
+        return Observable.merge([
+            NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
+                .compactMap { ($0.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.height }
+                .map { $0 + 40 },
+            NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
+                .map { _ in 0 }
+        ])
     }
     var service: Service { fatalError("Required override") }
 

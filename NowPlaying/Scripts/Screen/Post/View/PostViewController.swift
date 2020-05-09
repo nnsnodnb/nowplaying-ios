@@ -20,6 +20,7 @@ final class PostViewController: UIViewController {
             textView.rx.text.orEmpty.bind(to: viewModel.inputs.postText).disposed(by: disposeBag)
         }
     }
+    @IBOutlet private weak var textViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var iconImageButton: UIButton! {
         didSet {
             iconImageButton.imageView?.contentMode = .scaleAspectFit
@@ -54,6 +55,7 @@ final class PostViewController: UIViewController {
         viewModel.outputs.attachment.bind(to: attachmentImageButton.rx.image(for: .normal)).disposed(by: disposeBag)
         viewModel.outputs.attachment.map { $0 == nil }.bind(to: attachmentImageButton.rx.isHidden).disposed(by: disposeBag)
         viewModel.outputs.attachment.map { $0 != nil }.bind(to: addImageButton.rx.isHidden).disposed(by: disposeBag)
+        viewModel.outputs.keyboardHeight.bind(to: textViewBottomConstraint.rx.constant).disposed(by: disposeBag)
 
         setupNavigationBar()
 

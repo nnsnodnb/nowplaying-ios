@@ -14,6 +14,7 @@
                 <outlet property="attachmentImageButton" destination="Yfa-Oq-EZF" id="kod-Tv-KpA"/>
                 <outlet property="iconImageButton" destination="4nU-k3-kRT" id="hC5-Zd-OHn"/>
                 <outlet property="textView" destination="TFh-PB-62U" id="sLX-gi-Bsl"/>
+                <outlet property="textViewBottomConstraint" destination="qnc-nA-QHX" id="Hnb-EQ-GqA"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
