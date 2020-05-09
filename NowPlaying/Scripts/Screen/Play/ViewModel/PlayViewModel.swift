@@ -6,11 +6,11 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
-import Foundation
 import MediaPlayer
 import RxCocoa
 import RxSwift
 import StoreKit
+import UIKit
 
 protocol PlayViewModelInput {
 
@@ -86,8 +86,8 @@ final class PlayViewModel: PlayViewModelType {
     private let router: PlayRoutable
     private let disposeBag = DisposeBag()
     private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
-    private let nowPlayingItem: BehaviorRelay<MPMediaItem?>
-    private let playbackState: BehaviorRelay<MPMusicPlaybackState>
+    private let nowPlayingItem: BehaviorRelay<MPMediaItem?> = .init(value: MPMusicPlayerController.systemMusicPlayer.nowPlayingItem)
+    private let playbackState: BehaviorRelay<MPMusicPlaybackState> = .init(value: .stopped)
 
     private var isExistUser: Binder<(Service, MPMediaItem, UIImage)> {
         return .init(self) {
@@ -101,20 +101,17 @@ final class PlayViewModel: PlayViewModelType {
 
     init(router: PlayRoutable) {
         self.router = router
-        nowPlayingItem = .init(value: musicPlayer.nowPlayingItem)
-        playbackState = .init(value: musicPlayer.playbackState)
+        checkMediaLibraryAuthorization()
 
         musicPlayer.beginGeneratingPlayback().disposed(by: disposeBag)
 
-        subscribeInputs(router: router)
-
-        checkMediaLibraryAuthorization()
+        subscribeInputs()
         subscribeNotifications()
     }
 
     // MARK: - Private method
 
-    private func subscribeInputs(router: PlayRoutable) {
+    private func subscribeInputs() {
         playPauseButtonTrigger
             .withLatestFrom(playbackState) { $1 }
             .map { $0 == .playing }
@@ -125,8 +122,8 @@ final class PlayViewModel: PlayViewModelType {
         nextButtonTrigger.bind(to: musicPlayer.skipToNextItem).disposed(by: disposeBag)
 
         gearButtonTrigger
-            .subscribe(onNext: {
-                router.openSetting()
+            .subscribe(onNext: { [unowned self] in
+                self.router.openSetting()
             })
             .disposed(by: disposeBag)
 
@@ -167,10 +164,9 @@ final class PlayViewModel: PlayViewModelType {
                 case .authorized:
                     wself.nowPlayingItem.accept(wself.musicPlayer.nowPlayingItem)
                     wself.playbackState.accept(wself.musicPlayer.playbackState)
-                case .denied:
-                    // TODO: アラート表示
-                    break
-                case .notDetermined, .restricted:
+                case .denied, .restricted:
+                    self?.router.notAccessibleToMediaLibrary(status: status)
+                case .notDetermined:
                     break
                 @unknown default:
                     break
