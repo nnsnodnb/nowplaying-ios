@@ -144,13 +144,10 @@ final class PlayViewModel: PlayViewModelType {
             .disposed(by: disposeBag)
 
         countUpTrigger
+            .map { UserDefaults.standard.integer(forKey: .appOpenCount) + 1}
             .subscribe(onNext: {
-                var count = UserDefaults.standard.integer(forKey: .appOpenCount) + 1
-                defer { UserDefaults.standard.set(count, forKey: .appOpenCount) }
-                if count == 15 {
-                    SKStoreReviewController.requestReview()
-                    count = 0
-                }
+                if $0 == 15 { SKStoreReviewController.requestReview() }
+                UserDefaults.standard.set($0, forKey: .appOpenCount)
             })
             .disposed(by: disposeBag)
     }
