@@ -82,6 +82,7 @@ final class PlayViewController: UIViewController {
     }
     @IBOutlet private weak var bannerView: GADBannerView! {
         didSet {
+            if UserDefaults.standard.bool(forKey: .isPurchasedRemoveAdMob) { return }
             bannerView.adUnitID = Environments.firebaseAdmobBannerID
             bannerView.adSize = kGADAdSizeBanner
             bannerView.rootViewController = self
