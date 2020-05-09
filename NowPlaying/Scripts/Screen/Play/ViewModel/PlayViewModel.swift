@@ -192,6 +192,10 @@ final class PlayViewModel: PlayViewModelType {
     }
 }
 
+// MARK: - PlayViewModelInput
+
 extension PlayViewModel: PlayViewModelInput {}
+
+// MARK: - PlayViewModelOutput
 
 extension PlayViewModel: PlayViewModelOutput {}
