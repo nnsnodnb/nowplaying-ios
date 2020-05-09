@@ -42,8 +42,11 @@ final class SettingViewModel: SettingViewModelType {
 
     private let disposeBag = DisposeBag()
 
-    private lazy var restoreAction: Action<Void, SKPaymentQueue> = .init {
-        return SKPaymentQueue.default().rx.restoreCompletedTransactions()
+    private lazy var purchaseAction: Action<PaymentProduct, BuyTransactionState> = .init {
+        return $0.buyProduct()
+    }
+    private lazy var restoreAction: Action<Void, [PaymentProduct]> = .init {
+        return PaymentProduct.restore()
     }
 
     init(router: SettingRoutable) {
@@ -57,6 +60,7 @@ final class SettingViewModel: SettingViewModelType {
 
         configureForm()
         subscribeActions()
+        subscribeUserDefaults()
     }
 }
 
@@ -86,6 +90,7 @@ extension SettingViewModel {
                     switch action {
                     case .purchase:
                         SVProgressHUD.show()
+                        self.purchaseAction.execute(.hideAdMob)
                     case .restore:
                         SVProgressHUD.show()
                         self.restoreAction.execute()
@@ -97,30 +102,49 @@ extension SettingViewModel {
     }
 
     private func subscribeActions() {
-        restoreAction.elements
-            .map { $0.transactions.map { PaymentProduct(rawValue: $0.payment.productIdentifier) } }
-            .subscribe(onNext: { [weak self] in
-                if $0.isEmpty {
-                    SVProgressHUD.showInfo(withStatus: "復元するものがありません")
-                    SVProgressHUD.dismiss(withDelay: 1)
-                    return
-                }
-                $0.forEach { $0?.finishPurchased() }
-                defer {
-                    SVProgressHUD.showSuccess(withStatus: "復元に成功しました")
-                    SVProgressHUD.dismiss(withDelay: 1)
-                }
-                guard $0.first(where: { $0 == .hideAdMob }) != nil else { return }
-                guard let wself = self, let row = wself.form.rowBy(tag: SettingRow.purchaseHideAdMob { _ in }.tag) else { return }
-                row.hidden = .init(booleanLiteral: true)
-                row.evaluateHidden()
+        purchaseAction.elements
+            .filter { $0 == .purchased }
+            .map { _ in PaymentProduct.hideAdMob }
+            .subscribe(onNext: {
+                $0.finishPurchased()
+                SVProgressHUD.showSuccess(withStatus: "アプリ内広告削除を購入しました")
+                SVProgressHUD.dismiss(withDelay: 1)
             })
             .disposed(by: disposeBag)
 
-        restoreAction.errors
-            .subscribe(onNext: { (actionError) in
-                print(actionError)
-                SVProgressHUD.showError(withStatus: "エラーが発生しました: \(actionError)")
+        restoreAction.elements
+            .subscribe(onNext: {
+                defer { SVProgressHUD.dismiss(withDelay: 1) }
+                if $0.isEmpty {
+                    SVProgressHUD.showInfo(withStatus: "復元するものがありません")
+                    return
+                }
+                $0.forEach { $0.finishPurchased() }
+                SVProgressHUD.showSuccess(withStatus: "復元に成功しました")
+            })
+            .disposed(by: disposeBag)
+
+        Observable.merge(purchaseAction.errors, restoreAction.errors)
+            .subscribe(onNext: {
+                print($0)
+                SVProgressHUD.showError(withStatus: "エラーが発生しました: \($0)")
+                SVProgressHUD.dismiss(withDelay: 1)
+            })
+            .disposed(by: disposeBag)
+    }
+
+    private func subscribeUserDefaults() {
+        if UserDefaults.standard.bool(forKey: .isPurchasedRemoveAdMob) { return }
+        UserDefaults.standard.rx.change(type: Bool.self, key: .isPurchasedRemoveAdMob)
+            .compactMap { $0 }
+            .distinctUntilChanged()
+            .filter { $0 }
+            .take(1)
+            .compactMap { [weak self] _ in self?.form.rowBy(tag: SettingRow.purchaseHideAdMob { _ in }.tag) }
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { (row) in
+                row.hidden = .init(booleanLiteral: true)
+                row.evaluateHidden()
             })
             .disposed(by: disposeBag)
     }

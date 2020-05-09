@@ -99,38 +99,16 @@ final class PlayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewModel.outputs.artworkImage
-            .drive(onNext: { [weak self] in
-                self?.artworkImageView.image = $0
-            })
-            .disposed(by: disposeBag)
-
+        viewModel.outputs.artworkImage.bind(to: artworkImageView.rx.image).disposed(by: disposeBag)
         viewModel.outputs.artworkScale
-            .drive(onNext: { [weak self] in
-                let transform: CGAffineTransform = $0 == 1 ? .identity : .init(scaleX: $0, y: $0)
-                UIView.animate(withDuration: 0.3) { [weak self] in
-                    self?.artworkImageView.transform = transform
-                }
-            })
+            .map { $0 == 1 ? .identity : .init(scaleX: $0, y: $0) }
+            .bind(to: artworkImageView.rx.transform)
             .disposed(by: disposeBag)
 
-        viewModel.outputs.songName
-            .drive(onNext: { [weak self] in
-                self?.songNameLabel.text = $0
-            })
-            .disposed(by: disposeBag)
+        viewModel.outputs.songName.bind(to: songNameLabel.rx.text).disposed(by: disposeBag)
+        viewModel.outputs.artistName.bind(to: artistNameLabel.rx.text).disposed(by: disposeBag)
 
-        viewModel.outputs.artistName
-            .drive(onNext: { [weak self] in
-                self?.artistNameLabel.text = $0
-            })
-            .disposed(by: disposeBag)
-
-        viewModel.outputs.playButtonImage
-            .drive(onNext: { [weak self] in
-                self?.playButton.setImage($0, for: .normal)
-            })
-            .disposed(by: disposeBag)
+        viewModel.outputs.playButtonImage.bind(to: playButton.rx.image(for: .normal)).disposed(by: disposeBag)
 
         viewModel.outputs.takeScreenshot
             .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
@@ -141,6 +119,9 @@ final class PlayViewController: UIViewController {
             }
             .bind(to: viewModel.inputs.tookScreenshot)
             .disposed(by: disposeBag)
+
+        viewModel.outputs.hideAdMob.bind(to: bannerView.rx.isHidden).disposed(by: disposeBag)
+        viewModel.outputs.hideAdMob.map { _ in 0 }.bind(to: bannerViewHeight.rx.constant).disposed(by: disposeBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {
