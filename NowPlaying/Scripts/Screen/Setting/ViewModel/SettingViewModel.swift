@@ -42,6 +42,9 @@ final class SettingViewModel: SettingViewModelType {
 
     private let disposeBag = DisposeBag()
 
+    private lazy var purchaseAction: Action<PaymentProduct, BuyTransactionState> = .init {
+        return $0.buyProduct()
+    }
     private lazy var restoreAction: Action<Void, [PaymentProduct]> = .init {
         return PaymentProduct.restore()
     }
@@ -86,6 +89,7 @@ extension SettingViewModel {
                     switch action {
                     case .purchase:
                         SVProgressHUD.show()
+                        self.purchaseAction.execute(.hideAdMob)
                     case .restore:
                         SVProgressHUD.show()
                         self.restoreAction.execute()
@@ -97,6 +101,24 @@ extension SettingViewModel {
     }
 
     private func subscribeActions() {
+        purchaseAction.elements
+            .filter { $0 == .purchased }
+            .map { _ in }
+            .subscribe(onNext: { [weak self] in
+                UserDefaults.standard.set(true, forKey: .isPurchasedRemoveAdMob)
+                self?.hiddenAdMobCell()
+                SVProgressHUD.showSuccess(withStatus: "アプリ内広告削除を購入しました")
+                SVProgressHUD.dismiss(withDelay: 1)
+            })
+            .disposed(by: disposeBag)
+
+        purchaseAction.errors
+            .subscribe(onNext: { (actionError) in
+                print(actionError)
+                SVProgressHUD.showError(withStatus: "エラーが発生しました")
+            })
+            .disposed(by: disposeBag)
+
         restoreAction.elements
             .subscribe(onNext: { [weak self] in
                 if $0.isEmpty {
@@ -110,9 +132,7 @@ extension SettingViewModel {
                     SVProgressHUD.dismiss(withDelay: 1)
                 }
                 guard $0.first(where: { $0 == .hideAdMob }) != nil else { return }
-                guard let row = self?.form.rowBy(tag: SettingRow.purchaseHideAdMob { _ in }.tag) else { return }
-                row.hidden = .init(booleanLiteral: true)
-                row.evaluateHidden()
+                self?.hiddenAdMobCell()
             })
             .disposed(by: disposeBag)
 
@@ -122,6 +142,13 @@ extension SettingViewModel {
                 SVProgressHUD.showError(withStatus: "エラーが発生しました: \(actionError)")
             })
             .disposed(by: disposeBag)
+    }
+
+    private func hiddenAdMobCell() {
+        guard UserDefaults.standard.bool(forKey: .isPurchasedRemoveAdMob),
+            let row = form.rowBy(tag: SettingRow.purchaseHideAdMob { _ in }.tag) else { return }
+        row.hidden = .init(booleanLiteral: true)
+        row.evaluateHidden()
     }
 }
 
