@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         applicationCoordinator.start()
 
         SVProgressHUD.setDefaultMaskType(.black)
+        createInitialData()
 
         #if DEBUG
         let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()
@@ -40,5 +41,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         Swifter.handleOpenURL(url)
         return true
+    }
+
+    // MARK: - Private method
+
+    private func createInitialData() {
+        if UserDefaults.standard.string(forKey: .tweetFormat) == nil {
+            UserDefaults.standard.set(.defaultPostFormat, forKey: .tweetFormat)
+        }
+        if UserDefaults.standard.string(forKey: .tootFormat) == nil {
+            UserDefaults.standard.set(.defaultPostFormat, forKey: .tootFormat)
+        }
+        if UserDefaults.standard.string(forKey: .tweetWithImageType) == nil {
+            UserDefaults.standard.set("アートワークのみ", forKey: .tweetWithImageType)
+        }
+        if UserDefaults.standard.string(forKey: .tootWithImageType) == nil {
+            UserDefaults.standard.set("アートワークのみ", forKey: .tootWithImageType)
+        }
     }
 }
