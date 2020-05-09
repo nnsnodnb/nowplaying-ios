@@ -89,8 +89,11 @@ class PostViewModel: PostViewModelType {
 
         subscribeInputs(router: router)
 
-        let key: UserDefaults.Key = service == .twitter ? .isWithImage : .isMastodonWithImage
-        if UserDefaults.standard.bool(forKey: key) { attachmentImage.accept(item.artwork?.image) }
+        if UserDefaults.standard.bool(forKey: service.withImageKey) {
+            let isArtwork = UserDefaults.standard.string(forKey: service.withImageTypeKey)! == "アートワークのみ"
+            let image: UIImage? = isArtwork ? item.artwork?.image : screenshot
+            attachmentImage.accept(image)
+        }
 
         postText.skip(2).map { _ in true }.distinctUntilChanged().bind(to: didEdit).disposed(by: disposeBag)
     }

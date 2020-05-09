@@ -36,4 +36,22 @@ enum Service: String {
     static func resetPostFormat(_ service: Service) {
         Service.setPostFormat(service, format: .defaultPostFormat)
     }
+
+    var withImageKey: UserDefaults.Key {
+        switch self {
+        case .twitter:
+            return .isWithImage
+        case .mastodon:
+            return .isMastodonWithImage
+        }
+    }
+
+    var withImageTypeKey: UserDefaults.Key {
+        switch self {
+        case .twitter:
+            return .tweetWithImageType
+        case .mastodon:
+            return .tootWithImageType
+        }
+    }
 }
