@@ -124,6 +124,7 @@ targets:
             - carthage: SnapKit
             - carthage: SVProgressHUD
             - carthage: SwifteriOS
+            - carthage: ZoomTransitioning
             - framework: Carthage/Build/iOS/GoogleDataTransport.framework
               embed: false
             - framework: Carthage/Build/iOS/GoogleDataTransportCCTSupport.framework
