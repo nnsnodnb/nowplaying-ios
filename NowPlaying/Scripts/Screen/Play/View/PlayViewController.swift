@@ -147,6 +147,14 @@ extension PlayViewController {
         let viewModel: PlayViewModelType
     }
 
+    class func makeInstance() -> PlayViewController {
+        let viewController = PlayViewController()
+        let router = PlayRouter(view: viewController)
+        let viewModel = PlayViewModel(router: router)
+        viewController.inject(dependency: .init(viewModel: viewModel))
+        return viewController
+    }
+
     func inject(dependency: Dependency) {
         viewModel = dependency.viewModel
     }
