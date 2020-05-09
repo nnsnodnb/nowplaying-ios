@@ -112,13 +112,6 @@ extension SettingViewModel {
             })
             .disposed(by: disposeBag)
 
-        purchaseAction.errors
-            .subscribe(onNext: { (actionError) in
-                print(actionError)
-                SVProgressHUD.showError(withStatus: "エラーが発生しました")
-            })
-            .disposed(by: disposeBag)
-
         restoreAction.elements
             .subscribe(onNext: {
                 defer { SVProgressHUD.dismiss(withDelay: 1) }
@@ -131,10 +124,11 @@ extension SettingViewModel {
             })
             .disposed(by: disposeBag)
 
-        restoreAction.errors
-            .subscribe(onNext: { (actionError) in
-                print(actionError)
-                SVProgressHUD.showError(withStatus: "エラーが発生しました: \(actionError)")
+        Observable.merge(purchaseAction.errors, restoreAction.errors)
+            .subscribe(onNext: {
+                print($0)
+                SVProgressHUD.showError(withStatus: "エラーが発生しました: \($0)")
+                SVProgressHUD.dismiss(withDelay: 1)
             })
             .disposed(by: disposeBag)
     }
@@ -145,6 +139,7 @@ extension SettingViewModel {
             .compactMap { $0 }
             .distinctUntilChanged()
             .filter { $0 }
+            .take(1)
             .compactMap { [weak self] _ in self?.form.rowBy(tag: SettingRow.purchaseHideAdMob { _ in }.tag) }
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { (row) in

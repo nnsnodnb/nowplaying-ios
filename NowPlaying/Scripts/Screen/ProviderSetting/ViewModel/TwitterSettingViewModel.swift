@@ -6,10 +6,12 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import Action
 import Eureka
 import Foundation
 import RxCocoa
 import RxSwift
+import SVProgressHUD
 
 final class TwitterSettingViewModel: ProviderSettingViewModelType {
 
@@ -20,6 +22,7 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
     var output: ProviderSettingViewModelOutput { return self }
 
     private let router: ProviderSettingRoutable
+    private let disposeBag = DisposeBag()
 
     private lazy var postFormatHelpViewFooter: (Section) -> Void = {
         return {
@@ -28,6 +31,12 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
             })
         }
     }()
+    private lazy var purchaseAction: Action<PaymentProduct, BuyTransactionState> = .init {
+        return $0.buyProduct()
+    }
+    private lazy var restoreAction: Action<Void, [PaymentProduct]> = .init {
+        return PaymentProduct.restore()
+    }
 
     init(router: ProviderSettingRoutable) {
         self.router = router
@@ -35,6 +44,8 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
         form = .init()
 
         configureForm()
+        subscribeActions()
+        subscribeUserDefaults()
     }
 
     func configureForm() {
@@ -45,12 +56,14 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
                 <<< configureCell(row: .accounts)
                 <<< configureCell(row: .attachedImageSwitch)
                 <<< configureCell(row: .attachedImageType)
-                <<< configureCell(row: .purchaseAutoTweet {
+                <<< configureCell(row: .purchaseAutoTweet { [unowned self] in
                     switch $0 {
                     case .purchase:
-                        break
+                        SVProgressHUD.show()
+                        self.purchaseAction.execute(.autoTweet)
                     case .restore:
-                        break
+                        SVProgressHUD.show()
+                        self.restoreAction.execute(())
                     case .userCancel:
                         return
                     }
@@ -67,6 +80,62 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
                     }
                     self.router.present(alert, animated: true, completion: nil)
                 })
+    }
+
+    // MARK: - Private method
+
+    private func subscribeActions() {
+        purchaseAction.elements
+            .filter { $0 == .purchased }
+            .map { _ in PaymentProduct.autoTweet }
+            .subscribe(onNext: {
+                $0.finishPurchased()
+                SVProgressHUD.showSuccess(withStatus: "自動ツイートを購入しました")
+                SVProgressHUD.dismiss(withDelay: 1)
+            })
+            .disposed(by: disposeBag)
+
+        restoreAction.elements
+            .subscribe(onNext: {
+                defer { SVProgressHUD.dismiss(withDelay: 1) }
+                if $0.isEmpty {
+                    SVProgressHUD.showInfo(withStatus: "復元するものがありません")
+                    return
+                }
+                $0.forEach { $0.finishPurchased() }
+                SVProgressHUD.showSuccess(withStatus: "復元に成功しました")
+            })
+            .disposed(by: disposeBag)
+
+        Observable.merge(purchaseAction.errors, restoreAction.errors)
+            .subscribe(onNext: {
+                print($0)
+                SVProgressHUD.showError(withStatus: "エラーが発生しました: \($0)")
+                SVProgressHUD.dismiss(withDelay: 1)
+            })
+            .disposed(by: disposeBag)
+    }
+
+    // MARK: - Private method
+
+    private func subscribeUserDefaults() {
+        if UserDefaults.standard.bool(forKey: .isAutoTweetPurchase) { return }
+        UserDefaults.standard.rx.change(type: Bool.self, key: .isAutoTweetPurchase)
+            .compactMap { $0 }
+            .distinctUntilChanged()
+            .filter { $0 }
+            .take(1)
+            .map { _ in }
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                guard let purchaseCell = self?.form.rowBy(tag: TwitterSettingRow.purchaseAutoTweet { _ in }.tag),
+                    let switchCell = self?.form.rowBy(tag: TwitterSettingRow.autoTweetSwitch.tag) else { return }
+                purchaseCell.hidden = .init(booleanLiteral: true)
+                switchCell.hidden = .init(booleanLiteral: false)
+                purchaseCell.evaluateHidden()
+                switchCell.evaluateHidden()
+            })
+            .disposed(by: disposeBag)
     }
 }
 
