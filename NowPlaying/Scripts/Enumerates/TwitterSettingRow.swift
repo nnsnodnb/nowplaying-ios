@@ -88,6 +88,7 @@ enum TwitterSettingRow {
             return SwitchRow(tag) {
                 $0.title = "自動ツイート"
                 $0.value = UserDefaults.standard.bool(forKey: .isAutoTweet)
+                $0.hidden = .init(booleanLiteral: !UserDefaults.standard.bool(forKey: .isAutoTweetPurchase))
             }.onChange { (row) in
                 UserDefaults.standard.set(row.value, forKey: .isAutoTweet)
             }
