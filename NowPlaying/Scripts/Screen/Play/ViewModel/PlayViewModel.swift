@@ -32,6 +32,7 @@ protocol PlayViewModelOutput {
     var artistName: Driver<String> { get }
     var playButtonImage: Driver<UIImage> { get }
     var takeScreenshot: Observable<Void> { get }
+    var hideAdMob: Observable<Bool> { get }
 }
 
 protocol PlayViewModelType {
@@ -71,6 +72,15 @@ final class PlayViewModel: PlayViewModelType {
     }
     var takeScreenshot: Observable<Void> {
         return nowPlayingItem.compactMap { $0 }.distinctUntilChanged().map { _ in }.asObservable()
+    }
+    var hideAdMob: Observable<Bool> {
+        return UserDefaults.standard.rx.change(type: Bool.self, key: .isPurchasedRemoveAdMob)
+            .compactMap { $0 }
+            .distinctUntilChanged()
+            .filter { $0 }
+            .take(1)
+            .observeOn(MainScheduler.instance)
+            .share(replay: 1, scope: .whileConnected)
     }
 
     private let router: PlayRoutable

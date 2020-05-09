@@ -141,6 +141,9 @@ final class PlayViewController: UIViewController {
             }
             .bind(to: viewModel.inputs.tookScreenshot)
             .disposed(by: disposeBag)
+
+        viewModel.outputs.hideAdMob.bind(to: bannerView.rx.isHidden).disposed(by: disposeBag)
+        viewModel.outputs.hideAdMob.map { _ in 0 }.bind(to: bannerViewHeight.rx.constant).disposed(by: disposeBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {

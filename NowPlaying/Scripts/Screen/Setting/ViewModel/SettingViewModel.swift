@@ -42,8 +42,8 @@ final class SettingViewModel: SettingViewModelType {
 
     private let disposeBag = DisposeBag()
 
-    private lazy var restoreAction: Action<Void, SKPaymentQueue> = .init {
-        return SKPaymentQueue.default().rx.restoreCompletedTransactions()
+    private lazy var restoreAction: Action<Void, [PaymentProduct]> = .init {
+        return PaymentProduct.restore()
     }
 
     init(router: SettingRoutable) {
@@ -98,20 +98,19 @@ extension SettingViewModel {
 
     private func subscribeActions() {
         restoreAction.elements
-            .map { $0.transactions.map { PaymentProduct(rawValue: $0.payment.productIdentifier) } }
             .subscribe(onNext: { [weak self] in
                 if $0.isEmpty {
                     SVProgressHUD.showInfo(withStatus: "復元するものがありません")
                     SVProgressHUD.dismiss(withDelay: 1)
                     return
                 }
-                $0.forEach { $0?.finishPurchased() }
+                $0.forEach { $0.finishPurchased() }
                 defer {
                     SVProgressHUD.showSuccess(withStatus: "復元に成功しました")
                     SVProgressHUD.dismiss(withDelay: 1)
                 }
                 guard $0.first(where: { $0 == .hideAdMob }) != nil else { return }
-                guard let wself = self, let row = wself.form.rowBy(tag: SettingRow.purchaseHideAdMob { _ in }.tag) else { return }
+                guard let row = self?.form.rowBy(tag: SettingRow.purchaseHideAdMob { _ in }.tag) else { return }
                 row.hidden = .init(booleanLiteral: true)
                 row.evaluateHidden()
             })
