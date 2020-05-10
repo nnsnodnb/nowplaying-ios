@@ -6,6 +6,7 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
+import Hero
 import MediaPlayer
 import RxCocoa
 import RxSwift
@@ -30,6 +31,8 @@ final class PostViewController: UIViewController {
     }
     @IBOutlet private weak var attachmentImageButton: UIButton! {
         didSet {
+            attachmentImageButton.hero.isEnabled = true
+            attachmentImageButton.hero.id = "attachmentPreview"
             attachmentImageButton.imageView?.contentMode = .scaleAspectFit
             attachmentImageButton.contentVerticalAlignment = .fill
             attachmentImageButton.contentHorizontalAlignment = .fill
@@ -48,6 +51,8 @@ final class PostViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        hero.isEnabled = true
+
         _ = viewModel.outputs.title.bind(to: rx.title)
         _ = viewModel.outputs.initialPostText.bind(to: textView.rx.text)
 

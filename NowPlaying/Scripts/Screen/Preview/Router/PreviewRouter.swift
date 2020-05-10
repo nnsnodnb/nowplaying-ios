@@ -13,6 +13,7 @@ protocol PreviewViewer: UIViewController {}
 protocol PreviewRoutable: AnyObject {
 
     init(view: PreviewViewer)
+    func dismiss()
 }
 
 final class PreviewRouter: PreviewRoutable {
@@ -21,5 +22,9 @@ final class PreviewRouter: PreviewRoutable {
 
     init(view: PreviewViewer) {
         self.view = view
+    }
+
+    func dismiss() {
+        view.dismiss(animated: true, completion: nil)
     }
 }

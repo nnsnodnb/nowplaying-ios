@@ -47,8 +47,12 @@ final class PostRouter: PostRoutable {
 
     func presentAttachmentActions(withImage image: UIImage, deletionHandler: @escaping () -> Void) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        actionSheet.addAction(.init(title: "プレビュー", style: .default) { (_) in
-            // TODO: プレビュー
+        actionSheet.addAction(.init(title: "プレビュー", style: .default) { [unowned self] (_) in
+            let viewController = PreviewViewController.makeInstance(image: image)
+            let navi = UINavigationController(rootViewController: viewController)
+            navi.modalPresentationStyle = .currentContext
+            navi.hero.isEnabled = true
+            self.view.present(navi, animated: true, completion: nil)
         })
         actionSheet.addAction(.init(title: "添付画像を削除", style: .destructive) { (_) in
             deletionHandler()
