@@ -6,8 +6,8 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
-import Foundation
 import SwifteriOS
+import UIKit
 
 struct SwifterRequest {
 
@@ -19,8 +19,8 @@ struct SwifterRequest {
     }
 
     func postTweet(status: String, media: Data? = nil, success: Swifter.SuccessHandler?, failure: Swifter.FailureHandler?) {
-        if let media = media {
-            swifter.postTweet(status: status, media: media, tweetMode: .extended, success: success, failure: failure)
+        if let media = media, let data = compressionMedia(media) {
+            swifter.postTweet(status: status, media: data, tweetMode: .extended, success: success, failure: failure)
         } else {
             swifter.postTweet(status: status, tweetMode: .extended, success: success, failure: failure)
         }
@@ -30,5 +30,10 @@ struct SwifterRequest {
 
     private func _postTweet(status: String, success: Swifter.SuccessHandler?, failure: Swifter.FailureHandler?) {
         swifter.postTweet(status: status, tweetMode: .extended, success: success, failure: failure)
+    }
+
+    private func compressionMedia(_ media: Data) -> Data? {
+        if Double(media.count) < 5e6 { return media }
+        return UIImage(data: media)?.jpegData(compressionQuality: 0.3)
     }
 }
