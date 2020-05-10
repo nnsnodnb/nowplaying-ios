@@ -22,6 +22,7 @@ protocol PostRoutable: AnyObject {
     func pushChangeAccount(withService service: Service, selectHandler: @escaping (User) -> Void)
     func presentAttachmentActions(withImage image: UIImage, deletionHandler: @escaping () -> Void)
     func presentAddAttachmentActions(handler: @escaping (AttachmentType) -> Void)
+    func closeKeyboard()
 }
 
 final class PostRouter: PostRoutable {
@@ -80,5 +81,9 @@ final class PostRouter: PostRoutable {
         })
         actionSheet.addAction(.init(title: "キャンセル", style: .cancel, handler: nil))
         view.present(actionSheet, animated: true, completion: nil)
+    }
+
+    func closeKeyboard() {
+        view.view.endEditing(true)
     }
 }

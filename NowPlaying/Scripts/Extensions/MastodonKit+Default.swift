@@ -6,8 +6,8 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
-import Foundation
 import MastodonKit
+import UIKit
 
 extension Client {
 
@@ -33,5 +33,14 @@ extension Login {
     static func oauth(_ parameter: OAuthParameter) -> Request<LoginSettings> {
         return oauth(clientID: parameter.application.clientID, clientSecret: parameter.application.clientSecret, scopes: [.read, .write],
                      redirectURI: parameter.application.redirectURI, code: parameter.code)
+    }
+}
+
+extension Media {
+
+    static func upload(data: Data) -> Request<Attachment> {
+        if Double(data.count) < 5e6 { return Media.upload(media: .jpeg(data)) }
+        let media = UIImage(data: data)?.jpegData(compressionQuality: 0.3)
+        return Media.upload(media: .jpeg(media))
     }
 }

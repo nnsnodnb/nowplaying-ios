@@ -85,6 +85,8 @@ final class PostViewController: UIViewController {
 
         leftBarButtonItem.rx.tap.bind(to: viewModel.inputs.dismissTrigger).disposed(by: disposeBag)
         rightBarButtonItem.rx.tap.bind(to: viewModel.inputs.postTrigger).disposed(by: disposeBag)
+
+        viewModel.outputs.enablePostButton.bind(to: rightBarButtonItem.rx.isEnabled).disposed(by: disposeBag)
     }
 }
 
