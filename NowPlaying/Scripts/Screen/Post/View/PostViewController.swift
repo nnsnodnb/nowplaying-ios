@@ -27,6 +27,7 @@ final class PostViewController: UIViewController {
             iconImageButton.imageView?.contentMode = .scaleAspectFit
             iconImageButton.contentVerticalAlignment = .fill
             iconImageButton.contentHorizontalAlignment = .fill
+            iconImageButton.rx.tap.bind(to: viewModel.inputs.changeAccount).disposed(by: disposeBag)
         }
     }
     @IBOutlet private weak var attachmentImageButton: UIButton! {

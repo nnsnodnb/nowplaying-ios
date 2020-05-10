@@ -19,6 +19,7 @@ enum AttachmentType {
 protocol PostRoutable: AnyObject {
 
     func dismissConfirm(didEdit: Bool)
+    func pushChangeAccount(withService service: Service)
     func presentAttachmentActions(withImage image: UIImage, deletionHandler: @escaping () -> Void)
     func presentAddAttachmentActions(handler: @escaping (AttachmentType) -> Void)
 }
@@ -43,6 +44,10 @@ final class PostRouter: PostRoutable {
         })
         alert.preferredAction = alert.actions.last
         view.present(alert, animated: true, completion: nil)
+    }
+
+    func pushChangeAccount(withService service: Service) {
+        print(#function)
     }
 
     func presentAttachmentActions(withImage image: UIImage, deletionHandler: @escaping () -> Void) {
