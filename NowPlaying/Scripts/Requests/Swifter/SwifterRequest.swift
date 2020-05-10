@@ -28,12 +28,8 @@ struct SwifterRequest {
 
     // MARK: - Private method
 
-    private func _postTweet(status: String, success: Swifter.SuccessHandler?, failure: Swifter.FailureHandler?) {
-        swifter.postTweet(status: status, tweetMode: .extended, success: success, failure: failure)
-    }
-
     private func compressionMedia(_ media: Data) -> Data? {
-        if Double(media.count) < 5e6 { return media }
+        if Double(media.count) < 5e6 { return media } // 5MB以上であれば圧縮する
         return UIImage(data: media)?.jpegData(compressionQuality: 0.3)
     }
 }
