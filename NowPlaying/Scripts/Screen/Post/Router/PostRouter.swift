@@ -19,7 +19,7 @@ enum AttachmentType {
 protocol PostRoutable: AnyObject {
 
     func dismissConfirm(didEdit: Bool)
-    func pushChangeAccount(withService service: Service)
+    func pushChangeAccount(withService service: Service, selectHandler: @escaping (User) -> Void)
     func presentAttachmentActions(withImage image: UIImage, deletionHandler: @escaping () -> Void)
     func presentAddAttachmentActions(handler: @escaping (AttachmentType) -> Void)
 }
@@ -46,8 +46,12 @@ final class PostRouter: PostRoutable {
         view.present(alert, animated: true, completion: nil)
     }
 
-    func pushChangeAccount(withService service: Service) {
-        print(#function)
+    func pushChangeAccount(withService service: Service, selectHandler: @escaping (User) -> Void) {
+        let viewController = AccountManageViewController.makeInstance(screen: .list(service)) { [weak self] in
+            selectHandler($0)
+            self?.view.navigationController?.popViewController(animated: true)
+        }
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
 
     func presentAttachmentActions(withImage image: UIImage, deletionHandler: @escaping () -> Void) {

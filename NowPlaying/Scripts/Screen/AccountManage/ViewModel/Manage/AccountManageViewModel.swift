@@ -33,7 +33,6 @@ protocol AccountManageViewModelType: AnyObject {
     var inputs: AccountManageViewModelInput { get }
     var outputs: AccountManageViewModelOutput { get }
     var service: Service { get }
-    init(router: AccountManageRoutable)
 }
 
 class AccountManageViewModel: AccountManageViewModelType {

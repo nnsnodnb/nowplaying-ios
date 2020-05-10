@@ -118,7 +118,9 @@ class PostViewModel: PostViewModelType {
 
         changeAccount
             .subscribe(onNext: { [unowned self] in
-                router.pushChangeAccount(withService: self.service)
+                router.pushChangeAccount(withService: self.service) { [weak self] in
+                    self?.selectAccount.accept($0)
+                }
             })
             .disposed(by: disposeBag)
 
