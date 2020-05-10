@@ -31,6 +31,7 @@ protocol PostViewModelOutput {
     var account: Observable<User> { get }
     var attachment: Observable<UIImage?> { get }
     var keyboardHeight: Observable<CGFloat> { get }
+    var enablePostButton: Observable<Bool> { get }
 }
 
 protocol PostViewModelType {
@@ -75,6 +76,9 @@ class PostViewModel: PostViewModelType {
             NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
                 .map { _ in 0 }
         ])
+    }
+    var enablePostButton: Observable<Bool> {
+        return postText.map { !$0.isEmpty }.distinctUntilChanged()
     }
     var service: Service { fatalError("Required override") }
 

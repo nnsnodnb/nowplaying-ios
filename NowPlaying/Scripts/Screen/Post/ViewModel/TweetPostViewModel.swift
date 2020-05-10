@@ -15,4 +15,17 @@ import RxSwift
 final class TweetPostViewModel: PostViewModel {
 
     override var service: Service { return .twitter }
+
+    private let disposeBag = DisposeBag()
+
+    required init(router: PostRoutable, item: MPMediaItem, screenshot: UIImage) {
+        super.init(router: router, item: item, screenshot: screenshot)
+
+        postTrigger
+            .withLatestFrom(postText)
+            .subscribe(onNext: { (text) in
+                print(text)
+            })
+            .disposed(by: disposeBag)
+    }
 }
