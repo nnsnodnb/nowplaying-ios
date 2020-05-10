@@ -28,17 +28,47 @@ protocol AccountManageRoutable: AnyObject {
     func completeChangedDefaultAccount(user: User)
 }
 
-final class TwitterAccountManageRouter: AccountManageRoutable {
+final class AccountListRouter: AccountManageRoutable {
 
     private(set) weak var view: AccountManageViewer!
-
-    private let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret)
 
     init(view: AccountManageViewer) {
         self.view = view
     }
 
-    func login() -> Observable<AuthAccessToken> {
+    func login() -> Observable<AuthAccessToken> { fatalError("Do not implementation") }
+    func setEditing() { fatalError("Do not implementation") }
+    func completeChangedDefaultAccount(user: User) {
+
+    }
+}
+
+class AccountManageRouter: AccountManageRoutable {
+
+    private(set) weak var view: AccountManageViewer!
+
+    required init(view: AccountManageViewer) {
+        self.view = view
+    }
+
+    func login() -> Observable<AuthAccessToken> { fatalError("Require override") }
+
+    func setEditing() {
+        view.setEditing(!view.isEditing, animated: true)
+    }
+
+    func completeChangedDefaultAccount(user: User) {
+        let alert = UIAlertController(title: "デフォルトアカウントの変更", message: "\(user.name)に変更されました", preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .default, handler: nil))
+        view.present(alert, animated: true, completion: nil)
+    }
+}
+
+final class TwitterAccountManageRouter: AccountManageRouter {
+
+    private let swifter = Swifter(consumerKey: Environments.twitterConsumerKey, consumerSecret: Environments.twitterConsumerSecret)
+
+    override func login() -> Observable<AuthAccessToken> {
         return .create { [weak self] (observer) -> Disposable in
             self?.swifter.authorize(withCallback: .twitterCallbackURL, presentingFrom: self?.view, success: { (token, _) in
                 guard let token = token, let userID = token.userID else {
@@ -53,39 +83,13 @@ final class TwitterAccountManageRouter: AccountManageRoutable {
             return Disposables.create()
         }
     }
-
-    func setEditing() {
-        view.setEditing(!view.isEditing, animated: true)
-    }
-
-    func completeChangedDefaultAccount(user: User) {
-        let alert = UIAlertController(title: "デフォルトアカウントの変更", message: "\(user.name)に変更されました", preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default, handler: nil))
-        view.present(alert, animated: true, completion: nil)
-    }
 }
 
-final class MastodonAccountManageRouter: AccountManageRoutable {
+final class MastodonAccountManageRouter: AccountManageRouter {
 
-    private(set) weak var view: AccountManageViewer!
-
-    init(view: AccountManageViewer) {
-        self.view = view
-    }
-
-    func login() -> Observable<AuthAccessToken> {
+    override func login() -> Observable<AuthAccessToken> {
         let viewController = SearchMastodonViewController.makeInstance()
         view.navigationController?.pushViewController(viewController, animated: true)
         return .empty()
-    }
-
-    func setEditing() {
-        view.setEditing(!view.isEditing, animated: true)
-    }
-
-    func completeChangedDefaultAccount(user: User) {
-        let alert = UIAlertController(title: "デフォルトアカウントの変更", message: "\(user.name)に変更されました", preferredStyle: .alert)
-        alert.addAction(.init(title: "OK", style: .default, handler: nil))
-        view.present(alert, animated: true, completion: nil)
     }
 }

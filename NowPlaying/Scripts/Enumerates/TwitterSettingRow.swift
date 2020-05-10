@@ -49,7 +49,7 @@ enum TwitterSettingRow {
             return ButtonRow(tag) {
                 $0.title = "アカウント管理"
                 $0.presentationMode = .show(controllerProvider: .callback {
-                    return AccountManageViewController.makeInstance(service: .twitter)
+                    return AccountManageViewController.makeInstance(screen: .manage(.twitter))
                 }, onDismiss: nil)
             }
 
