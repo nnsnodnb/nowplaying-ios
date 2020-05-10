@@ -56,20 +56,7 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
         dataSource = Observable.changeset(from: results)
 
         loginSuccess = loginSuccessTrigger.map { "@\($0)" }.observeOn(MainScheduler.instance).asObservable()
-        loginError = loginErrorTrigger.map { (error) -> String in
-            if let authError = error as? AuthError {
-                switch authError {
-                case .cancel:
-                    return "ログインをキャンセルしました"
-                case .alreadyUser:
-                    return "既にログインされているユーザです"
-                case .unknown:
-                    return "不明なエラーが発生しました: \(error.localizedDescription)"
-                }
-            } else {
-                return "ログインエラーが発生しました: \(error.localizedDescription)"
-            }
-        }.observeOn(MainScheduler.instance).asObservable()
+        loginError = loginErrorTrigger.map { $0.authErrorDescription }.observeOn(MainScheduler.instance).asObservable()
 
         addTrigger
             .subscribe(onNext: {
@@ -96,12 +83,7 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
             })
             .disposed(by: disposeBag)
 
-        // インスタンスの選択で通知される
-        NotificationCenter.default.rx.notification(.selectedMastodonInstance)
-            .compactMap { $0.object as? Instance }
-            .map { $0.name }
-            .bind(to: hostname)
-            .disposed(by: disposeBag)
+        subscribeNotifications()
 
         // ホストネームが設定されたのでインスタンスにアプリケーションを登録する
         hostname.bind(to: registerAppAction.inputs).disposed(by: disposeBag)
@@ -115,6 +97,15 @@ final class MastodonAccountManageViewModel: AccountManageViewModelType {
     }
 
     // MARK: - Private method
+
+    private func subscribeNotifications() {
+        // インスタンスの選択で通知される
+        NotificationCenter.default.rx.notification(.selectedMastodonInstance)
+            .compactMap { $0.object as? Instance }
+            .map { $0.name }
+            .bind(to: hostname)
+            .disposed(by: disposeBag)
+    }
 
     private func subscribeActions() {
         // インスタンスにアプリケーションの登録がされたのでブラウザでログインをする

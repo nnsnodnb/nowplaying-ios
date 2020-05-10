@@ -40,20 +40,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
         dataSource = Observable.changeset(from: results)
 
         loginSuccess = loginSuccessTrigger.map { "@\($0)" }.observeOn(MainScheduler.instance).asObservable()
-        loginError = loginErrorTrigger.map { (error) -> String in
-            if let authError = error as? AuthError {
-                switch authError {
-                case .cancel:
-                    return "ログインをキャンセルしました"
-                case .alreadyUser:
-                    return "既にログインされているユーザです"
-                case .unknown:
-                    return "不明なエラーが発生しました: \(error.localizedDescription)"
-                }
-            } else {
-                return "ログインエラーが発生しました"
-            }
-        }.observeOn(MainScheduler.instance).asObservable()
+        loginError = loginErrorTrigger.map { $0.authErrorDescription }.observeOn(MainScheduler.instance).asObservable()
 
         addTrigger.bind(to: login).disposed(by: disposeBag)
 
