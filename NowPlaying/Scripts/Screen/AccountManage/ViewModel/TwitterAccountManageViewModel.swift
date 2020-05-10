@@ -13,55 +13,18 @@ import RxRealm
 import RxSwift
 import SwifteriOS
 
-final class TwitterAccountManageViewModel: AccountManageViewModelType {
+final class TwitterAccountManageViewModel: AccountManageViewModel {
 
-    let addTrigger: PublishRelay<Void> = .init()
-    let editTrigger: PublishRelay<Void> = .init()
-    let deleteTrigger: PublishRelay<User> = .init()
-    let cellSelected: PublishRelay<User> = .init()
-    let dataSource: Observable<(AnyRealmCollection<User>, RealmChangeset?)>
-    let loginSuccess: Observable<String>
-    let loginError: Observable<String>
-    let service: Service = .twitter
+    override var service: Service { return .twitter }
 
     var input: AccountManageViewModelInput { return self }
     var output: AccountManageViewModelOutput { return self }
 
     private let disposeBag = DisposeBag()
-    private let router: AccountManageRoutable
-    private let loginSuccessTrigger: PublishRelay<String> = .init()
-    private let loginErrorTrigger: PublishRelay<Error> = .init()
 
-    init(router: AccountManageRoutable) {
-        self.router = router
-
-        let realm = try! Realm(configuration: realmConfiguration)
-        let results = realm.objects(User.self).filter("serviceType = %@", service.rawValue).sorted(byKeyPath: "id", ascending: true)
-        dataSource = Observable.changeset(from: results)
-
-        loginSuccess = loginSuccessTrigger.map { "@\($0)" }.observeOn(MainScheduler.instance).asObservable()
-        loginError = loginErrorTrigger.map { $0.authErrorDescription }.observeOn(MainScheduler.instance).asObservable()
-
+    required init(router: AccountManageRoutable) {
+        super.init(router: router)
         addTrigger.bind(to: login).disposed(by: disposeBag)
-
-        editTrigger
-            .subscribe(onNext: {
-                router.setEditing()
-            })
-            .disposed(by: disposeBag)
-
-        deleteTrigger.map { $0.id }.bind(to: deleteUser).disposed(by: disposeBag)
-
-        cellSelected
-            .subscribe(onNext: { [unowned self] (user) in
-                let realm = try! Realm(configuration: realmConfiguration)
-                let others = realm.objects(User.self).filter("id != %@ AND serviceType = %@", user.id, self.service.rawValue)
-                try! realm.write {
-                    user.isDefault = true
-                    others.setValue(false, forKey: "isDefault")
-                }
-            })
-            .disposed(by: disposeBag)
     }
 
     private var login: Binder<Void> {
@@ -98,37 +61,4 @@ final class TwitterAccountManageViewModel: AccountManageViewModelType {
                 }, onError: onError)
         }
     }
-
-    private var deleteUser: Binder<Int> {
-        return .init(self) { (base, identifier) in
-            let realm = try! Realm(configuration: realmConfiguration)
-            guard let user = realm.object(ofType: User.self, forPrimaryKey: identifier) else { return }
-            let secrets = user.secretCredentials
-
-            let defaultUser: User?
-            if user.isDefault {
-                defaultUser = realm.objects(User.self).filter("id != %@ AND serviceType = %@", user.id, base.service.rawValue).first
-            } else {
-                defaultUser = nil
-            }
-
-            try! realm.write {
-                realm.delete(secrets)
-                realm.delete(user)
-                defaultUser?.isDefault = true
-            }
-
-            if let newDefaultUser = defaultUser, newDefaultUser.isDefault {
-                base.router.completeChangedDefaultAccount(user: newDefaultUser)
-            }
-        }
-    }
 }
-
-// MARK: - AccountManageViewModelInput
-
-extension TwitterAccountManageViewModel: AccountManageViewModelInput {}
-
-// MARK: - AccountManageViewModelOutput
-
-extension TwitterAccountManageViewModel: AccountManageViewModelOutput {}
