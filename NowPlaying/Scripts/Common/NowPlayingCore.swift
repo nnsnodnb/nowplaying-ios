@@ -18,8 +18,10 @@ protocol NowPlayingCoreType {}
 class NowPlayingCore: NowPlayingCoreType {
 
     var autoPostEnabled: Observable<Bool> { fatalError("Please override") }
+    var nowPlayingItem: Observable<MPMediaItem> { return mediaItem.asObservable() }
 
     private let disposeBag = DisposeBag()
+    private let mediaItem: PublishRelay<MPMediaItem> = .init()
 
     init() {
         MPMusicPlayerController.systemMusicPlayer.beginGeneratingPlayback().disposed(by: disposeBag)
@@ -31,9 +33,7 @@ class NowPlayingCore: NowPlayingCoreType {
             .compactMap { $0.object as? MPMusicPlayerController }
             .compactMap { $0.nowPlayingItem }
             .distinctUntilChanged()
-            .subscribe(onNext: {
-                print(#file, #line, $0.title ?? "")
-            })
+            .bind(to: mediaItem)
             .disposed(by: disposeBag)
     }
 }
