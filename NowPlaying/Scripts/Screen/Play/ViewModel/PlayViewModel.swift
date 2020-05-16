@@ -105,19 +105,6 @@ final class PlayViewModel: PlayViewModelType {
 
         musicPlayer.beginGeneratingPlayback().disposed(by: disposeBag)
 
-        nowPlayingItem
-            .compactMap { $0 }
-            .withLatestFrom(Observable.combineLatest(
-                UserDefaults.standard.rx.change(type: Bool.self, key: .isAutoTweetPurchase),
-                UserDefaults.standard.rx.change(type: Bool.self, key: .isAutoTweet)
-            )) { ($0, $1.0 ?? false, $1.1 ?? false) }
-            .filter { $1 && $2 }
-            .map { $0.0 }
-            .subscribe(onNext: { (_) in
-
-            })
-            .disposed(by: disposeBag)
-
         subscribeInputs()
         subscribeNotifications()
     }
