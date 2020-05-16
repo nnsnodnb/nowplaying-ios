@@ -86,7 +86,7 @@ final class PlayViewModel: PlayViewModelType {
     private let router: PlayRoutable
     private let disposeBag = DisposeBag()
     private let musicPlayer = MPMusicPlayerController.systemMusicPlayer
-    private let nowPlayingItem: BehaviorRelay<MPMediaItem?> = .init(value: MPMusicPlayerController.systemMusicPlayer.nowPlayingItem)
+    private let nowPlayingItem: BehaviorRelay<MPMediaItem?> = .init(value: nil)
     private let playbackState: BehaviorRelay<MPMusicPlaybackState> = .init(value: .stopped)
 
     private var isExistUser: Binder<(Service, MPMediaItem, UIImage)> {
@@ -104,6 +104,19 @@ final class PlayViewModel: PlayViewModelType {
         checkMediaLibraryAuthorization()
 
         musicPlayer.beginGeneratingPlayback().disposed(by: disposeBag)
+
+        nowPlayingItem
+            .compactMap { $0 }
+            .withLatestFrom(Observable.combineLatest(
+                UserDefaults.standard.rx.change(type: Bool.self, key: .isAutoTweetPurchase),
+                UserDefaults.standard.rx.change(type: Bool.self, key: .isAutoTweet)
+            )) { ($0, $1.0 ?? false, $1.1 ?? false) }
+            .filter { $1 && $2 }
+            .map { $0.0 }
+            .subscribe(onNext: { (_) in
+
+            })
+            .disposed(by: disposeBag)
 
         subscribeInputs()
         subscribeNotifications()
@@ -177,6 +190,7 @@ final class PlayViewModel: PlayViewModelType {
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
             .compactMap { $0.object as? MPMusicPlayerController }
             .map { $0.nowPlayingItem }
+            .share()
             .bind(to: nowPlayingItem)
             .disposed(by: disposeBag)
 
