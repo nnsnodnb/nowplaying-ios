@@ -9,6 +9,7 @@
 import Action
 import MastodonKit
 import MediaPlayer
+import NotificationBanner
 import RealmSwift
 import RxCocoa
 import RxSwift
@@ -19,10 +20,17 @@ protocol NowPlayingCoreType {}
 
 class NowPlayingCore: NowPlayingCoreType {
 
+    var service: Service { fatalError("Please overrive") }
     var autoPostEnabled: Observable<Bool> { fatalError("Please override") }
     var postImageTypeKey: UserDefaults.Key { fatalError("Please override") }
     var nowPlayingItem: Observable<MPMediaItem> { return mediaItem.asObservable() }
     var isOnlyArtwork: Observable<Bool> { return attachmentImageType.map { $0 == "アートワークのみ" } }
+
+    lazy var successBanner: NotificationBanner = {
+        let banner = NotificationBanner(title: "\(service == .twitter ? "ツイート" : "トゥート")しました！", style: .success)
+        banner.haptic = .none
+        return banner
+    }()
 
     private let disposeBag = DisposeBag()
     private let mediaItem: PublishRelay<MPMediaItem> = .init()
@@ -55,6 +63,7 @@ class NowPlayingCore: NowPlayingCoreType {
 
 final class TwitterNowPlayingCore: NowPlayingCore {
 
+    override var service: Service { return .twitter }
     override var autoPostEnabled: Observable<Bool> {
         return Observable.combineLatest(
             UserDefaults.standard.rx.change(type: Bool.self, key: .isAutoTweetPurchase),
@@ -72,6 +81,14 @@ final class TwitterNowPlayingCore: NowPlayingCore {
 
     override init() {
         super.init()
+
+        postTweetAction.executing.startWith(false)
+            .skip(1)
+            .subscribe(onNext: { [unowned self](isLoading) in
+                NotificationCenter.default.post(name: .autoPostBannerNotification, object: isLoading,
+                                                userInfo: ["service": self.service])
+            })
+            .disposed(by: disposeBag)
 
         nowPlayingItem
             .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
@@ -107,6 +124,7 @@ final class TwitterNowPlayingCore: NowPlayingCore {
 
 final class MastodonNowPlayingCore: NowPlayingCore {
 
+    override var service: Service { return .mastodon }
     override var autoPostEnabled: Observable<Bool> {
         return UserDefaults.standard.rx.change(type: Bool.self, key: .isMastodonAutoToot).map { $0 ?? false }
     }
@@ -120,6 +138,14 @@ final class MastodonNowPlayingCore: NowPlayingCore {
 
     override init() {
         super.init()
+
+        postTootAction.executing.startWith(false)
+            .skip(1)
+            .subscribe(onNext: { [unowned self](isLoading) in
+                NotificationCenter.default.post(name: .autoPostBannerNotification, object: isLoading,
+                                                userInfo: ["service": self.service])
+            })
+            .disposed(by: disposeBag)
 
         nowPlayingItem
             .debounce(.milliseconds(100), scheduler: MainScheduler.instance)

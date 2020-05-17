@@ -11,6 +11,7 @@ import RxCocoa
 import RxSwift
 import ScrollFlowLabel
 import UIKit
+import NotificationBanner
 
 final class PlayViewController: UIViewController {
 
@@ -95,6 +96,23 @@ final class PlayViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
+    private lazy var twitterStatusBarNotificationBanner: StatusBarNotificationBanner = {
+        let banner = StatusBarNotificationBanner(title: "ツイートを送信中...")
+        banner.autoDismiss = false
+        banner.dismissOnSwipeUp = false
+        banner.dismissOnTap = false
+        banner.haptic = .none
+        return banner
+    }()
+    private lazy var mastodonStatusBarNotificationBanner: StatusBarNotificationBanner = {
+        let banner = StatusBarNotificationBanner(title: "トゥートを送信中...")
+        banner.autoDismiss = false
+        banner.dismissOnSwipeUp = false
+        banner.dismissOnTap = false
+        banner.haptic = .none
+        return banner
+    }()
+
     // MARK: - Life cycle
 
     override func viewDidLoad() {
@@ -123,6 +141,26 @@ final class PlayViewController: UIViewController {
 
         viewModel.outputs.hideAdMob.bind(to: bannerView.rx.isHidden).disposed(by: disposeBag)
         viewModel.outputs.hideAdMob.map { _ in 0 }.bind(to: bannerViewHeight.rx.constant).disposed(by: disposeBag)
+
+        NotificationCenter.default.rx.notification(.autoPostBannerNotification, object: nil)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] (notification) in
+                guard let isLoading = notification.object as? Bool, let userInfo = notification.userInfo,
+                    let service = userInfo["service"] as? Service else { return }
+                let banner: StatusBarNotificationBanner?
+                switch service {
+                case .twitter:
+                    banner = self?.twitterStatusBarNotificationBanner
+                case .mastodon:
+                    banner = self?.mastodonStatusBarNotificationBanner
+                }
+                if isLoading {
+                    banner?.show()
+                } else {
+                    banner?.dismiss()
+                }
+            })
+            .disposed(by: disposeBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {

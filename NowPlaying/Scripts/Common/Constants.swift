@@ -42,4 +42,5 @@ extension URL {
 extension Notification.Name {
 
     static let selectedMastodonInstance = Notification.Name("selected_mastodon_instance")
+    static let autoPostBannerNotification = Notification.Name("auto_post_banner_notification")
 }
