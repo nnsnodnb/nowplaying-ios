@@ -116,7 +116,9 @@ targets:
             - carthage: Feeder
             - carthage: KeychainAccess
             - carthage: Hero
+            - carthage: MarqueeLabel
             - carthage: MastodonKit
+            - carthage: NotificationBanner
             - carthage: Nuke
             - carthage: Realm
             - carthage: RealmSwift

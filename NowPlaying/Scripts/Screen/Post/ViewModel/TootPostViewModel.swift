@@ -22,26 +22,8 @@ final class TootPostViewModel: PostViewModel {
     private let disposeBag = DisposeBag()
     private let router: PostRoutable
 
-    private lazy var postMediaAction: Action<(SecretCredential, Data), Attachment> = .init {
-        return Client.create(baseURL: $0.0.domainName, accessToken: $0.0.authToken).rx.response(Media.upload(data: $0.1))
-    }
-    private lazy var postTootAction: Action<(SecretCredential, String, [String]), Status> = .init {
-        return Client.create(baseURL: $0.0.domainName, accessToken: $0.0.authToken)
-            .rx.response(Statuses.create(status: $0.1, mediaIDs: $0.2))
-    }
-
-    private var preparePostToot: Binder<(SecretCredential, String, Data?)> {
-        return .init(self) {
-            defer {
-                SVProgressHUD.show()
-            }
-            $0.router.closeKeyboard()
-            if let data = $1.2 {
-                $0.postMediaAction.execute(($1.0, data))
-            } else {
-                $0.postTootAction.execute(($1.0, $1.1, []))
-            }
-        }
+    private lazy var postTootAction: Action<(SecretCredential, String, Data?), Status> = .init {
+        return MastodonKitRequest(secret: $0.0).rx.postToot(status: $0.1, media: $0.2)
     }
 
     required init(router: PostRoutable, item: MPMediaItem, screenshot: UIImage) {
@@ -51,14 +33,9 @@ final class TootPostViewModel: PostViewModel {
         postTrigger
             .withLatestFrom(Observable.combineLatest(account, postText, attachment)) { ($1.0, $1.1, $1.2) }
             .map { ($0.secretCredentials.first!, $1, $2?.jpegData(compressionQuality: 1)) }
-            .bind(to: preparePostToot)
-            .disposed(by: disposeBag)
-
-        postMediaAction.elements
-            .observeOn(MainScheduler.instance)
-            .withLatestFrom(Observable.combineLatest(account, postText)) { ($1.0, $1.1, $0) }
-            .map { ($0.secretCredentials.first!, $1, [$2.id]) }
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInteractive))
+            .do(onNext: { (_) in
+                SVProgressHUD.show()
+            })
             .bind(to: postTootAction.inputs)
             .disposed(by: disposeBag)
 
@@ -70,7 +47,7 @@ final class TootPostViewModel: PostViewModel {
             })
             .disposed(by: disposeBag)
 
-        Observable.merge([postMediaAction.errors, postTootAction.errors])
+        postTootAction.errors
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { (actionError) in
                 print(actionError)

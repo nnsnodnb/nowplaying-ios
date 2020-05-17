@@ -21,3 +21,4 @@ github "MastodonKit/MastodonKit" ~> 2.0.0
 github "thii/DTTJailbreakDetection" "35c3fafabff7f28f1142471ed31a0616a024ae2f"
 github "mac-cain13/R.swift.Library" ~> 5.2.0
 github "xmartlabs/Eureka" ~> 5.2.1
+github "Daltron/NotificationBanner" ~> 3.0.4

@@ -15,6 +15,8 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    static let shared = UIApplication.shared.delegate as! AppDelegate
+
     lazy var window: UIWindow? = {
         return UIWindow()
     }()
@@ -24,10 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        createInitialData()
         applicationCoordinator.start()
 
         SVProgressHUD.setDefaultMaskType(.black)
-        createInitialData()
 
         #if DEBUG
         let realmEncryptionKeyString = realmConfiguration.encryptionKey!.map { String(format: "%.2hhx", $0) }.joined()

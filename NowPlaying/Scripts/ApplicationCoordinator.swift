@@ -11,6 +11,8 @@ import UIKit
 final class ApplicationCoordinator {
 
     private let window: UIWindow
+    private let twitterNowPlayingCore: NowPlayingCoreType = TwitterNowPlayingCore()
+    private let mastodonNowPlayingCore: NowPlayingCoreType = MastodonNowPlayingCore()
 
     init(window: UIWindow) {
         self.window = window
