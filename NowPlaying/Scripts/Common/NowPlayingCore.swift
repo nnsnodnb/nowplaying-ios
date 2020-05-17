@@ -75,7 +75,7 @@ final class TwitterNowPlayingCore: NowPlayingCore {
         nowPlayingItem
             .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
             .withLatestFrom(isOnlyArtwork) { ($0, $1) }
-            .compactMap { (item, isOnlyArtwok) -> (SecretCredential, String, Data?)? in
+            .compactMap { (item, isOnlyArtwork) -> (SecretCredential, String, Data?)? in
                 let realm = try! Realm(configuration: realmConfiguration)
                 guard let user = realm.objects(User.self)
                     .filter("isDefault = %@ AND serviceType = %@", true, Service.twitter.rawValue).first,
@@ -85,7 +85,7 @@ final class TwitterNowPlayingCore: NowPlayingCore {
 
                 if UserDefaults.standard.bool(forKey: .isWithImage) {
                     let image: UIImage?
-                    if isOnlyArtwok {
+                    if isOnlyArtwork {
                         image = item.artwork?.image
                     } else {
                         image = UIGraphicsImageRenderer(bounds: UIScreen.main.bounds).image {
