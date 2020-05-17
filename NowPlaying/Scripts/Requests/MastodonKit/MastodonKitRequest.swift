@@ -22,14 +22,14 @@ struct MastodonKitRequest {
             client.run(Media.upload(data: data)) { (result) in
                 switch result {
                 case .success(let attachment, _):
-                    let request = Statuses.create(status: status, mediaIDs: [attachment.id], visibility: .private)
+                    let request = Statuses.create(status: status, mediaIDs: [attachment.id])
                     self.client.run(request, completion: completion)
                 case .failure(let error):
                     completion(.failure(error))
                 }
             }
         } else {
-            client.run(Statuses.create(status: status, visibility: .private), completion: completion)
+            client.run(Statuses.create(status: status), completion: completion)
         }
     }
 
