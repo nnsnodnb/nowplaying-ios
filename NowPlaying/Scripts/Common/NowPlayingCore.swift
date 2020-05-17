@@ -114,22 +114,8 @@ final class MastodonNowPlayingCore: NowPlayingCore {
 
     private let disposeBag = DisposeBag()
 
-    private lazy var postMediaAction: Action<(SecretCredential, Data), Attachment> = .init {
-        return Client.create(baseURL: $0.0.domainName, accessToken: $0.0.authToken).rx.response(Media.upload(data: $0.1))
-    }
-    private lazy var postTootAction: Action<(SecretCredential, String, [String]), Status> = .init {
-        return Client.create(baseURL: $0.0.domainName, accessToken: $0.0.authToken)
-            .rx.response(Statuses.create(status: $0.1, mediaIDs: $0.2))
-    }
-
-    private var preparePostToot: Binder<(SecretCredential, String, Data?)> {
-        return .init(self) {
-            if let data = $1.2 {
-                $0.postMediaAction.execute(($1.0, data))
-            } else {
-                $0.postTootAction.execute(($1.0, $1.1, []))
-            }
-        }
+    private lazy var postTootAction: Action<(SecretCredential, String, Data?), Status> = .init {
+        return MastodonKitRequest(secret: $0.0).rx.postToot(status: $0.1, media: $0.2)
     }
 
     override init() {
@@ -159,7 +145,7 @@ final class MastodonNowPlayingCore: NowPlayingCore {
                     return (secret, postText, nil)
                 }
             }
-            .bind(to: preparePostToot)
+            .bind(to: postTootAction.inputs)
             .disposed(by: disposeBag)
     }
 }
