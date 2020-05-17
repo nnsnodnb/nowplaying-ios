@@ -19,7 +19,11 @@ enum ViewType {
 
 final class TodayViewController: UIViewController, NCWidgetProviding {
         
-    @IBOutlet private weak var commonView: UIView!
+    @IBOutlet private weak var commonView: UIView! {
+        didSet {
+            viewModel.outputs.viewType.map { $0 != .common }.bind(to: commonView.rx.isHidden).disposed(by: disposeBag)
+        }
+    }
     @IBOutlet private weak var artworkImageButton: UIButton! {
         didSet {
             artworkImageButton.imageView?.contentMode = .scaleAspectFit
@@ -53,7 +57,11 @@ final class TodayViewController: UIViewController, NCWidgetProviding {
             artistNameScrollLabel.observeApplicationState()
         }
     }
-    @IBOutlet private weak var deniedView: UIView!
+    @IBOutlet private weak var deniedView: UIView! {
+        didSet {
+            viewModel.outputs.viewType.map { $0 != .denied }.bind(to: deniedView.rx.isHidden).disposed(by: disposeBag)
+        }
+    }
 
     private let disposeBag = DisposeBag()
 
@@ -67,11 +75,6 @@ final class TodayViewController: UIViewController, NCWidgetProviding {
         viewModel.outputs.artworkImage.bind(to: artworkImageButton.rx.image()).disposed(by: disposeBag)
         viewModel.outputs.songName.bind(to: songNameScrollLabel.rx.text).disposed(by: disposeBag)
         viewModel.outputs.artistName.bind(to: artistNameScrollLabel.rx.text).disposed(by: disposeBag)
-        viewModel.outputs.viewType
-            .map { $0 != .common }
-            .observeOn(MainScheduler.instance)
-            .bind(to: commonView.rx.isHidden, deniedView.rx.isHidden)
-            .disposed(by: disposeBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {

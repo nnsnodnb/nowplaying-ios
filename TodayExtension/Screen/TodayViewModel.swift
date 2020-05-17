@@ -46,7 +46,7 @@ final class TodayViewModel: TodayViewModelType {
         return nowPlayingItem.map { $0.artist ?? "" }
     }
     var viewType: Observable<ViewType> {
-        return libraryAuthorizationStatus.map { $0 == .authorized ? .common : .denied }
+        return libraryAuthorizationStatus.map { $0 == .authorized ? .common : .denied }.share(replay: 1, scope: .whileConnected)
     }
 
     private let disposeBag = DisposeBag()
