@@ -227,7 +227,7 @@ targets:
         sources:
             - path: TodayExtension
         info:
-            path: TodayExtension/Info.plist
+            path: TodayExtension/Resources/Info.plist
             properties:
                 CFBundleDisplayName: 再生中の音楽
                 CFBundleShortVersionString: 2.4.5
