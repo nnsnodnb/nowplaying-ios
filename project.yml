@@ -43,7 +43,7 @@ targets:
                     - ja
                 CFBundleName: $(PRODUCT_NAME)
                 CFBundlePackageType: APPL
-                CFBundleShortVersionString: 2.4.5
+                CFBundleShortVersionString: 2.4.6
                 CFBundleURLTypes:
                     - CFBundleTypeRole: Editor
                       CFBundleURLSchemes:
@@ -238,7 +238,7 @@ targets:
             path: TodayExtension/Resources/Info.plist
             properties:
                 CFBundleDisplayName: 再生中の音楽
-                CFBundleShortVersionString: 2.4.5
+                CFBundleShortVersionString: 2.4.6
                 NSExtension:
                     NSExtensionMainStoryboard: MainInterface
                     NSExtensionPointIdentifier: com.apple.widget-extension
