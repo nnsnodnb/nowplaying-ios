@@ -8,8 +8,8 @@ NowPlaying tweet & toot application for iOS
 
 ## Environments
 
-- Xcode 11.4.1
-  - Swift 5.2.2
+- Xcode 11.5
+  - Swift 5.2.4
 - Mint 0.14.2
   - Carthage 0.34.0
   - LicensePlist 2.15.1
