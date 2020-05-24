@@ -219,7 +219,10 @@ targets:
             - path: NowPlayingTests
               excludes:
                   - ReferenceImages_*/*
+                  - ReferenceImage.md
                   - FailureDiffs/*
+                  - FailureDiffs/.gitkeep
+                  - screenshots_previews_generator_for_ios_snapshot_testcase.py
         dependencies:
             - carthage: FBSnapshotTestCase
             - target: NowPlaying
