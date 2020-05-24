@@ -6,11 +6,17 @@
 //  Copyright © 2020 Yuya Oka. All rights reserved.
 //
 
-import DeallocationChecker
+import APIKit
 import RealmSwift
+import RxCocoa
+import RxSwift
 import SVProgressHUD
 import SwifteriOS
 import UIKit
+
+#if DEBUG
+import DeallocationChecker
+#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var window: UIWindow? = {
         return UIWindow()
     }()
+
+    private let disposeBag = DisposeBag()
 
     private(set) lazy var applicationCoordinator: ApplicationCoordinator = {
         return .init(window: window!)
@@ -37,6 +45,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         DeallocationChecker.shared.setup()
         #endif
+
+        checkVersion()
+
         return true
     }
 
@@ -60,5 +71,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UserDefaults.standard.string(forKey: .tootWithImageType) == nil {
             UserDefaults.standard.set("アートワークのみ", forKey: .tootWithImageType)
         }
+    }
+
+    private func checkVersion() {
+        let currentAppVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        Session.shared.rx.response(NowPlayingAppInfoRequest())
+            .map { $0.appVersion }
+            .subscribe(onSuccess: { [weak self] in
+                if currentAppVersion.compare($0.require, options: .numeric) == .orderedAscending {
+                    self?.applicationCoordinator.showUpdateAlert(isRequired: true)
+                } else if currentAppVersion.compare($0.latest, options: .numeric) == .orderedAscending {
+                    self?.applicationCoordinator.showUpdateAlert(isRequired: false)
+                }
+            }, onError: nil)
+            .disposed(by: disposeBag)
     }
 }
