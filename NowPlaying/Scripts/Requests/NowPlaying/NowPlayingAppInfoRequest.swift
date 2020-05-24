@@ -34,9 +34,4 @@ struct NowPlayingAppInfoRequest: Request {
     let baseURL: URL = URL(string: "https://nnsnodnb.github.io/nowplaying-ios/")!
     let method: HTTPMethod = .get
     let path: String = "app_info.json"
-
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Response {
-        let data = try JSONSerialization.data(withJSONObject: object, options: [])
-        return try JSONDecoder().decode(Response.self, from: data)
-    }
 }
