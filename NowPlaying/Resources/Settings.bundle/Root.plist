@@ -15,6 +15,16 @@
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>Version</string>
+			<key>Key</key>
+			<string>2.4.5</string>
+			<key>DefaultValue</key>
+			<string>2.4.5</string>
+		</dict>
+		<dict>
 			<key>Title</key>
 			<string>Copyright © 2020 Yuya Oka. All rights reserved.</string>
 			<key>Type</key>
