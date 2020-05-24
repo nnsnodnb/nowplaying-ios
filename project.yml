@@ -43,7 +43,7 @@ targets:
                     - ja
                 CFBundleName: $(PRODUCT_NAME)
                 CFBundlePackageType: APPL
-                CFBundleShortVersionString: 2.4.5
+                CFBundleShortVersionString: 2.4.6
                 CFBundleURLTypes:
                     - CFBundleTypeRole: Editor
                       CFBundleURLSchemes:
@@ -162,6 +162,14 @@ targets:
               codeSign: false
               embed: true
         preBuildScripts:
+            - script: |
+                APP_VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ${SRCROOT}/NowPlaying/Resources/Info.plist)
+                /usr/libexec/PlistBuddy -c "Set :PreferenceSpecifiers:1:DefaultValue ${APP_VERSION}" ${SRCROOT}/NowPlaying/Resources/Settings.bundle/Root.plist
+              name: Update Version value in Root.plist
+              inputFiles:
+                  - $(SRCROOT)/NowPlaying/Resources/Info.plist
+              outputFiles:
+                  - $(SRCROOT)/NowPlaying/Resources/Settings.bundle/Root.plist
             - script: "mint run R.swift generate ${SRCROOT}/NowPlaying/Scripts/R.generated.swift"
               name: R.swift
               inputFiles:
@@ -211,7 +219,10 @@ targets:
             - path: NowPlayingTests
               excludes:
                   - ReferenceImages_*/*
+                  - ReferenceImage.md
                   - FailureDiffs/*
+                  - FailureDiffs/.gitkeep
+                  - screenshots_previews_generator_for_ios_snapshot_testcase.py
         dependencies:
             - carthage: FBSnapshotTestCase
             - target: NowPlaying
@@ -230,7 +241,7 @@ targets:
             path: TodayExtension/Resources/Info.plist
             properties:
                 CFBundleDisplayName: 再生中の音楽
-                CFBundleShortVersionString: 2.4.5
+                CFBundleShortVersionString: 2.4.6
                 NSExtension:
                     NSExtensionMainStoryboard: MainInterface
                     NSExtensionPointIdentifier: com.apple.widget-extension

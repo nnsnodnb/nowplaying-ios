@@ -9,6 +9,14 @@
 import APIKit
 import Foundation
 
+extension Request where Response: Codable {
+
+    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Response {
+        let data = try JSONSerialization.data(withJSONObject: object, options: [])
+        return try JSONDecoder().decode(Response.self, from: data)
+    }
+}
+
 protocol InstancesSocialRequst: Request where Response == InstanceResponse {}
 
 extension InstancesSocialRequst {
@@ -21,13 +29,5 @@ extension InstancesSocialRequst {
         var urlRequest = urlRequest
         urlRequest.timeoutInterval = 20
         return urlRequest
-    }
-}
-
-extension InstancesSocialRequst where Response: Codable {
-
-    func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Response {
-        let data = try JSONSerialization.data(withJSONObject: object, options: [])
-        return try JSONDecoder().decode(Response.self, from: data)
     }
 }

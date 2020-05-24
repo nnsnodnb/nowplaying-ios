@@ -4,7 +4,7 @@ binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseAdMobBinary.json"
 binary "https://dl.google.com/dl/firebase/ios/carthage/FirebaseCrashlyticsBinary.json"
 github "HeroTransitions/Hero" ~> 1.5.0
 github "ishkawa/APIKit" ~> 5.1.0
-github "kean/Nuke" ~> 8.4.1
+github "kean/Nuke" ~> 9.0.0
 github "kishikawakatsumi/KeychainAccess" ~> 4.2.0
 github "mattdonnelly/Swifter" ~> 2.3.0
 github "ReactiveX/RxSwift" ~> 5.1.1

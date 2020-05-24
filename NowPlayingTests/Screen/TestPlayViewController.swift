@@ -19,25 +19,30 @@ final class PlayViewModelStub: PlayViewModelType {
     let previousButtonTrigger: PublishRelay<Void> = .init()
     let nextButtonTrigger: PublishRelay<Void> = .init()
     let gearButtonTrigger: PublishRelay<Void> = .init()
+    let mastodonButtonTrigger: PublishRelay<Void> = .init()
+    let twitterButtonTrigger: PublishRelay<Void> = .init()
     let countUpTrigger: PublishRelay<Void> = .init()
+    let tookScreenshot: PublishRelay<UIImage> = .init()
 
-    var input: PlayViewModelInput { return self }
-    var output: PlayViewModelOutput { return self }
-    var artworkImage: Driver<UIImage> {
-        return artwork.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
+    var inputs: PlayViewModelInput { return self }
+    var outputs: PlayViewModelOutput { return self }
+    var artworkImage: Observable<UIImage> {
+        return artwork.observeOn(MainScheduler.instance)
     }
-    var artworkScale: Driver<CGFloat> {
-        return scale.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
+    var artworkScale: Observable<CGFloat> {
+        return scale.observeOn(MainScheduler.instance)
     }
-    var songName: Driver<String> {
-        return song.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
+    var songName: Observable<String> {
+        return song.observeOn(MainScheduler.instance)
     }
-    var artistName: Driver<String> {
-        return artist.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
+    var artistName: Observable<String> {
+        return artist.observeOn(MainScheduler.instance)
     }
-    var playButtonImage: Driver<UIImage> {
-        return image.observeOn(MainScheduler.instance).asDriver(onErrorDriveWith: .empty())
+    var playButtonImage: Observable<UIImage> {
+        return image.observeOn(MainScheduler.instance)
     }
+    var takeScreenshot: Observable<Void> { return .empty() }
+    var hideAdMob: Observable<Bool> { return .just(false) }
 
     private let artwork: Observable<UIImage>
     private let scale: Observable<CGFloat>
@@ -62,7 +67,13 @@ final class PlayViewModelStub: PlayViewModelType {
     }
 }
 
-extension PlayViewModelStub: PlayViewModelInput, PlayViewModelOutput {}
+// MARK: - PlayViewModelInput
+
+extension PlayViewModelStub: PlayViewModelInput {}
+
+// MARK: - PlayViewModelOutput
+
+extension PlayViewModelStub: PlayViewModelOutput {}
 
 final class TestPlayViewController: FBSnapshotTestCase {
 
