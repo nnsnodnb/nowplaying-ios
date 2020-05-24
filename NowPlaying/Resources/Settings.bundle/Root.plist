@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>StringsTable</key>
-	<string>Root</string>
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
@@ -15,14 +13,14 @@
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSTitleValueSpecifier</string>
-			<key>Title</key>
-			<string>Version</string>
-			<key>Key</key>
-			<string>2.4.5</string>
 			<key>DefaultValue</key>
 			<string>2.4.5</string>
+			<key>Key</key>
+			<string>bundle_identifier</string>
+			<key>Title</key>
+			<string>Version</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
 		</dict>
 		<dict>
 			<key>Title</key>
@@ -31,5 +29,7 @@
 			<string>PSGroupSpecifier</string>
 		</dict>
 	</array>
+	<key>StringsTable</key>
+	<string>Root</string>
 </dict>
 </plist>

@@ -162,6 +162,14 @@ targets:
               codeSign: false
               embed: true
         preBuildScripts:
+            - script: |
+                APP_VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ${SRCROOT}/NowPlaying/Resources/Info.plist)
+                /usr/libexec/PlistBuddy -c "Set :PreferenceSpecifiers:1:DefaultValue ${APP_VERSION}" ${SRCROOT}/NowPlaying/Resources/Settings.bundle/Root.plist
+              name: Update Version value in Root.plist
+              inputFiles:
+                  - $(SRCROOT)/NowPlaying/Resources/Info.plist
+              outputFiles:
+                  - $(SRCROOT)/NowPlaying/Resources/Settings.bundle/Root.plist
             - script: "mint run R.swift generate ${SRCROOT}/NowPlaying/Scripts/R.generated.swift"
               name: R.swift
               inputFiles:
