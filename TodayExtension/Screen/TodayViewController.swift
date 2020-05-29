@@ -31,7 +31,7 @@ final class TodayViewController: UIViewController, NCWidgetProviding {
             artworkImageButton.contentVerticalAlignment = .fill
             artworkImageButton.rx.tap
                 .subscribe(onNext: { [unowned self] in
-                    let url = URL(string: "nowplaying-ios-nnsnodnb")!
+                    let url = URL(string: "nowplaying-ios-nnsnodnb://")!
                     self.extensionContext?.open(url, completionHandler: nil)
                 })
                 .disposed(by: disposeBag)
