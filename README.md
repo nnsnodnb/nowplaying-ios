@@ -8,8 +8,8 @@ NowPlaying tweet & toot application for iOS
 
 ## Environments
 
-- Xcode 11.4.1
-  - Swift 5.2.2
+- Xcode 11.5
+  - Swift 5.2.4
 - Mint 0.14.2
   - Carthage 0.34.0
   - LicensePlist 2.15.1
@@ -38,6 +38,10 @@ $ mint run carthage bootstrap --platform iOS --cache-builds --no-use-binaries
 $ mint run xcodegen generate
 $ open NowPlaying.xcworkspace
 ```
+
+## Links
+
+[Requests from end-users](https://docs.google.com/spreadsheets/d/1oNtyJ2x1G-2ZDktxT-jpo1I-8Wqif4Xhc40lH40Crrw/edit?usp=sharing)
 
 ## LICENSE
 
