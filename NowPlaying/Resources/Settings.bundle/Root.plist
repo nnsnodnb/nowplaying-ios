@@ -14,7 +14,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>2.4.6</string>
+			<string>2.4.7</string>
 			<key>Key</key>
 			<string>bundle_identifier</string>
 			<key>Title</key>
