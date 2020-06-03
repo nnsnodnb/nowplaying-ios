@@ -39,6 +39,10 @@ $ mint run xcodegen generate
 $ open NowPlaying.xcworkspace
 ```
 
+## Links
+
+[Requests from end-users](https://docs.google.com/spreadsheets/d/1oNtyJ2x1G-2ZDktxT-jpo1I-8Wqif4Xhc40lH40Crrw/edit?usp=sharing)
+
 ## LICENSE
 
 This software is licensed under the MIT License (See [LICENSE](LICENSE)).
