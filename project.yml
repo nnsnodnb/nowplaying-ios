@@ -15,7 +15,7 @@ options:
     indentWidth: 4
     xcodeVersion: 11.4
     deploymentTarget:
-        iOS: 11.0
+        iOS: 13.0
 
 settings:
     base:
@@ -109,51 +109,35 @@ targets:
               type: file
         requiresObjCLinking: true
         dependencies:
-            - carthage: APIKit
-            - carthage: DeallocationChecker
-            - carthage: DTTJailbreakDetection
-            - carthage: Eureka
-            - carthage: Feeder
-            - carthage: KeychainAccess
-            - carthage: Hero
-            - carthage: MarqueeLabel
-            - carthage: MastodonKit
-            - carthage: NotificationBanner
-            - carthage: Nuke
-            - carthage: Realm
-            - carthage: RealmSwift
-            - carthage: Rswift
-            - carthage: SnapKit
-            - carthage: SVProgressHUD
-            - carthage: SwifteriOS
-            - framework: Carthage/Build/iOS/GoogleDataTransport.framework
-              embed: false
-            - framework: Carthage/Build/iOS/GoogleDataTransportCCTSupport.framework
-              embed: false
-            - framework: Carthage/Build/iOS/leveldb-library.framework
-              embed: false
-            - framework: Carthage/Build/iOS/FIRAnalyticsConnector.framework
-              embed: false
-            - framework: Carthage/Build/iOS/FirebaseAnalytics.framework
-              embed: false
-            - framework: Carthage/Build/iOS/FirebaseCore.framework
-              embed: false
-            - framework: Carthage/Build/iOS/FirebaseCoreDiagnostics.framework
-              embed: false
-            - framework: Carthage/Build/iOS/FirebaseDatabase.framework
-              embed: false
-            - framework: Carthage/Build/iOS/FirebaseInstallations.framework
-              embed: false
-            - framework: Carthage/Build/iOS/GoogleAppMeasurement.framework
-              embed: false
-            - framework: Carthage/Build/iOS/GoogleUtilities.framework
-              embed: false
-            - framework: Carthage/Build/iOS/nanopb.framework
-              embed: false
-            - framework: Carthage/Build/iOS/PromisesObjC.framework
-              embed: false
-            - framework: Carthage/Build/iOS/GoogleMobileAds.framework
-              embed: false
+            - framework: Carthage/Build/APIKit.xcframework
+            - framework: Carthage/Build/DeallocationChecker.xcframework
+            - framework: Carthage/Build/DTTJailbreakDetection.xcframework
+            - framework: Carthage/Build/Eureka.xcframework
+            - framework: Carthage/Build/Feeder.xcframework
+            - framework: Carthage/Build/KeychainAccess.xcframework
+            - framework: Carthage/Build/Hero.xcframework
+            - framework: Carthage/Build/MarqueeLabel.xcframework
+            - framework: Carthage/Build/MastodonKit.xcframework
+            - framework: Carthage/Build/NotificationBanner.xcframework
+            - framework: Carthage/Build/Nuke.xcframework
+            - framework: Carthage/Build/Realm.xcframework
+            - framework: Carthage/Build/RealmSwift.xcframework
+            - framework: Carthage/Build/Rswift.xcframework
+            - framework: Carthage/Build/SnapKit.xcframework
+            - framework: Carthage/Build/SVProgressHUD.xcframework
+            - framework: Carthage/Build/SwifteriOS.xcframework
+            - framework: Carthage/Build/GoogleDataTransport.xcframework
+            - framework: Carthage/Build/leveldb-library.xcframework
+            - framework: Carthage/Build/FirebaseAnalytics.xcframework
+            - framework: Carthage/Build/FirebaseCore.xcframework
+            - framework: Carthage/Build/FirebaseCoreDiagnostics.xcframework
+            - framework: Carthage/Build/FirebaseDatabase.xcframework
+            - framework: Carthage/Build/FirebaseInstallations.xcframework
+            - framework: Carthage/Build/GoogleAppMeasurement.xcframework
+            - framework: Carthage/Build/GoogleUtilities.xcframework
+            - framework: Carthage/Build/nanopb.xcframework
+            - framework: Carthage/Build/PromisesObjC.xcframework
+            - framework: Carthage/Build/GoogleMobileAds.xcframework
             - sdk: StoreKit.framework
             - sdk: libc++.tbd
             - sdk: libsqlite3.tbd
@@ -271,14 +255,14 @@ targets:
                   - Info.plist
                   - RxStoreKit.h
         dependencies:
-            - carthage: Action
-            - carthage: Differentiator
-            - carthage: RxCocoa
-            - carthage: RxDataSources
-            - carthage: RxRealm
-            - carthage: RxRelay
-            - carthage: RxSwift
-            - carthage: ScrollFlowLabel
+            - framework: Carthage/Build/Action.xcframework
+            - framework: Carthage/Build/Differentiator.xcframework
+            - framework: Carthage/Build/RxCocoa.xcframework
+            - framework: Carthage/Build/RxDataSources.xcframework
+            - framework: Carthage/Build/RxRealm.xcframework
+            - framework: Carthage/Build/RxRelay.xcframework
+            - framework: Carthage/Build/RxSwift.xcframework
+            - framework: Carthage/Build/ScrollFlowLabel.xcframework
 
 schemes:
     NowPlaying:

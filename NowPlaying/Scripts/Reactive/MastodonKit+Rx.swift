@@ -22,7 +22,7 @@ extension Reactive where Base == Client {
                 case .success(let data, _):
                     observer(.success(data))
                 case .failure(let error):
-                    observer(.error(error))
+                    observer(.failure(error))
                 }
             }
             return Disposables.create()
