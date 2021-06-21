@@ -251,7 +251,7 @@ targets:
         settings:
             base:
                 PRODUCT_BUNDLE_IDENTIFIER: moe.nnsnodnb.NowPlaying.TodayExtension
-                APPLICATION_EXTENSION_API_ONLY: false
+                APPLICATION_EXTENSION_API_ONLY: true
 
     # Umbrella
     Umbrella:
