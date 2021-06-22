@@ -1,28 +1,27 @@
 name: NowPlaying
 
 attributes:
-    ORGANIZATIONNAME: Yuya Oka
+  ORGANIZATIONNAME: Yuya Oka
 
 configs:
-    Debug: debug
-    Release: release
+  Debug: debug
+  Release: release
 
 options:
-    bundleIdPrefix: moe.nnsnodnb
-    carthageExecutablePath: mint run carthage
-    developmentLanguage: ja
-    usesTabs: false
-    indentWidth: 4
-    xcodeVersion: 11.4
-    deploymentTarget:
-        iOS: 13.0
+  bundleIdPrefix: moe.nnsnodnb
+  developmentLanguage: ja
+  usesTabs: false
+  indentWidth: 4
+  xcodeVersion: 12.5
+  deploymentTarget:
+    iOS: 13.0
 
 settings:
-    base:
-        ENABLE_BITCODE: true
-        DEVELOPMENT_TEAM: 99649YXF6E
-        VALID_ARCHS: arm64
-        SWIFT_VERSION: 5.2
+  base:
+    ENABLE_BITCODE: true
+    DEVELOPMENT_TEAM: 99649YXF6E
+    VALID_ARCHS: arm64
+    SWIFT_VERSION: 5.2
 
 targets:
     # Application
@@ -30,267 +29,267 @@ targets:
         type: application
         platform: iOS
         configFiles:
-            Debug: NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig
-            Release: NowPlaying/Resources/Config/NowPlaying-Release.xcconfig
+          Debug: NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig
+          Release: NowPlaying/Resources/Config/NowPlaying-Release.xcconfig
         info:
-            path: NowPlaying/Resources/Info.plist
-            properties:
-                CFBundleDevelopmentRegion: ja_JP
-                CFBundleDisplayName: NowPlaying
-                CFBundleExecutable: $(EXECUTABLE_NAME)
-                CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
-                CFBundleLocalizations:
-                    - ja
-                CFBundleName: $(PRODUCT_NAME)
-                CFBundlePackageType: APPL
-                CFBundleShortVersionString: 2.4.7
-                CFBundleURLTypes:
-                    - CFBundleTypeRole: Editor
-                      CFBundleURLSchemes:
-                          - swifter-$(TWITTER_CONSUMER_KEY)
-                    - CFBundleTypeRole: Editor
-                      CFBundleURLSchemes:
-                          - nowplaying-ios-nnsnodnb
-                GADApplicationIdentifier: $(FIREBASE_ADMOB_APP_ID)
-                LSApplicationQueriesSchemes:
-                    - twitter
-                    - twitterauth
-                    - cydia
-                LSEnvironment:
-                    FIREBASE_ADMOB_APP_ID: $(FIREBASE_ADMOB_APP_ID)
-                    FIREBASE_ADMOB_BANNER_ID: $(FIREBASE_ADMOB_BANNER_ID)
-                    MASTODON_INSTANCES_API_TOKEN: $(MASTODON_INSTANCES_API_TOKEN)
-                    TWITTER_CONSUMER_KEY: $(TWITTER_CONSUMER_KEY)
-                    TWITTER_CONSUMER_SECRET: $(TWITTER_CONSUMER_SECRET)
-                LSRequiresIPhoneOS: true
-                NSAppleMusicUsageDescription: 音楽再生のためミュージックライブラリにアクセスします
-                UIBackgroundModes:
-                    - audio
-                UILaunchStoryboardName: LaunchScreen
-                UIRequiredDeviceCapabilities:
-                    - arm64
-                UISupportedInterfaceOrientations:
-                    - UIInterfaceOrientationPortrait
-                UISupportedInterfaceOrientations~ipad:
-                    - UIInterfaceOrientationPortrait
-                    - UIInterfaceOrientationPortraitUpsideDown
-                    - UIInterfaceOrientationLandscapeLeft
-                    - UIInterfaceOrientationLandscapeRight
+          path: NowPlaying/Resources/Info.plist
+          properties:
+            CFBundleDevelopmentRegion: ja_JP
+            CFBundleDisplayName: NowPlaying
+            CFBundleExecutable: $(EXECUTABLE_NAME)
+            CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+            CFBundleLocalizations:
+              - ja
+            CFBundleName: $(PRODUCT_NAME)
+            CFBundlePackageType: APPL
+            CFBundleShortVersionString: 2.4.7
+            CFBundleURLTypes:
+                - CFBundleTypeRole: Editor
+                  CFBundleURLSchemes:
+                    - swifter-$(TWITTER_CONSUMER_KEY)
+                - CFBundleTypeRole: Editor
+                  CFBundleURLSchemes:
+                    - nowplaying-ios-nnsnodnb
+            GADApplicationIdentifier: $(FIREBASE_ADMOB_APP_ID)
+            LSApplicationQueriesSchemes:
+              - twitter
+              - twitterauth
+              - cydia
+            LSEnvironment:
+              FIREBASE_ADMOB_APP_ID: $(FIREBASE_ADMOB_APP_ID)
+              FIREBASE_ADMOB_BANNER_ID: $(FIREBASE_ADMOB_BANNER_ID)
+              MASTODON_INSTANCES_API_TOKEN: $(MASTODON_INSTANCES_API_TOKEN)
+              TWITTER_CONSUMER_KEY: $(TWITTER_CONSUMER_KEY)
+              TWITTER_CONSUMER_SECRET: $(TWITTER_CONSUMER_SECRET)
+            LSRequiresIPhoneOS: true
+            NSAppleMusicUsageDescription: 音楽再生のためミュージックライブラリにアクセスします
+            UIBackgroundModes:
+              - audio
+            UILaunchStoryboardName: LaunchScreen
+            UIRequiredDeviceCapabilities:
+              - arm64
+            UISupportedInterfaceOrientations:
+              - UIInterfaceOrientationPortrait
+            UISupportedInterfaceOrientations~ipad:
+              - UIInterfaceOrientationPortrait
+              - UIInterfaceOrientationPortraitUpsideDown
+              - UIInterfaceOrientationLandscapeLeft
+              - UIInterfaceOrientationLandscapeRight
         settings:
-            base:
-                ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-                TARGETED_DEVICE_FAMILY: 1
-                DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
-                CODE_SIGN_ENTITLEMENTS: NowPlaying/Resources/NowPlaying.entitlements
-                OTHER_LDFLAGS: $(inherited) -ObjC
-            configs:
-                Debug:
-                    OTHER_SWIFT_FLAGS: $(inherited) -D DEBUG
-                Release:
-                    OTHER_SWIFT_FLAGS: $(inherited) -D RELEASE
+          base:
+            ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+            TARGETED_DEVICE_FAMILY: 1
+            DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+            CODE_SIGN_ENTITLEMENTS: NowPlaying/Resources/NowPlaying.entitlements
+            OTHER_LDFLAGS: $(inherited) -ObjC
+          configs:
+            Debug:
+              OTHER_SWIFT_FLAGS: $(inherited) -D DEBUG
+            Release:
+              OTHER_SWIFT_FLAGS: $(inherited) -D RELEASE
         sources:
-            - path: NowPlaying
-              excludes:
-                  - Resources/Config/NowPlaying-Debug.xcconfig.sample
-                  - Resources/Config/NowPlaying-Release.xcconfig.sample
-                  - Resources/Settings.bundle/moe.nnsnodnb.NowPlaying.latest_result.txt
-                  - Resources/Crashlytics
-            - path: NowPlaying/Scripts/R.generated.swift
-              optional: true
-              type: file
-            - path: NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig
-              optiona: true
-              type: file
-            - path: NowPlaying/Resources/Config/NowPlaying-Release.xcconfig
-              optional: true
-              type: file
-            - path: NowPlaying/Resources/GoogleService-Info.plist
-              optional: true
-              type: file
+          - path: NowPlaying
+            excludes:
+              - Resources/Config/NowPlaying-Debug.xcconfig.sample
+              - Resources/Config/NowPlaying-Release.xcconfig.sample
+              - Resources/Settings.bundle/moe.nnsnodnb.NowPlaying.latest_result.txt
+              - Resources/Crashlytics
+          - path: NowPlaying/Scripts/R.generated.swift
+            optional: true
+            type: file
+          - path: NowPlaying/Resources/Config/NowPlaying-Debug.xcconfig
+            optiona: true
+            type: file
+          - path: NowPlaying/Resources/Config/NowPlaying-Release.xcconfig
+            optional: true
+            type: file
+          - path: NowPlaying/Resources/GoogleService-Info.plist
+            optional: true
+            type: file
         requiresObjCLinking: true
         dependencies:
-            - framework: Carthage/Build/APIKit.xcframework
-            - framework: Carthage/Build/DeallocationChecker.xcframework
-            - framework: Carthage/Build/DTTJailbreakDetection.xcframework
-            - framework: Carthage/Build/Eureka.xcframework
-            - framework: Carthage/Build/Feeder.xcframework
-            - framework: Carthage/Build/KeychainAccess.xcframework
-            - framework: Carthage/Build/Hero.xcframework
-            - framework: Carthage/Build/MarqueeLabel.xcframework
-            - framework: Carthage/Build/MastodonKit.xcframework
-            - framework: Carthage/Build/NotificationBanner.xcframework
-            - framework: Carthage/Build/Nuke.xcframework
-            - framework: Carthage/Build/Realm.xcframework
-            - framework: Carthage/Build/RealmSwift.xcframework
-            - framework: Carthage/Build/Rswift.xcframework
-            - framework: Carthage/Build/SnapKit.xcframework
-            - framework: Carthage/Build/SVProgressHUD.xcframework
-            - framework: Carthage/Build/SwifteriOS.xcframework
-            - framework: Carthage/Build/GoogleDataTransport.xcframework
-            - framework: Carthage/Build/leveldb-library.xcframework
-            - framework: Carthage/Build/FirebaseAnalytics.xcframework
-            - framework: Carthage/Build/FirebaseCore.xcframework
-            - framework: Carthage/Build/FirebaseCoreDiagnostics.xcframework
-            - framework: Carthage/Build/FirebaseDatabase.xcframework
-            - framework: Carthage/Build/FirebaseInstallations.xcframework
-            - framework: Carthage/Build/GoogleAppMeasurement.xcframework
-            - framework: Carthage/Build/GoogleUtilities.xcframework
-            - framework: Carthage/Build/nanopb.xcframework
-            - framework: Carthage/Build/PromisesObjC.xcframework
-            - framework: Carthage/Build/GoogleMobileAds.xcframework
-            - sdk: StoreKit.framework
-            - sdk: libc++.tbd
-            - sdk: libsqlite3.tbd
-            - target: Umbrella
-            - target: TodayExtension
-              codeSign: false
-              embed: true
+          - framework: Carthage/Build/APIKit.xcframework
+          - framework: Carthage/Build/DeallocationChecker.xcframework
+          - framework: Carthage/Build/DTTJailbreakDetection.xcframework
+          - framework: Carthage/Build/Eureka.xcframework
+          - framework: Carthage/Build/Feeder.xcframework
+          - framework: Carthage/Build/KeychainAccess.xcframework
+          - framework: Carthage/Build/Hero.xcframework
+          - framework: Carthage/Build/MarqueeLabel.xcframework
+          - framework: Carthage/Build/MastodonKit.xcframework
+          - framework: Carthage/Build/NotificationBanner.xcframework
+          - framework: Carthage/Build/Nuke.xcframework
+          - framework: Carthage/Build/Realm.xcframework
+          - framework: Carthage/Build/RealmSwift.xcframework
+          - framework: Carthage/Build/Rswift.xcframework
+          - framework: Carthage/Build/SnapKit.xcframework
+          - framework: Carthage/Build/SVProgressHUD.xcframework
+          - framework: Carthage/Build/SwifteriOS.xcframework
+          - framework: Carthage/Build/GoogleDataTransport.xcframework
+          - framework: Carthage/Build/leveldb-library.xcframework
+          - framework: Carthage/Build/FirebaseAnalytics.xcframework
+          - framework: Carthage/Build/FirebaseCore.xcframework
+          - framework: Carthage/Build/FirebaseCoreDiagnostics.xcframework
+          - framework: Carthage/Build/FirebaseDatabase.xcframework
+          - framework: Carthage/Build/FirebaseInstallations.xcframework
+          - framework: Carthage/Build/GoogleAppMeasurement.xcframework
+          - framework: Carthage/Build/GoogleUtilities.xcframework
+          - framework: Carthage/Build/nanopb.xcframework
+          - framework: Carthage/Build/PromisesObjC.xcframework
+          - framework: Carthage/Build/GoogleMobileAds.xcframework
+          - sdk: StoreKit.framework
+          - sdk: libc++.tbd
+          - sdk: libsqlite3.tbd
+          - target: Umbrella
+          - target: TodayExtension
+            codeSign: false
+            embed: true
         preBuildScripts:
-            - script: |
-                APP_VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ${SRCROOT}/NowPlaying/Resources/Info.plist)
-                /usr/libexec/PlistBuddy -c "Set :PreferenceSpecifiers:1:DefaultValue ${APP_VERSION}" ${SRCROOT}/NowPlaying/Resources/Settings.bundle/Root.plist
-              name: Update Version value in Root.plist
-              inputFiles:
-                  - $(SRCROOT)/NowPlaying/Resources/Info.plist
-              outputFiles:
-                  - $(SRCROOT)/NowPlaying/Resources/Settings.bundle/Root.plist
-            - script: "mint run R.swift generate ${SRCROOT}/NowPlaying/Scripts/R.generated.swift"
-              name: R.swift
-              inputFiles:
-                  - $(TEMP_DIR)/rswift-lastrun
-              outputFiles:
-                  - $(SRCROOT)/NowPlaying/Scripts/R.generated.swift
-            - script: |
-                if [[ ! -f "${SRCROOT}/NowPlaying/Resources/Crashlytics/run" ]]; then
-                  curl -sSL "https://github.com/firebase/firebase-ios-sdk/raw/master/Crashlytics/run" -o "${SRCROOT}/NowPlaying/Resources/Crashlytics/run"
-                  chmod +x "${SRCROOT}/NowPlaying/Resources/Crashlytics/run"
-                fi
-                if [[ ! -f "${SRCROOT}/NowPlaying/Resources/Crashlytics/upload-symbols" ]]; then
-                  curl -sSL "https://github.com/firebase/firebase-ios-sdk/raw/master/Crashlytics/upload-symbols" -o "${SRCROOT}/NowPlaying/Resources/Crashlytics/upload-symbols"
-                  chmod +x "${SRCROOT}/NowPlaying/Resources/Crashlytics/upload-symbols"
-                fi
-              name: Download Crashlytics' scripts
-              outputFiles:
-                  - $(SRCROOT)/NowPlaying/Resources/Crashlytics/run
-                  - $(SRCROOT)/NowPlaying/Resources/Crashlytics/upload-symbols
+          - script: |
+              APP_VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ${SRCROOT}/NowPlaying/Resources/Info.plist)
+              /usr/libexec/PlistBuddy -c "Set :PreferenceSpecifiers:1:DefaultValue ${APP_VERSION}" ${SRCROOT}/NowPlaying/Resources/Settings.bundle/Root.plist
+            name: Update Version value in Root.plist
+            inputFiles:
+              - $(SRCROOT)/NowPlaying/Resources/Info.plist
+            outputFiles:
+              - $(SRCROOT)/NowPlaying/Resources/Settings.bundle/Root.plist
+          - script: "mint run R.swift generate ${SRCROOT}/NowPlaying/Scripts/R.generated.swift"
+            name: R.swift
+            inputFiles:
+              - $(TEMP_DIR)/rswift-lastrun
+            outputFiles:
+              - $(SRCROOT)/NowPlaying/Scripts/R.generated.swift
+          - script: |
+              if [[ ! -f "${SRCROOT}/NowPlaying/Resources/Crashlytics/run" ]]; then
+                curl -sSL "https://github.com/firebase/firebase-ios-sdk/raw/master/Crashlytics/run" -o "${SRCROOT}/NowPlaying/Resources/Crashlytics/run"
+                chmod +x "${SRCROOT}/NowPlaying/Resources/Crashlytics/run"
+              fi
+              if [[ ! -f "${SRCROOT}/NowPlaying/Resources/Crashlytics/upload-symbols" ]]; then
+                curl -sSL "https://github.com/firebase/firebase-ios-sdk/raw/master/Crashlytics/upload-symbols" -o "${SRCROOT}/NowPlaying/Resources/Crashlytics/upload-symbols"
+                chmod +x "${SRCROOT}/NowPlaying/Resources/Crashlytics/upload-symbols"
+              fi
+            name: Download Crashlytics' scripts
+            outputFiles:
+              - $(SRCROOT)/NowPlaying/Resources/Crashlytics/run
+              - $(SRCROOT)/NowPlaying/Resources/Crashlytics/upload-symbols
         postCompileScripts:
-            - script: "mint run swiftlint"
-              name: SwiftLint
+          - script: "mint run swiftlint"
+            name: SwiftLint
         postBuildScripts:
-            - script: |
-                if [[ $CONFIGURATION = "Debug" ]]; then
-                  mint run LicensePlist license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle \
-                  --github-token ${GITHUB_ACCESS_TOKEN} \
-                  --config-path ${SRCROOT}/NowPlaying/Resources/license_plist.yml \
-                  --prefix moe.nnsnodnb.NowPlaying \
-                  --suppress-opening-directory
-                fi
-              name: "LicensePlist"
-            - script: "${SRCROOT}/NowPlaying/Resources/Crashlytics/run"
-              name: Crashlytics
-              inputFiles:
-                  - ${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}
-                  - ${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}
+          - script: |
+              if [[ $CONFIGURATION = "Debug" ]]; then
+                mint run LicensePlist license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle \
+                --github-token ${GITHUB_ACCESS_TOKEN} \
+                --config-path ${SRCROOT}/NowPlaying/Resources/license_plist.yml \
+                --prefix moe.nnsnodnb.NowPlaying \
+                --suppress-opening-directory
+              fi
+            name: "LicensePlist"
+          - script: "${SRCROOT}/NowPlaying/Resources/Crashlytics/run"
+            name: Crashlytics
+            inputFiles:
+              - ${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}
+              - ${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}
         scheme:
-            testTargets:
-                - NowPlayingTests
+          testTargets:
+            - NowPlayingTests
 
     # UnitTest
     NowPlayingTests:
-        type: bundle.unit-test
-        platform: iOS
-        sources:
-            - path: NowPlayingTests
-              excludes:
-                  - ReferenceImages_*/*
-                  - ReferenceImage.md
-                  - FailureDiffs/*
-                  - FailureDiffs/.gitkeep
-                  - screenshots_previews_generator_for_ios_snapshot_testcase.py
-        dependencies:
-            - carthage: FBSnapshotTestCase
-            - target: NowPlaying
-            - target: Umbrella
-        settings:
-            base:
-                VALID_ARCHS: x86_64
+      type: bundle.unit-test
+      platform: iOS
+      sources:
+        - path: NowPlayingTests
+          excludes:
+            - ReferenceImages_*/*
+            - ReferenceImage.md
+            - FailureDiffs/*
+            - FailureDiffs/.gitkeep
+            - screenshots_previews_generator_for_ios_snapshot_testcase.py
+      dependencies:
+        - framework: Carthage/Build/FBSnapshotTestCase.xcframework
+        - target: NowPlaying
+        - target: Umbrella
+      settings:
+        base:
+          VALID_ARCHS: x86_64
 
     # TodayExtension
     TodayExtension:
-        type: app-extension
-        platform: iOS
-        sources:
-            - path: TodayExtension
-        info:
-            path: TodayExtension/Resources/Info.plist
-            properties:
-                CFBundleDisplayName: 再生中の音楽
-                CFBundleShortVersionString: 2.4.7
-                NSExtension:
-                    NSExtensionMainStoryboard: MainInterface
-                    NSExtensionPointIdentifier: com.apple.widget-extension
-        dependencies:
-            - sdk: NotificationCenter.framework
-            - target: Umbrella
-        settings:
-            base:
-                PRODUCT_BUNDLE_IDENTIFIER: moe.nnsnodnb.NowPlaying.TodayExtension
-                APPLICATION_EXTENSION_API_ONLY: true
+      type: app-extension
+      platform: iOS
+      sources:
+          - path: TodayExtension
+      info:
+        path: TodayExtension/Resources/Info.plist
+        properties:
+          CFBundleDisplayName: 再生中の音楽
+          CFBundleShortVersionString: 2.4.7
+          NSExtension:
+            NSExtensionMainStoryboard: MainInterface
+            NSExtensionPointIdentifier: com.apple.widget-extension
+      dependencies:
+        - sdk: NotificationCenter.framework
+        - target: Umbrella
+      settings:
+        base:
+          PRODUCT_BUNDLE_IDENTIFIER: moe.nnsnodnb.NowPlaying.TodayExtension
+          APPLICATION_EXTENSION_API_ONLY: true
 
     # Umbrella
     Umbrella:
         type: framework
         platform: iOS
         sources:
-            - path: Umbrella
-              excludes:
-                  - Vendors
-            - path: Umbrella/Vendors/RxRealmDataSources/Pod/Classes
-              group: Umbrella/Vendors/RxRealmDataSources
-              type: group
-            - path: Umbrella/Vendors/RxStoreKit/Sources
-              group: Umbrella/Vendors/RxStoreKit
-              type: group
-              excludes:
-                  - Info.plist
-                  - RxStoreKit.h
+          - path: Umbrella
+            excludes:
+              - Vendors
+          - path: Umbrella/Vendors/RxRealmDataSources/Pod/Classes
+            group: Umbrella/Vendors/RxRealmDataSources
+            type: group
+          - path: Umbrella/Vendors/RxStoreKit/Sources
+            group: Umbrella/Vendors/RxStoreKit
+            type: group
+            excludes:
+              - Info.plist
+              - RxStoreKit.h
         dependencies:
-            - framework: Carthage/Build/Action.xcframework
-            - framework: Carthage/Build/Differentiator.xcframework
-            - framework: Carthage/Build/RxCocoa.xcframework
-            - framework: Carthage/Build/RxDataSources.xcframework
-            - framework: Carthage/Build/RxRealm.xcframework
-            - framework: Carthage/Build/RxRelay.xcframework
-            - framework: Carthage/Build/RxSwift.xcframework
-            - framework: Carthage/Build/ScrollFlowLabel.xcframework
+          - framework: Carthage/Build/Action.xcframework
+          - framework: Carthage/Build/Differentiator.xcframework
+          - framework: Carthage/Build/RxCocoa.xcframework
+          - framework: Carthage/Build/RxDataSources.xcframework
+          - framework: Carthage/Build/RxRealm.xcframework
+          - framework: Carthage/Build/RxRelay.xcframework
+          - framework: Carthage/Build/RxSwift.xcframework
+          - framework: Carthage/Build/ScrollFlowLabel.xcframework
 
 schemes:
     NowPlaying:
-        build:
-            targets:
-                NowPlayingTests: [test]
+      build:
+        targets:
+          NowPlayingTests: [test]
         test:
-            config: Debug
-            environmentVariables:
-                FB_REFERENCE_IMAGE_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/ReferenceImages
-                IMAGE_DIFF_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/FailureDiffs
+          config: Debug
+          environmentVariables:
+            FB_REFERENCE_IMAGE_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/ReferenceImages
+            IMAGE_DIFF_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/FailureDiffs
 
     NowPlayingDev:
-        build:
-            targets:
-                NowPlaying: all
-                NowPlayingTests: [test]
-        run:
-            config: Debug
-            environmentVariables:
-                FB_REFERENCE_IMAGE_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/ReferenceImages
-                IMAGE_DIFF_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/FailureDiffs
-        test:
-            config: Debug
-            targets:
-                - NowPlayingTests
+      build:
+        targets:
+          NowPlaying: all
+          NowPlayingTests: [test]
+      run:
+        config: Debug
+        environmentVariables:
+          FB_REFERENCE_IMAGE_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/ReferenceImages
+          IMAGE_DIFF_DIR: $(SOURCE_ROOT)/$(PROJECT_NAME)Tests/FailureDiffs
+      test:
+        config: Debug
+        targets:
+          - NowPlayingTests
 
     TodayExtension:
-        build:
-            targets:
-                TodayExtension: all
+      build:
+        targets:
+          TodayExtension: all
