@@ -15,11 +15,11 @@ extension Reactive where Base: UIButton {
 
     var url: Binder<URL> {
         return .init(base) { (button, url) in
-            ImagePipeline.shared.loadImage(with: url) { (result) in
+            ImagePipeline.shared.loadImage(with: url, completion: { (result) in
                 if case let .success(response) = result {
                     button.setImage(response.image, for: .normal)
                 }
-            }
+            })
         }
     }
 }

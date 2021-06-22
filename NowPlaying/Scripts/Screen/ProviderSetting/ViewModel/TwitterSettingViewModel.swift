@@ -129,7 +129,7 @@ final class TwitterSettingViewModel: ProviderSettingViewModelType {
             .filter { $0 }
             .take(1)
             .map { _ in }
-            .observeOn(MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 guard let purchaseCell = self?.form.rowBy(tag: TwitterSettingRow.purchaseAutoTweet { _ in }.tag),
                     let switchCell = self?.form.rowBy(tag: TwitterSettingRow.autoTweetSwitch.tag) else { return }

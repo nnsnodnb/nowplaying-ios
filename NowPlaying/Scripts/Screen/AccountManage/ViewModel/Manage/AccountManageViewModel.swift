@@ -54,10 +54,10 @@ class AccountManageViewModel: AccountManageViewModelType {
         return Observable.changeset(from: results)
     }
     var loginSuccess: Observable<String> {
-        return loginSuccessTrigger.map { "@\($0)" }.observeOn(MainScheduler.instance).asObservable()
+        return loginSuccessTrigger.map { "@\($0)" }.observe(on: MainScheduler.instance).asObservable()
     }
     var loginError: Observable<String> {
-        return loginErrorTrigger.map { $0.authErrorDescription }.observeOn(MainScheduler.instance).asObservable()
+        return loginErrorTrigger.map { $0.authErrorDescription }.observe(on: MainScheduler.instance).asObservable()
     }
 
     private let disposeBag = DisposeBag()

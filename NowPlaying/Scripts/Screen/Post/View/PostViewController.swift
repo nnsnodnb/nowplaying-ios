@@ -69,7 +69,7 @@ final class PostViewController: UIViewController {
             navigationController?.presentationController?.delegate = self
 
             viewModel.outputs.didChangePostText
-                .observeOn(MainScheduler.instance)
+                .observe(on: MainScheduler.instance)
                 .bind(to: rx.isModalInPresentation)
                 .disposed(by: disposeBag)
         }

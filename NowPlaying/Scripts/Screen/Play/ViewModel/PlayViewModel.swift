@@ -56,19 +56,19 @@ final class PlayViewModel: PlayViewModelType {
     var inputs: PlayViewModelInput { return self }
     var outputs: PlayViewModelOutput { return self }
     var artworkImage: Observable<UIImage> {
-        return nowPlayingItem.map { $0?.artwork?.image ?? R.image.music()! }.observeOn(MainScheduler.instance)
+        return nowPlayingItem.map { $0?.artwork?.image ?? R.image.music()! }.observe(on: MainScheduler.instance)
     }
     var artworkScale: Observable<CGFloat> {
-        return playbackState.map { $0 == .playing ? 1 : 0.9 }.observeOn(MainScheduler.instance)
+        return playbackState.map { $0 == .playing ? 1 : 0.9 }.observe(on: MainScheduler.instance)
     }
     var songName: Observable<String> {
-        return nowPlayingItem.map { $0?.title ?? "" }.observeOn(MainScheduler.instance)
+        return nowPlayingItem.map { $0?.title ?? "" }.observe(on: MainScheduler.instance)
     }
     var artistName: Observable<String> {
-        return nowPlayingItem.map { $0?.artist ?? "" }.observeOn(MainScheduler.instance)
+        return nowPlayingItem.map { $0?.artist ?? "" }.observe(on: MainScheduler.instance)
     }
     var playButtonImage: Observable<UIImage> {
-        return playbackState.map { $0 == .playing ? R.image.pause()! : R.image.play()! }.observeOn(MainScheduler.instance)
+        return playbackState.map { $0 == .playing ? R.image.pause()! : R.image.play()! }.observe(on: MainScheduler.instance)
     }
     var takeScreenshot: Observable<Void> {
         return nowPlayingItem.compactMap { $0 }.distinctUntilChanged().map { _ in }.asObservable()
@@ -79,7 +79,7 @@ final class PlayViewModel: PlayViewModelType {
             .distinctUntilChanged()
             .filter { $0 }
             .take(1)
-            .observeOn(MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .share(replay: 1, scope: .whileConnected)
     }
 
@@ -154,7 +154,7 @@ final class PlayViewModel: PlayViewModelType {
 
     private func checkMediaLibraryAuthorization() {
         MPMediaLibrary.rx.requestAuthorization()
-            .observeOn(MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (status) in
                 guard let wself = self else { return }
                 switch status {
