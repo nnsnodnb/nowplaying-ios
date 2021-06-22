@@ -22,10 +22,10 @@ extension Reactive where Base: Swifter {
                 if let token = accessToken {
                     observer(.success(token))
                 } else {
-                    observer(.error(AuthError.unknown))
+                    observer(.failure(AuthError.unknown))
                 }
             }, failure: {
-                observer(.error($0))
+                observer(.failure($0))
             })
 
             return Disposables.create()
@@ -50,14 +50,14 @@ extension Reactive where Base: Swifter {
                     let name = $0["name"].string,
                     let screenName = $0["screen_name"].string,
                     var iconURLString = $0["profile_image_url_https"].string else {
-                        observer(.error(APIError.valueError))
+                        observer(.failure(APIError.valueError))
                         return
                 }
                 iconURLString = iconURLString.replacingOccurrences(of: "_normal", with: "")
                 let object = TwitterUser(userID: userID, name: name, screenName: screenName, iconURLString: iconURLString)
                 observer(.success(object))
             }, failure: {
-                observer(.error($0))
+                observer(.failure($0))
             })
 
             return Disposables.create()

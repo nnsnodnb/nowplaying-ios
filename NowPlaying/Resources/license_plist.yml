@@ -1,9 +1,9 @@
 github:
   - owner: RxSwiftCommunity
     name: RxRealmDataSources
-    version: 0.2.10
+    version: 0.3
   - owner: firebase
     name: firebase-ios-sdk
-    version: 6.23.0
+    version: 8.1.0
   - owner: glassonion1
     name: RxStoreKit

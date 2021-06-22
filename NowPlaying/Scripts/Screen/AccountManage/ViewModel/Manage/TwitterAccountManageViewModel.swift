@@ -29,7 +29,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModel {
 
     private var login: Binder<Void> {
         return .init(self) { (base, _) in
-            let onError: (Error) -> Void = { [weak base] (error) in
+            let onFailure: (Error) -> Void = { [weak base] (error) in
                 base?.loginErrorTrigger.accept(error)
             }
 
@@ -56,9 +56,9 @@ final class TwitterAccountManageViewModel: AccountManageViewModel {
 
                             base?.loginSuccessTrigger.accept(user.screenName)
 
-                        }, onError: onError)
+                        }, onFailure: onFailure)
 
-                }, onError: onError)
+                }, onError: onFailure)
         }
     }
 }

@@ -31,16 +31,16 @@ extension Reactive where Base == SFAuthenticationSession {
                 .init(name: "scope", value: "read write")
             ]
             guard let authorizeURL = components?.url else {
-                observer(.error(AuthError.unknown))
+                observer(.failure(AuthError.unknown))
                 return Disposables.create()
             }
 
             let session = SFAuthenticationSession(url: authorizeURL, callbackURLScheme: "nowplaying-ios-nnsnodnb") { (url, error) in
                 guard let url = url, error == nil else {
-                    return observer(.error(error!))
+                    return observer(.failure(error!))
                 }
                 guard let code = url.queryParams["code"] else {
-                    return observer(.error(AuthError.unknown))
+                    return observer(.failure(AuthError.unknown))
                 }
                 observer(.success(code))
             }

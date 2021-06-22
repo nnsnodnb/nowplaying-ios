@@ -13,7 +13,7 @@ import UIKit
 extension Reactive where Base: UIView {
 
     var transform: Binder<CGAffineTransform> {
-        return .init(base) { [weak base] (view, transform) in
+        return .init(base) { [weak base] (_, transform) in
             UIView.animate(withDuration: 0.3) {
                 base?.transform = transform
             }
