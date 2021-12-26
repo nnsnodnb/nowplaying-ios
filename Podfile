@@ -8,6 +8,7 @@ target 'NowPlaying' do
   pod 'RxCocoa'
   pod 'RxRelay'
   pod 'RxSwift'
+  pod 'SwiftLint'
 
   target 'NowPlayingTests' do
     inherit! :search_paths
