@@ -5,9 +5,11 @@ inhibit_all_warnings!
 target 'NowPlaying' do
   use_frameworks!
 
+  pod 'LicensePlist'
   pod 'RxCocoa'
   pod 'RxRelay'
   pod 'RxSwift'
+  pod 'SwiftGen'
   pod 'SwiftLint'
 
   target 'NowPlayingTests' do
