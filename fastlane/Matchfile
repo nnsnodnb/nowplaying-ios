@@ -1,0 +1,7 @@
+storage_mode "git"
+git_url "git@github.com:nnsnodnb/ios-certificates.git"
+git_branch "certs"
+type "development"
+shallow_clone true
+clone_branch_directly true
+readonly true

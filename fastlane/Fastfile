@@ -1,0 +1,10 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Fetch development certificates"
+  lane :setup_development_certificates do
+    match(
+      app_identifier: ["moe.nnsnodnb.NowPlaying", "moe.nnsnodnb.NowPlaying.TodayExtension"]
+    )
+  end
+end
