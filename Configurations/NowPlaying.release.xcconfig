@@ -1,0 +1,14 @@
+#include "Configurations/NowPlaying.xcconfig"
+#include "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"
+
+ONLY_ACTIVE_ARCH = NO
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+ENABLE_TESTABILITY = NO
+VALIDATE_PRODUCT = YES
+
+CODE_SIGN_IDENTITY = iPhone Distribution
+PROVISIONING_PROFILE_SPECIFIER = match AppStore moe.nnsnodnb.NowPlaying
+
+GCC_OPTIMIZATION_LEVEL = s
+SWIFT_OPTIMIZATION_LEVEL = -O
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE
