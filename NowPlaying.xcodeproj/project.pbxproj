@@ -136,10 +136,10 @@
 		CFCC402F27786D4D00937EDB = {
 			isa = PBXGroup;
 			children = (
-				CF43E2C0277E65AF00A35837 /* Configurations */,
 				CFCC403A27786D4D00937EDB /* NowPlaying */,
 				CFCC405127786D4E00937EDB /* NowPlayingTests */,
 				CFCC405B27786D4E00937EDB /* NowPlayingUITests */,
+				CF43E2C0277E65AF00A35837 /* Configurations */,
 				CFCC403927786D4D00937EDB /* Products */,
 				F52878203576725D0FEC8D69 /* Pods */,
 				D3D065403D26B9B44D86B6BD /* Frameworks */,
@@ -748,7 +748,6 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -768,7 +767,6 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlaying;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
