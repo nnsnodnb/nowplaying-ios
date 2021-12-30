@@ -1,0 +1,16 @@
+#include "Configurations/NowPlaying.xcconfig"
+#include "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.debug.xcconfig"
+
+COPY_PHASE_STRIP = NO
+STRIP_INSTALLED_PRODUCT = NO
+
+ONLY_ACTIVE_ARCH = YES
+DEBUG_INFORMATION_FORMAT = dwarf
+ENABLE_TESTABILITY = YES
+
+CODE_SIGN_IDENTITY = iPhone Developer
+PROVISIONING_PROFILE_SPECIFIER = match Development moe.nnsnodnb.NowPlaying
+
+GCC_OPTIMIZATION_LEVEL = 0
+SWIFT_OPTIMIZATION_LEVEL = -Onone
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG
