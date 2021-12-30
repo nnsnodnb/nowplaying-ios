@@ -12,6 +12,7 @@
 		759D4791E0D1FF0069331938 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2C0730DF7DE37FAB662125B /* Pods_NowPlaying.framework */; };
 		CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2B0277E609F00A35837 /* Colors.xcassets */; };
 		CF43E2BD277E621300A35837 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2BC277E621300A35837 /* Assets.swift */; };
+		CF43E2C6277E700200A35837 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2C5277E700200A35837 /* Settings.bundle */; };
 		CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC403B27786D4D00937EDB /* AppDelegate.swift */; };
 		CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404427786D4D00937EDB /* Assets.xcassets */; };
 		CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */; };
@@ -52,6 +53,7 @@
 		CF43E2C1277E65C400A35837 /* NowPlaying.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = NowPlaying.xcconfig; sourceTree = "<group>"; };
 		CF43E2C3277E675B00A35837 /* NowPlaying.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = NowPlaying.debug.xcconfig; sourceTree = "<group>"; };
 		CF43E2C4277E676700A35837 /* NowPlaying.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = NowPlaying.release.xcconfig; sourceTree = "<group>"; };
+		CF43E2C5277E700200A35837 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		CFCC403827786D4D00937EDB /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFCC403B27786D4D00937EDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFCC404427786D4D00937EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			children = (
 				CFCC404427786D4D00937EDB /* Assets.xcassets */,
 				CF43E2B0277E609F00A35837 /* Colors.xcassets */,
+				CF43E2C5277E700200A35837 /* Settings.bundle */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -248,6 +251,7 @@
 				CF43E2BF277E654300A35837 /* IBLinter */,
 				CFCC403427786D4D00937EDB /* Sources */,
 				CFCC403527786D4D00937EDB /* Frameworks */,
+				CF43E2C7277E701100A35837 /* LicensePlist */,
 				CFCC403627786D4D00937EDB /* Resources */,
 				DB1DB01A126429543BE37E3C /* [CP] Embed Pods Frameworks */,
 			);
@@ -350,6 +354,7 @@
 			files = (
 				CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */,
 				CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */,
+				CF43E2C6277E700200A35837 /* Settings.bundle in Resources */,
 				CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */,
 				CFCC407127786EC400937EDB /* MainViewController.xib in Resources */,
 			);
@@ -484,6 +489,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/IBLinter/bin/iblinter\"\n";
+		};
+		CF43E2C7277E701100A35837 /* LicensePlist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = LicensePlist;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"${CONFIGURATION}\" = \"Debug\" ]]; then\n  \"${PODS_ROOT}/LicensePlist/license-plist\" \\\n    \"--output-path\" \"${SRCROOT}/NowPlaying/Resources/Settings.bundle\" \\\n    \"--prefix\" \"moe.nnsnodnb.NowPlaying\" \\\n    \"--suppress-opening-directory\"\nfi\n";
 		};
 		D93008AA5BB73FB16DD5BF08 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
