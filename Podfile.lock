@@ -1,4 +1,7 @@
 PODS:
+  - Action (5.0.0):
+    - RxCocoa (~> 6.0)
+    - RxSwift (~> 6.0)
   - IBLinter (0.4.27)
   - LicensePlist (3.15.0)
   - RxCocoa (6.2.0):
@@ -13,6 +16,7 @@ PODS:
   - SwiftLint (0.45.1)
 
 DEPENDENCIES:
+  - Action
   - IBLinter
   - LicensePlist
   - RxCocoa
@@ -24,6 +28,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Action
     - IBLinter
     - LicensePlist
     - RxCocoa
@@ -34,6 +39,7 @@ SPEC REPOS:
     - SwiftLint
 
 SPEC CHECKSUMS:
+  Action: 47f1825511907b4fcd79dd7a7db9526c20f78018
   IBLinter: 7d543e4d17fbc8b7418409d770f119b1305310e9
   LicensePlist: bd3175ce3a27978e7b98c0c16a034b71cc14a7fc
   RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
@@ -43,6 +49,6 @@ SPEC CHECKSUMS:
   SwiftGen: a6d22010845f08fe18fbdf3a07a8e380fd22e0ea
   SwiftLint: 06ac37e4d38c7068e0935bb30cda95f093bec761
 
-PODFILE CHECKSUM: 571b64480526c38f4ea545ca46033d3ad72f51d7
+PODFILE CHECKSUM: 86a75fe3629df17895941b1808eea9859b0e4f4a
 
 COCOAPODS: 1.11.2
