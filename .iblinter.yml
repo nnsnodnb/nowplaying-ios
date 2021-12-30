@@ -1,0 +1,21 @@
+# https://github.com/IBDecodable/IBLinter/blob/master/Rules.md
+enabled_rules:
+  - custom_class_name
+  - relative_to_margin
+  - misplaced
+  - enable_autolayout
+  - duplicate_constraint
+  - duplicate_id
+  - image_resources
+  - ambiguous
+  - reuse_identifier
+  - color_resources
+  - stackview_backgroundcolor
+disabled_rules:
+  - storyboard_viewcontroller_id
+  - custom_module
+  - use_base_class
+  - view_as_device
+included:
+  - NowPlaying/Sources/Views
+  - NowPlaying/Sources/ViewControllers

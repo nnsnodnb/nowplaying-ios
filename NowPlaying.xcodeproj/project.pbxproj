@@ -227,13 +227,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CFCC406227786D4E00937EDB /* Build configuration list for PBXNativeTarget "NowPlaying" */;
 			buildPhases = (
+				F78EE616BBA60F2C1425F6CC /* [CP] Check Pods Manifest.lock */,
 				CF43E2B2277E60BC00A35837 /* Generate SwiftGenOutput.xcfilelist */,
 				CF43E2B3277E60DD00A35837 /* SwiftGen */,
-				F78EE616BBA60F2C1425F6CC /* [CP] Check Pods Manifest.lock */,
+				CF43E2BE277E646F00A35837 /* SwiftLint */,
+				CF43E2BF277E654300A35837 /* IBLinter */,
 				CFCC403427786D4D00937EDB /* Sources */,
 				CFCC403527786D4D00937EDB /* Frameworks */,
 				CFCC403627786D4D00937EDB /* Resources */,
-				CF43E2BE277E646F00A35837 /* SwiftLint */,
 				DB1DB01A126429543BE37E3C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -451,6 +452,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		CF43E2BF277E654300A35837 /* IBLinter */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = IBLinter;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/IBLinter/bin/iblinter\"\n";
 		};
 		D93008AA5BB73FB16DD5BF08 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
