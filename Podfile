@@ -5,6 +5,7 @@ inhibit_all_warnings!
 target 'NowPlaying' do
   use_frameworks!
 
+  pod 'IBLinter'
   pod 'LicensePlist'
   pod 'RxCocoa'
   pod 'RxRelay'

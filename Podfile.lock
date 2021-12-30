@@ -1,4 +1,5 @@
 PODS:
+  - IBLinter (0.4.27)
   - LicensePlist (3.15.0)
   - RxCocoa (6.2.0):
     - RxRelay (= 6.2.0)
@@ -12,6 +13,7 @@ PODS:
   - SwiftLint (0.45.1)
 
 DEPENDENCIES:
+  - IBLinter
   - LicensePlist
   - RxCocoa
   - RxRelay
@@ -22,6 +24,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - IBLinter
     - LicensePlist
     - RxCocoa
     - RxRelay
@@ -31,6 +34,7 @@ SPEC REPOS:
     - SwiftLint
 
 SPEC CHECKSUMS:
+  IBLinter: 7d543e4d17fbc8b7418409d770f119b1305310e9
   LicensePlist: bd3175ce3a27978e7b98c0c16a034b71cc14a7fc
   RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
   RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
@@ -39,6 +43,6 @@ SPEC CHECKSUMS:
   SwiftGen: a6d22010845f08fe18fbdf3a07a8e380fd22e0ea
   SwiftLint: 06ac37e4d38c7068e0935bb30cda95f093bec761
 
-PODFILE CHECKSUM: 0361cdba7544214b41bca7589d55c10a7c67b73c
+PODFILE CHECKSUM: 571b64480526c38f4ea545ca46033d3ad72f51d7
 
 COCOAPODS: 1.11.2
