@@ -10,6 +10,8 @@
 		2DAD157D7DB1E2BA245023BF /* Pods_NowPlaying_NowPlayingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3915784E1B778185B86B2BB0 /* Pods_NowPlaying_NowPlayingUITests.framework */; };
 		501078D9FA157908B32104B3 /* Pods_NowPlayingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D181EF1A07003AB681B9BA /* Pods_NowPlayingTests.framework */; };
 		759D4791E0D1FF0069331938 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2C0730DF7DE37FAB662125B /* Pods_NowPlaying.framework */; };
+		CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2B0277E609F00A35837 /* Colors.xcassets */; };
+		CF43E2BD277E621300A35837 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2BC277E621300A35837 /* Assets.swift */; };
 		CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC403B27786D4D00937EDB /* AppDelegate.swift */; };
 		CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404427786D4D00937EDB /* Assets.xcassets */; };
 		CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */; };
@@ -44,6 +46,9 @@
 		88364762EFB8F56CC151E5FD /* Pods-NowPlaying-NowPlayingUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying-NowPlayingUITests.release.xcconfig"; path = "Target Support Files/Pods-NowPlaying-NowPlayingUITests/Pods-NowPlaying-NowPlayingUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9E45C5BC09576D76E4EF5DFC /* Pods-NowPlayingTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlayingTests.debug.xcconfig"; path = "Target Support Files/Pods-NowPlayingTests/Pods-NowPlayingTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A2C0730DF7DE37FAB662125B /* Pods_NowPlaying.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NowPlaying.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF43E2B0277E609F00A35837 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		CF43E2B5277E616D00A35837 /* SwiftGenOutput.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = SwiftGenOutput.xcfilelist; sourceTree = "<group>"; };
+		CF43E2BC277E621300A35837 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = Generated/Assets.swift; sourceTree = "<group>"; };
 		CFCC403827786D4D00937EDB /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFCC403B27786D4D00937EDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFCC404427786D4D00937EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -89,6 +94,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CF43E2AF277E608600A35837 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CFCC404427786D4D00937EDB /* Assets.xcassets */,
+				CF43E2B0277E609F00A35837 /* Colors.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		CF43E2B4277E60E600A35837 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CFCC404927786D4D00937EDB /* Info.plist */,
+				CF43E2B5277E616D00A35837 /* SwiftGenOutput.xcfilelist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CF43E2BB277E620400A35837 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				CF43E2BC277E621300A35837 /* Assets.swift */,
+			);
+			name = Generated;
+			sourceTree = "<group>";
+		};
 		CFCC402F27786D4D00937EDB = {
 			isa = PBXGroup;
 			children = (
@@ -114,10 +145,11 @@
 		CFCC403A27786D4D00937EDB /* NowPlaying */ = {
 			isa = PBXGroup;
 			children = (
+				CF43E2AF277E608600A35837 /* Resources */,
 				CFCC406B27786EAC00937EDB /* Sources */,
-				CFCC404427786D4D00937EDB /* Assets.xcassets */,
 				CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */,
-				CFCC404927786D4D00937EDB /* Info.plist */,
+				CF43E2B4277E60E600A35837 /* Supporting Files */,
+				CF43E2BB277E620400A35837 /* Generated */,
 			);
 			path = NowPlaying;
 			sourceTree = "<group>";
@@ -185,7 +217,6 @@
 				9E45C5BC09576D76E4EF5DFC /* Pods-NowPlayingTests.debug.xcconfig */,
 				2693CA7C144F89CD1233C8BD /* Pods-NowPlayingTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -196,6 +227,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CFCC406227786D4E00937EDB /* Build configuration list for PBXNativeTarget "NowPlaying" */;
 			buildPhases = (
+				CF43E2B2277E60BC00A35837 /* Generate SwiftGenOutput.xcfilelist */,
+				CF43E2B3277E60DD00A35837 /* SwiftGen */,
 				F78EE616BBA60F2C1425F6CC /* [CP] Check Pods Manifest.lock */,
 				CFCC403427786D4D00937EDB /* Sources */,
 				CFCC403527786D4D00937EDB /* Frameworks */,
@@ -300,6 +333,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */,
+				CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */,
 				CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */,
 				CFCC407127786EC400937EDB /* MainViewController.xib in Resources */,
 			);
@@ -360,6 +394,44 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		CF43E2B2277E60BC00A35837 /* Generate SwiftGenOutput.xcfilelist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/NowPlaying/Supporting Files/SwiftGenOutput.xcfilelist",
+			);
+			name = "Generate SwiftGenOutput.xcfilelist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" \"config\" \"generate-xcfilelists\" \"--outputs\" \"${SRCROOT}/NowPlaying/Supporting Files/SwiftGenOutput.xcfilelist\"\n";
+		};
+		CF43E2B3277E60DD00A35837 /* SwiftGen */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftGen;
+			outputFileListPaths = (
+				"$(SRCROOT)/NowPlaying/Supporting Files/SwiftGenOutput.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\n";
 		};
 		D93008AA5BB73FB16DD5BF08 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -448,6 +520,7 @@
 			files = (
 				CFCC407027786EC400937EDB /* MainViewController.swift in Sources */,
 				CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */,
+				CF43E2BD277E621300A35837 /* Assets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -620,7 +693,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 99649YXF6E;
-				INFOPLIST_FILE = NowPlaying/Info.plist;
+				INFOPLIST_FILE = "NowPlaying/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -649,7 +722,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 99649YXF6E;
-				INFOPLIST_FILE = NowPlaying/Info.plist;
+				INFOPLIST_FILE = "NowPlaying/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

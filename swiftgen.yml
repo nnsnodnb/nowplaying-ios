@@ -1,0 +1,7 @@
+xcassets:
+  inputs:
+  - NowPlaying/Resources/Assets.xcassets
+  - NowPlaying/Resources/Colors.xcassets
+  outputs:
+    templateName: swift5
+    output: NowPlaying/Generated/Assets.swift
