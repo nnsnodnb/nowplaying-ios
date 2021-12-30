@@ -1,0 +1,69 @@
+included:
+  - NowPlaying/Sources
+  - NowPlayingTests
+excluded:
+  - Pods
+  - NowPlaying/Generated
+opt_in_rules:
+  - anyobject_protocol
+  - array_init
+  - attributes
+  - closure_end_indentation
+  - closure_spacing
+  - collection_alignment
+  - contains_over_filter_count
+  - contains_over_first_not_nil
+  - contains_over_filter_is_empty
+  - contains_over_range_nil_comparison
+  - duplicated_key_in_dictionary_literal
+  - empty_collection_literal
+  - empty_count
+  - empty_string
+  - explicit_init
+  - extension_access_modifier
+  - first_where
+  - joined_default_parameter
+  - last_where
+  - literal_expression_end_indentation
+  - modifier_order
+  - nimble_operator
+  - object_literal
+  - operator_usage_whitespace
+  - override_in_extension
+  - overridden_super_call
+  - prefer_self_in_static_references
+  - private_action
+  - private_outlet
+  - prohibited_super_call
+  - quick_discouraged_call
+  - quick_discouraged_focused_test
+  - quick_discouraged_pending_test
+  - redundant_nil_coalescing
+  - self_in_property_initialization
+  - single_test_class
+  - sorted_first_last
+  - sorted_imports
+  - unneeded_parentheses_in_closure_argument
+  - unused_import
+  - vertical_parameter_alignment_on_call
+  - yoda_condition
+disabled_rules:
+  - nesting
+  - function_parameter_count
+  - cyclomatic_complexity
+  - large_tuple
+identifier_name:
+  excluded:
+    - id
+    - ok
+    - rx
+line_length: 130
+type_body_length:
+  - 300
+  - 400
+file_length:
+  warning: 500
+  error: 1000
+function_body_length:
+  warning: 100
+  error: 200

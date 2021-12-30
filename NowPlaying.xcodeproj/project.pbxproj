@@ -233,6 +233,7 @@
 				CFCC403427786D4D00937EDB /* Sources */,
 				CFCC403527786D4D00937EDB /* Frameworks */,
 				CFCC403627786D4D00937EDB /* Resources */,
+				CF43E2BE277E646F00A35837 /* SwiftLint */,
 				DB1DB01A126429543BE37E3C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -432,6 +433,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\n";
+		};
+		CF43E2BE277E646F00A35837 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		D93008AA5BB73FB16DD5BF08 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
