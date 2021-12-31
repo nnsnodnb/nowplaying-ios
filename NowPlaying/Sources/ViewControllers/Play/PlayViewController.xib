@@ -151,10 +151,6 @@
             <point key="canvasLocation" x="34.5" y="53"/>
         </view>
     </objects>
-    <designables>
-        <designable name="7Tl-1g-kSO"/>
-        <designable name="ccL-cq-6gt"/>
-    </designables>
     <resources>
         <image name="backward.fill" catalog="system" width="128" height="79"/>
         <image name="forward.fill" catalog="system" width="128" height="79"/>

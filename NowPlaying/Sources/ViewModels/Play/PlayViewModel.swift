@@ -15,6 +15,8 @@ protocol PlayViewModelInputs: AnyObject {
     var playPause: PublishRelay<Void> { get }
     var back: PublishRelay<Void> { get }
     var forward: PublishRelay<Void> { get }
+    var mastodon: PublishRelay<Void> { get }
+    var twitter: PublishRelay<Void> { get }
 }
 
 protocol PlayViewModelOutputs: AnyObject {
@@ -36,6 +38,8 @@ final class PlayViewModel: PlayViewModelType {
     let playPause: PublishRelay<Void> = .init()
     let back: PublishRelay<Void> = .init()
     let forward: PublishRelay<Void> = .init()
+    let mastodon: PublishRelay<Void> = .init()
+    let twitter: PublishRelay<Void> = .init()
     // MARK: - Outputs Sources
     let router: PlayerRoutable
     let artworkImage: Driver<UIImage>
