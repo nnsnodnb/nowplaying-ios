@@ -1,0 +1,4 @@
+workspace "NowPlaying.xcworkspace"
+scheme "NowPlaying"
+clean true
+prelaunch_simulator true
