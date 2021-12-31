@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2DAD157D7DB1E2BA245023BF /* Pods_NowPlaying_NowPlayingUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3915784E1B778185B86B2BB0 /* Pods_NowPlaying_NowPlayingUITests.framework */; };
 		501078D9FA157908B32104B3 /* Pods_NowPlayingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D181EF1A07003AB681B9BA /* Pods_NowPlayingTests.framework */; };
 		759D4791E0D1FF0069331938 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2C0730DF7DE37FAB662125B /* Pods_NowPlaying.framework */; };
 		CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2B0277E609F00A35837 /* Colors.xcassets */; };
@@ -22,21 +21,12 @@
 		CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404427786D4D00937EDB /* Assets.xcassets */; };
 		CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */; };
 		CFCC405327786D4E00937EDB /* NowPlayingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC405227786D4E00937EDB /* NowPlayingTests.swift */; };
-		CFCC405D27786D4E00937EDB /* NowPlayingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC405C27786D4E00937EDB /* NowPlayingUITests.swift */; };
-		CFCC405F27786D4E00937EDB /* NowPlayingUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC405E27786D4E00937EDB /* NowPlayingUITestsLaunchTests.swift */; };
 		CFCC407027786EC400937EDB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC406E27786EC400937EDB /* MainViewController.swift */; };
 		CFCC407127786EC400937EDB /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFCC406F27786EC400937EDB /* MainViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		CFCC404F27786D4E00937EDB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CFCC403027786D4D00937EDB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CFCC403727786D4D00937EDB;
-			remoteInfo = NowPlaying;
-		};
-		CFCC405927786D4E00937EDB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CFCC403027786D4D00937EDB /* Project object */;
 			proxyType = 1;
@@ -71,9 +61,6 @@
 		CFCC404927786D4D00937EDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFCC404E27786D4E00937EDB /* NowPlayingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NowPlayingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFCC405227786D4E00937EDB /* NowPlayingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingTests.swift; sourceTree = "<group>"; };
-		CFCC405827786D4E00937EDB /* NowPlayingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NowPlayingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CFCC405C27786D4E00937EDB /* NowPlayingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingUITests.swift; sourceTree = "<group>"; };
-		CFCC405E27786D4E00937EDB /* NowPlayingUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CFCC406E27786EC400937EDB /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		CFCC406F27786EC400937EDB /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		DC5DFA428CD0A6159943A39E /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
@@ -95,14 +82,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				501078D9FA157908B32104B3 /* Pods_NowPlayingTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CFCC405527786D4E00937EDB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2DAD157D7DB1E2BA245023BF /* Pods_NowPlaying_NowPlayingUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,7 +171,6 @@
 			children = (
 				CFCC403A27786D4D00937EDB /* NowPlaying */,
 				CFCC405127786D4E00937EDB /* NowPlayingTests */,
-				CFCC405B27786D4E00937EDB /* NowPlayingUITests */,
 				CF43E2C0277E65AF00A35837 /* Configurations */,
 				CFCC403927786D4D00937EDB /* Products */,
 				F52878203576725D0FEC8D69 /* Pods */,
@@ -205,7 +183,6 @@
 			children = (
 				CFCC403827786D4D00937EDB /* NowPlaying.app */,
 				CFCC404E27786D4E00937EDB /* NowPlayingTests.xctest */,
-				CFCC405827786D4E00937EDB /* NowPlayingUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -228,15 +205,6 @@
 				CFCC405227786D4E00937EDB /* NowPlayingTests.swift */,
 			);
 			path = NowPlayingTests;
-			sourceTree = "<group>";
-		};
-		CFCC405B27786D4E00937EDB /* NowPlayingUITests */ = {
-			isa = PBXGroup;
-			children = (
-				CFCC405C27786D4E00937EDB /* NowPlayingUITests.swift */,
-				CFCC405E27786D4E00937EDB /* NowPlayingUITestsLaunchTests.swift */,
-			);
-			path = NowPlayingUITests;
 			sourceTree = "<group>";
 		};
 		CFCC406B27786EAC00937EDB /* Sources */ = {
@@ -339,26 +307,6 @@
 			productReference = CFCC404E27786D4E00937EDB /* NowPlayingTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		CFCC405727786D4E00937EDB /* NowPlayingUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CFCC406827786D4E00937EDB /* Build configuration list for PBXNativeTarget "NowPlayingUITests" */;
-			buildPhases = (
-				A570EFA4319D32BEF78FC37A /* [CP] Check Pods Manifest.lock */,
-				CFCC405427786D4E00937EDB /* Sources */,
-				CFCC405527786D4E00937EDB /* Frameworks */,
-				CFCC405627786D4E00937EDB /* Resources */,
-				D93008AA5BB73FB16DD5BF08 /* [CP] Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				CFCC405A27786D4E00937EDB /* PBXTargetDependency */,
-			);
-			name = NowPlayingUITests;
-			productName = NowPlayingUITests;
-			productReference = CFCC405827786D4E00937EDB /* NowPlayingUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -373,10 +321,6 @@
 						CreatedOnToolsVersion = 13.2.1;
 					};
 					CFCC404D27786D4E00937EDB = {
-						CreatedOnToolsVersion = 13.2.1;
-						TestTargetID = CFCC403727786D4D00937EDB;
-					};
-					CFCC405727786D4E00937EDB = {
 						CreatedOnToolsVersion = 13.2.1;
 						TestTargetID = CFCC403727786D4D00937EDB;
 					};
@@ -397,7 +341,6 @@
 			targets = (
 				CFCC403727786D4D00937EDB /* NowPlaying */,
 				CFCC404D27786D4E00937EDB /* NowPlayingTests */,
-				CFCC405727786D4E00937EDB /* NowPlayingUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -423,13 +366,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CFCC405627786D4E00937EDB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -448,28 +384,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NowPlayingTests/Pods-NowPlayingTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A570EFA4319D32BEF78FC37A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-NowPlaying-NowPlayingUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CF43E2B2277E60BC00A35837 /* Generate SwiftGenOutput.xcfilelist */ = {
@@ -564,23 +478,6 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ \"${CONFIGURATION}\" = \"Debug\" ]]; then\n  \"${PODS_ROOT}/LicensePlist/license-plist\" \\\n    \"--output-path\" \"${SRCROOT}/NowPlaying/Resources/Settings.bundle\" \\\n    \"--prefix\" \"moe.nnsnodnb.NowPlaying\" \\\n    \"--suppress-opening-directory\"\nfi\n";
 		};
-		D93008AA5BB73FB16DD5BF08 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NowPlaying-NowPlayingUITests/Pods-NowPlaying-NowPlayingUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NowPlaying-NowPlayingUITests/Pods-NowPlaying-NowPlayingUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NowPlaying-NowPlayingUITests/Pods-NowPlaying-NowPlayingUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		DB1DB01A126429543BE37E3C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -667,15 +564,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CFCC405427786D4E00937EDB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CFCC405F27786D4E00937EDB /* NowPlayingUITestsLaunchTests.swift in Sources */,
-				CFCC405D27786D4E00937EDB /* NowPlayingUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -683,11 +571,6 @@
 			isa = PBXTargetDependency;
 			target = CFCC403727786D4D00937EDB /* NowPlaying */;
 			targetProxy = CFCC404F27786D4E00937EDB /* PBXContainerItemProxy */;
-		};
-		CFCC405A27786D4E00937EDB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CFCC403727786D4D00937EDB /* NowPlaying */;
-			targetProxy = CFCC405927786D4E00937EDB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -898,44 +781,6 @@
 			};
 			name = Release;
 		};
-		CFCC406927786D4E00937EDB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E694659B797D761F6A33DEA3 /* Pods-NowPlaying-NowPlayingUITests.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 99649YXF6E;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlayingUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = NowPlaying;
-			};
-			name = Debug;
-		};
-		CFCC406A27786D4E00937EDB /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88364762EFB8F56CC151E5FD /* Pods-NowPlaying-NowPlayingUITests.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 99649YXF6E;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.NowPlayingUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = NowPlaying;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -962,15 +807,6 @@
 			buildConfigurations = (
 				CFCC406627786D4E00937EDB /* Debug */,
 				CFCC406727786D4E00937EDB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CFCC406827786D4E00937EDB /* Build configuration list for PBXNativeTarget "NowPlayingUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CFCC406927786D4E00937EDB /* Debug */,
-				CFCC406A27786D4E00937EDB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
