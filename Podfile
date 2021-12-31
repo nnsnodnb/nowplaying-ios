@@ -22,9 +22,6 @@ target 'NowPlaying' do
     pod 'RxTest'
   end
 
-  target 'NowPlayingUITests' do
-  end
-
 end
 
 def version(number)

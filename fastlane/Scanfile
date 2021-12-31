@@ -1,0 +1,6 @@
+workspace "NowPlaying.xcworkspace"
+scheme "NowPlaying"
+clean true
+prelaunch_simulator true
+output_types "junit"
+custom_report_file_name "report.xml"
