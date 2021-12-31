@@ -13,6 +13,11 @@
 		CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2B0277E609F00A35837 /* Colors.xcassets */; };
 		CF43E2BD277E621300A35837 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2BC277E621300A35837 /* Assets.swift */; };
 		CF43E2C6277E700200A35837 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2C5277E700200A35837 /* Settings.bundle */; };
+		CF43E2CB277E735F00A35837 /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2C9277E735F00A35837 /* PlayViewController.swift */; };
+		CF43E2CC277E735F00A35837 /* PlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2CA277E735F00A35837 /* PlayViewController.xib */; };
+		CF43E2CF277E799800A35837 /* ViewControllerInjectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2CE277E799800A35837 /* ViewControllerInjectable.swift */; };
+		CF43E2D2277E7B7700A35837 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2D1277E7B7700A35837 /* UIViewController+Extensions.swift */; };
+		CF60C17B277E81FD00F1177B /* PlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF60C17A277E81FD00F1177B /* PlayViewModel.swift */; };
 		CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC403B27786D4D00937EDB /* AppDelegate.swift */; };
 		CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404427786D4D00937EDB /* Assets.xcassets */; };
 		CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */; };
@@ -54,6 +59,11 @@
 		CF43E2C3277E675B00A35837 /* NowPlaying.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = NowPlaying.debug.xcconfig; sourceTree = "<group>"; };
 		CF43E2C4277E676700A35837 /* NowPlaying.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = NowPlaying.release.xcconfig; sourceTree = "<group>"; };
 		CF43E2C5277E700200A35837 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		CF43E2C9277E735F00A35837 /* PlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayViewController.swift; sourceTree = "<group>"; };
+		CF43E2CA277E735F00A35837 /* PlayViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayViewController.xib; sourceTree = "<group>"; };
+		CF43E2CE277E799800A35837 /* ViewControllerInjectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerInjectable.swift; sourceTree = "<group>"; };
+		CF43E2D1277E7B7700A35837 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		CF60C17A277E81FD00F1177B /* PlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayViewModel.swift; sourceTree = "<group>"; };
 		CFCC403827786D4D00937EDB /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFCC403B27786D4D00937EDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFCC404427786D4D00937EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -136,6 +146,47 @@
 			path = Configurations;
 			sourceTree = "<group>";
 		};
+		CF43E2C8277E735200A35837 /* Play */ = {
+			isa = PBXGroup;
+			children = (
+				CF43E2C9277E735F00A35837 /* PlayViewController.swift */,
+				CF43E2CA277E735F00A35837 /* PlayViewController.xib */,
+			);
+			path = Play;
+			sourceTree = "<group>";
+		};
+		CF43E2CD277E798F00A35837 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				CF43E2CE277E799800A35837 /* ViewControllerInjectable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		CF43E2D0277E7B6F00A35837 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CF43E2D1277E7B7700A35837 /* UIViewController+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		CF60C178277E81EB00F1177B /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				CF60C179277E81F400F1177B /* Play */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		CF60C179277E81F400F1177B /* Play */ = {
+			isa = PBXGroup;
+			children = (
+				CF60C17A277E81FD00F1177B /* PlayViewModel.swift */,
+			);
+			path = Play;
+			sourceTree = "<group>";
+		};
 		CFCC402F27786D4D00937EDB = {
 			isa = PBXGroup;
 			children = (
@@ -191,7 +242,10 @@
 		CFCC406B27786EAC00937EDB /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				CF43E2D0277E7B6F00A35837 /* Extensions */,
+				CF43E2CD277E798F00A35837 /* Protocols */,
 				CFCC406C27786EB200937EDB /* ViewControllers */,
+				CF60C178277E81EB00F1177B /* ViewModels */,
 				CFCC403B27786D4D00937EDB /* AppDelegate.swift */,
 			);
 			path = Sources;
@@ -200,6 +254,7 @@
 		CFCC406C27786EB200937EDB /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CF43E2C8277E735200A35837 /* Play */,
 				CFCC406D27786EB900937EDB /* Main */,
 			);
 			path = ViewControllers;
@@ -354,6 +409,7 @@
 			files = (
 				CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */,
 				CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */,
+				CF43E2CC277E735F00A35837 /* PlayViewController.xib in Resources */,
 				CF43E2C6277E700200A35837 /* Settings.bundle in Resources */,
 				CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */,
 				CFCC407127786EC400937EDB /* MainViewController.xib in Resources */,
@@ -593,8 +649,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF60C17B277E81FD00F1177B /* PlayViewModel.swift in Sources */,
+				CF43E2CB277E735F00A35837 /* PlayViewController.swift in Sources */,
 				CFCC407027786EC400937EDB /* MainViewController.swift in Sources */,
+				CF43E2CF277E799800A35837 /* ViewControllerInjectable.swift in Sources */,
 				CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */,
+				CF43E2D2277E7B7700A35837 /* UIViewController+Extensions.swift in Sources */,
 				CF43E2BD277E621300A35837 /* Assets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -763,14 +823,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = "NowPlaying/Supporting Files/Info.plist";
+				DEVELOPMENT_TEAM = 99649YXF6E;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				MARKETING_VERSION = 1.0;
+				PROVISIONING_PROFILE_SPECIFIER = "match Development moe.nnsnodnb.NowPlaying";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -783,7 +845,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = "NowPlaying/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
