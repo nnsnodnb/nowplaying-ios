@@ -151,6 +151,9 @@ GEM
       xcodeproj (>= 1.13.0, < 2.0.0)
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
+    fastlane-plugin-appicon (0.16.0)
+      json
+      mini_magick (>= 4.9.4, < 5.0.0)
     ffi (1.15.4)
     fourflusher (2.3.1)
     fuzzy_match (2.0.4)
@@ -275,6 +278,7 @@ PLATFORMS
 DEPENDENCIES
   cocoapods
   fastlane
+  fastlane-plugin-appicon
 
 BUNDLED WITH
    2.2.33
