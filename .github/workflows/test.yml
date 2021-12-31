@@ -33,3 +33,9 @@ jobs:
 
     - name: Run Test
       run: bundle exec fastlane ios test
+
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action/composite@v1
+      if: always()
+      with:
+        files: fastlane/test_output/report.xml
