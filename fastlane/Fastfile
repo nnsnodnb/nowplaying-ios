@@ -7,4 +7,11 @@ platform :ios do
       app_identifier: ["moe.nnsnodnb.NowPlaying", "moe.nnsnodnb.NowPlaying.TodayExtension"]
     )
   end
+
+  lane :create_appicon do
+    appicon(
+      appicon_devices: [:iphone, :ios_marketing],
+      appicon_path: "NowPlaying/Resources/Assets.xcassets"
+    )
+  end
 end
