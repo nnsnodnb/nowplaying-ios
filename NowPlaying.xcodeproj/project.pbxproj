@@ -17,6 +17,14 @@
 		CF43E2CF277E799800A35837 /* ViewControllerInjectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2CE277E799800A35837 /* ViewControllerInjectable.swift */; };
 		CF43E2D2277E7B7700A35837 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2D1277E7B7700A35837 /* UIViewController+Extensions.swift */; };
 		CF60C17B277E81FD00F1177B /* PlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF60C17A277E81FD00F1177B /* PlayViewModel.swift */; };
+		CF60C17D277F016C00F1177B /* MPMediaItemArtwork+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF60C17C277F016C00F1177B /* MPMediaItemArtwork+Extensions.swift */; };
+		CF60C181277F01F000F1177B /* PlayerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF60C180277F01F000F1177B /* PlayerRouter.swift */; };
+		CF60C183277F024000F1177B /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF60C182277F024000F1177B /* Routable.swift */; };
+		CF60C186277F049F00F1177B /* MediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF60C185277F049F00F1177B /* MediaItem.swift */; };
+		CF60C18A277F05B100F1177B /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF60C188277F05B100F1177B /* SettingViewController.swift */; };
+		CF60C18B277F05B100F1177B /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF60C189277F05B100F1177B /* SettingViewController.xib */; };
+		CF60C190277F0B7900F1177B /* MusicPlayerControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF60C18F277F0B7900F1177B /* MusicPlayerControllable.swift */; };
+		CF60C192277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF60C191277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift */; };
 		CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC403B27786D4D00937EDB /* AppDelegate.swift */; };
 		CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404427786D4D00937EDB /* Assets.xcassets */; };
 		CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */; };
@@ -54,6 +62,14 @@
 		CF43E2CE277E799800A35837 /* ViewControllerInjectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerInjectable.swift; sourceTree = "<group>"; };
 		CF43E2D1277E7B7700A35837 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		CF60C17A277E81FD00F1177B /* PlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayViewModel.swift; sourceTree = "<group>"; };
+		CF60C17C277F016C00F1177B /* MPMediaItemArtwork+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MPMediaItemArtwork+Extensions.swift"; sourceTree = "<group>"; };
+		CF60C180277F01F000F1177B /* PlayerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRouter.swift; sourceTree = "<group>"; };
+		CF60C182277F024000F1177B /* Routable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
+		CF60C185277F049F00F1177B /* MediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItem.swift; sourceTree = "<group>"; };
+		CF60C188277F05B100F1177B /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		CF60C189277F05B100F1177B /* SettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
+		CF60C18F277F0B7900F1177B /* MusicPlayerControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerControllable.swift; sourceTree = "<group>"; };
+		CF60C191277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MPMusicPlayerController+Extensions.swift"; sourceTree = "<group>"; };
 		CFCC403827786D4D00937EDB /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFCC403B27786D4D00937EDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFCC404427786D4D00937EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -138,6 +154,8 @@
 			isa = PBXGroup;
 			children = (
 				CF43E2CE277E799800A35837 /* ViewControllerInjectable.swift */,
+				CF60C182277F024000F1177B /* Routable.swift */,
+				CF60C18F277F0B7900F1177B /* MusicPlayerControllable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -146,6 +164,8 @@
 			isa = PBXGroup;
 			children = (
 				CF43E2D1277E7B7700A35837 /* UIViewController+Extensions.swift */,
+				CF60C17C277F016C00F1177B /* MPMediaItemArtwork+Extensions.swift */,
+				CF60C191277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -164,6 +184,39 @@
 				CF60C17A277E81FD00F1177B /* PlayViewModel.swift */,
 			);
 			path = Play;
+			sourceTree = "<group>";
+		};
+		CF60C17E277F01E200F1177B /* Routers */ = {
+			isa = PBXGroup;
+			children = (
+				CF60C17F277F01EA00F1177B /* Player */,
+			);
+			path = Routers;
+			sourceTree = "<group>";
+		};
+		CF60C17F277F01EA00F1177B /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				CF60C180277F01F000F1177B /* PlayerRouter.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		CF60C184277F049400F1177B /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				CF60C185277F049F00F1177B /* MediaItem.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		CF60C187277F05A600F1177B /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				CF60C188277F05B100F1177B /* SettingViewController.swift */,
+				CF60C189277F05B100F1177B /* SettingViewController.xib */,
+			);
+			path = Setting;
 			sourceTree = "<group>";
 		};
 		CFCC402F27786D4D00937EDB = {
@@ -210,11 +263,13 @@
 		CFCC406B27786EAC00937EDB /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				CFCC403B27786D4D00937EDB /* AppDelegate.swift */,
 				CF43E2D0277E7B6F00A35837 /* Extensions */,
 				CF43E2CD277E798F00A35837 /* Protocols */,
+				CF60C184277F049400F1177B /* Entities */,
 				CFCC406C27786EB200937EDB /* ViewControllers */,
 				CF60C178277E81EB00F1177B /* ViewModels */,
-				CFCC403B27786D4D00937EDB /* AppDelegate.swift */,
+				CF60C17E277F01E200F1177B /* Routers */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -222,8 +277,9 @@
 		CFCC406C27786EB200937EDB /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				CF43E2C8277E735200A35837 /* Play */,
 				CFCC406D27786EB900937EDB /* Main */,
+				CF43E2C8277E735200A35837 /* Play */,
+				CF60C187277F05A600F1177B /* Setting */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -350,6 +406,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF60C18B277F05B100F1177B /* SettingViewController.xib in Resources */,
 				CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */,
 				CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */,
 				CF43E2CC277E735F00A35837 /* PlayViewController.xib in Resources */,
@@ -551,8 +608,15 @@
 				CFCC407027786EC400937EDB /* MainViewController.swift in Sources */,
 				CF43E2CF277E799800A35837 /* ViewControllerInjectable.swift in Sources */,
 				CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */,
+				CF60C192277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift in Sources */,
+				CF60C181277F01F000F1177B /* PlayerRouter.swift in Sources */,
 				CF43E2D2277E7B7700A35837 /* UIViewController+Extensions.swift in Sources */,
 				CF43E2BD277E621300A35837 /* Assets.swift in Sources */,
+				CF60C17D277F016C00F1177B /* MPMediaItemArtwork+Extensions.swift in Sources */,
+				CF60C183277F024000F1177B /* Routable.swift in Sources */,
+				CF60C186277F049F00F1177B /* MediaItem.swift in Sources */,
+				CF60C18A277F05B100F1177B /* SettingViewController.swift in Sources */,
+				CF60C190277F0B7900F1177B /* MusicPlayerControllable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
