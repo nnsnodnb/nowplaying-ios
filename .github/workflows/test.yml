@@ -1,0 +1,35 @@
+name: Test
+
+on:
+  push: {}
+
+jobs:
+  tests:
+    runs-on: macos-11
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '2.7'
+        bundler-cache: true
+        cache-version: '0'
+
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_13.2.1.app/Contents/Developer
+
+    - name: Cache CocoaPods
+      uses: actions/cache@v2
+      with:
+        path: Pods
+        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pods-
+    
+    - name: Setup dependency
+      run: bundle exec pod install
+
+    - name: Run Test
+      run: bundle exec fastlane ios test
