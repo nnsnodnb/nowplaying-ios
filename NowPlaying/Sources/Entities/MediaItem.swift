@@ -13,6 +13,10 @@ struct MediaItem: Equatable {
     let persistentID: MPMediaEntityPersistentID
     let item: MPMediaItem
 
+    var title: String? { return item.title }
+    var artist: String? { return item.artist }
+    var artwork: MPMediaItemArtwork? { return item.artwork }
+
     // MARK: - Initialize
     init(item: MPMediaItem) {
         self.persistentID = item.persistentID

@@ -55,7 +55,7 @@ final class PlayViewModel: PlayViewModelType {
         self.musicPlayerController = musicPlayerController
         // アートワーク
         self.artworkImage = nowPlayingItem
-            .map { $0?.item.artwork?.image ?? Asset.Assets.icMusic.image }
+            .map { $0?.artwork?.image ?? Asset.Assets.icMusic.image }
             .distinctUntilChanged()
             .asDriver(onErrorDriveWith: .empty())
         self.artworkScale = playbackState
@@ -63,9 +63,9 @@ final class PlayViewModel: PlayViewModelType {
             .distinctUntilChanged()
             .asDriver(onErrorDriveWith: .empty())
         // 曲名
-        self.songName = nowPlayingItem.map { $0?.item.title ?? "" }.distinctUntilChanged().asDriver(onErrorDriveWith: .empty())
+        self.songName = nowPlayingItem.map { $0?.title ?? "" }.distinctUntilChanged().asDriver(onErrorDriveWith: .empty())
         // アーティスト名
-        self.artistName = nowPlayingItem.map { $0?.item.artist ?? "" }.distinctUntilChanged().asDriver(onErrorDriveWith: .empty())
+        self.artistName = nowPlayingItem.map { $0?.artist ?? "" }.distinctUntilChanged().asDriver(onErrorDriveWith: .empty())
         // 再生・一時停止
         playPause.asObservable()
             .withLatestFrom(playbackState)
