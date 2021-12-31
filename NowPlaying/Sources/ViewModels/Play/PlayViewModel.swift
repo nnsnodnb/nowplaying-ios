@@ -9,6 +9,7 @@ import Foundation
 import MediaPlayer
 import RxCocoa
 import RxSwift
+import SFSafeSymbols
 
 protocol PlayViewModelInputs: AnyObject {
     var playPause: PublishRelay<Void> { get }
@@ -22,6 +23,7 @@ protocol PlayViewModelOutputs: AnyObject {
     var artworkScale: Driver<CGFloat> { get }
     var songName: Driver<String> { get }
     var artistName: Driver<String> { get }
+    var playPauseImage: Driver<UIImage> { get }
 }
 
 protocol PlayViewModelType: AnyObject {
@@ -40,6 +42,7 @@ final class PlayViewModel: PlayViewModelType {
     let artworkScale: Driver<CGFloat>
     let songName: Driver<String>
     let artistName: Driver<String>
+    let playPauseImage: Driver<UIImage>
     // MARK: - Properties
     var inputs: PlayViewModelInputs { return self }
     var outputs: PlayViewModelOutputs { return self }
@@ -67,6 +70,10 @@ final class PlayViewModel: PlayViewModelType {
         // アーティスト名
         self.artistName = nowPlayingItem.map { $0?.artist ?? "" }.distinctUntilChanged().asDriver(onErrorDriveWith: .empty())
         // 再生・一時停止
+        self.playPauseImage = playbackState
+            .map { $0 == .playing ? .init(systemSymbol: .pauseFill) : .init(systemSymbol: .playFill) }
+            .distinctUntilChanged()
+            .asDriver(onErrorDriveWith: .empty())
         playPause.asObservable()
             .withLatestFrom(playbackState)
             .subscribe(onNext: {

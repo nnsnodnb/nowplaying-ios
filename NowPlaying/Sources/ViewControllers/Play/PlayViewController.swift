@@ -75,6 +75,7 @@ private extension PlayViewController {
         backButton.rx.tap.asSignal().emit(to: viewModel.inputs.back).disposed(by: disposeBag)
         // 再生ボタン
         playButton.rx.tap.asSignal().emit(to: viewModel.inputs.playPause).disposed(by: disposeBag)
+        viewModel.outputs.playPauseImage.drive(playButton.rx.image()).disposed(by: disposeBag)
         // 次へボタン
         forwardButton.rx.tap.asSignal().emit(to: viewModel.inputs.forward).disposed(by: disposeBag)
         // 設定ボタン
