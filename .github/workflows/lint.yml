@@ -13,7 +13,6 @@ jobs:
         ruby-version: '2.7'
         bundler-cache: true
         cache-version: '0'
-        architecture: 'x64'
     
     - name: Setup dependency
       run: bundle exec pod install
