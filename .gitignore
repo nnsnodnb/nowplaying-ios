@@ -215,3 +215,6 @@ build-iPhoneSimulator/
 # SwiftGen
 NowPlaying/Generated/
 !NowPlaying/Generated/.gitkeep
+
+# LicensePlist
+NowPlaying/Resources/Settings.bundle/moe.nnsnodnb.NowPlaying.latest_result.txt
