@@ -40,7 +40,6 @@ final class PlayViewController: UIViewController {
         }
     }
 
-
     // MARK: - Initialize
     init(dependency: Dependency) {
         self.viewModel = dependency
