@@ -8,7 +8,6 @@
 import UIKit
 
 protocol ViewControllerInjectable: UIViewController {
-
     associatedtype Dependency
 
     init(dependency: Dependency)
