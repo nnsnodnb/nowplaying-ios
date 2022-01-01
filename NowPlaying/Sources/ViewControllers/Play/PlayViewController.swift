@@ -10,7 +10,6 @@ import ScrollFlowLabel
 import UIKit
 
 final class PlayViewController: UIViewController {
-
     // MARK: - Dependency
     typealias Dependency = PlayViewModelType
 
@@ -46,6 +45,7 @@ final class PlayViewController: UIViewController {
         super.init(nibName: "PlayViewController", bundle: .main)
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -59,7 +59,6 @@ final class PlayViewController: UIViewController {
 
 // MARK: - Private method
 private extension PlayViewController {
-
     func bind(to viewModel: PlayViewModelType) {
         // カバー写真
 
