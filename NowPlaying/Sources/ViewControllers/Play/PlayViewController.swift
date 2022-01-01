@@ -42,7 +42,7 @@ final class PlayViewController: UIViewController {
     // MARK: - Initialize
     init(dependency: Dependency) {
         self.viewModel = dependency
-        super.init(nibName: "PlayViewController", bundle: .main)
+        super.init(nibName: Self.className, bundle: .main)
     }
 
     @available(*, unavailable)
