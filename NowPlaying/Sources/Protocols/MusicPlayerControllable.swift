@@ -8,7 +8,6 @@
 import Foundation
 
 protocol MusicPlayerControllable: AnyObject {
-
     func play()
     func pause()
     func skipToNextItem()

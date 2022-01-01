@@ -10,12 +10,10 @@ import RxSwift
 import UIKit
 
 protocol PlayerRoutable: Routable {
-
     var setting: PublishRelay<Void> { get }
 }
 
 final class PlayerRouter: PlayerRoutable {
-
     // MARK: - Properties
     private(set) weak var viewController: UIViewController?
 

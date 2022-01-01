@@ -8,7 +8,6 @@
 import UIKit
 
 protocol Routable {
-
     var viewController: UIViewController? { get }
 
     func inject(_ viewController: UIViewController)

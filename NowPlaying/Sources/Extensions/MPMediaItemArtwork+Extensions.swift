@@ -9,7 +9,6 @@ import Foundation
 import MediaPlayer
 
 extension MPMediaItemArtwork {
-
     var image: UIImage? {
         return image(at: bounds.size)
     }

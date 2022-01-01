@@ -8,7 +8,6 @@
 import MediaPlayer
 
 struct MediaItem: Equatable {
-
     // MARK: - Properties
     let persistentID: MPMediaEntityPersistentID
     let item: MPMediaItem
