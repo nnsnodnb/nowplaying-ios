@@ -9,7 +9,6 @@ import SnapKit
 import UIKit
 
 extension UIViewController {
-
     func addContainerViewController(_ viewController: UIViewController, to targetView: UIView) {
         guard !children.contains(viewController) else { return }
         addChild(viewController)

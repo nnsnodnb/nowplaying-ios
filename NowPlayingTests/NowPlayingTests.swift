@@ -9,7 +9,6 @@
 import XCTest
 
 class NowPlayingTests: XCTestCase {
-
     override func setUpWithError() throws {
         try super.setUpWithError()
     }
