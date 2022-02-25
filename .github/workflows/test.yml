@@ -7,6 +7,9 @@ jobs:
   tests:
     runs-on: macos-11
 
+    permissions:
+      pull-requests: write
+
     steps:
     - uses: actions/checkout@v2
 
