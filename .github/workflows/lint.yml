@@ -6,6 +6,9 @@ jobs:
   danger:
     runs-on: macos-11
 
+    permissions:
+      statuses: write
+
     steps:
     - uses: actions/checkout@v2
 
