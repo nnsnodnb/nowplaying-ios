@@ -9,6 +9,7 @@ jobs:
 
     permissions:
       checks: write
+      issues: write
 
     steps:
     - uses: actions/checkout@v2
