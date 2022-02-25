@@ -7,6 +7,10 @@ jobs:
   tests:
     runs-on: macos-11
 
+    permissions:
+      checks: write
+      issues: write
+
     steps:
     - uses: actions/checkout@v2
 
