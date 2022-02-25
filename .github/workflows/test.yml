@@ -8,7 +8,7 @@ jobs:
     runs-on: macos-11
 
     permissions:
-      pull-requests: write
+      checks: write
 
     steps:
     - uses: actions/checkout@v2
