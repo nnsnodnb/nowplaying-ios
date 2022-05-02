@@ -4,7 +4,7 @@ on: [pull_request]
 
 jobs:
   danger:
-    runs-on: macos-11
+    runs-on: macos-12
 
     permissions:
       statuses: write
@@ -20,7 +20,7 @@ jobs:
         cache-version: '1'
 
     - name: Select Xcode
-      run: sudo xcode-select -s /Applications/Xcode_13.2.1.app/Contents/Developer
+      run: sudo xcode-select -s /Applications/Xcode_13.3.1.app/Contents/Developer
 
     - name: Cache CocoaPods
       uses: actions/cache@v2
