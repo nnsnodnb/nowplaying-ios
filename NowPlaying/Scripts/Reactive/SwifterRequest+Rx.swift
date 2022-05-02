@@ -15,7 +15,7 @@ extension SwifterRequest: ReactiveCompatible {}
 extension Reactive where Base == SwifterRequest {
 
     func postTweet(status: String, media: Data? = nil) -> Observable<JSON> {
-        return .create { (observer) -> Disposable in
+        return .create { observer -> Disposable in
             self.base.postTweet(status: status, media: media, success: {
                 observer.onNext($0)
                 observer.onCompleted()

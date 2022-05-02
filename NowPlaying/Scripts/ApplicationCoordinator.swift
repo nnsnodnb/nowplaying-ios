@@ -46,8 +46,8 @@ final class ApplicationCoordinator {
         alert.addAction(openAction)
         alert.preferredAction = openAction
 
-        DispatchQueue.main.async {
-            self.window.rootViewController?.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.window.rootViewController?.present(alert, animated: true)
         }
     }
 }

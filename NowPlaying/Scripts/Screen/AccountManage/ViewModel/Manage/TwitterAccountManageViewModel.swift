@@ -43,7 +43,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModel {
                     }
                     let swifter = Swifter.nowPlaying(oauthToken: token.key, oauthTokenSecret: token.secret)
                     _ = swifter.rx.showUser(tag: .id(token.userID))
-                        .subscribe(onSuccess: { (twitterUser) in
+                        .subscribe(onSuccess: { twitterUser in
                             let user = User(serviceID: twitterUser.userID, name: twitterUser.name, screenName: twitterUser.screenName,
                                             iconURLString: twitterUser.iconURLString, service: .twitter)
                             let secret = SecretCredential.createTwitter(authToken: token.key, authTokenSecret: token.secret, user: user)
@@ -56,7 +56,7 @@ final class TwitterAccountManageViewModel: AccountManageViewModel {
 
                             base?.loginSuccessTrigger.accept(user.screenName)
 
-                        }, onError: onError)
+                        }, onFailure: onError)
 
                 }, onError: onError)
         }

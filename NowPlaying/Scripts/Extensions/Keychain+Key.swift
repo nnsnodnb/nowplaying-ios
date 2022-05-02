@@ -21,29 +21,29 @@ extension Keychain {
     static let nowPlaying = Keychain(service: .keychainServiceKey)
 
     subscript(key: Key) -> String? {
-        set {
-            self[key.rawValue] = newValue
-        }
         get {
             return self[key.rawValue]
+        }
+        set {
+            self[key.rawValue] = newValue
         }
     }
 
     subscript(string key: Key) -> String? {
-        set {
-            self[string: key.rawValue] = newValue
-        }
         get {
             return self[string: key.rawValue]
+        }
+        set {
+            self[string: key.rawValue] = newValue
         }
     }
 
     subscript(data key: Key) -> Data? {
-        set {
-            self[data: key.rawValue] = newValue
-        }
         get {
             return self[data: key.rawValue]
+        }
+        set {
+            self[data: key.rawValue] = newValue
         }
     }
 

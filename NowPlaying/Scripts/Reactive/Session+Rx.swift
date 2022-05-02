@@ -16,7 +16,7 @@ extension Session: ReactiveCompatible {}
 extension Reactive where Base: Session {
 
     func response<Request: APIKit.Request>(_ request: Request, callbackQueue: CallbackQueue? = .main) -> Single<Request.Response> {
-        return .create { [weak base] (observer) -> Disposable in
+        return .create { [weak base] observer -> Disposable in
 
             DispatchQueue.main.async {
                 UIApplication.shared.isNetworkActivityIndicatorVisible = true
@@ -27,7 +27,7 @@ extension Reactive where Base: Session {
                 case .success(let response):
                     observer(.success(response))
                 case .failure(let error):
-                    observer(.error(error))
+                    observer(.failure(error))
                 }
 
                 DispatchQueue.main.async {

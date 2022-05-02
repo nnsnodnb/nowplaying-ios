@@ -84,6 +84,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/IBLinter</string>
+			<key>Title</key>
+			<string>IBLinter</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/ios-snapshot-test-case</string>
 			<key>Title</key>
 			<string>ios-snapshot-test-case</string>
@@ -164,6 +172,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/RxCocoa</string>
+			<key>Title</key>
+			<string>RxCocoa</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/RxDataSources</string>
 			<key>Title</key>
 			<string>RxDataSources</string>
@@ -188,6 +204,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/RxRelay</string>
+			<key>Title</key>
+			<string>RxRelay</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/RxStoreKit</string>
 			<key>Title</key>
 			<string>RxStoreKit</string>
@@ -204,9 +228,25 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/RxTest</string>
+			<key>Title</key>
+			<string>RxTest</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/ScrollFlowLabel</string>
 			<key>Title</key>
 			<string>ScrollFlowLabel</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/SFSafeSymbols</string>
+			<key>Title</key>
+			<string>SFSafeSymbols</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -231,6 +271,14 @@
 			<string>moe.nnsnodnb.NowPlaying/Swifter</string>
 			<key>Title</key>
 			<string>Swifter</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/SwiftGen</string>
+			<key>Title</key>
+			<string>SwiftGen</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

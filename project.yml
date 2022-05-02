@@ -9,7 +9,6 @@ configs:
 
 options:
     bundleIdPrefix: moe.nnsnodnb
-    carthageExecutablePath: mint run carthage
     developmentLanguage: ja
     usesTabs: false
     indentWidth: 4
@@ -21,8 +20,8 @@ settings:
     base:
         ENABLE_BITCODE: true
         DEVELOPMENT_TEAM: 99649YXF6E
-        VALID_ARCHS: arm64
         SWIFT_VERSION: 5.2
+        EXCLUDED_ARCHS[sdk=iphonesimulator*]: arm64
 
 targets:
     # Application
@@ -109,26 +108,24 @@ targets:
               type: file
         requiresObjCLinking: true
         dependencies:
-            - carthage: APIKit
-            - carthage: DeallocationChecker
-            - carthage: DTTJailbreakDetection
-            - carthage: Eureka
-            - carthage: Feeder
-            - carthage: KeychainAccess
-            - carthage: Hero
-            - carthage: MarqueeLabel
-            - carthage: MastodonKit
-            - carthage: NotificationBanner
-            - carthage: Nuke
-            - carthage: Realm
-            - carthage: RealmSwift
-            - carthage: Rswift
-            - carthage: SnapKit
-            - carthage: SVProgressHUD
-            - carthage: SwifteriOS
+            - framework: Carthage/Build/APIKit.xcframework
+            - framework: Carthage/Build/DeallocationChecker.xcframework
+            - framework: Carthage/Build/DTTJailbreakDetection.xcframework
+            - framework: Carthage/Build/Eureka.xcframework
+            - framework: Carthage/Build/Feeder.xcframework
+            - framework: Carthage/Build/KeychainAccess.xcframework
+            - framework: Carthage/Build/Hero.xcframework
+            - framework: Carthage/Build/MarqueeLabel.xcframework
+            - framework: Carthage/Build/MastodonKit.xcframework
+            - framework: Carthage/Build/NotificationBanner.xcframework
+            - framework: Carthage/Build/Nuke.xcframework
+            - framework: Carthage/Build/Realm.xcframework
+            - framework: Carthage/Build/RealmSwift.xcframework
+            - framework: Carthage/Build/Rswift.xcframework
+            - framework: Carthage/Build/SnapKit.xcframework
+            - framework: Carthage/Build/SVProgressHUD.xcframework
+            - framework: Carthage/Build/SwifteriOS.xcframework
             - framework: Carthage/Build/iOS/GoogleDataTransport.framework
-              embed: false
-            - framework: Carthage/Build/iOS/GoogleDataTransportCCTSupport.framework
               embed: false
             - framework: Carthage/Build/iOS/leveldb-library.framework
               embed: false
@@ -170,7 +167,8 @@ targets:
                   - $(SRCROOT)/NowPlaying/Resources/Info.plist
               outputFiles:
                   - $(SRCROOT)/NowPlaying/Resources/Settings.bundle/Root.plist
-            - script: "mint run R.swift generate ${SRCROOT}/NowPlaying/Scripts/R.generated.swift"
+            - script: |
+                /opt/homebrew/bin/mint run R.swift generate ${SRCROOT}/NowPlaying/Scripts/R.generated.swift
               name: R.swift
               inputFiles:
                   - $(TEMP_DIR)/rswift-lastrun
@@ -190,12 +188,13 @@ targets:
                   - $(SRCROOT)/NowPlaying/Resources/Crashlytics/run
                   - $(SRCROOT)/NowPlaying/Resources/Crashlytics/upload-symbols
         postCompileScripts:
-            - script: "mint run swiftlint"
+            - script: |
+                /opt/homebrew/bin/mint run swiftlint
               name: SwiftLint
         postBuildScripts:
             - script: |
                 if [[ $CONFIGURATION = "Debug" ]]; then
-                  mint run LicensePlist license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle \
+                  /opt/homebrew/bin/mint run LicensePlist license-plist --output-path ${SRCROOT}/NowPlaying/Resources/Settings.bundle \
                   --github-token ${GITHUB_ACCESS_TOKEN} \
                   --config-path ${SRCROOT}/NowPlaying/Resources/license_plist.yml \
                   --prefix moe.nnsnodnb.NowPlaying \
@@ -224,7 +223,7 @@ targets:
                   - FailureDiffs/.gitkeep
                   - screenshots_previews_generator_for_ios_snapshot_testcase.py
         dependencies:
-            - carthage: FBSnapshotTestCase
+            - framework: Carthage/Build/FBSnapshotTestCase.xcframework
             - target: NowPlaying
             - target: Umbrella
         settings:
@@ -251,7 +250,7 @@ targets:
         settings:
             base:
                 PRODUCT_BUNDLE_IDENTIFIER: moe.nnsnodnb.NowPlaying.TodayExtension
-                APPLICATION_EXTENSION_API_ONLY: false
+                APPLICATION_EXTENSION_API_ONLY: true
 
     # Umbrella
     Umbrella:
@@ -271,14 +270,14 @@ targets:
                   - Info.plist
                   - RxStoreKit.h
         dependencies:
-            - carthage: Action
-            - carthage: Differentiator
-            - carthage: RxCocoa
-            - carthage: RxDataSources
-            - carthage: RxRealm
-            - carthage: RxRelay
-            - carthage: RxSwift
-            - carthage: ScrollFlowLabel
+            - framework: Carthage/Build/Action.xcframework
+            - framework: Carthage/Build/Differentiator.xcframework
+            - framework: Carthage/Build/RxCocoa.xcframework
+            - framework: Carthage/Build/RxDataSources.xcframework
+            - framework: Carthage/Build/RxRealm.xcframework
+            - framework: Carthage/Build/RxRelay.xcframework
+            - framework: Carthage/Build/RxSwift.xcframework
+            - framework: Carthage/Build/ScrollFlowLabel.xcframework
 
 schemes:
     NowPlaying:

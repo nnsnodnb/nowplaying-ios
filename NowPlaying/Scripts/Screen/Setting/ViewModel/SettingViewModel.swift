@@ -141,7 +141,7 @@ extension SettingViewModel {
             .filter { $0 }
             .take(1)
             .compactMap { [weak self] _ in self?.form.rowBy(tag: SettingRow.purchaseHideAdMob { _ in }.tag) }
-            .observeOn(MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { (row) in
                 row.hidden = .init(booleanLiteral: true)
                 row.evaluateHidden()
