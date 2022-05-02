@@ -8,13 +8,13 @@ NowPlaying tweet & toot application for iOS
 
 ## Environments
 
-- Xcode 11.5
-  - Swift 5.2.4
-- Mint 0.14.2
-  - Carthage 0.34.0
-  - LicensePlist 2.15.1
+- Xcode 13.3.1
+  - Swift 5.6
+- Mint 0.17.1
+  - Carthage 0.38.0
+  - LicensePlist 3.22.0
   - R.swift v5.2.0
-  - SwiftLint 0.39.2
+  - SwiftLint 0.47.1
   - XcodeGen 2.15.1
 
 ## Installation
@@ -34,7 +34,7 @@ And please fill your environment variables.
 
 ```bash
 $ mint bootstrap
-$ mint run carthage bootstrap --platform iOS --cache-builds --no-use-binaries
+$ mint run carthage bootstrap --platform iOS --cache-builds --no-use-binaries --use-xcframeworks
 $ mint run xcodegen generate
 $ open NowPlaying.xcworkspace
 ```
