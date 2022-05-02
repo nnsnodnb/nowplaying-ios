@@ -83,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 } else if currentAppVersion.compare($0.latest, options: .numeric) == .orderedAscending {
                     self?.applicationCoordinator.showUpdateAlert(isRequired: false)
                 }
-            }, onError: nil)
+            })
             .disposed(by: disposeBag)
     }
 }

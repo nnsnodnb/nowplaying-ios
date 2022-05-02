@@ -40,7 +40,7 @@ final class TootPostViewModel: PostViewModel {
             .disposed(by: disposeBag)
 
         postTootAction.elements
-            .observeOn(MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { (_) in
                 SVProgressHUD.dismiss()
                 router.dismissConfirm(didEdit: false)
@@ -48,7 +48,7 @@ final class TootPostViewModel: PostViewModel {
             .disposed(by: disposeBag)
 
         postTootAction.errors
-            .observeOn(MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { (actionError) in
                 print(actionError)
                 SVProgressHUD.showError(withStatus: "エラーが発生しました")

@@ -17,8 +17,8 @@ extension Reactive where Base: MPMediaLibrary {
         if MPMediaLibrary.authorizationStatus() == .authorized {
             return .just(.authorized, scheduler: MainScheduler.instance)
         }
-        return .create { (observer) -> Disposable in
-            MPMediaLibrary.requestAuthorization { (status) in
+        return .create { observer -> Disposable in
+            MPMediaLibrary.requestAuthorization { status in
                 observer.onNext(status)
                 observer.onCompleted()
             }

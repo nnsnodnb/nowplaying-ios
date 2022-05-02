@@ -143,7 +143,7 @@ final class PlayViewController: UIViewController {
         viewModel.outputs.hideAdMob.map { _ in 0 }.bind(to: bannerViewHeight.rx.constant).disposed(by: disposeBag)
 
         NotificationCenter.default.rx.notification(.autoPostBannerNotification, object: nil)
-            .observeOn(MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] (notification) in
                 guard let isLoading = notification.object as? Bool, let userInfo = notification.userInfo,
                     let service = userInfo["service"] as? Service else { return }

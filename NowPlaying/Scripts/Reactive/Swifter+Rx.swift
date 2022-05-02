@@ -17,15 +17,15 @@ extension Swifter: ReactiveCompatible {}
 extension Reactive where Base: Swifter {
 
     func authorizeBrowser(presentingFrom presenting: UIViewController?) -> Single<Credential.OAuthAccessToken> {
-        return .create { [weak base] (observer) -> Disposable in
-            base?.authorize(withCallback: .twitterCallbackURL, presentingFrom: presenting, success: { (accessToken, _) in
+        return .create { [weak base] observer -> Disposable in
+            base?.authorize(withCallback: .twitterCallbackURL, presentingFrom: presenting, success: { accessToken, _ in
                 if let token = accessToken {
                     observer(.success(token))
                 } else {
-                    observer(.error(AuthError.unknown))
+                    observer(.failure(AuthError.unknown))
                 }
             }, failure: {
-                observer(.error($0))
+                observer(.failure($0))
             })
 
             return Disposables.create()
@@ -44,20 +44,20 @@ extension Reactive where Base: Swifter {
     }
 
     func showUser(tag: UserTag, includeEntities: Bool? = nil) -> Single<TwitterUser> {
-        return .create { [weak base] (observer) -> Disposable in
+        return .create { [weak base] observer -> Disposable in
             base?.showUser(tag, includeEntities: includeEntities, success: {
                 guard let userID = $0["id_str"].string,
                     let name = $0["name"].string,
                     let screenName = $0["screen_name"].string,
                     var iconURLString = $0["profile_image_url_https"].string else {
-                        observer(.error(APIError.valueError))
+                        observer(.failure(APIError.valueError))
                         return
                 }
                 iconURLString = iconURLString.replacingOccurrences(of: "_normal", with: "")
                 let object = TwitterUser(userID: userID, name: name, screenName: screenName, iconURLString: iconURLString)
                 observer(.success(object))
             }, failure: {
-                observer(.error($0))
+                observer(.failure($0))
             })
 
             return Disposables.create()

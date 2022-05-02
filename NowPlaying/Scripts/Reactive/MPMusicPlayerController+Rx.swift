@@ -20,7 +20,7 @@ extension MPMusicPlayerController {
     }
 
     var playing: Binder<Bool> {
-        return .init(self) { (player, isPlaying) in
+        return .init(self) { player, isPlaying in
             if isPlaying {
                 player.pause()
             } else {
@@ -30,13 +30,13 @@ extension MPMusicPlayerController {
     }
 
     var skipToPreviousItem: Binder<Void> {
-        return .init(self) { (player, _) in
+        return .init(self) { player, _ in
             player.skipToPreviousItem()
         }
     }
 
     var skipToNextItem: Binder<Void> {
-        return .init(self) { (player, _) in
+        return .init(self) { player, _ in
             player.skipToNextItem()
         }
     }
