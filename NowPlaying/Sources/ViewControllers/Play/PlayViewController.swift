@@ -17,15 +17,33 @@ final class PlayViewController: UIViewController {
     private let viewModel: PlayViewModelType
     private let disposeBag = DisposeBag()
 
-    @IBOutlet private var coverImageView: UIImageView!
+    @IBOutlet private var coverImageView: UIImageView! {
+        didSet {
+            coverImageView.layer.shadowColor = Asset.Colors.shadow.color.cgColor
+            coverImageView.layer.shadowOffset = .zero
+            coverImageView.layer.shadowRadius = 20
+            coverImageView.layer.shadowOpacity = 0.5
+        }
+    }
     @IBOutlet private var songNameLabel: ScrollFlowLabel! {
         didSet {
+            songNameLabel.textColor = .label
             songNameLabel.textAlignment = .center
+            songNameLabel.font = .boldSystemFont(ofSize: 20)
+            songNameLabel.pauseInterval = 2
+            songNameLabel.scrollDirection = .left
+            songNameLabel.observeApplicationState()
         }
     }
     @IBOutlet private var artistNameLabel: ScrollFlowLabel! {
         didSet {
+            artistNameLabel.textColor = .label
             artistNameLabel.textAlignment = .center
+            artistNameLabel.textAlignment = .center
+            artistNameLabel.font = .systemFont(ofSize: 16)
+            artistNameLabel.pauseInterval = 2
+            artistNameLabel.scrollDirection = .left
+            artistNameLabel.observeApplicationState()
         }
     }
     @IBOutlet private var backButton: UIButton!
@@ -62,6 +80,12 @@ final class PlayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind(to: viewModel)
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle else { return }
+        coverImageView.layer.shadowColor = Asset.Colors.shadow.color.cgColor
     }
 }
 
