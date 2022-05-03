@@ -2,20 +2,6 @@ default_platform(:ios)
 
 platform :ios do
 
-  before_all do
-    if is_ci?
-      create_keychain(
-        name: ENV["MATCH_KEYCHAIN_NAME"],
-        default_keychain: true,
-        unlock: true,
-        timeout: 3600,
-        lock_when_sleeps: true,
-        password: ENV["MATCH_KEYCHAIN_PASSWORD"],
-        add_to_search_list: true,
-      )
-    end
-  end
-
   desc "Run test"
   lane :test do
     scan(
@@ -25,6 +11,7 @@ platform :ios do
 
   desc "Fetch development certificates"
   lane :setup_development_certificates do
+    keychain
     match(
       app_identifier: ["moe.nnsnodnb.NowPlaying", "moe.nnsnodnb.NowPlaying.TodayExtension"]
     )
@@ -32,6 +19,7 @@ platform :ios do
 
   desc "Fetch adhoc certificates"
   lane :setup_adhoc_certificates do
+    keychain
     match(
       type: "adhoc",
       app_identifier: ["moe.nnsnodnb.NowPlaying", "moe.nnsnodnb.NowPlaying.TodayExtension"]
@@ -67,4 +55,20 @@ platform :ios do
       appicon_path: "NowPlaying/Resources/Assets.xcassets"
     )
   end
+
+  desc "Create keychain if needed"
+  private_lane :keychain do
+    if is_ci?
+      create_keychain(
+        name: ENV["MATCH_KEYCHAIN_NAME"],
+        default_keychain: true,
+        unlock: true,
+        timeout: 3600,
+        lock_when_sleeps: true,
+        password: ENV["MATCH_KEYCHAIN_PASSWORD"],
+        add_to_search_list: true,
+      )
+    end
+  end
+
 end
