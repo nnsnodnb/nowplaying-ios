@@ -76,8 +76,7 @@ jobs:
     - name: Get upload destination
       id: destination
       run:
-        destination=$(cat Products/destination.txt)
-        echo "::set-output name=value::${destination}"
+        echo "::set-output name=value::$(cat Products/destination.txt)"
 
     - name: Seup app-distribution.json
       if: ${{ steps.destination.outputs.value == 'app-distribution' }}
