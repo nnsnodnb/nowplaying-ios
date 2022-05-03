@@ -62,8 +62,8 @@ jobs:
       with:
         name: nowplaying-product
         path: |
-          Product/NowPlaying.app.dSYM.zip
-          Product/NowPlaying.ipa
+          Products/NowPlaying.app.dSYM.zip
+          Products/NowPlaying.ipa
           Products/destination.txt
 
   upload:
@@ -98,3 +98,4 @@ jobs:
         groups: default
         serviceCredentialsFile: /tmp/app-distribution.json
         file: Products/NowPlaying.ipa
+        debug: true
