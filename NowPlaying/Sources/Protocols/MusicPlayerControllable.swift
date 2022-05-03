@@ -7,10 +7,13 @@
 
 import Foundation
 import MediaPlayer
+import RxSwift
 
 protocol MusicPlayerControllable: AnyObject {
-    var nowPlayingItem: MPMediaItem? { get }
+    var nowPlayingMediaItem: MediaItem? { get }
     var playbackState: MPMusicPlaybackState { get }
+    var nowPlayingMediaItemDidChange: Observable<MediaItem?> { get }
+    var playbackStateDidChange: Observable<MPMusicPlaybackState> { get }
 
     func play()
     func pause()

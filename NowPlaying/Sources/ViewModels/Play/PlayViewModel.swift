@@ -60,7 +60,7 @@ final class PlayViewModel: PlayViewModelType {
     init(router: PlayerRoutable, musicPlayerController: MusicPlayerControllable = MPMusicPlayerController.systemMusicPlayer) {
         self.router = router
         self.musicPlayerController = musicPlayerController
-        self.nowPlayingItem = .init(value: musicPlayerController.nowPlayingItem)
+        self.nowPlayingItem = .init(value: musicPlayerController.nowPlayingMediaItem)
         // アートワーク
         self.artworkImage = nowPlayingItem
             .map { $0?.artwork?.image ?? Asset.Assets.icMusic.image }
@@ -116,15 +116,11 @@ final class PlayViewModel: PlayViewModelType {
             .bind(to: router.twitter)
             .disposed(by: disposeBag)
         // 曲の変更
-        NotificationCenter.default.rx.notification(.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
-            .compactMap { $0.object as? MusicPlayerControllable }
-            .map { $0.nowPlayingItem }
+        musicPlayerController.nowPlayingMediaItemDidChange
             .bind(to: nowPlayingItem)
             .disposed(by: disposeBag)
         // 再生状態の変更
-        NotificationCenter.default.rx.notification(.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
-            .compactMap { $0.object as? MusicPlayerControllable }
-            .map { $0.playbackState }
+        musicPlayerController.playbackStateDidChange
             .bind(to: playbackState)
             .disposed(by: disposeBag)
         musicPlayerController.beginGeneratingPlaybackNotifications()
