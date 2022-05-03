@@ -1,0 +1,7 @@
+workspace("NowPlaying.xcworkspace")
+scheme("NowPlaying")
+include_symbols(true)
+include_bitcode(true)
+clean(true)
+output_directory("Products")
+output_name("NowPlaying.ipa")
