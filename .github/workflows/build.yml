@@ -36,9 +36,9 @@ jobs:
     - name: Setup dependency
       run: bundle exec pod install
 
-    - name: Setup Google-Service-Infp.plist
+    - name: Setup GoogleService-Info.plist
       run: |
-        cat << "EOF" > "NowPlaying/Supporting Files/GoogleService-Info.plist"
+        cat << "EOF" > "NowPlaying/Resources/Firebase/GoogleService-Info.plist"
         ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
         EOF
 

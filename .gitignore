@@ -220,4 +220,4 @@ NowPlaying/Generated/
 NowPlaying/Resources/Settings.bundle/moe.nnsnodnb.NowPlaying.latest_result.txt
 
 # Firebase
-NowPlaying/Supporting Files/GoogleService-Info.plist
+NowPlaying/Resources/Firebase/GoogleService-Info.plist

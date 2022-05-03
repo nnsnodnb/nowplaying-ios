@@ -15,6 +15,7 @@
 		CF01404028218F8D0095FA76 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01403F28218F8D0095FA76 /* UIColor+Extension.swift */; };
 		CF014042282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF014041282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift */; };
 		CF014044282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF014043282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift */; };
+		CF0140482821B02C0095FA76 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF0140472821B02C0095FA76 /* GoogleService-Info.plist */; };
 		CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2B0277E609F00A35837 /* Colors.xcassets */; };
 		CF43E2BD277E621300A35837 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2BC277E621300A35837 /* Assets.swift */; };
 		CF43E2C6277E700200A35837 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2C5277E700200A35837 /* Settings.bundle */; };
@@ -61,6 +62,7 @@
 		CF01403F28218F8D0095FA76 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		CF014041282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPlayViewModelArtworkScale.swift; sourceTree = "<group>"; };
 		CF014043282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPlayViewModelPlayPauseImage.swift; sourceTree = "<group>"; };
+		CF0140472821B02C0095FA76 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF43E2B0277E609F00A35837 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		CF43E2B5277E616D00A35837 /* SwiftGenOutput.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = SwiftGenOutput.xcfilelist; sourceTree = "<group>"; };
 		CF43E2BC277E621300A35837 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = Generated/Assets.swift; sourceTree = "<group>"; };
@@ -173,9 +175,18 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		CF0140462821B01C0095FA76 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				CF0140472821B02C0095FA76 /* GoogleService-Info.plist */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
 		CF43E2AF277E608600A35837 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CF0140462821B01C0095FA76 /* Firebase */,
 				CFCC404427786D4D00937EDB /* Assets.xcassets */,
 				CF43E2B0277E609F00A35837 /* Colors.xcassets */,
 				CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */,
@@ -404,6 +415,7 @@
 				CF43E2C7277E701100A35837 /* LicensePlist */,
 				CFCC403627786D4D00937EDB /* Resources */,
 				DB1DB01A126429543BE37E3C /* [CP] Embed Pods Frameworks */,
+				CF0140452821AFA20095FA76 /* Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -479,6 +491,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF60C18B277F05B100F1177B /* SettingViewController.xib in Resources */,
+				CF0140482821B02C0095FA76 /* GoogleService-Info.plist in Resources */,
 				CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */,
 				CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */,
 				CF43E2CC277E735F00A35837 /* PlayViewController.xib in Resources */,
@@ -514,6 +527,26 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NowPlayingTests/Pods-NowPlayingTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		CF0140452821AFA20095FA76 /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(DWARF_DSYM_FOLDER_PATH)/$(DWARF_DSYM_FILE_NAME)/Contents/Resources/DWARF/$(TARGET_NAME)",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = Crashlytics;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"${DEBUG_INFORMATION_FORMAT}\" == \"dwarf-with-dsym\" ]]; then\n  \"${PODS_ROOT}/FirebaseCrashlytics/run\" \"-gsp\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/Firebase/GoogleService-Info.plist\"\nfi\n";
 		};
 		CF43E2B2277E60BC00A35837 /* Generate SwiftGenOutput.xcfilelist */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -57,7 +57,7 @@ platform :ios do
     end
 
     upload_symbols_to_crashlytics(
-      gsp_path: "./NowPlaying/Supporting Files/GoogleService-Info.plist",
+      gsp_path: "./NowPlaying/Resources/Firebase/GoogleService-Info.plist",
     )
   end
 
