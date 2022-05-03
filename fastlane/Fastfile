@@ -18,6 +18,7 @@ platform :ios do
   desc "Fetch adhoc certificates"
   lane :setup_adhoc_certificates do
     match(
+      type: "adhoc",
       app_identifier: ["moe.nnsnodnb.NowPlaying", "moe.nnsnodnb.NowPlaying.TodayExtension"]
     )
   end
@@ -26,11 +27,19 @@ platform :ios do
   lane :development do
     setup_adhoc_certificates
 
-    gym(
-      export_method: "ad-hoc",
-      configuration: "Release",
-      xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.NowPlaying'",
-    )
+    add_badge(alpha: true)
+
+    begin
+      gym(
+        export_method: "ad-hoc",
+        configuration: "Release",
+        xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.NowPlaying'",
+      )
+    rescue => e
+      puts e
+    ensure
+      sh("git", "restore", "--", "#{Dir.pwd}/../NowPlaying/Resources/Assets.xcassets/")
+    end
   end
 
   lane :create_appicon do
