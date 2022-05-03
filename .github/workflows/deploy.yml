@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - 'update-action'
     tags:
       - '*.*.*'
 
@@ -48,6 +47,7 @@ jobs:
         write-mode: overwrite
 
     - name: Archive & export NowPlaying.ipa for development
+      if: github.ref == 'refs/heads/main'
       env:
         MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         MATCH_KEYCHAIN_NAME: "fastlane_keychain"
