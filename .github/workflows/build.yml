@@ -34,7 +34,9 @@ jobs:
           ${{ runner.os }}-pods-
     
     - name: Setup dependency
-      run: bundle exec pod install
+      run: |
+        bundle exec pod install
+        brew install imagemagick
 
     - name: Setup GoogleService-Info.plist
       uses: DamianReeves/write-file-action@v1.0
