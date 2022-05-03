@@ -41,7 +41,7 @@ jobs:
 
     - name: Setup GoogleService-Info.plist
       run: |
-        cat << "EOF" > "NowPlaying/Resources/Firebase/GoogleService-Info.plist"
+        cat << "EOF" > NowPlaying/Resources/Firebase/GoogleService-Info.plist
         ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
         EOF
 
