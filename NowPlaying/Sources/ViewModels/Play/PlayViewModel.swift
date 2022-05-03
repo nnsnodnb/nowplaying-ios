@@ -104,7 +104,17 @@ final class PlayViewModel: PlayViewModelType {
             })
             .disposed(by: disposeBag)
         // Mastodonボタン
+        mastodon.asObservable()
+            .withLatestFrom(nowPlayingItem)
+            .compactMap { $0 }
+            .bind(to: router.mastodon)
+            .disposed(by: disposeBag)
         // Twitterボタン
+        twitter.asObservable()
+            .withLatestFrom(nowPlayingItem)
+            .compactMap { $0 }
+            .bind(to: router.twitter)
+            .disposed(by: disposeBag)
         // 曲の変更
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
             .compactMap { $0.object as? MusicPlayerControllable }
