@@ -55,6 +55,10 @@ platform :ios do
     ensure
       sh("git", "restore", "--", "#{Dir.pwd}/../NowPlaying/Resources/Assets.xcassets/")
     end
+
+    upload_symbols_to_crashlytics(
+      gsp_path: "./NowPlaying/Supporting Files/GoogleService-Info.plist",
+    )
   end
 
   lane :create_appicon do
