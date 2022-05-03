@@ -75,14 +75,13 @@ jobs:
       id: download
       with:
         name: nowplaying-product
-        path: /tmp/
+        path: /tmp/nowplaying-product
 
     - name: Get upload destination
       id: destination
       run: |
-        tar -xf /tmp/Products.tar
-        rm /tmp/Products.tar
-        echo "::set-output name=value::$(cat /tmp/Products/destination.txt)"
+        tar -xf /tmp/nowplaying-product/Products.tar
+        echo "::set-output name=value::$(cat Products/destination.txt)"
 
     - name: Seup app-distribution.json
       if: ${{ steps.destination.outputs.value == 'app-distribution' }}
@@ -102,7 +101,7 @@ jobs:
         RELEASE_NOTES="$(git log -1 --pretty=short)"
         firebase \
           appdistribution:distribute \
-          /tmp/Products/NowPlaying.ipa \
+          Products/NowPlaying.ipa \
           --app "${{ secrets.FIREBASE_APP_ID }}" \
           --groups default \
           --release-notes "${RELEASE_NOTES}" \
