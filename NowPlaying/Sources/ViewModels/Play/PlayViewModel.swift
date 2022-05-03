@@ -15,12 +15,12 @@ protocol PlayViewModelInputs: AnyObject {
     var playPause: PublishRelay<Void> { get }
     var back: PublishRelay<Void> { get }
     var forward: PublishRelay<Void> { get }
+    var setting: PublishRelay<Void> { get }
     var mastodon: PublishRelay<Void> { get }
     var twitter: PublishRelay<Void> { get }
 }
 
 protocol PlayViewModelOutputs: AnyObject {
-    var router: PlayerRoutable { get }
     var artworkImage: Driver<UIImage> { get }
     var artworkScale: Driver<CGFloat> { get }
     var songName: Driver<String> { get }
@@ -38,10 +38,10 @@ final class PlayViewModel: PlayViewModelType {
     let playPause: PublishRelay<Void> = .init()
     let back: PublishRelay<Void> = .init()
     let forward: PublishRelay<Void> = .init()
+    let setting: PublishRelay<Void> = .init()
     let mastodon: PublishRelay<Void> = .init()
     let twitter: PublishRelay<Void> = .init()
     // MARK: - Outputs Sources
-    let router: PlayerRoutable
     let artworkImage: Driver<UIImage>
     let artworkScale: Driver<CGFloat>
     let songName: Driver<String>
@@ -52,6 +52,7 @@ final class PlayViewModel: PlayViewModelType {
     var outputs: PlayViewModelOutputs { return self }
 
     private let disposeBag = DisposeBag()
+    private let router: PlayerRoutable
     private let musicPlayerController: MusicPlayerControllable
     private let nowPlayingItem: BehaviorRelay<MediaItem?>
     private let playbackState: BehaviorRelay<MPMusicPlaybackState> = .init(value: .paused)
@@ -102,6 +103,10 @@ final class PlayViewModel: PlayViewModelType {
             .subscribe(onNext: {
                 musicPlayerController.skipToNextItem()
             })
+            .disposed(by: disposeBag)
+        // 設定ボタン
+        setting.asObservable()
+            .bind(to: router.setting)
             .disposed(by: disposeBag)
         // Mastodonボタン
         mastodon.asObservable()

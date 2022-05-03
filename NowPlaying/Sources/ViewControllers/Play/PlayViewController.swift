@@ -113,7 +113,7 @@ private extension PlayViewController {
         // 次へボタン
         forwardButton.rx.tap.asSignal().emit(to: viewModel.inputs.forward).disposed(by: disposeBag)
         // 設定ボタン
-        gearButton.rx.tap.asSignal().emit(to: viewModel.outputs.router.setting).disposed(by: disposeBag)
+        gearButton.rx.tap.asSignal().emit(to: viewModel.inputs.setting).disposed(by: disposeBag)
         // Mastodonボタン
         mastodonButton.rx.tap.asSignal().emit(to: viewModel.inputs.mastodon).disposed(by: disposeBag)
         // Twitterボタン
