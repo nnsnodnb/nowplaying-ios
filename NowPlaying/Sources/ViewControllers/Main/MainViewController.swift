@@ -11,8 +11,10 @@ final class MainViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        let viewModel = PlayViewModel()
+        let router = PlayerRouter()
+        let viewModel = PlayViewModel(router: router)
         let viewController = PlayViewController(dependency: viewModel)
+        router.inject(viewController)
         addContainerViewController(viewController, to: view)
     }
 }

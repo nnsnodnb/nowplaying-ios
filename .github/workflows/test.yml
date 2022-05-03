@@ -10,6 +10,7 @@ jobs:
     permissions:
       checks: write
       issues: write
+      pull-requests: write
 
     steps:
     - uses: actions/checkout@v3
@@ -17,7 +18,7 @@ jobs:
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '2.7'
+        ruby-version: '3.0'
         bundler-cache: true
         cache-version: '1'
 

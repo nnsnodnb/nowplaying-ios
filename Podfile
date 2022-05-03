@@ -11,6 +11,7 @@ target 'NowPlaying' do
   pod 'RxCocoa'
   pod 'RxRelay'
   pod 'RxSwift'
+  pod 'SFSafeSymbols'
   pod 'ScrollFlowLabel'
   pod 'SnapKit'
   pod 'SwiftGen'

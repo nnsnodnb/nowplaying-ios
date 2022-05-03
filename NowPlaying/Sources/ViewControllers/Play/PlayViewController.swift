@@ -17,9 +17,35 @@ final class PlayViewController: UIViewController {
     private let viewModel: PlayViewModelType
     private let disposeBag = DisposeBag()
 
-    @IBOutlet private var coverImageView: UIImageView!
-    @IBOutlet private var songNameLabel: ScrollFlowLabel!
-    @IBOutlet private var artistNameLabel: ScrollFlowLabel!
+    @IBOutlet private var coverImageView: UIImageView! {
+        didSet {
+            coverImageView.layer.shadowColor = Asset.Colors.shadow.color.cgColor
+            coverImageView.layer.shadowOffset = .zero
+            coverImageView.layer.shadowRadius = 20
+            coverImageView.layer.shadowOpacity = 0.5
+        }
+    }
+    @IBOutlet private var songNameLabel: ScrollFlowLabel! {
+        didSet {
+            songNameLabel.textColor = .label
+            songNameLabel.textAlignment = .center
+            songNameLabel.font = .boldSystemFont(ofSize: 20)
+            songNameLabel.pauseInterval = 2
+            songNameLabel.scrollDirection = .left
+            songNameLabel.observeApplicationState()
+        }
+    }
+    @IBOutlet private var artistNameLabel: ScrollFlowLabel! {
+        didSet {
+            artistNameLabel.textColor = .label
+            artistNameLabel.textAlignment = .center
+            artistNameLabel.textAlignment = .center
+            artistNameLabel.font = .systemFont(ofSize: 16)
+            artistNameLabel.pauseInterval = 2
+            artistNameLabel.scrollDirection = .left
+            artistNameLabel.observeApplicationState()
+        }
+    }
     @IBOutlet private var backButton: UIButton!
     @IBOutlet private var playButton: UIButton!
     @IBOutlet private var forwardButton: UIButton!
@@ -42,7 +68,7 @@ final class PlayViewController: UIViewController {
     // MARK: - Initialize
     init(dependency: Dependency) {
         self.viewModel = dependency
-        super.init(nibName: "PlayViewController", bundle: .main)
+        super.init(nibName: Self.className, bundle: .main)
     }
 
     @available(*, unavailable)
@@ -55,28 +81,43 @@ final class PlayViewController: UIViewController {
         super.viewDidLoad()
         bind(to: viewModel)
     }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle else { return }
+        coverImageView.layer.shadowColor = Asset.Colors.shadow.color.cgColor
+    }
 }
 
 // MARK: - Private method
 private extension PlayViewController {
     func bind(to viewModel: PlayViewModelType) {
         // カバー写真
-
+        viewModel.outputs.artworkImage.drive(coverImageView.rx.image).disposed(by: disposeBag)
+        viewModel.outputs.artworkScale
+            .drive(with: self, onNext: { strongSelf, scale in
+                UIView.animate(withDuration: 0.3, delay: 0) { [weak strongSelf] in
+                    strongSelf?.coverImageView.transform = .init(scaleX: scale, y: scale)
+                }
+            })
+            .disposed(by: disposeBag)
         // 曲名
-
+        viewModel.outputs.songName.drive(songNameLabel.rx.text).disposed(by: disposeBag)
         // アーティスト名
-
+        viewModel.outputs.artistName.drive(artistNameLabel.rx.text).disposed(by: disposeBag)
         // 戻るボタン
-
+        backButton.rx.tap.asSignal().emit(to: viewModel.inputs.back).disposed(by: disposeBag)
         // 再生ボタン
-
+        playButton.rx.tap.asSignal().emit(to: viewModel.inputs.playPause).disposed(by: disposeBag)
+        viewModel.outputs.playPauseImage.drive(playButton.rx.image()).disposed(by: disposeBag)
         // 次へボタン
-
+        forwardButton.rx.tap.asSignal().emit(to: viewModel.inputs.forward).disposed(by: disposeBag)
         // 設定ボタン
-
+        gearButton.rx.tap.asSignal().emit(to: viewModel.inputs.setting).disposed(by: disposeBag)
         // Mastodonボタン
-
+        mastodonButton.rx.tap.asSignal().emit(to: viewModel.inputs.mastodon).disposed(by: disposeBag)
         // Twitterボタン
+        twitterButton.rx.tap.asSignal().emit(to: viewModel.inputs.twitter).disposed(by: disposeBag)
     }
 }
 
