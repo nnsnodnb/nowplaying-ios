@@ -64,9 +64,13 @@ jobs:
         name: nowplaying-product
         path: Products.tar
 
-  upload:
+  firebase-upload:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     needs: build
+    environment:
+      name: Firebase App Distribution
+      url: https://console.firebase.google.com/project/nowplayingios/appdistribution/app/ios:moe.nnsnodnb.NowPlaying/releases
 
     steps:
     - uses: actions/checkout@v3
@@ -76,14 +80,11 @@ jobs:
         name: nowplaying-product
         path: /tmp/nowplaying-product
 
-    - name: Get upload destination
-      id: destination
+    - name: Export products
       run: |
         tar -xf /tmp/nowplaying-product/Products.tar
-        echo "::set-output name=value::$(cat Products/destination.txt)"
 
     - name: Seup app-distribution.json
-      if: ${{ steps.destination.outputs.value == 'app-distribution' }}
       uses: DamianReeves/write-file-action@v1.0
       with:
         path: /tmp/app-distribution.json
@@ -92,7 +93,6 @@ jobs:
         write-mode: overwrite
 
     - name: Upload to Firebase App Distribution
-      if: ${{ steps.destination.outputs.value == 'app-distribution' }}
       env:
         GOOGLE_APPLICATION_CREDENTIALS: "/tmp/app-distribution.json"
       run: |
