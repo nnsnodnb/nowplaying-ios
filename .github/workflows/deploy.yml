@@ -104,5 +104,4 @@ jobs:
           Products/NowPlaying.ipa \
           --app "${{ secrets.FIREBASE_APP_ID }}" \
           --groups default \
-          --release-notes "${RELEASE_NOTES}" \
-          --debug
+          --release-notes "${RELEASE_NOTES}"
