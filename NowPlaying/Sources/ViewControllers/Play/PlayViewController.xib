@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -98,17 +98,17 @@
                     <state key="normal" image="ic_gear"/>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cPV-yO-10a">
-                    <rect key="frame" x="32" y="522" width="350" height="68"/>
+                    <rect key="frame" x="32" y="522" width="350" height="200"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-cW-baF">
-                            <rect key="frame" x="0.0" y="11.5" width="74" height="45.5"/>
+                            <rect key="frame" x="0.0" y="77.5" width="74" height="45.5"/>
                             <color key="tintColor" systemColor="labelColor"/>
                             <state key="normal" image="backward.fill" catalog="system">
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="50"/>
                             </state>
                         </button>
                         <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMi-NZ-cvB">
-                            <rect key="frame" x="141" y="0.0" width="68" height="68"/>
+                            <rect key="frame" x="141" y="66" width="68" height="68"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="qMi-NZ-cvB" secondAttribute="height" multiplier="1:1" id="fYr-Vb-t1n"/>
                             </constraints>
@@ -118,7 +118,7 @@
                             </state>
                         </button>
                         <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crR-aX-F7g">
-                            <rect key="frame" x="276" y="11.5" width="74" height="45.5"/>
+                            <rect key="frame" x="276" y="77.5" width="74" height="45.5"/>
                             <color key="tintColor" systemColor="labelColor"/>
                             <state key="normal" image="forward.fill" catalog="system">
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="50"/>
@@ -145,16 +145,12 @@
                 <constraint firstItem="dfF-u4-Zba" firstAttribute="leading" secondItem="hQk-D4-a1j" secondAttribute="leading" id="d98-S0-q6v"/>
                 <constraint firstItem="GlU-pD-9su" firstAttribute="bottom" secondItem="XmZ-8C-J1H" secondAttribute="bottom" id="eAw-LD-Plf"/>
                 <constraint firstItem="GlU-pD-9su" firstAttribute="trailing" secondItem="y2C-jO-sIm" secondAttribute="trailing" constant="32" id="jET-b6-XsF"/>
-                <constraint firstItem="3aW-hZ-XIr" firstAttribute="top" relation="lessThanOrEqual" secondItem="cPV-yO-10a" secondAttribute="bottom" constant="164" id="jWs-JH-ofG"/>
+                <constraint firstItem="3aW-hZ-XIr" firstAttribute="top" secondItem="cPV-yO-10a" secondAttribute="bottom" constant="32" id="jWs-JH-ofG"/>
                 <constraint firstItem="hQk-D4-a1j" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="qWb-QP-8x8"/>
             </constraints>
             <point key="canvasLocation" x="34.5" y="53"/>
         </view>
     </objects>
-    <designables>
-        <designable name="7Tl-1g-kSO"/>
-        <designable name="ccL-cq-6gt"/>
-    </designables>
     <resources>
         <image name="backward.fill" catalog="system" width="128" height="79"/>
         <image name="forward.fill" catalog="system" width="128" height="79"/>
