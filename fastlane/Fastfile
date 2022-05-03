@@ -15,6 +15,24 @@ platform :ios do
     )
   end
 
+  desc "Fetch adhoc certificates"
+  lane :setup_adhoc_certificates do
+    match(
+      app_identifier: ["moe.nnsnodnb.NowPlaying", "moe.nnsnodnb.NowPlaying.TodayExtension"]
+    )
+  end
+
+  desc "Archive & export NowPlaying.ipa for Development"
+  lane :development do
+    setup_adhoc_certificates
+
+    gym(
+      export_method: "ad-hoc",
+      configuration: "Release",
+      xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.NowPlaying'",
+    )
+  end
+
   lane :create_appicon do
     appicon(
       appicon_devices: [:iphone, :ios_marketing],

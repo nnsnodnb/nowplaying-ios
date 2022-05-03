@@ -31,6 +31,22 @@ Run test
 
 Fetch development certificates
 
+### ios setup_adhoc_certificates
+
+```sh
+[bundle exec] fastlane ios setup_adhoc_certificates
+```
+
+Fetch adhoc certificates
+
+### ios development
+
+```sh
+[bundle exec] fastlane ios development
+```
+
+Archive & export NowPlaying.ipa for Development
+
 ### ios create_appicon
 
 ```sh
