@@ -38,7 +38,7 @@ jobs:
 
     - name: Setup GoogleService-Info.plist
       run: |
-        echo ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }} | base64 -d > NowPlaying/Resources/Firebase/GoogleService-Info.plist
+        echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}" | base64 -d > ./NowPlaying/Resources/Firebase/GoogleService-Info.plist
 
     - name: Archive & export NowPlaying.ipa for development
       if: github.ref == 'refs/heads/main'
