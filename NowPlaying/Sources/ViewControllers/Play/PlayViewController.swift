@@ -18,8 +18,16 @@ final class PlayViewController: UIViewController {
     private let disposeBag = DisposeBag()
 
     @IBOutlet private var coverImageView: UIImageView!
-    @IBOutlet private var songNameLabel: ScrollFlowLabel!
-    @IBOutlet private var artistNameLabel: ScrollFlowLabel!
+    @IBOutlet private var songNameLabel: ScrollFlowLabel! {
+        didSet {
+            songNameLabel.textAlignment = .center
+        }
+    }
+    @IBOutlet private var artistNameLabel: ScrollFlowLabel! {
+        didSet {
+            artistNameLabel.textAlignment = .center
+        }
+    }
     @IBOutlet private var backButton: UIButton!
     @IBOutlet private var playButton: UIButton!
     @IBOutlet private var forwardButton: UIButton!
