@@ -13,6 +13,8 @@
 		CF01403A28218A8E0095FA76 /* StubMusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01403928218A8E0095FA76 /* StubMusicPlayerController.swift */; };
 		CF01403D28218B630095FA76 /* StubMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01403C28218B630095FA76 /* StubMediaItem.swift */; };
 		CF01404028218F8D0095FA76 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01403F28218F8D0095FA76 /* UIColor+Extension.swift */; };
+		CF014042282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF014041282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift */; };
+		CF014044282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF014043282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift */; };
 		CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2B0277E609F00A35837 /* Colors.xcassets */; };
 		CF43E2BD277E621300A35837 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2BC277E621300A35837 /* Assets.swift */; };
 		CF43E2C6277E700200A35837 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2C5277E700200A35837 /* Settings.bundle */; };
@@ -57,6 +59,8 @@
 		CF01403928218A8E0095FA76 /* StubMusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMusicPlayerController.swift; sourceTree = "<group>"; };
 		CF01403C28218B630095FA76 /* StubMediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMediaItem.swift; sourceTree = "<group>"; };
 		CF01403F28218F8D0095FA76 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		CF014041282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPlayViewModelArtworkScale.swift; sourceTree = "<group>"; };
+		CF014043282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPlayViewModelPlayPauseImage.swift; sourceTree = "<group>"; };
 		CF43E2B0277E609F00A35837 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		CF43E2B5277E616D00A35837 /* SwiftGenOutput.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = SwiftGenOutput.xcfilelist; sourceTree = "<group>"; };
 		CF43E2BC277E621300A35837 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = Generated/Assets.swift; sourceTree = "<group>"; };
@@ -130,6 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				CF01403528218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift */,
+				CF014041282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift */,
+				CF014043282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift */,
 			);
 			path = Play;
 			sourceTree = "<group>";
@@ -694,6 +700,8 @@
 				CF01403D28218B630095FA76 /* StubMediaItem.swift in Sources */,
 				CF01403628218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift in Sources */,
 				CF01404028218F8D0095FA76 /* UIColor+Extension.swift in Sources */,
+				CF014042282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift in Sources */,
+				CF014044282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
