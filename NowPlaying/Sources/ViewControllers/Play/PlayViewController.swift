@@ -72,7 +72,9 @@ private extension PlayViewController {
         viewModel.outputs.artworkImage.drive(coverImageView.rx.image).disposed(by: disposeBag)
         viewModel.outputs.artworkScale
             .drive(with: self, onNext: { strongSelf, scale in
-                strongSelf.coverImageView.transform = .init(scaleX: scale, y: scale)
+                UIView.animate(withDuration: 0.3, delay: 0) { [weak strongSelf] in
+                    strongSelf?.coverImageView.transform = .init(scaleX: scale, y: scale)
+                }
             })
             .disposed(by: disposeBag)
         // 曲名

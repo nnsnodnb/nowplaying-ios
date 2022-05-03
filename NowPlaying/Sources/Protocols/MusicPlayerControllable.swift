@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import MediaPlayer
 
 protocol MusicPlayerControllable: AnyObject {
+    var nowPlayingItem: MPMediaItem? { get }
+
     func play()
     func pause()
     func skipToNextItem()

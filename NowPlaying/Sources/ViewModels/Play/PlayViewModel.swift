@@ -53,13 +53,15 @@ final class PlayViewModel: PlayViewModelType {
 
     private let disposeBag = DisposeBag()
     private let musicPlayerController: MusicPlayerControllable
-    private let nowPlayingItem: BehaviorRelay<MediaItem?> = .init(value: nil)
+    private let nowPlayingItem: BehaviorRelay<MediaItem?>
     private let playbackState: BehaviorRelay<MPMusicPlaybackState> = .init(value: .paused)
 
     // MARK: - Initialize
     init(router: PlayerRoutable, musicPlayerController: MusicPlayerControllable = MPMusicPlayerController.systemMusicPlayer) {
         self.router = router
         self.musicPlayerController = musicPlayerController
+
+        self.nowPlayingItem = .init(value: musicPlayerController.nowPlayingItem)
         // アートワーク
         self.artworkImage = nowPlayingItem
             .map { $0?.artwork?.image ?? Asset.Assets.icMusic.image }
@@ -105,10 +107,7 @@ final class PlayViewModel: PlayViewModelType {
         // 曲の変更
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
             .compactMap { $0.object as? MPMusicPlayerController }
-            .map { musicPlayerController -> MediaItem? in
-                guard let nowPlayingItem = musicPlayerController.nowPlayingItem else { return nil }
-                return MediaItem(item: nowPlayingItem)
-            }
+            .map { $0.nowPlayingItem }
             .bind(to: nowPlayingItem)
             .disposed(by: disposeBag)
         // 再生状態の変更

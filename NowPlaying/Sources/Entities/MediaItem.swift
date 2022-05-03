@@ -7,22 +7,17 @@
 
 import MediaPlayer
 
-struct MediaItem: Equatable {
+protocol MediaItem {
+    var persistentID: MPMediaEntityPersistentID { get }
+    var mediaItem: MediaItem { get }
+    var title: String? { get }
+    var artist: String? { get }
+    var artwork: MPMediaItemArtwork? { get }
+}
+
+extension MPMediaItem: MediaItem {
     // MARK: - Properties
-    let persistentID: MPMediaEntityPersistentID
-    let item: MPMediaItem
-
-    var title: String? { return item.title }
-    var artist: String? { return item.artist }
-    var artwork: MPMediaItemArtwork? { return item.artwork }
-
-    // MARK: - Initialize
-    init(item: MPMediaItem) {
-        self.persistentID = item.persistentID
-        self.item = item
-    }
-
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.item == rhs.item
+    var mediaItem: MediaItem {
+        return self
     }
 }
