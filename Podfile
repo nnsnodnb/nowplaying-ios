@@ -6,6 +6,7 @@ target 'NowPlaying' do
   use_frameworks!
 
   pod 'Action'
+  pod 'FirebaseCrashlytics'
   pod 'IBLinter'
   pod 'LicensePlist'
   pod 'RxCocoa'
