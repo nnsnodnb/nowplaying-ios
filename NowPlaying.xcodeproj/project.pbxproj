@@ -109,6 +109,7 @@
 			children = (
 				CFCC404427786D4D00937EDB /* Assets.xcassets */,
 				CF43E2B0277E609F00A35837 /* Colors.xcassets */,
+				CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */,
 				CF43E2C5277E700200A35837 /* Settings.bundle */,
 			);
 			path = Resources;
@@ -245,7 +246,6 @@
 			children = (
 				CF43E2AF277E608600A35837 /* Resources */,
 				CFCC406B27786EAC00937EDB /* Sources */,
-				CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */,
 				CF43E2B4277E60E600A35837 /* Supporting Files */,
 				CF43E2BB277E620400A35837 /* Generated */,
 			);
