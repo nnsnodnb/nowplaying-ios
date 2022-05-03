@@ -49,7 +49,8 @@ jobs:
         MATCH_KEYCHAIN_NAME: "fastlane_keychain"
         MATCH_KEYCHAIN_PASSWORD: ""
       run: |
-        export MATCH_GIT_PRIVATE_KEY=$(echo -n "${{ secrets.MATCH_GIT_PRIVATE_KEY }}" | base64 -d)
+        MATCH_GIT_PRIVATE_KEY=$(echo -n "${{ secrets.MATCH_GIT_PRIVATE_KEY }}" | base64 -d)
+        export MATCH_GIT_PRIVATE_KEY
         bundle exec fastlane ios development
         echo "app-distribution" > Products/destination.txt
 
@@ -75,19 +76,18 @@ jobs:
     - name: Get upload destination
       id: destination
       run:
-        if [[ $(cat Products/destination.txt) == "app-distribution" ]]; then
-          echo "::set-output name=value::{value}"
-        fi
+        destination=$(cat Products/destination.txt)
+        echo "::set-output name=value::${destination}"
 
     - name: Seup app-distribution.json
-      if: ${{ steps.destination.outputs.value == "app-distribution" }}
+      if: ${{ steps.destination.outputs.value == 'app-distribution' }}
       run: |
         cat << "EOF" > /tmp/app-distribution.json
         ${{ secrets.APP_DISTRIBUTION_JSON }}
         EOF
 
     - uses: wzieba/Firebase-Distribution-Github-Action@v1
-      if: ${{ steps.destination.outputs.value == "app-distribution" }}
+      if: ${{ steps.destination.outputs.value == 'app-distribution' }}
       with:
         appId: ${{ secrets.FIREBASE_APP_ID }}
         groups: default
