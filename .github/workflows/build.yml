@@ -79,9 +79,7 @@ jobs:
     - name: Seup app-distribution.json
       if: ${{ steps.destination.outputs.value == 'app-distribution' }}
       run: |
-        cat << "EOF" > /tmp/app-distribution.json
-        ${{ secrets.APP_DISTRIBUTION_JSON }}
-        EOF
+        echo "${{ secrets.APP_DISTRIBUTION_JSON }}" | base64 -d > /tmp/app-distribution.json
 
     - uses: wzieba/Firebase-Distribution-Github-Action@v1
       if: ${{ steps.destination.outputs.value == 'app-distribution' }}
