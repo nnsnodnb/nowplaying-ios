@@ -1,4 +1,4 @@
-name: Build
+name: Deploy
 
 on:
   push:
@@ -57,18 +57,20 @@ jobs:
         export MATCH_GIT_PRIVATE_KEY
         bundle exec fastlane ios development
         echo "app-distribution" > Products/destination.txt
+        tar -cvf Products.tar Products/
 
     - uses: actions/upload-artifact@v2
       with:
         name: nowplaying-product
-        path: |
-          Products/NowPlaying.app.dSYM.zip
-          Products/NowPlaying.ipa
-          Products/destination.txt
+        path: Products.tar
 
-  upload:
+  firebase-upload:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     needs: build
+    environment:
+      name: Firebase App Distribution
+      url: https://console.firebase.google.com/project/nowplayingios/appdistribution/app/ios:moe.nnsnodnb.NowPlaying/releases
 
     steps:
     - uses: actions/checkout@v3
@@ -76,14 +78,13 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: nowplaying-product
+        path: /tmp/nowplaying-product
 
-    - name: Get upload destination
-      id: destination
-      run:
-        echo "::set-output name=value::$(cat Products/destination.txt)"
+    - name: Export products
+      run: |
+        tar -xf /tmp/nowplaying-product/Products.tar
 
     - name: Seup app-distribution.json
-      if: ${{ steps.destination.outputs.value == 'app-distribution' }}
       uses: DamianReeves/write-file-action@v1.0
       with:
         path: /tmp/app-distribution.json
@@ -91,11 +92,15 @@ jobs:
           ${{ secrets.APP_DISTRIBUTION_JSON }}
         write-mode: overwrite
 
-    - uses: wzieba/Firebase-Distribution-Github-Action@v1
-      if: ${{ steps.destination.outputs.value == 'app-distribution' }}
-      with:
-        appId: ${{ secrets.FIREBASE_APP_ID }}
-        groups: default
-        serviceCredentialsFile: /tmp/app-distribution.json
-        file: Products/NowPlaying.ipa
-        debug: true
+    - name: Upload to Firebase App Distribution
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: "/tmp/app-distribution.json"
+      run: |
+        yarn global add firebase-tools
+        RELEASE_NOTES="$(git log -1 --pretty=short)"
+        firebase \
+          appdistribution:distribute \
+          Products/NowPlaying.ipa \
+          --app "${{ secrets.FIREBASE_APP_ID }}" \
+          --groups default \
+          --release-notes "${RELEASE_NOTES}"
