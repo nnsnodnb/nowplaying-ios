@@ -93,11 +93,17 @@ jobs:
           ${{ secrets.APP_DISTRIBUTION_JSON }}
         write-mode: overwrite
 
-    - uses: wzieba/Firebase-Distribution-Github-Action@v1
+    - name: Upload to Firebase App Distribution
       if: ${{ steps.destination.outputs.value == 'app-distribution' }}
-      with:
-        appId: ${{ secrets.FIREBASE_APP_ID }}
-        groups: default
-        serviceCredentialsFile: /tmp/app-distribution.json
-        file: /tmp/Products/NowPlaying.ipa
-        debug: true
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: "/tmp/app-distribution.json"
+      run: |
+        yarn global add firebase-tools
+        RELEASE_NOTES="$(git log -1 --pretty=short)"
+        firebase \
+          appdistribution:distribute \
+          /tmp/Products/NowPlaying.ipa \
+          --app "${{ secrets.FIREBASE_APP_ID }}" \
+          --groups default \
+          --release-notes "${RELEASE_NOTES}" \
+          --debug
