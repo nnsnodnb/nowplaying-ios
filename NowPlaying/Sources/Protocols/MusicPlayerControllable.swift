@@ -10,6 +10,7 @@ import MediaPlayer
 
 protocol MusicPlayerControllable: AnyObject {
     var nowPlayingItem: MPMediaItem? { get }
+    var playbackState: MPMusicPlaybackState { get }
 
     func play()
     func pause()

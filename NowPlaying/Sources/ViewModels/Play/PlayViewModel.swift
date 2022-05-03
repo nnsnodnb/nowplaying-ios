@@ -60,7 +60,6 @@ final class PlayViewModel: PlayViewModelType {
     init(router: PlayerRoutable, musicPlayerController: MusicPlayerControllable = MPMusicPlayerController.systemMusicPlayer) {
         self.router = router
         self.musicPlayerController = musicPlayerController
-
         self.nowPlayingItem = .init(value: musicPlayerController.nowPlayingItem)
         // アートワーク
         self.artworkImage = nowPlayingItem
@@ -80,6 +79,8 @@ final class PlayViewModel: PlayViewModelType {
             .map { $0 == .playing ? .init(systemSymbol: .pauseFill) : .init(systemSymbol: .playFill) }
             .distinctUntilChanged()
             .asDriver(onErrorDriveWith: .empty())
+
+        // 再生・一時停止
         playPause.asObservable()
             .withLatestFrom(playbackState)
             .subscribe(onNext: {
@@ -106,13 +107,13 @@ final class PlayViewModel: PlayViewModelType {
         // Twitterボタン
         // 曲の変更
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerNowPlayingItemDidChange, object: nil)
-            .compactMap { $0.object as? MPMusicPlayerController }
+            .compactMap { $0.object as? MusicPlayerControllable }
             .map { $0.nowPlayingItem }
             .bind(to: nowPlayingItem)
             .disposed(by: disposeBag)
         // 再生状態の変更
         NotificationCenter.default.rx.notification(.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
-            .compactMap { $0.object as? MPMusicPlayerController }
+            .compactMap { $0.object as? MusicPlayerControllable }
             .map { $0.playbackState }
             .bind(to: playbackState)
             .disposed(by: disposeBag)
