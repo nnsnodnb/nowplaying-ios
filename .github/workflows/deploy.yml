@@ -79,7 +79,7 @@ jobs:
 
     - name: Get upload destination
       id: destination
-      run:
+      run: |
         tar -xf /tmp/Products.tar
         rm /tmp/Products.tar
         echo "::set-output name=value::$(cat /tmp/Products/destination.txt)"
