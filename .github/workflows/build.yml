@@ -57,14 +57,12 @@ jobs:
         export MATCH_GIT_PRIVATE_KEY
         bundle exec fastlane ios development
         echo "app-distribution" > Products/destination.txt
+        tar -cvf Products.tar Products/
 
     - uses: actions/upload-artifact@v2
       with:
         name: nowplaying-product
-        path: |
-          Products/NowPlaying.app.dSYM.zip
-          Products/NowPlaying.ipa
-          Products/destination.txt
+        path: Products.tar
 
   upload:
     runs-on: ubuntu-latest
@@ -74,13 +72,17 @@ jobs:
     - uses: actions/checkout@v3
 
     - uses: actions/download-artifact@v2
+      id: download
       with:
         name: nowplaying-product
+        path: /tmp/Products.tar
 
     - name: Get upload destination
       id: destination
       run:
-        echo "::set-output name=value::$(cat Products/destination.txt)"
+        tar -xf /tmp/Products.tar
+        rm /tmp/Products.tar
+        echo "::set-output name=value::$(cat /tmp/Products/destination.txt)"
 
     - name: Seup app-distribution.json
       if: ${{ steps.destination.outputs.value == 'app-distribution' }}
@@ -97,5 +99,5 @@ jobs:
         appId: ${{ secrets.FIREBASE_APP_ID }}
         groups: default
         serviceCredentialsFile: /tmp/app-distribution.json
-        file: Products/NowPlaying.ipa
+        file: /tmp/Products/NowPlaying.ipa
         debug: true
