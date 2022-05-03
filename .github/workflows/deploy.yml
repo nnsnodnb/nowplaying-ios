@@ -75,7 +75,7 @@ jobs:
       id: download
       with:
         name: nowplaying-product
-        path: /tmp/Products.tar
+        path: /tmp/
 
     - name: Get upload destination
       id: destination
