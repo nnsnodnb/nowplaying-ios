@@ -41,9 +41,7 @@ jobs:
 
     - name: Setup GoogleService-Info.plist
       run: |
-        cat << "EOF" > NowPlaying/Resources/Firebase/GoogleService-Info.plist
-        ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
-        EOF
+        echo ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }} | base64 -d > NowPlaying/Resources/Firebase/GoogleService-Info.plist
 
     - name: Run Test
       run: bundle exec fastlane ios test
