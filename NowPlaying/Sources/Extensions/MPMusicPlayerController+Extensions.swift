@@ -23,7 +23,7 @@ extension MPMusicPlayerController: MusicPlayerControllable {
 
     var playbackStateDidChange: Observable<MPMusicPlaybackState> {
         return NotificationCenter.default.rx.notification(.MPMusicPlayerControllerPlaybackStateDidChange, object: nil)
-            .compactMap { $0.object as? MPMusicPlayerController}
+            .compactMap { $0.object as? MPMusicPlayerController }
             .map { $0.playbackState }
     }
 }

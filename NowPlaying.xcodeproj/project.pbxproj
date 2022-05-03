@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		501078D9FA157908B32104B3 /* Pods_NowPlayingTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D181EF1A07003AB681B9BA /* Pods_NowPlayingTests.framework */; };
 		759D4791E0D1FF0069331938 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2C0730DF7DE37FAB662125B /* Pods_NowPlaying.framework */; };
+		CF01403628218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01403528218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift */; };
+		CF01403A28218A8E0095FA76 /* StubMusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01403928218A8E0095FA76 /* StubMusicPlayerController.swift */; };
+		CF01403D28218B630095FA76 /* StubMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01403C28218B630095FA76 /* StubMediaItem.swift */; };
+		CF01404028218F8D0095FA76 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01403F28218F8D0095FA76 /* UIColor+Extension.swift */; };
 		CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2B0277E609F00A35837 /* Colors.xcassets */; };
 		CF43E2BD277E621300A35837 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2BC277E621300A35837 /* Assets.swift */; };
 		CF43E2C6277E700200A35837 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2C5277E700200A35837 /* Settings.bundle */; };
@@ -49,6 +53,10 @@
 		88364762EFB8F56CC151E5FD /* Pods-NowPlaying-NowPlayingUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying-NowPlayingUITests.release.xcconfig"; path = "Target Support Files/Pods-NowPlaying-NowPlayingUITests/Pods-NowPlaying-NowPlayingUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9E45C5BC09576D76E4EF5DFC /* Pods-NowPlayingTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlayingTests.debug.xcconfig"; path = "Target Support Files/Pods-NowPlayingTests/Pods-NowPlayingTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A2C0730DF7DE37FAB662125B /* Pods_NowPlaying.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NowPlaying.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF01403528218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPlayViewModelArtworkImage.swift; sourceTree = "<group>"; };
+		CF01403928218A8E0095FA76 /* StubMusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMusicPlayerController.swift; sourceTree = "<group>"; };
+		CF01403C28218B630095FA76 /* StubMediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMediaItem.swift; sourceTree = "<group>"; };
+		CF01403F28218F8D0095FA76 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		CF43E2B0277E609F00A35837 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		CF43E2B5277E616D00A35837 /* SwiftGenOutput.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = SwiftGenOutput.xcfilelist; sourceTree = "<group>"; };
 		CF43E2BC277E621300A35837 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = Generated/Assets.swift; sourceTree = "<group>"; };
@@ -105,8 +113,58 @@
 		CF01402E2821862C0095FA76 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				CF014033282189E00095FA76 /* ViewModels */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		CF014033282189E00095FA76 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				CF014034282189E50095FA76 /* Play */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		CF014034282189E50095FA76 /* Play */ = {
+			isa = PBXGroup;
+			children = (
+				CF01403528218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift */,
+			);
+			path = Play;
+			sourceTree = "<group>";
+		};
+		CF01403728218A770095FA76 /* Stubs */ = {
+			isa = PBXGroup;
+			children = (
+				CF01403828218A870095FA76 /* MediaPlayer */,
+				CF01403B28218B540095FA76 /* Entities */,
+			);
+			path = Stubs;
+			sourceTree = "<group>";
+		};
+		CF01403828218A870095FA76 /* MediaPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				CF01403928218A8E0095FA76 /* StubMusicPlayerController.swift */,
+			);
+			path = MediaPlayer;
+			sourceTree = "<group>";
+		};
+		CF01403B28218B540095FA76 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				CF01403C28218B630095FA76 /* StubMediaItem.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		CF01403E28218F840095FA76 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CF01403F28218F8D0095FA76 /* UIColor+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		CF43E2AF277E608600A35837 /* Resources */ = {
@@ -260,6 +318,8 @@
 		CFCC405127786D4E00937EDB /* NowPlayingTests */ = {
 			isa = PBXGroup;
 			children = (
+				CF01403E28218F840095FA76 /* Extensions */,
+				CF01403728218A770095FA76 /* Stubs */,
 				CF01402E2821862C0095FA76 /* Tests */,
 			);
 			path = NowPlayingTests;
@@ -630,6 +690,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF01403A28218A8E0095FA76 /* StubMusicPlayerController.swift in Sources */,
+				CF01403D28218B630095FA76 /* StubMediaItem.swift in Sources */,
+				CF01403628218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift in Sources */,
+				CF01404028218F8D0095FA76 /* UIColor+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -706,6 +770,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -760,6 +825,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -818,7 +884,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 99649YXF6E;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -846,7 +912,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 99649YXF6E;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
