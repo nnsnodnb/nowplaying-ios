@@ -40,8 +40,12 @@ jobs:
       run: bundle exec pod install
 
     - name: Setup GoogleService-Info.plist
-      run: |
-        echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}" | base64 -d > ./NowPlaying/Resources/Firebase/GoogleService-Info.plist
+      uses: DamianReeves/write-file-action@v1.0
+      with:
+        path: NowPlaying/Resources/Firebase/GoogleService-Info.plist
+        contents: |
+          ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
+        write-mode: overwrite
 
     - name: Run Test
       run: bundle exec fastlane ios test

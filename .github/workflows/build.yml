@@ -37,8 +37,12 @@ jobs:
       run: bundle exec pod install
 
     - name: Setup GoogleService-Info.plist
-      run: |
-        echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}" | base64 -d > ./NowPlaying/Resources/Firebase/GoogleService-Info.plist
+      uses: DamianReeves/write-file-action@v1.0
+      with:
+        path: NowPlaying/Resources/Firebase/GoogleService-Info.plist
+        contents: |
+          ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
+        write-mode: overwrite
 
     - name: Archive & export NowPlaying.ipa for development
       if: github.ref == 'refs/heads/main'
@@ -78,8 +82,12 @@ jobs:
 
     - name: Seup app-distribution.json
       if: ${{ steps.destination.outputs.value == 'app-distribution' }}
-      run: |
-        echo "${{ secrets.APP_DISTRIBUTION_JSON }}" | base64 -d > /tmp/app-distribution.json
+      uses: DamianReeves/write-file-action@v1.0
+      with:
+        path: /tmp/app-distribution.json
+        contents: |
+          ${{ secrets.APP_DISTRIBUTION_JSON }}
+        write-mode: overwrite
 
     - uses: wzieba/Firebase-Distribution-Github-Action@v1
       if: ${{ steps.destination.outputs.value == 'app-distribution' }}
