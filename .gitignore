@@ -218,3 +218,6 @@ NowPlaying/Generated/
 
 # LicensePlist
 NowPlaying/Resources/Settings.bundle/moe.nnsnodnb.NowPlaying.latest_result.txt
+
+# Firebase
+NowPlaying/Resources/Firebase/GoogleService-Info.plist

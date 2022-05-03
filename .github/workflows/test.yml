@@ -1,7 +1,9 @@
 name: Test
 
 on:
-  push: {}
+  push:
+    branches-ignore:
+      - main
 
 jobs:
   tests:
@@ -31,10 +33,19 @@ jobs:
         path: Pods
         key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
         restore-keys: |
+          ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           ${{ runner.os }}-pods-
     
     - name: Setup dependency
       run: bundle exec pod install
+
+    - name: Setup GoogleService-Info.plist
+      uses: DamianReeves/write-file-action@v1.0
+      with:
+        path: NowPlaying/Resources/Firebase/GoogleService-Info.plist
+        contents: |
+          ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
+        write-mode: overwrite
 
     - name: Run Test
       run: bundle exec fastlane ios test
