@@ -36,7 +36,7 @@ platform :ios do
       gym(
         export_method: "ad-hoc",
         configuration: "Release",
-        xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.NowPlaying'",
+        xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.NowPlaying' BUNDLE_VERSIONS_STRING_SHORT='#{generate_version_name}'",
       )
     rescue => e
       puts e
@@ -71,4 +71,13 @@ platform :ios do
     end
   end
 
+  desc "Generate version name"
+  private_lane :generate_version_name do
+    version = get_xcconfig_value(
+      path: "./Configurations/NowPlaying.xcconfig",
+      name: "BUNDLE_VERSIONS_STRING_SHORT",
+    )
+    short_hash = last_git_commit[:abbreviated_commit_hash]
+    "#{version}-#{short_hash}"
+  end
 end
