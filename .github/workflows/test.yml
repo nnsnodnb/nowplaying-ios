@@ -50,8 +50,10 @@ jobs:
     - name: Run Test
       run: bundle exec fastlane ios test
 
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action/composite@v1
-      if: always()
+    - name: Publish unit test results
+      uses: kishikawakatsumi/xcresulttool@v1
+      if: success() || failure()
       with:
-        files: fastlane/test_output/report.xml
+        path: fastlane/test_output/NowPlaying.xcresult
+        show-passed-tests: false
+        show-code-coverage: false
