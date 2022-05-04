@@ -34,6 +34,7 @@ final class TwitterSettingViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Twitter設定"
         bind(to: viewModel)
     }
 }
