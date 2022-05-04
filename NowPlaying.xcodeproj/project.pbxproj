@@ -24,6 +24,7 @@
 		CF01405928227D710095FA76 /* NSObject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405828227D710095FA76 /* NSObject+Extension.swift */; };
 		CF01405C28227E930095FA76 /* SettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405B28227E930095FA76 /* SettingRouter.swift */; };
 		CF01405E282280970095FA76 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405D282280970095FA76 /* URL+Extension.swift */; };
+		CF014062282286920095FA76 /* TestSettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF014061282286920095FA76 /* TestSettingRouter.swift */; };
 		CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2B0277E609F00A35837 /* Colors.xcassets */; };
 		CF43E2BD277E621300A35837 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2BC277E621300A35837 /* Assets.swift */; };
 		CF43E2C6277E700200A35837 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2C5277E700200A35837 /* Settings.bundle */; };
@@ -79,6 +80,7 @@
 		CF01405828227D710095FA76 /* NSObject+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Extension.swift"; sourceTree = "<group>"; };
 		CF01405B28227E930095FA76 /* SettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRouter.swift; sourceTree = "<group>"; };
 		CF01405D282280970095FA76 /* URL+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
+		CF014061282286920095FA76 /* TestSettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSettingRouter.swift; sourceTree = "<group>"; };
 		CF43E2B0277E609F00A35837 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		CF43E2B5277E616D00A35837 /* SwiftGenOutput.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = SwiftGenOutput.xcfilelist; sourceTree = "<group>"; };
 		CF43E2BC277E621300A35837 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = Generated/Assets.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				CF014033282189E00095FA76 /* ViewModels */,
+				CF01405F282286720095FA76 /* Router */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -236,6 +239,22 @@
 			isa = PBXGroup;
 			children = (
 				CF01405B28227E930095FA76 /* SettingRouter.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		CF01405F282286720095FA76 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				CF014060282286760095FA76 /* Setting */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		CF014060282286760095FA76 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				CF014061282286920095FA76 /* TestSettingRouter.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -803,6 +822,7 @@
 			files = (
 				CF01403A28218A8E0095FA76 /* StubMusicPlayerController.swift in Sources */,
 				CF01403D28218B630095FA76 /* StubMediaItem.swift in Sources */,
+				CF014062282286920095FA76 /* TestSettingRouter.swift in Sources */,
 				CF01403628218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift in Sources */,
 				CF01404028218F8D0095FA76 /* UIColor+Extension.swift in Sources */,
 				CF014042282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift in Sources */,
