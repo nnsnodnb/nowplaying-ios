@@ -25,7 +25,13 @@ Multiple files are confidential for this project.
 bundle exec fastlane ios setup_development_certificates
 ```
 
-### Links
+## Tests
+
+```sh
+bundle exec fastlane ios test
+```
+
+## Links
 
 - [Requests from end-users](https://docs.google.com/spreadsheets/d/1oNtyJ2x1G-2ZDktxT-jpo1I-8Wqif4Xhc40lH40Crrw/edit?usp=sharing)
 
