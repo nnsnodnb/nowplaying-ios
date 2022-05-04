@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SocialType: String, Equatable {
+enum SocialType: String {
     case twitter
     case mastodon
 }
