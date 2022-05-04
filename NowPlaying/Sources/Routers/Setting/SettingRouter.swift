@@ -17,7 +17,7 @@ protocol SettingRoutable: Routable {
     var appStore: PublishRelay<Void> { get }
 }
 
-final class SettingRouter: SettingRoutable {
+final class SettingRouter: NSObject, SettingRoutable {
     // MARK: - Properties
     private(set) weak var viewController: UIViewController?
 
@@ -30,7 +30,9 @@ final class SettingRouter: SettingRoutable {
     private let disposeBag = DisposeBag()
 
     // MARK: - Initialize
-    init() {
+    override init() {
+        super.init()
+
         // 閉じる
         dismiss.asSignal()
             .emit(with: self, onNext: { strongSelf, _ in
@@ -44,6 +46,7 @@ final class SettingRouter: SettingRoutable {
                 let viewModel = TwitterSettingViewModel(router: router)
                 let viewController = TwitterSettingViewController(dependency: viewModel)
                 router.inject(viewController)
+                strongSelf.viewController?.navigationController?.presentationController?.delegate = strongSelf
                 strongSelf.viewController?.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
@@ -70,5 +73,14 @@ final class SettingRouter: SettingRoutable {
 
     func inject(_ viewController: UIViewController) {
         self.viewController = viewController
+    }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension SettingRouter: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+        guard let viewController = viewController,
+              let children = viewController.navigationController?.children else { return true }
+        return children == [viewController]
     }
 }
