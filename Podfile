@@ -38,6 +38,7 @@ post_install do |project|
       if version(config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']) < version('9.0')
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
       end
+      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
     end
   end
 end
