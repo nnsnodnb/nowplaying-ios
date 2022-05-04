@@ -35,10 +35,16 @@ end
 post_install do |project|
   project.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
+      # IPHONEOS_DEPLOYMENT_TARGET
       if version(config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']) < version('9.0')
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
       end
+      # EXCLUDED_ARCHS
       config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+      # ONLY_ACTIVE_ARCH
+      if config.name == 'Debug'
+        config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
+      end
     end
   end
 end
