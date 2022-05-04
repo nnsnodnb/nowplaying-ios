@@ -11,6 +11,7 @@ target 'NowPlaying' do
   pod 'IBLinter'
   pod 'LicensePlist'
   pod 'RxCocoa'
+  pod 'RxDataSources'
   pod 'RxRelay'
   pod 'RxSwift'
   pod 'SFSafeSymbols'

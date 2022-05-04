@@ -16,6 +16,15 @@
 		CF014042282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF014041282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift */; };
 		CF014044282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF014043282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift */; };
 		CF0140482821B02C0095FA76 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF0140472821B02C0095FA76 /* GoogleService-Info.plist */; };
+		CF01404B282274E60095FA76 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01404A282274E60095FA76 /* SettingViewModel.swift */; };
+		CF01404D282276550095FA76 /* SocialType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01404C282276540095FA76 /* SocialType.swift */; };
+		CF01405428227D150095FA76 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405228227D150095FA76 /* SettingTableViewCell.swift */; };
+		CF01405528227D150095FA76 /* SettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF01405328227D150095FA76 /* SettingTableViewCell.xib */; };
+		CF01405728227D490095FA76 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405628227D490095FA76 /* UITableView+Extension.swift */; };
+		CF01405928227D710095FA76 /* NSObject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405828227D710095FA76 /* NSObject+Extension.swift */; };
+		CF01405C28227E930095FA76 /* SettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405B28227E930095FA76 /* SettingRouter.swift */; };
+		CF01405E282280970095FA76 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405D282280970095FA76 /* URL+Extension.swift */; };
+		CF014062282286920095FA76 /* TestSettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF014061282286920095FA76 /* TestSettingRouter.swift */; };
 		CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2B0277E609F00A35837 /* Colors.xcassets */; };
 		CF43E2BD277E621300A35837 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2BC277E621300A35837 /* Assets.swift */; };
 		CF43E2C6277E700200A35837 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2C5277E700200A35837 /* Settings.bundle */; };
@@ -63,6 +72,15 @@
 		CF014041282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPlayViewModelArtworkScale.swift; sourceTree = "<group>"; };
 		CF014043282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPlayViewModelPlayPauseImage.swift; sourceTree = "<group>"; };
 		CF0140472821B02C0095FA76 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CF01404A282274E60095FA76 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
+		CF01404C282276540095FA76 /* SocialType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialType.swift; sourceTree = "<group>"; };
+		CF01405228227D150095FA76 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		CF01405328227D150095FA76 /* SettingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingTableViewCell.xib; sourceTree = "<group>"; };
+		CF01405628227D490095FA76 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		CF01405828227D710095FA76 /* NSObject+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Extension.swift"; sourceTree = "<group>"; };
+		CF01405B28227E930095FA76 /* SettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRouter.swift; sourceTree = "<group>"; };
+		CF01405D282280970095FA76 /* URL+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
+		CF014061282286920095FA76 /* TestSettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSettingRouter.swift; sourceTree = "<group>"; };
 		CF43E2B0277E609F00A35837 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		CF43E2B5277E616D00A35837 /* SwiftGenOutput.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = SwiftGenOutput.xcfilelist; sourceTree = "<group>"; };
 		CF43E2BC277E621300A35837 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = Generated/Assets.swift; sourceTree = "<group>"; };
@@ -120,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				CF014033282189E00095FA76 /* ViewModels */,
+				CF01405F282286720095FA76 /* Router */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -181,6 +200,63 @@
 				CF0140472821B02C0095FA76 /* GoogleService-Info.plist */,
 			);
 			path = Firebase;
+			sourceTree = "<group>";
+		};
+		CF014049282274D50095FA76 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				CF01404A282274E60095FA76 /* SettingViewModel.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		CF01404E28227CEA0095FA76 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CF01404F28227CF30095FA76 /* UITableViewCells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CF01404F28227CF30095FA76 /* UITableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				CF01405028227CFA0095FA76 /* Setting */,
+			);
+			path = UITableViewCells;
+			sourceTree = "<group>";
+		};
+		CF01405028227CFA0095FA76 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				CF01405228227D150095FA76 /* SettingTableViewCell.swift */,
+				CF01405328227D150095FA76 /* SettingTableViewCell.xib */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		CF01405A28227E890095FA76 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				CF01405B28227E930095FA76 /* SettingRouter.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		CF01405F282286720095FA76 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				CF014060282286760095FA76 /* Setting */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		CF014060282286760095FA76 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				CF014061282286920095FA76 /* TestSettingRouter.swift */,
+			);
+			path = Setting;
 			sourceTree = "<group>";
 		};
 		CF43E2AF277E608600A35837 /* Resources */ = {
@@ -247,6 +323,9 @@
 				CF43E2D1277E7B7700A35837 /* UIViewController+Extensions.swift */,
 				CF60C17C277F016C00F1177B /* MPMediaItemArtwork+Extensions.swift */,
 				CF60C191277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift */,
+				CF01405628227D490095FA76 /* UITableView+Extension.swift */,
+				CF01405828227D710095FA76 /* NSObject+Extension.swift */,
+				CF01405D282280970095FA76 /* URL+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -255,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				CF60C179277E81F400F1177B /* Play */,
+				CF014049282274D50095FA76 /* Setting */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -271,6 +351,7 @@
 			isa = PBXGroup;
 			children = (
 				CF60C17F277F01EA00F1177B /* Player */,
+				CF01405A28227E890095FA76 /* Setting */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -287,6 +368,7 @@
 			isa = PBXGroup;
 			children = (
 				CF60C185277F049F00F1177B /* MediaItem.swift */,
+				CF01404C282276540095FA76 /* SocialType.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -352,6 +434,7 @@
 				CFCC406C27786EB200937EDB /* ViewControllers */,
 				CF60C178277E81EB00F1177B /* ViewModels */,
 				CF60C17E277F01E200F1177B /* Routers */,
+				CF01404E28227CEA0095FA76 /* Views */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -495,6 +578,7 @@
 				CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */,
 				CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */,
 				CF43E2CC277E735F00A35837 /* PlayViewController.xib in Resources */,
+				CF01405528227D150095FA76 /* SettingTableViewCell.xib in Resources */,
 				CF43E2C6277E700200A35837 /* Settings.bundle in Resources */,
 				CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */,
 				CFCC407127786EC400937EDB /* MainViewController.xib in Resources */,
@@ -709,15 +793,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF60C17B277E81FD00F1177B /* PlayViewModel.swift in Sources */,
+				CF01405C28227E930095FA76 /* SettingRouter.swift in Sources */,
 				CF43E2CB277E735F00A35837 /* PlayViewController.swift in Sources */,
 				CFCC407027786EC400937EDB /* MainViewController.swift in Sources */,
 				CF43E2CF277E799800A35837 /* ViewControllerInjectable.swift in Sources */,
+				CF01405E282280970095FA76 /* URL+Extension.swift in Sources */,
 				CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */,
 				CF60C192277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift in Sources */,
 				CF60C181277F01F000F1177B /* PlayerRouter.swift in Sources */,
 				CF43E2D2277E7B7700A35837 /* UIViewController+Extensions.swift in Sources */,
+				CF01404D282276550095FA76 /* SocialType.swift in Sources */,
 				CF43E2BD277E621300A35837 /* Assets.swift in Sources */,
+				CF01405428227D150095FA76 /* SettingTableViewCell.swift in Sources */,
+				CF01405728227D490095FA76 /* UITableView+Extension.swift in Sources */,
 				CF60C17D277F016C00F1177B /* MPMediaItemArtwork+Extensions.swift in Sources */,
+				CF01404B282274E60095FA76 /* SettingViewModel.swift in Sources */,
+				CF01405928227D710095FA76 /* NSObject+Extension.swift in Sources */,
 				CF60C183277F024000F1177B /* Routable.swift in Sources */,
 				CF60C186277F049F00F1177B /* MediaItem.swift in Sources */,
 				CF60C18A277F05B100F1177B /* SettingViewController.swift in Sources */,
@@ -731,6 +822,7 @@
 			files = (
 				CF01403A28218A8E0095FA76 /* StubMusicPlayerController.swift in Sources */,
 				CF01403D28218B630095FA76 /* StubMediaItem.swift in Sources */,
+				CF014062282286920095FA76 /* TestSettingRouter.swift in Sources */,
 				CF01403628218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift in Sources */,
 				CF01404028218F8D0095FA76 /* UIColor+Extension.swift in Sources */,
 				CF014042282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift in Sources */,

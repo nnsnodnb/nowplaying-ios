@@ -30,8 +30,12 @@ final class PlayerRouter: PlayerRoutable {
         // 設定
         setting.asSignal()
             .emit(with: self, onNext: { strongSelf, _ in
-                let viewController = SettingViewController()
-                strongSelf.viewController?.present(viewController, animated: true)
+                let router = SettingRouter()
+                let viewModel = SettingViewModel(router: router)
+                let viewController = SettingViewController(dependency: viewModel)
+                router.inject(viewController)
+                let navi = UINavigationController(rootViewController: viewController)
+                strongSelf.viewController?.present(navi, animated: true)
             })
             .disposed(by: disposeBag)
         // Mastodon
