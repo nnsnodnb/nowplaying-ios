@@ -11,8 +11,7 @@ import RxSwift
 
 protocol SettingViewModelInputs: AnyObject {
     var dismiss: PublishRelay<Void> { get }
-    var twitter: PublishRelay<Void> { get }
-    var mastodon: PublishRelay<Void> { get }
+    var item: PublishRelay<SettingViewController.Item> { get }
 }
 
 protocol SettingViewModelOutputs: AnyObject {
@@ -27,8 +26,7 @@ protocol SettingViewModelType: AnyObject {
 final class SettingViewModel: SettingViewModelType {
     // MARK: - Inputs Sources
     let dismiss: PublishRelay<Void> = .init()
-    let twitter: PublishRelay<Void> = .init()
-    let mastodon: PublishRelay<Void> = .init()
+    let item: PublishRelay<SettingViewController.Item> = .init()
     // MARK: - Outputs Sources
     let dataSource: Driver<[SettingViewController.SectionModel]>
     // MARK: - Properties
@@ -36,6 +34,7 @@ final class SettingViewModel: SettingViewModelType {
     var outputs: SettingViewModelOutputs { return self }
 
     private let disposeBag = DisposeBag()
+    private let router: SettingRoutable
 
     // MARK: - Initialize
     init(router: SettingRoutable) {
@@ -58,18 +57,51 @@ final class SettingViewModel: SettingViewModelType {
                 ]
             )
         ])
+        self.router = router
 
         // 閉じる
         dismiss
             .bind(to: router.dismiss)
             .disposed(by: disposeBag)
+        let socialType = item.asObservable()
+            .compactMap { item -> SocialType? in
+                guard case let .socialType(socialType) = item else { return nil }
+                return socialType
+            }
+            .share(replay: 1)
         // Twitter設定
-        twitter
+        socialType
+            .filter { $0 == .twitter }
+            .map { _ in }
             .bind(to: router.twitter)
             .disposed(by: disposeBag)
         // Mastodon設定
-        mastodon
+        socialType
+            .filter { $0 == .mastodon }
+            .map { _ in }
             .bind(to: router.mastodon)
+            .disposed(by: disposeBag)
+        // リンク
+        item.asObservable()
+            .compactMap { item -> SettingViewController.Link? in
+                guard case let .link(link) = item else { return nil }
+                return link
+            }
+            .map { $0.url }
+            .bind(to: router.safari)
+            .disposed(by: disposeBag)
+        // 広告削除
+        item.asObservable()
+            .filter { $0 == .removeAdMob }
+            .subscribe(onNext: { _ in
+                // TODO: StoreKit
+            })
+            .disposed(by: disposeBag)
+        // レビュー
+        item.asObservable()
+            .filter { $0 == .review }
+            .map { _ in }
+            .bind(to: router.appStore)
             .disposed(by: disposeBag)
     }
 }

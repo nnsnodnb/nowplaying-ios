@@ -13,6 +13,8 @@ protocol SettingRoutable: Routable {
     var dismiss: PublishRelay<Void> { get }
     var twitter: PublishRelay<Void> { get }
     var mastodon: PublishRelay<Void> { get }
+    var safari: PublishRelay<URL> { get }
+    var appStore: PublishRelay<Void> { get }
 }
 
 final class SettingRouter: SettingRoutable {
@@ -22,6 +24,8 @@ final class SettingRouter: SettingRoutable {
     let dismiss: PublishRelay<Void> = .init()
     let twitter: PublishRelay<Void> = .init()
     let mastodon: PublishRelay<Void> = .init()
+    let safari: PublishRelay<URL> = .init()
+    let appStore: PublishRelay<Void> = .init()
 
     private let disposeBag = DisposeBag()
 
@@ -43,6 +47,19 @@ final class SettingRouter: SettingRoutable {
         mastodon.asSignal()
             .emit(with: self, onNext: { strongSelf, _ in
                 // TODO: 画面遷移
+            })
+            .disposed(by: disposeBag)
+        // SFSafariViewController
+        safari.asSignal()
+            .emit(with: self, onNext: { strongSelf, url in
+                strongSelf.viewController?.presentSafariViewController(url: url)
+            })
+            .disposed(by: disposeBag)
+        // AppStore
+        appStore.asSignal()
+            .emit(with: self, onNext: { strongSelf, _ in
+                let url = URL(string: "\(URL.appStore.absoluteString)&action=write-review")!
+                strongSelf.viewController?.presentSafariViewController(url: url)
             })
             .disposed(by: disposeBag)
     }

@@ -75,25 +75,7 @@ private extension SettingViewController {
             .disposed(by: disposeBag)
         // UITableView
         tableView.rx.modelSelected(Item.self).asSignal()
-            .emit(with: self, onNext: { strongSelf, item in
-                switch item {
-                case let .socialType(socialType):
-                    switch socialType {
-                    case .twitter:
-                        viewModel.inputs.twitter.accept(())
-                    case .mastodon:
-                        viewModel.inputs.mastodon.accept(())
-                    }
-                case let .link(link):
-                    strongSelf.presentSafariViewController(url: link.url)
-                case .removeAdMob:
-                    // TODO: StoreKit
-                    break
-                case .review:
-                    let url = URL(string: "\(URL.appStore.absoluteString)&action=write-review")!
-                    strongSelf.presentSafariViewController(url: url)
-                }
-            })
+            .emit(to: viewModel.inputs.item)
             .disposed(by: disposeBag)
         tableView.rx.itemSelected.asSignal()
             .emit(with: self, onNext: { strongSelf, indexPath in
