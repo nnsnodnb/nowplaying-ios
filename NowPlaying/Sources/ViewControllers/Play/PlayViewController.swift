@@ -19,7 +19,7 @@ final class PlayViewController: UIViewController {
 
     @IBOutlet private var coverImageView: UIImageView! {
         didSet {
-            coverImageView.layer.shadowColor = Asset.Colors.shadow.color.cgColor
+            coverImageView.layer.shadowColor = Asset.Colors.shadowMain.color.cgColor
             coverImageView.layer.shadowOffset = .zero
             coverImageView.layer.shadowRadius = 20
             coverImageView.layer.shadowOpacity = 0.5
@@ -85,7 +85,7 @@ final class PlayViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle else { return }
-        coverImageView.layer.shadowColor = Asset.Colors.shadow.color.cgColor
+        coverImageView.layer.shadowColor = Asset.Colors.shadowMain.color.cgColor
     }
 }
 

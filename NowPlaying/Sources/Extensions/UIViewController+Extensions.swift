@@ -5,14 +5,9 @@
 //  Created by Yuya Oka on 2021/12/31.
 //
 
+import SafariServices
 import SnapKit
 import UIKit
-
-extension UIViewController {
-    static var className: String {
-        return NSStringFromClass(self).components(separatedBy: ".").last!
-    }
-}
 
 extension UIViewController {
     func addContainerViewController(_ viewController: UIViewController, to targetView: UIView) {
@@ -29,5 +24,17 @@ extension UIViewController {
         willMove(toParent: nil)
         view.removeFromSuperview()
         removeFromParent()
+    }
+}
+
+extension UIViewController {
+    func presentSafariViewController(url: URL) {
+        if url.scheme == "https" || url.scheme == "http" {
+            let safari = SFSafariViewController(url: url)
+            safari.dismissButtonStyle = .close
+            present(safari, animated: true)
+            return
+        }
+        UIApplication.shared.open(url)
     }
 }
