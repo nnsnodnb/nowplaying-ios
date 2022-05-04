@@ -40,7 +40,11 @@ final class SettingRouter: SettingRoutable {
         // Twitter設定
         twitter.asSignal()
             .emit(with: self, onNext: { strongSelf, _ in
-                // TODO: 画面遷移
+                let router = TwitterSettingRouter()
+                let viewModel = TwitterSettingViewModel(router: router)
+                let viewController = TwitterSettingViewController(dependency: viewModel)
+                router.inject(viewController)
+                strongSelf.viewController?.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         // Mastodon設定
