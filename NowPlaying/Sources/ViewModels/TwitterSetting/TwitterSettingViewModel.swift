@@ -11,6 +11,7 @@ protocol TwitterSettingViewModelInputs: AnyObject {
 }
 
 protocol TwitterSettingViewModelOutputs: AnyObject {
+    var dataSource: [TwitterSettingViewController.SectionModel] { get }
 }
 
 protocol TwitterSettingViewModelType: AnyObject {
@@ -21,6 +22,7 @@ protocol TwitterSettingViewModelType: AnyObject {
 final class TwitterSettingViewModel: TwitterSettingViewModelType {
     // MARK: - Inputs Sources
     // MARK: - Outputs Sources
+    let dataSource: [TwitterSettingViewController.SectionModel]
     // MARK: - Properties
     var inputs: TwitterSettingViewModelInputs { return self }
     var outputs: TwitterSettingViewModelOutputs { return self }
@@ -29,6 +31,24 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
 
     // MARK: - Initialize
     init(router: TwitterSettingRoutable) {
+        self.dataSource = [
+            .init(
+                model: .twitter,
+                items: [
+                    .detail(.accounts),
+                    .toggle(.attachImage),
+                    .selection(.attachmentType),
+                    .toggle(.auto)
+                ]
+            ),
+            .init(
+                model: .format,
+                items: [
+                    .textView,
+                    .button(.reset)
+                ]
+            )
+        ]
         self.router = router
     }
 }

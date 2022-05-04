@@ -7,8 +7,8 @@
 
 import RxDataSources
 import RxSwift
+import SFSafeSymbols
 import UIKit
-import UniformTypeIdentifiers
 
 final class SettingViewController: UIViewController {
     // MARK: - Dependency
@@ -121,7 +121,7 @@ extension SettingViewController {
 
 // MARK: - Item
 extension SettingViewController {
-    enum Item: Equatable, IdentifiableType {
+    enum Item: Equatable, IdentifiableType, SettingTableViewCellItemType {
         case socialType(SocialType)
         case link(Link)
         case removeAdMob
@@ -155,6 +155,26 @@ extension SettingViewController {
                 return "アプリ内広告削除(有料)"
             case .review:
                 return "レビューする"
+            }
+        }
+        var image: UIImage? {
+            switch self {
+            case let .socialType(socialType):
+                return socialType.image
+            case let .link(link):
+                switch link {
+                case .developer:
+                    return .init(systemSymbol: .personFill).withTintColor(.systemIndigo, renderingMode: .alwaysOriginal)
+                case .github:
+                    return Asset.Assets.icGithub.image
+                case .contact:
+                    return .init(systemSymbol: .exclamationmarkBubbleFill).withTintColor(.systemGreen,
+                                                                                         renderingMode: .alwaysOriginal)
+                }
+            case .removeAdMob:
+                return Asset.Assets.icPackage.image
+            case .review:
+                return .init(systemSymbol: .pencilCircleFill).withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
             }
         }
     }

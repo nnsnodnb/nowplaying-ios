@@ -8,6 +8,11 @@
 import SFSafeSymbols
 import UIKit
 
+protocol SettingTableViewCellItemType {
+    var image: UIImage? { get }
+    var title: String { get }
+}
+
 final class SettingTableViewCell: UITableViewCell {
     // MARK: - Properties
     @IBOutlet private var iconImageView: UIImageView!
@@ -19,28 +24,10 @@ final class SettingTableViewCell: UITableViewCell {
         iconImageView.image = nil
     }
 
-    func configure(item: SettingViewController.Item) {
+    func configure(item: SettingTableViewCellItemType) {
         // 画像
-        let image: UIImage
-        switch item {
-        case let .socialType(socialType):
-            image = socialType.image
-        case let .link(link):
-            switch link {
-            case .developer:
-                image = .init(systemSymbol: .personFill).withTintColor(.systemIndigo, renderingMode: .alwaysOriginal)
-            case .github:
-                image = Asset.Assets.icGithub.image
-            case .contact:
-                image = .init(systemSymbol: .exclamationmarkBubbleFill).withTintColor(.systemGreen,
-                                                                                      renderingMode: .alwaysOriginal)
-            }
-        case .removeAdMob:
-            image = Asset.Assets.icPackage.image
-        case .review:
-            image = .init(systemSymbol: .pencilCircleFill).withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
-        }
-        iconImageView.image = image
+        iconImageView.isHidden = item.image == nil
+        iconImageView.image = item.image
         // テキスト
         titleLabel.text = item.title
     }
