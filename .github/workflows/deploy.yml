@@ -39,7 +39,7 @@ jobs:
         brew install imagemagick
 
     - name: Setup GoogleService-Info.plist
-      uses: DamianReeves/write-file-action@v1.0
+      uses: DamianReeves/write-file-action@v1.1
       with:
         path: NowPlaying/Resources/Firebase/GoogleService-Info.plist
         contents: |
@@ -85,7 +85,7 @@ jobs:
         tar -xf /tmp/nowplaying-product/Products.tar
 
     - name: Seup app-distribution.json
-      uses: DamianReeves/write-file-action@v1.0
+      uses: DamianReeves/write-file-action@v1.1
       with:
         path: /tmp/app-distribution.json
         contents: |
