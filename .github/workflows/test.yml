@@ -43,7 +43,7 @@ jobs:
       run: bundle exec pod install
 
     - name: Setup GoogleService-Info.plist
-      uses: DamianReeves/write-file-action@v1.0
+      uses: DamianReeves/write-file-action@v1.1
       with:
         path: NowPlaying/Resources/Firebase/GoogleService-Info.plist
         contents: |
