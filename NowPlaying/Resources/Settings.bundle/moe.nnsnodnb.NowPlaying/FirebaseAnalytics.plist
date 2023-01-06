@@ -6,7 +6,9 @@
 	<array>
 		<dict>
 			<key>FooterText</key>
-			<string>Copyright 2021 Google</string>
+			<string>Copyright 2022 Google</string>
+			<key>License</key>
+			<string>unknown</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
