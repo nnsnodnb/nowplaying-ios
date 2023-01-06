@@ -5,7 +5,7 @@ platform :ios do
   desc "Run test"
   lane :test do
     scan(
-      devices: ["iPhone 13 Pro (15.4)"],
+      devices: ["iPhone 14 Pro (16.2)"],
       result_bundle: true,
     )
   end

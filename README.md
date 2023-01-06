@@ -2,8 +2,8 @@
 
 ## Environment
 
-- Xcode 13.3.1
-- Ruby 3.0.3 or later
+- Xcode 14.2
+- Ruby 3.1.3 or later
 
 ## Setup
 
