@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,7 +28,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_music" translatesAutoresizingMaskIntoConstraints="NO" id="hQk-D4-a1j">
-                    <rect key="frame" x="56" y="80" width="302" height="302"/>
+                    <rect key="frame" x="56" y="84" width="302" height="302"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="hQk-D4-a1j" secondAttribute="height" multiplier="1:1" id="lk3-9b-wmO"/>
                     </constraints>
@@ -40,7 +39,7 @@
                     </userDefinedRuntimeAttributes>
                 </imageView>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dfF-u4-Zba">
-                    <rect key="frame" x="56" y="410" width="302" height="80"/>
+                    <rect key="frame" x="56" y="414" width="302" height="80"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ccL-cq-6gt" customClass="ScrollFlowLabel" customModule="ScrollFlowLabel">
                             <rect key="frame" x="0.0" y="0.0" width="302" height="40"/>
@@ -98,17 +97,17 @@
                     <state key="normal" image="ic_gear"/>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cPV-yO-10a">
-                    <rect key="frame" x="32" y="522" width="350" height="200"/>
+                    <rect key="frame" x="32" y="526" width="350" height="196"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQA-cW-baF">
-                            <rect key="frame" x="0.0" y="77.5" width="74" height="45.5"/>
+                            <rect key="frame" x="0.0" y="75.5" width="74" height="45.5"/>
                             <color key="tintColor" systemColor="labelColor"/>
                             <state key="normal" image="backward.fill" catalog="system">
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="50"/>
                             </state>
                         </button>
                         <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qMi-NZ-cvB">
-                            <rect key="frame" x="141" y="66" width="68" height="68"/>
+                            <rect key="frame" x="141" y="64" width="68" height="68"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="qMi-NZ-cvB" secondAttribute="height" multiplier="1:1" id="fYr-Vb-t1n"/>
                             </constraints>
@@ -118,7 +117,7 @@
                             </state>
                         </button>
                         <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crR-aX-F7g">
-                            <rect key="frame" x="276" y="77.5" width="74" height="45.5"/>
+                            <rect key="frame" x="276" y="75.5" width="74" height="45.5"/>
                             <color key="tintColor" systemColor="labelColor"/>
                             <state key="normal" image="forward.fill" catalog="system">
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="50"/>
@@ -151,20 +150,16 @@
             <point key="canvasLocation" x="34.5" y="53"/>
         </view>
     </objects>
-    <designables>
-        <designable name="7Tl-1g-kSO"/>
-        <designable name="ccL-cq-6gt"/>
-    </designables>
     <resources>
-        <image name="backward.fill" catalog="system" width="128" height="79"/>
-        <image name="forward.fill" catalog="system" width="128" height="79"/>
+        <image name="backward.fill" catalog="system" width="128" height="77"/>
+        <image name="forward.fill" catalog="system" width="128" height="77"/>
         <image name="ic_gear" width="128" height="124"/>
         <image name="ic_mastodon" width="50" height="54"/>
         <image name="ic_music" width="50" height="51"/>
         <image name="ic_twitter" width="248" height="204"/>
-        <image name="play.fill" catalog="system" width="116" height="128"/>
+        <image name="play.fill" catalog="system" width="117" height="128"/>
         <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
