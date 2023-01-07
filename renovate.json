@@ -5,5 +5,29 @@
   ],
   "enabledManagers": [
     "cocoapods"
+  ],
+  "packageRules": [
+    {
+      "groupName": "ReactiveX",
+      "managers": [
+        "cocoapods"
+      ],
+      "packageNames": [
+        "RxCocoa",
+        "RxSwift",
+        "RxRelay",
+        "RxTest"
+      ]
+    },
+    {
+      "groupName": "Firebase-Apple-SDK",
+      "managers": [
+        "cocoapods"
+      ],
+      "packageNames": [
+        "FirebaseAnalytics",
+        "FirebaseCrashlytics"
+      ]
+    }
   ]
 }
