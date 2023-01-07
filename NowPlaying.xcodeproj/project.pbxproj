@@ -65,6 +65,8 @@
 		CFC37BAD29699A0900A5C1AA /* SettingProviderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFC37BAB29699A0900A5C1AA /* SettingProviderViewController.xib */; };
 		CFC37BB129699A3D00A5C1AA /* SettingProviderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BB029699A3D00A5C1AA /* SettingProviderViewModel.swift */; };
 		CFC37BB329699AA600A5C1AA /* SettingProviderRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BB229699AA600A5C1AA /* SettingProviderRouter.swift */; };
+		CFC37BB62969A28800A5C1AA /* StubSettingProviderRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BB52969A28800A5C1AA /* StubSettingProviderRouter.swift */; };
+		CFC37BBA2969A35400A5C1AA /* TestSettingProviderViewModelTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BB92969A35400A5C1AA /* TestSettingProviderViewModelTitle.swift */; };
 		CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC403B27786D4D00937EDB /* AppDelegate.swift */; };
 		CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404427786D4D00937EDB /* Assets.xcassets */; };
 		CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */; };
@@ -149,6 +151,8 @@
 		CFC37BAB29699A0900A5C1AA /* SettingProviderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingProviderViewController.xib; sourceTree = "<group>"; };
 		CFC37BB029699A3D00A5C1AA /* SettingProviderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingProviderViewModel.swift; sourceTree = "<group>"; };
 		CFC37BB229699AA600A5C1AA /* SettingProviderRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingProviderRouter.swift; sourceTree = "<group>"; };
+		CFC37BB52969A28800A5C1AA /* StubSettingProviderRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubSettingProviderRouter.swift; sourceTree = "<group>"; };
+		CFC37BB92969A35400A5C1AA /* TestSettingProviderViewModelTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSettingProviderViewModelTitle.swift; sourceTree = "<group>"; };
 		CFCC403827786D4D00937EDB /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFCC403B27786D4D00937EDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFCC404427786D4D00937EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -195,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				CF014034282189E50095FA76 /* Play */,
+				CFC37BB72969A33B00A5C1AA /* Setting */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -520,6 +525,7 @@
 			isa = PBXGroup;
 			children = (
 				CFC37B99296904FF00A5C1AA /* StubSettingRouter.swift */,
+				CFC37BB42969A27F00A5C1AA /* Provider */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -545,6 +551,30 @@
 			isa = PBXGroup;
 			children = (
 				CFC37BB229699AA600A5C1AA /* SettingProviderRouter.swift */,
+			);
+			path = Provider;
+			sourceTree = "<group>";
+		};
+		CFC37BB42969A27F00A5C1AA /* Provider */ = {
+			isa = PBXGroup;
+			children = (
+				CFC37BB52969A28800A5C1AA /* StubSettingProviderRouter.swift */,
+			);
+			path = Provider;
+			sourceTree = "<group>";
+		};
+		CFC37BB72969A33B00A5C1AA /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				CFC37BB82969A33F00A5C1AA /* Provider */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		CFC37BB82969A33F00A5C1AA /* Provider */ = {
+			isa = PBXGroup;
+			children = (
+				CFC37BB92969A35400A5C1AA /* TestSettingProviderViewModelTitle.swift */,
 			);
 			path = Provider;
 			sourceTree = "<group>";
@@ -1014,6 +1044,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFC37BBA2969A35400A5C1AA /* TestSettingProviderViewModelTitle.swift in Sources */,
+				CFC37BB62969A28800A5C1AA /* StubSettingProviderRouter.swift in Sources */,
 				CF01403A28218A8E0095FA76 /* StubMusicPlayerController.swift in Sources */,
 				CF01403D28218B630095FA76 /* StubMediaItem.swift in Sources */,
 				CF014062282286920095FA76 /* TestSettingRouter.swift in Sources */,
