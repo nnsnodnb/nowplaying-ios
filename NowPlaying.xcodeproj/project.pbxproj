@@ -68,6 +68,10 @@
 		CFC37BB62969A28800A5C1AA /* StubSettingProviderRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BB52969A28800A5C1AA /* StubSettingProviderRouter.swift */; };
 		CFC37BBA2969A35400A5C1AA /* TestSettingProviderViewModelTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BB92969A35400A5C1AA /* TestSettingProviderViewModelTitle.swift */; };
 		CFC37BBC2969A4DB00A5C1AA /* TestSettingProviderViewModelDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BBB2969A4DB00A5C1AA /* TestSettingProviderViewModelDataSource.swift */; };
+		CFC37BBF2969A8C300A5C1AA /* StubEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BBE2969A8C300A5C1AA /* StubEnvironment.swift */; };
+		CFC37BC22969A92D00A5C1AA /* StubUIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BC12969A92D00A5C1AA /* StubUIApplication.swift */; };
+		CFC37BC42969A94C00A5C1AA /* StubUIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BC32969A94C00A5C1AA /* StubUIScreen.swift */; };
+		CFC37BC62969A97600A5C1AA /* StubUIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BC52969A97600A5C1AA /* StubUIWindow.swift */; };
 		CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC403B27786D4D00937EDB /* AppDelegate.swift */; };
 		CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404427786D4D00937EDB /* Assets.xcassets */; };
 		CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */; };
@@ -155,6 +159,10 @@
 		CFC37BB52969A28800A5C1AA /* StubSettingProviderRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubSettingProviderRouter.swift; sourceTree = "<group>"; };
 		CFC37BB92969A35400A5C1AA /* TestSettingProviderViewModelTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSettingProviderViewModelTitle.swift; sourceTree = "<group>"; };
 		CFC37BBB2969A4DB00A5C1AA /* TestSettingProviderViewModelDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSettingProviderViewModelDataSource.swift; sourceTree = "<group>"; };
+		CFC37BBE2969A8C300A5C1AA /* StubEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubEnvironment.swift; sourceTree = "<group>"; };
+		CFC37BC12969A92D00A5C1AA /* StubUIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubUIApplication.swift; sourceTree = "<group>"; };
+		CFC37BC32969A94C00A5C1AA /* StubUIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubUIScreen.swift; sourceTree = "<group>"; };
+		CFC37BC52969A97600A5C1AA /* StubUIWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubUIWindow.swift; sourceTree = "<group>"; };
 		CFCC403827786D4D00937EDB /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFCC403B27786D4D00937EDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFCC404427786D4D00937EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -220,6 +228,8 @@
 			isa = PBXGroup;
 			children = (
 				CF01403828218A870095FA76 /* MediaPlayer */,
+				CFC37BC02969A92400A5C1AA /* UIKit */,
+				CFC37BBD2969A8BA00A5C1AA /* Environments */,
 				CF01403B28218B540095FA76 /* Entities */,
 				CFC37B942969046700A5C1AA /* Routers */,
 			);
@@ -580,6 +590,24 @@
 				CFC37BBB2969A4DB00A5C1AA /* TestSettingProviderViewModelDataSource.swift */,
 			);
 			path = Provider;
+			sourceTree = "<group>";
+		};
+		CFC37BBD2969A8BA00A5C1AA /* Environments */ = {
+			isa = PBXGroup;
+			children = (
+				CFC37BBE2969A8C300A5C1AA /* StubEnvironment.swift */,
+			);
+			path = Environments;
+			sourceTree = "<group>";
+		};
+		CFC37BC02969A92400A5C1AA /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				CFC37BC12969A92D00A5C1AA /* StubUIApplication.swift */,
+				CFC37BC32969A94C00A5C1AA /* StubUIScreen.swift */,
+				CFC37BC52969A97600A5C1AA /* StubUIWindow.swift */,
+			);
+			path = UIKit;
 			sourceTree = "<group>";
 		};
 		CFCC402F27786D4D00937EDB = {
@@ -1048,7 +1076,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFC37BBA2969A35400A5C1AA /* TestSettingProviderViewModelTitle.swift in Sources */,
+				CFC37BC62969A97600A5C1AA /* StubUIWindow.swift in Sources */,
 				CFC37BB62969A28800A5C1AA /* StubSettingProviderRouter.swift in Sources */,
+				CFC37BBF2969A8C300A5C1AA /* StubEnvironment.swift in Sources */,
 				CF01403A28218A8E0095FA76 /* StubMusicPlayerController.swift in Sources */,
 				CF01403D28218B630095FA76 /* StubMediaItem.swift in Sources */,
 				CF014062282286920095FA76 /* TestSettingRouter.swift in Sources */,
@@ -1056,6 +1086,8 @@
 				CF01404028218F8D0095FA76 /* UIColor+Extension.swift in Sources */,
 				CFC37BBC2969A4DB00A5C1AA /* TestSettingProviderViewModelDataSource.swift in Sources */,
 				CFC37B9A296904FF00A5C1AA /* StubSettingRouter.swift in Sources */,
+				CFC37BC42969A94C00A5C1AA /* StubUIScreen.swift in Sources */,
+				CFC37BC22969A92D00A5C1AA /* StubUIApplication.swift in Sources */,
 				CFC37B972969047C00A5C1AA /* StubPlayerRouter.swift in Sources */,
 				CF014042282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift in Sources */,
 				CF014044282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift in Sources */,

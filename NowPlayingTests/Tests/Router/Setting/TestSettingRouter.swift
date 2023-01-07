@@ -14,22 +14,25 @@ final class TestSettingRouter: XCTestCase {
     // MARK: - Properties
     var disposeBag: DisposeBag!
     var testScheduler: TestScheduler!
+    var environment: EnvironmentProtocol!
 
     // MARK: - Life Cycle
     override func setUp() {
         super.setUp()
         disposeBag = .init()
         testScheduler = .init(initialClock: 0)
+        environment = StubEnvironment.stub
     }
 
     override func tearDown() {
         super.tearDown()
         disposeBag = nil
         testScheduler = nil
+        environment = nil
     }
 
     func testTwitterの取得() {
-        let router = StubSettingRouter()
+        let router = SettingRouter(environment: environment)
         let viewModel = SettingViewModel(router: router)
         let observer = testScheduler.createObserver(Void.self)
 
@@ -42,7 +45,7 @@ final class TestSettingRouter: XCTestCase {
     }
 
     func testMastodonの取得() {
-        let router = StubSettingRouter()
+        let router = SettingRouter(environment: environment)
         let viewModel = SettingViewModel(router: router)
         let observer = testScheduler.createObserver(Void.self)
 
@@ -55,7 +58,7 @@ final class TestSettingRouter: XCTestCase {
     }
 
     func testSafariの取得() {
-        let router = StubSettingRouter()
+        let router = SettingRouter(environment: environment)
         let viewModel = SettingViewModel(router: router)
         let observer = testScheduler.createObserver(URL.self)
 
@@ -67,7 +70,7 @@ final class TestSettingRouter: XCTestCase {
     }
 
     func testAppStoreの取得() {
-        let router = StubSettingRouter()
+        let router = SettingRouter(environment: environment)
         let viewModel = SettingViewModel(router: router)
         let observer = testScheduler.createObserver(Void.self)
 
