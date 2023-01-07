@@ -536,8 +536,8 @@
 		CFC37B942969046700A5C1AA /* Routers */ = {
 			isa = PBXGroup;
 			children = (
-				CFC37B98296904F800A5C1AA /* Setting */,
 				CFC37B952969047500A5C1AA /* Player */,
+				CFC37B98296904F800A5C1AA /* Setting */,
 			);
 			path = Routers;
 			sourceTree = "<group>";

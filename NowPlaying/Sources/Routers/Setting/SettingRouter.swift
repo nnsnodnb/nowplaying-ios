@@ -54,7 +54,12 @@ final class SettingRouter: NSObject, SettingRoutable {
         // Mastodon設定
         mastodon.asSignal()
             .emit(with: self, onNext: { strongSelf, _ in
-                // TODO: 画面遷移
+                let router = MastodonSettingRouter(environment: strongSelf.environment)
+                let viewModel = MastodonSettingViewModel(router: router)
+                let viewController = MastodonSettingViewController(dependency: viewModel, environment: strongSelf.environment)
+                router.inject(viewController)
+                strongSelf.viewController?.navigationController?.presentationController?.delegate = strongSelf
+                strongSelf.viewController?.navigationController?.pushViewController(viewController, animated: true)
             })
             .disposed(by: disposeBag)
         // SFSafariViewController
@@ -80,7 +85,7 @@ final class SettingRouter: NSObject, SettingRoutable {
 // MARK: - UIAdaptivePresentationControllerDelegate
 extension SettingRouter: UIAdaptivePresentationControllerDelegate {
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
-        guard let viewController = viewController,
+        guard let viewController,
               let children = viewController.navigationController?.children else { return true }
         return children == [viewController]
     }
