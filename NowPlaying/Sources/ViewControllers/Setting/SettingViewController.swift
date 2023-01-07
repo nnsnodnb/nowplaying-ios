@@ -16,6 +16,7 @@ final class SettingViewController: UIViewController {
 
     // MARK: - Life Cycle
     private let viewModel: SettingViewModelType
+    private let environment: EnvironmentProtocol
     private let disposeBag = DisposeBag()
 
     @IBOutlet private var tableView: UITableView! {
@@ -48,8 +49,9 @@ final class SettingViewController: UIViewController {
     }()
 
     // MARK: - Initialize
-    init(dependency: Dependency) {
+    init(dependency: Dependency, environment: EnvironmentProtocol) {
         self.viewModel = dependency
+        self.environment = environment
         super.init(nibName: Self.className, bundle: .main)
     }
 

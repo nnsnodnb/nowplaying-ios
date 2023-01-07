@@ -23,16 +23,18 @@ final class PlayerRouter: PlayerRoutable {
     let mastodon: PublishRelay<MediaItem> = .init()
     let twitter: PublishRelay<MediaItem> = .init()
 
+    private let environment: EnvironmentProtocol
     private let disposeBag = DisposeBag()
 
     // MARK: - Initialize
-    init() {
+    init(environment: EnvironmentProtocol) {
+        self.environment = environment
         // 設定
         setting.asSignal()
             .emit(with: self, onNext: { strongSelf, _ in
-                let router = SettingRouter()
+                let router = SettingRouter(environment: strongSelf.environment)
                 let viewModel = SettingViewModel(router: router)
-                let viewController = SettingViewController(dependency: viewModel)
+                let viewController = SettingViewController(dependency: viewModel, environment: strongSelf.environment)
                 router.inject(viewController)
                 let navi = UINavigationController(rootViewController: viewController)
                 strongSelf.viewController?.present(navi, animated: true)
