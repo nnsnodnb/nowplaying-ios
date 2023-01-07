@@ -9,6 +9,7 @@ target 'NowPlaying' do
   pod 'FirebaseAnalytics'
   pod 'FirebaseCrashlytics'
   pod 'IBLinter'
+  pod 'KRProgressHUD'
   pod 'LicensePlist'
   pod 'RxCocoa'
   pod 'RxDataSources'
