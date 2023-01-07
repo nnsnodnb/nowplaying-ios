@@ -26,14 +26,15 @@ final class TwitterSettingViewController: UIViewController {
             tableView.register(SettingSelectionTableViewCell.self)
             tableView.register(SettingTextViewTableViewCell.self)
             tableView.register(SettingButtonTableViewCell.self)
+            tableView.register(SettingProviderFooterNoteTableViewCell.self)
             tableView.delegate = self
-            tableView.tableFooterView = .init() // FIXME: フッターノート
+            tableView.tableFooterView = .init()
         }
     }
 
     private lazy var dataSource: DataSource = {
         return .init(
-            configureCell: { _, tableView, indexPath, item in
+            configureCell: { [weak self] _, tableView, indexPath, item in
                 switch item {
                 case let .detail(detail):
                     let cell = tableView.dequeueReusableCell(with: SettingTableViewCell.self, for: indexPath)
@@ -54,6 +55,11 @@ final class TwitterSettingViewController: UIViewController {
                 case let .button(button):
                     let cell = tableView.dequeueReusableCell(with: SettingButtonTableViewCell.self, for: indexPath)
                     cell.configure(button: button)
+                    return cell
+                case .footerNote:
+                    let cell = tableView.dequeueReusableCell(with: SettingProviderFooterNoteTableViewCell.self, for: indexPath)
+                    cell.configure()
+                    cell.delegate = self
                     return cell
                 }
             },
@@ -105,7 +111,16 @@ extension TwitterSettingViewController: UITableViewDelegate {
             return 44
         case .textView:
             return 132
+        case .footerNote:
+            return SettingProviderFooterNoteTableViewCell.height
         }
+    }
+}
+
+// MARK: - SettingProviderFooterNoteTableViewCellDelegate
+extension TwitterSettingViewController: SettingProviderFooterNoteTableViewCellDelegate {
+    func settingProviderFooterNoteTableViewCellDidCopy() {
+        // TODO: 「コピーしました」表示
     }
 }
 
@@ -124,14 +139,17 @@ extension TwitterSettingViewController {
     enum Section: String {
         case twitter
         case format
+        case footer
 
         // MARK: - Properties
-        var title: String {
+        var title: String? {
             switch self {
             case .twitter:
                 return "Twitter"
             case .format:
                 return "自動フォーマット"
+            case .footer:
+                return nil
             }
         }
     }
@@ -145,6 +163,7 @@ extension TwitterSettingViewController {
         case selection(Selection)
         case textView
         case button(Button)
+        case footerNote
 
         // MARK: - Properties
         var title: String {
@@ -159,6 +178,8 @@ extension TwitterSettingViewController {
                 return "textView"
             case let .button(button):
                 return button.title
+            case .footerNote:
+                return "footerNote"
             }
         }
         var image: UIImage? {

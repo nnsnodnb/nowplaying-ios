@@ -47,6 +47,12 @@ final class TwitterSettingViewModel: TwitterSettingViewModelType {
                     .textView,
                     .button(.reset)
                 ]
+            ),
+            .init(
+                model: .footer,
+                items: [
+                    .footerNote
+                ]
             )
         ]
         self.router = router

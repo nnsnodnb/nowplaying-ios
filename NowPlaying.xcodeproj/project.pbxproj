@@ -37,6 +37,8 @@
 		CF01407D2822C5210095FA76 /* SettingTextViewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF01407B2822C5210095FA76 /* SettingTextViewTableViewCell.xib */; };
 		CF0140812822C64E0095FA76 /* SettingButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01407F2822C64E0095FA76 /* SettingButtonTableViewCell.swift */; };
 		CF0140822822C64E0095FA76 /* SettingButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0140802822C64E0095FA76 /* SettingButtonTableViewCell.xib */; };
+		CF3967622968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3967602968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift */; };
+		CF3967632968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF3967612968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib */; };
 		CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2B0277E609F00A35837 /* Colors.xcassets */; };
 		CF43E2BD277E621300A35837 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2BC277E621300A35837 /* Assets.swift */; };
 		CF43E2C6277E700200A35837 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2C5277E700200A35837 /* Settings.bundle */; };
@@ -105,6 +107,8 @@
 		CF01407B2822C5210095FA76 /* SettingTextViewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingTextViewTableViewCell.xib; sourceTree = "<group>"; };
 		CF01407F2822C64E0095FA76 /* SettingButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingButtonTableViewCell.swift; sourceTree = "<group>"; };
 		CF0140802822C64E0095FA76 /* SettingButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingButtonTableViewCell.xib; sourceTree = "<group>"; };
+		CF3967602968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingProviderFooterNoteTableViewCell.swift; sourceTree = "<group>"; };
+		CF3967612968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingProviderFooterNoteTableViewCell.xib; sourceTree = "<group>"; };
 		CF43E2B0277E609F00A35837 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		CF43E2B5277E616D00A35837 /* SwiftGenOutput.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = SwiftGenOutput.xcfilelist; sourceTree = "<group>"; };
 		CF43E2BC277E621300A35837 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = Generated/Assets.swift; sourceTree = "<group>"; };
@@ -250,6 +254,7 @@
 				CF0140742822C25B0095FA76 /* SettingSelection */,
 				CF0140792822C5130095FA76 /* SettingTextView */,
 				CF01407E2822C63F0095FA76 /* SettingButton */,
+				CF39675F2968F08D003552FE /* SettingProviderFooterNote */,
 			);
 			path = UITableViewCells;
 			sourceTree = "<group>";
@@ -346,6 +351,15 @@
 				CF0140802822C64E0095FA76 /* SettingButtonTableViewCell.xib */,
 			);
 			path = SettingButton;
+			sourceTree = "<group>";
+		};
+		CF39675F2968F08D003552FE /* SettingProviderFooterNote */ = {
+			isa = PBXGroup;
+			children = (
+				CF3967602968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift */,
+				CF3967612968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib */,
+			);
+			path = SettingProviderFooterNote;
 			sourceTree = "<group>";
 		};
 		CF43E2AF277E608600A35837 /* Resources */ = {
@@ -668,6 +682,7 @@
 				CF60C18B277F05B100F1177B /* SettingViewController.xib in Resources */,
 				CF01407D2822C5210095FA76 /* SettingTextViewTableViewCell.xib in Resources */,
 				CF0140482821B02C0095FA76 /* GoogleService-Info.plist in Resources */,
+				CF3967632968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib in Resources */,
 				CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */,
 				CF0140782822C2660095FA76 /* SettingSelectionTableViewCell.xib in Resources */,
 				CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */,
@@ -911,6 +926,7 @@
 				CF43E2BD277E621300A35837 /* Assets.swift in Sources */,
 				CF01405428227D150095FA76 /* SettingTableViewCell.swift in Sources */,
 				CF01405728227D490095FA76 /* UITableView+Extension.swift in Sources */,
+				CF3967622968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift in Sources */,
 				CF01406D2822B6CA0095FA76 /* TwitterSettingRouter.swift in Sources */,
 				CF60C17D277F016C00F1177B /* MPMediaItemArtwork+Extensions.swift in Sources */,
 				CF01404B282274E60095FA76 /* SettingViewModel.swift in Sources */,
