@@ -52,3 +52,11 @@ jobs:
       with:
         reporter: github-pr-review
         level: warning
+
+  renovate-validation:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: rinchsan/renovate-config-validator@v0.0.12
+      with:
+        pattern: "*.json"
