@@ -112,22 +112,22 @@ PODS:
   - SwiftLint (0.50.3)
 
 DEPENDENCIES:
-  - Action
-  - FirebaseAnalytics
-  - FirebaseCrashlytics
-  - IBLinter
-  - KRProgressHUD
-  - LicensePlist
-  - RxCocoa
-  - RxDataSources
-  - RxRelay
-  - RxSwift
-  - RxTest
-  - ScrollFlowLabel
-  - SFSafeSymbols
-  - SnapKit
-  - SwiftGen
-  - SwiftLint
+  - Action (~> 5.0.0)
+  - FirebaseAnalytics (~> 10.3.0)
+  - FirebaseCrashlytics (~> 10.3.0)
+  - IBLinter (~> 0.5.0)
+  - KRProgressHUD (~> 3.4.7)
+  - LicensePlist (~> 3.23.4)
+  - RxCocoa (~> 6.5.0)
+  - RxDataSources (~> 5.0.0)
+  - RxRelay (~> 6.5.0)
+  - RxSwift (~> 6.5.0)
+  - RxTest (~> 6.5.0)
+  - ScrollFlowLabel (~> 1.0.3)
+  - SFSafeSymbols (~> 4.1.0)
+  - SnapKit (~> 5.6.0)
+  - SwiftGen (~> 6.6.2)
+  - SwiftLint (~> 0.50.3)
 
 SPEC REPOS:
   trunk:
@@ -186,6 +186,6 @@ SPEC CHECKSUMS:
   SwiftGen: 1366a7f71aeef49954ca5a63ba4bef6b0f24138c
   SwiftLint: 77f7cb2b9bb81ab4a12fcc86448ba3f11afa50c6
 
-PODFILE CHECKSUM: 5fc600f78108975f49f987f082bf102681c9a66b
+PODFILE CHECKSUM: 52f9fac59cdeb047941ab593bb0568c9f0b75c16
 
 COCOAPODS: 1.11.3
