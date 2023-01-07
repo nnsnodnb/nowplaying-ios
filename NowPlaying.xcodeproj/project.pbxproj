@@ -24,10 +24,6 @@
 		CF01405C28227E930095FA76 /* SettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405B28227E930095FA76 /* SettingRouter.swift */; };
 		CF01405E282280970095FA76 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405D282280970095FA76 /* URL+Extension.swift */; };
 		CF014062282286920095FA76 /* TestSettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF014061282286920095FA76 /* TestSettingRouter.swift */; };
-		CF0140682822B55B0095FA76 /* TwitterSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0140662822B55B0095FA76 /* TwitterSettingViewController.swift */; };
-		CF0140692822B55B0095FA76 /* TwitterSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0140672822B55B0095FA76 /* TwitterSettingViewController.xib */; };
-		CF01406B2822B5770095FA76 /* TwitterSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01406A2822B5770095FA76 /* TwitterSettingViewModel.swift */; };
-		CF01406D2822B6CA0095FA76 /* TwitterSettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01406C2822B6CA0095FA76 /* TwitterSettingRouter.swift */; };
 		CF0140722822C0E80095FA76 /* SettingToggleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0140702822C0E80095FA76 /* SettingToggleTableViewCell.swift */; };
 		CF0140732822C0E80095FA76 /* SettingToggleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0140712822C0E80095FA76 /* SettingToggleTableViewCell.xib */; };
 		CF0140772822C2660095FA76 /* SettingSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0140752822C2660095FA76 /* SettingSelectionTableViewCell.swift */; };
@@ -65,10 +61,10 @@
 		CFC37B93296903FB00A5C1AA /* SocialType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37B92296903FB00A5C1AA /* SocialType.swift */; };
 		CFC37B972969047C00A5C1AA /* StubPlayerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37B962969047C00A5C1AA /* StubPlayerRouter.swift */; };
 		CFC37B9A296904FF00A5C1AA /* StubSettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37B99296904FF00A5C1AA /* StubSettingRouter.swift */; };
-		CFC37B9E29698DF000A5C1AA /* MastodonSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37B9C29698DF000A5C1AA /* MastodonSettingViewController.swift */; };
-		CFC37B9F29698DF000A5C1AA /* MastodonSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFC37B9D29698DF000A5C1AA /* MastodonSettingViewController.xib */; };
-		CFC37BA229698E6500A5C1AA /* MastodonSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BA129698E6500A5C1AA /* MastodonSettingViewModel.swift */; };
-		CFC37BA729698F6400A5C1AA /* MastodonSettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BA629698F6400A5C1AA /* MastodonSettingRouter.swift */; };
+		CFC37BAC29699A0900A5C1AA /* SettingProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BAA29699A0900A5C1AA /* SettingProviderViewController.swift */; };
+		CFC37BAD29699A0900A5C1AA /* SettingProviderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CFC37BAB29699A0900A5C1AA /* SettingProviderViewController.xib */; };
+		CFC37BB129699A3D00A5C1AA /* SettingProviderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BB029699A3D00A5C1AA /* SettingProviderViewModel.swift */; };
+		CFC37BB329699AA600A5C1AA /* SettingProviderRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BB229699AA600A5C1AA /* SettingProviderRouter.swift */; };
 		CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC403B27786D4D00937EDB /* AppDelegate.swift */; };
 		CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404427786D4D00937EDB /* Assets.xcassets */; };
 		CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */; };
@@ -108,10 +104,6 @@
 		CF01405B28227E930095FA76 /* SettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRouter.swift; sourceTree = "<group>"; };
 		CF01405D282280970095FA76 /* URL+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
 		CF014061282286920095FA76 /* TestSettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSettingRouter.swift; sourceTree = "<group>"; };
-		CF0140662822B55B0095FA76 /* TwitterSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSettingViewController.swift; sourceTree = "<group>"; };
-		CF0140672822B55B0095FA76 /* TwitterSettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterSettingViewController.xib; sourceTree = "<group>"; };
-		CF01406A2822B5770095FA76 /* TwitterSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSettingViewModel.swift; sourceTree = "<group>"; };
-		CF01406C2822B6CA0095FA76 /* TwitterSettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSettingRouter.swift; sourceTree = "<group>"; };
 		CF0140702822C0E80095FA76 /* SettingToggleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingToggleTableViewCell.swift; sourceTree = "<group>"; };
 		CF0140712822C0E80095FA76 /* SettingToggleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingToggleTableViewCell.xib; sourceTree = "<group>"; };
 		CF0140752822C2660095FA76 /* SettingSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSelectionTableViewCell.swift; sourceTree = "<group>"; };
@@ -153,10 +145,10 @@
 		CFC37B92296903FB00A5C1AA /* SocialType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialType.swift; sourceTree = "<group>"; };
 		CFC37B962969047C00A5C1AA /* StubPlayerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubPlayerRouter.swift; sourceTree = "<group>"; };
 		CFC37B99296904FF00A5C1AA /* StubSettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubSettingRouter.swift; sourceTree = "<group>"; };
-		CFC37B9C29698DF000A5C1AA /* MastodonSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonSettingViewController.swift; sourceTree = "<group>"; };
-		CFC37B9D29698DF000A5C1AA /* MastodonSettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MastodonSettingViewController.xib; sourceTree = "<group>"; };
-		CFC37BA129698E6500A5C1AA /* MastodonSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonSettingViewModel.swift; sourceTree = "<group>"; };
-		CFC37BA629698F6400A5C1AA /* MastodonSettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MastodonSettingRouter.swift; sourceTree = "<group>"; };
+		CFC37BAA29699A0900A5C1AA /* SettingProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingProviderViewController.swift; sourceTree = "<group>"; };
+		CFC37BAB29699A0900A5C1AA /* SettingProviderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingProviderViewController.xib; sourceTree = "<group>"; };
+		CFC37BB029699A3D00A5C1AA /* SettingProviderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingProviderViewModel.swift; sourceTree = "<group>"; };
+		CFC37BB229699AA600A5C1AA /* SettingProviderRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingProviderRouter.swift; sourceTree = "<group>"; };
 		CFCC403827786D4D00937EDB /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFCC403B27786D4D00937EDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFCC404427786D4D00937EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -263,6 +255,7 @@
 			isa = PBXGroup;
 			children = (
 				CF01404A282274E60095FA76 /* SettingViewModel.swift */,
+				CFC37BAE29699A1A00A5C1AA /* Provider */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -301,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				CF01405B28227E930095FA76 /* SettingRouter.swift */,
+				CFC37BAF29699A2900A5C1AA /* Provider */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -319,31 +313,6 @@
 				CF014061282286920095FA76 /* TestSettingRouter.swift */,
 			);
 			path = Setting;
-			sourceTree = "<group>";
-		};
-		CF0140632822B5330095FA76 /* TwitterSetting */ = {
-			isa = PBXGroup;
-			children = (
-				CF0140662822B55B0095FA76 /* TwitterSettingViewController.swift */,
-				CF0140672822B55B0095FA76 /* TwitterSettingViewController.xib */,
-			);
-			path = TwitterSetting;
-			sourceTree = "<group>";
-		};
-		CF0140642822B53D0095FA76 /* TwitterSetting */ = {
-			isa = PBXGroup;
-			children = (
-				CF01406A2822B5770095FA76 /* TwitterSettingViewModel.swift */,
-			);
-			path = TwitterSetting;
-			sourceTree = "<group>";
-		};
-		CF0140652822B5470095FA76 /* TwitterSetting */ = {
-			isa = PBXGroup;
-			children = (
-				CF01406C2822B6CA0095FA76 /* TwitterSettingRouter.swift */,
-			);
-			path = TwitterSetting;
 			sourceTree = "<group>";
 		};
 		CF01406F2822C0D80095FA76 /* SettingToggle */ = {
@@ -482,8 +451,6 @@
 			children = (
 				CF60C179277E81F400F1177B /* Play */,
 				CF014049282274D50095FA76 /* Setting */,
-				CF0140642822B53D0095FA76 /* TwitterSetting */,
-				CFC37BA029698E5000A5C1AA /* MastodonSetting */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -501,8 +468,6 @@
 			children = (
 				CF60C17F277F01EA00F1177B /* Player */,
 				CF01405A28227E890095FA76 /* Setting */,
-				CF0140652822B5470095FA76 /* TwitterSetting */,
-				CFC37BA329698F4C00A5C1AA /* MastodonSetting */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -529,6 +494,7 @@
 			children = (
 				CF60C188277F05B100F1177B /* SettingViewController.swift */,
 				CF60C189277F05B100F1177B /* SettingViewController.xib */,
+				CFC37BA9296999EF00A5C1AA /* Provider */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -558,29 +524,29 @@
 			path = Setting;
 			sourceTree = "<group>";
 		};
-		CFC37B9B29698DDC00A5C1AA /* MastodonSetting */ = {
+		CFC37BA9296999EF00A5C1AA /* Provider */ = {
 			isa = PBXGroup;
 			children = (
-				CFC37B9C29698DF000A5C1AA /* MastodonSettingViewController.swift */,
-				CFC37B9D29698DF000A5C1AA /* MastodonSettingViewController.xib */,
+				CFC37BAA29699A0900A5C1AA /* SettingProviderViewController.swift */,
+				CFC37BAB29699A0900A5C1AA /* SettingProviderViewController.xib */,
 			);
-			path = MastodonSetting;
+			path = Provider;
 			sourceTree = "<group>";
 		};
-		CFC37BA029698E5000A5C1AA /* MastodonSetting */ = {
+		CFC37BAE29699A1A00A5C1AA /* Provider */ = {
 			isa = PBXGroup;
 			children = (
-				CFC37BA129698E6500A5C1AA /* MastodonSettingViewModel.swift */,
+				CFC37BB029699A3D00A5C1AA /* SettingProviderViewModel.swift */,
 			);
-			path = MastodonSetting;
+			path = Provider;
 			sourceTree = "<group>";
 		};
-		CFC37BA329698F4C00A5C1AA /* MastodonSetting */ = {
+		CFC37BAF29699A2900A5C1AA /* Provider */ = {
 			isa = PBXGroup;
 			children = (
-				CFC37BA629698F6400A5C1AA /* MastodonSettingRouter.swift */,
+				CFC37BB229699AA600A5C1AA /* SettingProviderRouter.swift */,
 			);
-			path = MastodonSetting;
+			path = Provider;
 			sourceTree = "<group>";
 		};
 		CFCC402F27786D4D00937EDB = {
@@ -647,8 +613,6 @@
 				CFCC406D27786EB900937EDB /* Main */,
 				CF43E2C8277E735200A35837 /* Play */,
 				CF60C187277F05A600F1177B /* Setting */,
-				CF0140632822B5330095FA76 /* TwitterSetting */,
-				CFC37B9B29698DDC00A5C1AA /* MastodonSetting */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -778,6 +742,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF60C18B277F05B100F1177B /* SettingViewController.xib in Resources */,
+				CFC37BAD29699A0900A5C1AA /* SettingProviderViewController.xib in Resources */,
 				CF01407D2822C5210095FA76 /* SettingTextViewTableViewCell.xib in Resources */,
 				CF0140482821B02C0095FA76 /* GoogleService-Info.plist in Resources */,
 				CF3967632968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib in Resources */,
@@ -787,9 +752,7 @@
 				CF43E2CC277E735F00A35837 /* PlayViewController.xib in Resources */,
 				CF0140732822C0E80095FA76 /* SettingToggleTableViewCell.xib in Resources */,
 				CF01405528227D150095FA76 /* SettingTableViewCell.xib in Resources */,
-				CF0140692822B55B0095FA76 /* TwitterSettingViewController.xib in Resources */,
 				CF43E2C6277E700200A35837 /* Settings.bundle in Resources */,
-				CFC37B9F29698DF000A5C1AA /* MastodonSettingViewController.xib in Resources */,
 				CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */,
 				CF0140822822C64E0095FA76 /* SettingButtonTableViewCell.xib in Resources */,
 				CFCC407127786EC400937EDB /* MainViewController.xib in Resources */,
@@ -1015,16 +978,15 @@
 				CF43E2CF277E799800A35837 /* ViewControllerInjectable.swift in Sources */,
 				CF01405E282280970095FA76 /* URL+Extension.swift in Sources */,
 				CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */,
-				CFC37BA229698E6500A5C1AA /* MastodonSettingViewModel.swift in Sources */,
 				CF0140772822C2660095FA76 /* SettingSelectionTableViewCell.swift in Sources */,
-				CFC37BA729698F6400A5C1AA /* MastodonSettingRouter.swift in Sources */,
+				CFC37BB329699AA600A5C1AA /* SettingProviderRouter.swift in Sources */,
 				CF60C192277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift in Sources */,
 				CF60C181277F01F000F1177B /* PlayerRouter.swift in Sources */,
 				CF3967652968FE09003552FE /* EnvironmentProtocol.swift in Sources */,
 				CF43E2D2277E7B7700A35837 /* UIViewController+Extensions.swift in Sources */,
 				CF0140722822C0E80095FA76 /* SettingToggleTableViewCell.swift in Sources */,
 				CF01407C2822C5210095FA76 /* SettingTextViewTableViewCell.swift in Sources */,
-				CF01406B2822B5770095FA76 /* TwitterSettingViewModel.swift in Sources */,
+				CFC37BAC29699A0900A5C1AA /* SettingProviderViewController.swift in Sources */,
 				CF3967702968FE9E003552FE /* UIWindow+Extension.swift in Sources */,
 				CF39676E2968FE83003552FE /* UIApplication+Extension.swift in Sources */,
 				CF43E2BD277E621300A35837 /* Assets.swift in Sources */,
@@ -1034,7 +996,6 @@
 				CF3967722968FF2A003552FE /* UIScreenProtocol.swift in Sources */,
 				CF01405728227D490095FA76 /* UITableView+Extension.swift in Sources */,
 				CF3967622968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift in Sources */,
-				CF01406D2822B6CA0095FA76 /* TwitterSettingRouter.swift in Sources */,
 				CF60C17D277F016C00F1177B /* MPMediaItemArtwork+Extensions.swift in Sources */,
 				CF01404B282274E60095FA76 /* SettingViewModel.swift in Sources */,
 				CF39676A2968FE35003552FE /* UIApplicationProtocol.swift in Sources */,
@@ -1043,10 +1004,9 @@
 				CF39676C2968FE59003552FE /* UIWindowProtocol.swift in Sources */,
 				CF60C186277F049F00F1177B /* MediaItem.swift in Sources */,
 				CF0140812822C64E0095FA76 /* SettingButtonTableViewCell.swift in Sources */,
-				CFC37B9E29698DF000A5C1AA /* MastodonSettingViewController.swift in Sources */,
 				CF60C18A277F05B100F1177B /* SettingViewController.swift in Sources */,
 				CF60C190277F0B7900F1177B /* MusicPlayerControllable.swift in Sources */,
-				CF0140682822B55B0095FA76 /* TwitterSettingViewController.swift in Sources */,
+				CFC37BB129699A3D00A5C1AA /* SettingProviderViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

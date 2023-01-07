@@ -7,16 +7,12 @@
 
 import UIKit
 
-protocol SettingButtonTableViewCellItemType {
-    var title: String { get }
-}
-
 final class SettingButtonTableViewCell: UITableViewCell {
     // MARK: - Properties
     @IBOutlet private var titleLabel: UILabel!
 
-    func configure(item: SettingButtonTableViewCellItemType) {
+    func configure(button: SettingProviderViewController.Item.Button) {
         // テキスト
-        titleLabel.text = item.title
+        titleLabel.text = button.title
     }
 }

@@ -7,16 +7,12 @@
 
 import UIKit
 
-protocol SettingToggleTableViewCellItemType {
-    var title: String { get }
-}
-
 final class SettingToggleTableViewCell: UITableViewCell {
     // MARK: - Properties
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var toggleSwitch: UISwitch!
 
-    func configure(item: SettingToggleTableViewCellItemType) {
+    func configure(item: SettingProviderViewController.Item) {
         // テキスト
         titleLabel.text = item.title
     }

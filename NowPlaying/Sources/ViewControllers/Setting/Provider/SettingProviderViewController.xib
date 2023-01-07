@@ -8,9 +8,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MastodonSettingViewController" customModule="NowPlaying" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingProviderViewController" customModule="NowPlaying" customModuleProvider="target">
             <connections>
-                <outlet property="tableView" destination="P4A-R5-5P7" id="4KD-xa-lEb"/>
+                <outlet property="tableView" destination="ik4-ZX-flK" id="dfU-w5-40p"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -19,7 +19,7 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="P4A-R5-5P7">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ik4-ZX-flK">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <color key="backgroundColor" name="bg-tableview"/>
                 </tableView>
@@ -27,12 +27,12 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="P4A-R5-5P7" secondAttribute="bottom" id="6Ym-Wq-A9q"/>
-                <constraint firstItem="P4A-R5-5P7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="GKY-LN-jvt"/>
-                <constraint firstItem="P4A-R5-5P7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="nIp-PF-fcm"/>
-                <constraint firstAttribute="trailing" secondItem="P4A-R5-5P7" secondAttribute="trailing" id="tjv-CQ-HgV"/>
+                <constraint firstItem="ik4-ZX-flK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="7kc-QZ-ETC"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ik4-ZX-flK" secondAttribute="trailing" id="Df7-AS-P1g"/>
+                <constraint firstItem="ik4-ZX-flK" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="LoD-2A-aVT"/>
+                <constraint firstAttribute="bottom" secondItem="ik4-ZX-flK" secondAttribute="bottom" id="Ypx-Kh-32I"/>
             </constraints>
-            <point key="canvasLocation" x="103.05343511450381" y="20.422535211267608"/>
+            <point key="canvasLocation" x="139.13043478260872" y="19.419642857142858"/>
         </view>
     </objects>
     <resources>

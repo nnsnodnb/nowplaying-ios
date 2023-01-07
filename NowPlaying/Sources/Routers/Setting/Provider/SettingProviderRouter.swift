@@ -1,24 +1,26 @@
 //
-//  TwitterSettingRouter.swift
+//  SettingProviderRouter.swift
 //  NowPlaying
 //
-//  Created by Yuya Oka on 2022/05/04.
+//  Created by Yuya Oka on 2023/01/07.
 //
 
 import UIKit
 
-protocol TwitterSettingRoutable: Routable {
+protocol SettingProviderRoutable: Routable {
 }
 
-final class TwitterSettingRouter: TwitterSettingRoutable {
+final class SettingProviderRouter: SettingProviderRoutable {
     // MARK: - Properties
     private(set) weak var viewController: UIViewController?
 
     private let environment: EnvironmentProtocol
+    private let socialType: SocialType
 
     // MARK: - Initialize
-    init(environment: EnvironmentProtocol) {
+    init(environment: EnvironmentProtocol, socialType: SocialType) {
         self.environment = environment
+        self.socialType = socialType
     }
 
     func inject(_ viewController: UIViewController) {

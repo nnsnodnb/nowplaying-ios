@@ -43,23 +43,13 @@ final class SettingRouter: NSObject, SettingRoutable {
         // Twitter設定
         twitter.asSignal()
             .emit(with: self, onNext: { strongSelf, _ in
-                let router = TwitterSettingRouter(environment: strongSelf.environment)
-                let viewModel = TwitterSettingViewModel(router: router)
-                let viewController = TwitterSettingViewController(dependency: viewModel, environment: strongSelf.environment)
-                router.inject(viewController)
-                strongSelf.viewController?.navigationController?.presentationController?.delegate = strongSelf
-                strongSelf.viewController?.navigationController?.pushViewController(viewController, animated: true)
+                strongSelf.showSettingProviderViewController(with: .twitter)
             })
             .disposed(by: disposeBag)
         // Mastodon設定
         mastodon.asSignal()
             .emit(with: self, onNext: { strongSelf, _ in
-                let router = MastodonSettingRouter(environment: strongSelf.environment)
-                let viewModel = MastodonSettingViewModel(router: router)
-                let viewController = MastodonSettingViewController(dependency: viewModel, environment: strongSelf.environment)
-                router.inject(viewController)
-                strongSelf.viewController?.navigationController?.presentationController?.delegate = strongSelf
-                strongSelf.viewController?.navigationController?.pushViewController(viewController, animated: true)
+                strongSelf.showSettingProviderViewController(with: .mastodon)
             })
             .disposed(by: disposeBag)
         // SFSafariViewController
@@ -79,6 +69,18 @@ final class SettingRouter: NSObject, SettingRoutable {
 
     func inject(_ viewController: UIViewController) {
         self.viewController = viewController
+    }
+}
+
+// MARK: - Private method
+private extension SettingRouter {
+    func showSettingProviderViewController(with socialType: SocialType) {
+        let router = SettingProviderRouter(environment: environment, socialType: socialType)
+        let viewModel = SettingProviderViewModel(router: router, socialType: socialType)
+        let viewController = SettingProviderViewController(dependency: viewModel, environment: environment)
+        router.inject(viewController)
+        self.viewController?.navigationController?.presentationController?.delegate = self
+        self.viewController?.navigationController?.pushViewController(viewController, animated: true)
     }
 }
 

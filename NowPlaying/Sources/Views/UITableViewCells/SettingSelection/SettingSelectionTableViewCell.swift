@@ -7,17 +7,13 @@
 
 import UIKit
 
-protocol SettingSelectionTableViewCellItemType {
-    var title: String { get }
-}
-
 final class SettingSelectionTableViewCell: UITableViewCell {
     // MARK: - Properties
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var valueLabel: UILabel!
 
-    func configure(item: SettingSelectionTableViewCellItemType) {
+    func configure(selection: SettingProviderViewController.Item.Selection) {
         // タイトル
-        titleLabel.text = item.title
+        titleLabel.text = selection.title
     }
 }
