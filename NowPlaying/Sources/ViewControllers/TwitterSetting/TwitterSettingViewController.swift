@@ -47,7 +47,7 @@ final class TwitterSettingViewController: UIViewController {
                     return cell
                 case let .selection(selection):
                     let cell = tableView.dequeueReusableCell(with: SettingSelectionTableViewCell.self, for: indexPath)
-                    cell.configure(selection: selection)
+                    cell.configure(item: selection)
                     return cell
                 case .textView:
                     let cell = tableView.dequeueReusableCell(with: SettingTextViewTableViewCell.self, for: indexPath)
@@ -55,7 +55,7 @@ final class TwitterSettingViewController: UIViewController {
                     return cell
                 case let .button(button):
                     let cell = tableView.dequeueReusableCell(with: SettingButtonTableViewCell.self, for: indexPath)
-                    cell.configure(button: button)
+                    cell.configure(item: button)
                     return cell
                 case .footerNote:
                     let cell = tableView.dequeueReusableCell(with: SettingProviderFooterNoteTableViewCell.self, for: indexPath)
@@ -225,7 +225,7 @@ extension TwitterSettingViewController.Item {
 
 // MARK: - Item.Selection
 extension TwitterSettingViewController.Item {
-    enum Selection: String {
+    enum Selection: String, SettingSelectionTableViewCellItemType {
         case attachmentType
 
         // MARK: - Properties
@@ -240,7 +240,7 @@ extension TwitterSettingViewController.Item {
 
 // MARK: - Item.Button
 extension TwitterSettingViewController.Item {
-    enum Button: String {
+    enum Button: String, SettingButtonTableViewCellItemType {
         case reset
 
         // MARK: - Properties

@@ -7,12 +7,16 @@
 
 import UIKit
 
+protocol SettingButtonTableViewCellItemType {
+    var title: String { get }
+}
+
 final class SettingButtonTableViewCell: UITableViewCell {
     // MARK: - Properties
     @IBOutlet private var titleLabel: UILabel!
 
-    func configure(button: TwitterSettingViewController.Item.Button) {
+    func configure(item: SettingButtonTableViewCellItemType) {
         // テキスト
-        titleLabel.text = button.title
+        titleLabel.text = item.title
     }
 }

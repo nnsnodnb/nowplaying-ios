@@ -11,6 +11,7 @@ protocol MastodonSettingViewModelInput: AnyObject {
 }
 
 protocol MastodonSettingViewModelOutput: AnyObject {
+    var dataSource: [MastodonSettingViewController.SectionModel] { get }
 }
 
 protocol MastodonSettingViewModelType: AnyObject {
@@ -19,6 +20,9 @@ protocol MastodonSettingViewModelType: AnyObject {
 }
 
 final class MastodonSettingViewModel: MastodonSettingViewModelType {
+    // MARK: - Inputs Sources
+    // MARK: - Outputs Sources
+    let dataSource: [MastodonSettingViewController.SectionModel]
     // MARK: - Properties
     var inputs: MastodonSettingViewModelInput { return self }
     var outputs: MastodonSettingViewModelOutput { return self }
@@ -27,6 +31,30 @@ final class MastodonSettingViewModel: MastodonSettingViewModelType {
 
     // MARK: - Initialize
     init(router: MastodonSettingRoutable) {
+        self.dataSource = [
+            .init(
+                model: .mastodon,
+                items: [
+                    .detail(.accounts),
+                    .toggle(.attachImage),
+                    .selection(.attachmentType),
+                    .toggle(.auto)
+                ]
+            ),
+            .init(
+                model: .format,
+                items: [
+                    .textView,
+                    .button(.reset)
+                ]
+            ),
+            .init(
+                model: .footer,
+                items: [
+                    .footerNote
+                ]
+            )
+        ]
         self.router = router
     }
 }
