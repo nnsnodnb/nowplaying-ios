@@ -16,26 +16,29 @@
                 <rect key="frame" x="0.0" y="0.0" width="293.5" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NBZ-34-EcD">
-                        <rect key="frame" x="16" y="8" width="28" height="28"/>
-                        <constraints>
-                            <constraint firstAttribute="width" secondItem="NBZ-34-EcD" secondAttribute="height" multiplier="1:1" id="Rpa-Tr-3R4"/>
-                        </constraints>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HgI-dF-ex5">
-                        <rect key="frame" x="60" y="11.5" width="217.5" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Neq-2l-KjJ">
+                        <rect key="frame" x="16" y="8" width="263.5" height="28"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NBZ-34-EcD">
+                                <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="NBZ-34-EcD" secondAttribute="height" multiplier="1:1" id="Rpa-Tr-3R4"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HgI-dF-ex5">
+                                <rect key="frame" x="44" y="0.0" width="219.5" height="28"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="HgI-dF-ex5" firstAttribute="centerY" secondItem="NBZ-34-EcD" secondAttribute="centerY" id="Lbh-Pn-A62"/>
-                    <constraint firstItem="HgI-dF-ex5" firstAttribute="leading" secondItem="NBZ-34-EcD" secondAttribute="trailing" constant="16" id="dOc-Hk-3Je"/>
-                    <constraint firstAttribute="bottom" secondItem="NBZ-34-EcD" secondAttribute="bottom" constant="8" id="gUm-z0-2D3"/>
-                    <constraint firstItem="NBZ-34-EcD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="q1G-qP-ARy"/>
-                    <constraint firstItem="NBZ-34-EcD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="ubU-7F-c5h"/>
-                    <constraint firstAttribute="trailing" secondItem="HgI-dF-ex5" secondAttribute="trailing" constant="16" id="vFb-ma-lGN"/>
+                    <constraint firstAttribute="trailing" secondItem="Neq-2l-KjJ" secondAttribute="trailing" constant="16" id="QlF-Wy-hm6"/>
+                    <constraint firstAttribute="bottom" secondItem="Neq-2l-KjJ" secondAttribute="bottom" constant="8" id="TIX-91-bn2"/>
+                    <constraint firstItem="Neq-2l-KjJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="cUj-Jn-q69"/>
+                    <constraint firstItem="Neq-2l-KjJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="fJN-ed-fz3"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

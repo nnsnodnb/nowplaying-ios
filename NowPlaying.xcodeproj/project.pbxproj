@@ -25,6 +25,20 @@
 		CF01405C28227E930095FA76 /* SettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405B28227E930095FA76 /* SettingRouter.swift */; };
 		CF01405E282280970095FA76 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405D282280970095FA76 /* URL+Extension.swift */; };
 		CF014062282286920095FA76 /* TestSettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF014061282286920095FA76 /* TestSettingRouter.swift */; };
+		CF0140682822B55B0095FA76 /* TwitterSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0140662822B55B0095FA76 /* TwitterSettingViewController.swift */; };
+		CF0140692822B55B0095FA76 /* TwitterSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0140672822B55B0095FA76 /* TwitterSettingViewController.xib */; };
+		CF01406B2822B5770095FA76 /* TwitterSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01406A2822B5770095FA76 /* TwitterSettingViewModel.swift */; };
+		CF01406D2822B6CA0095FA76 /* TwitterSettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01406C2822B6CA0095FA76 /* TwitterSettingRouter.swift */; };
+		CF0140722822C0E80095FA76 /* SettingToggleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0140702822C0E80095FA76 /* SettingToggleTableViewCell.swift */; };
+		CF0140732822C0E80095FA76 /* SettingToggleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0140712822C0E80095FA76 /* SettingToggleTableViewCell.xib */; };
+		CF0140772822C2660095FA76 /* SettingSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0140752822C2660095FA76 /* SettingSelectionTableViewCell.swift */; };
+		CF0140782822C2660095FA76 /* SettingSelectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0140762822C2660095FA76 /* SettingSelectionTableViewCell.xib */; };
+		CF01407C2822C5210095FA76 /* SettingTextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01407A2822C5210095FA76 /* SettingTextViewTableViewCell.swift */; };
+		CF01407D2822C5210095FA76 /* SettingTextViewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF01407B2822C5210095FA76 /* SettingTextViewTableViewCell.xib */; };
+		CF0140812822C64E0095FA76 /* SettingButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01407F2822C64E0095FA76 /* SettingButtonTableViewCell.swift */; };
+		CF0140822822C64E0095FA76 /* SettingButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0140802822C64E0095FA76 /* SettingButtonTableViewCell.xib */; };
+		CF3967622968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3967602968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift */; };
+		CF3967632968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF3967612968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib */; };
 		CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2B0277E609F00A35837 /* Colors.xcassets */; };
 		CF43E2BD277E621300A35837 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2BC277E621300A35837 /* Assets.swift */; };
 		CF43E2C6277E700200A35837 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2C5277E700200A35837 /* Settings.bundle */; };
@@ -81,6 +95,20 @@
 		CF01405B28227E930095FA76 /* SettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRouter.swift; sourceTree = "<group>"; };
 		CF01405D282280970095FA76 /* URL+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
 		CF014061282286920095FA76 /* TestSettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSettingRouter.swift; sourceTree = "<group>"; };
+		CF0140662822B55B0095FA76 /* TwitterSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSettingViewController.swift; sourceTree = "<group>"; };
+		CF0140672822B55B0095FA76 /* TwitterSettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TwitterSettingViewController.xib; sourceTree = "<group>"; };
+		CF01406A2822B5770095FA76 /* TwitterSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSettingViewModel.swift; sourceTree = "<group>"; };
+		CF01406C2822B6CA0095FA76 /* TwitterSettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterSettingRouter.swift; sourceTree = "<group>"; };
+		CF0140702822C0E80095FA76 /* SettingToggleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingToggleTableViewCell.swift; sourceTree = "<group>"; };
+		CF0140712822C0E80095FA76 /* SettingToggleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingToggleTableViewCell.xib; sourceTree = "<group>"; };
+		CF0140752822C2660095FA76 /* SettingSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSelectionTableViewCell.swift; sourceTree = "<group>"; };
+		CF0140762822C2660095FA76 /* SettingSelectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingSelectionTableViewCell.xib; sourceTree = "<group>"; };
+		CF01407A2822C5210095FA76 /* SettingTextViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTextViewTableViewCell.swift; sourceTree = "<group>"; };
+		CF01407B2822C5210095FA76 /* SettingTextViewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingTextViewTableViewCell.xib; sourceTree = "<group>"; };
+		CF01407F2822C64E0095FA76 /* SettingButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingButtonTableViewCell.swift; sourceTree = "<group>"; };
+		CF0140802822C64E0095FA76 /* SettingButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingButtonTableViewCell.xib; sourceTree = "<group>"; };
+		CF3967602968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingProviderFooterNoteTableViewCell.swift; sourceTree = "<group>"; };
+		CF3967612968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingProviderFooterNoteTableViewCell.xib; sourceTree = "<group>"; };
 		CF43E2B0277E609F00A35837 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		CF43E2B5277E616D00A35837 /* SwiftGenOutput.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = SwiftGenOutput.xcfilelist; sourceTree = "<group>"; };
 		CF43E2BC277E621300A35837 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = Generated/Assets.swift; sourceTree = "<group>"; };
@@ -222,6 +250,11 @@
 			isa = PBXGroup;
 			children = (
 				CF01405028227CFA0095FA76 /* Setting */,
+				CF01406F2822C0D80095FA76 /* SettingToggle */,
+				CF0140742822C25B0095FA76 /* SettingSelection */,
+				CF0140792822C5130095FA76 /* SettingTextView */,
+				CF01407E2822C63F0095FA76 /* SettingButton */,
+				CF39675F2968F08D003552FE /* SettingProviderFooterNote */,
 			);
 			path = UITableViewCells;
 			sourceTree = "<group>";
@@ -257,6 +290,76 @@
 				CF014061282286920095FA76 /* TestSettingRouter.swift */,
 			);
 			path = Setting;
+			sourceTree = "<group>";
+		};
+		CF0140632822B5330095FA76 /* TwitterSetting */ = {
+			isa = PBXGroup;
+			children = (
+				CF0140662822B55B0095FA76 /* TwitterSettingViewController.swift */,
+				CF0140672822B55B0095FA76 /* TwitterSettingViewController.xib */,
+			);
+			path = TwitterSetting;
+			sourceTree = "<group>";
+		};
+		CF0140642822B53D0095FA76 /* TwitterSetting */ = {
+			isa = PBXGroup;
+			children = (
+				CF01406A2822B5770095FA76 /* TwitterSettingViewModel.swift */,
+			);
+			path = TwitterSetting;
+			sourceTree = "<group>";
+		};
+		CF0140652822B5470095FA76 /* TwitterSetting */ = {
+			isa = PBXGroup;
+			children = (
+				CF01406C2822B6CA0095FA76 /* TwitterSettingRouter.swift */,
+			);
+			path = TwitterSetting;
+			sourceTree = "<group>";
+		};
+		CF01406F2822C0D80095FA76 /* SettingToggle */ = {
+			isa = PBXGroup;
+			children = (
+				CF0140702822C0E80095FA76 /* SettingToggleTableViewCell.swift */,
+				CF0140712822C0E80095FA76 /* SettingToggleTableViewCell.xib */,
+			);
+			path = SettingToggle;
+			sourceTree = "<group>";
+		};
+		CF0140742822C25B0095FA76 /* SettingSelection */ = {
+			isa = PBXGroup;
+			children = (
+				CF0140752822C2660095FA76 /* SettingSelectionTableViewCell.swift */,
+				CF0140762822C2660095FA76 /* SettingSelectionTableViewCell.xib */,
+			);
+			path = SettingSelection;
+			sourceTree = "<group>";
+		};
+		CF0140792822C5130095FA76 /* SettingTextView */ = {
+			isa = PBXGroup;
+			children = (
+				CF01407A2822C5210095FA76 /* SettingTextViewTableViewCell.swift */,
+				CF01407B2822C5210095FA76 /* SettingTextViewTableViewCell.xib */,
+			);
+			path = SettingTextView;
+			sourceTree = "<group>";
+		};
+		CF01407E2822C63F0095FA76 /* SettingButton */ = {
+			isa = PBXGroup;
+			children = (
+				CF01407F2822C64E0095FA76 /* SettingButtonTableViewCell.swift */,
+				CF0140802822C64E0095FA76 /* SettingButtonTableViewCell.xib */,
+			);
+			path = SettingButton;
+			sourceTree = "<group>";
+		};
+		CF39675F2968F08D003552FE /* SettingProviderFooterNote */ = {
+			isa = PBXGroup;
+			children = (
+				CF3967602968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift */,
+				CF3967612968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib */,
+			);
+			path = SettingProviderFooterNote;
 			sourceTree = "<group>";
 		};
 		CF43E2AF277E608600A35837 /* Resources */ = {
@@ -335,6 +438,7 @@
 			children = (
 				CF60C179277E81F400F1177B /* Play */,
 				CF014049282274D50095FA76 /* Setting */,
+				CF0140642822B53D0095FA76 /* TwitterSetting */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -352,6 +456,7 @@
 			children = (
 				CF60C17F277F01EA00F1177B /* Player */,
 				CF01405A28227E890095FA76 /* Setting */,
+				CF0140652822B5470095FA76 /* TwitterSetting */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -445,6 +550,7 @@
 				CFCC406D27786EB900937EDB /* Main */,
 				CF43E2C8277E735200A35837 /* Play */,
 				CF60C187277F05A600F1177B /* Setting */,
+				CF0140632822B5330095FA76 /* TwitterSetting */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -574,13 +680,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF60C18B277F05B100F1177B /* SettingViewController.xib in Resources */,
+				CF01407D2822C5210095FA76 /* SettingTextViewTableViewCell.xib in Resources */,
 				CF0140482821B02C0095FA76 /* GoogleService-Info.plist in Resources */,
+				CF3967632968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib in Resources */,
 				CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */,
+				CF0140782822C2660095FA76 /* SettingSelectionTableViewCell.xib in Resources */,
 				CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */,
 				CF43E2CC277E735F00A35837 /* PlayViewController.xib in Resources */,
+				CF0140732822C0E80095FA76 /* SettingToggleTableViewCell.xib in Resources */,
 				CF01405528227D150095FA76 /* SettingTableViewCell.xib in Resources */,
+				CF0140692822B55B0095FA76 /* TwitterSettingViewController.xib in Resources */,
 				CF43E2C6277E700200A35837 /* Settings.bundle in Resources */,
 				CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */,
+				CF0140822822C64E0095FA76 /* SettingButtonTableViewCell.xib in Resources */,
 				CFCC407127786EC400937EDB /* MainViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -803,20 +915,28 @@
 				CF43E2CF277E799800A35837 /* ViewControllerInjectable.swift in Sources */,
 				CF01405E282280970095FA76 /* URL+Extension.swift in Sources */,
 				CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */,
+				CF0140772822C2660095FA76 /* SettingSelectionTableViewCell.swift in Sources */,
 				CF60C192277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift in Sources */,
 				CF60C181277F01F000F1177B /* PlayerRouter.swift in Sources */,
 				CF43E2D2277E7B7700A35837 /* UIViewController+Extensions.swift in Sources */,
+				CF0140722822C0E80095FA76 /* SettingToggleTableViewCell.swift in Sources */,
+				CF01407C2822C5210095FA76 /* SettingTextViewTableViewCell.swift in Sources */,
 				CF01404D282276550095FA76 /* SocialType.swift in Sources */,
+				CF01406B2822B5770095FA76 /* TwitterSettingViewModel.swift in Sources */,
 				CF43E2BD277E621300A35837 /* Assets.swift in Sources */,
 				CF01405428227D150095FA76 /* SettingTableViewCell.swift in Sources */,
 				CF01405728227D490095FA76 /* UITableView+Extension.swift in Sources */,
+				CF3967622968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift in Sources */,
+				CF01406D2822B6CA0095FA76 /* TwitterSettingRouter.swift in Sources */,
 				CF60C17D277F016C00F1177B /* MPMediaItemArtwork+Extensions.swift in Sources */,
 				CF01404B282274E60095FA76 /* SettingViewModel.swift in Sources */,
 				CF01405928227D710095FA76 /* NSObject+Extension.swift in Sources */,
 				CF60C183277F024000F1177B /* Routable.swift in Sources */,
 				CF60C186277F049F00F1177B /* MediaItem.swift in Sources */,
+				CF0140812822C64E0095FA76 /* SettingButtonTableViewCell.swift in Sources */,
 				CF60C18A277F05B100F1177B /* SettingViewController.swift in Sources */,
 				CF60C190277F0B7900F1177B /* MusicPlayerControllable.swift in Sources */,
+				CF0140682822B55B0095FA76 /* TwitterSettingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
