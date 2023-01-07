@@ -83,6 +83,9 @@ PODS:
   - GoogleUtilities/UserDefaults (7.10.0):
     - GoogleUtilities/Logger
   - IBLinter (0.5.0)
+  - KRActivityIndicatorView (3.0.7)
+  - KRProgressHUD (3.4.7):
+    - KRActivityIndicatorView (= 3.0.7)
   - LicensePlist (3.23.4)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
@@ -113,6 +116,7 @@ DEPENDENCIES:
   - FirebaseAnalytics
   - FirebaseCrashlytics
   - IBLinter
+  - KRProgressHUD
   - LicensePlist
   - RxCocoa
   - RxDataSources
@@ -138,6 +142,8 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - IBLinter
+    - KRActivityIndicatorView
+    - KRProgressHUD
     - LicensePlist
     - nanopb
     - PromisesObjC
@@ -164,6 +170,8 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleUtilities: bad72cb363809015b1f7f19beb1f1cd23c589f95
   IBLinter: 7d28cbb7b579ca80690b56f6c8d22092a672967c
+  KRActivityIndicatorView: ad69e89c4ce40c986cf580595be4829dcad0e35a
+  KRProgressHUD: a248f0bc6c9c2aed40a37b76e03ffecc7f85c887
   LicensePlist: 804d60431859ef6ee6b2aa2dd0eb2c09d0418edd
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
@@ -178,6 +186,6 @@ SPEC CHECKSUMS:
   SwiftGen: 1366a7f71aeef49954ca5a63ba4bef6b0f24138c
   SwiftLint: 77f7cb2b9bb81ab4a12fcc86448ba3f11afa50c6
 
-PODFILE CHECKSUM: 7938fef8a37ca163400461c9f7ff894a236aefec
+PODFILE CHECKSUM: 5fc600f78108975f49f987f082bf102681c9a66b
 
 COCOAPODS: 1.11.3
