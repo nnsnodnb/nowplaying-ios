@@ -17,7 +17,6 @@
 		CF014044282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF014043282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift */; };
 		CF0140482821B02C0095FA76 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF0140472821B02C0095FA76 /* GoogleService-Info.plist */; };
 		CF01404B282274E60095FA76 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01404A282274E60095FA76 /* SettingViewModel.swift */; };
-		CF01404D282276550095FA76 /* SocialType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01404C282276540095FA76 /* SocialType.swift */; };
 		CF01405428227D150095FA76 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405228227D150095FA76 /* SettingTableViewCell.swift */; };
 		CF01405528227D150095FA76 /* SettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF01405328227D150095FA76 /* SettingTableViewCell.xib */; };
 		CF01405728227D490095FA76 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01405628227D490095FA76 /* UITableView+Extension.swift */; };
@@ -39,6 +38,14 @@
 		CF0140822822C64E0095FA76 /* SettingButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0140802822C64E0095FA76 /* SettingButtonTableViewCell.xib */; };
 		CF3967622968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3967602968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift */; };
 		CF3967632968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF3967612968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib */; };
+		CF3967652968FE09003552FE /* EnvironmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3967642968FE09003552FE /* EnvironmentProtocol.swift */; };
+		CF3967682968FE21003552FE /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3967672968FE21003552FE /* Environment.swift */; };
+		CF39676A2968FE35003552FE /* UIApplicationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3967692968FE35003552FE /* UIApplicationProtocol.swift */; };
+		CF39676C2968FE59003552FE /* UIWindowProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF39676B2968FE59003552FE /* UIWindowProtocol.swift */; };
+		CF39676E2968FE83003552FE /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF39676D2968FE83003552FE /* UIApplication+Extension.swift */; };
+		CF3967702968FE9E003552FE /* UIWindow+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF39676F2968FE9E003552FE /* UIWindow+Extension.swift */; };
+		CF3967722968FF2A003552FE /* UIScreenProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3967712968FF2A003552FE /* UIScreenProtocol.swift */; };
+		CF3967742968FF41003552FE /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3967732968FF41003552FE /* UIScreen+Extension.swift */; };
 		CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2B0277E609F00A35837 /* Colors.xcassets */; };
 		CF43E2BD277E621300A35837 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF43E2BC277E621300A35837 /* Assets.swift */; };
 		CF43E2C6277E700200A35837 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CF43E2C5277E700200A35837 /* Settings.bundle */; };
@@ -55,6 +62,9 @@
 		CF60C18B277F05B100F1177B /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF60C189277F05B100F1177B /* SettingViewController.xib */; };
 		CF60C190277F0B7900F1177B /* MusicPlayerControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF60C18F277F0B7900F1177B /* MusicPlayerControllable.swift */; };
 		CF60C192277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF60C191277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift */; };
+		CFC37B93296903FB00A5C1AA /* SocialType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37B92296903FB00A5C1AA /* SocialType.swift */; };
+		CFC37B972969047C00A5C1AA /* StubPlayerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37B962969047C00A5C1AA /* StubPlayerRouter.swift */; };
+		CFC37B9A296904FF00A5C1AA /* StubSettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37B99296904FF00A5C1AA /* StubSettingRouter.swift */; };
 		CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC403B27786D4D00937EDB /* AppDelegate.swift */; };
 		CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404427786D4D00937EDB /* Assets.xcassets */; };
 		CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */; };
@@ -87,7 +97,6 @@
 		CF014043282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPlayViewModelPlayPauseImage.swift; sourceTree = "<group>"; };
 		CF0140472821B02C0095FA76 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF01404A282274E60095FA76 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
-		CF01404C282276540095FA76 /* SocialType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialType.swift; sourceTree = "<group>"; };
 		CF01405228227D150095FA76 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		CF01405328227D150095FA76 /* SettingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingTableViewCell.xib; sourceTree = "<group>"; };
 		CF01405628227D490095FA76 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
@@ -109,6 +118,14 @@
 		CF0140802822C64E0095FA76 /* SettingButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingButtonTableViewCell.xib; sourceTree = "<group>"; };
 		CF3967602968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingProviderFooterNoteTableViewCell.swift; sourceTree = "<group>"; };
 		CF3967612968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingProviderFooterNoteTableViewCell.xib; sourceTree = "<group>"; };
+		CF3967642968FE09003552FE /* EnvironmentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentProtocol.swift; sourceTree = "<group>"; };
+		CF3967672968FE21003552FE /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		CF3967692968FE35003552FE /* UIApplicationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationProtocol.swift; sourceTree = "<group>"; };
+		CF39676B2968FE59003552FE /* UIWindowProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowProtocol.swift; sourceTree = "<group>"; };
+		CF39676D2968FE83003552FE /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
+		CF39676F2968FE9E003552FE /* UIWindow+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Extension.swift"; sourceTree = "<group>"; };
+		CF3967712968FF2A003552FE /* UIScreenProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreenProtocol.swift; sourceTree = "<group>"; };
+		CF3967732968FF41003552FE /* UIScreen+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
 		CF43E2B0277E609F00A35837 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		CF43E2B5277E616D00A35837 /* SwiftGenOutput.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = SwiftGenOutput.xcfilelist; sourceTree = "<group>"; };
 		CF43E2BC277E621300A35837 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Assets.swift; path = Generated/Assets.swift; sourceTree = "<group>"; };
@@ -129,6 +146,9 @@
 		CF60C189277F05B100F1177B /* SettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
 		CF60C18F277F0B7900F1177B /* MusicPlayerControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerControllable.swift; sourceTree = "<group>"; };
 		CF60C191277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MPMusicPlayerController+Extensions.swift"; sourceTree = "<group>"; };
+		CFC37B92296903FB00A5C1AA /* SocialType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialType.swift; sourceTree = "<group>"; };
+		CFC37B962969047C00A5C1AA /* StubPlayerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubPlayerRouter.swift; sourceTree = "<group>"; };
+		CFC37B99296904FF00A5C1AA /* StubSettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubSettingRouter.swift; sourceTree = "<group>"; };
 		CFCC403827786D4D00937EDB /* NowPlaying.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlaying.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFCC403B27786D4D00937EDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFCC404427786D4D00937EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -194,6 +214,7 @@
 			children = (
 				CF01403828218A870095FA76 /* MediaPlayer */,
 				CF01403B28218B540095FA76 /* Entities */,
+				CFC37B942969046700A5C1AA /* Routers */,
 			);
 			path = Stubs;
 			sourceTree = "<group>";
@@ -362,6 +383,14 @@
 			path = SettingProviderFooterNote;
 			sourceTree = "<group>";
 		};
+		CF3967662968FE16003552FE /* Environments */ = {
+			isa = PBXGroup;
+			children = (
+				CF3967672968FE21003552FE /* Environment.swift */,
+			);
+			path = Environments;
+			sourceTree = "<group>";
+		};
 		CF43E2AF277E608600A35837 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -416,6 +445,10 @@
 				CF43E2CE277E799800A35837 /* ViewControllerInjectable.swift */,
 				CF60C182277F024000F1177B /* Routable.swift */,
 				CF60C18F277F0B7900F1177B /* MusicPlayerControllable.swift */,
+				CF3967642968FE09003552FE /* EnvironmentProtocol.swift */,
+				CF3967692968FE35003552FE /* UIApplicationProtocol.swift */,
+				CF39676B2968FE59003552FE /* UIWindowProtocol.swift */,
+				CF3967712968FF2A003552FE /* UIScreenProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -429,6 +462,9 @@
 				CF01405628227D490095FA76 /* UITableView+Extension.swift */,
 				CF01405828227D710095FA76 /* NSObject+Extension.swift */,
 				CF01405D282280970095FA76 /* URL+Extension.swift */,
+				CF39676D2968FE83003552FE /* UIApplication+Extension.swift */,
+				CF39676F2968FE9E003552FE /* UIWindow+Extension.swift */,
+				CF3967732968FF41003552FE /* UIScreen+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -473,7 +509,7 @@
 			isa = PBXGroup;
 			children = (
 				CF60C185277F049F00F1177B /* MediaItem.swift */,
-				CF01404C282276540095FA76 /* SocialType.swift */,
+				CFC37B92296903FB00A5C1AA /* SocialType.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -483,6 +519,31 @@
 			children = (
 				CF60C188277F05B100F1177B /* SettingViewController.swift */,
 				CF60C189277F05B100F1177B /* SettingViewController.xib */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		CFC37B942969046700A5C1AA /* Routers */ = {
+			isa = PBXGroup;
+			children = (
+				CFC37B98296904F800A5C1AA /* Setting */,
+				CFC37B952969047500A5C1AA /* Player */,
+			);
+			path = Routers;
+			sourceTree = "<group>";
+		};
+		CFC37B952969047500A5C1AA /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				CFC37B962969047C00A5C1AA /* StubPlayerRouter.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		CFC37B98296904F800A5C1AA /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				CFC37B99296904FF00A5C1AA /* StubSettingRouter.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -534,6 +595,7 @@
 			children = (
 				CFCC403B27786D4D00937EDB /* AppDelegate.swift */,
 				CF43E2D0277E7B6F00A35837 /* Extensions */,
+				CF3967662968FE16003552FE /* Environments */,
 				CF43E2CD277E798F00A35837 /* Protocols */,
 				CF60C184277F049400F1177B /* Entities */,
 				CFCC406C27786EB200937EDB /* ViewControllers */,
@@ -912,26 +974,34 @@
 				CF01405C28227E930095FA76 /* SettingRouter.swift in Sources */,
 				CF43E2CB277E735F00A35837 /* PlayViewController.swift in Sources */,
 				CFCC407027786EC400937EDB /* MainViewController.swift in Sources */,
+				CFC37B93296903FB00A5C1AA /* SocialType.swift in Sources */,
 				CF43E2CF277E799800A35837 /* ViewControllerInjectable.swift in Sources */,
 				CF01405E282280970095FA76 /* URL+Extension.swift in Sources */,
 				CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */,
 				CF0140772822C2660095FA76 /* SettingSelectionTableViewCell.swift in Sources */,
 				CF60C192277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift in Sources */,
 				CF60C181277F01F000F1177B /* PlayerRouter.swift in Sources */,
+				CF3967652968FE09003552FE /* EnvironmentProtocol.swift in Sources */,
 				CF43E2D2277E7B7700A35837 /* UIViewController+Extensions.swift in Sources */,
 				CF0140722822C0E80095FA76 /* SettingToggleTableViewCell.swift in Sources */,
 				CF01407C2822C5210095FA76 /* SettingTextViewTableViewCell.swift in Sources */,
-				CF01404D282276550095FA76 /* SocialType.swift in Sources */,
 				CF01406B2822B5770095FA76 /* TwitterSettingViewModel.swift in Sources */,
+				CF3967702968FE9E003552FE /* UIWindow+Extension.swift in Sources */,
+				CF39676E2968FE83003552FE /* UIApplication+Extension.swift in Sources */,
 				CF43E2BD277E621300A35837 /* Assets.swift in Sources */,
+				CF3967682968FE21003552FE /* Environment.swift in Sources */,
+				CF3967742968FF41003552FE /* UIScreen+Extension.swift in Sources */,
 				CF01405428227D150095FA76 /* SettingTableViewCell.swift in Sources */,
+				CF3967722968FF2A003552FE /* UIScreenProtocol.swift in Sources */,
 				CF01405728227D490095FA76 /* UITableView+Extension.swift in Sources */,
 				CF3967622968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift in Sources */,
 				CF01406D2822B6CA0095FA76 /* TwitterSettingRouter.swift in Sources */,
 				CF60C17D277F016C00F1177B /* MPMediaItemArtwork+Extensions.swift in Sources */,
 				CF01404B282274E60095FA76 /* SettingViewModel.swift in Sources */,
+				CF39676A2968FE35003552FE /* UIApplicationProtocol.swift in Sources */,
 				CF01405928227D710095FA76 /* NSObject+Extension.swift in Sources */,
 				CF60C183277F024000F1177B /* Routable.swift in Sources */,
+				CF39676C2968FE59003552FE /* UIWindowProtocol.swift in Sources */,
 				CF60C186277F049F00F1177B /* MediaItem.swift in Sources */,
 				CF0140812822C64E0095FA76 /* SettingButtonTableViewCell.swift in Sources */,
 				CF60C18A277F05B100F1177B /* SettingViewController.swift in Sources */,
@@ -949,6 +1019,8 @@
 				CF014062282286920095FA76 /* TestSettingRouter.swift in Sources */,
 				CF01403628218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift in Sources */,
 				CF01404028218F8D0095FA76 /* UIColor+Extension.swift in Sources */,
+				CFC37B9A296904FF00A5C1AA /* StubSettingRouter.swift in Sources */,
+				CFC37B972969047C00A5C1AA /* StubPlayerRouter.swift in Sources */,
 				CF014042282196AB0095FA76 /* TestPlayViewModelArtworkScale.swift in Sources */,
 				CF014044282197EE0095FA76 /* TestPlayViewModelPlayPauseImage.swift in Sources */,
 			);

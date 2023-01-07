@@ -15,6 +15,7 @@ final class PlayViewController: UIViewController {
 
     // MARK: - Properties
     private let viewModel: PlayViewModelType
+    private let environment: EnvironmentProtocol
     private let disposeBag = DisposeBag()
 
     @IBOutlet private var coverImageView: UIImageView! {
@@ -66,8 +67,9 @@ final class PlayViewController: UIViewController {
     }
 
     // MARK: - Initialize
-    init(dependency: Dependency) {
+    init(dependency: Dependency, environment: EnvironmentProtocol) {
         self.viewModel = dependency
+        self.environment = environment
         super.init(nibName: Self.className, bundle: .main)
     }
 

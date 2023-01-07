@@ -10,5 +10,11 @@ import UIKit
 protocol ViewControllerInjectable: UIViewController {
     associatedtype Dependency
 
-    init(dependency: Dependency)
+    init(dependency: Dependency, environment: EnvironmentProtocol)
+}
+
+extension ViewControllerInjectable where Dependency == Void {
+    init(dependency: Dependency = (), environment: EnvironmentProtocol) {
+        self.init(dependency: dependency, environment: environment)
+    }
 }

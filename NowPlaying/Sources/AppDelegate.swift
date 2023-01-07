@@ -12,16 +12,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Properties
     var window: UIWindow?
 
-    private let mainViewController: MainViewController = {
-        let viewController = MainViewController()
-        return viewController
-    }()
-
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        self.window = .init(frame: UIScreen.main.bounds)
-        window?.rootViewController = mainViewController
-        window?.makeKeyAndVisible()
+        let window = UIWindow()
+        self.window = window
+        let environment = Environment(
+            application: application,
+            screen: window.windowScene?.screen ?? .init(),
+            window: window
+        )
+        let viewController = MainViewController(environment: environment)
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
         return true
     }
 }

@@ -19,7 +19,7 @@ final class TestPlayViewModelPlayPauseImage: XCTestCase {
     // MARK: - Life Cycle
     override func setUp() {
         super.setUp()
-        router = PlayerRouter()
+        router = StubPlayerRouter()
         disposeBag = .init()
         testScheduler = .init(initialClock: 0)
     }

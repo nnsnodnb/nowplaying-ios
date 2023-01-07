@@ -14,8 +14,11 @@ final class TwitterSettingRouter: TwitterSettingRoutable {
     // MARK: - Properties
     private(set) weak var viewController: UIViewController?
 
+    private let environment: EnvironmentProtocol
+
     // MARK: - Initialize
-    init() {
+    init(environment: EnvironmentProtocol) {
+        self.environment = environment
     }
 
     func inject(_ viewController: UIViewController) {

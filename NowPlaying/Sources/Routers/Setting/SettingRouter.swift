@@ -27,12 +27,13 @@ final class SettingRouter: NSObject, SettingRoutable {
     let safari: PublishRelay<URL> = .init()
     let appStore: PublishRelay<Void> = .init()
 
+    private let environment: EnvironmentProtocol
     private let disposeBag = DisposeBag()
 
     // MARK: - Initialize
-    override init() {
+    init(environment: EnvironmentProtocol) {
+        self.environment = environment
         super.init()
-
         // 閉じる
         dismiss.asSignal()
             .emit(with: self, onNext: { strongSelf, _ in
@@ -42,9 +43,9 @@ final class SettingRouter: NSObject, SettingRoutable {
         // Twitter設定
         twitter.asSignal()
             .emit(with: self, onNext: { strongSelf, _ in
-                let router = TwitterSettingRouter()
+                let router = TwitterSettingRouter(environment: strongSelf.environment)
                 let viewModel = TwitterSettingViewModel(router: router)
-                let viewController = TwitterSettingViewController(dependency: viewModel)
+                let viewController = TwitterSettingViewController(dependency: viewModel, environment: strongSelf.environment)
                 router.inject(viewController)
                 strongSelf.viewController?.navigationController?.presentationController?.delegate = strongSelf
                 strongSelf.viewController?.navigationController?.pushViewController(viewController, animated: true)

@@ -29,7 +29,7 @@ final class TestSettingRouter: XCTestCase {
     }
 
     func testTwitterの取得() {
-        let router = SettingRouter()
+        let router = StubSettingRouter()
         let viewModel = SettingViewModel(router: router)
         let observer = testScheduler.createObserver(Void.self)
 
@@ -42,7 +42,7 @@ final class TestSettingRouter: XCTestCase {
     }
 
     func testMastodonの取得() {
-        let router = SettingRouter()
+        let router = StubSettingRouter()
         let viewModel = SettingViewModel(router: router)
         let observer = testScheduler.createObserver(Void.self)
 
@@ -55,7 +55,7 @@ final class TestSettingRouter: XCTestCase {
     }
 
     func testSafariの取得() {
-        let router = SettingRouter()
+        let router = StubSettingRouter()
         let viewModel = SettingViewModel(router: router)
         let observer = testScheduler.createObserver(URL.self)
 
@@ -67,7 +67,7 @@ final class TestSettingRouter: XCTestCase {
     }
 
     func testAppStoreの取得() {
-        let router = SettingRouter()
+        let router = StubSettingRouter()
         let viewModel = SettingViewModel(router: router)
         let observer = testScheduler.createObserver(Void.self)
 
