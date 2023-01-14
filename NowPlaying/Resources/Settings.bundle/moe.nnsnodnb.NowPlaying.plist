@@ -12,6 +12,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/abseil-cpp-SwiftPM</string>
+			<key>Title</key>
+			<string>abseil</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/Action</string>
 			<key>Title</key>
 			<string>Action</string>
@@ -20,49 +28,17 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>moe.nnsnodnb.NowPlaying/Differentiator</string>
+			<string>moe.nnsnodnb.NowPlaying/boringssl-SwiftPM</string>
 			<key>Title</key>
-			<string>Differentiator</string>
+			<string>BoringSSL-GRPC</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>moe.nnsnodnb.NowPlaying/FirebaseAnalytics</string>
+			<string>moe.nnsnodnb.NowPlaying/firebase-ios-sdk</string>
 			<key>Title</key>
-			<string>FirebaseAnalytics</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>moe.nnsnodnb.NowPlaying/FirebaseCore</string>
-			<key>Title</key>
-			<string>FirebaseCore</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>moe.nnsnodnb.NowPlaying/FirebaseCoreInternal</string>
-			<key>Title</key>
-			<string>FirebaseCoreInternal</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>moe.nnsnodnb.NowPlaying/FirebaseCrashlytics</string>
-			<key>Title</key>
-			<string>FirebaseCrashlytics</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>moe.nnsnodnb.NowPlaying/FirebaseInstallations</string>
-			<key>Title</key>
-			<string>FirebaseInstallations</string>
+			<string>Firebase</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -92,6 +68,22 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/grpc-ios</string>
+			<key>Title</key>
+			<string>gRPC</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/gtm-session-fetcher</string>
+			<key>Title</key>
+			<string>gtm-session-fetcher</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/IBLinter</string>
 			<key>Title</key>
 			<string>IBLinter</string>
@@ -116,6 +108,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/leveldb</string>
+			<key>Title</key>
+			<string>leveldb</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/LicensePlist</string>
 			<key>Title</key>
 			<string>LicensePlist</string>
@@ -132,17 +132,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>moe.nnsnodnb.NowPlaying/PromisesObjC</string>
+			<string>moe.nnsnodnb.NowPlaying/promises</string>
 			<key>Title</key>
-			<string>PromisesObjC</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>moe.nnsnodnb.NowPlaying/RxCocoa</string>
-			<key>Title</key>
-			<string>RxCocoa</string>
+			<string>Promises</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -156,25 +148,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>moe.nnsnodnb.NowPlaying/RxRelay</string>
-			<key>Title</key>
-			<string>RxRelay</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>moe.nnsnodnb.NowPlaying/RxSwift</string>
 			<key>Title</key>
 			<string>RxSwift</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>moe.nnsnodnb.NowPlaying/RxTest</string>
-			<key>Title</key>
-			<string>RxTest</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -199,6 +175,14 @@
 			<string>moe.nnsnodnb.NowPlaying/SnapKit</string>
 			<key>Title</key>
 			<string>SnapKit</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.NowPlaying/swift-protobuf</string>
+			<key>Title</key>
+			<string>SwiftProtobuf</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

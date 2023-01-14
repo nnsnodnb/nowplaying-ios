@@ -46,6 +46,15 @@ jobs:
           ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
         write-mode: overwrite
 
+    - name: Cache Swift Package Manager
+      uses: actions/cache@v3
+      with:
+        path: .swiftpm
+        key: ${{ runner.os }}-swiftpm-${{ hashFile('NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-swiftpm-${{ hashFile('NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          ${{ runner.os }}-swiftpm-
+
     - name: Archive & export NowPlaying.ipa for development
       if: github.ref == 'refs/heads/main'
       env:

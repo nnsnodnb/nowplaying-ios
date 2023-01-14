@@ -7,6 +7,7 @@
 
 @testable import NowPlaying
 import RxCocoa
+import UIKit
 
 final class StubPlayerRouter: PlayerRoutable {
     // MARK: - Properties
