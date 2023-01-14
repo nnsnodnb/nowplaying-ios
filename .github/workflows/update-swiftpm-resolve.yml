@@ -1,0 +1,39 @@
+on:
+  pull_request:
+    paths:
+      - Packages/Package.swift
+    branches:
+      - renovate/*
+
+jobs:
+  precheck:
+    runs-on: ubuntu-latest
+    outputs:
+      files_changed: ${{ steps.file_changes.outputs.files }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: file_changes
+        uses: trilom/file-chnages-action@v1
+  update:
+    runs-on: macos-12
+    needs: precheck
+    if: contains(fromJson(needs.precheck.outputs.files_changed), 'NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved') == false
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache Swift Package Manager
+        uses: actions/cache@v3
+        with:
+          path: .swiftpm
+          key: ${{ runner.os }}-swiftpm-${{ hashFiles('NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-swiftpm-${{ hashFiles('NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+            ${{ runner.os }}-swiftpm-
+
+      - run: |
+          xcodebuild -scheme NowPlaying -workspace NowPlaying.xcworkspace -resolvePackageDependencies -clonedSourcePackagesDirPath ./.swiftpm
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git add .
+          git commit -m "Update package resolve"
+          git push origin HEAD:"${GITHUB_REF}"
