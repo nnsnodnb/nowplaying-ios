@@ -14,7 +14,7 @@ let package = Package(
         .package(url: "https://github.com/RxSwiftCommunity/RxDataSources.git", from: "5.0.2"),
         .package(url: "https://github.com/krimpedance/KRProgressHUD.git", from: "3.4.7"),
         .package(url: "https://github.com/nnsnodnb/ScrollFlowLabel.git", from: "1.0.4"),
-        .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", from: "4.0.0"),
+        .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", from: "4.1.0"),
         .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "10.0.0"),
         .package(url: "https://github.com/SnapKit/SnapKit.git", from: "5.6.0"),
     ],
