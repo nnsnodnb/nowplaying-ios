@@ -1,7 +1,8 @@
-workspace "NowPlaying.xcworkspace"
-scheme "NowPlaying"
-clean true
-prelaunch_simulator true
-output_types "junit"
-custom_report_file_name "report.xml"
+workspace("NowPlaying.xcworkspace")
+scheme("NowPlaying")
+clean(true)
+prelaunch_simulator(true)
+output_types("junit")
+custom_report_file_name("report.xml")
 cloned_source_packages_path("./.swiftpm")
+disable_package_automatic_updates(true)
