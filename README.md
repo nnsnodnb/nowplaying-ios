@@ -21,6 +21,8 @@ Multiple files are confidential for this project.
 
 ### Certificates
 
+If you accessable certificate management repository.
+
 ```sh
 bundle exec fastlane ios setup_development_certificates
 ```
