@@ -7,6 +7,7 @@
 
 @testable import NowPlaying
 import RxCocoa
+import UIKit
 
 final class StubSettingRouter: SettingRoutable {
     // MARK: - Properties

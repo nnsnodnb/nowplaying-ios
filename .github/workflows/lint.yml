@@ -33,7 +33,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           ${{ runner.os }}-pods-
-    
+
     - name: Setup dependency
       run: bundle exec pod install
 

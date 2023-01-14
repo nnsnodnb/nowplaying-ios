@@ -46,12 +46,22 @@ jobs:
           ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
         write-mode: overwrite
 
+    - name: Cache Swift Package Manager
+      uses: actions/cache@v3
+      with:
+        path: .swiftpm
+        key: ${{ runner.os }}-swiftpm-${{ hashFiles('NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-swiftpm-${{ hashFiles('NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          ${{ runner.os }}-swiftpm-
+
     - name: Archive & export NowPlaying.ipa for development
       if: github.ref == 'refs/heads/main'
       env:
         MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         MATCH_KEYCHAIN_NAME: "fastlane_keychain"
         MATCH_KEYCHAIN_PASSWORD: ""
+        FASTLANE_XCODEBUILD_SETTINGS_RETRIES: 20
       run: |
         MATCH_GIT_PRIVATE_KEY=$(echo -n "${{ secrets.MATCH_GIT_PRIVATE_KEY }}" | base64 -d)
         export MATCH_GIT_PRIVATE_KEY

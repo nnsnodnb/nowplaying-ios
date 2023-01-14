@@ -50,7 +50,18 @@ jobs:
           ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
         write-mode: overwrite
 
+    - name: Cache Swift Package Manager
+      uses: actions/cache@v3
+      with:
+        path: .swiftpm
+        key: ${{ runner.os }}-swiftpm-${{ hashFiles('NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-swiftpm-${{ hashFiles('NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          ${{ runner.os }}-swiftpm-
+
     - name: Run Test
+      env:
+        FASTLANE_XCODEBUILD_SETTINGS_RETRIES: 20
       run: bundle exec fastlane ios test
 
     - name: Publish unit test results
