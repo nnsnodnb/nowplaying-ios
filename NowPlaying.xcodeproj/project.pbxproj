@@ -864,7 +864,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"${DEBUG_INFORMATION_FORMAT}\" == \"dwarf-with-dsym\" ]]; then\n  \"${BUILD_DIR%Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\" \"-gsp\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/Firebase/GoogleService-Info.plist\"\nfi\n";
+			shellScript = "if [[ \"${DEBUG_INFORMATION_FORMAT}\" == \"dwarf-with-dsym\" ]]; then\n  \"${SRCROOT}/.swiftpm/checkouts/firebase-ios-sdk/Crashlytics/run\" \"-gsp\" \"${SRCROOT}/${PRODUCT_NAME}/Resources/Firebase/GoogleService-Info.plist\"\nfi\n";
 		};
 		CF43E2B2277E60BC00A35837 /* Generate SwiftGenOutput.xcfilelist */ = {
 			isa = PBXShellScriptBuildPhase;
