@@ -1,22 +1,23 @@
 //
-//  TwitterSettingViewController.swift
+//  SettingProviderViewController.swift
 //  NowPlaying
 //
-//  Created by Yuya Oka on 2022/05/04.
+//  Created by Yuya Oka on 2023/01/07.
 //
 
 import Differentiator
+import KRProgressHUD
 import RxCocoa
 import RxDataSources
 import RxSwift
 import UIKit
 
-final class TwitterSettingViewController: UIViewController {
+final class SettingProviderViewController: UIViewController {
     // MARK: - Dependency
-    typealias Dependency = TwitterSettingViewModelType
+    typealias Dependency = SettingProviderViewModelType
 
     // MARK: - Properties
-    private let viewModel: TwitterSettingViewModelType
+    private let viewModel: SettingProviderViewModelType
     private let environment: EnvironmentProtocol
     private let disposeBag = DisposeBag()
 
@@ -85,14 +86,15 @@ final class TwitterSettingViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Twitter設定"
         bind(to: viewModel)
     }
 }
 
 // MARK: - Private method
-private extension TwitterSettingViewController {
-    func bind(to viewModel: TwitterSettingViewModelType) {
+private extension SettingProviderViewController {
+    func bind(to viewModel: SettingProviderViewModelType) {
+        // タイトル
+        navigationItem.title = viewModel.outputs.title
         // UITableView
         tableView.rx.itemSelected.asSignal()
             .emit(with: self, onNext: { strongSelf, indexPath in
@@ -106,7 +108,7 @@ private extension TwitterSettingViewController {
 }
 
 // MARK: - UITableViewDelegate
-extension TwitterSettingViewController: UITableViewDelegate {
+extension SettingProviderViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch dataSource[indexPath] {
         case .detail, .toggle, .selection, .button:
@@ -120,34 +122,34 @@ extension TwitterSettingViewController: UITableViewDelegate {
 }
 
 // MARK: - SettingProviderFooterNoteTableViewCellDelegate
-extension TwitterSettingViewController: SettingProviderFooterNoteTableViewCellDelegate {
+extension SettingProviderViewController: SettingProviderFooterNoteTableViewCellDelegate {
     func settingProviderFooterNoteTableViewCellDidCopy() {
-        // TODO: 「コピーしました」表示
+        KRProgressHUD.showInfo(withMessage: "コピーしました")
     }
 }
 
 // MARK: - DataSource
-private extension TwitterSettingViewController {
+private extension SettingProviderViewController {
     typealias DataSource = RxTableViewSectionedReloadDataSource<SectionModel>
 }
 
 // MARK: - SectionModel
-extension TwitterSettingViewController {
+extension SettingProviderViewController {
     typealias SectionModel = Differentiator.SectionModel<Section, Item>
 }
 
 // MARK: - Section
-extension TwitterSettingViewController {
-    enum Section: String {
-        case twitter
+extension SettingProviderViewController {
+    enum Section: Equatable {
+        case socialType(SocialType)
         case format
         case footer
 
         // MARK: - Properties
         var title: String? {
             switch self {
-            case .twitter:
-                return "Twitter"
+            case let .socialType(socialType):
+                return socialType.title
             case .format:
                 return "自動フォーマット"
             case .footer:
@@ -158,8 +160,8 @@ extension TwitterSettingViewController {
 }
 
 // MARK: - Item
-extension TwitterSettingViewController {
-    enum Item: Equatable, SettingTableViewCellItemType, SettingToggleTableViewCellItemType {
+extension SettingProviderViewController {
+    enum Item: Equatable, SettingTableViewCellItemType {
         case detail(Detail)
         case toggle(Toggle)
         case selection(Selection)
@@ -191,7 +193,7 @@ extension TwitterSettingViewController {
 }
 
 // MARK: - Item.Detail
-extension TwitterSettingViewController.Item {
+extension SettingProviderViewController.Item {
     enum Detail: String {
         case accounts
 
@@ -206,25 +208,30 @@ extension TwitterSettingViewController.Item {
 }
 
 // MARK: - Item.Toggle
-extension TwitterSettingViewController.Item {
-    enum Toggle: String {
+extension SettingProviderViewController.Item {
+    enum Toggle: Equatable {
         case attachImage
-        case auto
+        case auto(SocialType)
 
         // MARK: - Properties
         var title: String {
             switch self {
             case .attachImage:
                 return "画像を添付"
-            case .auto:
-                return "自動ツイート"
+            case let .auto(socialType):
+                switch socialType {
+                case .twitter:
+                    return "自動ツイート"
+                case .mastodon:
+                    return "自動トゥート"
+                }
             }
         }
     }
 }
 
 // MARK: - Item.Selection
-extension TwitterSettingViewController.Item {
+extension SettingProviderViewController.Item {
     enum Selection: String {
         case attachmentType
 
@@ -239,7 +246,7 @@ extension TwitterSettingViewController.Item {
 }
 
 // MARK: - Item.Button
-extension TwitterSettingViewController.Item {
+extension SettingProviderViewController.Item {
     enum Button: String {
         case reset
 
@@ -254,4 +261,4 @@ extension TwitterSettingViewController.Item {
 }
 
 // MARK: - ViewControllerInjectable
-extension TwitterSettingViewController: ViewControllerInjectable {}
+extension SettingProviderViewController: ViewControllerInjectable {}

@@ -11,7 +11,7 @@ final class SettingButtonTableViewCell: UITableViewCell {
     // MARK: - Properties
     @IBOutlet private var titleLabel: UILabel!
 
-    func configure(button: TwitterSettingViewController.Item.Button) {
+    func configure(button: SettingProviderViewController.Item.Button) {
         // テキスト
         titleLabel.text = button.title
     }

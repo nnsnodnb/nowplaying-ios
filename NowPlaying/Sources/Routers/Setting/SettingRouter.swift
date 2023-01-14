@@ -43,18 +43,13 @@ final class SettingRouter: NSObject, SettingRoutable {
         // Twitter設定
         twitter.asSignal()
             .emit(with: self, onNext: { strongSelf, _ in
-                let router = TwitterSettingRouter(environment: strongSelf.environment)
-                let viewModel = TwitterSettingViewModel(router: router)
-                let viewController = TwitterSettingViewController(dependency: viewModel, environment: strongSelf.environment)
-                router.inject(viewController)
-                strongSelf.viewController?.navigationController?.presentationController?.delegate = strongSelf
-                strongSelf.viewController?.navigationController?.pushViewController(viewController, animated: true)
+                strongSelf.showSettingProviderViewController(with: .twitter)
             })
             .disposed(by: disposeBag)
         // Mastodon設定
         mastodon.asSignal()
             .emit(with: self, onNext: { strongSelf, _ in
-                // TODO: 画面遷移
+                strongSelf.showSettingProviderViewController(with: .mastodon)
             })
             .disposed(by: disposeBag)
         // SFSafariViewController
@@ -77,10 +72,22 @@ final class SettingRouter: NSObject, SettingRoutable {
     }
 }
 
+// MARK: - Private method
+private extension SettingRouter {
+    func showSettingProviderViewController(with socialType: SocialType) {
+        let router = SettingProviderRouter(environment: environment, socialType: socialType)
+        let viewModel = SettingProviderViewModel(router: router, socialType: socialType)
+        let viewController = SettingProviderViewController(dependency: viewModel, environment: environment)
+        router.inject(viewController)
+        self.viewController?.navigationController?.presentationController?.delegate = self
+        self.viewController?.navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+
 // MARK: - UIAdaptivePresentationControllerDelegate
 extension SettingRouter: UIAdaptivePresentationControllerDelegate {
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
-        guard let viewController = viewController,
+        guard let viewController,
               let children = viewController.navigationController?.children else { return true }
         return children == [viewController]
     }

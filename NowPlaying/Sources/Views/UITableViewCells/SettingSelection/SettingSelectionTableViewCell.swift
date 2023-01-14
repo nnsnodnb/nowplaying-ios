@@ -12,7 +12,7 @@ final class SettingSelectionTableViewCell: UITableViewCell {
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var valueLabel: UILabel!
 
-    func configure(selection: TwitterSettingViewController.Item.Selection) {
+    func configure(selection: SettingProviderViewController.Item.Selection) {
         // タイトル
         titleLabel.text = selection.title
     }

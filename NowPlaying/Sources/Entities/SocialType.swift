@@ -12,6 +12,14 @@ enum SocialType: String {
     case mastodon
 
     // MARK: - Properties
+    var title: String {
+        switch self {
+        case .twitter:
+            return "Twitter"
+        case .mastodon:
+            return "Mastodon"
+        }
+    }
     var image: UIImage {
         switch self {
         case .twitter:
