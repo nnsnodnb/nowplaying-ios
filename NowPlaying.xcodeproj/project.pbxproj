@@ -31,6 +31,9 @@
 		CF01407D2822C5210095FA76 /* SettingTextViewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF01407B2822C5210095FA76 /* SettingTextViewTableViewCell.xib */; };
 		CF0140812822C64E0095FA76 /* SettingButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01407F2822C64E0095FA76 /* SettingButtonTableViewCell.swift */; };
 		CF0140822822C64E0095FA76 /* SettingButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0140802822C64E0095FA76 /* SettingButtonTableViewCell.xib */; };
+		CF1ACEED297272C100996FB4 /* Packages in Frameworks */ = {isa = PBXBuildFile; productRef = CF1ACEEC297272C100996FB4 /* Packages */; };
+		CF1ACEF42972784600996FB4 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = CF1ACEF32972784600996FB4 /* RxBlocking */; };
+		CF1ACEF62972784600996FB4 /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = CF1ACEF52972784600996FB4 /* RxTest */; };
 		CF3967622968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3967602968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift */; };
 		CF3967632968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF3967612968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib */; };
 		CF3967652968FE09003552FE /* EnvironmentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3967642968FE09003552FE /* EnvironmentProtocol.swift */; };
@@ -71,19 +74,6 @@
 		CFC37BC22969A92D00A5C1AA /* StubUIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BC12969A92D00A5C1AA /* StubUIApplication.swift */; };
 		CFC37BC42969A94C00A5C1AA /* StubUIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BC32969A94C00A5C1AA /* StubUIScreen.swift */; };
 		CFC37BC62969A97600A5C1AA /* StubUIWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC37BC52969A97600A5C1AA /* StubUIWindow.swift */; };
-		CFC37BC9297264CD00A5C1AA /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BC8297264CD00A5C1AA /* RxBlocking */; };
-		CFC37BCB297264CD00A5C1AA /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BCA297264CD00A5C1AA /* RxCocoa */; };
-		CFC37BCD297264CD00A5C1AA /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BCC297264CD00A5C1AA /* RxRelay */; };
-		CFC37BCF297264CD00A5C1AA /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BCE297264CD00A5C1AA /* RxSwift */; };
-		CFC37BD1297264CD00A5C1AA /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BD0297264CD00A5C1AA /* RxTest */; };
-		CFC37BD4297264E400A5C1AA /* Action in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BD3297264E400A5C1AA /* Action */; };
-		CFC37BD72972651000A5C1AA /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BD62972651000A5C1AA /* RxDataSources */; };
-		CFC37BDA2972659400A5C1AA /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BD92972659400A5C1AA /* FirebaseAnalytics */; };
-		CFC37BDC2972659400A5C1AA /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BDB2972659400A5C1AA /* FirebaseCrashlytics */; };
-		CFC37BDF297265E000A5C1AA /* KRProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BDE297265E000A5C1AA /* KRProgressHUD */; };
-		CFC37BE22972661F00A5C1AA /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BE12972661F00A5C1AA /* SFSafeSymbols */; };
-		CFC37BE52972664C00A5C1AA /* ScrollFlowLabel in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BE42972664C00A5C1AA /* ScrollFlowLabel */; };
-		CFC37BE82972668000A5C1AA /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CFC37BE72972668000A5C1AA /* SnapKit */; };
 		CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC403B27786D4D00937EDB /* AppDelegate.swift */; };
 		CFCC404527786D4D00937EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404427786D4D00937EDB /* Assets.xcassets */; };
 		CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CFCC404627786D4D00937EDB /* LaunchScreen.storyboard */; };
@@ -128,6 +118,7 @@
 		CF01407B2822C5210095FA76 /* SettingTextViewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingTextViewTableViewCell.xib; sourceTree = "<group>"; };
 		CF01407F2822C64E0095FA76 /* SettingButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingButtonTableViewCell.swift; sourceTree = "<group>"; };
 		CF0140802822C64E0095FA76 /* SettingButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingButtonTableViewCell.xib; sourceTree = "<group>"; };
+		CF1ACEEB2972710900996FB4 /* Packages */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Packages; sourceTree = "<group>"; };
 		CF3967602968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingProviderFooterNoteTableViewCell.swift; sourceTree = "<group>"; };
 		CF3967612968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingProviderFooterNoteTableViewCell.xib; sourceTree = "<group>"; };
 		CF3967642968FE09003552FE /* EnvironmentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentProtocol.swift; sourceTree = "<group>"; };
@@ -190,18 +181,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFC37BE52972664C00A5C1AA /* ScrollFlowLabel in Frameworks */,
-				CFC37BE22972661F00A5C1AA /* SFSafeSymbols in Frameworks */,
-				CFC37BDA2972659400A5C1AA /* FirebaseAnalytics in Frameworks */,
-				CFC37BD4297264E400A5C1AA /* Action in Frameworks */,
-				CFC37BCD297264CD00A5C1AA /* RxRelay in Frameworks */,
-				CFC37BDF297265E000A5C1AA /* KRProgressHUD in Frameworks */,
-				CFC37BCB297264CD00A5C1AA /* RxCocoa in Frameworks */,
-				CFC37BD72972651000A5C1AA /* RxDataSources in Frameworks */,
-				CFC37BDC2972659400A5C1AA /* FirebaseCrashlytics in Frameworks */,
-				CFC37BE82972668000A5C1AA /* SnapKit in Frameworks */,
-				CFC37BCF297264CD00A5C1AA /* RxSwift in Frameworks */,
 				759D4791E0D1FF0069331938 /* Pods_NowPlaying.framework in Frameworks */,
+				CF1ACEED297272C100996FB4 /* Packages in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,8 +190,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFC37BD1297264CD00A5C1AA /* RxTest in Frameworks */,
-				CFC37BC9297264CD00A5C1AA /* RxBlocking in Frameworks */,
+				CF1ACEF62972784600996FB4 /* RxTest in Frameworks */,
+				CF1ACEF42972784600996FB4 /* RxBlocking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,6 +368,14 @@
 				CF0140802822C64E0095FA76 /* SettingButtonTableViewCell.xib */,
 			);
 			path = SettingButton;
+			sourceTree = "<group>";
+		};
+		CF1ACEEA2972710900996FB4 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				CF1ACEEB2972710900996FB4 /* Packages */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 		CF39675F2968F08D003552FE /* SettingProviderFooterNote */ = {
@@ -637,6 +626,7 @@
 				CFCC403A27786D4D00937EDB /* NowPlaying */,
 				CFCC405127786D4E00937EDB /* NowPlayingTests */,
 				CF43E2C0277E65AF00A35837 /* Configurations */,
+				CF1ACEEA2972710900996FB4 /* Packages */,
 				CFCC403927786D4D00937EDB /* Products */,
 				F52878203576725D0FEC8D69 /* Pods */,
 				D3D065403D26B9B44D86B6BD /* Frameworks */,
@@ -752,17 +742,7 @@
 			);
 			name = NowPlaying;
 			packageProductDependencies = (
-				CFC37BCA297264CD00A5C1AA /* RxCocoa */,
-				CFC37BCC297264CD00A5C1AA /* RxRelay */,
-				CFC37BCE297264CD00A5C1AA /* RxSwift */,
-				CFC37BD3297264E400A5C1AA /* Action */,
-				CFC37BD62972651000A5C1AA /* RxDataSources */,
-				CFC37BD92972659400A5C1AA /* FirebaseAnalytics */,
-				CFC37BDB2972659400A5C1AA /* FirebaseCrashlytics */,
-				CFC37BDE297265E000A5C1AA /* KRProgressHUD */,
-				CFC37BE12972661F00A5C1AA /* SFSafeSymbols */,
-				CFC37BE42972664C00A5C1AA /* ScrollFlowLabel */,
-				CFC37BE72972668000A5C1AA /* SnapKit */,
+				CF1ACEEC297272C100996FB4 /* Packages */,
 			);
 			productName = NowPlaying;
 			productReference = CFCC403827786D4D00937EDB /* NowPlaying.app */;
@@ -783,8 +763,8 @@
 			);
 			name = NowPlayingTests;
 			packageProductDependencies = (
-				CFC37BC8297264CD00A5C1AA /* RxBlocking */,
-				CFC37BD0297264CD00A5C1AA /* RxTest */,
+				CF1ACEF32972784600996FB4 /* RxBlocking */,
+				CF1ACEF52972784600996FB4 /* RxTest */,
 			);
 			productName = NowPlayingTests;
 			productReference = CFCC404E27786D4E00937EDB /* NowPlayingTests.xctest */;
@@ -820,14 +800,7 @@
 			);
 			mainGroup = CFCC402F27786D4D00937EDB;
 			packageReferences = (
-				CFC37BC7297264CD00A5C1AA /* XCRemoteSwiftPackageReference "RxSwift" */,
-				CFC37BD2297264E400A5C1AA /* XCRemoteSwiftPackageReference "Action" */,
-				CFC37BD52972651000A5C1AA /* XCRemoteSwiftPackageReference "RxDataSources" */,
-				CFC37BD82972659400A5C1AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				CFC37BDD297265E000A5C1AA /* XCRemoteSwiftPackageReference "KRProgressHUD" */,
-				CFC37BE02972661F00A5C1AA /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
-				CFC37BE32972664C00A5C1AA /* XCRemoteSwiftPackageReference "ScrollFlowLabel" */,
-				CFC37BE62972668000A5C1AA /* XCRemoteSwiftPackageReference "SnapKit" */,
+				CF1ACEF22972784600996FB4 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = CFCC403927786D4D00937EDB /* Products */;
 			projectDirPath = "";
@@ -1232,6 +1205,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development moe.nnsnodnb.NowPlaying";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1255,6 +1229,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1356,7 +1331,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CFC37BC7297264CD00A5C1AA /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		CF1ACEF22972784600996FB4 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {
@@ -1364,129 +1339,22 @@
 				minimumVersion = 6.0.0;
 			};
 		};
-		CFC37BD2297264E400A5C1AA /* XCRemoteSwiftPackageReference "Action" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RxSwiftCommunity/Action.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
-		CFC37BD52972651000A5C1AA /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
-		CFC37BD82972659400A5C1AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
-			};
-		};
-		CFC37BDD297265E000A5C1AA /* XCRemoteSwiftPackageReference "KRProgressHUD" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/krimpedance/KRProgressHUD";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
-			};
-		};
-		CFC37BE02972661F00A5C1AA /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
-		CFC37BE32972664C00A5C1AA /* XCRemoteSwiftPackageReference "ScrollFlowLabel" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/nnsnodnb/ScrollFlowLabel";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		CFC37BE62972668000A5C1AA /* XCRemoteSwiftPackageReference "SnapKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CFC37BC8297264CD00A5C1AA /* RxBlocking */ = {
+		CF1ACEEC297272C100996FB4 /* Packages */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CFC37BC7297264CD00A5C1AA /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = Packages;
+		};
+		CF1ACEF32972784600996FB4 /* RxBlocking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF1ACEF22972784600996FB4 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxBlocking;
 		};
-		CFC37BCA297264CD00A5C1AA /* RxCocoa */ = {
+		CF1ACEF52972784600996FB4 /* RxTest */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CFC37BC7297264CD00A5C1AA /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxCocoa;
-		};
-		CFC37BCC297264CD00A5C1AA /* RxRelay */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC37BC7297264CD00A5C1AA /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxRelay;
-		};
-		CFC37BCE297264CD00A5C1AA /* RxSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC37BC7297264CD00A5C1AA /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxSwift;
-		};
-		CFC37BD0297264CD00A5C1AA /* RxTest */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC37BC7297264CD00A5C1AA /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = CF1ACEF22972784600996FB4 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxTest;
-		};
-		CFC37BD3297264E400A5C1AA /* Action */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC37BD2297264E400A5C1AA /* XCRemoteSwiftPackageReference "Action" */;
-			productName = Action;
-		};
-		CFC37BD62972651000A5C1AA /* RxDataSources */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC37BD52972651000A5C1AA /* XCRemoteSwiftPackageReference "RxDataSources" */;
-			productName = RxDataSources;
-		};
-		CFC37BD92972659400A5C1AA /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC37BD82972659400A5C1AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		CFC37BDB2972659400A5C1AA /* FirebaseCrashlytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC37BD82972659400A5C1AA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseCrashlytics;
-		};
-		CFC37BDE297265E000A5C1AA /* KRProgressHUD */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC37BDD297265E000A5C1AA /* XCRemoteSwiftPackageReference "KRProgressHUD" */;
-			productName = KRProgressHUD;
-		};
-		CFC37BE12972661F00A5C1AA /* SFSafeSymbols */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC37BE02972661F00A5C1AA /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
-			productName = SFSafeSymbols;
-		};
-		CFC37BE42972664C00A5C1AA /* ScrollFlowLabel */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC37BE32972664C00A5C1AA /* XCRemoteSwiftPackageReference "ScrollFlowLabel" */;
-			productName = ScrollFlowLabel;
-		};
-		CFC37BE72972668000A5C1AA /* SnapKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFC37BE62972668000A5C1AA /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

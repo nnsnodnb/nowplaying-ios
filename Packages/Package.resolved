@@ -30,7 +30,7 @@
     {
       "identity" : "firebase-ios-sdk",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/firebase/firebase-ios-sdk",
+      "location" : "https://github.com/firebase/firebase-ios-sdk.git",
       "state" : {
         "revision" : "dce2e1abc6c0d5e830ff1cffe3f8633fda64001e",
         "version" : "10.3.0"
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/gtm-session-fetcher.git",
       "state" : {
-        "revision" : "5ccda3981422a84186387dbb763ba739178b529c",
-        "version" : "2.3.0"
+        "revision" : "96d7cc73a71ce950723aa3c50ce4fb275ae180b8",
+        "version" : "3.1.0"
       }
     },
     {
@@ -93,7 +93,7 @@
     {
       "identity" : "krprogresshud",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krimpedance/KRProgressHUD",
+      "location" : "https://github.com/krimpedance/KRProgressHUD.git",
       "state" : {
         "revision" : "265142816d8f8ea93840accaf4ac7c49998e77c2",
         "version" : "3.4.7"
@@ -129,7 +129,7 @@
     {
       "identity" : "rxdatasources",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/RxSwiftCommunity/RxDataSources",
+      "location" : "https://github.com/RxSwiftCommunity/RxDataSources.git",
       "state" : {
         "revision" : "90c29b48b628479097fe775ed1966d75ac374518",
         "version" : "5.0.2"
@@ -147,7 +147,7 @@
     {
       "identity" : "scrollflowlabel",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/nnsnodnb/ScrollFlowLabel",
+      "location" : "https://github.com/nnsnodnb/ScrollFlowLabel.git",
       "state" : {
         "revision" : "0bdff1d5f07901516de6c860bd1022e9e1d2b986",
         "version" : "1.0.4"
@@ -156,7 +156,7 @@
     {
       "identity" : "sfsafesymbols",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SFSafeSymbols/SFSafeSymbols",
+      "location" : "https://github.com/SFSafeSymbols/SFSafeSymbols.git",
       "state" : {
         "revision" : "2bcd249b49178247e6b52bac7d67d6e338a40cee",
         "version" : "4.1.0"
@@ -165,7 +165,7 @@
     {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SnapKit/SnapKit",
+      "location" : "https://github.com/SnapKit/SnapKit.git",
       "state" : {
         "revision" : "f222cbdf325885926566172f6f5f06af95473158",
         "version" : "5.6.0"
