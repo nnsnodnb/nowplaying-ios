@@ -32,7 +32,6 @@ final class TestSettingProviderViewModelDataSource: XCTestCase {
                 items: [
                     .detail(.accounts),
                     .toggle(.attachImage),
-                    .selection(.attachmentType),
                     .toggle(.auto(.twitter))
                 ]
             ),
@@ -62,7 +61,6 @@ final class TestSettingProviderViewModelDataSource: XCTestCase {
                 items: [
                     .detail(.accounts),
                     .toggle(.attachImage),
-                    .selection(.attachmentType),
                     .toggle(.auto(.mastodon))
                 ]
             ),

@@ -40,7 +40,6 @@ final class SettingProviderViewModel: SettingProviderViewModelType {
                 items: [
                     .detail(.accounts),
                     .toggle(.attachImage),
-                    .selection(.attachmentType),
                     .toggle(.auto(socialType))
                 ]
             ),

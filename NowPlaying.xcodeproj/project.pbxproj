@@ -25,8 +25,6 @@
 		CF014062282286920095FA76 /* TestSettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF014061282286920095FA76 /* TestSettingRouter.swift */; };
 		CF0140722822C0E80095FA76 /* SettingToggleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0140702822C0E80095FA76 /* SettingToggleTableViewCell.swift */; };
 		CF0140732822C0E80095FA76 /* SettingToggleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0140712822C0E80095FA76 /* SettingToggleTableViewCell.xib */; };
-		CF0140772822C2660095FA76 /* SettingSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF0140752822C2660095FA76 /* SettingSelectionTableViewCell.swift */; };
-		CF0140782822C2660095FA76 /* SettingSelectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF0140762822C2660095FA76 /* SettingSelectionTableViewCell.xib */; };
 		CF01407C2822C5210095FA76 /* SettingTextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01407A2822C5210095FA76 /* SettingTextViewTableViewCell.swift */; };
 		CF01407D2822C5210095FA76 /* SettingTextViewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF01407B2822C5210095FA76 /* SettingTextViewTableViewCell.xib */; };
 		CF0140812822C64E0095FA76 /* SettingButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01407F2822C64E0095FA76 /* SettingButtonTableViewCell.swift */; };
@@ -112,8 +110,6 @@
 		CF014061282286920095FA76 /* TestSettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSettingRouter.swift; sourceTree = "<group>"; };
 		CF0140702822C0E80095FA76 /* SettingToggleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingToggleTableViewCell.swift; sourceTree = "<group>"; };
 		CF0140712822C0E80095FA76 /* SettingToggleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingToggleTableViewCell.xib; sourceTree = "<group>"; };
-		CF0140752822C2660095FA76 /* SettingSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSelectionTableViewCell.swift; sourceTree = "<group>"; };
-		CF0140762822C2660095FA76 /* SettingSelectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingSelectionTableViewCell.xib; sourceTree = "<group>"; };
 		CF01407A2822C5210095FA76 /* SettingTextViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTextViewTableViewCell.swift; sourceTree = "<group>"; };
 		CF01407B2822C5210095FA76 /* SettingTextViewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingTextViewTableViewCell.xib; sourceTree = "<group>"; };
 		CF01407F2822C64E0095FA76 /* SettingButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingButtonTableViewCell.swift; sourceTree = "<group>"; };
@@ -292,7 +288,6 @@
 			children = (
 				CF01405028227CFA0095FA76 /* Setting */,
 				CF01406F2822C0D80095FA76 /* SettingToggle */,
-				CF0140742822C25B0095FA76 /* SettingSelection */,
 				CF0140792822C5130095FA76 /* SettingTextView */,
 				CF01407E2822C63F0095FA76 /* SettingButton */,
 				CF39675F2968F08D003552FE /* SettingProviderFooterNote */,
@@ -341,15 +336,6 @@
 				CF0140712822C0E80095FA76 /* SettingToggleTableViewCell.xib */,
 			);
 			path = SettingToggle;
-			sourceTree = "<group>";
-		};
-		CF0140742822C25B0095FA76 /* SettingSelection */ = {
-			isa = PBXGroup;
-			children = (
-				CF0140752822C2660095FA76 /* SettingSelectionTableViewCell.swift */,
-				CF0140762822C2660095FA76 /* SettingSelectionTableViewCell.xib */,
-			);
-			path = SettingSelection;
 			sourceTree = "<group>";
 		};
 		CF0140792822C5130095FA76 /* SettingTextView */ = {
@@ -823,7 +809,6 @@
 				CF0140482821B02C0095FA76 /* GoogleService-Info.plist in Resources */,
 				CF3967632968F0BF003552FE /* SettingProviderFooterNoteTableViewCell.xib in Resources */,
 				CFCC404827786D4D00937EDB /* LaunchScreen.storyboard in Resources */,
-				CF0140782822C2660095FA76 /* SettingSelectionTableViewCell.xib in Resources */,
 				CF43E2B1277E609F00A35837 /* Colors.xcassets in Resources */,
 				CF43E2CC277E735F00A35837 /* PlayViewController.xib in Resources */,
 				CF0140732822C0E80095FA76 /* SettingToggleTableViewCell.xib in Resources */,
@@ -998,7 +983,6 @@
 				CF43E2CF277E799800A35837 /* ViewControllerInjectable.swift in Sources */,
 				CF01405E282280970095FA76 /* URL+Extension.swift in Sources */,
 				CFCC403C27786D4D00937EDB /* AppDelegate.swift in Sources */,
-				CF0140772822C2660095FA76 /* SettingSelectionTableViewCell.swift in Sources */,
 				CFC37BB329699AA600A5C1AA /* SettingProviderRouter.swift in Sources */,
 				CF60C192277F0BAC00F1177B /* MPMusicPlayerController+Extensions.swift in Sources */,
 				CF60C181277F01F000F1177B /* PlayerRouter.swift in Sources */,

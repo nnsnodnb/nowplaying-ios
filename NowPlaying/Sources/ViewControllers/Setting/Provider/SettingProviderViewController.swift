@@ -25,7 +25,6 @@ final class SettingProviderViewController: UIViewController {
         didSet {
             tableView.register(SettingTableViewCell.self)
             tableView.register(SettingToggleTableViewCell.self)
-            tableView.register(SettingSelectionTableViewCell.self)
             tableView.register(SettingTextViewTableViewCell.self)
             tableView.register(SettingButtonTableViewCell.self)
             tableView.register(SettingProviderFooterNoteTableViewCell.self)
@@ -45,10 +44,6 @@ final class SettingProviderViewController: UIViewController {
                 case let .toggle(toggle):
                     let cell = tableView.dequeueReusableCell(with: SettingToggleTableViewCell.self, for: indexPath)
                     cell.configure(item: item)
-                    return cell
-                case let .selection(selection):
-                    let cell = tableView.dequeueReusableCell(with: SettingSelectionTableViewCell.self, for: indexPath)
-                    cell.configure(selection: selection)
                     return cell
                 case .textView:
                     let cell = tableView.dequeueReusableCell(with: SettingTextViewTableViewCell.self, for: indexPath)
@@ -111,7 +106,7 @@ private extension SettingProviderViewController {
 extension SettingProviderViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch dataSource[indexPath] {
-        case .detail, .toggle, .selection, .button:
+        case .detail, .toggle, .button:
             return 44
         case .textView:
             return 132
@@ -164,7 +159,6 @@ extension SettingProviderViewController {
     enum Item: Equatable, SettingTableViewCellItemType {
         case detail(Detail)
         case toggle(Toggle)
-        case selection(Selection)
         case textView
         case button(Button)
         case footerNote
@@ -176,8 +170,6 @@ extension SettingProviderViewController {
                 return detail.title
             case let .toggle(toggle):
                 return toggle.title
-            case let .selection(selection):
-                return selection.title
             case .textView:
                 return "textView"
             case let .button(button):
@@ -225,21 +217,6 @@ extension SettingProviderViewController.Item {
                 case .mastodon:
                     return "自動トゥート"
                 }
-            }
-        }
-    }
-}
-
-// MARK: - Item.Selection
-extension SettingProviderViewController.Item {
-    enum Selection: String {
-        case attachmentType
-
-        // MARK: - Properties
-        var title: String {
-            switch self {
-            case .attachmentType:
-                return "投稿時の画像"
             }
         }
     }
