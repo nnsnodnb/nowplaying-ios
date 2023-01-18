@@ -5,7 +5,6 @@ excluded:
   - Pods
   - NowPlaying/Generated
 opt_in_rules:
-  - anyobject_protocol
   - array_init
   - attributes
   - closure_end_indentation
@@ -57,7 +56,6 @@ disabled_rules:
   - large_tuple
 identifier_name:
   excluded:
-    - id
     - ok
     - rx
 line_length: 130
