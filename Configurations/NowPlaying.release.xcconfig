@@ -1,5 +1,4 @@
 #include "Configurations/NowPlaying.xcconfig"
-#include "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"
 
 ONLY_ACTIVE_ARCH = NO
 DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
