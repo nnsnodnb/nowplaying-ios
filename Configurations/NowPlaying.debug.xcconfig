@@ -1,5 +1,4 @@
 #include "Configurations/NowPlaying.xcconfig"
-#include "Pods/Target Support Files/Pods-NowPlaying/Pods-NowPlaying.debug.xcconfig"
 
 COPY_PHASE_STRIP = NO
 STRIP_INSTALLED_PRODUCT = NO

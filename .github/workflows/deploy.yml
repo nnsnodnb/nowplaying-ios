@@ -24,20 +24,6 @@ jobs:
     - name: Select Xcode
       run: sudo xcode-select -s /Applications/Xcode_14.2.app/Contents/Developer
 
-    - name: Cache CocoaPods
-      uses: actions/cache@v3
-      with:
-        path: Pods
-        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          ${{ runner.os }}-pods-
-    
-    - name: Setup dependency
-      run: |
-        bundle exec pod install
-        brew install imagemagick
-
     - name: Setup GoogleService-Info.plist
       uses: DamianReeves/write-file-action@v1.2
       with:

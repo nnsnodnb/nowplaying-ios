@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		759D4791E0D1FF0069331938 /* Pods_NowPlaying.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2C0730DF7DE37FAB662125B /* Pods_NowPlaying.framework */; };
 		CF01403628218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01403528218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift */; };
 		CF01403A28218A8E0095FA76 /* StubMusicPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01403928218A8E0095FA76 /* StubMusicPlayerController.swift */; };
 		CF01403D28218B630095FA76 /* StubMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF01403C28218B630095FA76 /* StubMediaItem.swift */; };
@@ -90,9 +89,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3915784E1B778185B86B2BB0 /* Pods_NowPlaying_NowPlayingUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NowPlaying_NowPlayingUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		88364762EFB8F56CC151E5FD /* Pods-NowPlaying-NowPlayingUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying-NowPlayingUITests.release.xcconfig"; path = "Target Support Files/Pods-NowPlaying-NowPlayingUITests/Pods-NowPlaying-NowPlayingUITests.release.xcconfig"; sourceTree = "<group>"; };
-		A2C0730DF7DE37FAB662125B /* Pods_NowPlaying.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NowPlaying.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF01403528218A0A0095FA76 /* TestPlayViewModelArtworkImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPlayViewModelArtworkImage.swift; sourceTree = "<group>"; };
 		CF01403928218A8E0095FA76 /* StubMusicPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMusicPlayerController.swift; sourceTree = "<group>"; };
 		CF01403C28218B630095FA76 /* StubMediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubMediaItem.swift; sourceTree = "<group>"; };
@@ -167,9 +163,6 @@
 		CFCC404E27786D4E00937EDB /* NowPlayingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NowPlayingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFCC406E27786EC400937EDB /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		CFCC406F27786EC400937EDB /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
-		DC5DFA428CD0A6159943A39E /* Pods-NowPlaying.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.release.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.release.xcconfig"; sourceTree = "<group>"; };
-		E694659B797D761F6A33DEA3 /* Pods-NowPlaying-NowPlayingUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying-NowPlayingUITests.debug.xcconfig"; path = "Target Support Files/Pods-NowPlaying-NowPlayingUITests/Pods-NowPlaying-NowPlayingUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		E88DAAE54187EFEB75F9ACA7 /* Pods-NowPlaying.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NowPlaying.debug.xcconfig"; path = "Target Support Files/Pods-NowPlaying/Pods-NowPlaying.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,7 +170,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				759D4791E0D1FF0069331938 /* Pods_NowPlaying.framework in Frameworks */,
 				CF1ACEED297272C100996FB4 /* Packages in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -614,8 +606,6 @@
 				CF43E2C0277E65AF00A35837 /* Configurations */,
 				CF1ACEEA2972710900996FB4 /* Packages */,
 				CFCC403927786D4D00937EDB /* Products */,
-				F52878203576725D0FEC8D69 /* Pods */,
-				D3D065403D26B9B44D86B6BD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -684,26 +674,6 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		D3D065403D26B9B44D86B6BD /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				A2C0730DF7DE37FAB662125B /* Pods_NowPlaying.framework */,
-				3915784E1B778185B86B2BB0 /* Pods_NowPlaying_NowPlayingUITests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		F52878203576725D0FEC8D69 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E88DAAE54187EFEB75F9ACA7 /* Pods-NowPlaying.debug.xcconfig */,
-				DC5DFA428CD0A6159943A39E /* Pods-NowPlaying.release.xcconfig */,
-				E694659B797D761F6A33DEA3 /* Pods-NowPlaying-NowPlayingUITests.debug.xcconfig */,
-				88364762EFB8F56CC151E5FD /* Pods-NowPlaying-NowPlayingUITests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -711,7 +681,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CFCC406227786D4E00937EDB /* Build configuration list for PBXNativeTarget "NowPlaying" */;
 			buildPhases = (
-				F78EE616BBA60F2C1425F6CC /* [CP] Check Pods Manifest.lock */,
 				CF43E2B2277E60BC00A35837 /* Generate SwiftGenOutput.xcfilelist */,
 				CF43E2B3277E60DD00A35837 /* SwiftGen */,
 				CF43E2BE277E646F00A35837 /* SwiftLint */,
@@ -868,7 +837,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" \"config\" \"generate-xcfilelists\" \"--outputs\" \"${SRCROOT}/NowPlaying/Supporting Files/SwiftGenOutput.xcfilelist\"\n";
+			shellScript = "\"${SRCROOT}/Pods/SwiftGen/bin/swiftgen\" \"config\" \"generate-xcfilelists\" \"--outputs\" \"${SRCROOT}/NowPlaying/Supporting Files/SwiftGenOutput.xcfilelist\"\n";
 		};
 		CF43E2B3277E60DD00A35837 /* SwiftGen */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -887,7 +856,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\n";
+			shellScript = "\"${SRCROOT}/Pods/SwiftGen/bin/swiftgen\"\n";
 		};
 		CF43E2BE277E646F00A35837 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -906,7 +875,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+			shellScript = "\"${SRCROOT}/Pods/SwiftLint/swiftlint\"\n";
 		};
 		CF43E2BF277E654300A35837 /* IBLinter */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -925,7 +894,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/IBLinter/bin/iblinter\"\n";
+			shellScript = "\"${SRCROOT}/Pods/IBLinter/bin/iblinter\"\n";
 		};
 		CF43E2C7277E701100A35837 /* LicensePlist */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -944,29 +913,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"${CONFIGURATION}\" = \"Debug\" ]]; then\n  \"${PODS_ROOT}/LicensePlist/license-plist\" \\\n    \"--output-path\" \"${SRCROOT}/NowPlaying/Resources/Settings.bundle\" \\\n    \"--prefix\" \"moe.nnsnodnb.NowPlaying\" \\\n    \"--suppress-opening-directory\"\nfi\n";
-		};
-		F78EE616BBA60F2C1425F6CC /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-NowPlaying-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "if [[ \"${CONFIGURATION}\" = \"Debug\" ]]; then\n  \"${SRCROOT}/Pods/LicensePlist/license-plist\" \\\n    \"--output-path\" \"${SRCROOT}/NowPlaying/Resources/Settings.bundle\" \\\n    \"--prefix\" \"moe.nnsnodnb.NowPlaying\" \\\n    \"--suppress-opening-directory\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
