@@ -1,12 +1,12 @@
 PODS:
   - IBLinter (0.5.0)
-  - LicensePlist (3.23.4)
+  - LicensePlist (3.24.1)
   - SwiftGen (6.6.2)
   - SwiftLint (0.50.3)
 
 DEPENDENCIES:
   - IBLinter (~> 0.5.0)
-  - LicensePlist (~> 3.23.4)
+  - LicensePlist (~> 3.24.1)
   - SwiftGen (~> 6.6.2)
   - SwiftLint (~> 0.50.3)
 
@@ -19,10 +19,10 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   IBLinter: 7d28cbb7b579ca80690b56f6c8d22092a672967c
-  LicensePlist: 804d60431859ef6ee6b2aa2dd0eb2c09d0418edd
+  LicensePlist: ea9cbf3e8888a5585b0c3ea4e1bbe2a3fdf8ba19
   SwiftGen: 1366a7f71aeef49954ca5a63ba4bef6b0f24138c
   SwiftLint: 77f7cb2b9bb81ab4a12fcc86448ba3f11afa50c6
 
-PODFILE CHECKSUM: 4cc3ba7982623a6e550b5edba55c348797a661f4
+PODFILE CHECKSUM: 613328b8db48935fed85bf2c631376e8e2cf2d88
 
 COCOAPODS: 1.11.3
