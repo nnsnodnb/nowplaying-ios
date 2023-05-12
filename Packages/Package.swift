@@ -9,7 +9,7 @@ let package = Package(
         .library(name: "Packages", targets: ["Packages"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/ReactiveX/RxSwift.git", from: "6.5.0"),
+        .package(url: "https://github.com/ReactiveX/RxSwift.git", from: "6.6.0"),
         .package(url: "https://github.com/RxSwiftCommunity/Action.git", from: "5.0.0"),
         .package(url: "https://github.com/RxSwiftCommunity/RxDataSources.git", from: "5.0.2"),
         .package(url: "https://github.com/krimpedance/KRProgressHUD.git", from: "3.4.7"),
