@@ -5,19 +5,143 @@ import PackageDescription
 
 let package = Package(
   name: "NowPlayingPackage",
+  platforms: [
+    .iOS(.v18),
+  ],
   products: [
     .library(
       name: "NowPlayingPackage",
       targets: ["NowPlayingPackage"],
     ),
   ],
+  dependencies: [
+    .package(url: "https://github.com/stleamist/BetterSafariView.git", .upToNextMajor(from: "2.4.2")),
+    .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "12.10.0")),
+    .package(url: "https://github.com/maiyama18/LicensesPlugin.git", .upToNextMajor(from: "0.2.0")),
+    .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", .upToNextMajor(from: "0.63.2")),
+    .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .upToNextMajor(from: "1.24.1")),
+    .package(url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.11.0")),
+    .package(url: "https://github.com/gohanlon/swift-memberwise-init-macro.git", .upToNextMajor(from: "0.5.2")),
+    .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", .upToNextMajor(from: "13.1.0")),
+    .package(url: "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git", .upToNextMajor(from: "3.1.0")),
+  ],
   targets: [
     .target(
       name: "NowPlayingPackage",
+      dependencies: [
+        .betterSafariView,
+        .composableArchitecture,
+        .firebaseAnalytics,
+        .googleMobileAds,
+        .googleUserMessagingPlatform,
+        .memberwiseInit,
+      ],
+      plugins: [
+        .licensesPlugin,
+      ],
     ),
     .testTarget(
       name: "NowPlayingPackageTests",
-      dependencies: ["NowPlayingPackage"],
+      dependencies: [
+        "NowPlayingPackage",
+        .composableArchitecture,
+        .dependenciesTestSupport,
+      ],
     ),
-  ]
+  ],
+  swiftLanguageModes: [.v6],
 )
+
+// MARK: - Target.Dependency
+extension Target.Dependency {
+  static var betterSafariView: Self {
+    .product(
+      name: "BetterSafariView",
+      package: "BetterSafariView",
+    )
+  }
+
+  static var composableArchitecture: Self {
+    .product(
+      name: "ComposableArchitecture",
+      package: "swift-composable-architecture",
+    )
+  }
+
+  static var dependencies: Self {
+    .product(
+      name: "Dependencies",
+      package: "swift-dependencies",
+    )
+  }
+
+  static var dependenciesTestSupport: Self {
+    .product(
+      name: "DependenciesTestSupport",
+      package: "swift-dependencies",
+    )
+  }
+
+  static var firebaseAnalytics: Self {
+    .product(
+      name: "FirebaseAnalytics",
+      package: "firebase-ios-sdk",
+    )
+  }
+
+  static var googleMobileAds: Self {
+    .product(
+      name: "GoogleMobileAds",
+      package: "swift-package-manager-google-mobile-ads",
+    )
+  }
+
+  static var googleUserMessagingPlatform: Self {
+    .product(
+      name: "GoogleUserMessagingPlatform",
+      package: "swift-package-manager-google-user-messaging-platform",
+    )
+  }
+
+  static var memberwiseInit: Self {
+    .product(
+      name: "MemberwiseInit",
+      package: "swift-memberwise-init-macro",
+    )
+  }
+}
+
+// MARK: - Target.PluginUsage
+extension Target.PluginUsage {
+  static var licensesPlugin: Self {
+    .plugin(
+      name: "LicensesPlugin",
+      package: "LicensesPlugin",
+    )
+  }
+
+  static var swiftLintBuildToolPlugin: Self {
+    .plugin(
+      name: "SwiftLintBuildToolPlugin",
+      package: "SwiftLintPlugins",
+    )
+  }
+}
+
+let debugOtherSwiftFlags = [
+  "-Xfrontend", "-warn-long-expression-type-checking=500",
+  "-Xfrontend", "-warn-long-function-bodies=500",
+  "-strict-concurrency=complete",
+  "-enable-actor-data-race-checks",
+]
+
+for target in package.targets {
+  // swiftSettings
+  target.swiftSettings = [
+    .unsafeFlags(debugOtherSwiftFlags, .when(configuration: .debug)),
+  ]
+  // plugins
+  target.plugins = (target.plugins ?? []) + [
+    .swiftLintBuildToolPlugin,
+  ]
+}

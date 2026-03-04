@@ -5,13 +5,22 @@
 //  Created by Yuya Oka on 2026/03/04.
 //
 
-import SwiftUI
+import NowPlayingPackage
 
 @main
 struct ProductionApp: App {
+  // MARK: - Body
   var body: some Scene {
     WindowGroup {
-      ContentView()
+      RootPage()
+    }
+  }
+
+  // MARK: - Initialize
+  init() {
+    FirebaseApp.configure()
+    Task {
+      _ = await MobileAds.shared.start()
     }
   }
 }
