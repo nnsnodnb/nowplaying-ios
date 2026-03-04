@@ -25,7 +25,7 @@ jobs:
       run: sudo xcode-select -s /Applications/Xcode_14.2.app/Contents/Developer
 
     - name: Setup GoogleService-Info.plist
-      uses: DamianReeves/write-file-action@v1.2
+      uses: DamianReeves/write-file-action@v1.3
       with:
         path: NowPlaying/Resources/Firebase/GoogleService-Info.plist
         contents: |
@@ -81,7 +81,7 @@ jobs:
         tar -xf /tmp/nowplaying-product/Products.tar
 
     - name: Seup app-distribution.json
-      uses: DamianReeves/write-file-action@v1.2
+      uses: DamianReeves/write-file-action@v1.3
       with:
         path: /tmp/app-distribution.json
         contents: |
