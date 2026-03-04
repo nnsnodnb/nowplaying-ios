@@ -1,0 +1,4 @@
+app_identifier("moe.nnsnodnb.NowPlaying")
+precheck_include_in_app_purchases(false)
+submit_for_review(false)
+force(true)
