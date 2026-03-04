@@ -1,0 +1,6 @@
+readonly(true)
+app_identifier("moe.nnsnodnb.NowPlaying")
+git_url("git@github.com:nnsnodnb/ios-certificates.git")
+git_branch("certs")
+shallow_clone(true)
+clone_branch_directly(true)

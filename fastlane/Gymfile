@@ -1,0 +1,5 @@
+workspace("NowPlaying.xcworkspace")
+clean(true)
+cloned_source_packages_path(".swiftpm")
+disable_package_automatic_updates(true)
+output_directory("Products")
