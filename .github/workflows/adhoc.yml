@@ -43,6 +43,8 @@ jobs:
         with:
           path: .swiftpm
           key: ${{ runner.os }}-swiftpm-${{ steps.get-swiftpm-origin-hash.outputs.ORIGIN_HASH }}
+          restore-keys: |
+            ${{ runner.os }}-swiftpm-
 
       - name: Write IDESkipPackagePluginFingerprintValidatation
         run: defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
