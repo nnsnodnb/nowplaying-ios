@@ -207,5 +207,12 @@
 			<string>3qcr597p9d.skadnetwork</string>
 		</dict>
 	</array>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string>Logo</string>
+		<key>UIColorName</key>
+		<string>AccentColor</string>
+	</dict>
 </dict>
 </plist>
