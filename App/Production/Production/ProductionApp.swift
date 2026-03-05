@@ -12,7 +12,17 @@ struct ProductionApp: App {
   // MARK: - Body
   var body: some Scene {
     WindowGroup {
-      RootPage()
+      RootPage(
+        store: .init(
+          initialState: RootFeature.State(),
+          reducer: {
+            RootFeature()
+          },
+          withDependencies: {
+            $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3417597686353524/5779812351" }
+          },
+        ),
+      )
     }
   }
 

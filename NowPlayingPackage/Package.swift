@@ -18,6 +18,8 @@ let package = Package(
     .package(url: "https://github.com/stleamist/BetterSafariView.git", .upToNextMajor(from: "2.4.2")),
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "12.10.0")),
     .package(url: "https://github.com/maiyama18/LicensesPlugin.git", .upToNextMajor(from: "0.2.0")),
+    .package(url: "https://github.com/nnsnodnb/ScrollFlowLabel.git", .upToNextMajor(from: "1.0.4")),
+    .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "7.0.0")),
     .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", .upToNextMajor(from: "0.63.2")),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .upToNextMajor(from: "1.24.1")),
     .package(url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.11.0")),
@@ -35,6 +37,8 @@ let package = Package(
         .googleMobileAds,
         .googleUserMessagingPlatform,
         .memberwiseInit,
+        .scrollFlowLabel,
+        .sfSafeSymbols,
       ],
       plugins: [
         .licensesPlugin,
@@ -107,6 +111,20 @@ extension Target.Dependency {
     .product(
       name: "MemberwiseInit",
       package: "swift-memberwise-init-macro",
+    )
+  }
+
+  static var scrollFlowLabel: Self {
+    .product(
+      name: "ScrollFlowLabel",
+      package: "ScrollFlowLabel",
+    )
+  }
+
+  static var sfSafeSymbols: Self {
+    .product(
+      name: "SFSafeSymbols",
+      package: "SFSafeSymbols",
     )
   }
 }

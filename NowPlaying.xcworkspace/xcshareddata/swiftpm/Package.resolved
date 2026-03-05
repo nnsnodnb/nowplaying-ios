@@ -1,5 +1,5 @@
 {
-  "originHash" : "462ecf6b2babb444d5f0fdb2fa205b4512fd9d79f610298a8e912f15f0f0425c",
+  "originHash" : "3bda3eb8328a3b26858b759bed6d1989b78272e2cc7fcef3c54d84d24eda5ebd",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -143,6 +143,24 @@
       "state" : {
         "revision" : "540318ecedd63d883069ae7f1ed811a2df00b6ac",
         "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "scrollflowlabel",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nnsnodnb/ScrollFlowLabel.git",
+      "state" : {
+        "revision" : "0bdff1d5f07901516de6c860bd1022e9e1d2b986",
+        "version" : "1.0.4"
+      }
+    },
+    {
+      "identity" : "sfsafesymbols",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SFSafeSymbols/SFSafeSymbols.git",
+      "state" : {
+        "revision" : "e01b3d4f861412f8dcee8d93c417d2c2b0cdfd77",
+        "version" : "7.0.0"
       }
     },
     {
