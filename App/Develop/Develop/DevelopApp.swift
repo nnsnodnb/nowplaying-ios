@@ -13,7 +13,14 @@ struct DevelopApp: App {
   var body: some Scene {
     WindowGroup {
       if !isTesting {
-        RootPage()
+        RootPage(
+          store: .init(
+            initialState: RootFeature.State(),
+            reducer: {
+              RootFeature()
+            },
+          ),
+        )
       }
     }
   }

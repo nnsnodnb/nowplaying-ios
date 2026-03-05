@@ -12,7 +12,14 @@ struct ProductionApp: App {
   // MARK: - Body
   var body: some Scene {
     WindowGroup {
-      RootPage()
+      RootPage(
+        store: .init(
+          initialState: RootFeature.State(),
+          reducer: {
+            RootFeature()
+          },
+        ),
+      )
     }
   }
 

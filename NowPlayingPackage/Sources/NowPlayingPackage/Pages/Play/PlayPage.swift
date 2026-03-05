@@ -5,10 +5,56 @@
 //  Created by Yuya Oka on 2026/03/04.
 //
 
+import ComposableArchitecture
+import MemberwiseInit
 import SFSafeSymbols
 import SwiftUI
 
+@Reducer
+public struct PlayFeature: Sendable {
+  // MARK: - State
+  @ObservableState
+  @MemberwiseInit(.public)
+  public struct State: Equatable {
+    public var songName = "曲名曲名曲名曲名曲名曲名曲名曲名曲名曲名曲名曲名"
+    public var artistName = "アーティスト名アーティスト名アーティスト名"
+    public var isPlaying = false
+    @Init(default: nil)
+    public var bannerAdUnitID: String?
+  }
+
+  // MARK: - Action
+  public enum Action {
+    case onAppear
+    case togglePlayback
+    case xTwitter
+    case bluesky
+  }
+
+  // MARK: - Body
+  public var body: some ReducerOf<Self> {
+    Reduce { state, action in
+      switch action {
+      case .onAppear:
+        // TODO: Get adUnitID from DI client
+        state.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
+        return .none
+      case .togglePlayback:
+        state.isPlaying.toggle()
+        return .none
+      case .xTwitter:
+        return .none
+      case .bluesky:
+        return .none
+      }
+    }
+  }
+}
+
 public struct PlayPage: View {
+  // MARK: - Properties
+  public let store: StoreOf<PlayFeature>
+
   // MARK: - Body
   public var body: some View {
     VStack(alignment: .center, spacing: 40) {
@@ -19,7 +65,13 @@ public struct PlayPage: View {
       }
       controlButtons
       Spacer()
-      bottomTools
+      VStack(alignment: .center, spacing: 8) {
+        bottomTools
+        bottomBanner
+      }
+    }
+    .onAppear {
+      store.send(.onAppear)
     }
   }
 
@@ -37,20 +89,25 @@ public struct PlayPage: View {
   }
 
   private var songInfo: some View {
-    VStack(alignment: .center, spacing: 16) {
-      Text("曲名曲名曲名曲名曲名曲名曲名曲名曲名曲名曲名曲名")
-        .font(.system(size: 20, weight: .bold))
-        .multilineTextAlignment(.center)
-      Text("アーティスト名アーティスト名アーティスト名")
+    VStack(alignment: .center, spacing: 8) {
+      ScrollFlowText(
+        text: store.songName,
+        textColor: .label,
+        font: .boldSystemFont(ofSize: 20)
+      )
+      ScrollFlowText(
+        text: store.artistName,
+        textColor: .tertiaryLabel,
+        font: .systemFont(ofSize: 17)
+      )
     }
-    .lineLimit(1)
     .padding(.horizontal, 36)
   }
 
   private var controlButtons: some View {
     HStack(alignment: .center, spacing: 40) {
       backwardButton
-      playPauseButton
+      playbackButton
       forwardButton
     }
   }
@@ -62,27 +119,28 @@ public struct PlayPage: View {
       label: {
         Image(systemSymbol: .backwardFill)
           .resizable()
-          .frame(width: .infinity, height: .infinity)
           .foregroundStyle(Color(UIColor.label))
       }
     )
+    .buttonStyle(.pressScale)
     .padding(.horizontal, 8)
     .padding(.vertical, 12)
     .frame(width: 54, height: 54)
   }
 
-  private var playPauseButton: some View {
+  private var playbackButton: some View {
     Button(
       action: {
+        store.send(.togglePlayback)
       },
       label: {
-        Image(systemSymbol: .playFill)
+        Image(systemSymbol: store.isPlaying ? .pauseFill : .playFill)
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: .infinity, height: .infinity)
           .foregroundStyle(Color(UIColor.label))
       }
     )
+    .buttonStyle(.pressScale)
     .frame(width: 62, height: 62)
   }
 
@@ -93,10 +151,10 @@ public struct PlayPage: View {
       label: {
         Image(systemSymbol: .forwardFill)
           .resizable()
-          .frame(width: .infinity, height: .infinity)
           .foregroundStyle(Color(UIColor.label))
       }
     )
+    .buttonStyle(.pressScale)
     .padding(.horizontal, 8)
     .padding(.vertical, 12)
     .frame(width: 54, height: 54)
@@ -121,7 +179,6 @@ public struct PlayPage: View {
           .resizable()
           .aspectRatio(contentMode: .fit)
           .padding(8)
-          .frame(width: .infinity, height: .infinity)
           .foregroundStyle(.gray)
       },
     )
@@ -134,43 +191,32 @@ public struct PlayPage: View {
   }
 
   private var postButton: some View {
-    Menu(
-      content: {
-//        Button(
-//          action: {
-//          },
-//          label: {
-//            Text("Bluesky")
-//          },
-//        )
-        Button(
-          action: {
-          },
-          label: {
-            Text("Twitter")
-          },
-        )
+    PostPlusButton(
+      xTwitterAction: {
+        store.send(.xTwitter)
       },
-      label: {
-        Image(systemSymbol: .plus)
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .padding(12)
-          .frame(width: .infinity, height: .infinity)
-          .foregroundStyle(.white)
-          .shadow(color: .black.opacity(0.4), radius: 0.8)
-          .background(.blue)
-          .clipShape(Circle())
-      }
+      blueskyAction: {
+        store.send(.bluesky)
+      },
     )
-    .modifier { view in
-      if #available(iOS 26.0, *) {
-        view.glassEffect(.regular.interactive())
-      }
+  }
+
+  @ViewBuilder private var bottomBanner: some View {
+    if let adUnitID = store.bannerAdUnitID {
+      PlayerBottomAdBanner(adUnitID: adUnitID)
     }
   }
 }
 
-#Preview {
-  PlayPage()
+struct PlayPage_Previews: PreviewProvider {
+  static var previews: some View {
+    PlayPage(
+      store: .init(
+        initialState: PlayFeature.State(),
+        reducer: {
+          PlayFeature()
+        },
+      ),
+    )
+  }
 }
