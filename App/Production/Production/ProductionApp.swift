@@ -18,6 +18,9 @@ struct ProductionApp: App {
           reducer: {
             RootFeature()
           },
+          withDependencies: {
+            $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3417597686353524/5779812351" }
+          },
         ),
       )
     }

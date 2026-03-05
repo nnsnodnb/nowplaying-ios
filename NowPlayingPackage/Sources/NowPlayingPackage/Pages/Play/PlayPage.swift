@@ -31,13 +31,15 @@ public struct PlayFeature: Sendable {
     case bluesky
   }
 
+  @Dependency(\.adUnit)
+  private var adUnit
+
   // MARK: - Body
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
       case .onAppear:
-        // TODO: Get adUnitID from DI client
-        state.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
+        state.bannerAdUnitID = adUnit.playerBottomBannerAdUnitID()
         return .none
       case .togglePlayback:
         state.isPlaying.toggle()

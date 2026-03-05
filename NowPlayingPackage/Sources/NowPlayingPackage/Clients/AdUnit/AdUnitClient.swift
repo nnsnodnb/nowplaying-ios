@@ -1,0 +1,34 @@
+//
+//  AdUnitClient.swift
+//  NowPlayingPackage
+//
+//  Created by Yuya Oka on 2026/03/05.
+//
+
+import Dependencies
+import DependenciesMacros
+import Foundation
+
+@DependencyClient
+public struct AdUnitClient: Sendable {
+  public var playerBottomBannerAdUnitID: @Sendable () -> String = { "ca-app-pub-3940256099942544/2435281174" }
+}
+
+// MARK: - DependencyKey
+extension AdUnitClient: DependencyKey {
+  public static let liveValue: Self = .init(
+    playerBottomBannerAdUnitID: { "ca-app-pub-3940256099942544/2435281174" },
+  )
+}
+
+// MARK: - DependencyValues
+public extension DependencyValues {
+  var adUnit: AdUnitClient {
+    get {
+      self[AdUnitClient.self]
+    }
+    set {
+      self[AdUnitClient.self] = newValue
+    }
+  }
+}
