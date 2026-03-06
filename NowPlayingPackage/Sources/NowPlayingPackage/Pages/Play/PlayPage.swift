@@ -21,14 +21,17 @@ public struct PlayFeature: Sendable {
     public var isPlaying = false
     @Init(default: nil)
     public var bannerAdUnitID: String?
+    @Presents public var setting: SettingFeature.State?
   }
 
   // MARK: - Action
   public enum Action {
     case onAppear
     case togglePlayback
+    case showSetting
     case xTwitter
     case bluesky
+    case setting(PresentationAction<SettingFeature.Action>)
   }
 
   @Dependency(\.adUnit)
@@ -44,18 +47,26 @@ public struct PlayFeature: Sendable {
       case .togglePlayback:
         state.isPlaying.toggle()
         return .none
+      case .showSetting:
+        state.setting = .init()
+        return .none
       case .xTwitter:
         return .none
       case .bluesky:
         return .none
+      case .setting:
+        return .none
       }
+    }
+    .ifLet(\.$setting, action: \.setting) {
+      SettingFeature()
     }
   }
 }
 
 public struct PlayPage: View {
   // MARK: - Properties
-  public let store: StoreOf<PlayFeature>
+  @Bindable public var store: StoreOf<PlayFeature>
 
   // MARK: - Body
   public var body: some View {
@@ -74,6 +85,9 @@ public struct PlayPage: View {
     }
     .onAppear {
       store.send(.onAppear)
+    }
+    .sheet(item: $store.scope(state: \.setting, action: \.setting)) { store in
+      SettingPage(store: store)
     }
   }
 
@@ -175,6 +189,7 @@ public struct PlayPage: View {
   private var settingButton: some View {
     Button(
       action: {
+        store.send(.showSetting)
       },
       label: {
         Image(systemSymbol: .gear)
