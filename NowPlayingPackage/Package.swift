@@ -17,6 +17,7 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/stleamist/BetterSafariView.git", .upToNextMajor(from: "2.4.2")),
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "12.10.0")),
+    .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", .upToNextMajor(from: "4.2.2")),
     .package(url: "https://github.com/maiyama18/LicensesPlugin.git", .upToNextMajor(from: "0.2.0")),
     .package(url: "https://github.com/nnsnodnb/ScrollFlowLabel.git", .upToNextMajor(from: "1.0.4")),
     .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "7.0.0")),
@@ -26,6 +27,7 @@ let package = Package(
     .package(url: "https://github.com/gohanlon/swift-memberwise-init-macro.git", .upToNextMajor(from: "0.5.2")),
     .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", .upToNextMajor(from: "13.1.0")),
     .package(url: "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git", .upToNextMajor(from: "3.1.0")),
+    .package(url: "https://github.com/pointfreeco/swift-tagged.git", .upToNextMajor(from: "0.10.0")),
   ],
   targets: [
     .target(
@@ -36,9 +38,11 @@ let package = Package(
         .firebaseAnalytics,
         .googleMobileAds,
         .googleUserMessagingPlatform,
+        .keychainAccess,
         .memberwiseInit,
         .scrollFlowLabel,
         .sfSafeSymbols,
+        .tagged,
       ],
       plugins: [
         .licensesPlugin,
@@ -107,6 +111,13 @@ extension Target.Dependency {
     )
   }
 
+  static var keychainAccess: Self {
+    .product(
+      name: "KeychainAccess",
+      package: "KeychainAccess",
+    )
+  }
+
   static var memberwiseInit: Self {
     .product(
       name: "MemberwiseInit",
@@ -125,6 +136,13 @@ extension Target.Dependency {
     .product(
       name: "SFSafeSymbols",
       package: "SFSafeSymbols",
+    )
+  }
+
+  static var tagged: Self {
+    .product(
+      name: "Tagged",
+      package: "swift-tagged",
     )
   }
 }
