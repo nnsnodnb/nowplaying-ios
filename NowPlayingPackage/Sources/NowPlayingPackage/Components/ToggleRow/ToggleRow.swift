@@ -10,8 +10,8 @@ import SwiftUI
 public struct ToggleRow<Icon: View>: View {
   // MARK: - Properties
   @Binding public var isOn: Bool
-  public var title: String
-  public var icon: () -> Icon
+  public let title: String
+  public let icon: () -> Icon
 
   // MARK: - Body
   public var body: some View {
@@ -24,7 +24,7 @@ public struct ToggleRow<Icon: View>: View {
           },
           icon: icon,
         )
-      }
+      },
     )
   }
 }
@@ -37,6 +37,6 @@ public struct ToggleRow<Icon: View>: View {
       Image(systemSymbol: .photo)
         .resizable()
         .scaledToFit()
-    }
+    },
   )
 }

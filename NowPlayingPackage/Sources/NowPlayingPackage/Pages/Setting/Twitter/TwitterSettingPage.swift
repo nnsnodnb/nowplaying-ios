@@ -151,7 +151,7 @@ public struct TwitterSettingPage: View {
             .resizable()
             .scaledToFit()
             .foregroundStyle(.gray.opacity(0.6))
-        }
+        },
       )
       ToggleRow(
         isOn: $store.isAttachImage.sending(\.changedIsAttachImage),
