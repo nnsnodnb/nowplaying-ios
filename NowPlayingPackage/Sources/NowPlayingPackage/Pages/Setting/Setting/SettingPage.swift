@@ -105,6 +105,9 @@ public struct SettingFeature: Sendable {
       case .pushLicenseList:
         state.path.append(.licenseList(.init()))
         return .none
+      case .path(.element(id: _, action: .twitterSetting(.delegate(.pushTwitterAccountManage)))):
+        // TODO: アカウント管理画面遷移
+        return .none
       case .path:
         return .none
       case let .openSafari(safariURL):
@@ -229,7 +232,7 @@ public struct SettingPage: View {
   private var thirdSection: some View {
     Section {
       // TODO: UMPの同意変更表示
-      buttonRow(
+      ButtonRow(
         action: {
           store.send(.openSafari(.privacyPolicy))
         },
@@ -238,9 +241,10 @@ public struct SettingPage: View {
           Image(systemSymbol: .handRaisedFill)
             .resizable()
             .scaledToFit()
+            .foregroundStyle(.blue)
         },
       )
-      buttonRow(
+      ButtonRow(
         action: {
           store.send(.openSafari(.userdataExternalTransmission))
         },
@@ -257,7 +261,7 @@ public struct SettingPage: View {
 
   private var fourthSection: some View {
     Section {
-      buttonRow(
+      ButtonRow(
         action: {
           store.send(.openSafari(.contactDeveloper))
         },
@@ -268,7 +272,7 @@ public struct SettingPage: View {
             .aspectRatio(contentMode: .fit)
         },
       )
-      buttonRow(
+      ButtonRow(
         action: {
           store.send(.openSafari(.gitHub))
         },
@@ -279,7 +283,7 @@ public struct SettingPage: View {
             .aspectRatio(contentMode: .fit)
         },
       )
-      buttonRow(
+      ButtonRow(
         action: {
           store.send(.pushLicenseList)
         },
@@ -291,7 +295,7 @@ public struct SettingPage: View {
             .aspectRatio(contentMode: .fit)
         },
       )
-      buttonRow(
+      ButtonRow(
         action: {
           store.send(.openSafari(.googleForm))
         },
@@ -303,7 +307,7 @@ public struct SettingPage: View {
             .aspectRatio(contentMode: .fit)
         },
       )
-      buttonRow(
+      ButtonRow(
         action: {
           store.send(.openSafari(.reviewAppStore))
         },
