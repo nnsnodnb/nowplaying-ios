@@ -15,6 +15,7 @@ public struct SecureKeyValueStoreClient: Sendable {
   public var twitterAccounts: @Sendable () async throws -> [TwitterAccount]
   public var setTwitterAccounts: @Sendable ([TwitterAccount]) async throws -> Void
   public var addTwitterAccount: @Sendable (TwitterAccount) async throws -> Void
+  public var removeTwitterAccount: @Sendable (TwitterAccount) async throws -> Void
 }
 
 // MARK: - DependencyKey
@@ -28,6 +29,9 @@ extension SecureKeyValueStoreClient: DependencyKey {
     },
     addTwitterAccount: { account in
       await Implementation.shared.addTwitterAccount(account)
+    },
+    removeTwitterAccount: { account in
+      await Implementation.shared.removeTwitterAccount(account)
     },
   )
 }
@@ -53,6 +57,12 @@ private extension SecureKeyValueStoreClient {
       guard !accounts.contains(account) else { return }
       accounts.append(account)
       keychain.set(accounts, key: .twitterAccounts)
+    }
+
+    func removeTwitterAccount(_ account: TwitterAccount) {
+      let accounts = getTwitterAccounts()
+        .filter { $0 != account }
+      setTwitterAccounts(accounts)
     }
   }
 }
