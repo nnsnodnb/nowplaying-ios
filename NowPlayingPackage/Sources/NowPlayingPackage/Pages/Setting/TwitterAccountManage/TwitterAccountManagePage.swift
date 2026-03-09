@@ -1,0 +1,243 @@
+//
+//  TwitterAccountManagePage.swift
+//  NowPlayingPackage
+//
+//  Created by Yuya Oka on 2026/03/09.
+//
+
+import BetterSafariView
+import ComposableArchitecture
+import Dependencies
+import SFSafeSymbols
+import SVProgressHUD
+import SwiftUI
+
+@Reducer
+public struct TwitterAccountManageFeature: Sendable {
+  // MARK: - State
+  @ObservableState
+  public struct State: Equatable {
+    // MARK: - Properties
+    public var callbackURLScheme = ""
+    public var clientID = ""
+    public var twitterAccounts: [TwitterAccount] = []
+    public var isPresentedOAuth = false
+    public var oauthURL: URL?
+    public var codeVerifier: TwitterOAuthClient.CodeVerifier?
+    public var isLoading = false
+    @Presents public var alert: AlertState<Action.Alert>?
+  }
+
+  // MARK: - Action
+  public enum Action {
+    case onAppear
+    case fetchTwitterAccounts
+    case fetchedTwitterAccounts([TwitterAccount])
+    case oauth
+    case authenticateSuccess(URL)
+    case authenticateFailure(any Error)
+    case changedOAuthURL(URL?)
+    case requestGetUserMe(TwitterOAuthToken)
+    case savedTwitterAccount
+    case oauthFailure(String)
+    case alert(PresentationAction<Alert>)
+
+    // MARK: - Alert
+    @CasePathable
+    public enum Alert: Equatable {
+    }
+  }
+
+  // MARK: - Dependency
+  @Dependency(\.secureKeyValueStore)
+  private var secureKeyValueStore
+  @Dependency(\.twitterAPI)
+  private var twitterAPI
+  @Dependency(\.twitterOAuth)
+  private var twitterOAuth
+
+  // MARK: - Body
+  public var body: some ReducerOf<Self> {
+    Reduce { state, action in
+      switch action {
+      case .onAppear:
+        (state.callbackURLScheme, state.clientID) = twitterOAuth.setup()
+        return .send(.fetchTwitterAccounts)
+      case .fetchTwitterAccounts:
+        return .run(
+          operation: { send in
+            let accounts = try await secureKeyValueStore.twitterAccounts()
+            await send(.fetchedTwitterAccounts(accounts))
+          },
+        )
+      case let .fetchedTwitterAccounts(twitterAccounts):
+        state.twitterAccounts = twitterAccounts
+        return .none
+      case .oauth:
+        state.isPresentedOAuth = true
+        guard let (oauthURL, codeVerifier) = try? twitterOAuth.getAuthenticateURL() else { return .none }
+        state.oauthURL = oauthURL
+        state.codeVerifier = codeVerifier
+        return .none
+      case let .authenticateSuccess(url):
+        guard let codeVerifier = state.codeVerifier else { return .none }
+        guard let code = try? twitterOAuth.validateCallbackURL(url, codeVerifier) else {
+          return .send(.oauthFailure("無効な操作が行われました"))
+        }
+        state.isLoading = true
+        state.codeVerifier = nil
+        return .run(
+          priority: .high,
+          operation: { send in
+            let oauthToken = try await twitterOAuth.requestAccessToken(codeVerifier, code)
+            await send(.requestGetUserMe(oauthToken))
+          },
+          catch: { _, send in
+            await send(.oauthFailure("認証情報の取得に失敗しました"))
+          },
+        )
+      case let .authenticateFailure(error):
+        guard let errorCode = WebAuthenticationSessionError.Code(rawValue: (error as NSError).code),
+              errorCode != .canceledLogin else { return .none }
+        return .none
+      case let .changedOAuthURL(oauthURL):
+        state.oauthURL = oauthURL
+        return .none
+      case let .requestGetUserMe(oauthToken):
+        return .run(
+          priority: .high,
+          operation: { send in
+            let profile = try await twitterAPI.getUserMe(oauthToken)
+            let twitterAccount = TwitterAccount(oauthToken: oauthToken, profile: profile)
+            try await secureKeyValueStore.addTwitterAccount(twitterAccount)
+            await send(.savedTwitterAccount)
+          },
+          catch: { _, send in
+            await send(.oauthFailure("ユーザー情報の取得に失敗しました"))
+          },
+        )
+      case .savedTwitterAccount:
+        state.isLoading = false
+        return .send(.fetchTwitterAccounts)
+      case let .oauthFailure(title):
+        state.isLoading = false
+        state.alert = AlertState(
+          title: {
+            TextState(title)
+          },
+          actions: {
+            ButtonState(
+              role: .cancel,
+              label: {
+                TextState("閉じる")
+              },
+            )
+          },
+        )
+        return .none
+      case .alert:
+        state.alert = nil
+        return .none
+      }
+    }
+  }
+}
+
+public struct TwitterAccountManagePage: View {
+  // MARK: - Properties
+  @Bindable public var store: StoreOf<TwitterAccountManageFeature>
+
+  // MARK: - Body
+  public var body: some View {
+    list
+      .navigationTitle("Xアカウント管理")
+      .toolbar(
+        addAction: {
+          store.send(.oauth)
+        },
+      )
+      .onAppear {
+        store.send(.onAppear)
+      }
+      .webAuthenticationSession(
+        item: $store.oauthURL.sending(\.changedOAuthURL),
+        content: { url in
+          webAuthenticationSession(url: url)
+        },
+      )
+      .alert($store.scope(state: \.alert, action: \.alert))
+      .progress(store.isLoading)
+  }
+
+  @ViewBuilder private var list: some View {
+    if store.twitterAccounts.isEmpty {
+      empty
+    } else {
+      List {
+        ForEach(store.twitterAccounts, id: \.profile.id) { twitterAccount in
+          Text(twitterAccount.profile.name)
+        }
+      }
+    }
+  }
+
+  private var empty: some View {
+    ContentUnavailableView(
+      label: {
+        VStack(alignment: .center, spacing: 24) {
+          Image(systemSymbol: .at)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 50, height: 50)
+          Text("アカウントがありません")
+        }
+        .foregroundStyle(.secondary)
+      }
+    )
+    .background {
+      Color(UIColor.systemGroupedBackground)
+    }
+    .ignoresSafeArea(.all)
+  }
+
+  private func webAuthenticationSession(url: URL) -> WebAuthenticationSession {
+    WebAuthenticationSession(
+      url: url,
+      callbackURLScheme: store.callbackURLScheme,
+      onCompletion: { result in
+        switch result {
+        case let .success(url):
+          store.send(.authenticateSuccess(url))
+        case let .failure(error):
+          store.send(.authenticateFailure(error))
+        }
+      },
+    )
+  }
+}
+
+private extension View {
+  func toolbar(addAction: @escaping @MainActor () -> Void) -> some View {
+    toolbar {
+      ToolbarItem(placement: .primaryAction) {
+        Button(
+          action: addAction,
+          label: {
+            Image(systemSymbol: .atBadgePlus)
+          },
+        )
+      }
+    }
+  }
+}
+
+#Preview {
+  TwitterAccountManagePage(
+    store: .init(
+      initialState: TwitterAccountManageFeature.State(),
+      reducer: {
+        TwitterAccountManageFeature()
+      },
+    ),
+  )
+}

@@ -122,9 +122,7 @@ public struct TwitterSettingPage: View {
     form
       .navigationTitle("X設定")
       .interactiveDismissDisabled(true)
-      .onTapGesture {
-        isActiveKeyboard = false
-      }
+      .scrollDismissesKeyboard(.immediately)
       .toolbar(
         keyboardClose: {
           isActiveKeyboard = false
@@ -181,6 +179,7 @@ public struct TwitterSettingPage: View {
         TextEditor(
           text: $store.postFormat.sending(\.changedPostFormat),
         )
+        .frame(height: 120)
         .focused($isActiveKeyboard)
         resetFormatButton
       },

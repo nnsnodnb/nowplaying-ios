@@ -33,5 +33,6 @@ struct DevelopApp: App {
       MobileAds.shared.requestConfiguration.testDeviceIdentifiers = [
       ]
     }
+    SVProgressHUD.setDefaultMaskType(.black)
   }
 }

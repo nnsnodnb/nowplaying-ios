@@ -15,6 +15,7 @@ public struct SettingFeature: Sendable {
   @Reducer
   public enum Path {
     case twitterSetting(TwitterSettingFeature)
+    case twitterAccountManage(TwitterAccountManageFeature)
     case blueskySetting(BlueSkySettingFeature)
     case paidContent(PaidContentFeature)
     case licenseList(LicenseListFeature)
@@ -106,7 +107,7 @@ public struct SettingFeature: Sendable {
         state.path.append(.licenseList(.init()))
         return .none
       case .path(.element(id: _, action: .twitterSetting(.delegate(.pushTwitterAccountManage)))):
-        // TODO: アカウント管理画面遷移
+        state.path.append(.twitterAccountManage(.init()))
         return .none
       case .path:
         return .none
@@ -153,6 +154,8 @@ public struct SettingPage: View {
         switch store.case {
         case let .twitterSetting(store):
           TwitterSettingPage(store: store)
+        case let .twitterAccountManage(store):
+          TwitterAccountManagePage(store: store)
         case let .blueskySetting(store):
           BlueSkySettingPage(store: store)
         case let.paidContent(store):
