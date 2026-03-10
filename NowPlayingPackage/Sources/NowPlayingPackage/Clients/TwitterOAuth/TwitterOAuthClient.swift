@@ -23,7 +23,7 @@ public struct TwitterOAuthClient: Sendable {
     case internalError
   }
 
-  public var setup: @Sendable () -> (String, String) = { ("", "") }
+  public var getCallbackURLScheme: @Sendable () -> String = { "" }
   public var getAuthenticateURL: @Sendable () throws -> (URL, CodeVerifier)
   public var validateCallbackURL: @Sendable (URL, CodeVerifier) throws -> AuthorizationCode
   public var requestAccessToken: @Sendable (CodeVerifier, AuthorizationCode) async throws -> TwitterOAuthToken
@@ -36,8 +36,8 @@ public struct TwitterOAuthClient: Sendable {
 // MARK: - DependencyKey
 extension TwitterOAuthClient: DependencyKey {
   public static let liveValue: Self = .init(
-    setup: {
-      (Self._callbackURLScheme, Self._clientID)
+    getCallbackURLScheme: {
+      Self._callbackURLScheme
     },
     getAuthenticateURL: {
       let codeVerifier: CodeVerifier = {
@@ -70,11 +70,14 @@ extension TwitterOAuthClient: DependencyKey {
       return (urlComponents.url!, codeVerifier)
     },
     validateCallbackURL: { url, codeVerifier in
+      guard url.scheme == Self._callbackURLScheme,
+            url.host == "callback",
+            url.path == "/oauth",
+            let query = url.query(percentEncoded: false) else {
+        throw Error.invalidCallbackURL
+      }
       let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
-      guard urlComponents?.scheme == Self._callbackURLScheme,
-            urlComponents?.host == "callback",
-            urlComponents?.path == "/oauth",
-            let queryItems = urlComponents?.queryItems,
+      guard let queryItems = urlComponents?.queryItems,
             queryItems.first(where: { $0.name == "state" })?.value == codeVerifier.rawValue,
             let code = queryItems.first(where: { $0.name == "code" })?.value else {
         throw Error.invalidCallbackURL
@@ -82,11 +85,7 @@ extension TwitterOAuthClient: DependencyKey {
       return .init(code)
     },
     requestAccessToken: { codeVerifier, code in
-      var urlComponents = URLComponents(string: "https://api.x.com")!
-      urlComponents.path = "/2/oauth2/token"
-      guard let url = urlComponents.url else {
-        throw Error.invalidCallbackURL
-      }
+      let url = URL(string: "https://api.x.com/2/oauth2/token")!
       var urlRequest = URLRequest(url: url)
       urlRequest.httpMethod = "POST"
       urlRequest.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")

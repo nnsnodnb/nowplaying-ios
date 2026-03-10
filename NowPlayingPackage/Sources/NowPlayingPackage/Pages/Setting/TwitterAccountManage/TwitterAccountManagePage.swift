@@ -21,7 +21,6 @@ public struct TwitterAccountManageFeature: Sendable {
     public var callbackURLScheme = ""
     public var clientID = ""
     public var twitterAccounts: [TwitterAccount] = []
-    public var isPresentedOAuth = false
     public var oauthURL: URL?
     public var codeVerifier: TwitterOAuthClient.CodeVerifier?
     public var isLoading = false
@@ -61,7 +60,7 @@ public struct TwitterAccountManageFeature: Sendable {
     Reduce { state, action in
       switch action {
       case .onAppear:
-        (state.callbackURLScheme, state.clientID) = twitterOAuth.setup()
+        state.callbackURLScheme = twitterOAuth.getCallbackURLScheme()
         return .send(.fetchTwitterAccounts)
       case .fetchTwitterAccounts:
         return .run(
@@ -74,7 +73,6 @@ public struct TwitterAccountManageFeature: Sendable {
         state.twitterAccounts = twitterAccounts
         return .none
       case .oauth:
-        state.isPresentedOAuth = true
         guard let (oauthURL, codeVerifier) = try? twitterOAuth.getAuthenticateURL() else { return .none }
         state.oauthURL = oauthURL
         state.codeVerifier = codeVerifier
@@ -98,8 +96,11 @@ public struct TwitterAccountManageFeature: Sendable {
         )
       case let .authenticateFailure(error):
         guard let errorCode = WebAuthenticationSessionError.Code(rawValue: (error as NSError).code),
-              errorCode != .canceledLogin else { return .none }
-        return .none
+              errorCode != .canceledLogin else {
+          state.isLoading = false
+          return .none
+        }
+        return .send(.oauthFailure("不明なエラーが発生しました"))
       case let .changedOAuthURL(oauthURL):
         state.oauthURL = oauthURL
         return .none
@@ -213,6 +214,7 @@ public struct TwitterAccountManagePage: View {
         }
       },
     )
+    .prefersEphemeralWebBrowserSession(true)
   }
 }
 
