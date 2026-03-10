@@ -1,5 +1,5 @@
 {
-  "originHash" : "ac365a635044cc1d1c89738ba9afae18323e0f272b6a7f918ba2d8797fdb96ea",
+  "originHash" : "ce83cc026df0f3e2fd622ad13bb148ec411c23f267f50ebee24fd8f0de4a9a90",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -170,6 +170,15 @@
       "state" : {
         "revision" : "e01b3d4f861412f8dcee8d93c417d2c2b0cdfd77",
         "version" : "7.0.0"
+      }
+    },
+    {
+      "identity" : "stubkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kateinoigakukun/StubKit.git",
+      "state" : {
+        "revision" : "6d3c5d8dec873b8b0c4e4ae5832cb91218b8f858",
+        "version" : "0.1.7"
       }
     },
     {

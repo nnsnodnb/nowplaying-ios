@@ -21,6 +21,7 @@ let package = Package(
     .package(url: "https://github.com/maiyama18/LicensesPlugin.git", .upToNextMajor(from: "0.2.0")),
     .package(url: "https://github.com/nnsnodnb/ScrollFlowLabel.git", .upToNextMajor(from: "1.0.4")),
     .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "7.0.0")),
+    .package(url: "https://github.com/kateinoigakukun/StubKit.git", .upToNextMajor(from: "0.1.7")),
     .package(url: "https://github.com/SVProgressHUD/SVProgressHUD.git", .upToNextMajor(from: "2.3.1")),
     .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", .upToNextMajor(from: "0.63.2")),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .upToNextMajor(from: "1.24.1")),
@@ -56,6 +57,7 @@ let package = Package(
         "NowPlayingPackage",
         .composableArchitecture,
         .dependenciesTestSupport,
+        .stubKit,
       ],
     ),
   ],
@@ -138,6 +140,13 @@ extension Target.Dependency {
     .product(
       name: "SFSafeSymbols",
       package: "SFSafeSymbols",
+    )
+  }
+
+  static var stubKit: Self {
+    .product(
+      name: "StubKit",
+      package: "StubKit",
     )
   }
 
