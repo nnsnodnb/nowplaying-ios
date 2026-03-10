@@ -30,6 +30,6 @@ struct TestTwitterAccountManageFeatureOnAppear {
       $0.callbackURLScheme = "test-scheme"
     }
     await store.receive(\.fetchTwitterAccounts)
-    await store.receive(\.fetchedTwitterAccounts, [])
+    await store.receive(\.internalAction.fetchedTwitterAccounts, [])
   }
 }

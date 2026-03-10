@@ -29,7 +29,7 @@ struct TestTwitterAccountManageFeatureFetchTwitterAccounts {
       )
 
       await store.send(.fetchTwitterAccounts)
-      await store.receive(\.fetchedTwitterAccounts) {
+      await store.receive(\.internalAction.fetchedTwitterAccounts) {
         $0.twitterAccounts = [twitterAccount]
       }
     }

@@ -50,7 +50,7 @@ struct TestTwitterAccountManageFeatureAuthenticateFailure {
 
     let error = NSError(domain: ASWebAuthenticationSessionErrorDomain, code: errorCode.rawValue)
     await store.send(.authenticateFailure(error))
-    await store.receive(\.oauthFailure) {
+    await store.receive(\.internalAction.oauthFailure) {
       $0.isLoading = false
       $0.alert = AlertState(
         title: {

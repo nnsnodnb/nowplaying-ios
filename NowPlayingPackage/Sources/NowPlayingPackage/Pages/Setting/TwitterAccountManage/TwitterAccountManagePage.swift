@@ -31,15 +31,21 @@ public struct TwitterAccountManageFeature: Sendable {
   public enum Action {
     case onAppear
     case fetchTwitterAccounts
-    case fetchedTwitterAccounts([TwitterAccount])
     case oauth
     case authenticateSuccess(URL)
     case authenticateFailure(any Error)
     case changedOAuthURL(URL?)
-    case requestGetUserMe(TwitterOAuthToken)
-    case savedTwitterAccount
-    case oauthFailure(String)
+    case internalAction(InternalAction)
     case alert(PresentationAction<Alert>)
+
+    // MARK: - InternalAction
+    @CasePathable
+    public enum InternalAction {
+      case fetchedTwitterAccounts([TwitterAccount])
+      case requestGetUserMe(TwitterOAuthToken)
+      case savedTwitterAccount
+      case oauthFailure(String)
+    }
 
     // MARK: - Alert
     @CasePathable
@@ -66,12 +72,9 @@ public struct TwitterAccountManageFeature: Sendable {
         return .run(
           operation: { send in
             let accounts = try await secureKeyValueStore.twitterAccounts()
-            await send(.fetchedTwitterAccounts(accounts))
+            await send(.internalAction(.fetchedTwitterAccounts(accounts)))
           },
         )
-      case let .fetchedTwitterAccounts(twitterAccounts):
-        state.twitterAccounts = twitterAccounts
-        return .none
       case .oauth:
         guard let (oauthURL, codeVerifier) = try? twitterOAuth.getAuthenticateURL() else { return .none }
         state.oauthURL = oauthURL
@@ -80,7 +83,7 @@ public struct TwitterAccountManageFeature: Sendable {
       case let .authenticateSuccess(url):
         guard let codeVerifier = state.codeVerifier else { return .none }
         guard let code = try? twitterOAuth.validateCallbackURL(url, codeVerifier) else {
-          return .send(.oauthFailure("無効な操作が行われました"))
+        return .send(.internalAction(.oauthFailure("無効な操作が行われました")))
         }
         state.isLoading = true
         state.codeVerifier = nil
@@ -88,10 +91,10 @@ public struct TwitterAccountManageFeature: Sendable {
           priority: .high,
           operation: { send in
             let oauthToken = try await twitterOAuth.requestAccessToken(codeVerifier, code)
-            await send(.requestGetUserMe(oauthToken))
+            await send(.internalAction(.requestGetUserMe(oauthToken)))
           },
           catch: { _, send in
-            await send(.oauthFailure("認証情報の取得に失敗しました"))
+            await send(.internalAction(.oauthFailure("認証情報の取得に失敗しました")))
           },
         )
       case let .authenticateFailure(error):
@@ -100,27 +103,30 @@ public struct TwitterAccountManageFeature: Sendable {
           state.isLoading = false
           return .none
         }
-        return .send(.oauthFailure("不明なエラーが発生しました"))
+        return .send(.internalAction(.oauthFailure("不明なエラーが発生しました")))
       case let .changedOAuthURL(oauthURL):
         state.oauthURL = oauthURL
         return .none
-      case let .requestGetUserMe(oauthToken):
+      case let .internalAction(.fetchedTwitterAccounts(twitterAccounts)):
+        state.twitterAccounts = twitterAccounts
+        return .none
+      case let .internalAction(.requestGetUserMe(oauthToken)):
         return .run(
           priority: .high,
           operation: { send in
             let profile = try await twitterAPI.getUserMe(oauthToken)
             let twitterAccount = TwitterAccount(oauthToken: oauthToken, profile: profile)
             try await secureKeyValueStore.addTwitterAccount(twitterAccount)
-            await send(.savedTwitterAccount)
+            await send(.internalAction(.savedTwitterAccount))
           },
           catch: { _, send in
-            await send(.oauthFailure("ユーザー情報の取得に失敗しました"))
+            await send(.internalAction(.oauthFailure("ユーザー情報の取得に失敗しました")))
           },
         )
-      case .savedTwitterAccount:
+      case .internalAction(.savedTwitterAccount):
         state.isLoading = false
         return .send(.fetchTwitterAccounts)
-      case let .oauthFailure(title):
+      case let .internalAction(.oauthFailure(title)):
         state.isLoading = false
         state.alert = AlertState(
           title: {
