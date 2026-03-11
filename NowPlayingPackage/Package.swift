@@ -17,15 +17,20 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/stleamist/BetterSafariView.git", .upToNextMajor(from: "2.4.2")),
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "12.10.0")),
+    .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", .upToNextMajor(from: "4.2.2")),
     .package(url: "https://github.com/maiyama18/LicensesPlugin.git", .upToNextMajor(from: "0.2.0")),
+    .package(url: "https://github.com/kean/Nuke.git", .upToNextMajor(from: "12.9.0")),
     .package(url: "https://github.com/nnsnodnb/ScrollFlowLabel.git", .upToNextMajor(from: "1.0.4")),
     .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "7.0.0")),
+    .package(url: "https://github.com/kateinoigakukun/StubKit.git", .upToNextMajor(from: "0.1.7")),
+    .package(url: "https://github.com/SVProgressHUD/SVProgressHUD.git", .upToNextMajor(from: "2.3.1")),
     .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", .upToNextMajor(from: "0.63.2")),
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .upToNextMajor(from: "1.24.1")),
     .package(url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.11.0")),
     .package(url: "https://github.com/gohanlon/swift-memberwise-init-macro.git", .upToNextMajor(from: "0.5.2")),
     .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", .upToNextMajor(from: "13.1.0")),
     .package(url: "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git", .upToNextMajor(from: "3.1.0")),
+    .package(url: "https://github.com/pointfreeco/swift-tagged.git", .upToNextMajor(from: "0.10.0")),
   ],
   targets: [
     .target(
@@ -36,9 +41,13 @@ let package = Package(
         .firebaseAnalytics,
         .googleMobileAds,
         .googleUserMessagingPlatform,
+        .keychainAccess,
         .memberwiseInit,
+        .nukeUI,
         .scrollFlowLabel,
         .sfSafeSymbols,
+        .svProgressHUD,
+        .tagged,
       ],
       plugins: [
         .licensesPlugin,
@@ -50,6 +59,7 @@ let package = Package(
         "NowPlayingPackage",
         .composableArchitecture,
         .dependenciesTestSupport,
+        .stubKit,
       ],
     ),
   ],
@@ -107,10 +117,24 @@ extension Target.Dependency {
     )
   }
 
+  static var keychainAccess: Self {
+    .product(
+      name: "KeychainAccess",
+      package: "KeychainAccess",
+    )
+  }
+
   static var memberwiseInit: Self {
     .product(
       name: "MemberwiseInit",
       package: "swift-memberwise-init-macro",
+    )
+  }
+
+  static var nukeUI: Self {
+    .product(
+      name: "NukeUI",
+      package: "Nuke",
     )
   }
 
@@ -125,6 +149,27 @@ extension Target.Dependency {
     .product(
       name: "SFSafeSymbols",
       package: "SFSafeSymbols",
+    )
+  }
+
+  static var stubKit: Self {
+    .product(
+      name: "StubKit",
+      package: "StubKit",
+    )
+  }
+
+  static var svProgressHUD: Self {
+    .product(
+      name: "SVProgressHUD",
+      package: "SVProgressHUD"
+    )
+  }
+
+  static var tagged: Self {
+    .product(
+      name: "Tagged",
+      package: "swift-tagged",
     )
   }
 }
