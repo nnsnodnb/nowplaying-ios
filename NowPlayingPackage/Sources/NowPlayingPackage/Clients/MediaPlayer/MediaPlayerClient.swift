@@ -61,6 +61,8 @@ private extension MediaPlayerClient {
 
     private let musicPlayer: any MPMusicPlayerController & MPSystemMusicPlayerController
 
+    private var isGeneratingNotifications = false
+
     // MARK: - Initialize
     init() {
       self.musicPlayer = MPMusicPlayerController.systemMusicPlayer
@@ -116,7 +118,7 @@ private extension MediaPlayerClient {
 
     func nowPlayingItem() async -> AsyncStream<(any MediaItemProtocol)?> {
       AsyncStream { continuation in
-        musicPlayer.beginGeneratingPlaybackNotifications()
+        startNotifications()
         continuation.yield(musicPlayer.nowPlayingItem)
 
         let task = Task {
@@ -127,17 +129,21 @@ private extension MediaPlayerClient {
         }
         if task.isCancelled {
           continuation.finish()
-          musicPlayer.endGeneratingPlaybackNotifications()
+          stopNotifications()
         }
 
-        continuation.onTermination = { _ in
+        continuation.onTermination = { [weak self] _ in
           task.cancel()
+          Task {
+            await self?.stopNotifications()
+          }
         }
       }
     }
 
     func playbackState() async -> AsyncStream<Bool> {
       AsyncStream { continuation in
+        startNotifications()
         continuation.yield(musicPlayer.playbackState == .playing)
 
         let task = Task {
@@ -148,12 +154,28 @@ private extension MediaPlayerClient {
         }
         if task.isCancelled {
           continuation.finish()
+          stopNotifications()
         }
 
-        continuation.onTermination = { _ in
+        continuation.onTermination = { [weak self] _ in
           task.cancel()
+          Task {
+            await self?.stopNotifications()
+          }
         }
       }
+    }
+
+    private func startNotifications() {
+      guard !isGeneratingNotifications else { return }
+      musicPlayer.beginGeneratingPlaybackNotifications()
+      isGeneratingNotifications = true
+    }
+
+    private func stopNotifications() {
+      guard isGeneratingNotifications else { return }
+      musicPlayer.endGeneratingPlaybackNotifications()
+      isGeneratingNotifications = false
     }
   }
 }
