@@ -16,26 +16,49 @@ public struct PlayFeature: Sendable {
   @ObservableState
   @MemberwiseInit(.public)
   public struct State: Equatable {
-    public var songName = "曲名曲名曲名曲名曲名曲名曲名曲名曲名曲名曲名曲名"
-    public var artistName = "アーティスト名アーティスト名アーティスト名"
+    @Init(default: nil)
+    public var artworkImage: UIImage?
+    public var songName = "曲名"
+    public var artistName = "アーティスト名"
     public var isPlaying = false
     @Init(default: nil)
     public var bannerAdUnitID: String?
     @Presents public var setting: SettingFeature.State?
+    @Presents public var alert: AlertState<Action.Alert>?
   }
 
   // MARK: - Action
   public enum Action {
     case onAppear
+    case backward
     case togglePlayback
+    case forward
     case showSetting
     case xTwitter
     case bluesky
     case setting(PresentationAction<SettingFeature.Action>)
+    case internalAction(InternalAction)
+    case alert(PresentationAction<Alert>)
+
+    // MARK: - InternalAction
+    @CasePathable
+    public enum InternalAction {
+      case authorizationSuccess
+      case authorizationFailure(String)
+      case applyNowPlayingItem(any MediaItemProtocol)
+      case changedIsPlaying(Bool)
+    }
+
+    // MARK: - Alert
+    @CasePathable
+    public enum Alert: Equatable {
+    }
   }
 
   @Dependency(\.adUnit)
   private var adUnit
+  @Dependency(\.mediaPlayer)
+  private var mediaPlayer
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
@@ -43,10 +66,40 @@ public struct PlayFeature: Sendable {
       switch action {
       case .onAppear:
         state.bannerAdUnitID = adUnit.playerBottomBannerAdUnitID()
-        return .none
+        return .run(
+          operation: { send in
+            try await mediaPlayer.requestAuthorization()
+            await send(.internalAction(.authorizationSuccess))
+          },
+          catch: { error, send in
+            guard let error = error as? MediaPlayerClient.Error else { return }
+            switch error {
+            case .denied:
+              await send(.internalAction(.authorizationFailure("ミュージックライブラリへのアクセスが拒否されました")))
+            case .restricted:
+              await send(.internalAction(.authorizationFailure("ミュージックライブラリへのアクセスが制限されています")))
+            }
+          },
+        )
+      case .backward:
+        return .run(
+          operation: { _ in
+            try await mediaPlayer.backward()
+          },
+        )
       case .togglePlayback:
         state.isPlaying.toggle()
-        return .none
+        return .run(
+          operation: { _ in
+            try await mediaPlayer.playback()
+          },
+        )
+      case .forward:
+        return .run(
+          operation: { _ in
+            try await mediaPlayer.forward()
+          },
+        )
       case .showSetting:
         state.setting = .init()
         return .none
@@ -55,6 +108,51 @@ public struct PlayFeature: Sendable {
       case .bluesky:
         return .none
       case .setting:
+        return .none
+      case .internalAction(.authorizationSuccess):
+        state.songName = "読み込み中..."
+        state.artistName = ""
+        return .merge(
+          .run(
+            operation: { send in
+              for await nowPlayingItem in try await mediaPlayer.nowPlayingItem() {
+                guard let nowPlayingItem else { continue }
+                await send(.internalAction(.applyNowPlayingItem(nowPlayingItem)))
+              }
+            },
+          ),
+          .run(
+            operation: { send in
+              for await isPlaying in try await mediaPlayer.playbackState() {
+                await send(.internalAction(.changedIsPlaying(isPlaying)))
+              }
+            },
+          )
+        )
+      case let .internalAction(.authorizationFailure(title)):
+        state.alert = AlertState(
+          title: {
+            TextState(title)
+          },
+          actions: {
+            ButtonState(
+              role: .cancel,
+              label: {
+                TextState("閉じる")
+              },
+            )
+          },
+        )
+        return .none
+      case let .internalAction(.applyNowPlayingItem(mediaItem)):
+        state.artworkImage = mediaItem.artworkImage
+        state.songName = mediaItem.title ?? "不明な曲名"
+        state.artistName = mediaItem.artist ?? "不明なアーティスト"
+        return .none
+      case let .internalAction(.changedIsPlaying(isPlaying)):
+        state.isPlaying = isPlaying
+        return .none
+      case .alert:
         return .none
       }
     }
@@ -67,6 +165,8 @@ public struct PlayFeature: Sendable {
 public struct PlayPage: View {
   // MARK: - Properties
   @Bindable public var store: StoreOf<PlayFeature>
+  @Environment(\.colorScheme)
+  private var colorScheme
 
   // MARK: - Body
   public var body: some View {
@@ -89,19 +189,26 @@ public struct PlayPage: View {
     .sheet(item: $store.scope(state: \.setting, action: \.setting)) { store in
       SettingPage(store: store)
     }
+    .alert($store.scope(state: \.alert, action: \.alert))
   }
 
   private var artworkImage: some View {
-    Image(systemSymbol: .musicQuarternote3)
-      .resizable()
-      .aspectRatio(contentMode: .fit)
-      .padding(40)
-      .background {
-        RoundedRectangle(cornerRadius: 16)
-          .aspectRatio(1, contentMode: .fit)
-          .foregroundStyle(.clear)
+    Group {
+      if let artworkImage = store.artworkImage {
+        Image(uiImage: artworkImage)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .clipShape(RoundedRectangle(cornerRadius: 12))
+          .shadow(color: colorScheme == .dark ? .white.opacity(0.7) : .black.opacity(0.4), radius: 8)
+      } else {
+        Image(systemSymbol: .musicQuarternote3)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
       }
-      .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+    .scaleEffect(x: store.isPlaying ? 1 : 0.85, y: store.isPlaying ? 1 : 0.85)
+    .animation(.spring(response: 0.3, dampingFraction: 0.5), value: store.isPlaying)
+    .padding(40)
   }
 
   private var songInfo: some View {
@@ -113,8 +220,8 @@ public struct PlayPage: View {
       )
       ScrollFlowText(
         text: store.artistName,
-        textColor: .tertiaryLabel,
-        font: .systemFont(ofSize: 17)
+        textColor: .secondaryLabel,
+        font: .systemFont(ofSize: 17, weight: .semibold)
       )
     }
     .padding(.horizontal, 36)
@@ -131,6 +238,7 @@ public struct PlayPage: View {
   private var backwardButton: some View {
     Button(
       action: {
+        store.send(.backward)
       },
       label: {
         Image(systemSymbol: .backwardFill)
@@ -163,6 +271,7 @@ public struct PlayPage: View {
   private var forwardButton: some View {
     Button(
       action: {
+        store.send(.forward)
       },
       label: {
         Image(systemSymbol: .forwardFill)
