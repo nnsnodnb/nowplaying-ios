@@ -49,6 +49,8 @@ public struct PlayFeature: Sendable {
       case requestArtwork(any MediaItemProtocol)
       case applyArtwork(UIImage)
       case changedIsPlaying(Bool)
+      case emptySNSAccounts
+      case showTweet([TwitterAccount])
     }
 
     // MARK: - Alert
@@ -61,6 +63,8 @@ public struct PlayFeature: Sendable {
   private var adUnit
   @Dependency(\.mediaPlayer)
   private var mediaPlayer
+  @Dependency(\.secureKeyValueStore)
+  private var secureKeyValueStore
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
@@ -105,7 +109,16 @@ public struct PlayFeature: Sendable {
         state.setting = .init()
         return .none
       case .xTwitter:
-        return .none
+        return .run(
+          operation: { send in
+            let twitterAccounts = try await secureKeyValueStore.twitterAccounts()
+            guard !twitterAccounts.isEmpty else {
+              await send(.internalAction(.emptySNSAccounts))
+              return
+            }
+            await send(.internalAction(.showTweet(twitterAccounts)))
+          },
+        )
       case .bluesky:
         return .none
       case .setting:
@@ -162,6 +175,19 @@ public struct PlayFeature: Sendable {
         return .none
       case let .internalAction(.changedIsPlaying(isPlaying)):
         state.isPlaying = isPlaying
+        return .none
+      case .internalAction(.emptySNSAccounts):
+        state.alert = AlertState(
+          title: {
+            TextState("Xアカウントが設定されていません")
+          },
+          message: {
+            TextState("左下の設定ボタンから「X設定」→「アカウント管理」→左上のボタンから認証を行ってください")
+          },
+        )
+        return .none
+      case let .internalAction(.showTweet(twitterAccounts)):
+        // TODO: 投稿画面を開く
         return .none
       case .alert:
         return .none
