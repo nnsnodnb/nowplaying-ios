@@ -12,12 +12,60 @@ import Testing
 
 @MainActor
 struct TestPlayFeatureOnAppear {
+  @Test
+  func testMediaLibraryAuthorized() async throws {
+    let nowPlayingItem = StubMediaItem(
+      artworkImage: .init(systemSymbol: .photo),
+    )
+
+    await withDependencies {
+      $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
+      $0.mediaPlayer.requestAuthorization = {}
+      $0.mediaPlayer.nowPlayingItem = {
+        AsyncStream {
+          $0.yield(nowPlayingItem)
+          $0.finish()
+        }
+      }
+      $0.mediaPlayer.playbackState = {
+        AsyncStream {
+          $0.yield(true)
+          $0.finish()
+        }
+      }
+    } operation: {
+      let store = TestStore(
+        initialState: PlayFeature.State(),
+        reducer: {
+          PlayFeature()
+        },
+      )
+
+      await store.send(.onAppear) {
+        $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
+      }
+      await store.receive(\.internalAction.authorizationSuccess) {
+        $0.songName = "読み込み中..."
+        $0.artistName = ""
+      }
+      await store.receive(\.internalAction.applyNowPlayingItem) {
+        $0.artworkImage = .init(systemSymbol: .photo)
+        $0.songName = nowPlayingItem.title!
+        $0.artistName = nowPlayingItem.artist!
+      }
+      await store.receive(\.internalAction.changedIsPlaying) {
+        $0.isPlaying = true
+      }
+    }
+  }
+
   @Test(
     .dependencies {
       $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
+      $0.mediaPlayer.requestAuthorization = { throw MediaPlayerClient.Error.denied }
     }
   )
-  func testIt() async throws {
+  func testMediaLibraryDenied() async throws {
     let store = TestStore(
       initialState: PlayFeature.State(),
       reducer: {
@@ -27,6 +75,55 @@ struct TestPlayFeatureOnAppear {
 
     await store.send(.onAppear) {
       $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
+    }
+    await store.receive(\.internalAction.authorizationFailure, "ミュージックライブラリへのアクセスが拒否されました") {
+      $0.alert = AlertState(
+        title: {
+          TextState("ミュージックライブラリへのアクセスが拒否されました")
+        },
+        actions: {
+          ButtonState(
+            role: .cancel,
+            label: {
+              TextState("閉じる")
+            },
+          )
+        },
+      )
+    }
+  }
+
+  @Test(
+    .dependencies {
+      $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
+      $0.mediaPlayer.requestAuthorization = { throw MediaPlayerClient.Error.restricted }
+    }
+  )
+  func testMediaLibraryRestricted() async throws {
+    let store = TestStore(
+      initialState: PlayFeature.State(),
+      reducer: {
+        PlayFeature()
+      },
+    )
+
+    await store.send(.onAppear) {
+      $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
+    }
+    await store.receive(\.internalAction.authorizationFailure, "ミュージックライブラリへのアクセスが制限されています") {
+      $0.alert = AlertState(
+        title: {
+          TextState("ミュージックライブラリへのアクセスが制限されています")
+        },
+        actions: {
+          ButtonState(
+            role: .cancel,
+            label: {
+              TextState("閉じる")
+            },
+          )
+        },
+      )
     }
   }
 }
