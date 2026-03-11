@@ -32,6 +32,7 @@ public struct TwitterAccountManageFeature: Sendable {
     case onAppear
     case fetchTwitterAccounts
     case oauth
+    case deleteTwitterAccount(IndexSet)
     case authenticateSuccess(URL)
     case authenticateFailure(any Error)
     case changedOAuthURL(URL?)
@@ -80,6 +81,15 @@ public struct TwitterAccountManageFeature: Sendable {
         state.oauthURL = oauthURL
         state.codeVerifier = codeVerifier
         return .none
+      case let .deleteTwitterAccount(indexSet):
+        return .run(
+          operation: { [twitterAccounts = state.twitterAccounts] send in
+            for twitterAccount in indexSet.compactMap({ twitterAccounts[safe: $0] }) {
+              try await secureKeyValueStore.removeTwitterAccount(twitterAccount)
+            }
+            await send(.fetchTwitterAccounts)
+          },
+        )
       case let .authenticateSuccess(url):
         guard let codeVerifier = state.codeVerifier else { return .none }
         guard let code = try? twitterOAuth.validateCallbackURL(url, codeVerifier) else {
@@ -189,8 +199,13 @@ public struct TwitterAccountManagePage: View {
     } else {
       List {
         ForEach(store.twitterAccounts, id: \.profile.id) { twitterAccount in
-          Text(twitterAccount.profile.name)
+          TwitterProfileRow(twitterAccount: twitterAccount)
         }
+        .onDelete(
+          perform: { indexSet in
+            store.send(.deleteTwitterAccount(indexSet))
+          },
+        )
       }
     }
   }

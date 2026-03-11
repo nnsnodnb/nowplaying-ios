@@ -46,10 +46,12 @@ private extension SecureKeyValueStoreClient {
 
     func addTwitterAccount(_ account: TwitterAccount) {
       var accounts = getTwitterAccounts()
-      guard !accounts.contains(account) else { return }
       if accounts.isEmpty {
         var account = account
         account.setDefault()
+      }
+      if let existAccountIndex = accounts.firstIndex(where: { $0.profile.id == account.profile.id }) {
+        accounts[existAccountIndex] = account
       }
       accounts.append(account)
       keychain.set(accounts, key: .twitterAccounts)
@@ -57,7 +59,7 @@ private extension SecureKeyValueStoreClient {
 
     func removeTwitterAccount(_ account: TwitterAccount) {
       var accounts = getTwitterAccounts()
-        .filter { $0 != account }
+        .filter { $0.profile.id != account.profile.id }
       if account.isDefault, var account = accounts.first {
         account.setDefault()
         accounts[0] = account
