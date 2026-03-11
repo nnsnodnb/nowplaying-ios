@@ -23,6 +23,15 @@ public struct TwitterProfileRow: View {
         Text("@\(twitterAccount.profile.username)")
           .font(.system(size: 17))
       }
+      if twitterAccount.isDefault {
+        Spacer()
+        Image(systemSymbol: .starFill)
+          .resizable()
+          .scaledToFit()
+          .foregroundStyle(.yellow)
+          .frame(width: 24, height: 24)
+          .padding(.trailing, 12)
+      }
     }
   }
 
