@@ -46,20 +46,27 @@ private extension SecureKeyValueStoreClient {
 
     func addTwitterAccount(_ account: TwitterAccount) {
       var accounts = getTwitterAccounts()
+      let addingAccount: TwitterAccount
+      // 保存されているアカウントがなければデフォルトにする
       if accounts.isEmpty {
         var account = account
         account.setDefault()
+        addingAccount = account
+      } else {
+        addingAccount = account
       }
-      if let existAccountIndex = accounts.firstIndex(where: { $0.profile.id == account.profile.id }) {
-        accounts[existAccountIndex] = account
+      // すでに登録されている場合は追加しない
+      guard !accounts.contains(where: { $0.profile.id == addingAccount.profile.id }) else {
+        return
       }
-      accounts.append(account)
+      accounts.append(addingAccount)
       keychain.set(accounts, key: .twitterAccounts)
     }
 
     func removeTwitterAccount(_ account: TwitterAccount) {
       var accounts = getTwitterAccounts()
         .filter { $0.profile.id != account.profile.id }
+      // 削除するアカウントがデフォルト設定されていて、残ったアカウントがあればデフォルトにする
       if account.isDefault, var account = accounts.first {
         account.setDefault()
         accounts[0] = account
