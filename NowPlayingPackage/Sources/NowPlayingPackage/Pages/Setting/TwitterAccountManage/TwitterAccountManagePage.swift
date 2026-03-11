@@ -43,7 +43,7 @@ public struct TwitterAccountManageFeature: Sendable {
     public enum InternalAction {
       case fetchedTwitterAccounts([TwitterAccount])
       case requestGetUserMe(TwitterOAuthToken)
-      case savedTwitterAccount
+      case savedTwitterAccount(TwitterProfile)
       case oauthFailure(String)
     }
 
@@ -100,7 +100,6 @@ public struct TwitterAccountManageFeature: Sendable {
       case let .authenticateFailure(error):
         guard let errorCode = WebAuthenticationSessionError.Code(rawValue: (error as NSError).code),
               errorCode != .canceledLogin else {
-          state.isLoading = false
           return .none
         }
         return .send(.internalAction(.oauthFailure("不明なエラーが発生しました")))
@@ -117,14 +116,22 @@ public struct TwitterAccountManageFeature: Sendable {
             let profile = try await twitterAPI.getUserMe(oauthToken)
             let twitterAccount = TwitterAccount(oauthToken: oauthToken, profile: profile)
             try await secureKeyValueStore.addTwitterAccount(twitterAccount)
-            await send(.internalAction(.savedTwitterAccount))
+            await send(.internalAction(.savedTwitterAccount(twitterAccount.profile)))
           },
           catch: { _, send in
             await send(.internalAction(.oauthFailure("ユーザー情報の取得に失敗しました")))
           },
         )
-      case .internalAction(.savedTwitterAccount):
+      case let .internalAction(.savedTwitterAccount(profile)):
         state.isLoading = false
+        state.alert = AlertState(
+          title: {
+            TextState("ログインしました！")
+          },
+          message: {
+            TextState("\(profile.name) (@\(profile.username))")
+          },
+        )
         return .send(.fetchTwitterAccounts)
       case let .internalAction(.oauthFailure(title)):
         state.isLoading = false

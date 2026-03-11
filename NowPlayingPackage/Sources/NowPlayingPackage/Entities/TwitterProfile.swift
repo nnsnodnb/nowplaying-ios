@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import MemberwiseInit
 import Tagged
 
+@MemberwiseInit(.public)
 public struct TwitterProfile: Codable, Hashable, Sendable {
   // MARK: - Tagged
   public typealias ID = Tagged<Self, String>

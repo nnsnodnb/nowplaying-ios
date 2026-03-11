@@ -15,9 +15,7 @@ struct TestTwitterAccountManageFeatureAuthenticateFailure {
   @Test
   func testErrorCodeCanceledLogin() async throws {
     let store = TestStore(
-      initialState: TwitterAccountManageFeature.State(
-        isLoading: true,
-      ),
+      initialState: TwitterAccountManageFeature.State(),
       reducer: {
         TwitterAccountManageFeature()
       },
@@ -27,9 +25,7 @@ struct TestTwitterAccountManageFeatureAuthenticateFailure {
       domain: ASWebAuthenticationSessionErrorDomain,
       code: ASWebAuthenticationSessionError.canceledLogin.rawValue,
     )
-    await store.send(.authenticateFailure(error)) {
-      $0.isLoading = false
-    }
+    await store.send(.authenticateFailure(error))
   }
 
   @Test(
@@ -41,7 +37,6 @@ struct TestTwitterAccountManageFeatureAuthenticateFailure {
   func testErrorCodeNotCanceldLogin(errorCode: ASWebAuthenticationSessionError.Code) async throws {
     let store = TestStore(
       initialState: TwitterAccountManageFeature.State(
-        isLoading: true,
       ),
       reducer: {
         TwitterAccountManageFeature()
@@ -51,7 +46,6 @@ struct TestTwitterAccountManageFeatureAuthenticateFailure {
     let error = NSError(domain: ASWebAuthenticationSessionErrorDomain, code: errorCode.rawValue)
     await store.send(.authenticateFailure(error))
     await store.receive(\.internalAction.oauthFailure) {
-      $0.isLoading = false
       $0.alert = AlertState(
         title: {
           TextState("不明なエラーが発生しました")

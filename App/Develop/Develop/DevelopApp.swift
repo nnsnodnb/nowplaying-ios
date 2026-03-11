@@ -19,6 +19,16 @@ struct DevelopApp: App {
             reducer: {
               RootFeature()
             },
+            withDependencies: {
+              $0.twitterAPI.getUserMe = { _ in
+                TwitterProfile(
+                  id: .init("1137201750"),
+                  name: "小泉ひやかし🌻",
+                  username: "nnsnodnb",
+                  profileImageURL: URL(string: "https://pbs.twimg.com/profile_images/1593438620769488897/3kV4Mtvq_normal.jpg")!,
+                )
+              }
+            }
           ),
         )
       }
