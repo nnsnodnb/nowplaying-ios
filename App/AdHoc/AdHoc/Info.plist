@@ -214,5 +214,7 @@
 		<key>UIColorName</key>
 		<string>AccentColor</string>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>再生中音楽取得のためミュージックライブラリにアクセスします</string>
 </dict>
 </plist>

@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct ScrollFlowText: View {
   // MARK: - Properties
-  @State public var text: String?
+  public let text: String?
   public var textColor: UIColor = .label
   public var font: UIFont = .systemFont(ofSize: 14)
 
@@ -27,14 +27,14 @@ public struct ScrollFlowText: View {
 
 struct ScrollFlowLabelWrapper: UIViewRepresentable {
   // MARK: - Properties
-  @State var text: String?
+  let text: String?
   let textColor: UIColor
   let font: UIFont
 
   func makeUIView(context: Context) -> ScrollFlowLabel {
     let label = ScrollFlowLabel()
     label.text = text
-    label.textColor = .label
+    label.textColor = textColor
     label.font = font
     label.pauseInterval = 2
     label.scrollDirection = .left
@@ -44,7 +44,15 @@ struct ScrollFlowLabelWrapper: UIViewRepresentable {
   }
 
   func updateUIView(_ uiView: ScrollFlowLabel, context: Context) {
-    uiView.text = text
+    if uiView.text != text {
+      uiView.text = text
+    }
+    if uiView.textColor != textColor {
+      uiView.textColor = textColor
+    }
+    if uiView.font != font {
+      uiView.font = font
+    }
   }
 }
 
