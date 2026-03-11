@@ -88,7 +88,6 @@ public struct PlayFeature: Sendable {
           },
         )
       case .togglePlayback:
-        state.isPlaying.toggle()
         return .run(
           operation: { _ in
             try await mediaPlayer.playback()
