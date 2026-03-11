@@ -20,6 +20,7 @@ public struct TwitterOAuthToken: Codable, Hashable, Sendable {
     case accessToken = "access_token"
     case refreshToken = "refresh_token"
     case scope
+    case expiresAt
   }
 
   // MARK: - Properties
@@ -47,6 +48,19 @@ public struct TwitterOAuthToken: Codable, Hashable, Sendable {
     self.accessToken = try container.decode(AccessToken.self, forKey: .accessToken)
     self.refreshToken = try container.decode(RefreshToken.self, forKey: .refreshToken)
     self.scope = try container.decode(String.self, forKey: .scope)
-    self.expiresAt = date.now.addingTimeInterval(TimeInterval(expiresIn - 10))
+    if let expiredAt = try container.decodeIfPresent(Date.self, forKey: .expiresAt) {
+      self.expiresAt = expiredAt
+    } else {
+      self.expiresAt = date.now.addingTimeInterval(TimeInterval(expiresIn - 10))
+    }
+  }
+
+  public func encode(to encoder: any Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(self.expiresIn, forKey: .expiresIn)
+    try container.encode(self.accessToken, forKey: .accessToken)
+    try container.encode(self.refreshToken, forKey: .refreshToken)
+    try container.encode(self.scope, forKey: .scope)
+    try container.encode(self.expiresAt, forKey: .expiresAt)
   }
 }

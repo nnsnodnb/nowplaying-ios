@@ -6,12 +6,37 @@
 //
 
 import ComposableArchitecture
+import DependenciesTestSupport
+@testable import NowPlayingPackage
+import StubKit
 import Testing
 
 @MainActor
 struct TestTwitterAccountManageFeatureDeleteTwitterAccount {
-  @Test
+  @Test(
+    .dependency(\.date, .constant(.now))
+  )
   func testIt() async throws {
-    // TODO: 実装
+    let twitterAccount = try Stub.make(TwitterAccount.self)
+
+    await withDependencies {
+      $0.secureKeyValueStore.removeTwitterAccount = { _ in }
+      $0.secureKeyValueStore.twitterAccounts = { [] }
+    } operation: {
+      let store = TestStore(
+        initialState: TwitterAccountManageFeature.State(
+          twitterAccounts: [twitterAccount],
+        ),
+        reducer: {
+          TwitterAccountManageFeature()
+        },
+      )
+
+      await store.send(.deleteTwitterAccount(.init(arrayLiteral: 0)))
+      await store.receive(\.fetchTwitterAccounts)
+      await store.receive(\.internalAction.fetchedTwitterAccounts, []) {
+        $0.twitterAccounts = []
+      }
+    }
   }
 }

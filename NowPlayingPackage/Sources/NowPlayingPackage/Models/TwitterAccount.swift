@@ -15,7 +15,7 @@ public struct TwitterAccount: Codable, Hashable, Sendable {
   public let profile: TwitterProfile
   public private(set) var isDefault = false
 
-  public mutating func setDefault() {
-    isDefault = true
+  public mutating func setDefault(_ isDefault: Bool = true) {
+    self.isDefault = isDefault
   }
 }

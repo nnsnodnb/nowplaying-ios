@@ -14,6 +14,7 @@ import KeychainAccess
 public struct SecureKeyValueStoreClient: Sendable {
   public var twitterAccounts: @Sendable () async throws -> [TwitterAccount]
   public var addTwitterAccount: @Sendable (TwitterAccount) async throws -> Void
+  public var updateDefaultTwitterAccount: @Sendable (TwitterAccount) async throws -> Void
   public var removeTwitterAccount: @Sendable (TwitterAccount) async throws -> Void
 }
 
@@ -25,6 +26,9 @@ extension SecureKeyValueStoreClient: DependencyKey {
     },
     addTwitterAccount: { account in
       await Implementation.shared.addTwitterAccount(account)
+    },
+    updateDefaultTwitterAccount: { account in
+      await Implementation.shared.updateDefaultTwitterAccount(account)
     },
     removeTwitterAccount: { account in
       await Implementation.shared.removeTwitterAccount(account)
@@ -61,6 +65,21 @@ private extension SecureKeyValueStoreClient {
       }
       accounts.append(addingAccount)
       keychain.set(accounts, key: .twitterAccounts)
+    }
+
+    func updateDefaultTwitterAccount(_ account: TwitterAccount) {
+      let accounts = getTwitterAccounts()
+        .map { twitterAccount in
+          // 同じアカウントですでにデフォルトであればそのまま
+          if twitterAccount.profile.id == account.profile.id && !account.isDefault {
+            return account
+          }
+          var twitterAccount = twitterAccount
+          let isDefault = twitterAccount.profile.id == account.profile.id
+          twitterAccount.setDefault(isDefault)
+          return twitterAccount
+        }
+      setTwitterAccounts(accounts)
     }
 
     func removeTwitterAccount(_ account: TwitterAccount) {

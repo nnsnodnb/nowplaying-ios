@@ -32,6 +32,7 @@ public struct TwitterAccountManageFeature: Sendable {
     case onAppear
     case fetchTwitterAccounts
     case oauth
+    case changeDefaultAccount(TwitterAccount)
     case deleteTwitterAccount(IndexSet)
     case authenticateSuccess(URL)
     case authenticateFailure(any Error)
@@ -81,6 +82,16 @@ public struct TwitterAccountManageFeature: Sendable {
         state.oauthURL = oauthURL
         state.codeVerifier = codeVerifier
         return .none
+      case let .changeDefaultAccount(twitterAccount):
+        guard !twitterAccount.isDefault else { return .none }
+          return .run(
+            operation: { send in
+              var twitterAccount = twitterAccount
+              twitterAccount.setDefault()
+              try await secureKeyValueStore.updateDefaultTwitterAccount(twitterAccount)
+              await send(.fetchTwitterAccounts)
+            },
+          )
       case let .deleteTwitterAccount(indexSet):
         return .run(
           operation: { [twitterAccounts = state.twitterAccounts] send in
@@ -199,7 +210,7 @@ public struct TwitterAccountManagePage: View {
     } else {
       List {
         ForEach(store.twitterAccounts, id: \.profile.id) { twitterAccount in
-          TwitterProfileRow(twitterAccount: twitterAccount)
+          twitterAccountRow(twitterAccount)
         }
         .onDelete(
           perform: { indexSet in
@@ -227,6 +238,18 @@ public struct TwitterAccountManagePage: View {
       Color(UIColor.systemGroupedBackground)
     }
     .ignoresSafeArea(.all)
+  }
+
+  private func twitterAccountRow(_ twitterAccount: TwitterAccount) -> some View {
+    Button(
+      action: {
+        store.send(.changeDefaultAccount(twitterAccount))
+      },
+      label: {
+        TwitterProfileRow(twitterAccount: twitterAccount)
+          .foregroundStyle(Color.primary)
+      },
+    )
   }
 
   private func webAuthenticationSession(url: URL) -> WebAuthenticationSession {
