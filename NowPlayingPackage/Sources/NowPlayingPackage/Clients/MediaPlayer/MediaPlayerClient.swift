@@ -93,7 +93,7 @@ private extension MediaPlayerClient {
     func backward() {
       // 3秒以上経過していれば曲の初めに戻す
       if musicPlayer.currentPlaybackTime > 3 {
-        musicPlayer.beginSeekingBackward()
+        musicPlayer.skipToBeginning()
       } else {
         musicPlayer.skipToPreviousItem()
       }
