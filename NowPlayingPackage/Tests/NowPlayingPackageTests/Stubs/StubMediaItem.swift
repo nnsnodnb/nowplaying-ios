@@ -20,4 +20,8 @@ struct StubMediaItem: MediaItemProtocol {
   let albumTitle: String?
   @Init(default: nil)
   let artworkImage: UIImage?
+  @Init(default: false)
+  let isCloudItem: Bool
+  @Init(default: false)
+  let hasProtectedAsset: Bool
 }

@@ -29,10 +29,10 @@ struct TestPlayFeatureOnAppear {
       }
       $0.mediaPlayer.playbackState = {
         AsyncStream {
-          $0.yield(true)
           $0.finish()
         }
       }
+      $0.mediaPlayer.getNowPlayingArtwork = { _ in .init(systemSymbol: .photo) }
     } operation: {
       let store = TestStore(
         initialState: PlayFeature.State(),
@@ -49,12 +49,12 @@ struct TestPlayFeatureOnAppear {
         $0.artistName = ""
       }
       await store.receive(\.internalAction.applyNowPlayingItem) {
-        $0.artworkImage = .init(systemSymbol: .photo)
         $0.songName = nowPlayingItem.title!
         $0.artistName = nowPlayingItem.artist!
       }
-      await store.receive(\.internalAction.changedIsPlaying) {
-        $0.isPlaying = true
+      await store.receive(\.internalAction.requestArtwork)
+      await store.receive(\.internalAction.applyArtwork, .init(systemSymbol: .photo)) {
+        $0.artworkImage = .init(systemSymbol: .photo)
       }
     }
   }
