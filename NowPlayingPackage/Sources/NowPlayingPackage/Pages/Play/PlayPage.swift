@@ -46,6 +46,8 @@ public struct PlayFeature: Sendable {
       case authorizationSuccess
       case authorizationFailure(String)
       case applyNowPlayingItem(any MediaItemProtocol)
+      case requestArtwork(any MediaItemProtocol)
+      case applyArtwork(UIImage)
       case changedIsPlaying(Bool)
     }
 
@@ -144,9 +146,19 @@ public struct PlayFeature: Sendable {
         )
         return .none
       case let .internalAction(.applyNowPlayingItem(mediaItem)):
-        state.artworkImage = mediaItem.artworkImage
         state.songName = mediaItem.title ?? "不明な曲名"
         state.artistName = mediaItem.artist ?? "不明なアーティスト"
+        return .send(.internalAction(.requestArtwork(mediaItem)))
+      case let .internalAction(.requestArtwork(mediaItem)):
+        return .run(
+          operation: { send in
+            if let image = try await mediaPlayer.getNowPlayingArtwork(mediaItem) {
+              await send(.internalAction(.applyArtwork(image)))
+            }
+          },
+        )
+      case let .internalAction(.applyArtwork(image)):
+        state.artworkImage = image
         return .none
       case let .internalAction(.changedIsPlaying(isPlaying)):
         state.isPlaying = isPlaying

@@ -12,4 +12,6 @@ public protocol MediaItemProtocol: Sendable {
   var artist: String? { get }
   var albumTitle: String? { get }
   var artworkImage: UIImage? { get }
+  var isCloudItem: Bool { get }
+  var hasProtectedAsset: Bool { get }
 }

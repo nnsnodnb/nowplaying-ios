@@ -9,6 +9,8 @@ import Dependencies
 import DependenciesMacros
 import Foundation
 import MediaPlayer
+import MusicKit
+import Nuke
 
 @DependencyClient
 public struct MediaPlayerClient: Sendable {
@@ -18,6 +20,7 @@ public struct MediaPlayerClient: Sendable {
   public var forward: @Sendable () async throws -> Void
   public var nowPlayingItem: @Sendable () async throws -> AsyncStream<(any MediaItemProtocol)?>
   public var playbackState: @Sendable () async throws -> AsyncStream<Bool>
+  public var getNowPlayingArtwork: @Sendable (any MediaItemProtocol) async throws -> UIImage?
 
   // MARK: - Error
   public enum Error: Swift.Error {
@@ -46,6 +49,21 @@ extension MediaPlayerClient: DependencyKey {
     },
     playbackState: {
       await Implementation.shared.playbackState()
+    },
+    getNowPlayingArtwork: { mediaItem in
+      if !mediaItem.isCloudItem && !mediaItem.hasProtectedAsset {
+        return mediaItem.artworkImage
+      }
+      var request = MusicCatalogSearchRequest(
+        term: "\(mediaItem.title ?? "") \(mediaItem.artist ?? "")",
+        types: [Song.self],
+      )
+      request.limit = 1
+      guard let song = try await request.response().songs.first,
+            let artwork = song.artwork else { return nil }
+      guard let url = artwork.url(width: 600, height: 600) else { return nil }
+      let image = try await ImagePipeline.shared.image(for: url)
+      return image
     },
   )
 }
