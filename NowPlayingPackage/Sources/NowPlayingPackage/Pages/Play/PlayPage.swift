@@ -217,9 +217,9 @@ public struct PlayPage: View {
           .aspectRatio(contentMode: .fit)
       }
     }
-    .scaleEffect(x: store.isPlaying ? 1 : 0.85, y: store.isPlaying ? 1 : 0.85)
-    .animation(.spring(response: 0.3, dampingFraction: 0.5), value: store.isPlaying)
-    .padding(40)
+    .scaleEffect(x: store.isPlaying ? 1 : 0.8, y: store.isPlaying ? 1 : 0.8)
+    .animation(.spring(response: 0.3, dampingFraction: store.isPlaying ? 0.5 : 0.6), value: store.isPlaying)
+    .padding(12)
   }
 
   private var songInfo: some View {
