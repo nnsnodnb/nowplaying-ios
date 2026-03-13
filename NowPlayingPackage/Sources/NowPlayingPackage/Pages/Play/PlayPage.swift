@@ -370,7 +370,7 @@ public struct PlayPage: View {
       Spacer()
       postButton
     }
-    .padding(.horizontal, 36)
+    .padding(.horizontal, 16)
     .frame(height: 56)
   }
 
