@@ -18,12 +18,17 @@ public struct PlayFeature: Sendable {
   public struct State: Equatable {
     @Init(default: nil)
     public var artworkImage: UIImage?
-    public var songName = "曲名"
-    public var artistName = "アーティスト名"
+    @Init(default: nil)
+    public var songName: String?
+    @Init(default: nil)
+    public var artistName: String?
+    @Init(default: nil)
+    public var album: String?
     public var isPlaying = false
     @Init(default: nil)
     public var bannerAdUnitID: String?
     @Presents public var setting: SettingFeature.State?
+    @Presents public var tweet: TweetFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?
   }
 
@@ -37,6 +42,7 @@ public struct PlayFeature: Sendable {
     case xTwitter
     case bluesky
     case setting(PresentationAction<SettingFeature.Action>)
+    case tweet(PresentationAction<TweetFeature.Action>)
     case internalAction(InternalAction)
     case alert(PresentationAction<Alert>)
 
@@ -50,7 +56,7 @@ public struct PlayFeature: Sendable {
       case applyArtwork(UIImage)
       case changedIsPlaying(Bool)
       case emptySNSAccounts
-      case showTweet([TwitterAccount])
+      case showTweet([TwitterAccount], UIImage)
     }
 
     // MARK: - Alert
@@ -63,6 +69,10 @@ public struct PlayFeature: Sendable {
   private var adUnit
   @Dependency(\.mediaPlayer)
   private var mediaPlayer
+  @Dependency(\.imageRenderer)
+  private var imageRenderer
+  @Dependency(\.mainQueue)
+  private var mainQueue
   @Dependency(\.secureKeyValueStore)
   private var secureKeyValueStore
 
@@ -116,12 +126,17 @@ public struct PlayFeature: Sendable {
               await send(.internalAction(.emptySNSAccounts))
               return
             }
-            await send(.internalAction(.showTweet(twitterAccounts)))
+            // Menuを閉じるためメインスレッドで待機する
+            try await mainQueue.sleep(for: .milliseconds(300))
+            let capturedImage = try await imageRenderer.image()
+            await send(.internalAction(.showTweet(twitterAccounts, capturedImage)))
           },
         )
       case .bluesky:
         return .none
       case .setting:
+        return .none
+      case .tweet:
         return .none
       case .internalAction(.authorizationSuccess):
         state.songName = "読み込み中..."
@@ -159,8 +174,9 @@ public struct PlayFeature: Sendable {
         )
         return .none
       case let .internalAction(.applyNowPlayingItem(mediaItem)):
-        state.songName = mediaItem.title ?? "不明な曲名"
-        state.artistName = mediaItem.artist ?? "不明なアーティスト"
+        state.songName = mediaItem.title
+        state.artistName = mediaItem.artist
+        state.album = mediaItem.albumTitle
         return .send(.internalAction(.requestArtwork(mediaItem)))
       case let .internalAction(.requestArtwork(mediaItem)):
         return .run(
@@ -186,8 +202,27 @@ public struct PlayFeature: Sendable {
           },
         )
         return .none
-      case let .internalAction(.showTweet(twitterAccounts)):
-        // TODO: 投稿画面を開く
+      case let .internalAction(.showTweet(twitterAccounts, capturedImage)):
+        guard let songName = state.songName,
+              let artistName = state.artistName else {
+          state.alert = AlertState(
+            title: {
+              TextState("投稿に必要な情報が取得できません")
+            },
+            message: {
+              TextState("曲名とアーティスト名が取得できていません")
+            },
+          )
+          return .none
+        }
+        state.tweet = .init(
+          twitterAccounts: twitterAccounts,
+          title: songName,
+          artist: artistName,
+          album: state.album,
+          artwork: state.artworkImage,
+          capturedImage: capturedImage,
+        )
         return .none
       case .alert:
         return .none
@@ -196,12 +231,16 @@ public struct PlayFeature: Sendable {
     .ifLet(\.$setting, action: \.setting) {
       SettingFeature()
     }
+    .ifLet(\.$tweet, action: \.tweet) {
+      TweetFeature()
+    }
   }
 }
 
 public struct PlayPage: View {
   // MARK: - Properties
   @Bindable public var store: StoreOf<PlayFeature>
+
   @Environment(\.colorScheme)
   private var colorScheme
 
@@ -225,6 +264,9 @@ public struct PlayPage: View {
     }
     .sheet(item: $store.scope(state: \.setting, action: \.setting)) { store in
       SettingPage(store: store)
+    }
+    .sheet(item: $store.scope(state: \.tweet, action: \.tweet)) { store in
+      TweetPage(store: store)
     }
     .alert($store.scope(state: \.alert, action: \.alert))
   }
@@ -251,12 +293,12 @@ public struct PlayPage: View {
   private var songInfo: some View {
     VStack(alignment: .center, spacing: 8) {
       ScrollFlowText(
-        text: store.songName,
+        text: store.songName ?? "曲名",
         textColor: .label,
         font: .boldSystemFont(ofSize: 20)
       )
       ScrollFlowText(
-        text: store.artistName,
+        text: store.artistName ?? "アーティスト名",
         textColor: .secondaryLabel,
         font: .systemFont(ofSize: 17, weight: .semibold)
       )
