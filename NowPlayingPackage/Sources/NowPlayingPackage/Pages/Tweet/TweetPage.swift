@@ -121,7 +121,8 @@ public struct TweetFeature: Sendable {
         // TODO: 選択画面に遷移
         return .none
       case .addArtwork:
-        state.attachmentImage = state.artwork
+        guard let artwork = state.artwork else { return .none }
+        state.attachmentImage = artwork
         state.isEditing = true
         return .none
       case .addCapturedImage:
@@ -282,14 +283,16 @@ public struct TweetPage: View {
   private var addAttachmentMenu: some View {
     Menu(
       content: {
-        Button(
-          action: {
-            store.send(.addArtwork)
-          },
-          label: {
-            Text("アートワークのみ")
-          },
-        )
+        if store.artwork != nil {
+          Button(
+            action: {
+              store.send(.addArtwork)
+            },
+            label: {
+              Text("アートワークのみ")
+            },
+          )
+        }
         Button(
           action: {
             store.send(.addCapturedImage)
