@@ -187,6 +187,11 @@ public struct TweetPage: View {
           .fullScreenCover(isPresented: $store.isShowPreview.sending(\.showPreview)) {
             imageViewer
           }
+          .onChange(of: store.isShowPreview, initial: false) { oldValue, newValue in
+            if oldValue && !newValue {
+              isFocused = true
+            }
+          }
       },
     )
   }
@@ -258,9 +263,6 @@ public struct TweetPage: View {
       text: $store.text.sending(\.changedText),
     )
     .focused($isFocused)
-    .onAppear {
-      isFocused = true
-    }
   }
 
   private func attachmentImageMenu(image: UIImage) -> some View {
