@@ -44,8 +44,9 @@ struct TestPlayFeatureInternalAction {
         $0.artistName = ""
       }
       await store.receive(\.internalAction.applyNowPlayingItem) {
-        $0.songName = nowPlayingItem.title!
-        $0.artistName = nowPlayingItem.artist!
+        $0.songName = nowPlayingItem.title
+        $0.artistName = nowPlayingItem.artist
+        $0.album = nowPlayingItem.albumTitle
       }
       await store.receive(\.internalAction.requestArtwork)
       await store.receive(\.internalAction.applyArtwork, .init(systemSymbol: .photo)) {
