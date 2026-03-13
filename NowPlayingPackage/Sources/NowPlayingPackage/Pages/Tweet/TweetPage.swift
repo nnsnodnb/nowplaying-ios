@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import Dependencies
+import ImageViewer
 import NukeUI
 import SwiftUI
 
@@ -26,6 +27,7 @@ public struct TweetFeature: Sendable {
     public var text = ""
     public var isEditing = false
     public var isDisablePostButton = false
+    public var isShowPreview = false
     @Shared(.appStorage("is_twitter_attach_image"))
     public var isAttachImage = true
     @Shared(.appStorage("tweet_with_image_type"))
@@ -45,6 +47,7 @@ public struct TweetFeature: Sendable {
     case addArtwork
     case addCapturedImage
     case removeAttachmentImage
+    case showPreview(Bool)
     case alert(PresentationAction<Alert>)
 
     // MARK: - Alert
@@ -139,6 +142,9 @@ public struct TweetFeature: Sendable {
             await dismiss()
           },
         )
+      case let .showPreview(isShow):
+        state.isShowPreview = isShow
+        return .none
       case .alert:
         state.alert = nil
         return .none
@@ -178,6 +184,9 @@ public struct TweetPage: View {
           }
           .interactiveDismissDisabled(store.isEditing)
           .alert($store.scope(state: \.alert, action: \.alert))
+          .fullScreenCover(isPresented: $store.isShowPreview.sending(\.showPreview)) {
+            imageViewer
+          }
       },
     )
   }
@@ -249,6 +258,9 @@ public struct TweetPage: View {
       text: $store.text.sending(\.changedText),
     )
     .focused($isFocused)
+    .onAppear {
+      isFocused = true
+    }
   }
 
   private func attachmentImageMenu(image: UIImage) -> some View {
@@ -256,7 +268,8 @@ public struct TweetPage: View {
       content: {
         Button(
           action: {
-            // TODO: プレビュー
+            isFocused = false
+            store.send(.showPreview(true))
           },
           label: {
             Text("プレビュー")
@@ -312,6 +325,19 @@ public struct TweetPage: View {
       },
     )
     .frame(width: 54, height: 54)
+  }
+
+  private var imageViewer: some View {
+    ImageViewer(
+      image: .init(
+        get: {
+          Image(uiImage: store.attachmentImage ?? .init(systemSymbol: .xmarkCircleFill))
+        },
+        set: { _ in }
+      ),
+      viewerShown: $store.isShowPreview.sending(\.showPreview),
+      closeButtonTopRight: true,
+    )
   }
 }
 
