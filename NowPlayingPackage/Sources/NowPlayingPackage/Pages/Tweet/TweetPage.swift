@@ -232,6 +232,7 @@ public struct TweetPage: View {
       )
       .frame(width: 54, height: 54)
       .clipShape(Circle())
+      .disabled(store.twitterAccounts.count == 1)
     }
   }
 
