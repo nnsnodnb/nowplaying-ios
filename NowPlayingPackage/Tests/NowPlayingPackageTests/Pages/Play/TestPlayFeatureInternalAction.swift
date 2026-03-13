@@ -9,6 +9,7 @@ import ComposableArchitecture
 import Dependencies
 import DependenciesTestSupport
 @testable import NowPlayingPackage
+import StubKit
 import Testing
 
 @MainActor
@@ -43,8 +44,9 @@ struct TestPlayFeatureInternalAction {
         $0.artistName = ""
       }
       await store.receive(\.internalAction.applyNowPlayingItem) {
-        $0.songName = nowPlayingItem.title!
-        $0.artistName = nowPlayingItem.artist!
+        $0.songName = nowPlayingItem.title
+        $0.artistName = nowPlayingItem.artist
+        $0.album = nowPlayingItem.albumTitle
       }
       await store.receive(\.internalAction.requestArtwork)
       await store.receive(\.internalAction.applyArtwork, .init(systemSymbol: .photo)) {
@@ -70,6 +72,58 @@ struct TestPlayFeatureInternalAction {
     await store.send(.internalAction(.requestArtwork(nowPlayingItem)))
     await store.receive(\.internalAction.applyArtwork, .init(systemSymbol: .photo)) {
       $0.artworkImage = .init(systemSymbol: .photo)
+    }
+  }
+
+  @Test
+  func testShowTweetSongNameIsNil() async throws {
+    let store = TestStore(
+      initialState: PlayFeature.State(
+        songName: nil,
+        artistName: "アーティスト名",
+      ),
+      reducer: {
+        PlayFeature()
+      },
+    )
+
+    let twitterAccount = try Stub.make(TwitterAccount.self)
+
+    await store.send(.internalAction(.showTweet([twitterAccount], .init(systemSymbol: .photo)))) {
+      $0.alert = AlertState(
+        title: {
+          TextState("投稿に必要な情報が取得できません")
+        },
+        message: {
+          TextState("曲名とアーティスト名が取得できていません")
+        },
+      )
+    }
+  }
+
+  @Test
+  func testShowTweetArtistNameIsNil() async throws {
+    let store = TestStore(
+      initialState: PlayFeature.State(
+        songName: "曲名",
+        artistName: nil,
+      ),
+      reducer: {
+        PlayFeature()
+      },
+    )
+
+    let twitterAccount = try Stub.make(TwitterAccount.self)
+
+    await store.send(.internalAction(.showTweet([twitterAccount], .init(systemSymbol: .photo)))) {
+      $0.alert = AlertState(
+        title: {
+          TextState("投稿に必要な情報が取得できません")
+        },
+        message: {
+          TextState("曲名とアーティスト名が取得できていません")
+        },
+      )
     }
   }
 }

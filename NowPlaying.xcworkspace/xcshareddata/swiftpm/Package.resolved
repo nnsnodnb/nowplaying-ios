@@ -1,5 +1,5 @@
 {
-  "originHash" : "b59aa1c864726594be143b6414e03082e32ccf20193f068533127831553ca1e6",
+  "originHash" : "8df1180a1e768377bacadf8a82fa3a3028b13d3686d7e85ded69bbbd72fd1bd3",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -350,6 +350,24 @@
       "state" : {
         "revision" : "8a4640d14777685ba8f14e832373160498fbab92",
         "version" : "0.63.2"
+      }
+    },
+    {
+      "identity" : "swiftui-image-viewer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Jake-Short/swiftui-image-viewer.git",
+      "state" : {
+        "revision" : "f61f298c0100c81dfb0c7908091e68aad12a892c",
+        "version" : "2.3.1"
+      }
+    },
+    {
+      "identity" : "url-image",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dmytro-anokhin/url-image.git",
+      "state" : {
+        "revision" : "ccab89ad1cedb04f25dd4df1776dd8c8583b914a",
+        "version" : "2.2.5"
       }
     },
     {

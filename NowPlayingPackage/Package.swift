@@ -31,6 +31,7 @@ let package = Package(
     .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", .upToNextMajor(from: "13.1.0")),
     .package(url: "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git", .upToNextMajor(from: "3.1.0")),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .upToNextMajor(from: "0.10.0")),
+    .package(url: "https://github.com/Jake-Short/swiftui-image-viewer.git", .upToNextMajor(from: "2.3.1")),
   ],
   targets: [
     .target(
@@ -41,6 +42,7 @@ let package = Package(
         .firebaseAnalytics,
         .googleMobileAds,
         .googleUserMessagingPlatform,
+        .imageViewer,
         .keychainAccess,
         .memberwiseInit,
         .nukeUI,
@@ -114,6 +116,13 @@ extension Target.Dependency {
     .product(
       name: "GoogleUserMessagingPlatform",
       package: "swift-package-manager-google-user-messaging-platform",
+    )
+  }
+
+  static var imageViewer: Self {
+    .product(
+      name: "ImageViewer",
+      package: "swiftui-image-viewer",
     )
   }
 
