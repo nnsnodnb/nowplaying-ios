@@ -104,7 +104,7 @@ public struct TwitterAccountManageFeature: Sendable {
       case let .authenticateSuccess(url):
         guard let codeVerifier = state.codeVerifier else { return .none }
         guard let code = try? twitterOAuth.validateCallbackURL(url, codeVerifier) else {
-        return .send(.internalAction(.oauthFailure("無効な操作が行われました")))
+          return .send(.internalAction(.oauthFailure("無効な操作が行われました")))
         }
         state.isLoading = true
         state.codeVerifier = nil
