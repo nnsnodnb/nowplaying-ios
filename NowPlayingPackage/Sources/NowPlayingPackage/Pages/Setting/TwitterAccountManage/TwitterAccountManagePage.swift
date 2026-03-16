@@ -171,7 +171,6 @@ public struct TwitterAccountManageFeature: Sendable {
         )
         return .none
       case .alert:
-        state.alert = nil
         return .none
       }
     }

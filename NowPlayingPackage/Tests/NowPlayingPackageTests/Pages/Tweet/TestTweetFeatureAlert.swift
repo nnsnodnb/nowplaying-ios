@@ -40,8 +40,6 @@ struct TestTweetFeatureAlert {
       },
     )
 
-    await store.send(.alert(.presented(.delete))) {
-      $0.alert = nil
-    }
+    await store.send(.alert(.presented(.delete)))
   }
 }
