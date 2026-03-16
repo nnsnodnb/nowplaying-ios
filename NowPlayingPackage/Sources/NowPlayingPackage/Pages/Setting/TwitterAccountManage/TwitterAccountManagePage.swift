@@ -31,6 +31,7 @@ public struct TwitterAccountManageFeature: Sendable {
   public enum Action {
     case onAppear
     case fetchTwitterAccounts
+    case checkExistTwitterAccounts
     case oauth
     case changeDefaultAccount(TwitterAccount)
     case deleteTwitterAccount(IndexSet)
@@ -52,6 +53,7 @@ public struct TwitterAccountManageFeature: Sendable {
     // MARK: - Alert
     @CasePathable
     public enum Alert: Equatable {
+      case openRewardedAd
     }
   }
 
@@ -77,6 +79,34 @@ public struct TwitterAccountManageFeature: Sendable {
             await send(.internalAction(.fetchedTwitterAccounts(accounts)))
           },
         )
+      case .checkExistTwitterAccounts:
+        // アカウントなしであればそのままOAuth2.0認可に進む
+        if state.twitterAccounts.isEmpty {
+          return .send(.oauth)
+        }
+        state.alert = AlertState(
+          title: {
+            TextState("アカウントを追加するには広告の視聴が必要です。")
+          },
+          actions: {
+            ButtonState(
+              role: .cancel,
+              label: {
+                TextState("キャンセル")
+              },
+            )
+            ButtonState(
+              action: .openRewardedAd,
+              label: {
+                TextState("視聴する")
+              },
+            )
+          },
+          message: {
+            TextState("ユーザー情報を取得するためにコストが発生するためご協力お願いします。")
+          },
+        )
+        return .none
       case .oauth:
         guard let (oauthURL, codeVerifier) = try? twitterOAuth.getAuthenticateURL() else { return .none }
         state.oauthURL = oauthURL
@@ -170,6 +200,9 @@ public struct TwitterAccountManageFeature: Sendable {
           },
         )
         return .none
+      case .alert(.presented(.openRewardedAd)):
+        // TODO: 広告表示
+        return .none
       case .alert:
         return .none
       }
@@ -187,7 +220,7 @@ public struct TwitterAccountManagePage: View {
       .navigationTitle("Xアカウント管理")
       .toolbar(
         addAction: {
-          store.send(.oauth)
+          store.send(.checkExistTwitterAccounts)
         },
       )
       .onAppear {
