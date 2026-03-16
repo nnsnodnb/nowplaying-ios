@@ -20,6 +20,7 @@ struct ProductionApp: App {
           },
           withDependencies: {
             $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3417597686353524/5779812351" }
+            $0.adUnit.addTwitterAccountRewardAdUnitID = { "ca-app-pub-3417597686353524/2100996522" }
           },
         ),
       )
