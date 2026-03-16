@@ -39,7 +39,7 @@ extension TwitterAPIClient: DependencyKey {
         throw Error.internalError
       }
       let jsonDecoder = JSONDecoder()
-      let object = try jsonDecoder.decode(TwitterProfileRespones.self, from: data)
+      let object = try jsonDecoder.decode(TwitterAPIResponse<TwitterProfile>.self, from: data)
 
       return object.data
     },
