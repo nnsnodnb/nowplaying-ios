@@ -27,4 +27,17 @@ public struct TwitterProfile: Codable, Hashable, Sendable {
   public let name: String
   public let username: String
   public let profileImageURL: URL
+
+  // MARK: - Initialize
+  public init(from decoder: any Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.id = try container.decode(TwitterProfile.ID.self, forKey: .id)
+    self.name = try container.decode(String.self, forKey: .name)
+    self.username = try container.decode(String.self, forKey: .username)
+    var profileImageURLString = try container.decode(String.self, forKey: .profileImageURL)
+    if profileImageURLString.hasSuffix("_normal.jpg") {
+      profileImageURLString = profileImageURLString.replacingOccurrences(of: "_normal.jpg", with: ".jpg")
+    }
+    self.profileImageURL = URL(string: profileImageURLString)!
+  }
 }
