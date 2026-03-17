@@ -32,7 +32,7 @@ public struct TwitterAccountManageFeature: Sendable {
     case onAppear
     case preloadRewardedAds
     case fetchTwitterAccounts
-    case checkExistTwitterAccounts
+    case showAlertForWatchingAds
     case oauth
     case changeDefaultAccount(TwitterAccount)
     case deleteTwitterAccount(IndexSet)
@@ -91,11 +91,7 @@ public struct TwitterAccountManageFeature: Sendable {
             await send(.internalAction(.fetchedTwitterAccounts(accounts)))
           },
         )
-      case .checkExistTwitterAccounts:
-        // アカウントなしであればそのままOAuth2.0認可に進む
-        if state.twitterAccounts.isEmpty {
-          return .send(.oauth)
-        }
+      case .showAlertForWatchingAds:
         state.alert = AlertState(
           title: {
             TextState("アカウントを追加するには広告の視聴が必要です。")
@@ -244,10 +240,11 @@ public struct TwitterAccountManagePage: View {
       .navigationTitle("Xアカウント管理")
       .toolbar(
         addAction: {
-          store.send(.checkExistTwitterAccounts)
+          store.send(.showAlertForWatchingAds)
         },
       )
       .onAppear {
+        store.send(.preloadRewardedAds)
         store.send(.onAppear)
       }
       .webAuthenticationSession(
@@ -273,9 +270,6 @@ public struct TwitterAccountManagePage: View {
             store.send(.deleteTwitterAccount(indexSet))
           },
         )
-      }
-      .onAppear {
-        store.send(.preloadRewardedAds)
       }
     }
   }
