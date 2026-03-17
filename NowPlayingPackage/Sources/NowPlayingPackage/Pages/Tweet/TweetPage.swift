@@ -136,6 +136,7 @@ public struct TweetFeature: Sendable {
         state.attachmentImage = nil
         return .none
       case .alert(.presented(.delete)):
+        state.alert = nil
         return .run(
           operation: { _ in
             await dismiss()
@@ -145,6 +146,7 @@ public struct TweetFeature: Sendable {
         state.isShowPreview = isShow
         return .none
       case .alert:
+        state.alert = nil
         return .none
       }
     }

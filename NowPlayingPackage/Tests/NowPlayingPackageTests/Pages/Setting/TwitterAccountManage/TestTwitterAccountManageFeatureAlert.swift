@@ -34,6 +34,8 @@ struct TestTwitterAccountManageFeatureAlert {
       },
     )
 
-    await store.send(.alert(.dismiss))
+    await store.send(.alert(.dismiss)) {
+      $0.alert = nil
+    }
   }
 }
