@@ -45,11 +45,9 @@ public struct SettingFeature: Sendable {
       public var url: URL {
         switch self {
         case .privacyPolicy:
-          // FIXME: URL差し替え
-          URL(string: "https://example.com")!
+          URL(string: "https://github.com/nnsnodnb/nowplaying-ios/wiki/Privacy-Policy")!
         case .termsOfUse:
-          // FIXME: URL差し替え
-          URL(string: "https://example.com")!
+          URL(string: "https://github.com/nnsnodnb/nowplaying-ios/wiki/Terms-of-use")!
         case .userdataExternalTransmission:
           URL(string: "https://nnsnodnb.moe/userdata-external-transmission/?app=moe.nnsnodnb.NowPlaying")!
         case .contactDeveloper:

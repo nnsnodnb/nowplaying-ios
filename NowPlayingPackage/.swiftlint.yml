@@ -80,6 +80,10 @@ opt_in_rules:
 type_name:
   min_length: 2
 
+file_length:
+  warning: 500
+  error: 1000
+
 line_length: 130
 
 disabled_rules:
