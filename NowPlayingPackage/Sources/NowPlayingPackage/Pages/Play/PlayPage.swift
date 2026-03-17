@@ -234,6 +234,7 @@ public struct PlayFeature: Sendable {
     .ifLet(\.$tweet, action: \.tweet) {
       TweetFeature()
     }
+    .ifLet(\.$alert, action: \.alert)
   }
 }
 
