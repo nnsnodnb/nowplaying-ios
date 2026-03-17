@@ -299,8 +299,11 @@ public struct TwitterAccountManagePage: View {
         store.send(.changeDefaultAccount(twitterAccount))
       },
       label: {
-        TwitterProfileRow(twitterAccount: twitterAccount)
-          .foregroundStyle(Color.primary)
+        TwitterProfileRow(
+          twitterAccount: twitterAccount,
+          showDefaultStar: true,
+        )
+        .foregroundStyle(Color.primary)
       },
     )
   }

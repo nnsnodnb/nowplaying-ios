@@ -7,8 +7,10 @@
 
 import Dependencies
 import Foundation
+import MemberwiseInit
 import Tagged
 
+@MemberwiseInit(.public)
 public struct TwitterOAuthToken: Codable, Hashable, Sendable {
   // MARK: - Tagged
   public typealias AccessToken = Tagged<(Self, accessToken: ()), String>
@@ -36,6 +38,7 @@ public struct TwitterOAuthToken: Codable, Hashable, Sendable {
     return expiresAt <= date.now
   }
 
+  @Init(.public)
   private let expiresAt: Date
 
   // MARK: - Initialize

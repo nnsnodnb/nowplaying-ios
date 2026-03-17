@@ -12,6 +12,8 @@ import Tagged
 public struct TwitterProfileRow: View {
   // MARK: - Properties
   public let twitterAccount: TwitterAccount
+  public let showDefaultStar: Bool
+  public var selected = false
 
   // MARK: - Body
   public var body: some View {
@@ -23,13 +25,13 @@ public struct TwitterProfileRow: View {
         Text("@\(twitterAccount.profile.username)")
           .font(.system(size: 17))
       }
-      if twitterAccount.isDefault {
+      if showDefaultStar && twitterAccount.isDefault {
         Spacer()
-        Image(systemSymbol: .starFill)
-          .resizable()
-          .scaledToFit()
-          .foregroundStyle(.yellow)
-          .frame(width: 24, height: 24)
+        defaultStar
+          .padding(.trailing, 12)
+      } else if selected {
+        Spacer()
+        selectedCheckmark
           .padding(.trailing, 12)
       }
     }
@@ -54,5 +56,21 @@ public struct TwitterProfileRow: View {
       }
     }
     .frame(width: 48, height: 48)
+  }
+
+  private var defaultStar: some View {
+    Image(systemSymbol: .starFill)
+      .resizable()
+      .scaledToFit()
+      .foregroundStyle(.yellow)
+      .frame(width: 24, height: 24)
+  }
+
+  private var selectedCheckmark: some View {
+    Image(systemSymbol: .checkmarkCircleFill)
+      .resizable()
+      .scaledToFit()
+      .foregroundStyle(.white, Color.accentColor)
+      .frame(width: 24, height: 24)
   }
 }
