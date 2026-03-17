@@ -80,7 +80,7 @@ public struct TwitterAccountManageFeature: Sendable {
       case .preloadRewardedAds:
         return .run(
           priority: .background,
-          operation: { send in
+          operation: { _ in
             try await rewardedAd.load(adUnitID())
           },
         )
