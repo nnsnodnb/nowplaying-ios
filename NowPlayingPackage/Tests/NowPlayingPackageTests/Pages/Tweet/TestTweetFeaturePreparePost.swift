@@ -1,5 +1,5 @@
 //
-//  TestTweetFeaturePost.swift
+//  TestTweetFeaturePreparePost.swift
 //  NowPlayingPackage
 //
 //  Created by Yuya Oka on 2026/03/13.
@@ -11,7 +11,7 @@ import StubKit
 import Testing
 
 @MainActor
-struct TestTweetFeaturePost {
+struct TestTweetFeaturePreparePost {
   @Test
   func testIsDisablePostButton() async throws {
     let twitterAccount = try Stub.make(TwitterAccount.self)
@@ -32,6 +32,6 @@ struct TestTweetFeaturePost {
       },
     )
 
-    await store.send(.post)
+    await store.send(.preparePost)
   }
 }

@@ -132,6 +132,21 @@ extension TwitterOAuthClient: DependencyKey {
       let jsonDecoder = JSONDecoder()
       let oauthToken = try jsonDecoder.decode(TwitterOAuthToken.self, from: data)
 
+      // oauthTokenの置き換え
+      @Dependency(\.secureKeyValueStore)
+      var secureKeyValueStore
+
+      var twitterAccounts = try await secureKeyValueStore.twitterAccounts()
+      if let index = twitterAccounts.firstIndex(where: { $0.oauthToken.refreshToken == refreshToken }),
+         let twitterAccount = twitterAccounts[safe: index] {
+        twitterAccounts[index] = .init(
+          oauthToken: oauthToken,
+          profile: twitterAccount.profile,
+          isDefault: twitterAccount.isDefault,
+        )
+        try await secureKeyValueStore.setTwitterAccounts(twitterAccounts)
+      }
+
       return oauthToken
     },
   )

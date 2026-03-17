@@ -12,6 +12,7 @@ import Foundation
 @DependencyClient
 public struct TwitterAPIClient: Sendable {
   public var getUserMe: @Sendable (TwitterOAuthToken) async throws -> TwitterProfile
+  public var uploadMedia: @Sendable (TwitterOAuthToken, Data) async throws -> TwitterMedia
 
   // MARK: - Error
   public enum Error: Swift.Error {
@@ -42,6 +43,23 @@ extension TwitterAPIClient: DependencyKey {
       let object = try jsonDecoder.decode(TwitterAPIResponse<TwitterProfile>.self, from: data)
 
       return object.data
+    },
+    uploadMedia: { oauthToken, imageData in
+      let accessToken: TwitterOAuthToken.AccessToken
+      if oauthToken.isExpired {
+        @Dependency(\.twitterOAuth)
+        var twitterOAuth
+        let oauthToken = try await twitterOAuth.refreshAccessToken(oauthToken.refreshToken)
+        accessToken = oauthToken.accessToken
+      } else {
+        accessToken = oauthToken.accessToken
+      }
+      let url = URL(string: "https://api.x.com/2/media/upload")!
+      var urlRequest = URLRequest(url: url)
+      urlRequest.httpMethod = "POST"
+      urlRequest.addValue("Bearer \(accessToken.rawValue)", forHTTPHeaderField: "Authorization")
+
+      throw Error.internalError
     },
   )
 }

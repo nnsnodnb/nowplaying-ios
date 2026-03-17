@@ -15,7 +15,7 @@ import SwiftUI
 public struct TweetFeature: Sendable {
   // MARK: - State
   @ObservableState
-  public struct State: Equatable {
+  public struct State: Equatable, Sendable {
     public let twitterAccounts: [TwitterAccount]
     public let title: String
     public let artist: String
@@ -25,6 +25,7 @@ public struct TweetFeature: Sendable {
     public var attachmentImage: UIImage?
     public var postableTwitterAccount: TwitterAccount?
     public var text = ""
+    public var temporaryMedia: TwitterMedia?
     public var isEditing = false
     public var isDisablePostButton = false
     public var isShowPreview = false
@@ -42,7 +43,7 @@ public struct TweetFeature: Sendable {
   public enum Action {
     case onAppear
     case close
-    case post
+    case preparePost
     case changedText(String)
     case showSelectTwitterAccount
     case addArtwork
@@ -50,17 +51,27 @@ public struct TweetFeature: Sendable {
     case removeAttachmentImage
     case showPreview(Bool)
     case selectTwitterAccount(PresentationAction<SelectTwitterAccountFeature.Action>)
+    case internalAction(InternalAction)
     case alert(PresentationAction<Alert>)
+
+    // MARK: - InternalAction
+    @CasePathable
+    public enum InternalAction {
+      case uploadImageData(TwitterAccount, Data)
+      case post(TwitterAccount, TwitterMedia?)
+    }
 
     // MARK: - Alert
     @CasePathable
-    public enum Alert: Equatable {
+    public enum Alert: Equatable, Sendable {
       case delete
     }
   }
 
   @Dependency(\.dismiss)
   private var dismiss
+  @Dependency(\.twitterAPI)
+  private var twitterAPI
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
@@ -109,10 +120,19 @@ public struct TweetFeature: Sendable {
             await dismiss()
           },
         )
-      case .post:
-        guard !state.isDisablePostButton else { return .none }
-        // TODO: 投稿
-        return .none
+      case .preparePost:
+        guard !state.isDisablePostButton,
+              let twitterAccount = state.postableTwitterAccount else { return .none }
+        // 有効期限内のメディアであればそのまま使用する
+        if let media = state.temporaryMedia,
+           !media.isExpired {
+          return .send(.internalAction(.post(twitterAccount, media)))
+        } else if let attachmentImage = state.attachmentImage,
+                  let imageData = attachmentImage.jpegData(compressionQuality: 0.3) {
+          return .send(.internalAction(.uploadImageData(twitterAccount, imageData)))
+        } else {
+          return .send(.internalAction(.post(twitterAccount, nil)))
+        }
       case let .changedText(text):
         state.text = text
         state.isEditing = true
@@ -157,6 +177,22 @@ public struct TweetFeature: Sendable {
         return .none
       case .selectTwitterAccount:
         return .none
+      case let .internalAction(.uploadImageData(twitterAccount, imageData)):
+        // TODO: アクセストークンが切り替わっていることがあるため成功失敗に関わらずTwitterAccountを置き換える
+        return .run(
+          operation: { send in
+            let media = try await twitterAPI.uploadMedia(twitterAccount.oauthToken, imageData)
+            await send(.internalAction(.post(twitterAccount, media)))
+          },
+          catch: { _, send in
+            // TODO: アラート
+          },
+        )
+      case let .internalAction(.post(twitterAccount, media)):
+        state.temporaryMedia = media
+        // FIXME: 投稿
+        // TODO: アクセストークンが切り替わっていることがあるため成功失敗に関わらずTwitterAccountを置き換える
+        return .none
       case .alert:
         return .none
       }
@@ -190,7 +226,7 @@ public struct TweetPage: View {
               store.send(.close)
             },
             postAction: {
-              store.send(.post)
+              store.send(.preparePost)
             },
           )
           .onAppear {
