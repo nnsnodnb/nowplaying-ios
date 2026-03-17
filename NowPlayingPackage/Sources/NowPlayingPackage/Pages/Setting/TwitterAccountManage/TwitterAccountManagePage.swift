@@ -30,6 +30,7 @@ public struct TwitterAccountManageFeature: Sendable {
   // MARK: - Action
   public enum Action {
     case onAppear
+    case preloadRewardedAds
     case fetchTwitterAccounts
     case checkExistTwitterAccounts
     case oauth
@@ -58,6 +59,10 @@ public struct TwitterAccountManageFeature: Sendable {
   }
 
   // MARK: - Dependency
+  @Dependency(\.adUnit.addTwitterAccountRewardAdUnitID)
+  private var adUnitID
+  @Dependency(\.rewardedAd)
+  private var rewardedAd
   @Dependency(\.secureKeyValueStore)
   private var secureKeyValueStore
   @Dependency(\.twitterAPI)
@@ -72,6 +77,13 @@ public struct TwitterAccountManageFeature: Sendable {
       case .onAppear:
         state.callbackURLScheme = twitterOAuth.getCallbackURLScheme()
         return .send(.fetchTwitterAccounts)
+      case .preloadRewardedAds:
+        return .run(
+          priority: .background,
+          operation: { send in
+            try await rewardedAd.load(adUnitID())
+          },
+        )
       case .fetchTwitterAccounts:
         return .run(
           operation: { send in
@@ -201,8 +213,19 @@ public struct TwitterAccountManageFeature: Sendable {
         )
         return .none
       case .alert(.presented(.openRewardedAd)):
-        // TODO: 広告表示
-        return .none
+        state.alert = nil
+        return .run(
+          operation: { send in
+            let result = try await rewardedAd.show(adUnitID())
+            if result > 0 {
+              await send(.oauth)
+            }
+            await send(.preloadRewardedAds)
+          },
+          catch: { _, send in
+            await send(.preloadRewardedAds)
+          },
+        )
       case .alert:
         return .none
       }
@@ -249,6 +272,9 @@ public struct TwitterAccountManagePage: View {
             store.send(.deleteTwitterAccount(indexSet))
           },
         )
+      }
+      .onAppear {
+        store.send(.preloadRewardedAds)
       }
     }
   }
