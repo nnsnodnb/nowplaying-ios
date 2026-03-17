@@ -1,5 +1,5 @@
 //
-//  SelectTweetAccountPage.swift
+//  SelectTwitterAccountPage.swift
 //  NowPlayingPackage
 //
 //  Created by Yuya Oka on 2026/03/17.
@@ -9,7 +9,7 @@ import ComposableArchitecture
 import SwiftUI
 
 @Reducer
-public struct SelectTweetAccountFeature: Sendable {
+public struct SelectTwitterAccountFeature: Sendable {
   // MARK: - State
   @ObservableState
   public struct State: Equatable {
@@ -56,9 +56,9 @@ public struct SelectTweetAccountFeature: Sendable {
   }
 }
 
-public struct SelectTweetAccountPage: View {
+public struct SelectTwitterAccountPage: View {
   // MARK: - Properties
-  public let store: StoreOf<SelectTweetAccountFeature>
+  public let store: StoreOf<SelectTwitterAccountFeature>
 
   // MARK: - Body
   public var body: some View {
@@ -121,11 +121,11 @@ private extension View {
   }
 }
 
-struct SelectTweetAccountPage_Previews: PreviewProvider {
+struct SelectTwitterAccountPage_Previews: PreviewProvider {
   static var previews: some View {
-    SelectTweetAccountPage(
+    SelectTwitterAccountPage(
       store: .init(
-        initialState: SelectTweetAccountFeature.State(
+        initialState: SelectTwitterAccountFeature.State(
           twitterAccounts: [],
           selectedTwitterAccount: TwitterAccount(
             oauthToken: .init(
@@ -145,7 +145,7 @@ struct SelectTweetAccountPage_Previews: PreviewProvider {
           )
         ),
         reducer: {
-          SelectTweetAccountFeature()
+          SelectTwitterAccountFeature()
         },
       ),
     )

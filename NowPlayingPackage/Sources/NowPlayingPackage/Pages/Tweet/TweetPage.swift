@@ -34,7 +34,7 @@ public struct TweetFeature: Sendable {
     public var attachImageType: TwitterSettingFeature.State.AttachImageType = .onlyArtwork
     @Shared(.appStorage("tweet_format"))
     public var postFormat = ""
-    @Presents public var selectTweetAccount: SelectTweetAccountFeature.State?
+    @Presents public var selectTwitterAccount: SelectTwitterAccountFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?
   }
 
@@ -49,7 +49,7 @@ public struct TweetFeature: Sendable {
     case addCapturedImage
     case removeAttachmentImage
     case showPreview(Bool)
-    case selectTweetAccount(PresentationAction<SelectTweetAccountFeature.Action>)
+    case selectTwitterAccount(PresentationAction<SelectTwitterAccountFeature.Action>)
     case alert(PresentationAction<Alert>)
 
     // MARK: - Alert
@@ -126,7 +126,7 @@ public struct TweetFeature: Sendable {
               let postableTwitterAccount = state.postableTwitterAccount else {
           return .none
         }
-        state.selectTweetAccount = .init(
+        state.selectTwitterAccount = .init(
           twitterAccounts: state.twitterAccounts,
           selectedTwitterAccount: postableTwitterAccount,
         )
@@ -152,17 +152,17 @@ public struct TweetFeature: Sendable {
       case let .showPreview(isShow):
         state.isShowPreview = isShow
         return .none
-      case let .selectTweetAccount(.presented(.delegate(.select(twitterAccount)))):
+      case let .selectTwitterAccount(.presented(.delegate(.select(twitterAccount)))):
         state.postableTwitterAccount = twitterAccount
         return .none
-      case .selectTweetAccount:
+      case .selectTwitterAccount:
         return .none
       case .alert:
         return .none
       }
     }
-    .ifLet(\.$selectTweetAccount, action: \.selectTweetAccount) {
-      SelectTweetAccountFeature()
+    .ifLet(\.$selectTwitterAccount, action: \.selectTwitterAccount) {
+      SelectTwitterAccountFeature()
     }
     .ifLet(\.$alert, action: \.alert)
   }
@@ -199,11 +199,8 @@ public struct TweetPage: View {
           }
           .interactiveDismissDisabled(store.isEditing)
           .alert($store.scope(state: \.alert, action: \.alert))
-          .sheet(item: $store.scope(state: \.selectTweetAccount, action: \.selectTweetAccount)) { store in
-            SelectTweetAccountPage(store: store)
-              .presentationDetents([.medium, .large])
-              .presentationBackgroundInteraction(.disabled)
-              .presentationBackground(.background)
+          .sheet(item: $store.scope(state: \.selectTwitterAccount, action: \.selectTwitterAccount)) { store in
+            selectTwitterAccountPage(store: store)
           }
           .fullScreenCover(isPresented: $store.isShowPreview.sending(\.showPreview)) {
             imageViewer
@@ -348,6 +345,13 @@ public struct TweetPage: View {
       },
     )
     .frame(width: 54, height: 54)
+  }
+
+  private func selectTwitterAccountPage(store: StoreOf<SelectTwitterAccountFeature>) -> some View {
+    SelectTwitterAccountPage(store: store)
+      .presentationDetents([.medium, .large])
+      .presentationBackgroundInteraction(.disabled)
+      .presentationBackground(.background)
   }
 
   private var imageViewer: some View {

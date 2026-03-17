@@ -1,5 +1,5 @@
 //
-//  TestSelectTweetAccountFeatureClose.swift
+//  TestSelectTwitterAccountFeatureSelect.swift
 //  NowPlayingPackage
 //
 //  Created by Yuya Oka on 2026/03/17.
@@ -11,21 +11,22 @@ import StubKit
 import Testing
 
 @MainActor
-struct TestSelectTweetAccountFeatureClose {
+struct TestSelectTwitterAccountFeatureSelect {
   @Test
   func testIt() async throws {
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
     let store = TestStore(
-      initialState: SelectTweetAccountFeature.State(
+      initialState: SelectTwitterAccountFeature.State(
         twitterAccounts: [twitterAccount],
         selectedTwitterAccount: twitterAccount,
       ),
       reducer: {
-        SelectTweetAccountFeature()
+        SelectTwitterAccountFeature()
       },
     )
 
-    await store.send(.close)
+    await store.send(.select(twitterAccount))
+    await store.receive(\.delegate.select, twitterAccount)
   }
 }
