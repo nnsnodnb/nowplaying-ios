@@ -223,10 +223,10 @@ public struct TwitterAccountManageFeature: Sendable {
           },
         )
       case .alert:
-        state.alert = nil
         return .none
       }
     }
+    .ifLet(\.$alert, action: \.alert)
   }
 }
 
