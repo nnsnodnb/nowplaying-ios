@@ -30,7 +30,9 @@ public struct TwitterAccountManageFeature: Sendable {
   // MARK: - Action
   public enum Action {
     case onAppear
+    case preloadRewardedAds
     case fetchTwitterAccounts
+    case showAlertForWatchingAds
     case oauth
     case changeDefaultAccount(TwitterAccount)
     case deleteTwitterAccount(IndexSet)
@@ -52,10 +54,15 @@ public struct TwitterAccountManageFeature: Sendable {
     // MARK: - Alert
     @CasePathable
     public enum Alert: Equatable {
+      case openRewardedAd
     }
   }
 
   // MARK: - Dependency
+  @Dependency(\.adUnit.addTwitterAccountRewardAdUnitID)
+  private var adUnitID
+  @Dependency(\.rewardedAd)
+  private var rewardedAd
   @Dependency(\.secureKeyValueStore)
   private var secureKeyValueStore
   @Dependency(\.twitterAPI)
@@ -70,6 +77,13 @@ public struct TwitterAccountManageFeature: Sendable {
       case .onAppear:
         state.callbackURLScheme = twitterOAuth.getCallbackURLScheme()
         return .send(.fetchTwitterAccounts)
+      case .preloadRewardedAds:
+        return .run(
+          priority: .background,
+          operation: { _ in
+            try await rewardedAd.load(adUnitID())
+          },
+        )
       case .fetchTwitterAccounts:
         return .run(
           operation: { send in
@@ -77,6 +91,30 @@ public struct TwitterAccountManageFeature: Sendable {
             await send(.internalAction(.fetchedTwitterAccounts(accounts)))
           },
         )
+      case .showAlertForWatchingAds:
+        state.alert = AlertState(
+          title: {
+            TextState("アカウントを追加するには広告の視聴が必要です。")
+          },
+          actions: {
+            ButtonState(
+              role: .cancel,
+              label: {
+                TextState("キャンセル")
+              },
+            )
+            ButtonState(
+              action: .openRewardedAd,
+              label: {
+                TextState("視聴する")
+              },
+            )
+          },
+          message: {
+            TextState("ユーザー情報を取得するためにコストが発生するためご協力お願いします。")
+          },
+        )
+        return .none
       case .oauth:
         guard let (oauthURL, codeVerifier) = try? twitterOAuth.getAuthenticateURL() else { return .none }
         state.oauthURL = oauthURL
@@ -104,7 +142,7 @@ public struct TwitterAccountManageFeature: Sendable {
       case let .authenticateSuccess(url):
         guard let codeVerifier = state.codeVerifier else { return .none }
         guard let code = try? twitterOAuth.validateCallbackURL(url, codeVerifier) else {
-        return .send(.internalAction(.oauthFailure("無効な操作が行われました")))
+          return .send(.internalAction(.oauthFailure("無効な操作が行われました")))
         }
         state.isLoading = true
         state.codeVerifier = nil
@@ -170,6 +208,20 @@ public struct TwitterAccountManageFeature: Sendable {
           },
         )
         return .none
+      case .alert(.presented(.openRewardedAd)):
+        state.alert = nil
+        return .run(
+          operation: { send in
+            let result = try await rewardedAd.show(adUnitID())
+            if result > 0 {
+              await send(.oauth)
+            }
+            await send(.preloadRewardedAds)
+          },
+          catch: { _, send in
+            await send(.preloadRewardedAds)
+          },
+        )
       case .alert:
         state.alert = nil
         return .none
@@ -188,10 +240,11 @@ public struct TwitterAccountManagePage: View {
       .navigationTitle("Xアカウント管理")
       .toolbar(
         addAction: {
-          store.send(.oauth)
+          store.send(.showAlertForWatchingAds)
         },
       )
       .onAppear {
+        store.send(.preloadRewardedAds)
         store.send(.onAppear)
       }
       .webAuthenticationSession(

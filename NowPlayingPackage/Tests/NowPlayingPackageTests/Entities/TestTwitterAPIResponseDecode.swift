@@ -12,7 +12,7 @@ import Testing
 struct TestTwitterAPIResponseDecode {
   @Test
   func testIt() throws {
-    let profileImageURLString = "tps://pbs.twimg.com/profile_images/1593438620769488897/3kV4Mtvq_normal.jpg"
+    let profileImageURLString = "https://pbs.twimg.com/profile_images/1593438620769488897/3kV4Mtvq_normal.jpg"
     let jsonObject = [
       "data": [
         "id": "1137201750",
@@ -29,6 +29,7 @@ struct TestTwitterAPIResponseDecode {
     #expect(response.data.id == "1137201750")
     #expect(response.data.name == "小泉ひやかし🌻")
     #expect(response.data.username == "nnsnodnb")
-    #expect(response.data.profileImageURL == URL(string: profileImageURLString))
+    let expectedProfileImageURLString = "https://pbs.twimg.com/profile_images/1593438620769488897/3kV4Mtvq.jpg"
+    #expect(response.data.profileImageURL == URL(string: expectedProfileImageURLString))
   }
 }
