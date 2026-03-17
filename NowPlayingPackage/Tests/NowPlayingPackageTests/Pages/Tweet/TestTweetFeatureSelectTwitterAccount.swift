@@ -1,8 +1,8 @@
 //
-//  TestTweetFeatureShowSelectTwitterAccount.swift
+//  TestTweetFeatureSelectTwitterAccount.swift
 //  NowPlayingPackage
 //
-//  Created by Yuya Oka on 2026/03/13.
+//  Created by Yuya Oka on 2026/03/17.
 //
 
 import ComposableArchitecture
@@ -11,31 +11,9 @@ import StubKit
 import Testing
 
 @MainActor
-struct TestTweetFeatureShowSelectTwitterAccount {
+struct TestTweetFeatureSelectTwitterAccount {
   @Test
-  func testTwitterAccountIsOne() async throws {
-    let twitterAccount = try Stub.make(TwitterAccount.self)
-
-    let store = TestStore(
-      initialState: TweetFeature.State(
-        twitterAccounts: [twitterAccount],
-        title: "曲名",
-        artist: "アーティスト名",
-        album: nil,
-        artwork: nil,
-        capturedImage: .init(systemSymbol: .photo),
-        postableTwitterAccount: twitterAccount,
-      ),
-      reducer: {
-        TweetFeature()
-      },
-    )
-
-    await store.send(.showSelectTwitterAccount)
-  }
-
-  @Test
-  func testTwitterAccountIsTwo() async throws {
+  func testPresentedDelegateSelect() async throws {
     let twitterProfileA = try Stub.make(TwitterProfile.self) {
       $0.set(\.id, value: .init("stub_id_a"))
     }
@@ -56,20 +34,24 @@ struct TestTweetFeatureShowSelectTwitterAccount {
         title: "曲名",
         artist: "アーティスト名",
         album: nil,
-        artwork: nil,
+        artwork: .init(systemSymbol: .photoFill),
         capturedImage: .init(systemSymbol: .photo),
         postableTwitterAccount: twitterAccountA,
+        selectTwitterAccount: .init(
+          twitterAccounts: [twitterAccountA, twitterAccountB],
+          selectedTwitterAccount: twitterAccountA,
+        )
       ),
       reducer: {
         TweetFeature()
       },
     )
 
-    await store.send(.showSelectTwitterAccount) {
-      $0.selectTwitterAccount = .init(
-        twitterAccounts: [twitterAccountA, twitterAccountB],
-        selectedTwitterAccount: twitterAccountA,
-      )
+    await store.send(.selectTwitterAccount(.presented(.delegate(.select(twitterAccountB))))) {
+      $0.postableTwitterAccount = twitterAccountB
+    }
+    await store.receive(\.selectTwitterAccount.dismiss) {
+      $0.selectTwitterAccount = nil
     }
   }
 }
