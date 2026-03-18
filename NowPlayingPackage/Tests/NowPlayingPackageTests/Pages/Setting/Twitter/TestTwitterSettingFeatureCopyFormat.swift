@@ -12,13 +12,9 @@ import Testing
 @MainActor
 struct TestTwitterSettingFeatureCopyFormat {
   @Test(
-    arguments: [
-      TwitterSettingFeature.Action.CopyFormatType.songTitle,
-      TwitterSettingFeature.Action.CopyFormatType.artist,
-      TwitterSettingFeature.Action.CopyFormatType.album,
-    ]
+    arguments: [CopyFormatType.songTitle, CopyFormatType.artist, CopyFormatType.album]
   )
-  func testIt(copyFormatType: TwitterSettingFeature.Action.CopyFormatType) async throws {
+  func testIt(copyFormatType: CopyFormatType) async throws {
     await withDependencies {
       $0.pasteboard.setString = {
         #expect($0 == copyFormatType.rawValue)

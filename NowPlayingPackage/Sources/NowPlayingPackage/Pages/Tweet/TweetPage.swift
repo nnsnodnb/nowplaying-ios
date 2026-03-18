@@ -34,7 +34,7 @@ public struct TweetFeature: Sendable {
     @Shared(.appStorage("is_twitter_attach_image"))
     public var isAttachImage = true
     @Shared(.appStorage("tweet_with_image_type"))
-    public var attachImageType: TwitterSettingFeature.State.AttachImageType = .onlyArtwork
+    public var attachImageType: AttachImageType = .onlyArtwork
     @Shared(.appStorage("tweet_format"))
     public var postFormat = ""
     @Presents public var selectTwitterAccount: SelectTwitterAccountFeature.State?

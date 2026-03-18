@@ -13,44 +13,19 @@ public struct BlueskySettingFeature: Sendable {
   // MARK: - State
   @ObservableState
   public struct State: Equatable {
-    // MARK: - AttachImageType
-    public enum AttachImageType: String, CaseIterable, Sendable {
-      case onlyArtwork
-      case screenShot
+    // MARK: - Properties
+    fileprivate static let defaultPostFormat = "__songtitle__ / __artist__ #NowPlaying"
 
-      // MARK: - Properties
-      public var displayName: String {
-        switch self {
-        case .onlyArtwork:
-          "アートワークのみ"
-        case .screenShot:
-          "再生画面のスクリーンショット"
-        }
-      }
-    }
+    @Shared(.appStorage("is_mastodon_with_image"))
+    public var isAttachImage = true
+    @Shared(.appStorage("toot_with_image_type"))
+    public var attachImageType: AttachImageType = .onlyArtwork
+    @Shared(.appStorage("toot_format"))
+    public var postFormat = Self.defaultPostFormat
   }
 
   // MARK: - Action
   public enum Action {
-    // MARK: - CopyFormatType
-    @CasePathable
-    public enum CopyFormatType: String, CaseIterable, CustomStringConvertible, Sendable {
-      case songTitle = "__songtitle__"
-      case artist = "__artist__"
-      case album = "__album__"
-
-      // MARK: - Properties
-      public var description: String {
-        switch self {
-        case .songTitle:
-          "曲名"
-        case .artist:
-          "歌手名"
-        case .album:
-          "アルバム名"
-        }
-      }
-    }
   }
 
   // MARK: - Body
@@ -112,9 +87,9 @@ public struct BlueskySettingPage: View {
       )
       PickerAttachedMediaSourceRow(
         // TODO: selection: $store.attachImageType.sending(\.changedAttachImageType),
-        selection: .constant(BlueskySettingFeature.State.AttachImageType.onlyArtwork),
+        selection: .constant(AttachImageType.onlyArtwork),
         content: {
-          ForEach(BlueskySettingFeature.State.AttachImageType.allCases, id: \.self) { attachImageType in
+          ForEach(AttachImageType.allCases, id: \.self) { attachImageType in
             Text(attachImageType.displayName)
               .tag(attachImageType)
           }
@@ -159,7 +134,7 @@ public struct BlueskySettingPage: View {
   private var copyFormatFooter: some View {
     HStack(alignment: .center, spacing: 12) {
       VStack(alignment: .center, spacing: 8) {
-        ForEach(TwitterSettingFeature.Action.CopyFormatType.allCases, id: \.self) { copyFormatType in
+        ForEach(CopyFormatType.allCases, id: \.self) { copyFormatType in
           Button(
             action: {
               // TODO: store.send(.copyFormat(copyFormatType))
@@ -174,7 +149,7 @@ public struct BlueskySettingPage: View {
         }
       }
       VStack(alignment: .leading, spacing: 8) {
-        ForEach(BlueskySettingFeature.Action.CopyFormatType.allCases, id: \.self) { copyFormatType in
+        ForEach(CopyFormatType.allCases, id: \.self) { copyFormatType in
           Text(verbatim: copyFormatType.description)
             .font(.system(size: 16))
         }

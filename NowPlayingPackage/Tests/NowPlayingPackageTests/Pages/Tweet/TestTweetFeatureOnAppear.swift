@@ -13,12 +13,9 @@ import Testing
 @MainActor
 struct TestTweetFeatureOnAppear {
   @Test(
-    arguments: [
-      TwitterSettingFeature.State.AttachImageType.onlyArtwork,
-      TwitterSettingFeature.State.AttachImageType.screenShot,
-    ]
+    arguments: [AttachImageType.onlyArtwork, AttachImageType.screenShot]
   )
-  func testIsAttachImage(attachImageType: TwitterSettingFeature.State.AttachImageType) async throws {
+  func testIsAttachImage(attachImageType: AttachImageType) async throws {
     try await withDependencies {
       $0.defaultAppStorage = .inMemory
     } operation: {

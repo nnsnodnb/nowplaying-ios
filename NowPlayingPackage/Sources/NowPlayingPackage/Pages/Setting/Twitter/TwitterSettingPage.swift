@@ -22,29 +22,13 @@ public struct TwitterSettingFeature: Sendable {
     public var attachImageType: AttachImageType = .onlyArtwork
     @Shared(.appStorage("tweet_format"))
     public var postFormat = Self.defaultPostFormat
-
-    // MARK: - AttachImageType
-    public enum AttachImageType: String, CaseIterable, Sendable {
-      case onlyArtwork
-      case screenShot
-
-      // MARK: - Properties
-      public var displayName: String {
-        switch self {
-        case .onlyArtwork:
-          "アートワークのみ"
-        case .screenShot:
-          "再生画面のスクリーンショット"
-        }
-      }
-    }
   }
 
   // MARK: - Action
   public enum Action {
     case pushTwitterAccountManage
     case changedIsAttachImage(Bool)
-    case changedAttachImageType(State.AttachImageType)
+    case changedAttachImageType(AttachImageType)
     case changedPostFormat(String)
     case resetFormat
     case copyFormat(CopyFormatType)
@@ -54,26 +38,6 @@ public struct TwitterSettingFeature: Sendable {
     @CasePathable
     public enum Delegate {
       case pushTwitterAccountManage
-    }
-
-    // MARK: - CopyFormatType
-    @CasePathable
-    public enum CopyFormatType: String, CaseIterable, CustomStringConvertible, Sendable {
-      case songTitle = "__songtitle__"
-      case artist = "__artist__"
-      case album = "__album__"
-
-      // MARK: - Properties
-      public var description: String {
-        switch self {
-        case .songTitle:
-          "曲名"
-        case .artist:
-          "歌手名"
-        case .album:
-          "アルバム名"
-        }
-      }
     }
   }
 
@@ -164,7 +128,7 @@ public struct TwitterSettingPage: View {
       PickerAttachedMediaSourceRow(
         selection: $store.attachImageType.sending(\.changedAttachImageType),
         content: {
-          ForEach(TwitterSettingFeature.State.AttachImageType.allCases, id: \.self) { attachImageType in
+          ForEach(AttachImageType.allCases, id: \.self) { attachImageType in
             Text(attachImageType.displayName)
               .tag(attachImageType)
           }
@@ -208,7 +172,7 @@ public struct TwitterSettingPage: View {
   private var copyFormatFooter: some View {
     HStack(alignment: .center, spacing: 12) {
       VStack(alignment: .center, spacing: 8) {
-        ForEach(TwitterSettingFeature.Action.CopyFormatType.allCases, id: \.self) { copyFormatType in
+        ForEach(CopyFormatType.allCases, id: \.self) { copyFormatType in
           Button(
             action: {
               store.send(.copyFormat(copyFormatType))
@@ -223,7 +187,7 @@ public struct TwitterSettingPage: View {
         }
       }
       VStack(alignment: .leading, spacing: 8) {
-        ForEach(TwitterSettingFeature.Action.CopyFormatType.allCases, id: \.self) { copyFormatType in
+        ForEach(CopyFormatType.allCases, id: \.self) { copyFormatType in
           Text(verbatim: copyFormatType.description)
             .font(.system(size: 16))
         }
