@@ -16,7 +16,7 @@ public struct SettingFeature: Sendable {
   public enum Path {
     case twitterSetting(TwitterSettingFeature)
     case twitterAccountManage(TwitterAccountManageFeature)
-    case blueskySetting(BlueSkySettingFeature)
+    case blueskySetting(BlueskySettingFeature)
     case paidContent(PaidContentFeature)
     case licenseList(LicenseListFeature)
   }
@@ -155,7 +155,7 @@ public struct SettingPage: View {
         case let .twitterAccountManage(store):
           TwitterAccountManagePage(store: store)
         case let .blueskySetting(store):
-          BlueSkySettingPage(store: store)
+          BlueskySettingPage(store: store)
         case let.paidContent(store):
           PaidContentPage(store: store)
         case let .licenseList(store):

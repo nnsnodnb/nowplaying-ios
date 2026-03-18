@@ -1,5 +1,5 @@
 //
-//  BlueSkySettingPage.swift
+//  BlueskySettingPage.swift
 //  NowPlayingPackage
 //
 //  Created by Yuya Oka on 2026/03/06.
@@ -9,7 +9,7 @@ import ComposableArchitecture
 import SwiftUI
 
 @Reducer
-public struct BlueSkySettingFeature: Sendable {
+public struct BlueskySettingFeature: Sendable {
   // MARK: - State
   @ObservableState
   public struct State: Equatable {
@@ -25,9 +25,9 @@ public struct BlueSkySettingFeature: Sendable {
   }
 }
 
-public struct BlueSkySettingPage: View {
+public struct BlueskySettingPage: View {
   // MARK: - Properties
-  public let store: StoreOf<BlueSkySettingFeature>
+  public let store: StoreOf<BlueskySettingFeature>
 
   // MARK: - Body
   public var body: some View {
@@ -37,11 +37,11 @@ public struct BlueSkySettingPage: View {
 }
 
 #Preview {
-  BlueSkySettingPage(
+  BlueskySettingPage(
     store: .init(
-      initialState: BlueSkySettingFeature.State(),
+      initialState: BlueskySettingFeature.State(),
       reducer: {
-        BlueSkySettingFeature()
+        BlueskySettingFeature()
       },
     )
   )
