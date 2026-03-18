@@ -318,6 +318,13 @@ public struct TweetPage: View {
             }
           }
           .progress(store.isLoading)
+          .onChange(of: store.showSuccess, initial: false) { _, newValue in
+            if newValue {
+              SVProgressHUD.showSuccess(withStatus: "ポストしました")
+            } else {
+              SVProgressHUD.dismiss()
+            }
+          }
       },
     )
   }
