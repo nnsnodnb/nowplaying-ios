@@ -11,7 +11,7 @@ import Foundation
 
 @DependencyClient
 public struct TwitterAPIClient: Sendable {
-  public var getUserMe: @Sendable (TwitterOAuthToken) async throws -> TwitterProfile
+  public var getUserMe: @Sendable (TwitterOAuthToken.AccessToken) async throws -> TwitterProfile
   public var uploadMedia: @Sendable (TwitterOAuthToken.AccessToken, Data) async throws -> TwitterMedia
   public var post: @Sendable (TwitterOAuthToken.AccessToken, TwitterMedia?, String) async throws -> Void
 
@@ -24,11 +24,7 @@ public struct TwitterAPIClient: Sendable {
 // MARK: - DependencyKey
 extension TwitterAPIClient: DependencyKey {
   public static let liveValue: Self = .init(
-    getUserMe: { oauthToken in
-      @Dependency(\.twitterOAuth)
-      var twitterOAuth
-      let accessToken = try await twitterOAuth.getAccessToken(oauthToken)
-
+    getUserMe: { accessToken in
       var urlComponents = URLComponents(string: "https://api.x.com")!
       urlComponents.path = "/2/users/me"
       urlComponents.queryItems = [
