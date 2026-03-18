@@ -297,6 +297,7 @@ public struct TweetPage: View {
             },
             postAction: {
               store.send(.preparePost)
+              isFocused = false
             },
           )
           .onAppear {
