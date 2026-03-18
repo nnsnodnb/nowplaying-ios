@@ -17,4 +17,8 @@ public extension Data {
 
     return urlSafe
   }
+
+  mutating func append(_ string: String) {
+    append(Data(string.utf8))
+  }
 }

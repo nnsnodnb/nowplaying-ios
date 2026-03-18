@@ -20,6 +20,7 @@ struct TestTwitterAccountManageFeatureInternalAction {
 
     await withDependencies {
       $0.twitterOAuth.requestAccessToken = { _, _ in twitterAccount.oauthToken }
+      $0.twitterOAuth.getAccessToken = { _ in .init("stub_access_token") }
       $0.twitterAPI.getUserMe = { _ in twitterAccount.profile }
       $0.secureKeyValueStore.addTwitterAccount = { _ in }
       $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }

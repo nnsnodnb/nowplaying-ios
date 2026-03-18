@@ -172,7 +172,8 @@ public struct TwitterAccountManageFeature: Sendable {
         return .run(
           priority: .high,
           operation: { send in
-            let profile = try await twitterAPI.getUserMe(oauthToken)
+            let accessToken = try await twitterOAuth.getAccessToken(oauthToken)
+            let profile = try await twitterAPI.getUserMe(accessToken)
             let twitterAccount = TwitterAccount(oauthToken: oauthToken, profile: profile)
             try await secureKeyValueStore.addTwitterAccount(twitterAccount)
             await send(.internalAction(.savedTwitterAccount(twitterAccount.profile)))

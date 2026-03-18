@@ -12,7 +12,7 @@ import SwiftUI
 public struct SelectTwitterAccountFeature: Sendable {
   // MARK: - State
   @ObservableState
-  public struct State: Equatable {
+  public struct State: Equatable, Sendable {
     public let twitterAccounts: [TwitterAccount]
     public let selectedTwitterAccount: TwitterAccount
   }

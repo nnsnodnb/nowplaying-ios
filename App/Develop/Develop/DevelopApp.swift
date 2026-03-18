@@ -36,6 +36,17 @@ struct DevelopApp: App {
                 )
                 // swiftlint:enable line_length
               }
+              // MEMO: 普段はこれを有効にしておく
+              $0.twitterAPI.uploadMedia = { _, _ in
+                TwitterMedia(
+                  id: .init("2034250625912016896"),
+                  expiresAfterSecs: 86_400,
+                  expiresAt: Date.now.addingTimeInterval(86_400),
+                )
+              }
+              $0.twitterAPI.post = { _, _, _ in
+                try await Task.sleep(for: .milliseconds(500))
+              }
             }
           ),
         )

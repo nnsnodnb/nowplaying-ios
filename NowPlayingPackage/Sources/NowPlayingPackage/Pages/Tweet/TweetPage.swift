@@ -15,8 +15,8 @@ import SwiftUI
 public struct TweetFeature: Sendable {
   // MARK: - State
   @ObservableState
-  public struct State: Equatable {
-    public let twitterAccounts: [TwitterAccount]
+  public struct State: Equatable, Sendable {
+    public var twitterAccounts: [TwitterAccount]
     public let title: String
     public let artist: String
     public let album: String?
@@ -25,9 +25,12 @@ public struct TweetFeature: Sendable {
     public var attachmentImage: UIImage?
     public var postableTwitterAccount: TwitterAccount?
     public var text = ""
+    public var temporaryMedia: TwitterMedia?
     public var isEditing = false
     public var isDisablePostButton = false
     public var isShowPreview = false
+    public var isLoading = false
+    public var showSuccess = false
     @Shared(.appStorage("is_twitter_attach_image"))
     public var isAttachImage = true
     @Shared(.appStorage("tweet_with_image_type"))
@@ -42,7 +45,7 @@ public struct TweetFeature: Sendable {
   public enum Action {
     case onAppear
     case close
-    case post
+    case preparePost
     case changedText(String)
     case showSelectTwitterAccount
     case addArtwork
@@ -50,17 +53,39 @@ public struct TweetFeature: Sendable {
     case removeAttachmentImage
     case showPreview(Bool)
     case selectTwitterAccount(PresentationAction<SelectTwitterAccountFeature.Action>)
+    case internalAction(InternalAction)
     case alert(PresentationAction<Alert>)
+
+    // MARK: - InternalAction
+    @CasePathable
+    public enum InternalAction {
+      case uploadImageData(TwitterOAuthToken.AccessToken, Data)
+      case post(TwitterOAuthToken.AccessToken, TwitterMedia?)
+      case posted
+      case postFailure(String)
+      case fetchTwitterAccounts
+      case refreshTwitterAccounts([TwitterAccount], TwitterAccount?)
+      case dismiss
+    }
 
     // MARK: - Alert
     @CasePathable
-    public enum Alert: Equatable {
+    public enum Alert: Equatable, Sendable {
       case delete
+      case close
     }
   }
 
   @Dependency(\.dismiss)
   private var dismiss
+  @Dependency(\.mainQueue)
+  private var mainQueue
+  @Dependency(\.secureKeyValueStore)
+  private var secureKeyValueStore
+  @Dependency(\.twitterAPI)
+  private var twitterAPI
+  @Dependency(\.twitterOAuth)
+  private var twitterOAuth
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
@@ -109,10 +134,28 @@ public struct TweetFeature: Sendable {
             await dismiss()
           },
         )
-      case .post:
-        guard !state.isDisablePostButton else { return .none }
-        // TODO: 投稿
-        return .none
+      case .preparePost:
+        guard !state.isDisablePostButton,
+              let twitterAccount = state.postableTwitterAccount else { return .none }
+        state.isLoading = true
+        return .run(
+          operation: { [state] send in
+            let accessToken = try await twitterOAuth.getAccessToken(twitterAccount.oauthToken)
+            // 有効期限内のメディアであればそのまま使用する
+            if let media = state.temporaryMedia,
+               !media.isExpired {
+              await send(.internalAction(.post(accessToken, media)))
+            } else if let attachmentImage = state.attachmentImage,
+                      let imageData = attachmentImage.jpegData(compressionQuality: 0.3) {
+              await send(.internalAction(.uploadImageData(accessToken, imageData)))
+            } else {
+              await send(.internalAction(.post(accessToken, nil)))
+            }
+          },
+          catch: { _, send in
+            await send(.internalAction(.postFailure("認証情報の取得に失敗しました")))
+          },
+        )
       case let .changedText(text):
         state.text = text
         state.isEditing = true
@@ -142,6 +185,7 @@ public struct TweetFeature: Sendable {
         return .none
       case .removeAttachmentImage:
         state.attachmentImage = nil
+        state.temporaryMedia = nil
         return .none
       case .alert(.presented(.delete)):
         return .run(
@@ -157,6 +201,68 @@ public struct TweetFeature: Sendable {
         return .none
       case .selectTwitterAccount:
         return .none
+      case let .internalAction(.uploadImageData(accessToken, imageData)):
+        return .run(
+          operation: { send in
+            let media = try await twitterAPI.uploadMedia(accessToken, imageData)
+            await send(.internalAction(.post(accessToken, media)))
+          },
+          catch: { _, send in
+            await send(.internalAction(.postFailure("画像のアップロードに失敗しました")))
+          },
+        )
+      case let .internalAction(.post(accessToken, media)):
+        state.temporaryMedia = media
+        return .run(
+          operation: { [text = state.text] send in
+            try await twitterAPI.post(accessToken, media?.id, text)
+            await send(.internalAction(.posted))
+          },
+          catch: { _, send in
+            await send(.internalAction(.postFailure("ポストに失敗しました")))
+          },
+        )
+      case .internalAction(.posted):
+        state.isLoading = false
+        state.showSuccess = true
+        return .run(
+          operation: { send in
+            try await mainQueue.sleep(for: .milliseconds(500))
+            await send(.internalAction(.dismiss))
+          },
+        )
+      case let .internalAction(.postFailure(title)):
+        state.isLoading = false
+        state.alert = AlertState(
+          title: {
+            TextState(title)
+          },
+          actions: {
+            ButtonState(
+              action: .close,
+              label: {
+                TextState("閉じる")
+              },
+            )
+          },
+        )
+        return .send(.internalAction(.fetchTwitterAccounts))
+      case .internalAction(.fetchTwitterAccounts):
+        guard let postableTwitterAccount = state.postableTwitterAccount else { return .none }
+        return .run(
+          operation: { send in
+            let twitterAccounts = try await secureKeyValueStore.twitterAccounts()
+            let postableTwitterAccount = twitterAccounts.first(where: { $0.profile.id == postableTwitterAccount.profile.id })
+            await send(.internalAction(.refreshTwitterAccounts(twitterAccounts, postableTwitterAccount)))
+          },
+        )
+      case let .internalAction(.refreshTwitterAccounts(twitterAccounts, postableTwitterAccount)):
+        state.twitterAccounts = twitterAccounts
+        state.postableTwitterAccount = postableTwitterAccount
+        return .none
+      case .internalAction(.dismiss):
+        state.showSuccess = false
+        return .send(.close)
       case .alert:
         return .none
       }
@@ -190,7 +296,8 @@ public struct TweetPage: View {
               store.send(.close)
             },
             postAction: {
-              store.send(.post)
+              store.send(.preparePost)
+              isFocused = false
             },
           )
           .onAppear {
@@ -208,6 +315,14 @@ public struct TweetPage: View {
           .onChange(of: store.isShowPreview, initial: false) { oldValue, newValue in
             if oldValue && !newValue {
               isFocused = true
+            }
+          }
+          .progress(store.isLoading)
+          .onChange(of: store.showSuccess, initial: false) { _, newValue in
+            if newValue {
+              SVProgressHUD.showSuccess(withStatus: "ポストしました")
+            } else {
+              SVProgressHUD.dismiss()
             }
           }
       },
