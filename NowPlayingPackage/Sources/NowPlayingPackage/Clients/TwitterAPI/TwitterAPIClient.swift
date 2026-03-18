@@ -13,7 +13,7 @@ import Foundation
 public struct TwitterAPIClient: Sendable {
   public var getUserMe: @Sendable (TwitterOAuthToken.AccessToken) async throws -> TwitterProfile
   public var uploadMedia: @Sendable (TwitterOAuthToken.AccessToken, Data) async throws -> TwitterMedia
-  public var post: @Sendable (TwitterOAuthToken.AccessToken, TwitterMedia?, String) async throws -> Void
+  public var post: @Sendable (TwitterOAuthToken.AccessToken, TwitterMedia.ID?, String) async throws -> Void
 
   // MARK: - Error
   public enum Error: Swift.Error {
@@ -82,7 +82,7 @@ extension TwitterAPIClient: DependencyKey {
 
       return object.data
     },
-    post: { accessToken, media, text in
+    post: { accessToken, mediaID, text in
       let url = URL(string: "https://api.x.com/2/tweets")!
       var urlRequest = URLRequest(url: url)
       urlRequest.httpMethod = "POST"
@@ -90,9 +90,9 @@ extension TwitterAPIClient: DependencyKey {
       var jsonObject: [String: Any] = [
         "text": text,
       ]
-      if let media {
+      if let mediaID {
         jsonObject["media"] = [
-          "media_ids": [media.id.rawValue],
+          "media_ids": [mediaID.rawValue],
         ]
       }
       let httpBody = try JSONSerialization.data(withJSONObject: jsonObject, options: .init())

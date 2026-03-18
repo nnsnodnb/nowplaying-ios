@@ -215,7 +215,7 @@ public struct TweetFeature: Sendable {
         state.temporaryMedia = media
         return .run(
           operation: { [text = state.text] send in
-            try await twitterAPI.post(accessToken, media, text)
+            try await twitterAPI.post(accessToken, media?.id, text)
             await send(.internalAction(.posted))
           },
           catch: { _, send in
