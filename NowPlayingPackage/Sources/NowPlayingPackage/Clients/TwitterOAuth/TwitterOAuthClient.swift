@@ -27,7 +27,7 @@ public struct TwitterOAuthClient: Sendable {
   public var getAuthenticateURL: @Sendable () throws -> (URL, CodeVerifier)
   public var validateCallbackURL: @Sendable (URL, CodeVerifier) throws -> AuthorizationCode
   public var requestAccessToken: @Sendable (CodeVerifier, AuthorizationCode) async throws -> TwitterOAuthToken
-  public var refreshAccessToken: @Sendable (TwitterOAuthToken.RefreshToken) async throws -> TwitterOAuthToken
+  public var getAccessToken: @Sendable (TwitterOAuthToken) async throws -> TwitterOAuthToken.AccessToken
 
   fileprivate static let _callbackURLScheme = "nowplaying-ss5dnc-el0eskszufn3qactsets"
   fileprivate static let _clientID = "cFkwa24zTlhGck1KUkViZENOUHc6MTpjaQ"
@@ -108,48 +108,58 @@ extension TwitterOAuthClient: DependencyKey {
 
       return oauthToken
     },
-    refreshAccessToken: { refreshToken in
-      var urlComponents = URLComponents(string: "https://api.x.com")!
-      urlComponents.path = "/2/oauth2/token"
-      guard let url = urlComponents.url else {
-        throw Error.invalidCallbackURL
+    getAccessToken: { oauthToken in
+      let accessToken: TwitterOAuthToken.AccessToken
+      if oauthToken.isExpired {
+        let oauthToken = try await Self.refreshAccessToken(oauthToken.refreshToken)
+        return oauthToken.accessToken
+      } else {
+        return oauthToken.accessToken
       }
-      var urlRequest = URLRequest(url: url)
-      urlRequest.httpMethod = "POST"
-      urlRequest.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-      let params: [String: String] = [
-        "grant_type": "refresh_token",
-        "client_id": Self._clientID,
-        "refresh_token": refreshToken.rawValue,
-      ]
-      var paramURLComponents = URLComponents()
-      paramURLComponents.queryItems = params.map { .init(name: $0, value: $1) }
-      urlRequest.httpBody = paramURLComponents.percentEncodedQuery?.data(using: .utf8)
-      let (data, response) = try await URLSession.shared.data(for: urlRequest)
-      guard let urlResponse = response as? HTTPURLResponse, urlResponse.statusCode == 200 else {
-        throw Error.internalError
-      }
-      let jsonDecoder = JSONDecoder()
-      let oauthToken = try jsonDecoder.decode(TwitterOAuthToken.self, from: data)
-
-      // oauthTokenの置き換え
-      @Dependency(\.secureKeyValueStore)
-      var secureKeyValueStore
-
-      var twitterAccounts = try await secureKeyValueStore.twitterAccounts()
-      if let index = twitterAccounts.firstIndex(where: { $0.oauthToken.refreshToken == refreshToken }),
-         let twitterAccount = twitterAccounts[safe: index] {
-        twitterAccounts[index] = .init(
-          oauthToken: oauthToken,
-          profile: twitterAccount.profile,
-          isDefault: twitterAccount.isDefault,
-        )
-        try await secureKeyValueStore.setTwitterAccounts(twitterAccounts)
-      }
-
-      return oauthToken
     },
   )
+
+  private static func refreshAccessToken(_ refreshToken: TwitterOAuthToken.RefreshToken) async throws -> TwitterOAuthToken {
+    var urlComponents = URLComponents(string: "https://api.x.com")!
+    urlComponents.path = "/2/oauth2/token"
+    guard let url = urlComponents.url else {
+      throw Error.invalidCallbackURL
+    }
+    var urlRequest = URLRequest(url: url)
+    urlRequest.httpMethod = "POST"
+    urlRequest.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+    let params: [String: String] = [
+      "grant_type": "refresh_token",
+      "client_id": Self._clientID,
+      "refresh_token": refreshToken.rawValue,
+    ]
+    var paramURLComponents = URLComponents()
+    paramURLComponents.queryItems = params.map { .init(name: $0, value: $1) }
+    urlRequest.httpBody = paramURLComponents.percentEncodedQuery?.data(using: .utf8)
+    let (data, response) = try await URLSession.shared.data(for: urlRequest)
+    guard let urlResponse = response as? HTTPURLResponse, urlResponse.statusCode == 200 else {
+      throw Error.internalError
+    }
+    let jsonDecoder = JSONDecoder()
+    let oauthToken = try jsonDecoder.decode(TwitterOAuthToken.self, from: data)
+
+    // oauthTokenの置き換え
+    @Dependency(\.secureKeyValueStore)
+    var secureKeyValueStore
+
+    var twitterAccounts = try await secureKeyValueStore.twitterAccounts()
+    if let index = twitterAccounts.firstIndex(where: { $0.oauthToken.refreshToken == refreshToken }),
+       let twitterAccount = twitterAccounts[safe: index] {
+      twitterAccounts[index] = .init(
+        oauthToken: oauthToken,
+        profile: twitterAccount.profile,
+        isDefault: twitterAccount.isDefault,
+      )
+      try await secureKeyValueStore.setTwitterAccounts(twitterAccounts)
+    }
+
+    return oauthToken
+  }
 }
 
 // MARK: - DependencyValues
