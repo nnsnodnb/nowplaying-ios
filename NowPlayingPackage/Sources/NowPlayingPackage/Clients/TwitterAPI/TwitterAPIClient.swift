@@ -56,7 +56,7 @@ extension TwitterAPIClient: DependencyKey {
 
       var httpBody = Data()
       httpBody.append("--\(boundary)\r\n")
-      httpBody.append("Content-Disposition: form-data; name=\"name\"; filename=\"image.jpg\"\r\n")
+      httpBody.append("Content-Disposition: form-data; name=\"media\"; filename=\"image.jpg\"\r\n")
       httpBody.append("Content-Type: image/jpeg\r\n\r\n")
       httpBody.append(imageData)
       httpBody.append("\r\n")
@@ -87,6 +87,7 @@ extension TwitterAPIClient: DependencyKey {
       var urlRequest = URLRequest(url: url)
       urlRequest.httpMethod = "POST"
       urlRequest.addValue("Bearer \(accessToken.rawValue)", forHTTPHeaderField: "Authorization")
+      urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
       var jsonObject: [String: Any] = [
         "text": text,
       ]
