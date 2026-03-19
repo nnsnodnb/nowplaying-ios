@@ -19,7 +19,7 @@ struct TestTweetFeatureOnAppear {
     try await withDependencies {
       $0.defaultAppStorage = .inMemory
     } operation: {
-      @Shared(.appStorage("tweet_with_image_type"))
+      @Shared(.appStorage(.twitterWithImageType))
       var attachImageType = attachImageType
 
       let twitterAccountA = try Stub.make(TwitterAccount.self) {
