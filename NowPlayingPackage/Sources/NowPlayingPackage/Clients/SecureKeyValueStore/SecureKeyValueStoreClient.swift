@@ -17,6 +17,11 @@ public struct SecureKeyValueStoreClient: Sendable {
   public var updateDefaultTwitterAccount: @Sendable (TwitterAccount) async throws -> Void
   public var removeTwitterAccount: @Sendable (TwitterAccount) async throws -> Void
   public var setTwitterAccounts: @Sendable ([TwitterAccount]) async throws -> Void
+  public var blueskyAccounts: @Sendable () async throws -> [BlueskyAccount]
+  public var addBlueskyAccount: @Sendable (BlueskyAccount) async throws -> Void
+  public var updateDefaultBlueskyAccount: @Sendable (BlueskyAccount) async throws -> Void
+  public var removeBlueskyAccount: @Sendable (BlueskyAccount) async throws -> Void
+  public var setBlueskyAccounts: @Sendable ([BlueskyAccount]) async throws -> Void
 }
 
 // MARK: - DependencyKey
@@ -36,6 +41,21 @@ extension SecureKeyValueStoreClient: DependencyKey {
     },
     setTwitterAccounts: { accounts in
       await Implementation.shared.setTwitterAccounts(accounts)
+    },
+    blueskyAccounts: {
+      await Implementation.shared.getBlueskyAccounts()
+    },
+    addBlueskyAccount: { account in
+      await Implementation.shared.addBlueskyAccount(account: account)
+    },
+    updateDefaultBlueskyAccount: { account in
+      await Implementation.shared.updateDefaultBlueskyAccount(account: account)
+    },
+    removeBlueskyAccount: { account in
+      await Implementation.shared.removeBlueskyAccount(account: account)
+    },
+    setBlueskyAccounts: { accounts in
+      await Implementation.shared.setBlueskyAccounts(accounts)
     },
   )
 }
@@ -99,6 +119,59 @@ private extension SecureKeyValueStoreClient {
 
     func setTwitterAccounts(_ accounts: [TwitterAccount]) {
       keychain.set(accounts, key: .twitterAccounts)
+    }
+
+    func getBlueskyAccounts() -> [BlueskyAccount] {
+      keychain.object(forKey: .blueskyAccounts) ?? []
+    }
+
+    func addBlueskyAccount(account: BlueskyAccount) {
+      var accounts = getBlueskyAccounts()
+      let addingAccount: BlueskyAccount
+      // 保存されているアカウントがなければデフォルトにする
+      if accounts.isEmpty {
+        var account = account
+        account.setDefault()
+        addingAccount = account
+      } else {
+        addingAccount = account
+      }
+      // すでに登録されている場合は追加しない
+      guard !accounts.contains(where: { $0.handle == addingAccount.handle }) else {
+        return
+      }
+      accounts.append(addingAccount)
+      keychain.set(accounts, key: .blueskyAccounts)
+    }
+
+    func updateDefaultBlueskyAccount(account: BlueskyAccount) {
+      let accounts = getBlueskyAccounts()
+        .map { blueskyAccount in
+          // 同じアカウントですでにデフォルトであればそのまま
+          if blueskyAccount.handle == account.handle && !account.isDefault {
+            return account
+          }
+          var blueskyAccount = blueskyAccount
+          let isDefault = blueskyAccount.handle == account.handle
+          blueskyAccount.setDefault(isDefault)
+          return blueskyAccount
+        }
+      setBlueskyAccounts(accounts)
+    }
+
+    func removeBlueskyAccount(account: BlueskyAccount) {
+      var accounts = getBlueskyAccounts()
+        .filter { $0.handle != account.handle }
+      // 削除するアカウントがデフォルト設定されていて、残ったアカウントがあればデフォルトにする
+      if account.isDefault, var account = accounts.first {
+        account.setDefault()
+        accounts[0] = account
+      }
+      setBlueskyAccounts(accounts)
+    }
+
+    func setBlueskyAccounts(_ accounts: [BlueskyAccount]) {
+      keychain.set(accounts, key: .blueskyAccounts)
     }
   }
 }

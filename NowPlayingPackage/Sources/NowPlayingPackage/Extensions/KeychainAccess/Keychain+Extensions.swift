@@ -12,6 +12,7 @@ public extension Keychain {
   // MARK: - Keys
   enum Keys: String {
     case twitterAccounts = "twitter_accounts"
+    case blueskyAccounts = "bluesky_accounts"
   }
 
   func object<D: Decodable>(forKey key: Keys) -> D? {

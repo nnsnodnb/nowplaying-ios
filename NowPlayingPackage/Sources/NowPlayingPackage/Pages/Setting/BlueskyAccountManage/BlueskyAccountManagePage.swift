@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2026/03/19.
 //
 
+import ATProtoKit
 import BetterSafariView
 import ComposableArchitecture
 import SwiftUI
@@ -16,6 +17,8 @@ public struct BlueskyAccountManageFeature: Sendable {
   public struct State: Equatable {
     public var blueskyAccounts: [BlueskyAccount] = []
     public var safari: Safari?
+    @Presents public var blueskyLogin: BlueskyLoginFeature.State?
+    @Presents public var alert: AlertState<Action.Alert>?
 
     // MARK: - Safari
     public enum Safari: Equatable, Identifiable {
@@ -30,7 +33,7 @@ public struct BlueskyAccountManageFeature: Sendable {
       public var url: URL {
         switch self {
         case .howToAddBlueskyAccount:
-          URL(string: "https://github.com/nnsnodnb/nowplaying-ios/wiki/Add-Bluesky-Account#blueskyアカウント追加方法")!
+          URL(string: "https://github.com/nnsnodnb/nowplaying-ios/wiki/Add-Bluesky-Account#nowplayingアプリでのログイン")!
         }
       }
     }
@@ -40,31 +43,74 @@ public struct BlueskyAccountManageFeature: Sendable {
   public enum Action {
     case fetchBlueskyAccounts
     case changedSafari(State.Safari?)
+    case addAccount
+    case blueskyLogin(PresentationAction<BlueskyLoginFeature.Action>)
     case internalAction(InternalAction)
+    case alert(PresentationAction<Alert>)
 
     // MARK: - InternalAction
     @CasePathable
     public enum InternalAction {
       case fetchedBlueskyAccounts([BlueskyAccount])
     }
+
+    @CasePathable
+    public enum Alert: Equatable {
+      case close
+    }
   }
+
+  @Dependency(\.secureKeyValueStore)
+  private var secureKeyValueStore
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
       case .fetchBlueskyAccounts:
-        return .none
+        return .run(
+          operation: { send in
+            let blueskyAccounts = try await secureKeyValueStore.blueskyAccounts()
+            await send(.internalAction(.fetchedBlueskyAccounts(blueskyAccounts)))
+          },
+        )
       case let .changedSafari(safari):
         state.safari = safari
+        return .none
+      case .addAccount:
+        state.blueskyLogin = .init()
         return .none
       case let .internalAction(.fetchedBlueskyAccounts(blueskyAccounts)):
         state.blueskyAccounts = blueskyAccounts
         return .none
+      case let .blueskyLogin(.presented(.delegate(.loggedIn(blueskyAccount)))):
+        let message: String
+        if let displayName = blueskyAccount.displayName {
+          message = "\(displayName) (@\(blueskyAccount.handle))"
+        } else {
+          message = "@\(blueskyAccount.handle)"
+        }
+        state.alert = AlertState(
+          title: {
+            TextState("ログインしました！")
+          },
+          message: {
+            TextState(message)
+          },
+        )
+          return .send(.fetchBlueskyAccounts)
+      case .blueskyLogin:
+        return .none
       case .internalAction:
+        return .none
+      case .alert:
         return .none
       }
     }
+    .ifLet(\.$blueskyLogin, action: \.blueskyLogin) {
+      BlueskyLoginFeature()
+    }
+    .ifLet(\.$alert, action: \.alert)
   }
 }
 
@@ -81,7 +127,7 @@ public struct BlueskyAccountManagePage: View {
           store.send(.changedSafari(.howToAddBlueskyAccount))
         },
         addAction: {
-          // TODO: 追加
+          store.send(.addAccount)
         },
       )
       .onAppear {
@@ -91,6 +137,13 @@ public struct BlueskyAccountManagePage: View {
         SafariView(url: safari.url)
           .dismissButtonStyle(.close)
       }
+      .sheet(
+        item: $store.scope(state: \.blueskyLogin, action: \.blueskyLogin),
+        content: { store in
+          BlueskyLoginPage(store: store)
+        },
+      )
+      .alert($store.scope(state: \.alert, action: \.alert))
   }
 
   @ViewBuilder private var list: some View {
@@ -135,7 +188,7 @@ public struct BlueskyAccountManagePage: View {
         // TODO: store.send(.changeDefaultAccount(blueskyAccount))
       },
       label: {
-        Text(blueskyAccount.handler)
+        Text(blueskyAccount.handle)
           .foregroundStyle(Color.primary)
       },
     )
@@ -145,7 +198,6 @@ public struct BlueskyAccountManagePage: View {
 private extension View {
   func toolbar(helpAction: @escaping @MainActor () -> Void, addAction: @escaping @MainActor () -> Void) -> some View {
     toolbar {
-      // ToolbarItem(placement: .primaryAction) {
       ToolbarItemGroup(placement: .primaryAction) {
         Button(
           action: helpAction,
