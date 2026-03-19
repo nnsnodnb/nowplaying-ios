@@ -137,7 +137,7 @@ private extension SecureKeyValueStoreClient {
         addingAccount = account
       }
       // すでに登録されている場合は追加しない
-      guard !accounts.contains(where: { $0.handle == addingAccount.handle }) else {
+      guard !accounts.contains(where: { $0.id == addingAccount.id }) else {
         return
       }
       accounts.append(addingAccount)
@@ -148,11 +148,11 @@ private extension SecureKeyValueStoreClient {
       let accounts = getBlueskyAccounts()
         .map { blueskyAccount in
           // 同じアカウントですでにデフォルトであればそのまま
-          if blueskyAccount.handle == account.handle && !account.isDefault {
+          if blueskyAccount.id == account.id && !account.isDefault {
             return account
           }
           var blueskyAccount = blueskyAccount
-          let isDefault = blueskyAccount.handle == account.handle
+          let isDefault = blueskyAccount.id == account.id
           blueskyAccount.setDefault(isDefault)
           return blueskyAccount
         }
