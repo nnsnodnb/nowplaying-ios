@@ -21,7 +21,7 @@ struct TestSettingFeaturePushBlueskySetting {
     )
 
     await store.send(.pushBlueskySetting) {
-      $0.path[id: 0] = .blueskySetting(.init())
+      $0.path[id: 0] = .blueskySetting(.init(socialService: .bluesky))
     }
   }
 }
