@@ -11,66 +11,22 @@ import Foundation
 public extension ATProtocolConfiguration {
   // swiftlint:disable:next cyclomatic_complexity
   func authenticate(with handle: String, password: String) async throws { // swiftlint:disable:this function_body_length
-    var response: ComAtprotoLexicon.Server.CreateSessionOutput?
-
     guard let pdsURL = URL(string: pdsURL) else {
       throw ATRequestPrepareError.emptyPDSURL
     }
 
-    // Loop until an error has been thrown, or until the response has been added.
-    while response == nil {
-      do {
-        response = try await ATProtoKit(
-          apiClientConfiguration: .init(urlSessionConfiguration: configuration),
-          pdsURL: self.pdsURL,
-          canUseBlueskyRecords: false,
-        ).createSession(
-          with: handle,
-          and: password,
-          authenticationFactorToken: nil,
-        )
-      } catch let error as ATAPIError {
-        switch error {
-        case let .badRequest(error: responseError):
-          if responseError.error == "AuthFactorTokenRequired" {
-            let json = [
-              "error": "AuthFactorTokenRequired",
-              "message": "Two-factor authentication is enabled.",
-            ]
-            let data = try JSONSerialization.data(withJSONObject: json)
-            let error = try JSONDecoder().decode(APIClientService.ATHTTPResponseError.self, from: data)
-            throw ATAPIError.badRequest(error: error)
-          } else {
-            throw error
-          }
-        case let .unauthorized(error: responseError, wwwAuthenticate: _):
-          // Handle 2FA requirement that comes as unauthorized instead of badRequest
-          if responseError.error == "AuthFactorTokenRequired" {
-            let json = [
-              "error": "AuthFactorTokenRequired",
-              "message": "Two-factor authentication is enabled.",
-            ]
-            let data = try JSONSerialization.data(withJSONObject: json)
-            let error = try JSONDecoder().decode(APIClientService.ATHTTPResponseError.self, from: data)
-            throw ATAPIError.badRequest(error: error)
-          } else {
-            throw error
-          }
-        default:
-          throw error
-        }
-      } catch {
-        throw error
-      }
-    }
-
-    // Assemble the UserSession object and insert it to the keychain protocol.
     do {
-      guard let response = response else {
-        // TODO: Replace with a better error.
-        throw DIDDocument.DIDDocumentError.emptyArray
-      }
+      let response = try await ATProtoKit(
+        apiClientConfiguration: .init(urlSessionConfiguration: configuration),
+        pdsURL: self.pdsURL,
+        canUseBlueskyRecords: false,
+      ).createSession(
+        with: handle,
+        and: password,
+        authenticationFactorToken: nil,
+      )
 
+      // Assemble the UserSession object and insert it to the keychain protocol.
       let convertedDIDDocument = self.convertDIDDocument(response.didDocument)
 
       var status: UserAccountStatus?
@@ -104,6 +60,36 @@ public extension ATProtocolConfiguration {
       try await keychainProtocol.savePassword(password)
 
       await UserSessionRegistry.shared.register(instanceUUID, session: userSession)
+    } catch let error as ATAPIError {
+      switch error {
+      case let .badRequest(error: responseError):
+        if responseError.error == "AuthFactorTokenRequired" {
+          let json = [
+            "error": "AuthFactorTokenRequired",
+            "message": "Two-factor authentication is enabled.",
+          ]
+          let data = try JSONSerialization.data(withJSONObject: json)
+          let error = try JSONDecoder().decode(APIClientService.ATHTTPResponseError.self, from: data)
+          throw ATAPIError.badRequest(error: error)
+        } else {
+          throw error
+        }
+      case let .unauthorized(error: responseError, wwwAuthenticate: _):
+        // Handle 2FA requirement that comes as unauthorized instead of badRequest
+        if responseError.error == "AuthFactorTokenRequired" {
+          let json = [
+            "error": "AuthFactorTokenRequired",
+            "message": "Two-factor authentication is enabled.",
+          ]
+          let data = try JSONSerialization.data(withJSONObject: json)
+          let error = try JSONDecoder().decode(APIClientService.ATHTTPResponseError.self, from: data)
+          throw ATAPIError.badRequest(error: error)
+        } else {
+          throw error
+        }
+      default:
+        throw error
+      }
     } catch {
       throw error
     }
