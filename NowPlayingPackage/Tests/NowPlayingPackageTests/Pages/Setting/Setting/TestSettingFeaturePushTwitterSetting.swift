@@ -21,7 +21,7 @@ struct TestSettingFeaturePushTwitterSetting {
     )
 
     await store.send(.pushTwitterSetting) {
-      $0.path[id: 0] = .twitterSetting(.init())
+      $0.path[id: 0] = .twitterSetting(.init(socialService: .twitter))
     }
   }
 }

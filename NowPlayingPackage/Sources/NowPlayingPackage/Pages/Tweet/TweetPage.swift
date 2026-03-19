@@ -31,11 +31,11 @@ public struct TweetFeature: Sendable {
     public var isShowPreview = false
     public var isLoading = false
     public var showSuccess = false
-    @Shared(.appStorage("is_twitter_attach_image"))
+    @Shared(.appStorage(.twitterIsAttachImage))
     public var isAttachImage = true
-    @Shared(.appStorage("tweet_with_image_type"))
-    public var attachImageType: TwitterSettingFeature.State.AttachImageType = .onlyArtwork
-    @Shared(.appStorage("tweet_format"))
+    @Shared(.appStorage(.twitterWithImageType))
+    public var attachImageType: AttachImageType = .onlyArtwork
+    @Shared(.appStorage(.twitterPostFormat))
     public var postFormat = ""
     @Presents public var selectTwitterAccount: SelectTwitterAccountFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?

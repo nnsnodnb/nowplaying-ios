@@ -14,9 +14,9 @@ public struct SettingFeature: Sendable {
   // MARK: - Path
   @Reducer
   public enum Path {
-    case twitterSetting(TwitterSettingFeature)
+    case twitterSetting(SocialServiceSettingFeature)
     case twitterAccountManage(TwitterAccountManageFeature)
-    case blueskySetting(BlueSkySettingFeature)
+    case blueskySetting(SocialServiceSettingFeature)
     case paidContent(PaidContentFeature)
     case licenseList(LicenseListFeature)
   }
@@ -93,10 +93,10 @@ public struct SettingFeature: Sendable {
           await dismiss()
         }
       case .pushTwitterSetting:
-        state.path.append(.twitterSetting(.init()))
+        state.path.append(.twitterSetting(.init(socialService: .twitter)))
         return .none
       case .pushBlueskySetting:
-        state.path.append(.blueskySetting(.init()))
+        state.path.append(.blueskySetting(.init(socialService: .bluesky)))
         return .none
       case .pushPaidContent:
         state.path.append(.paidContent(.init()))
@@ -106,6 +106,9 @@ public struct SettingFeature: Sendable {
         return .none
       case .path(.element(id: _, action: .twitterSetting(.delegate(.pushTwitterAccountManage)))):
         state.path.append(.twitterAccountManage(.init()))
+        return .none
+      case .path(.element(id: _, action: .blueskySetting(.delegate(.pushBlueskyAccountManage)))):
+        // TODO: アカウント管理画面に遷移
         return .none
       case .path:
         return .none
@@ -151,11 +154,11 @@ public struct SettingPage: View {
       destination: { store in
         switch store.case {
         case let .twitterSetting(store):
-          TwitterSettingPage(store: store)
+          SocialServiceSettingPage(store: store)
         case let .twitterAccountManage(store):
           TwitterAccountManagePage(store: store)
         case let .blueskySetting(store):
-          BlueSkySettingPage(store: store)
+          SocialServiceSettingPage(store: store)
         case let.paidContent(store):
           PaidContentPage(store: store)
         case let .licenseList(store):

@@ -14,7 +14,7 @@ struct TestSettingFeaturePath {
   @Test
   func testPathElementTwitterSettingDelegatePushTwitterAccountManage() async throws {
     var path = StackState<SettingFeature.Path.State>()
-    path[id: 0] = .twitterSetting(.init())
+    path[id: 0] = .twitterSetting(.init(socialService: .twitter))
 
     let store = TestStore(
       initialState: SettingFeature.State(
