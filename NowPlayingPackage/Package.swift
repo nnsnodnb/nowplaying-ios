@@ -15,6 +15,7 @@ let package = Package(
     ),
   ],
   dependencies: [
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", .upToNextMajor(from: "0.32.5")),
     .package(url: "https://github.com/stleamist/BetterSafariView.git", .upToNextMajor(from: "2.4.2")),
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "12.10.0")),
     .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", .upToNextMajor(from: "4.2.2")),
@@ -37,6 +38,7 @@ let package = Package(
     .target(
       name: "NowPlayingPackage",
       dependencies: [
+        .atProtoKit,
         .betterSafariView,
         .composableArchitecture,
         .firebaseAnalytics,
@@ -70,6 +72,13 @@ let package = Package(
 
 // MARK: - Target.Dependency
 extension Target.Dependency {
+  static var atProtoKit: Self {
+    .product(
+      name: "ATProtoKit",
+      package: "ATProtoKit",
+    )
+  }
+
   static var betterSafariView: Self {
     .product(
       name: "BetterSafariView",
