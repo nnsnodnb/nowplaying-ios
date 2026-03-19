@@ -139,6 +139,8 @@ public struct BlueskyLoginPage: View {
   // MARK: - Properties
   @Bindable public var store: StoreOf<BlueskyLoginFeature>
 
+  @FocusState private var isFocused
+
   // MARK: - Body
   public var body: some View {
     NavigationStack(
@@ -149,6 +151,7 @@ public struct BlueskyLoginPage: View {
           .toolbar(
             loginButtonDisabled: store.isDisabledLoginButton,
             loginAction: {
+              isFocused = false
               store.send(.login)
             },
           )
@@ -167,12 +170,14 @@ public struct BlueskyLoginPage: View {
             Text("ハンドル")
           },
         )
+        .focused($isFocused)
         SecureField(
           text: $store.password.sending(\.changedPassword),
           label: {
             Text("パスワード・アプリパスワード")
           },
         )
+        .focused($isFocused)
       }
     }
   }
