@@ -44,6 +44,8 @@ public struct BlueskyAccountManageFeature: Sendable {
     case fetchBlueskyAccounts
     case changedSafari(State.Safari?)
     case addAccount
+    case changeDefaultAccount(BlueskyAccount)
+    case deleteBlueskyAccount(IndexSet)
     case blueskyLogin(PresentationAction<BlueskyLoginFeature.Action>)
     case internalAction(InternalAction)
     case alert(PresentationAction<Alert>)
@@ -80,9 +82,25 @@ public struct BlueskyAccountManageFeature: Sendable {
       case .addAccount:
         state.blueskyLogin = .init()
         return .none
-      case let .internalAction(.fetchedBlueskyAccounts(blueskyAccounts)):
-        state.blueskyAccounts = blueskyAccounts
-        return .none
+      case let .changeDefaultAccount(blueskyAccount):
+        guard !blueskyAccount.isDefault else { return .none }
+        return .run(
+          operation: { send in
+            var blueskyAccount = blueskyAccount
+            blueskyAccount.setDefault()
+            try await secureKeyValueStore.updateDefaultBlueskyAccount(blueskyAccount)
+            await send(.fetchBlueskyAccounts)
+          },
+        )
+      case let .deleteBlueskyAccount(indexSet):
+        return .run(
+          operation: { [blueskyAccounts = state.blueskyAccounts] send in
+            for blueskyAccount in indexSet.compactMap({ blueskyAccounts[safe: $0] }) {
+              try await secureKeyValueStore.removeBlueskyAccount(blueskyAccount)
+            }
+            await send(.fetchBlueskyAccounts)
+          },
+        )
       case let .blueskyLogin(.presented(.delegate(.loggedIn(blueskyAccount)))):
         let message: String
         if let displayName = blueskyAccount.displayName {
@@ -100,6 +118,9 @@ public struct BlueskyAccountManageFeature: Sendable {
         )
           return .send(.fetchBlueskyAccounts)
       case .blueskyLogin:
+        return .none
+      case let .internalAction(.fetchedBlueskyAccounts(blueskyAccounts)):
+        state.blueskyAccounts = blueskyAccounts
         return .none
       case .internalAction:
         return .none
@@ -156,7 +177,7 @@ public struct BlueskyAccountManagePage: View {
         }
         .onDelete(
           perform: { indexSet in
-            // TODO: store.send(.deleteBlueskyAccount(indexSet))
+             store.send(.deleteBlueskyAccount(indexSet))
           },
         )
       }
@@ -185,11 +206,14 @@ public struct BlueskyAccountManagePage: View {
   private func blueskyAccountRow(_ blueskyAccount: BlueskyAccount) -> some View {
     Button(
       action: {
-        // TODO: store.send(.changeDefaultAccount(blueskyAccount))
+         store.send(.changeDefaultAccount(blueskyAccount))
       },
       label: {
-        Text(blueskyAccount.handle)
-          .foregroundStyle(Color.primary)
+        BlueskyProfileRow(
+          blueskyAccount: blueskyAccount,
+          showDefaultStar: true,
+        )
+        .foregroundStyle(Color.primary)
       },
     )
   }

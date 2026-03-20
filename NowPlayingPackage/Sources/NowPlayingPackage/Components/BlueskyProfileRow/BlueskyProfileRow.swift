@@ -1,16 +1,16 @@
 //
-//  TwitterProfileRow.swift
+//  BlueskyProfileRow.swift
 //  NowPlayingPackage
 //
-//  Created by Yuya Oka on 2026/03/11.
+//  Created by Yuya Oka on 2026/03/20.
 //
 
 import NukeUI
 import SwiftUI
 
-public struct TwitterProfileRow: View {
+public struct BlueskyProfileRow: View {
   // MARK: - Properties
-  public let twitterAccount: TwitterAccount
+  public let blueskyAccount: BlueskyAccount
   public let showDefaultStar: Bool
   public var selected = false
 
@@ -19,12 +19,14 @@ public struct TwitterProfileRow: View {
     HStack(alignment: .center, spacing: 12) {
       image
       VStack(alignment: .leading, spacing: 4) {
-        Text(twitterAccount.profile.name)
-          .font(.system(size: 20, weight: .semibold))
-        Text("@\(twitterAccount.profile.username)")
+        if let displayName = blueskyAccount.displayName {
+          Text(displayName)
+            .font(.system(size: 20, weight: .semibold))
+        }
+        Text("@\(blueskyAccount.handle)")
           .font(.system(size: 17))
       }
-      if showDefaultStar && twitterAccount.isDefault {
+      if showDefaultStar && blueskyAccount.isDefault {
         Spacer()
         defaultStar
           .padding(.trailing, 12)
@@ -37,7 +39,7 @@ public struct TwitterProfileRow: View {
   }
 
   private var image: some View {
-    LazyImage(url: twitterAccount.profile.profileImageURL) { state in
+    LazyImage(url: blueskyAccount.avatarImageURL) { state in
       if state.isLoading {
         ProgressView()
           .progressViewStyle(.circular)

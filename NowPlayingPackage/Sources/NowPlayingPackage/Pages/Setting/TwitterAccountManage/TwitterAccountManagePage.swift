@@ -122,14 +122,14 @@ public struct TwitterAccountManageFeature: Sendable {
         return .none
       case let .changeDefaultAccount(twitterAccount):
         guard !twitterAccount.isDefault else { return .none }
-          return .run(
-            operation: { send in
-              var twitterAccount = twitterAccount
-              twitterAccount.setDefault()
-              try await secureKeyValueStore.updateDefaultTwitterAccount(twitterAccount)
-              await send(.fetchTwitterAccounts)
-            },
-          )
+        return .run(
+          operation: { send in
+            var twitterAccount = twitterAccount
+            twitterAccount.setDefault()
+            try await secureKeyValueStore.updateDefaultTwitterAccount(twitterAccount)
+            await send(.fetchTwitterAccounts)
+          },
+        )
       case let .deleteTwitterAccount(indexSet):
         return .run(
           operation: { [twitterAccounts = state.twitterAccounts] send in
