@@ -56,12 +56,14 @@ public struct BlueskyAccountManageFeature: Sendable {
       case fetchedBlueskyAccounts([BlueskyAccount])
     }
 
+    // MARK: - Alert
     @CasePathable
     public enum Alert: Equatable {
       case close
     }
   }
 
+  // MARK: - Dependency
   @Dependency(\.secureKeyValueStore)
   private var secureKeyValueStore
 
