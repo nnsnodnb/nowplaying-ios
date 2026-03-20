@@ -159,10 +159,7 @@ public struct TweetFeature: Sendable {
       case let .changedText(text):
         state.text = text
         state.isEditing = true
-        state.isDisablePostButton = text
-            .replacingOccurrences(of: " ", with: "")
-            .replacingOccurrences(of: "\n", with: "")
-            .isEmpty
+        state.isDisablePostButton = text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         return .none
       case .showSelectTwitterAccount:
         guard state.twitterAccounts.count > 1,
