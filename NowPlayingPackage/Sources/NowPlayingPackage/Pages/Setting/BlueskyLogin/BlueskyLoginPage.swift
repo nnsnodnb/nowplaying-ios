@@ -13,7 +13,6 @@ public struct BlueskyLoginFeature: Sendable {
   // MARK: - State
   @ObservableState
   public struct State: Equatable, Sendable {
-    public var pdsURL = "https://bsky.social"
     public var handle = ""
     public var password = ""
     public var focusedField: Field? = .handle
@@ -23,7 +22,6 @@ public struct BlueskyLoginFeature: Sendable {
 
     // MARK: - Field
     public enum Field: Sendable {
-      case pdsURL
       case handle
       case password
     }
@@ -33,7 +31,6 @@ public struct BlueskyLoginFeature: Sendable {
   public enum Action: BindableAction {
     case close
     case login
-    case changedPdsURL(String)
     case changedHandle(String)
     case changedPassword(String)
     case binding(BindingAction<State>)
@@ -86,7 +83,7 @@ public struct BlueskyLoginFeature: Sendable {
         state.isLoading = true
         return .run(
           operation: { [state] send in
-            let blueskyAccount = try await blueskyAPI.login(state.pdsURL, state.handle, state.password)
+            let blueskyAccount = try await blueskyAPI.login(state.handle, state.password)
             try await secureKeyValueStore.addBlueskyAccount(blueskyAccount)
             await send(.internalAction(.loggedIn(blueskyAccount)))
           },
@@ -107,9 +104,6 @@ public struct BlueskyLoginFeature: Sendable {
             }
           },
         )
-      case let .changedPdsURL(urlString):
-        state.pdsURL = urlString
-        return .send(.internalAction(.validate))
       case let .changedHandle(handle):
         state.handle = handle
         return .send(.internalAction(.validate))
@@ -123,8 +117,7 @@ public struct BlueskyLoginFeature: Sendable {
       case .internalAction(.validate):
         state.isDisabledLoginButton = (
           state.handle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-          state.password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-          URL(string: state.pdsURL) == nil
+          state.password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         )
         return .none
       case let .internalAction(.loggedIn(blueskyAccount)):
@@ -201,22 +194,10 @@ public struct BlueskyLoginPage: View {
 
   private var section: some View {
     Section {
-      pdsURLTextField
       handleTextField
       passwordTextField
     }
     .bind($store.focusedField, to: $focusedField)
-  }
-
-  private var pdsURLTextField: some View {
-    TextField(
-      text: $store.pdsURL.sending(\.changedPdsURL),
-      label: {
-        Text("https://bsky.social")
-      },
-    )
-    .keyboardType(.URL)
-    .focused($focusedField, equals: .pdsURL)
   }
 
   private var handleTextField: some View {

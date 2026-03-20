@@ -12,7 +12,7 @@ import Foundation
 
 @DependencyClient
 public struct BlueskyAPIClient: Sendable {
-  public var login: @Sendable (String, String, String) async throws -> BlueskyAccount
+  public var login: @Sendable (String, String) async throws -> BlueskyAccount
 
   // MARK: - Error
   public enum Error: Swift.Error {
@@ -26,8 +26,8 @@ public struct BlueskyAPIClient: Sendable {
 // MARK: - DependencyKey
 extension BlueskyAPIClient: DependencyKey {
   public static let liveValue: Self = .init(
-    login: { pdsURL, handle, password in
-      let config = ATProtocolConfiguration(pdsURL: pdsURL)
+    login: { handle, password in
+      let config = ATProtocolConfiguration(pdsURL: "https://bsky.social")
       do {
         try await config.authenticate(with: handle, password: password)
       } catch let error as ATAPIError {
