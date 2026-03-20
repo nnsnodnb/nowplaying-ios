@@ -9,25 +9,12 @@ import SwiftUI
 
 public struct PostPlusButton: View {
   // MARK: - Properties
-  public let xTwitterAction: () -> Void
+  public let twitterAction: () -> Void
   public let blueskyAction: () -> Void
 
   public var body: some View {
     Menu(
       content: {
-        Button(
-          action: xTwitterAction,
-          label: {
-            Label(
-              title: {
-                Text("X")
-              },
-              icon: {
-                Image(.icXTwitterPadding)
-              },
-            )
-          },
-        )
         Button(
           action: blueskyAction,
           label: {
@@ -37,6 +24,19 @@ public struct PostPlusButton: View {
               },
               icon: {
                 Image(.icBlueskyPadding)
+              },
+            )
+          },
+        )
+        Button(
+          action: twitterAction,
+          label: {
+            Label(
+              title: {
+                Text("X")
+              },
+              icon: {
+                Image(.icXTwitterPadding)
               },
             )
           },
@@ -63,7 +63,7 @@ public struct PostPlusButton: View {
 
 #Preview {
   PostPlusButton(
-    xTwitterAction: {},
+    twitterAction: {},
     blueskyAction: {}
   )
 }

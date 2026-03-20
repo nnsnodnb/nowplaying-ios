@@ -39,8 +39,7 @@ public struct PlayFeature: Sendable {
     case togglePlayback
     case forward
     case showSetting
-    case xTwitter
-    case bluesky
+    case showPost(SocialService)
     case setting(PresentationAction<SettingFeature.Action>)
     case tweet(PresentationAction<TweetFeature.Action>)
     case internalAction(InternalAction)
@@ -55,7 +54,8 @@ public struct PlayFeature: Sendable {
       case requestArtwork(any MediaItemProtocol)
       case applyArtwork(UIImage)
       case changedIsPlaying(Bool)
-      case emptySNSAccounts
+      case captureScreen(SocialService, [TwitterAccount], [BlueskyAccount])
+      case emptySNSAccounts(SocialService)
       case showTweet([TwitterAccount], UIImage)
     }
 
@@ -118,22 +118,31 @@ public struct PlayFeature: Sendable {
       case .showSetting:
         state.setting = .init()
         return .none
-      case .xTwitter:
-        return .run(
-          operation: { send in
-            let twitterAccounts = try await secureKeyValueStore.twitterAccounts()
-            guard !twitterAccounts.isEmpty else {
-              await send(.internalAction(.emptySNSAccounts))
-              return
-            }
-            // Menuを閉じるためメインスレッドで待機する
-            try await mainQueue.sleep(for: .milliseconds(300))
-            let capturedImage = try await imageRenderer.image()
-            await send(.internalAction(.showTweet(twitterAccounts, capturedImage)))
-          },
-        )
-      case .bluesky:
-        return .none
+      case let .showPost(socialService):
+        switch socialService {
+        case .twitter:
+          return .run(
+            operation: { send in
+              let twitterAccounts = try await secureKeyValueStore.twitterAccounts()
+              guard !twitterAccounts.isEmpty else {
+                await send(.internalAction(.emptySNSAccounts(.twitter)))
+                return
+              }
+              await send(.internalAction(.captureScreen(socialService, twitterAccounts, [])))
+            },
+          )
+        case .bluesky:
+          return .run(
+            operation: { send in
+              let blueskyAccounts = try await secureKeyValueStore.blueskyAccounts()
+              guard !blueskyAccounts.isEmpty else {
+                await send(.internalAction(.emptySNSAccounts(.bluesky)))
+                return
+              }
+              await send(.internalAction(.captureScreen(socialService, [], blueskyAccounts)))
+            },
+          )
+        }
       case .setting:
         return .none
       case .tweet:
@@ -192,13 +201,29 @@ public struct PlayFeature: Sendable {
       case let .internalAction(.changedIsPlaying(isPlaying)):
         state.isPlaying = isPlaying
         return .none
-      case .internalAction(.emptySNSAccounts):
+      case let .internalAction(.captureScreen(socialService, twitterAccounts, blueskyAccounts)):
+        return .run(
+          operation: { send in
+            // Menuを閉じるためメインスレッドで待機する
+            try await mainQueue.sleep(for: .milliseconds(300))
+            let capturedImage = try await imageRenderer.image()
+            switch socialService {
+            case .twitter:
+              await send(.internalAction(.showTweet(twitterAccounts, capturedImage)))
+            case .bluesky:
+              // TODO: 投稿画面
+              return
+            }
+          },
+        )
+      case let .internalAction(.emptySNSAccounts(socialService)):
+        let name = socialService.rawValue
         state.alert = AlertState(
           title: {
-            TextState("Xアカウントが設定されていません")
+            TextState("\(name)アカウントが設定されていません")
           },
           message: {
-            TextState("左下の設定ボタンから「X設定」→「アカウント管理」→左上のボタンから認証を行ってください")
+            TextState("左下の設定ボタンから「\(name)設定」→「アカウント管理」→左上のボタンから認証を行ってください")
           },
         )
         return .none
@@ -398,11 +423,11 @@ public struct PlayPage: View {
 
   private var postButton: some View {
     PostPlusButton(
-      xTwitterAction: {
-        store.send(.xTwitter)
+      twitterAction: {
+        store.send(.showPost(.twitter))
       },
       blueskyAction: {
-        store.send(.bluesky)
+        store.send(.showPost(.bluesky))
       },
     )
   }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum SocialService: Sendable {
-  case twitter
-  case bluesky
+public enum SocialService: String, Sendable {
+  case twitter = "X"
+  case bluesky = "Bluesky"
 }
