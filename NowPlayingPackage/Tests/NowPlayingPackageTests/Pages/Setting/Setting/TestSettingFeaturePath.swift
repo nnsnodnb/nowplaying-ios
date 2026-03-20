@@ -29,4 +29,23 @@ struct TestSettingFeaturePath {
       $0.path.append(.twitterAccountManage(.init()))
     }
   }
+
+  @Test
+  func testPathElementBlueskySettingDelegatePushBlueskyAccountManage() async throws {
+    var path = StackState<SettingFeature.Path.State>()
+    path[id: 0] = .blueskySetting(.init(socialService: .bluesky))
+
+    let store = TestStore(
+      initialState: SettingFeature.State(
+        path: path,
+      ),
+      reducer: {
+        SettingFeature()
+      },
+    )
+
+    await store.send(.path(.element(id: 0, action: .blueskySetting(.delegate(.pushBlueskyAccountManage))))) {
+      $0.path.append(.blueskyAccountManage(.init()))
+    }
+  }
 }

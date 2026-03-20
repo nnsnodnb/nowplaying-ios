@@ -17,6 +17,7 @@ public struct SettingFeature: Sendable {
     case twitterSetting(SocialServiceSettingFeature)
     case twitterAccountManage(TwitterAccountManageFeature)
     case blueskySetting(SocialServiceSettingFeature)
+    case blueskyAccountManage(BlueskyAccountManageFeature)
     case paidContent(PaidContentFeature)
     case licenseList(LicenseListFeature)
   }
@@ -108,7 +109,7 @@ public struct SettingFeature: Sendable {
         state.path.append(.twitterAccountManage(.init()))
         return .none
       case .path(.element(id: _, action: .blueskySetting(.delegate(.pushBlueskyAccountManage)))):
-        // TODO: アカウント管理画面に遷移
+        state.path.append(.blueskyAccountManage(.init()))
         return .none
       case .path:
         return .none
@@ -159,7 +160,9 @@ public struct SettingPage: View {
           TwitterAccountManagePage(store: store)
         case let .blueskySetting(store):
           SocialServiceSettingPage(store: store)
-        case let.paidContent(store):
+        case let .blueskyAccountManage(store):
+          BlueskyAccountManagePage(store: store)
+        case let .paidContent(store):
           PaidContentPage(store: store)
         case let .licenseList(store):
           LicenseListPage(store: store)
