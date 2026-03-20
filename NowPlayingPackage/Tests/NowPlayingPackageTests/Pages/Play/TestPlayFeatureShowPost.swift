@@ -1,5 +1,5 @@
 //
-//  TestPlayFeatureXTwitter.swift
+//  TestPlayFeatureShowPost.swift
 //  NowPlayingPackage
 //
 //  Created by Yuya Oka on 2026/03/13.
@@ -12,9 +12,9 @@ import StubKit
 import Testing
 
 @MainActor
-struct TestPlayFeatureXTwitter {
+struct TestPlayFeatureShowPost {
   @Test
-  func testIt() async throws {
+  func testTwitter() async throws {
     let twitterAccount = try Stub.make(TwitterAccount.self)
     let mainQueue = DispatchQueue.test
 
@@ -34,7 +34,8 @@ struct TestPlayFeatureXTwitter {
         },
       )
 
-      await store.send(.xTwitter)
+      await store.send(.showPost(.twitter))
+      await store.receive(\.internalAction.captureScreen)
       await mainQueue.advance(by: .milliseconds(300))
       await store.receive(\.internalAction.showTweet) {
         $0.tweet = .init(
@@ -66,7 +67,7 @@ struct TestPlayFeatureXTwitter {
       },
     )
 
-    await store.send(.xTwitter)
+    await store.send(.showPost(.twitter))
     await store.receive(\.internalAction.emptySNSAccounts) {
       $0.alert = AlertState(
         title: {
