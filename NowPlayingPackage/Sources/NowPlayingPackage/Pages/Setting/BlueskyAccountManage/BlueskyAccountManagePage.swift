@@ -116,7 +116,7 @@ public struct BlueskyAccountManageFeature: Sendable {
             TextState(message)
           },
         )
-          return .send(.fetchBlueskyAccounts)
+        return .send(.fetchBlueskyAccounts)
       case .blueskyLogin:
         return .none
       case let .internalAction(.fetchedBlueskyAccounts(blueskyAccounts)):
