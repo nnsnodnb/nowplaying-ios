@@ -13,18 +13,30 @@ public struct BlueskyLoginFeature: Sendable {
   // MARK: - State
   @ObservableState
   public struct State: Equatable, Sendable {
+    public var pdsURL = "https://bsky.social"
     public var handle = ""
     public var password = ""
+    public var focusedField: Field? = .handle
     public var isDisabledLoginButton = true
     public var isLoading = false
     @Presents public var alert: AlertState<Action.Alert>?
+
+    // MARK: - Field
+    public enum Field: Sendable {
+      case pdsURL
+      case handle
+      case password
+    }
   }
 
   // MARK: - Action
-  public enum Action {
+  public enum Action: BindableAction {
+    case close
+    case login
+    case changedPdsURL(String)
     case changedHandle(String)
     case changedPassword(String)
-    case login
+    case binding(BindingAction<State>)
     case delegate(Delegate)
     case internalAction(InternalAction)
     case alert(PresentationAction<Alert>)
@@ -59,19 +71,22 @@ public struct BlueskyLoginFeature: Sendable {
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
+    BindingReducer()
     Reduce { state, action in
       switch action {
-      case let .changedHandle(handle):
-        state.handle = handle
-        return .send(.internalAction(.validate))
-      case let .changedPassword(password):
-        state.password = password
-        return .send(.internalAction(.validate))
+      case .close:
+        return .run(
+          operation: { _ in
+            await dismiss()
+          },
+        )
       case .login:
+        guard !state.isDisabledLoginButton else { return .none }
+        state.focusedField = nil
         state.isLoading = true
         return .run(
           operation: { [state] send in
-            let blueskyAccount = try await blueskyAPI.login(state.handle, state.password)
+            let blueskyAccount = try await blueskyAPI.login(state.pdsURL, state.handle, state.password)
             try await secureKeyValueStore.addBlueskyAccount(blueskyAccount)
             await send(.internalAction(.loggedIn(blueskyAccount)))
           },
@@ -92,18 +107,32 @@ public struct BlueskyLoginFeature: Sendable {
             }
           },
         )
+      case let .changedPdsURL(urlString):
+        state.pdsURL = urlString
+        return .send(.internalAction(.validate))
+      case let .changedHandle(handle):
+        state.handle = handle
+        return .send(.internalAction(.validate))
+      case let .changedPassword(password):
+        state.password = password
+        return .send(.internalAction(.validate))
+      case .binding:
+        return .none
       case .delegate:
         return .none
       case .internalAction(.validate):
-        state.isDisabledLoginButton = state.handle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-        state.password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        state.isDisabledLoginButton = (
+          state.handle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+          state.password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+          URL(string: state.pdsURL) == nil
+        )
         return .none
       case let .internalAction(.loggedIn(blueskyAccount)):
         state.isLoading = false
         return .run(
           operation: { send in
             await send(.delegate(.loggedIn(blueskyAccount)))
-            await dismiss()
+            await send(.close)
           },
         )
       case let .internalAction(.loginFailure(message)):
@@ -139,7 +168,7 @@ public struct BlueskyLoginPage: View {
   // MARK: - Properties
   @Bindable public var store: StoreOf<BlueskyLoginFeature>
 
-  @FocusState private var isFocused
+  @FocusState private var focusedField: BlueskyLoginFeature.State.Field?
 
   // MARK: - Body
   public var body: some View {
@@ -149,9 +178,12 @@ public struct BlueskyLoginPage: View {
           .navigationTitle("ログイン情報")
           .navigationBarTitleDisplayMode(.inline)
           .toolbar(
+            closeAction: {
+              store.send(.close)
+            },
             loginButtonDisabled: store.isDisabledLoginButton,
             loginAction: {
-              isFocused = false
+              focusedField = nil
               store.send(.login)
             },
           )
@@ -163,29 +195,75 @@ public struct BlueskyLoginPage: View {
 
   private var form: some View {
     Form {
-      Section {
-        TextField(
-          text: $store.handle.sending(\.changedHandle),
-          label: {
-            Text("ハンドル")
-          },
-        )
-        .focused($isFocused)
-        SecureField(
-          text: $store.password.sending(\.changedPassword),
-          label: {
-            Text("パスワード・アプリパスワード")
-          },
-        )
-        .focused($isFocused)
-      }
+      section
     }
+  }
+
+  private var section: some View {
+    Section {
+      pdsURLTextField
+      handleTextField
+      passwordTextField
+    }
+    .bind($store.focusedField, to: $focusedField)
+  }
+
+  private var pdsURLTextField: some View {
+    TextField(
+      text: $store.pdsURL.sending(\.changedPdsURL),
+      label: {
+        Text("https://bsky.social")
+      },
+    )
+    .keyboardType(.URL)
+    .focused($focusedField, equals: .pdsURL)
+  }
+
+  private var handleTextField: some View {
+    TextField(
+      text: $store.handle.sending(\.changedHandle),
+      label: {
+        Text("ハンドル")
+      },
+    )
+    .keyboardType(.twitter)
+    .focused($focusedField, equals: .handle)
+  }
+
+  private var passwordTextField: some View {
+    SecureField(
+      text: $store.password.sending(\.changedPassword),
+      label: {
+        Text("パスワード・アプリパスワード")
+      },
+    )
+    .keyboardType(.alphabet)
+    .focused($focusedField, equals: .password)
   }
 }
 
 private extension View {
-  func toolbar(loginButtonDisabled: Bool, loginAction: @escaping @MainActor () -> Void) -> some View {
+  func toolbar(
+    closeAction: @escaping @MainActor () -> Void,
+    loginButtonDisabled: Bool,
+    loginAction: @escaping @MainActor () -> Void,
+  ) -> some View {
     toolbar {
+      ToolbarItem(placement: .cancellationAction) {
+        if #available(iOS 26.0, *) {
+          Button(
+            role: .close,
+            action: closeAction,
+          )
+        } else {
+          Button(
+            action: closeAction,
+            label: {
+              Image(systemSymbol: .xmark)
+            },
+          )
+        }
+      }
       ToolbarItem(placement: .confirmationAction) {
         if #available(iOS 26.0, *) {
           Button(
