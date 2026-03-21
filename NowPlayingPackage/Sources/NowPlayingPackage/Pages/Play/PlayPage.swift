@@ -218,7 +218,6 @@ public struct PlayFeature: Sendable {
               await send(.internalAction(.showTweet(twitterAccounts, capturedImage)))
             case .bluesky:
               await send(.internalAction(.showPost(blueskyAccounts, capturedImage)))
-              return
             }
           },
         )
