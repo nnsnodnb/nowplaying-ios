@@ -12,10 +12,11 @@ import StubKit
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.date, .constant(.now))
+)
 struct TestTweetFeatureRemoveAttachmentImage {
-  @Test(
-    .dependency(\.date, .constant(.now))
-  )
+  @Test
   func testIt() async throws {
     let twitterMedia = try Stub.make(TwitterMedia.self)
 
@@ -38,6 +39,7 @@ struct TestTweetFeatureRemoveAttachmentImage {
     await store.send(.removeAttachmentImage) {
       $0.attachmentImage = nil
       $0.temporaryMedia = nil
+      $0.isEditing = true
     }
   }
 }
