@@ -270,7 +270,14 @@ public struct PlayFeature: Sendable {
           )
           return .none
         }
-        state.post = .init()
+        state.post = .init(
+          blueskyAccounts: blueskyAccounts,
+          title: songName,
+          artist: artistName,
+          album: state.album,
+          artwork: state.artworkImage,
+          capturedImage: capturedImage,
+        )
         return .none
       case .alert:
         return .none

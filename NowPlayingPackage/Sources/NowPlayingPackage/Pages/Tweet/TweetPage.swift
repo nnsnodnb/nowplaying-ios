@@ -183,13 +183,8 @@ public struct TweetFeature: Sendable {
       case .removeAttachmentImage:
         state.attachmentImage = nil
         state.temporaryMedia = nil
+        state.isEditing = true
         return .none
-      case .alert(.presented(.delete)):
-        return .run(
-          operation: { _ in
-            await dismiss()
-          },
-        )
       case let .showPreview(isShow):
         state.isShowPreview = isShow
         return .none
@@ -259,7 +254,17 @@ public struct TweetFeature: Sendable {
         return .none
       case .internalAction(.dismiss):
         state.showSuccess = false
-        return .send(.close)
+        return .run(
+          operation: { _ in
+            await dismiss()
+          },
+        )
+      case .alert(.presented(.delete)):
+        return .run(
+          operation: { _ in
+            await dismiss()
+          },
+        )
       case .alert:
         return .none
       }
@@ -285,7 +290,7 @@ public struct TweetPage: View {
     NavigationStack(
       root: {
         form
-          .navigationTitle("ポストを作成")
+          .navigationTitle("Xへポスト")
           .navigationBarTitleDisplayMode(.inline)
           .toolbar(
             disablePostButton: store.isDisablePostButton,
@@ -508,6 +513,9 @@ private extension View {
             Button(
               role: .confirm,
               action: postAction,
+              label: {
+                Text("ポスト")
+              },
             )
           } else {
             Button(

@@ -13,8 +13,7 @@ import Foundation
 @DependencyClient
 public struct BlueskyAPIClient: Sendable {
   public var login: @Sendable (String, String) async throws -> BlueskyAccount
-  public var getAccessToken: @Sendable (BlueskyAccount) async throws -> BlueskyOAuthToken.AccessToken
-  public var uploadMedia: @Sendable (BlueskyOAuthToken.AccessToken, Data) async throws -> Void
+  public var createPostRecord: @Sendable (BlueskyAccount, String, Data?) async throws -> Void
 
   // MARK: - Error
   public enum Error: Swift.Error {
@@ -72,32 +71,27 @@ extension BlueskyAPIClient: DependencyKey {
         throw Error.unknown
       }
     },
-    getAccessToken: { blueskyAccount in
+    createPostRecord: { blueskyAccount, text, imageData in
       let config = ATProtocolConfiguration()
       try await config.authenticate(with: blueskyAccount.handle, password: blueskyAccount.password)
-      let accessToken = try await Self.retrieveAccessToken(config: config)
-
-      return accessToken
-    },
-    uploadMedia: { accessToken, imageData in
-      let atProtoKit = await ATProtoKit()
-      let response = try await atProtoKit.uploadBlob(
-        accessToken: accessToken.rawValue,
-        filename: "image.jpeg",
-        imageData: imageData,
+      let atProtoKit = await ATProtoKit(sessionConfiguration: config)
+      let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProtoKit)
+      let embedIdentifier: ATProtoBluesky.EmbedIdentifier?
+      if let imageData {
+        embedIdentifier = .images(
+          images: [
+            .init(imageData: imageData, fileName: "image.jpeg", altText: text, aspectRatio: nil),
+          ],
+        )
+      } else {
+        embedIdentifier = nil
+      }
+      _ = try await atProtoBluesky.createPostRecord(
+        text: text,
+        embed: embedIdentifier,
       )
-
-      _ = response.blob
     },
   )
-
-  private static func retrieveAccessToken(
-    config: any SessionConfiguration,
-  ) async throws -> BlueskyOAuthToken.AccessToken {
-    let accessToken = try await config.keychainProtocol.retrieveAccessToken()
-
-    return .init(accessToken)
-  }
 }
 
 // MARK: - DependencyValues
