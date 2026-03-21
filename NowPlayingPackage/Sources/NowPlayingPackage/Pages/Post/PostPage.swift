@@ -35,7 +35,7 @@ public struct PostFeature: Sendable {
     public var attachImageType: AttachImageType = .onlyArtwork
     @Shared(.appStorage(.blueskyPostFormat))
     public var postFormat = ""
-    // TODO: @Presents public var selectBlueskyAccount: SelectBlueskyAccountFeature.State?
+    @Presents public var selectBlueskyAccount: SelectBlueskyAccountFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?
   }
 
@@ -50,7 +50,7 @@ public struct PostFeature: Sendable {
     case addCapturedImage
     case removeAttachmentImage
     case showPreview(Bool)
-    // case selectBlueskyAccount(PresentationAction<SelectBlueskyAccountFeature.Action>)
+    case selectBlueskyAccount(PresentationAction<SelectBlueskyAccountFeature.Action>)
     case internalAction(InternalAction)
     case alert(PresentationAction<Alert>)
 
@@ -149,10 +149,10 @@ public struct PostFeature: Sendable {
               let postableBlueskyAccount = state.postableBlueskyAccount else {
           return .none
         }
-//        state.selectBlueskyAccount = .init(
-//          blueskyAccounts: state.blueskyAccounts,
-//          selectedBlueskyAccount: postableBlueskyAccount,
-//        )
+        state.selectBlueskyAccount = .init(
+          blueskyAccounts: state.blueskyAccounts,
+          selectedBlueskyAccount: postableBlueskyAccount,
+        )
         return .none
       case .addArtwork:
         guard let artwork = state.artwork else { return .none }
@@ -170,8 +170,8 @@ public struct PostFeature: Sendable {
       case let .showPreview(isShow):
         state.isShowPreview = isShow
         return .none
-//      case .selectBlueskyAccount:
-//        return .none
+      case .selectBlueskyAccount:
+        return .none
       case .internalAction(.posted):
         state.isLoading = false
         state.showSuccess = true
@@ -216,9 +216,9 @@ public struct PostFeature: Sendable {
         return .none
       }
     }
-//    .ifLet(\.$selectBlueskyAccount, action: \.selectBlueskyAccount) {
-//      SelectBlueskyAccountFeature()
-//    }
+    .ifLet(\.$selectBlueskyAccount, action: \.selectBlueskyAccount) {
+      SelectBlueskyAccountFeature()
+    }
     .ifLet(\.$alert, action: \.alert)
   }
 }
@@ -255,10 +255,9 @@ public struct PostPage: View {
           }
           .interactiveDismissDisabled(store.isEditing)
           .alert($store.scope(state: \.alert, action: \.alert))
-          // TODO: 選択画面
-          // .sheet(item: $store.scope(state: \.selectBlueskyAccount, action: \.selectBlueskyAccount)) { store in
-          //   selectBlueskyAccountPage(store: store)
-          // }
+          .sheet(item: $store.scope(state: \.selectBlueskyAccount, action: \.selectBlueskyAccount)) { store in
+            selectBlueskyAccountPage(store: store)
+          }
           .fullScreenCover(isPresented: $store.isShowPreview.sending(\.showPreview)) {
             imageViewer
           }
@@ -412,12 +411,12 @@ public struct PostPage: View {
     .frame(width: 54, height: 54)
   }
 
-//  private func selectTwitterAccountPage(store: StoreOf<SelectTwitterAccountFeature>) -> some View {
-//    SelectTwitterAccountPage(store: store)
-//      .presentationDetents([.medium, .large])
-//      .presentationBackgroundInteraction(.disabled)
-//      .presentationBackground(.background)
-//  }
+  private func selectBlueskyAccountPage(store: StoreOf<SelectBlueskyAccountFeature>) -> some View {
+    SelectBlueskyAccountPage(store: store)
+      .presentationDetents([.medium, .large])
+      .presentationBackgroundInteraction(.disabled)
+      .presentationBackground(.background)
+  }
 
   private var imageViewer: some View {
     ImageViewer(

@@ -15,7 +15,7 @@ struct TestBlueskyLoginFeatureInternal {
   func testInternalValidateEnabled() async throws {
     let store = TestStore(
       initialState: BlueskyLoginFeature.State(
-        handle: "example.bsky.app",
+        handle: "example.bsky.social",
         password: "password",
       ),
       reducer: {
@@ -50,7 +50,7 @@ struct TestBlueskyLoginFeatureInternal {
   func testInternalValidateDisabledPasswordIsWhitespaceAndNewLines(password: String) async throws {
     let store = TestStore(
       initialState: BlueskyLoginFeature.State(
-        handle: "example.bsky.app",
+        handle: "example.bsky.social",
         password: password,
         isDisabledLoginButton: false,
       ),

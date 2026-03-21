@@ -1,32 +1,32 @@
 //
-//  SelectTwitterAccountPage.swift
+//  SelectBlueskyAccountPage.swift
 //  NowPlayingPackage
 //
-//  Created by Yuya Oka on 2026/03/17.
+//  Created by Yuya Oka on 2026/03/21.
 //
 
 import ComposableArchitecture
 import SwiftUI
 
 @Reducer
-public struct SelectTwitterAccountFeature: Sendable {
+public struct SelectBlueskyAccountFeature: Sendable {
   // MARK: - State
   @ObservableState
   public struct State: Equatable, Sendable {
-    public let twitterAccounts: [TwitterAccount]
-    public let selectedTwitterAccount: TwitterAccount
+    public let blueskyAccounts: [BlueskyAccount]
+    public let selectedBlueskyAccount: BlueskyAccount
   }
 
   // MARK: - Action
   public enum Action {
     case close
-    case select(TwitterAccount)
+    case select(BlueskyAccount)
     case delegate(Delegate)
 
     // MARK: - Delegate
     @CasePathable
     public enum Delegate {
-      case select(TwitterAccount)
+      case select(BlueskyAccount)
     }
   }
 
@@ -44,8 +44,8 @@ public struct SelectTwitterAccountFeature: Sendable {
             await dismiss()
           },
         )
-      case let .select(twitterAccount):
-        return .send(.delegate(.select(twitterAccount)))
+      case let .select(blueskyAccount):
+        return .send(.delegate(.select(blueskyAccount)))
       case .delegate(.select):
         return .run(
           operation: { _ in
@@ -59,9 +59,9 @@ public struct SelectTwitterAccountFeature: Sendable {
   }
 }
 
-public struct SelectTwitterAccountPage: View {
+public struct SelectBlueskyAccountPage: View {
   // MARK: - Properties
-  public let store: StoreOf<SelectTwitterAccountFeature>
+  public let store: StoreOf<SelectBlueskyAccountFeature>
 
   // MARK: - Body
   public var body: some View {
@@ -81,23 +81,23 @@ public struct SelectTwitterAccountPage: View {
 
   private var list: some View {
     List {
-      ForEach(store.twitterAccounts, id: \.profile.id) { twitterAccount in
-        row(twitterAccount: twitterAccount)
+      ForEach(store.blueskyAccounts, id: \.id) { blueskyAccount in
+        row(blueskyAccount: blueskyAccount)
       }
     }
     .listStyle(.insetGrouped)
   }
 
-  private func row(twitterAccount: TwitterAccount) -> some View {
+  private func row(blueskyAccount: BlueskyAccount) -> some View {
     Button(
       action: {
-        store.send(.select(twitterAccount))
+        store.send(.select(blueskyAccount))
       },
       label: {
-        TwitterProfileRow(
-          twitterAccount: twitterAccount,
+        BlueskyProfileRow(
+          blueskyAccount: blueskyAccount,
           showDefaultStar: false,
-          selected: store.selectedTwitterAccount == twitterAccount,
+          selected: store.selectedBlueskyAccount == blueskyAccount,
         )
         .foregroundStyle(Color.primary)
       },
@@ -124,31 +124,22 @@ private extension View {
   }
 }
 
-struct SelectTwitterAccountPage_Previews: PreviewProvider {
+struct SelectBlueskyAccountPage_Previews: PreviewProvider {
   static var previews: some View {
-    SelectTwitterAccountPage(
+    SelectBlueskyAccountPage(
       store: .init(
-        initialState: SelectTwitterAccountFeature.State(
-          twitterAccounts: [],
-          selectedTwitterAccount: TwitterAccount(
-            oauthToken: .init(
-              expiresIn: 7200,
-              accessToken: .init("mock_access_token"),
-              refreshToken: .init("mock_refresh_token"),
-              scope: "users.read",
-              expiresAt: .init(timeInterval: 7200, since: .init())
-            ),
-            profile: .init(
-              id: .init("1137201750"),
-              name: "小泉ひやかし🌻",
-              username: "nnsnodnb",
-              profileImageURL: URL(string: "https://pbs.twimg.com/profile_images/1593438620769488897/3kV4Mtvq_normal.jpg")!,
-            ),
-            isDefault: true,
-          )
+        initialState: SelectBlueskyAccountFeature.State(
+          blueskyAccounts: [],
+          selectedBlueskyAccount: .init(
+            id: .init("mock_did"),
+            handle: "example.bsky.social",
+            displayName: "Example",
+            avatarImageURL: nil,
+            password: "password",
+          ),
         ),
         reducer: {
-          SelectTwitterAccountFeature()
+          SelectBlueskyAccountFeature()
         },
       ),
     )
