@@ -170,6 +170,9 @@ public struct PostFeature: Sendable {
       case let .showPreview(isShow):
         state.isShowPreview = isShow
         return .none
+      case let .selectBlueskyAccount(.presented(.delegate(.select(blueskyAccount)))):
+        state.postableBlueskyAccount = blueskyAccount
+        return .none
       case .selectBlueskyAccount:
         return .none
       case .internalAction(.posted):
