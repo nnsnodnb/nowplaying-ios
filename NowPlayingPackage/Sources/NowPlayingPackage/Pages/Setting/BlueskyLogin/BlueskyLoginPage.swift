@@ -250,6 +250,9 @@ private extension View {
           Button(
             role: .confirm,
             action: loginAction,
+            label: {
+              Text("ログイン")
+            },
           )
           .disabled(loginButtonDisabled)
         } else {
