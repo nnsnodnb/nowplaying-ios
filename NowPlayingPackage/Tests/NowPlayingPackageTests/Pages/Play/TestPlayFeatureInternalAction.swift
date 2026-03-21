@@ -102,6 +102,32 @@ struct TestPlayFeatureInternalAction {
   }
 
   @Test
+  func testShowTweetSongNameIsLoading() async throws {
+    let store = TestStore(
+      initialState: PlayFeature.State(
+        songName: "読み込み中...",
+        artistName: "",
+      ),
+      reducer: {
+        PlayFeature()
+      },
+    )
+
+    let twitterAccount = try Stub.make(TwitterAccount.self)
+
+    await store.send(.internalAction(.showTweet([twitterAccount], .init(systemSymbol: .photo)))) {
+      $0.alert = AlertState(
+        title: {
+          TextState("投稿に必要な情報が取得できません")
+        },
+        message: {
+          TextState("曲名とアーティスト名が取得できていません")
+        },
+      )
+    }
+  }
+
+  @Test
   func testShowTweetArtistNameIsNil() async throws {
     let store = TestStore(
       initialState: PlayFeature.State(
@@ -116,6 +142,84 @@ struct TestPlayFeatureInternalAction {
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
     await store.send(.internalAction(.showTweet([twitterAccount], .init(systemSymbol: .photo)))) {
+      $0.alert = AlertState(
+        title: {
+          TextState("投稿に必要な情報が取得できません")
+        },
+        message: {
+          TextState("曲名とアーティスト名が取得できていません")
+        },
+      )
+    }
+  }
+
+  @Test
+  func testShowPostSongNameIsNil() async throws {
+    let store = TestStore(
+      initialState: PlayFeature.State(
+        songName: nil,
+        artistName: "アーティスト名",
+      ),
+      reducer: {
+        PlayFeature()
+      },
+    )
+
+    let blueskyAccount = try Stub.make(BlueskyAccount.self)
+
+    await store.send(.internalAction(.showPost([blueskyAccount], .init(systemSymbol: .photo)))) {
+      $0.alert = AlertState(
+        title: {
+          TextState("投稿に必要な情報が取得できません")
+        },
+        message: {
+          TextState("曲名とアーティスト名が取得できていません")
+        },
+      )
+    }
+  }
+
+  @Test
+  func testShowPostSongNameIsLoading() async throws {
+    let store = TestStore(
+      initialState: PlayFeature.State(
+        songName: "読み込み中...",
+        artistName: "",
+      ),
+      reducer: {
+        PlayFeature()
+      },
+    )
+
+    let blueskyAccount = try Stub.make(BlueskyAccount.self)
+
+    await store.send(.internalAction(.showPost([blueskyAccount], .init(systemSymbol: .photo)))) {
+      $0.alert = AlertState(
+        title: {
+          TextState("投稿に必要な情報が取得できません")
+        },
+        message: {
+          TextState("曲名とアーティスト名が取得できていません")
+        },
+      )
+    }
+  }
+
+  @Test
+  func testShowPostArtistNameIsNil() async throws {
+    let store = TestStore(
+      initialState: PlayFeature.State(
+        songName: "曲名",
+        artistName: nil,
+      ),
+      reducer: {
+        PlayFeature()
+      },
+    )
+
+    let blueskyAccount = try Stub.make(BlueskyAccount.self)
+
+    await store.send(.internalAction(.showPost([blueskyAccount], .init(systemSymbol: .photo)))) {
       $0.alert = AlertState(
         title: {
           TextState("投稿に必要な情報が取得できません")
