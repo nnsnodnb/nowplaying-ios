@@ -13,7 +13,8 @@ import Testing
 
 @MainActor
 @Suite(
-  .dependency(\.date, .constant(.now))
+  .dependency(\.date, .constant(.now)),
+  .dependency(\.defaultAppStorage, .inMemory)
 )
 struct TestTweetFeaturePreparePost {
   @Test

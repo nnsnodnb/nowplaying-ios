@@ -10,6 +10,9 @@ import ComposableArchitecture
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestSocialServiceSettingFeatureCopyFormat {
   @Test(
     arguments: [CopyFormatType.songTitle, CopyFormatType.artist, CopyFormatType.album]

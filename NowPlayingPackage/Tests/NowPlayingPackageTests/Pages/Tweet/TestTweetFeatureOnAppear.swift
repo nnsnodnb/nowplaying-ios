@@ -11,6 +11,9 @@ import StubKit
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestTweetFeatureOnAppear {
   @Test(
     arguments: [AttachImageType.onlyArtwork, AttachImageType.screenShot]

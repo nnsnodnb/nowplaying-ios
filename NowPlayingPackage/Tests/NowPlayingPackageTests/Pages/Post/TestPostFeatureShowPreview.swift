@@ -10,6 +10,9 @@ import ComposableArchitecture
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestPostFeatureShowPreview {
   @Test(arguments: [true, false])
   func testIt(isShow: Bool) async throws {
