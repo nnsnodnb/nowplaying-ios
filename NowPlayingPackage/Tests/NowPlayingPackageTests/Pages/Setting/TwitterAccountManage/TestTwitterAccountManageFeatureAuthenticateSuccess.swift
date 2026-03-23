@@ -24,8 +24,8 @@ struct TestTwitterAccountManageFeatureAuthenticateSuccess {
       $0.twitterOAuth.validateCallbackURL = { _, _ in .init("stub_authorization_code") }
       $0.twitterOAuth.requestAccessToken = { _, _ in twitterOAuthToken }
       $0.twitterAPI.getUserMe = { _ in twitterAccount.profile }
+      $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
       $0.secureKeyValueStore.addTwitterAccount = { _ in }
-      $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
       $0.secureKeyValueStore.setTwitterOAuthToken = { _, _ in }
     } operation: {
       let store = TestStore(

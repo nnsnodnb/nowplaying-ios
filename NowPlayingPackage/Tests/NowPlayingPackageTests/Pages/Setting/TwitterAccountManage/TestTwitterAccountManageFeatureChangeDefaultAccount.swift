@@ -70,8 +70,8 @@ struct TestTwitterAccountManageFeatureChangeDefaultAccount {
     }
 
     await withDependencies {
+      $0.secureKeyValueStore.getTwitterAccounts = { [updatedNotDefaultTwitterAccount, updatedDefaultTwitterAccount] }
       $0.secureKeyValueStore.updateDefaultTwitterAccount = { _ in }
-      $0.secureKeyValueStore.twitterAccounts = { [updatedNotDefaultTwitterAccount, updatedDefaultTwitterAccount] }
     } operation: {
       let store = TestStore(
         initialState: TwitterAccountManageFeature.State(

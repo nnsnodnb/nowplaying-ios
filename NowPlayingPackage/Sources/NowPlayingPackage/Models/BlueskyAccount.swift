@@ -12,14 +12,14 @@ import Tagged
 @MemberwiseInit(.public)
 public struct BlueskyAccount: Codable, Hashable, Sendable {
   // MARK: - Tagged
-  public typealias DID = Tagged<Self, String>
+  public typealias DID = Tagged<(Self, did: ()), String>
+  public typealias Password = Tagged<(Self, password: ()), String>
 
   // MARK: - Properties
   public let id: DID
   public let handle: String
   public let displayName: String?
   public let avatarImageURL: URL?
-  public let password: String
   @Init(.public)
   public private(set) var isDefault = false
 

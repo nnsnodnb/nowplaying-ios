@@ -243,7 +243,7 @@ public struct TweetFeature: Sendable {
         guard let postableTwitterAccount = state.postableTwitterAccount else { return .none }
         return .run(
           operation: { send in
-            let twitterAccounts = try await secureKeyValueStore.twitterAccounts()
+            let twitterAccounts = try await secureKeyValueStore.getTwitterAccounts()
             let postableTwitterAccount = twitterAccounts.first(where: { $0.profile.id == postableTwitterAccount.profile.id })
             await send(.internalAction(.refreshTwitterAccounts(twitterAccounts, postableTwitterAccount)))
           },

@@ -74,7 +74,7 @@ public struct BlueskyAccountManageFeature: Sendable {
       case .fetchBlueskyAccounts:
         return .run(
           operation: { send in
-            let blueskyAccounts = try await secureKeyValueStore.blueskyAccounts()
+            let blueskyAccounts = try await secureKeyValueStore.getBlueskyAccounts()
             await send(.internalAction(.fetchedBlueskyAccounts(blueskyAccounts)))
           },
         )

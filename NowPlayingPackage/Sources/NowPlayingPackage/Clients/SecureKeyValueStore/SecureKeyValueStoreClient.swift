@@ -12,24 +12,30 @@ import KeychainAccess
 
 @DependencyClient
 public struct SecureKeyValueStoreClient: Sendable {
-  public var twitterAccounts: @Sendable () async throws -> [TwitterAccount]
+  // TwitterAccount
+  public var getTwitterAccounts: @Sendable () async throws -> [TwitterAccount]
   public var addTwitterAccount: @Sendable (TwitterAccount) async throws -> Void
   public var updateDefaultTwitterAccount: @Sendable (TwitterAccount) async throws -> Void
   public var removeTwitterAccount: @Sendable (TwitterAccount) async throws -> Void
   public var setTwitterAccounts: @Sendable ([TwitterAccount]) async throws -> Void
+  // TwitterOAuthToken
   public var getTwitterOAuthToken: @Sendable (TwitterAccount) async throws -> TwitterOAuthToken?
   public var setTwitterOAuthToken: @Sendable (TwitterAccount, TwitterOAuthToken) async throws -> Void
-  public var blueskyAccounts: @Sendable () async throws -> [BlueskyAccount]
+  // BlueskyAccount
+  public var getBlueskyAccounts: @Sendable () async throws -> [BlueskyAccount]
   public var addBlueskyAccount: @Sendable (BlueskyAccount) async throws -> Void
   public var updateDefaultBlueskyAccount: @Sendable (BlueskyAccount) async throws -> Void
   public var removeBlueskyAccount: @Sendable (BlueskyAccount) async throws -> Void
   public var setBlueskyAccounts: @Sendable ([BlueskyAccount]) async throws -> Void
+  // BlueskyAccount.Password
+  public var getBlueskyAccountPassword: @Sendable (BlueskyAccount) async throws -> BlueskyAccount.Password?
+  public var setBlueskyAccountPassword: @Sendable (BlueskyAccount, BlueskyAccount.Password) async throws -> Void
 }
 
 // MARK: - DependencyKey
 extension SecureKeyValueStoreClient: DependencyKey {
   public static let liveValue: Self = .init(
-    twitterAccounts: {
+    getTwitterAccounts: {
       await Implementation.shared.getTwitterAccounts()
     },
     addTwitterAccount: { account in
@@ -50,7 +56,7 @@ extension SecureKeyValueStoreClient: DependencyKey {
     setTwitterOAuthToken: { account, oauthToken in
       await Implementation.shared.setTwitterOAuthToken(for: account, oauthToken: oauthToken)
     },
-    blueskyAccounts: {
+    getBlueskyAccounts: {
       await Implementation.shared.getBlueskyAccounts()
     },
     addBlueskyAccount: { account in
@@ -64,6 +70,12 @@ extension SecureKeyValueStoreClient: DependencyKey {
     },
     setBlueskyAccounts: { accounts in
       await Implementation.shared.setBlueskyAccounts(accounts)
+    },
+    getBlueskyAccountPassword: { account in
+      await Implementation.shared.getBlueskyAccountPassword(for: account)
+    },
+    setBlueskyAccountPassword: { account, password in
+      await Implementation.shared.setBlueskyAccountPassword(for: account, password: password)
     },
   )
 }
@@ -188,6 +200,14 @@ private extension SecureKeyValueStoreClient {
 
     func setBlueskyAccounts(_ accounts: [BlueskyAccount]) {
       keychain.set(accounts, key: .blueskyAccounts)
+    }
+
+    func getBlueskyAccountPassword(for account: BlueskyAccount) -> BlueskyAccount.Password? {
+      keychain.object(forKey: .blueskyAccountPassword(account.id))
+    }
+
+    func setBlueskyAccountPassword(for account: BlueskyAccount, password: BlueskyAccount.Password) {
+      keychain.set(password, key: .blueskyAccountPassword(account.id))
     }
   }
 }

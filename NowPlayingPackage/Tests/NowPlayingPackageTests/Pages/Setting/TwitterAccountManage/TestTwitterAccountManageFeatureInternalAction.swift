@@ -22,8 +22,8 @@ struct TestTwitterAccountManageFeatureInternalAction {
     await withDependencies {
       $0.twitterOAuth.requestAccessToken = { _, _ in twitterOAuthToken }
       $0.twitterAPI.getUserMe = { _ in twitterAccount.profile }
+      $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
       $0.secureKeyValueStore.addTwitterAccount = { _ in }
-      $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
       $0.secureKeyValueStore.setTwitterOAuthToken = { _, _ in }
     } operation: {
       let store = TestStore(
@@ -61,7 +61,7 @@ struct TestTwitterAccountManageFeatureInternalAction {
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
     await withDependencies {
-      $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
+      $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
     } operation: {
       let store = TestStore(
         initialState: TwitterAccountManageFeature.State(

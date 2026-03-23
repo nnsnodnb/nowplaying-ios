@@ -12,18 +12,21 @@ public extension Keychain {
   // MARK: - Keys
   enum Keys {
     case twitterAccounts
-    case blueskyAccounts
     case twitterOAuthToken(TwitterProfile.ID)
+    case blueskyAccounts
+    case blueskyAccountPassword(BlueskyAccount.DID)
 
     // MARK: - Properties
     public var rawValue: String {
       switch self {
       case .twitterAccounts:
         "twitter_accounts"
-      case .blueskyAccounts:
-        "bluesky_accounts"
       case let .twitterOAuthToken(id):
         "twitter_oauth_token_\(id.rawValue)"
+      case .blueskyAccounts:
+        "bluesky_accounts"
+      case let .blueskyAccountPassword(did):
+        "bluesky_account_password_\(did.rawValue)"
       }
     }
   }

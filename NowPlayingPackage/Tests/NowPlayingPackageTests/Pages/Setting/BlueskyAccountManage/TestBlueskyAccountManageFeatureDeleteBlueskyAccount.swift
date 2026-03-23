@@ -18,7 +18,7 @@ struct TestBlueskyAccountManageFeatureDeleteBlueskyAccount {
 
     await withDependencies {
       $0.secureKeyValueStore.removeBlueskyAccount = { _ in }
-      $0.secureKeyValueStore.blueskyAccounts = { [] }
+      $0.secureKeyValueStore.getBlueskyAccounts = { [] }
     } operation: {
       let store = TestStore(
         initialState: BlueskyAccountManageFeature.State(

@@ -87,7 +87,7 @@ public struct TwitterAccountManageFeature: Sendable {
       case .fetchTwitterAccounts:
         return .run(
           operation: { send in
-            let accounts = try await secureKeyValueStore.twitterAccounts()
+            let accounts = try await secureKeyValueStore.getTwitterAccounts()
             await send(.internalAction(.fetchedTwitterAccounts(accounts)))
           },
         )

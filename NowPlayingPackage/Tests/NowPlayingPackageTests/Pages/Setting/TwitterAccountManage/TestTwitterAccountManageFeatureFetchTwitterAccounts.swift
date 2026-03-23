@@ -19,7 +19,7 @@ struct TestTwitterAccountManageFeatureFetchTwitterAccounts {
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
     await withDependencies {
-      $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
+      $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
     } operation: {
       let store = TestStore(
         initialState: TwitterAccountManageFeature.State(),

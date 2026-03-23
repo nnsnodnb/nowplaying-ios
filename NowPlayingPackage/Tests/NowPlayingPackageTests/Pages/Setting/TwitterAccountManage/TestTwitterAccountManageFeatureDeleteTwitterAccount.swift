@@ -20,8 +20,8 @@ struct TestTwitterAccountManageFeatureDeleteTwitterAccount {
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
     await withDependencies {
+      $0.secureKeyValueStore.getTwitterAccounts = { [] }
       $0.secureKeyValueStore.removeTwitterAccount = { _ in }
-      $0.secureKeyValueStore.twitterAccounts = { [] }
     } operation: {
       let store = TestStore(
         initialState: TwitterAccountManageFeature.State(
