@@ -62,6 +62,7 @@ struct DevelopApp: App {
       MobileAds.shared.requestConfiguration.testDeviceIdentifiers = [
       ]
     }
+    Purchases.configure(withAPIKey: "appl_bFpdFCHLAyHiwuozSKJgbMNPZkD")
     SVProgressHUD.setDefaultMaskType(.black)
   }
 }

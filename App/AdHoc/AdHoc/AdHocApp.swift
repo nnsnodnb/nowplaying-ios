@@ -29,6 +29,7 @@ struct AdHocApp: App {
     Task {
       _ = await MobileAds.shared.start()
     }
+    Purchases.configure(withAPIKey: "appl_bFpdFCHLAyHiwuozSKJgbMNPZkD")
     SVProgressHUD.setDefaultMaskType(.black)
   }
 }
