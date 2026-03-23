@@ -15,18 +15,24 @@ struct TestSelectTwitterAccountFeatureSelect {
   @Test
   func testIt() async throws {
     let twitterAccount = try Stub.make(TwitterAccount.self)
+    var calledDismiss = false
 
-    let store = TestStore(
-      initialState: SelectTwitterAccountFeature.State(
-        twitterAccounts: [twitterAccount],
-        selectedTwitterAccount: twitterAccount,
-      ),
-      reducer: {
-        SelectTwitterAccountFeature()
-      },
-    )
+    await withDependencies {
+      $0.dismiss = DismissEffect { calledDismiss = true }
+    } operation: {
+      let store = TestStore(
+        initialState: SelectTwitterAccountFeature.State(
+          twitterAccounts: [twitterAccount],
+          selectedTwitterAccount: twitterAccount,
+        ),
+        reducer: {
+          SelectTwitterAccountFeature()
+        },
+      )
 
-    await store.send(.select(twitterAccount))
-    await store.receive(\.delegate.select, twitterAccount)
+      await store.send(.select(twitterAccount))
+      await store.receive(\.delegate.select, twitterAccount)
+      #expect(calledDismiss)
+    }
   }
 }

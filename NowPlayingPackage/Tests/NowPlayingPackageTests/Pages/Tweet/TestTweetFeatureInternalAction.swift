@@ -12,16 +12,19 @@ import StubKit
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.date, .constant(.now))
+)
 struct TestTweetFeatureInternalAction {
-  @Test(
-    .dependency(\.date, .constant(.now))
-  )
+  @Test
   func testUploadImageDataSuccess() async throws {
     let mainQueue = DispatchQueue.test
     let twitterAccount = try Stub.make(TwitterAccount.self)
     let twitterMedia = try Stub.make(TwitterMedia.self)
+    var calledDismiss = false
 
     await withDependencies {
+      $0.dismiss = DismissEffect { calledDismiss = true }
       $0.mainQueue = mainQueue.eraseToAnyScheduler()
       $0.twitterAPI.uploadMedia = { _, _ in twitterMedia }
       $0.twitterAPI.post = { _, _, _ in }
@@ -60,13 +63,11 @@ struct TestTweetFeatureInternalAction {
       await store.receive(\.internalAction.dismiss) {
         $0.showSuccess = false
       }
-      await store.receive(\.close)
+      #expect(calledDismiss)
     }
   }
 
-  @Test(
-    .dependency(\.date, .constant(.now))
-  )
+  @Test
   func testUploadImageDataFailure() async throws {
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
@@ -122,17 +123,11 @@ struct TestTweetFeatureInternalAction {
   func testPostSuccess(hasMedia: Bool) async throws {
     let mainQueue = DispatchQueue.test
     let twitterAccount = try Stub.make(TwitterAccount.self)
-    let twitterMedia: TwitterMedia? = try withDependencies {
-      $0.date = .constant(.now)
-    } operation: {
-      if hasMedia {
-        return try Stub.make(TwitterMedia.self)
-      } else {
-        return nil
-      }
-    }
+    let twitterMedia: TwitterMedia? = hasMedia ? try Stub.make(TwitterMedia.self) : nil
+    var calledDismiss = false
 
     await withDependencies {
+      $0.dismiss = DismissEffect { calledDismiss = true }
       $0.mainQueue = mainQueue.eraseToAnyScheduler()
       $0.twitterAPI.post = { _, _, _ in }
     } operation: {
@@ -168,15 +163,17 @@ struct TestTweetFeatureInternalAction {
       await store.receive(\.internalAction.dismiss) {
         $0.showSuccess = false
       }
-      await store.receive(\.close)
+      #expect(calledDismiss)
     }
   }
 
   @Test
   func testPostFailure() async throws {
     let twitterAccount = try Stub.make(TwitterAccount.self)
+    var calledDismiss = false
 
     await withDependencies {
+      $0.dismiss = DismissEffect { calledDismiss = true }
       $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
       $0.twitterAPI.post = { _, _, _ in throw TwitterAPIClient.Error.internalError }
     } operation: {
@@ -216,6 +213,7 @@ struct TestTweetFeatureInternalAction {
       }
       await store.receive(\.internalAction.fetchTwitterAccounts)
       await store.receive(\.internalAction.refreshTwitterAccounts)
+      #expect(!calledDismiss)
     }
   }
 
@@ -223,8 +221,10 @@ struct TestTweetFeatureInternalAction {
   func testPosted() async throws {
     let mainQueue = DispatchQueue.test
     let twitterAccount = try Stub.make(TwitterAccount.self)
+    var calledDismiss = false
 
     await withDependencies {
+      $0.dismiss = DismissEffect { calledDismiss = true }
       $0.mainQueue = mainQueue.eraseToAnyScheduler()
     } operation: {
       let store = TestStore(
@@ -252,15 +252,17 @@ struct TestTweetFeatureInternalAction {
       await store.receive(\.internalAction.dismiss) {
         $0.showSuccess = false
       }
-      await store.receive(\.close)
+      #expect(calledDismiss)
     }
   }
 
   @Test
   func test_PostFailure() async throws {
     let twitterAccount = try Stub.make(TwitterAccount.self)
+    var calledDismiss = false
 
     await withDependencies {
+      $0.dismiss = DismissEffect { calledDismiss = true }
       $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
     } operation: {
       let store = TestStore(
@@ -298,6 +300,7 @@ struct TestTweetFeatureInternalAction {
       }
       await store.receive(\.internalAction.fetchTwitterAccounts)
       await store.receive(\.internalAction.refreshTwitterAccounts)
+      #expect(!calledDismiss)
     }
   }
 }

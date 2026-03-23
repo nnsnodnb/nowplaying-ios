@@ -12,6 +12,9 @@ import StubKit
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.date, .constant(.now))
+)
 struct TestTweetFeaturePreparePost {
   @Test
   func testIsDisablePostButton() async throws {
@@ -39,8 +42,10 @@ struct TestTweetFeaturePreparePost {
   @Test
   func testGetAccessTokenFailure() async throws {
     let twitterAccount = try Stub.make(TwitterAccount.self)
+    var calledDismiss = false
 
     await withDependencies {
+      $0.dismiss = DismissEffect { calledDismiss = true }
       $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
       $0.twitterOAuth.getAccessToken = { _ in throw TwitterOAuthClient.Error.internalError }
     } operation: {
@@ -82,18 +87,19 @@ struct TestTweetFeaturePreparePost {
       }
       await store.receive(\.internalAction.fetchTwitterAccounts)
       await store.receive(\.internalAction.refreshTwitterAccounts)
+      #expect(!calledDismiss)
     }
   }
 
-  @Test(
-    .dependency(\.date, .constant(.now))
-  )
-  func testExistTemporaryMedia() async throws {
+  @Test(arguments: [true, false])
+  func testExistTemporaryMedia(isEditing: Bool) async throws {
     let mainQueue = DispatchQueue.test
     let twitterAccount = try Stub.make(TwitterAccount.self)
     let twitterMedia = try Stub.make(TwitterMedia.self)
+    var calledDismiss = false
 
     await withDependencies {
+      $0.dismiss = DismissEffect { calledDismiss = true }
       $0.mainQueue = mainQueue.eraseToAnyScheduler()
       $0.twitterAPI.post = { _, _, _ in }
       $0.twitterOAuth.getAccessToken = { _ in .init("stub_access_token") }
@@ -110,6 +116,7 @@ struct TestTweetFeaturePreparePost {
           postableTwitterAccount: twitterAccount,
           text: "曲名 / アーティスト名 #NowPlaying",
           temporaryMedia: twitterMedia,
+          isEditing: isEditing,
           isDisablePostButton: false,
         ),
         reducer: {
@@ -129,19 +136,19 @@ struct TestTweetFeaturePreparePost {
       await store.receive(\.internalAction.dismiss) {
         $0.showSuccess = false
       }
-      await store.receive(\.close)
+      #expect(calledDismiss)
     }
   }
 
-  @Test(
-    .dependency(\.date, .constant(.now))
-  )
-  func testExistAttachmentImage() async throws {
+  @Test(arguments: [true, false])
+  func testExistAttachmentImage(isEditing: Bool) async throws {
     let mainQueue = DispatchQueue.test
     let twitterAccount = try Stub.make(TwitterAccount.self)
     let twitterMedia = try Stub.make(TwitterMedia.self)
+    var calledDismiss = false
 
     await withDependencies {
+      $0.dismiss = DismissEffect { calledDismiss = true }
       $0.mainQueue = mainQueue.eraseToAnyScheduler()
       $0.twitterAPI.uploadMedia = { _, _ in twitterMedia }
       $0.twitterAPI.post = { _, _, _ in }
@@ -158,6 +165,7 @@ struct TestTweetFeaturePreparePost {
           attachmentImage: .init(systemSymbol: .photoFill),
           postableTwitterAccount: twitterAccount,
           text: "曲名 / アーティスト名 #NowPlaying",
+          isEditing: isEditing,
           isDisablePostButton: false,
         ),
         reducer: {
@@ -180,18 +188,18 @@ struct TestTweetFeaturePreparePost {
       await store.receive(\.internalAction.dismiss) {
         $0.showSuccess = false
       }
-      await store.receive(\.close)
+      #expect(calledDismiss)
     }
   }
 
-  @Test(
-    .dependency(\.date, .constant(.now))
-  )
-  func testOnlyText() async throws {
+  @Test(arguments: [true, false])
+  func testOnlyText(isEditing: Bool) async throws {
     let mainQueue = DispatchQueue.test
     let twitterAccount = try Stub.make(TwitterAccount.self)
+    var calledDismiss = true
 
     await withDependencies {
+      $0.dismiss = DismissEffect { calledDismiss = true }
       $0.mainQueue = mainQueue.eraseToAnyScheduler()
       $0.twitterAPI.post = { _, _, _ in }
       $0.twitterOAuth.getAccessToken = { _ in .init("stub_access_token") }
@@ -206,6 +214,7 @@ struct TestTweetFeaturePreparePost {
           capturedImage: .init(systemSymbol: .photo),
           postableTwitterAccount: twitterAccount,
           text: "曲名 / アーティスト名 #NowPlaying",
+          isEditing: isEditing,
           isDisablePostButton: false,
         ),
         reducer: {
@@ -225,7 +234,7 @@ struct TestTweetFeaturePreparePost {
       await store.receive(\.internalAction.dismiss) {
         $0.showSuccess = false
       }
-      await store.receive(\.close)
+      #expect(calledDismiss)
     }
   }
 }

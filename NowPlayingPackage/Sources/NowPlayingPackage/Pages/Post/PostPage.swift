@@ -1,43 +1,41 @@
 //
-//  TweetPage.swift
+//  PostPage.swift
 //  NowPlayingPackage
 //
-//  Created by Yuya Oka on 2026/03/12.
+//  Created by Yuya Oka on 2026/03/20.
 //
 
 import ComposableArchitecture
-import Dependencies
 import ImageViewer
 import NukeUI
 import SwiftUI
 
 @Reducer
-public struct TweetFeature: Sendable {
+public struct PostFeature: Sendable {
   // MARK: - State
   @ObservableState
   public struct State: Equatable, Sendable {
-    public var twitterAccounts: [TwitterAccount]
+    public var blueskyAccounts: [BlueskyAccount]
     public let title: String
     public let artist: String
     public let album: String?
     public let artwork: UIImage?
     public let capturedImage: UIImage
     public var attachmentImage: UIImage?
-    public var postableTwitterAccount: TwitterAccount?
+    public var postableBlueskyAccount: BlueskyAccount?
     public var text = ""
-    public var temporaryMedia: TwitterMedia?
     public var isEditing = false
     public var isDisablePostButton = false
     public var isShowPreview = false
     public var isLoading = false
     public var showSuccess = false
-    @Shared(.appStorage(.twitterIsAttachImage))
+    @Shared(.appStorage(.blueskyIsAttachImage))
     public var isAttachImage = true
-    @Shared(.appStorage(.twitterWithImageType))
+    @Shared(.appStorage(.blueskyWithImageType))
     public var attachImageType: AttachImageType = .onlyArtwork
-    @Shared(.appStorage(.twitterPostFormat))
+    @Shared(.appStorage(.blueskyPostFormat))
     public var postFormat = ""
-    @Presents public var selectTwitterAccount: SelectTwitterAccountFeature.State?
+    @Presents public var selectBlueskyAccount: SelectBlueskyAccountFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?
   }
 
@@ -45,54 +43,47 @@ public struct TweetFeature: Sendable {
   public enum Action {
     case onAppear
     case close
-    case preparePost
+    case post
     case changedText(String)
-    case showSelectTwitterAccount
+    case showSelectBlueskyAccount
     case addArtwork
     case addCapturedImage
     case removeAttachmentImage
     case showPreview(Bool)
-    case selectTwitterAccount(PresentationAction<SelectTwitterAccountFeature.Action>)
+    case selectBlueskyAccount(PresentationAction<SelectBlueskyAccountFeature.Action>)
     case internalAction(InternalAction)
     case alert(PresentationAction<Alert>)
 
     // MARK: - InternalAction
     @CasePathable
     public enum InternalAction {
-      case uploadImageData(TwitterOAuthToken.AccessToken, Data)
-      case post(TwitterOAuthToken.AccessToken, TwitterMedia?)
       case posted
       case postFailure(String)
-      case fetchTwitterAccounts
-      case refreshTwitterAccounts([TwitterAccount], TwitterAccount?)
       case dismiss
     }
 
     // MARK: - Alert
     @CasePathable
     public enum Alert: Equatable, Sendable {
-      case delete
       case close
+      case delete
     }
   }
 
+  // MARK: - Dependency
   @Dependency(\.dismiss)
   private var dismiss
+  @Dependency(\.blueskyAPI)
+  private var blueskyAPI
   @Dependency(\.mainQueue)
   private var mainQueue
-  @Dependency(\.secureKeyValueStore)
-  private var secureKeyValueStore
-  @Dependency(\.twitterAPI)
-  private var twitterAPI
-  @Dependency(\.twitterOAuth)
-  private var twitterOAuth
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
       case .onAppear:
-        state.postableTwitterAccount = state.twitterAccounts.first(where: { $0.isDefault })
+        state.postableBlueskyAccount = state.blueskyAccounts.first(where: { $0.isDefault })
         state.text = state.postFormat
           .replacingOccurrences(of: "__songtitle__", with: state.title)
           .replacingOccurrences(of: "__artist__", with: state.artist)
@@ -134,26 +125,18 @@ public struct TweetFeature: Sendable {
             await dismiss()
           },
         )
-      case .preparePost:
+      case .post:
         guard !state.isDisablePostButton,
-              let twitterAccount = state.postableTwitterAccount else { return .none }
+              let blueskyAccount = state.postableBlueskyAccount else { return .none }
         state.isLoading = true
         return .run(
           operation: { [state] send in
-            let accessToken = try await twitterOAuth.getAccessToken(twitterAccount.oauthToken)
-            // 有効期限内のメディアであればそのまま使用する
-            if let media = state.temporaryMedia,
-               !media.isExpired {
-              await send(.internalAction(.post(accessToken, media)))
-            } else if let attachmentImage = state.attachmentImage,
-                      let imageData = attachmentImage.jpegData(compressionQuality: 0.3) {
-              await send(.internalAction(.uploadImageData(accessToken, imageData)))
-            } else {
-              await send(.internalAction(.post(accessToken, nil)))
-            }
+            let imageData = state.attachmentImage?.jpegData(compressionQuality: 0.3)
+            try await blueskyAPI.createPostRecord(blueskyAccount, state.text, imageData)
+            await send(.internalAction(.posted))
           },
           catch: { _, send in
-            await send(.internalAction(.postFailure("認証情報の取得に失敗しました")))
+            await send(.internalAction(.postFailure("ポストに失敗しました")))
           },
         )
       case let .changedText(text):
@@ -161,14 +144,14 @@ public struct TweetFeature: Sendable {
         state.isEditing = true
         state.isDisablePostButton = text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         return .none
-      case .showSelectTwitterAccount:
-        guard state.twitterAccounts.count > 1,
-              let postableTwitterAccount = state.postableTwitterAccount else {
+      case .showSelectBlueskyAccount:
+        guard state.blueskyAccounts.count > 1,
+              let postableBlueskyAccount = state.postableBlueskyAccount else {
           return .none
         }
-        state.selectTwitterAccount = .init(
-          twitterAccounts: state.twitterAccounts,
-          selectedTwitterAccount: postableTwitterAccount,
+        state.selectBlueskyAccount = .init(
+          blueskyAccounts: state.blueskyAccounts,
+          selectedBlueskyAccount: postableBlueskyAccount,
         )
         return .none
       case .addArtwork:
@@ -182,38 +165,16 @@ public struct TweetFeature: Sendable {
         return .none
       case .removeAttachmentImage:
         state.attachmentImage = nil
-        state.temporaryMedia = nil
         state.isEditing = true
         return .none
       case let .showPreview(isShow):
         state.isShowPreview = isShow
         return .none
-      case let .selectTwitterAccount(.presented(.delegate(.select(twitterAccount)))):
-        state.postableTwitterAccount = twitterAccount
+      case let .selectBlueskyAccount(.presented(.delegate(.select(blueskyAccount)))):
+        state.postableBlueskyAccount = blueskyAccount
         return .none
-      case .selectTwitterAccount:
+      case .selectBlueskyAccount:
         return .none
-      case let .internalAction(.uploadImageData(accessToken, imageData)):
-        return .run(
-          operation: { send in
-            let media = try await twitterAPI.uploadMedia(accessToken, imageData)
-            await send(.internalAction(.post(accessToken, media)))
-          },
-          catch: { _, send in
-            await send(.internalAction(.postFailure("画像のアップロードに失敗しました")))
-          },
-        )
-      case let .internalAction(.post(accessToken, media)):
-        state.temporaryMedia = media
-        return .run(
-          operation: { [text = state.text] send in
-            try await twitterAPI.post(accessToken, media?.id, text)
-            await send(.internalAction(.posted))
-          },
-          catch: { _, send in
-            await send(.internalAction(.postFailure("ポストに失敗しました")))
-          },
-        )
       case .internalAction(.posted):
         state.isLoading = false
         state.showSuccess = true
@@ -238,19 +199,6 @@ public struct TweetFeature: Sendable {
             )
           },
         )
-        return .send(.internalAction(.fetchTwitterAccounts))
-      case .internalAction(.fetchTwitterAccounts):
-        guard let postableTwitterAccount = state.postableTwitterAccount else { return .none }
-        return .run(
-          operation: { send in
-            let twitterAccounts = try await secureKeyValueStore.twitterAccounts()
-            let postableTwitterAccount = twitterAccounts.first(where: { $0.profile.id == postableTwitterAccount.profile.id })
-            await send(.internalAction(.refreshTwitterAccounts(twitterAccounts, postableTwitterAccount)))
-          },
-        )
-      case let .internalAction(.refreshTwitterAccounts(twitterAccounts, postableTwitterAccount)):
-        state.twitterAccounts = twitterAccounts
-        state.postableTwitterAccount = postableTwitterAccount
         return .none
       case .internalAction(.dismiss):
         state.showSuccess = false
@@ -259,6 +207,8 @@ public struct TweetFeature: Sendable {
             await dismiss()
           },
         )
+      case .internalAction:
+        return .none
       case .alert(.presented(.delete)):
         return .run(
           operation: { _ in
@@ -269,16 +219,16 @@ public struct TweetFeature: Sendable {
         return .none
       }
     }
-    .ifLet(\.$selectTwitterAccount, action: \.selectTwitterAccount) {
-      SelectTwitterAccountFeature()
+    .ifLet(\.$selectBlueskyAccount, action: \.selectBlueskyAccount) {
+      SelectBlueskyAccountFeature()
     }
     .ifLet(\.$alert, action: \.alert)
   }
 }
 
-public struct TweetPage: View {
+public struct PostPage: View {
   // MARK: - Properties
-  @Bindable public var store: StoreOf<TweetFeature>
+  @Bindable public var store: StoreOf<PostFeature>
 
   @Environment(\.colorScheme)
   private var colorScheme
@@ -290,15 +240,15 @@ public struct TweetPage: View {
     NavigationStack(
       root: {
         form
-          .navigationTitle("Xへポスト")
+          .navigationTitle("Blueskyへポスト")
           .navigationBarTitleDisplayMode(.inline)
           .toolbar(
-            disablePostButton: store.isDisablePostButton,
+            disablePostButton: false,
             cancelAction: {
               store.send(.close)
             },
             postAction: {
-              store.send(.preparePost)
+              store.send(.post)
               isFocused = false
             },
           )
@@ -308,8 +258,8 @@ public struct TweetPage: View {
           }
           .interactiveDismissDisabled(store.isEditing)
           .alert($store.scope(state: \.alert, action: \.alert))
-          .sheet(item: $store.scope(state: \.selectTwitterAccount, action: \.selectTwitterAccount)) { store in
-            selectTwitterAccountPage(store: store)
+          .sheet(item: $store.scope(state: \.selectBlueskyAccount, action: \.selectBlueskyAccount)) { store in
+            selectBlueskyAccountPage(store: store)
           }
           .fullScreenCover(isPresented: $store.isShowPreview.sending(\.showPreview)) {
             imageViewer
@@ -354,13 +304,13 @@ public struct TweetPage: View {
   }
 
   @ViewBuilder private var iconButton: some View {
-    if let twitterAccount = store.postableTwitterAccount {
+    if let blueskyAccount = store.postableBlueskyAccount {
       Button(
         action: {
-          store.send(.showSelectTwitterAccount)
+          store.send(.showSelectBlueskyAccount)
         },
         label: {
-          LazyImage(url: twitterAccount.profile.profileImageURL) { state in
+          LazyImage(url: blueskyAccount.avatarImageURL) { state in
             if state.isLoading {
               ProgressView()
                 .progressViewStyle(.circular)
@@ -381,7 +331,7 @@ public struct TweetPage: View {
       )
       .frame(width: 54, height: 54)
       .clipShape(Circle())
-      .disabled(store.twitterAccounts.count == 1)
+      .disabled(store.blueskyAccounts.count == 1)
     }
   }
 
@@ -464,8 +414,8 @@ public struct TweetPage: View {
     .frame(width: 54, height: 54)
   }
 
-  private func selectTwitterAccountPage(store: StoreOf<SelectTwitterAccountFeature>) -> some View {
-    SelectTwitterAccountPage(store: store)
+  private func selectBlueskyAccountPage(store: StoreOf<SelectBlueskyAccountFeature>) -> some View {
+    SelectBlueskyAccountPage(store: store)
       .presentationDetents([.medium, .large])
       .presentationBackgroundInteraction(.disabled)
       .presentationBackground(.background)
@@ -532,22 +482,20 @@ private extension View {
   }
 }
 
-struct TweetPage_Previews: PreviewProvider {
-  static var previews: some View {
-    TweetPage(
-      store: .init(
-        initialState: TweetFeature.State(
-          twitterAccounts: [],
-          title: "タイトル",
-          artist: "アーティスト",
-          album: "アルバム名",
-          artwork: nil,
-          capturedImage: .init()
-        ),
-        reducer: {
-          TweetFeature()
-        },
+#Preview {
+  PostPage(
+    store: .init(
+      initialState: PostFeature.State(
+        blueskyAccounts: [],
+        title: "曲名",
+        artist: "アーティスト名",
+        album: "アルバム",
+        artwork: nil,
+        capturedImage: .init(systemSymbol: .photo),
       ),
-    )
-  }
+      reducer: {
+        PostFeature()
+      },
+    ),
+  )
 }

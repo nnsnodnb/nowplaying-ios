@@ -13,6 +13,7 @@ import Foundation
 @DependencyClient
 public struct BlueskyAPIClient: Sendable {
   public var login: @Sendable (String, String) async throws -> BlueskyAccount
+  public var createPostRecord: @Sendable (BlueskyAccount, String, Data?) async throws -> Void
 
   // MARK: - Error
   public enum Error: Swift.Error {
@@ -50,6 +51,7 @@ extension BlueskyAPIClient: DependencyKey {
           handle: profile.actorHandle,
           displayName: profile.displayName,
           avatarImageURL: profile.avatarImageURL,
+          password: password,
           isDefault: false,
         )
 
@@ -68,6 +70,26 @@ extension BlueskyAPIClient: DependencyKey {
       } catch {
         throw Error.unknown
       }
+    },
+    createPostRecord: { blueskyAccount, text, imageData in
+      let config = ATProtocolConfiguration()
+      try await config.authenticate(with: blueskyAccount.handle, password: blueskyAccount.password)
+      let atProtoKit = await ATProtoKit(sessionConfiguration: config)
+      let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProtoKit)
+      let embedIdentifier: ATProtoBluesky.EmbedIdentifier?
+      if let imageData {
+        embedIdentifier = .images(
+          images: [
+            .init(imageData: imageData, fileName: "image.jpeg", altText: text, aspectRatio: nil),
+          ],
+        )
+      } else {
+        embedIdentifier = nil
+      }
+      _ = try await atProtoBluesky.createPostRecord(
+        text: text,
+        embed: embedIdentifier,
+      )
     },
   )
 }

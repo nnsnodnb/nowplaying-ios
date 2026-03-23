@@ -20,8 +20,8 @@ struct TestBlueskyLoginFeatureChangedHandle {
       },
     )
 
-    await store.send(.changedHandle("example.bsky.app")) {
-      $0.handle = "example.bsky.app"
+    await store.send(.changedHandle("example.bsky.social")) {
+      $0.handle = "example.bsky.social"
     }
     await store.receive(\.internalAction.validate)
   }
