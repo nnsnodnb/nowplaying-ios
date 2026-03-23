@@ -131,13 +131,6 @@ struct SelectTwitterAccountPage_Previews: PreviewProvider {
         initialState: SelectTwitterAccountFeature.State(
           twitterAccounts: [],
           selectedTwitterAccount: TwitterAccount(
-            oauthToken: .init(
-              expiresIn: 7200,
-              accessToken: .init("mock_access_token"),
-              refreshToken: .init("mock_refresh_token"),
-              scope: "users.read",
-              expiresAt: .init(timeInterval: 7200, since: .init())
-            ),
             profile: .init(
               id: .init("1137201750"),
               name: "小泉ひやかし🌻",

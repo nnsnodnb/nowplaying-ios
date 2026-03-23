@@ -140,7 +140,7 @@ public struct TweetFeature: Sendable {
         state.isLoading = true
         return .run(
           operation: { [state] send in
-            let accessToken = try await twitterOAuth.getAccessToken(twitterAccount.oauthToken)
+            let accessToken = try await twitterOAuth.getAccessToken(twitterAccount)
             // 有効期限内のメディアであればそのまま使用する
             if let media = state.temporaryMedia,
                !media.isExpired {

@@ -62,12 +62,10 @@ struct TestTwitterAccountManageFeatureChangeDefaultAccount {
     }
     let updatedNotDefaultTwitterAccount = try Stub.make(TwitterAccount.self) {
       $0.set(\.profile, value: twitterProfileA)
-      $0.set(\.oauthToken, value: twitterAccountA.oauthToken)
       $0.set(\.isDefault, value: false)
     }
     let updatedDefaultTwitterAccount = try Stub.make(TwitterAccount.self) {
       $0.set(\.profile, value: twitterProfileB)
-      $0.set(\.oauthToken, value: twitterAccountB.oauthToken)
       $0.set(\.isDefault, value: true)
     }
 

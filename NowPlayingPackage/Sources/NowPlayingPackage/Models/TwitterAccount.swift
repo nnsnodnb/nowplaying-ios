@@ -11,7 +11,6 @@ import Tagged
 
 public struct TwitterAccount: Codable, Hashable, Sendable {
   // MARK: - Properties
-  public let oauthToken: TwitterOAuthToken
   public let profile: TwitterProfile
   public private(set) var isDefault = false
 

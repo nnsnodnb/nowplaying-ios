@@ -172,10 +172,11 @@ public struct TwitterAccountManageFeature: Sendable {
         return .run(
           priority: .high,
           operation: { send in
-            let accessToken = try await twitterOAuth.getAccessToken(oauthToken)
-            let profile = try await twitterAPI.getUserMe(accessToken)
-            let twitterAccount = TwitterAccount(oauthToken: oauthToken, profile: profile)
+            // ここではoauthToken.accessTokenは取得した直後で有効の想定なので直接アクセスする
+            let profile = try await twitterAPI.getUserMe(oauthToken.accessToken)
+            let twitterAccount = TwitterAccount(profile: profile)
             try await secureKeyValueStore.addTwitterAccount(twitterAccount)
+            try await secureKeyValueStore.setTwitterOAuthToken(twitterAccount, oauthToken)
             await send(.internalAction(.savedTwitterAccount(twitterAccount.profile)))
           },
           catch: { _, send in

@@ -10,9 +10,22 @@ import KeychainAccess
 
 public extension Keychain {
   // MARK: - Keys
-  enum Keys: String {
-    case twitterAccounts = "twitter_accounts"
-    case blueskyAccounts = "bluesky_accounts"
+  enum Keys {
+    case twitterAccounts
+    case blueskyAccounts
+    case twitterOAuthToken(TwitterProfile.ID)
+
+    // MARK: - Properties
+    public var rawValue: String {
+      switch self {
+      case .twitterAccounts:
+        "twitter_accounts"
+      case .blueskyAccounts:
+        "bluesky_accounts"
+      case let .twitterOAuthToken(id):
+        "twitter_oauth_token_\(id.rawValue)"
+      }
+    }
   }
 
   func object<D: Decodable>(forKey key: Keys) -> D? {
