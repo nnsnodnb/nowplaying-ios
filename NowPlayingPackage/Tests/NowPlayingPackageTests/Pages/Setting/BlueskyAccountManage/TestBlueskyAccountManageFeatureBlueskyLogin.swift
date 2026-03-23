@@ -17,7 +17,7 @@ struct TestBlueskyAccountManageFeatureBlueskyLogin {
     let blueskyAccount = try Stub.make(BlueskyAccount.self)
 
     await withDependencies {
-      $0.secureKeyValueStore.blueskyAccounts = { [blueskyAccount] }
+      $0.secureKeyValueStore.getBlueskyAccounts = { [blueskyAccount] }
     } operation: {
       let store = TestStore(
         initialState: BlueskyAccountManageFeature.State(

@@ -127,7 +127,7 @@ public struct PlayFeature: Sendable {
         case .twitter:
           return .run(
             operation: { send in
-              let twitterAccounts = try await secureKeyValueStore.twitterAccounts()
+              let twitterAccounts = try await secureKeyValueStore.getTwitterAccounts()
               guard !twitterAccounts.isEmpty else {
                 await send(.internalAction(.emptySNSAccounts(.twitter)))
                 return
@@ -138,7 +138,7 @@ public struct PlayFeature: Sendable {
         case .bluesky:
           return .run(
             operation: { send in
-              let blueskyAccounts = try await secureKeyValueStore.blueskyAccounts()
+              let blueskyAccounts = try await secureKeyValueStore.getBlueskyAccounts()
               guard !blueskyAccounts.isEmpty else {
                 await send(.internalAction(.emptySNSAccounts(.bluesky)))
                 return

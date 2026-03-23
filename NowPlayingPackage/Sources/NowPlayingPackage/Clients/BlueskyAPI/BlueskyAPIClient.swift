@@ -20,6 +20,7 @@ public struct BlueskyAPIClient: Sendable {
     case invalidHandleOrPassword
     case enabledTwoFactorAuthentication
     case invalidHandle
+    case requiredLogin
     case unknown
   }
 }
@@ -51,7 +52,6 @@ extension BlueskyAPIClient: DependencyKey {
           handle: profile.actorHandle,
           displayName: profile.displayName,
           avatarImageURL: profile.avatarImageURL,
-          password: password,
           isDefault: false,
         )
 
@@ -72,8 +72,14 @@ extension BlueskyAPIClient: DependencyKey {
       }
     },
     createPostRecord: { blueskyAccount, text, imageData in
+      @Dependency(\.secureKeyValueStore)
+      var secureKeyValueStore
+
+      guard let password = try await secureKeyValueStore.getBlueskyAccountPassword(blueskyAccount) else {
+        throw Error.requiredLogin
+      }
       let config = ATProtocolConfiguration()
-      try await config.authenticate(with: blueskyAccount.handle, password: blueskyAccount.password)
+      try await config.authenticate(with: blueskyAccount.handle, password: password.rawValue)
       let atProtoKit = await ATProtoKit(sessionConfiguration: config)
       let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProtoKit)
       let embedIdentifier: ATProtoBluesky.EmbedIdentifier?

@@ -17,13 +17,14 @@ struct TestTwitterAccountManageFeatureInternalAction {
   )
   func testRequestGetUserMe() async throws {
     let twitterAccount = try Stub.make(TwitterAccount.self)
+    let twitterOAuthToken = try Stub.make(TwitterOAuthToken.self)
 
     await withDependencies {
-      $0.twitterOAuth.requestAccessToken = { _, _ in twitterAccount.oauthToken }
-      $0.twitterOAuth.getAccessToken = { _ in .init("stub_access_token") }
+      $0.twitterOAuth.requestAccessToken = { _, _ in twitterOAuthToken }
       $0.twitterAPI.getUserMe = { _ in twitterAccount.profile }
+      $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
       $0.secureKeyValueStore.addTwitterAccount = { _ in }
-      $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
+      $0.secureKeyValueStore.setTwitterOAuthToken = { _, _ in }
     } operation: {
       let store = TestStore(
         initialState: TwitterAccountManageFeature.State(
@@ -34,7 +35,7 @@ struct TestTwitterAccountManageFeatureInternalAction {
         },
       )
 
-      await store.send(.internalAction(.requestGetUserMe(twitterAccount.oauthToken)))
+      await store.send(.internalAction(.requestGetUserMe(twitterOAuthToken)))
       await store.receive(\.internalAction.savedTwitterAccount, twitterAccount.profile) {
         $0.isLoading = false
         $0.alert = AlertState(
@@ -60,7 +61,7 @@ struct TestTwitterAccountManageFeatureInternalAction {
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
     await withDependencies {
-      $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
+      $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
     } operation: {
       let store = TestStore(
         initialState: TwitterAccountManageFeature.State(

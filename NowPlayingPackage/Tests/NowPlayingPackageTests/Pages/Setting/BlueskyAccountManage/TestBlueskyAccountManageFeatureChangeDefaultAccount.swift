@@ -49,7 +49,7 @@ struct TestBlueskyAccountManageFeatureChangeDefaultAccount {
     }
 
     await withDependencies {
-      $0.secureKeyValueStore.blueskyAccounts = { [updatedBlueskyAccountA, updatedBlueskyAccountB] }
+      $0.secureKeyValueStore.getBlueskyAccounts = { [updatedBlueskyAccountA, updatedBlueskyAccountB] }
       $0.secureKeyValueStore.updateDefaultBlueskyAccount = { _ in }
     } operation: {
       let store = TestStore(

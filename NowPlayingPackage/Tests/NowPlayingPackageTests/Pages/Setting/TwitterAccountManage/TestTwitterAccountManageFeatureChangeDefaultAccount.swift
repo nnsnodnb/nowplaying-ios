@@ -62,18 +62,16 @@ struct TestTwitterAccountManageFeatureChangeDefaultAccount {
     }
     let updatedNotDefaultTwitterAccount = try Stub.make(TwitterAccount.self) {
       $0.set(\.profile, value: twitterProfileA)
-      $0.set(\.oauthToken, value: twitterAccountA.oauthToken)
       $0.set(\.isDefault, value: false)
     }
     let updatedDefaultTwitterAccount = try Stub.make(TwitterAccount.self) {
       $0.set(\.profile, value: twitterProfileB)
-      $0.set(\.oauthToken, value: twitterAccountB.oauthToken)
       $0.set(\.isDefault, value: true)
     }
 
     await withDependencies {
+      $0.secureKeyValueStore.getTwitterAccounts = { [updatedNotDefaultTwitterAccount, updatedDefaultTwitterAccount] }
       $0.secureKeyValueStore.updateDefaultTwitterAccount = { _ in }
-      $0.secureKeyValueStore.twitterAccounts = { [updatedNotDefaultTwitterAccount, updatedDefaultTwitterAccount] }
     } operation: {
       let store = TestStore(
         initialState: TwitterAccountManageFeature.State(

@@ -34,6 +34,7 @@ struct TestBlueskyLoginFeatureLogin {
     await withDependencies {
       $0.blueskyAPI.login = { _, _ in blueskyAccount }
       $0.secureKeyValueStore.addBlueskyAccount = { _ in }
+      $0.secureKeyValueStore.setBlueskyAccountPassword = { _, _ in }
     } operation: {
       let store = TestStore(
         initialState: BlueskyLoginFeature.State(

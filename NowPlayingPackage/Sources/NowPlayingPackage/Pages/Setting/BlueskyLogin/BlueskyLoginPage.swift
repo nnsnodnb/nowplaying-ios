@@ -85,6 +85,7 @@ public struct BlueskyLoginFeature: Sendable {
           operation: { [state] send in
             let blueskyAccount = try await blueskyAPI.login(state.handle, state.password)
             try await secureKeyValueStore.addBlueskyAccount(blueskyAccount)
+            try await secureKeyValueStore.setBlueskyAccountPassword(blueskyAccount, .init(state.password))
             await send(.internalAction(.loggedIn(blueskyAccount)))
           },
           catch: { error, send in
@@ -99,6 +100,9 @@ public struct BlueskyLoginFeature: Sendable {
               await send(.internalAction(.loginFailure("2要素認証が有効になっています。アプリパスワードを入力してください")))
             case .invalidHandle:
               await send(.internalAction(.loginFailure("ハンドルが間違っていませんか？")))
+            case .requiredLogin:
+              // MEMO: 普通は絶対にでない
+              await send(.internalAction(.loginFailure("先にログインをしてください")))
             case .unknown:
               await send(.internalAction(.loginFailure("不明なエラーが発生しました")))
             }

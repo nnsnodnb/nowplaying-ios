@@ -15,7 +15,7 @@ struct TestTwitterAccountManageFeatureOnAppear {
   @Test(
     .dependencies {
       $0.twitterOAuth.getCallbackURLScheme = { "test-scheme" }
-      $0.secureKeyValueStore.twitterAccounts = { [] }
+      $0.secureKeyValueStore.getTwitterAccounts = { [] }
     }
   )
   func testIt() async throws {

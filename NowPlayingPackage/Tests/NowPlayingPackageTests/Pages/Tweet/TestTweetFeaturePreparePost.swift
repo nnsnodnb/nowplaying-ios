@@ -46,7 +46,7 @@ struct TestTweetFeaturePreparePost {
 
     await withDependencies {
       $0.dismiss = DismissEffect { calledDismiss = true }
-      $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
+      $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
       $0.twitterOAuth.getAccessToken = { _ in throw TwitterOAuthClient.Error.internalError }
     } operation: {
       let store = TestStore(

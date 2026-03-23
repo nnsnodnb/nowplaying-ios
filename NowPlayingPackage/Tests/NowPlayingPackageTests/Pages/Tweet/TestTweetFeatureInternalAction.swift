@@ -72,7 +72,7 @@ struct TestTweetFeatureInternalAction {
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
     await withDependencies {
-      $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
+      $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
       $0.twitterAPI.uploadMedia = { _, _ in throw TwitterAPIClient.Error.internalError }
     } operation: {
       let store = TestStore(
@@ -174,7 +174,7 @@ struct TestTweetFeatureInternalAction {
 
     await withDependencies {
       $0.dismiss = DismissEffect { calledDismiss = true }
-      $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
+      $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
       $0.twitterAPI.post = { _, _, _ in throw TwitterAPIClient.Error.internalError }
     } operation: {
       let store = TestStore(
@@ -263,7 +263,7 @@ struct TestTweetFeatureInternalAction {
 
     await withDependencies {
       $0.dismiss = DismissEffect { calledDismiss = true }
-      $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
+      $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
     } operation: {
       let store = TestStore(
         initialState: TweetFeature.State(

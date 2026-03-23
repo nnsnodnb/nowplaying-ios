@@ -135,7 +135,6 @@ struct SelectBlueskyAccountPage_Previews: PreviewProvider {
             handle: "example.bsky.social",
             displayName: "Example",
             avatarImageURL: nil,
-            password: "password",
           ),
         ),
         reducer: {

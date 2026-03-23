@@ -20,6 +20,7 @@ public struct TwitterOAuthClient: Sendable {
   // MARK: - Error
   public enum Error: Swift.Error {
     case invalidCallbackURL
+    case requiredOAuth
     case internalError
   }
 
@@ -27,7 +28,7 @@ public struct TwitterOAuthClient: Sendable {
   public var getAuthenticateURL: @Sendable () throws -> (URL, CodeVerifier)
   public var validateCallbackURL: @Sendable (URL, CodeVerifier) throws -> AuthorizationCode
   public var requestAccessToken: @Sendable (CodeVerifier, AuthorizationCode) async throws -> TwitterOAuthToken
-  public var getAccessToken: @Sendable (TwitterOAuthToken) async throws -> TwitterOAuthToken.AccessToken
+  public var getAccessToken: @Sendable (TwitterAccount) async throws -> TwitterOAuthToken.AccessToken
 
   fileprivate static let _callbackURLScheme = "nowplaying-ss5dnc-el0eskszufn3qactsets"
   fileprivate static let _clientID = "cFkwa24zTlhGck1KUkViZENOUHc6MTpjaQ"
@@ -108,10 +109,16 @@ extension TwitterOAuthClient: DependencyKey {
 
       return oauthToken
     },
-    getAccessToken: { oauthToken in
+    getAccessToken: { account in
+      @Dependency(\.secureKeyValueStore)
+      var secureKeyValueStore
+
+      guard let oauthToken = try await secureKeyValueStore.getTwitterOAuthToken(account) else {
+        throw Error.requiredOAuth
+      }
       let accessToken: TwitterOAuthToken.AccessToken
       if oauthToken.isExpired {
-        let oauthToken = try await Self.refreshAccessToken(oauthToken.refreshToken)
+        let oauthToken = try await Self.refreshAccessToken(for: account, refreshToken: oauthToken.refreshToken)
         return oauthToken.accessToken
       } else {
         return oauthToken.accessToken
@@ -119,7 +126,10 @@ extension TwitterOAuthClient: DependencyKey {
     },
   )
 
-  private static func refreshAccessToken(_ refreshToken: TwitterOAuthToken.RefreshToken) async throws -> TwitterOAuthToken {
+  private static func refreshAccessToken(
+    for account: TwitterAccount,
+    refreshToken: TwitterOAuthToken.RefreshToken,
+  ) async throws -> TwitterOAuthToken {
     var urlComponents = URLComponents(string: "https://api.x.com")!
     urlComponents.path = "/2/oauth2/token"
     guard let url = urlComponents.url else {
@@ -147,16 +157,7 @@ extension TwitterOAuthClient: DependencyKey {
     @Dependency(\.secureKeyValueStore)
     var secureKeyValueStore
 
-    var twitterAccounts = try await secureKeyValueStore.twitterAccounts()
-    if let index = twitterAccounts.firstIndex(where: { $0.oauthToken.refreshToken == refreshToken }),
-       let twitterAccount = twitterAccounts[safe: index] {
-      twitterAccounts[index] = .init(
-        oauthToken: oauthToken,
-        profile: twitterAccount.profile,
-        isDefault: twitterAccount.isDefault,
-      )
-      try await secureKeyValueStore.setTwitterAccounts(twitterAccounts)
-    }
+    try await secureKeyValueStore.setTwitterOAuthToken(account, oauthToken)
 
     return oauthToken
   }

@@ -21,7 +21,7 @@ struct TestPlayFeatureShowPost {
     await withDependencies {
       $0.imageRenderer.image = { .init(systemSymbol: .photo) }
       $0.mainQueue = mainQueue.eraseToAnyScheduler()
-      $0.secureKeyValueStore.twitterAccounts = { [twitterAccount] }
+      $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
     } operation: {
       let store = TestStore(
         initialState: PlayFeature.State(
@@ -52,7 +52,7 @@ struct TestPlayFeatureShowPost {
 
   @Test(
     .dependencies {
-      $0.secureKeyValueStore.twitterAccounts = { [] }
+      $0.secureKeyValueStore.getTwitterAccounts = { [] }
     }
   )
   func testTwitterAccountIsEmpty() async throws {
@@ -88,7 +88,7 @@ struct TestPlayFeatureShowPost {
     await withDependencies {
       $0.imageRenderer.image = { .init(systemSymbol: .photo) }
       $0.mainQueue = mainQueue.eraseToAnyScheduler()
-      $0.secureKeyValueStore.blueskyAccounts = { [blueskyAccount] }
+      $0.secureKeyValueStore.getBlueskyAccounts = { [blueskyAccount] }
     } operation: {
       let store = TestStore(
         initialState: PlayFeature.State(
@@ -119,7 +119,7 @@ struct TestPlayFeatureShowPost {
 
   @Test(
     .dependencies {
-      $0.secureKeyValueStore.blueskyAccounts = { [] }
+      $0.secureKeyValueStore.getBlueskyAccounts = { [] }
     }
   )
   func testBlueskyAccountIsEmpty() async throws {
