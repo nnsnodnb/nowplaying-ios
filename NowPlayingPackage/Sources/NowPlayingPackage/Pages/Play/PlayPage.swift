@@ -16,6 +16,7 @@ public struct PlayFeature: Sendable {
   @ObservableState
   @MemberwiseInit(.public)
   public struct State: Equatable {
+    public var isPurchasedHideAds: Bool
     @Init(default: nil)
     public var artworkImage: UIImage?
     @Init(default: nil)
@@ -27,6 +28,7 @@ public struct PlayFeature: Sendable {
     public var isPlaying = false
     @Init(default: nil)
     public var bannerAdUnitID: String?
+    @Init(default: nil)
     @Presents public var setting: SettingFeature.State?
     @Presents public var tweet: TweetFeature.State?
     @Presents public var post: PostFeature.State?
@@ -147,6 +149,9 @@ public struct PlayFeature: Sendable {
             },
           )
         }
+      case .setting(.presented(.delegate(.hideAds))):
+        state.isPurchasedHideAds = true
+        return .none
       case .setting:
         return .none
       case .tweet:
@@ -468,7 +473,7 @@ public struct PlayPage: View {
   }
 
   @ViewBuilder private var bottomBanner: some View {
-    if let adUnitID = store.bannerAdUnitID {
+    if !store.isPurchasedHideAds, let adUnitID = store.bannerAdUnitID {
       PlayerBottomAdBanner(adUnitID: adUnitID)
     }
   }
@@ -478,7 +483,7 @@ struct PlayPage_Previews: PreviewProvider {
   static var previews: some View {
     PlayPage(
       store: .init(
-        initialState: PlayFeature.State(),
+        initialState: PlayFeature.State(isPurchasedHideAds: false),
         reducer: {
           PlayFeature()
         },

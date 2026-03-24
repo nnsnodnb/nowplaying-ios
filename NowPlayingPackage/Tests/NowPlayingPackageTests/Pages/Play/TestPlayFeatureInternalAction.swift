@@ -33,7 +33,9 @@ struct TestPlayFeatureInternalAction {
       $0.mediaPlayer.getNowPlayingArtwork = { _ in .init(systemSymbol: .photo) }
     } operation: {
       let store = TestStore(
-        initialState: PlayFeature.State(),
+        initialState: PlayFeature.State(
+          isPurchasedHideAds: false,
+        ),
         reducer: {
           PlayFeature()
         },
@@ -62,7 +64,9 @@ struct TestPlayFeatureInternalAction {
   )
   func testRequestArtwork() async throws {
     let store = TestStore(
-      initialState: PlayFeature.State(),
+      initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
+      ),
       reducer: {
         PlayFeature()
       },
@@ -79,6 +83,7 @@ struct TestPlayFeatureInternalAction {
   func testShowTweetSongNameIsNil() async throws {
     let store = TestStore(
       initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
         songName: nil,
         artistName: "アーティスト名",
       ),
@@ -105,6 +110,7 @@ struct TestPlayFeatureInternalAction {
   func testShowTweetSongNameIsLoading() async throws {
     let store = TestStore(
       initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
         songName: "読み込み中...",
         artistName: "",
       ),
@@ -131,6 +137,7 @@ struct TestPlayFeatureInternalAction {
   func testShowTweetArtistNameIsNil() async throws {
     let store = TestStore(
       initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
         songName: "曲名",
         artistName: nil,
       ),
@@ -157,6 +164,7 @@ struct TestPlayFeatureInternalAction {
   func testShowPostSongNameIsNil() async throws {
     let store = TestStore(
       initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
         songName: nil,
         artistName: "アーティスト名",
       ),
@@ -183,6 +191,7 @@ struct TestPlayFeatureInternalAction {
   func testShowPostSongNameIsLoading() async throws {
     let store = TestStore(
       initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
         songName: "読み込み中...",
         artistName: "",
       ),
@@ -209,6 +218,7 @@ struct TestPlayFeatureInternalAction {
   func testShowPostArtistNameIsNil() async throws {
     let store = TestStore(
       initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
         songName: "曲名",
         artistName: nil,
       ),

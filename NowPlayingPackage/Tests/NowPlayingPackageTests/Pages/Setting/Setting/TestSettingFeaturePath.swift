@@ -48,4 +48,22 @@ struct TestSettingFeaturePath {
       $0.path.append(.blueskyAccountManage(.init()))
     }
   }
+
+  @Test
+  func testPathElementPaidContentDelegateHideAds() async throws {
+    var path = StackState<SettingFeature.Path.State>()
+    path[id: 0] = .paidContent(.init())
+
+    let store = TestStore(
+      initialState: SettingFeature.State(
+        path: path,
+      ),
+      reducer: {
+        SettingFeature()
+      },
+    )
+
+    await store.send(.path(.element(id: 0, action: .paidContent(.delegate(.hideAds)))))
+    await store.receive(\.delegate.hideAds)
+  }
 }

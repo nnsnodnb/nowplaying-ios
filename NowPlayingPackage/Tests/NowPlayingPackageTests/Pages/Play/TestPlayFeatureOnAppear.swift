@@ -35,7 +35,9 @@ struct TestPlayFeatureOnAppear {
       $0.mediaPlayer.getNowPlayingArtwork = { _ in .init(systemSymbol: .photo) }
     } operation: {
       let store = TestStore(
-        initialState: PlayFeature.State(),
+        initialState: PlayFeature.State(
+          isPurchasedHideAds: false,
+        ),
         reducer: {
           PlayFeature()
         },
@@ -68,7 +70,9 @@ struct TestPlayFeatureOnAppear {
   )
   func testMediaLibraryDenied() async throws {
     let store = TestStore(
-      initialState: PlayFeature.State(),
+      initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
+      ),
       reducer: {
         PlayFeature()
       },
@@ -102,7 +106,9 @@ struct TestPlayFeatureOnAppear {
   )
   func testMediaLibraryRestricted() async throws {
     let store = TestStore(
-      initialState: PlayFeature.State(),
+      initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
+      ),
       reducer: {
         PlayFeature()
       },

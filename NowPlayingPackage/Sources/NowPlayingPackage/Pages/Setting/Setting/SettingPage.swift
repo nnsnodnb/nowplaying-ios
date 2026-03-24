@@ -74,6 +74,13 @@ public struct SettingFeature: Sendable {
     case pushLicenseList
     case path(StackActionOf<Path>)
     case openSafari(State.SafariURL?)
+    case delegate(Delegate)
+
+    // MARK: - Delegate
+    @CasePathable
+    public enum Delegate {
+      case hideAds
+    }
   }
 
   // MARK: - Dependency
@@ -111,10 +118,14 @@ public struct SettingFeature: Sendable {
       case .path(.element(id: _, action: .blueskySetting(.delegate(.pushBlueskyAccountManage)))):
         state.path.append(.blueskyAccountManage(.init()))
         return .none
+      case .path(.element(id: _, action: .paidContent(.delegate(.hideAds)))):
+        return .send(.delegate(.hideAds))
       case .path:
         return .none
       case let .openSafari(safariURL):
         state.safariURL = safariURL
+        return .none
+      case .delegate:
         return .none
       }
     }
