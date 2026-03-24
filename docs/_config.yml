@@ -1,0 +1,104 @@
+#page title
+page_title                                :
+
+# App Info
+ios_app_id                                : 1289764391
+
+appstore_link                             : https://itunes.apple.com/jp/app/nowplaying-%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B%E3%81%A0%E3%81%91%E3%81%A7%E3%83%84%E3%82%A4%E3%83%BC%E3%83%88/id1289764391?mt=8
+
+app_icon                                  : assets/appicon.png
+app_name                                  : NowPlaying
+app_price                                 : 無料 ( 一部コンテンツ有料 )
+app_description                           : 今聞いている音楽をTwitterとマストドンにシェアしよう！
+
+enable_smart_app_banner                   : true
+
+
+
+# Information About Yourself
+your_name                                 : Yuya Oka
+your_link                                 : https://nnsnodnb.github.io
+your_city                                 : Chiba, Japan
+email_address                             : nnsnodnb@gmail.com
+facebook_username                         : nnsnodnb
+instagram_username                        : nnsnodnb
+twitter_username                          : nnsnodnb
+github_username                           : nnsnodnb
+
+
+
+# Feature List                            Edit, add or remove features to be presented.
+features                                  :
+
+  - title                                 : Twitterシェア
+    description                           : 自分自身でシェアすることも可能ですが、1回限りの購入で自動的にツイートする機能もあり！
+    fontawesome_icon_name                 : fab fa-twitter
+    
+  - title                                 : Mastodonシェア
+    description                           : 自分自身でシェアすることも、自動でトゥートする機能あり！（現在の時点では無料！！）
+    fontawesome_icon_name                 : fab fa-mastodon
+
+  - title                                 : あなたも開発に参加💻
+    description                           : 気が狂ってしまったのか、GitHubにてソースコードを公開しています！ぜひPull Request等を😎
+    fontawesome_icon_name                 : fas fa-file-code
+
+  - title                                 : 皆様のおかげでユーザ数7000人超え🤩🤩
+    description                           : 本当にいつも使ってくれてありがとうございます🙇‍♂️ (月間使用ユーザ数：3400人)
+    fontawesome_icon_name                 : fas fa-user
+
+
+# Theme Settings
+topbar_color                              : "#000000"
+topbar_transparency                       : 0.1
+topbar_title_color                        : "#ffffff"
+
+cover_image                               : assets/headerimage.jpg
+cover_overlay_color                       : "#363b3d"
+cover_overlay_transparency                : 0.8
+
+device_color                              : white                                     # Set to: blue, black, yellow, coral or white.
+
+body_background_color                     : "ffffff"
+
+link_color                                : "#1d63ea"
+
+app_title_color                           : "#ffffff"
+app_price_color                           : "#ffffff"
+app_description_color                     : "#ffffff"
+
+feature_title_color                       : "#000000"
+feature_text_color                        : "#666666"
+
+feature_icons_foreground_color            : "#1d63ea"
+feature_icons_background_color            : "#e6e6e6"
+
+social_icons_foreground_color             : "#666666"
+social_icons_background_color             : "#e6e6e6"
+
+footer_text_color                         : "#666666"
+
+
+
+
+
+
+
+
+
+
+
+
+
+####################################################
+### Jekyll Configuration. No need to touch this. ###
+####################################################
+
+# Set the Sass partials directory, as we're using @imports
+sass:
+  style: :compressed # You might prefer to minify using :compressed
+
+# Exclude these files from your production _site
+exclude:
+  - LICENSE
+  - README.md
+  - CNAME
