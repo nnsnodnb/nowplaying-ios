@@ -1,21 +1,84 @@
 {
-  "appPolicies": {
-    "eula": "",
-    "policies": [
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
       {
-        "locale": "en_US",
-        "policyText": "",
-        "policyURL": ""
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
       }
     ]
   },
-  "identifier": "F1F4B189",
-  "nonRenewingSubscriptions": [],
-  "products": [
+  "identifier" : "F1F4B189",
+  "nonRenewingSubscriptions" : [
+
   ],
-  "subscriptionGroups": [],
-  "version": {
-    "major": 4,
-    "minor": 0
+  "products" : [
+    {
+      "displayPrice" : "320",
+      "familyShareable" : false,
+      "internalID" : "6EFC3F7E",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "バナー広告削除",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "moe.nnsnodnb.NowPlaying.hideAdMob",
+      "referenceName" : "バナー広告削除",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "320",
+      "familyShareable" : false,
+      "internalID" : "A87DDF61",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "自動ツイート",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "moe.nnsnodnb.NowPlaying.autoTweet",
+      "referenceName" : "自動ツイート",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "300",
+      "familyShareable" : false,
+      "internalID" : "FA04D0EB",
+      "localizations" : [
+        {
+          "description" : "開発者にコーヒー代をプレゼントします",
+          "displayName" : "コーヒーを買ってあげる",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "moe.nnsnodnb.BuyMeACoffee",
+      "referenceName" : "Buy me a coffee",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "ja",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "JPN",
+    "_storeKitErrors" : [
+
+    ],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
   }
 }
