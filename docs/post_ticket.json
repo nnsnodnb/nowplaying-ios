@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "ticket_count": 30,
+      "price": 100
+    },
+    {
+      "ticket_count": 160,
+      "price": 500
+    },
+    {
+      "ticket_count": 350,
+      "price": 1000
+    },
+    {
+      "ticket_count": 1200,
+      "price": 3000,
+    },
+    {
+      "ticket_count": 4200,
+      "price": 10000
+    }
+  ]
+}
