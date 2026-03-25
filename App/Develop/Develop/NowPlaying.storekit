@@ -58,6 +58,81 @@
       "productID" : "moe.nnsnodnb.BuyMeACoffee",
       "referenceName" : "Buy me a coffee",
       "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "100",
+      "familyShareable" : false,
+      "internalID" : "973DC88A",
+      "localizations" : [
+        {
+          "description" : "メディア・テキストでそれぞれ1枚消費します",
+          "displayName" : "投稿チケット (30枚)",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "moe.nnsnodnb.NowPlaying.postTicket30",
+      "referenceName" : "投稿チケット (30枚)",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "500",
+      "familyShareable" : false,
+      "internalID" : "51F7C38C",
+      "localizations" : [
+        {
+          "description" : "メディア・テキストでそれぞれ1枚消費します",
+          "displayName" : "投稿チケット (160枚)",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "moe.nnsnodnb.NowPlaying.postTicket160",
+      "referenceName" : "投稿チケット (160枚)",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "1000",
+      "familyShareable" : false,
+      "internalID" : "37C19E86",
+      "localizations" : [
+        {
+          "description" : "メディア・テキストでそれぞれ1枚消費します",
+          "displayName" : "投稿チケット (350枚)",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "moe.nnsnodnb.NowPlaying.postTicket350",
+      "referenceName" : "投稿チケット (350枚)",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "3000",
+      "familyShareable" : false,
+      "internalID" : "39177B7F",
+      "localizations" : [
+        {
+          "description" : "メディア・テキストでそれぞれ1枚消費します",
+          "displayName" : "投稿チケット (1,200枚) ",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "moe.nnsnodnb.NowPlaying.postTicket1200",
+      "referenceName" : "投稿チケット (1,200枚) ",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "10000",
+      "familyShareable" : false,
+      "internalID" : "B10DFB12",
+      "localizations" : [
+        {
+          "description" : "メディア・テキストでそれぞれ1枚消費します",
+          "displayName" : "投稿チケット (4,200枚)",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "moe.nnsnodnb.NowPlaying.postTicket4200",
+      "referenceName" : "投稿チケット (4,200枚)",
+      "type" : "Consumable"
     }
   ],
   "settings" : {

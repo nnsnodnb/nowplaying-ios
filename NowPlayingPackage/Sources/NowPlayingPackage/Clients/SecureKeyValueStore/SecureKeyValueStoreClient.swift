@@ -33,6 +33,9 @@ public struct SecureKeyValueStoreClient: Sendable {
   // In-App Purchases
   public var getNonConsumables: @Sendable () async throws -> [NonConsumable]
   public var addNonConsumable: @Sendable (NonConsumable) async throws -> Void
+  // AvailablePostTicket
+  public var getAvailablePostTicket: @Sendable () async throws -> AvailablePostTicket
+  public var setAvailablePostTicket: @Sendable (AvailablePostTicket) async throws -> Void
 }
 
 // MARK: - DependencyKey
@@ -85,6 +88,12 @@ extension SecureKeyValueStoreClient: DependencyKey {
     },
     addNonConsumable: { nonConsumable in
       await Implementation.shared.addNonConsumable(nonConsumable)
+    },
+    getAvailablePostTicket: {
+      await Implementation.shared.getAvailablePostTicket()
+    },
+    setAvailablePostTicket: { availablePostTicket in
+      await Implementation.shared.setAvailablePostTicket(availablePostTicket)
     },
   )
 }
@@ -227,6 +236,14 @@ private extension SecureKeyValueStoreClient {
       let nonConsumables = getNonConsumables()
       guard !nonConsumables.contains(nonConsumable) else { return }
       keychain.set(nonConsumables + [nonConsumable], key: .purchasedNonConsumables)
+    }
+
+    func getAvailablePostTicket() -> AvailablePostTicket {
+      keychain.object(forKey: .availablePostTicket) ?? .initial
+    }
+
+    func setAvailablePostTicket(_ availablePostTicket: AvailablePostTicket) {
+      keychain.set(availablePostTicket, key: .availablePostTicket)
     }
   }
 }

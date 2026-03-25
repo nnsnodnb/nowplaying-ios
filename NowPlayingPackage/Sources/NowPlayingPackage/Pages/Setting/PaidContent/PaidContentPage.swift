@@ -17,6 +17,11 @@ public struct PaidContentFeature: Sendable {
     public var isLoading = false
     public var isPurchasedHideAds = false
     public var isPurchasedAutoTweet = false
+    public var postTickets: [PostTicket] = []
+    public var availablePostTicket: AvailablePostTicket = .initial
+    public var isLoadingPostTicket = true
+    @Shared(.appStorage(.earnFreeTicket))
+    public var earnFreeTicket: Date?
     @Presents public var alert: AlertState<Action.Alert>?
   }
 
@@ -25,6 +30,8 @@ public struct PaidContentFeature: Sendable {
     case onAppear
     case purchaseNonConsumable(NonConsumable)
     case restorePurchases
+    case showAlertBeforeAds
+    case purchasePostTicket(PostTicket)
     case buyMeACoffee
     case delegate(Delegate)
     case internalAction(InternalAction)
@@ -41,7 +48,9 @@ public struct PaidContentFeature: Sendable {
     public enum InternalAction {
       case getNonConsumable
       case setNonConsumable([NonConsumable])
+      case setPostTickets([PostTicket], AvailablePostTicket)
       case paidNonConsumable(String)
+      case paidPostTicket(PostTicket)
       case paidCheer(String)
       case failedPay(String, String?)
       case userCancelled
@@ -52,10 +61,17 @@ public struct PaidContentFeature: Sendable {
     @CasePathable
     public enum Alert: Equatable {
       case close
+      case watchAds
     }
   }
 
   // MARK: - Dependency
+  @Dependency(\.apiClient)
+  private var apiClient
+  @Dependency(\.calendar)
+  private var calendar
+  @Dependency(\.date)
+  private var date
   @Dependency(\.revenueCat)
   private var revenueCat
   @Dependency(\.secureKeyValueStore)
@@ -66,7 +82,14 @@ public struct PaidContentFeature: Sendable {
     Reduce { state, action in
       switch action {
       case .onAppear:
-        return .send(.internalAction(.getNonConsumable))
+        return .run(
+          operation: { send in
+            await send(.internalAction(.getNonConsumable))
+            let postTickets = try await apiClient.getPostTickets()
+            let availablePostTicket = try await secureKeyValueStore.getAvailablePostTicket()
+            await send(.internalAction(.setPostTickets(postTickets, availablePostTicket)))
+          },
+        )
       case let .purchaseNonConsumable(nonConsumable):
         state.isLoading = true
         return .run(
@@ -108,6 +131,66 @@ public struct PaidContentFeature: Sendable {
             await send(.internalAction(.failedPay("購入に失敗しました", nil)))
           },
         )
+      case .showAlertBeforeAds:
+        // すでに当日中に見ている場合はスキップする
+        if let earnFreeTicket = state.earnFreeTicket, calendar.isDateInToday(earnFreeTicket) {
+          state.alert = AlertState(
+            title: {
+              TextState("今日の無料チケットはすでに獲得済みです")
+            },
+            actions: {
+              ButtonState(
+                action: .close,
+                label: {
+                  TextState("閉じる")
+                },
+              )
+            },
+          )
+          return .none
+        }
+        state.alert = AlertState(
+          title: {
+            TextState("広告を見て無料チケットを獲得しますか？")
+          },
+          actions: {
+            ButtonState(
+              role: .cancel,
+              label: {
+                TextState("キャンセル")
+              },
+            )
+            ButtonState(
+              action: .watchAds,
+              label: {
+                TextState("視聴する")
+              },
+            )
+          },
+          message: {
+            TextState("視聴できるのは1日1回までです")
+          }
+        )
+        return .none
+      case let .purchasePostTicket(postTicket):
+        state.isLoading = true
+        return .run(
+          operation: { send in
+            try await revenueCat.purchasePostTicket(postTicket)
+            await send(.internalAction(.paidPostTicket(postTicket)))
+            var availablePostTicket = try await secureKeyValueStore.getAvailablePostTicket()
+            availablePostTicket.increasePurchasedCount(amount: postTicket.ticketCount)
+            try await secureKeyValueStore.setAvailablePostTicket(availablePostTicket)
+          },
+          catch: { error, send in
+            guard let error = error as? RevenueCatClient.Error,
+                  error != .userCancelled else {
+              await send(.internalAction(.userCancelled))
+              return
+            }
+            await send(.internalAction(.failedPay("購入に失敗しました", nil)))
+          },
+        )
       case .buyMeACoffee:
         state.isLoading = true
         return .run(
@@ -143,6 +226,11 @@ public struct PaidContentFeature: Sendable {
           }
         }
         return .none
+      case let .internalAction(.setPostTickets(postTickets, availablePostTicket)):
+        state.postTickets = postTickets
+        state.availablePostTicket = availablePostTicket
+        state.isLoadingPostTicket = false
+        return .none
       case let .internalAction(.paidNonConsumable(title)):
         state.isLoading = false
         state.alert = AlertState(
@@ -160,6 +248,25 @@ public struct PaidContentFeature: Sendable {
           message: {
             TextState("【\(title)】を購入しました")
           },
+        )
+        return .none
+      case let .internalAction(.paidPostTicket(postTicket)):
+        state.isLoading = false
+        state.alert = AlertState(
+          title: {
+            TextState("投稿チケット\(postTicket.ticketCount)枚を購入しました")
+          },
+          actions: {
+            ButtonState(
+              action: .close,
+              label: {
+                TextState("了解")
+              },
+            )
+          },
+          message: {
+            TextState("ご購入ありがとうございます！！")
+          }
         )
         return .none
       case let .internalAction(.paidCheer(title)):
@@ -231,6 +338,9 @@ public struct PaidContentFeature: Sendable {
         return .none
       case .internalAction:
         return .none
+      case .alert(.presented(.watchAds)):
+        state.$earnFreeTicket.withLock { $0 = date.now }
+        return .none
       case .alert:
         return .none
       }
@@ -281,10 +391,30 @@ public struct PaidContentPage: View {
   private var consumableSection: some View {
     Section(
       content: {
+        Text("無料チケット: \(store.availablePostTicket.remainingFreeCount)枚")
+        earnFreeTicketButtonRow
+        Text("有料チケット: \(store.availablePostTicket.remainingPurchasedCount)枚")
+        if store.isLoadingPostTicket {
+          ProgressView()
+            .frame(maxWidth: .infinity)
+            .progressViewStyle(.circular)
+        } else {
+          ForEach(store.postTickets) { postTicket in
+            postTicketRow(
+              action: {
+                store.send(.purchasePostTicket(postTicket))
+              },
+              postTicket: postTicket,
+            )
+          }
+        }
       },
       header: {
         Text("消費コンテンツ")
-      }
+      },
+      footer: {
+        Text("無料チケットから優先して使用されます")
+      },
     )
   }
 
@@ -301,7 +431,7 @@ public struct PaidContentPage: View {
 
   @ViewBuilder private var hideAdsRow: some View {
     if !store.isPurchasedHideAds {
-      ButtonRow(
+      priceRow(
         action: {
           store.send(.purchaseNonConsumable(.hideAds))
         },
@@ -312,13 +442,14 @@ public struct PaidContentPage: View {
             .aspectRatio(contentMode: .fit)
             .foregroundStyle(.red)
         },
+        price: 320,
       )
     }
   }
 
   @ViewBuilder private var autoTweetRow: some View {
     if !store.isPurchasedAutoTweet {
-      ButtonRow(
+      priceRow(
         action: {
           store.send(.purchaseNonConsumable(.autoTweet))
         },
@@ -329,6 +460,7 @@ public struct PaidContentPage: View {
             .aspectRatio(contentMode: .fit)
             .foregroundStyle(Color(UIColor.systemCyan))
         },
+        price: 0,
       )
     }
   }
@@ -348,8 +480,41 @@ public struct PaidContentPage: View {
     )
   }
 
-  private var buyMeACoffeeRow: some View {
+  private var earnFreeTicketButtonRow: some View {
     ButtonRow(
+      action: {
+        store.send(.showAlertBeforeAds)
+      },
+      title: "無料チケットを獲得する",
+      icon: {
+        Image(systemSymbol: .ticketFill)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .foregroundStyle(.green)
+      },
+    )
+  }
+
+  private func postTicketRow(
+    action: @escaping @MainActor () -> Void,
+    postTicket: PostTicket,
+  ) -> some View {
+    priceRow(
+      action: action,
+      title: "投稿チケット (\(postTicket.ticketCount)枚)",
+      icon: {
+        Image(systemSymbol: .ticketFill)
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .foregroundStyle(.orange)
+      },
+      price: postTicket.price,
+      discount: postTicket.discount,
+    )
+  }
+
+  private var buyMeACoffeeRow: some View {
+    priceRow(
       action: {
         store.send(.buyMeACoffee)
       },
@@ -359,6 +524,46 @@ public struct PaidContentPage: View {
           .resizable()
           .aspectRatio(contentMode: .fit)
           .foregroundStyle(.brown)
+      },
+      price: 300,
+    )
+  }
+
+  private func priceRow(
+    action: @escaping @MainActor () -> Void,
+    title: String,
+    @ViewBuilder icon: @escaping @MainActor () -> some View,
+    price: Int? = nil,
+    discount: String? = nil,
+  ) -> some View {
+    Button(
+      action: action,
+      label: {
+        HStack(alignment: .center, spacing: 0) {
+          Label(
+            title: {
+              VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                if let discount {
+                  Text("\(discount)OFF")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 2)
+                    .background(Color.blue.opacity(0.7))
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
+                }
+              }
+              .foregroundStyle(Color.primary)
+            },
+            icon: icon,
+          )
+          Spacer()
+          if let price {
+            Text("\(price)円")
+              .foregroundStyle(Color.secondary)
+          }
+        }
       },
     )
   }

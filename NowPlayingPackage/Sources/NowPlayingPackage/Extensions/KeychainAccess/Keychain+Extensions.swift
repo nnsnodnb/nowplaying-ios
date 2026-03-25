@@ -16,6 +16,7 @@ public extension Keychain {
     case blueskyAccounts
     case blueskyAccountPassword(BlueskyAccount.DID)
     case purchasedNonConsumables
+    case availablePostTicket
 
     // MARK: - Properties
     public var rawValue: String {
@@ -30,6 +31,8 @@ public extension Keychain {
         "bluesky_account_password_\(did.rawValue)"
       case .purchasedNonConsumables:
         "purchased_non_nonsumables"
+      case .availablePostTicket:
+        "available_post_ticket"
       }
     }
   }

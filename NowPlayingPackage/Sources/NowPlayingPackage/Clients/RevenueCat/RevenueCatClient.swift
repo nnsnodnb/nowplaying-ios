@@ -22,6 +22,7 @@ public struct RevenueCatClient: Sendable {
   public var purchaseHideAds: @Sendable () async throws -> Void
   public var purchaseAutoTweet: @Sendable () async throws -> Void
   public var restorePurchases: @Sendable () async throws -> Set<NonConsumable>
+  public var purchasePostTicket: @Sendable (PostTicket) async throws -> Void
   public var buyMeACoffee: @Sendable () async throws -> Void
 }
 
@@ -62,6 +63,21 @@ extension RevenueCatClient: DependencyKey {
         .compactMap { NonConsumable(rawValue: $0.productIdentifier) }
 
       return Set(nonConsumables)
+    },
+    purchasePostTicket: { postTicket in
+      let offerings = try await Purchases.shared.offerings()
+      guard let package = offerings.current?.availablePackages
+        .first(where: { $0.identifier == postTicket.packageID.rawValue }) else {
+        throw Error.internalError
+      }
+      let result = try await Purchases.shared.purchase(product: package.storeProduct)
+      if result.userCancelled {
+        throw Error.userCancelled
+      }
+      if result.transaction?.transactionIdentifier != nil {
+        return
+      }
+      throw Error.purchaseError
     },
     buyMeACoffee: {
       let offerings = try await Purchases.shared.offerings()
