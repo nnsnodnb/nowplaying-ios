@@ -376,7 +376,8 @@ public struct PaidContentPage: View {
   }
 
   @ViewBuilder private var nonConsumableSection: some View {
-    if !store.isPurchasedHideAds || !store.isPurchasedAutoTweet {
+    // if !store.isPurchasedHideAds || !store.isPurchasedAutoTweet {
+    if !store.isPurchasedHideAds {
       Section(
         content: {
           hideAdsRow
