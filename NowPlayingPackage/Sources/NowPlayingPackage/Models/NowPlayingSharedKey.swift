@@ -14,4 +14,7 @@ public enum NowPlayingSharedKey: String {
   case blueskyIsAttachImage = "key_bluesky_is_attach_image"
   case blueskyWithImageType = "key_bluesky_with_image_type"
   case blueskyPostFormat = "key_bluesky_post_format"
+  case purchasedHideAds = "key_purchased_hide_ads"
+  case purchasedAutoTweet = "key_purchased_auto_tweet"
+  case earnFreeTicket = "key_earn_free_ticket"
 }

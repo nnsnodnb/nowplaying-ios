@@ -19,7 +19,9 @@ struct TestPlayFeatureForward {
   )
   func testIt() async throws {
     let store = TestStore(
-      initialState: PlayFeature.State(),
+      initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
+      ),
       reducer: {
         PlayFeature()
       },

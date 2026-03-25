@@ -16,24 +16,49 @@ public struct RootFeature: Sendable {
   @ObservableState
   @MemberwiseInit(.public)
   public struct State: Equatable {
-    public var play: PlayFeature.State = .init()
+    @Init(default: nil)
+    public var play: PlayFeature.State?
   }
 
   // MARK: - Action
   public enum Action {
+    case onAppear
     case play(PlayFeature.Action)
+    case internalAction(InternalAction)
+
+    // MARK: - InternalAction
+    @CasePathable
+    public enum InternalAction {
+      case showPlay(Bool)
+    }
   }
+
+  // MARK: - Dependency
+  @Dependency(\.secureKeyValueStore)
+  private var secureKeyValueStore
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
-    Scope(state: \.play, action: \.play) {
-      PlayFeature()
-    }
-    Reduce { _, action in
+    Reduce { state, action in
       switch action {
+      case .onAppear:
+        return .run(
+          operation: { send in
+            let nonConsumables = try await secureKeyValueStore.getNonConsumables()
+            await send(.internalAction(.showPlay(nonConsumables.contains(.hideAds))))
+          },
+        )
       case .play:
         return .none
+      case let .internalAction(.showPlay(isPurchasedHideAds)):
+        state.play = .init(
+          isPurchasedHideAds: isPurchasedHideAds,
+        )
+        return .none
       }
+    }
+    .ifLet(\.play, action: \.play) {
+      PlayFeature()
     }
   }
 }
@@ -46,9 +71,14 @@ public struct RootPage: View {
 
   // MARK: - Body
   public var body: some View {
-    PlayPage(
-      store: store.scope(state: \.play, action: \.play)
-    )
+    if let store = store.scope(state: \.play, action: \.play) {
+      PlayPage(store: store)
+    } else {
+      Text("")
+        .onAppear {
+          store.send(.onAppear)
+        }
+    }
   }
 }
 

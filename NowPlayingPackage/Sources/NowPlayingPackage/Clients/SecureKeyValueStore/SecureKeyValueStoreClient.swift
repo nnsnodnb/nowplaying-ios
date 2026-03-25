@@ -30,6 +30,12 @@ public struct SecureKeyValueStoreClient: Sendable {
   // BlueskyAccount.Password
   public var getBlueskyAccountPassword: @Sendable (BlueskyAccount) async throws -> BlueskyAccount.Password?
   public var setBlueskyAccountPassword: @Sendable (BlueskyAccount, BlueskyAccount.Password) async throws -> Void
+  // In-App Purchases
+  public var getNonConsumables: @Sendable () async throws -> [NonConsumable]
+  public var addNonConsumable: @Sendable (NonConsumable) async throws -> Void
+  // AvailablePostTicket
+  public var getAvailablePostTicket: @Sendable () async throws -> AvailablePostTicket
+  public var setAvailablePostTicket: @Sendable (AvailablePostTicket) async throws -> Void
 }
 
 // MARK: - DependencyKey
@@ -76,6 +82,18 @@ extension SecureKeyValueStoreClient: DependencyKey {
     },
     setBlueskyAccountPassword: { account, password in
       await Implementation.shared.setBlueskyAccountPassword(for: account, password: password)
+    },
+    getNonConsumables: {
+      await Implementation.shared.getNonConsumables()
+    },
+    addNonConsumable: { nonConsumable in
+      await Implementation.shared.addNonConsumable(nonConsumable)
+    },
+    getAvailablePostTicket: {
+      await Implementation.shared.getAvailablePostTicket()
+    },
+    setAvailablePostTicket: { availablePostTicket in
+      await Implementation.shared.setAvailablePostTicket(availablePostTicket)
     },
   )
 }
@@ -208,6 +226,24 @@ private extension SecureKeyValueStoreClient {
 
     func setBlueskyAccountPassword(for account: BlueskyAccount, password: BlueskyAccount.Password) {
       keychain.set(password, key: .blueskyAccountPassword(account.id))
+    }
+
+    func getNonConsumables() -> [NonConsumable] {
+      keychain.object(forKey: .purchasedNonConsumables) ?? []
+    }
+
+    func addNonConsumable(_ nonConsumable: NonConsumable) {
+      let nonConsumables = getNonConsumables()
+      guard !nonConsumables.contains(nonConsumable) else { return }
+      keychain.set(nonConsumables + [nonConsumable], key: .purchasedNonConsumables)
+    }
+
+    func getAvailablePostTicket() -> AvailablePostTicket {
+      keychain.object(forKey: .availablePostTicket) ?? .initial
+    }
+
+    func setAvailablePostTicket(_ availablePostTicket: AvailablePostTicket) {
+      keychain.set(availablePostTicket, key: .availablePostTicket)
     }
   }
 }

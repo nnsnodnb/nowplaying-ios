@@ -21,6 +21,7 @@ let package = Package(
     .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", .upToNextMajor(from: "4.2.2")),
     .package(url: "https://github.com/maiyama18/LicensesPlugin.git", .upToNextMajor(from: "0.2.0")),
     .package(url: "https://github.com/kean/Nuke.git", .upToNextMajor(from: "12.9.0")),
+    .package(url: "https://github.com/RevenueCat/purchases-ios-spm.git", .upToNextMajor(from: "5.66.0")),
     .package(url: "https://github.com/nnsnodnb/ScrollFlowLabel.git", .upToNextMajor(from: "1.0.4")),
     .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "7.0.0")),
     .package(url: "https://github.com/kateinoigakukun/StubKit.git", .upToNextMajor(from: "0.1.7")),
@@ -48,6 +49,7 @@ let package = Package(
         .keychainAccess,
         .memberwiseInit,
         .nukeUI,
+        .revenueCat,
         .scrollFlowLabel,
         .sfSafeSymbols,
         .svProgressHUD,
@@ -153,6 +155,13 @@ extension Target.Dependency {
     .product(
       name: "NukeUI",
       package: "Nuke",
+    )
+  }
+
+  static var revenueCat: Self {
+    .product(
+      name: "RevenueCat",
+      package: "purchases-ios-spm",
     )
   }
 

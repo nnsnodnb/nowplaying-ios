@@ -25,6 +25,7 @@ struct TestPlayFeatureShowPost {
     } operation: {
       let store = TestStore(
         initialState: PlayFeature.State(
+          isPurchasedHideAds: false,
           artworkImage: .init(systemSymbol: .photoFill),
           songName: "曲名",
           artistName: "アーティスト名",
@@ -58,6 +59,7 @@ struct TestPlayFeatureShowPost {
   func testTwitterAccountIsEmpty() async throws {
     let store = TestStore(
       initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
         artworkImage: .init(systemSymbol: .photoFill),
         songName: "曲名",
         artistName: "アーティスト名",
@@ -92,6 +94,7 @@ struct TestPlayFeatureShowPost {
     } operation: {
       let store = TestStore(
         initialState: PlayFeature.State(
+          isPurchasedHideAds: false,
           artworkImage: .init(systemSymbol: .photoFill),
           songName: "曲名",
           artistName: "アーティスト名",
@@ -125,6 +128,7 @@ struct TestPlayFeatureShowPost {
   func testBlueskyAccountIsEmpty() async throws {
     let store = TestStore(
       initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
         artworkImage: .init(systemSymbol: .photoFill),
         songName: "曲名",
         artistName: "アーティスト名",

@@ -111,3 +111,9 @@ public extension SharedKey {
     appStorage(key.rawValue)
   }
 }
+
+public extension SharedKey {
+  static func inMemory<Value>(_ key: NowPlayingSharedKey) -> Self where Self == InMemoryKey<Value> {
+    inMemory(key.rawValue)
+  }
+}
