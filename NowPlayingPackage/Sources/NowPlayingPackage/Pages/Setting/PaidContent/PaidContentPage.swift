@@ -133,7 +133,8 @@ public struct PaidContentFeature: Sendable {
         )
       case .showAlertBeforeAds:
         // すでに当日中に見ている場合はスキップする
-        if let earnFreeTicket = state.earnFreeTicket, calendar.isDateInToday(earnFreeTicket) {
+        if let earnFreeTicket = state.earnFreeTicket,
+           calendar.isDate(earnFreeTicket, inSameDayAs: date.now) {
           state.alert = AlertState(
             title: {
               TextState("今日の無料チケットはすでに獲得済みです")
@@ -379,7 +380,7 @@ public struct PaidContentPage: View {
       Section(
         content: {
           hideAdsRow
-          autoTweetRow
+          // autoTweetRow
           restoreRow
         },
         header: {
