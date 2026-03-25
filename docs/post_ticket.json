@@ -10,25 +10,29 @@
       "id": "moe.nnsnodnb.NowPlaying.postTicket160",
       "ticket_count": 160,
       "price": 500,
-      "package_id": "$rc_post_ticket_160"
+      "package_id": "$rc_post_ticket_160",
+      "discount": "6.2%"
     },
     {
       "id": "moe.nnsnodnb.NowPlaying.postTicket350",
       "ticket_count": 350,
       "price": 1000,
       "package_id": "$rc_post_ticket_350"
+      "discount": "14.2%"
     },
     {
       "id": "moe.nnsnodnb.NowPlaying.postTicket1200",
       "ticket_count": 1200,
       "price": 3000,
       "package_id": "$rc_post_ticket_1200"
+      "discount": "25.0%"
     },
     {
       "id": "moe.nnsnodnb.NowPlaying.postTicket4200",
       "ticket_count": 4200,
       "price": 10000,
       "package_id": "$rc_post_ticket_4200"
+      "discount": "28.5%"
     }
   ]
 }
