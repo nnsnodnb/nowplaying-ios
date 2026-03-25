@@ -340,6 +340,7 @@ public struct PaidContentFeature: Sendable {
         return .none
       case .alert(.presented(.watchAds)):
         state.$earnFreeTicket.withLock { $0 = date.now }
+        // TODO: 広告を再生
         return .none
       case .alert:
         return .none
