@@ -28,8 +28,8 @@ extension APIClient: DependencyKey {
       guard let urlResponse = response as? HTTPURLResponse,
             urlResponse.statusCode == 200 else { throw Error.internalError }
       let decoder = JSONDecoder()
-
       let object = try decoder.decode(Response<PostTicket>.self, from: data)
+
       return object.results
     },
   )
