@@ -13,6 +13,7 @@ import Foundation
 public struct AdUnitClient: Sendable {
   public var playerBottomBannerAdUnitID: @Sendable () -> String = { "ca-app-pub-3940256099942544/2435281174" }
   public var addTwitterAccountRewardAdUnitID: @Sendable () -> String = { "ca-app-pub-3940256099942544/1712485313" }
+  public var getFreePostTicketRewardAdUnitID: @Sendable () -> String = { "ca-app-pub-3940256099942544/1712485313" }
 }
 
 // MARK: - DependencyKey
@@ -20,6 +21,7 @@ extension AdUnitClient: DependencyKey {
   public static let liveValue: Self = .init(
     playerBottomBannerAdUnitID: { "ca-app-pub-3940256099942544/2435281174" },
     addTwitterAccountRewardAdUnitID: { "ca-app-pub-3940256099942544/1712485313" },
+    getFreePostTicketRewardAdUnitID: { "ca-app-pub-3940256099942544/1712485313" },
   )
 }
 

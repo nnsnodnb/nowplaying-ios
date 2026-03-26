@@ -13,15 +13,17 @@ import SwiftUI
 public struct PaidContentFeature: Sendable {
   // MARK: - State
   @ObservableState
-  public struct State: Equatable {
+  public struct State: Equatable, Sendable {
+    public var initialized = false
+    public var freeTicketAdUnitID = ""
     public var isLoading = false
     public var isPurchasedHideAds = false
     public var isPurchasedAutoTweet = false
     public var postTickets: [PostTicket] = []
     public var availablePostTicket: AvailablePostTicket = .initial
     public var isLoadingPostTicket = true
-    @Shared(.appStorage(.earnFreeTicket))
-    public var earnFreeTicket: Date?
+    @Shared(.appStorage(.earnFreeTicketDate))
+    public var earnFreeTicketDate: Date?
     @Presents public var alert: AlertState<Action.Alert>?
   }
 
@@ -49,6 +51,8 @@ public struct PaidContentFeature: Sendable {
       case getNonConsumable
       case setNonConsumable([NonConsumable])
       case setPostTickets([PostTicket], AvailablePostTicket)
+      case updateAvailablePostTicket(AvailablePostTicket)
+      case earnFreeTicket
       case paidNonConsumable(String)
       case paidPostTicket(PostTicket)
       case paidCheer(String)
@@ -59,13 +63,15 @@ public struct PaidContentFeature: Sendable {
 
     // MARK: - Alert
     @CasePathable
-    public enum Alert: Equatable {
+    public enum Alert: Equatable, Sendable {
       case close
       case watchAds
     }
   }
 
   // MARK: - Dependency
+  @Dependency(\.adUnit)
+  private var adUnit
   @Dependency(\.apiClient)
   private var apiClient
   @Dependency(\.calendar)
@@ -74,6 +80,8 @@ public struct PaidContentFeature: Sendable {
   private var date
   @Dependency(\.revenueCat)
   private var revenueCat
+  @Dependency(\.rewardedAd)
+  private var rewardedAd
   @Dependency(\.secureKeyValueStore)
   private var secureKeyValueStore
 
@@ -82,6 +90,9 @@ public struct PaidContentFeature: Sendable {
     Reduce { state, action in
       switch action {
       case .onAppear:
+        guard !state.initialized else { return .none }
+        state.initialized = true
+        state.freeTicketAdUnitID = adUnit.getFreePostTicketRewardAdUnitID()
         return .run(
           operation: { send in
             await send(.internalAction(.getNonConsumable))
@@ -133,44 +144,45 @@ public struct PaidContentFeature: Sendable {
         )
       case .showAlertBeforeAds:
         // すでに当日中に見ている場合はスキップする
-        if let earnFreeTicket = state.earnFreeTicket,
-           calendar.isDate(earnFreeTicket, inSameDayAs: date.now) {
-          state.alert = AlertState(
-            title: {
-              TextState("今日の無料チケットはすでに獲得済みです")
-            },
-            actions: {
+        let title: String
+        let message: (() -> TextState)?
+
+        if let earnFreeTicketDate = state.earnFreeTicketDate,
+           calendar.isDate(earnFreeTicketDate, inSameDayAs: date.now) {
+          title = "今日の無料チケットはすでに獲得済みです"
+          message = nil
+        } else {
+          title = "広告を見て無料チケットを獲得しますか？"
+          message = { TextState("視聴できるのは1日1回までです") }
+        }
+        state.alert = AlertState(
+          title: {
+            TextState(title)
+          },
+          actions: {
+            if message != nil {
+              ButtonState(
+                role: .cancel,
+                label: {
+                  TextState("キャンセル")
+                },
+              )
+              ButtonState(
+                action: .watchAds,
+                label: {
+                  TextState("視聴する")
+                },
+              )
+            } else {
               ButtonState(
                 action: .close,
                 label: {
                   TextState("閉じる")
                 },
               )
-            },
-          )
-          return .none
-        }
-        state.alert = AlertState(
-          title: {
-            TextState("広告を見て無料チケットを獲得しますか？")
+            }
           },
-          actions: {
-            ButtonState(
-              role: .cancel,
-              label: {
-                TextState("キャンセル")
-              },
-            )
-            ButtonState(
-              action: .watchAds,
-              label: {
-                TextState("視聴する")
-              },
-            )
-          },
-          message: {
-            TextState("視聴できるのは1日1回までです")
-          }
+          message: message,
         )
         return .none
       case let .purchasePostTicket(postTicket):
@@ -232,6 +244,32 @@ public struct PaidContentFeature: Sendable {
         state.availablePostTicket = availablePostTicket
         state.isLoadingPostTicket = false
         return .none
+      case let .internalAction(.updateAvailablePostTicket(availablePostTicket)):
+        state.availablePostTicket = availablePostTicket
+        return .none
+      case .internalAction(.earnFreeTicket):
+        state.isLoading = false
+        state.alert = AlertState(
+          title: {
+            TextState("無料チケットを獲得しました")
+          },
+          actions: {
+            ButtonState(
+              action: .close,
+              label: {
+                TextState("閉じる")
+              },
+            )
+          },
+        )
+        return .run(
+          operation: { send in
+            var availablePostTicket = try await secureKeyValueStore.getAvailablePostTicket()
+            availablePostTicket.increaseFreeCount(amount: 1)
+            try await secureKeyValueStore.setAvailablePostTicket(availablePostTicket)
+            await send(.internalAction(.updateAvailablePostTicket(availablePostTicket)))
+          },
+        )
       case let .internalAction(.paidNonConsumable(title)):
         state.isLoading = false
         state.alert = AlertState(
@@ -340,9 +378,16 @@ public struct PaidContentFeature: Sendable {
       case .internalAction:
         return .none
       case .alert(.presented(.watchAds)):
-        state.$earnFreeTicket.withLock { $0 = date.now }
-        // TODO: 広告を再生
-        return .none
+        state.isLoading = true
+        state.$earnFreeTicketDate.withLock { $0 = date.now }
+        return .run(
+          operation: { [state] send in
+            try await rewardedAd.load(state.freeTicketAdUnitID)
+            let result = try await rewardedAd.show(state.freeTicketAdUnitID)
+            guard result > 0 else { return }
+            await send(.internalAction(.earnFreeTicket))
+          },
+        )
       case .alert:
         return .none
       }

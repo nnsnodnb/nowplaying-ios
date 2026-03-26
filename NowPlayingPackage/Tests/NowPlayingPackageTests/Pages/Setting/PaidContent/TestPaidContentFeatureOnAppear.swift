@@ -17,6 +17,7 @@ struct TestPaidContentFeatureOnAppear {
     let postTicket = try Stub.make(PostTicket.self)
 
     await withDependencies {
+      $0.adUnit.getFreePostTicketRewardAdUnitID = { "ca-app-pub-3940256099942544/1712485313" }
       $0.apiClient.getPostTickets = { [postTicket] }
       $0.secureKeyValueStore.getAvailablePostTicket = { .initial }
       $0.secureKeyValueStore.getNonConsumables = { [] }
@@ -28,7 +29,10 @@ struct TestPaidContentFeatureOnAppear {
         },
       )
 
-      await store.send(.onAppear)
+      await store.send(.onAppear) {
+        $0.initialized = true
+        $0.freeTicketAdUnitID = "ca-app-pub-3940256099942544/1712485313"
+      }
       await store.receive(\.internalAction.getNonConsumable)
       await store.receive(\.internalAction.setPostTickets) {
         $0.postTickets = [postTicket]
@@ -37,5 +41,19 @@ struct TestPaidContentFeatureOnAppear {
       }
       await store.receive(\.internalAction.setNonConsumable, [])
     }
+  }
+
+  @Test
+  func testDidInitialize() async throws {
+    let store = TestStore(
+      initialState: PaidContentFeature.State(
+        initialized: true,
+      ),
+      reducer: {
+        PaidContentFeature()
+      },
+    )
+
+    await store.send(.onAppear)
   }
 }

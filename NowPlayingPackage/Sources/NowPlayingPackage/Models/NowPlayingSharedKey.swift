@@ -16,5 +16,5 @@ public enum NowPlayingSharedKey: String {
   case blueskyPostFormat = "key_bluesky_post_format"
   case purchasedHideAds = "key_purchased_hide_ads"
   case purchasedAutoTweet = "key_purchased_auto_tweet"
-  case earnFreeTicket = "key_earn_free_ticket"
+  case earnFreeTicketDate = "key_earn_free_ticket_date"
 }
