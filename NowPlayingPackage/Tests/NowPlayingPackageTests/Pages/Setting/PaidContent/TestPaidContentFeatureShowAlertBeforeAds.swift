@@ -18,7 +18,7 @@ struct TestPaidContentFeatureShowAlertBeforeAds {
     } operation: {
       let store = TestStore(
         initialState: PaidContentFeature.State(
-          earnFreeTicket: .init(value: nil),
+          earnFreeTicketDate: .init(value: nil),
         ),
         reducer: {
           PaidContentFeature()
@@ -65,8 +65,8 @@ struct TestPaidContentFeatureShowAlertBeforeAds {
       $0.defaultAppStorage = .inMemory
       $0.date = .constant(now)
     } operation: {
-      @Shared(.appStorage(.earnFreeTicket))
-      var earnFreeTicket = yesterday
+      @Shared(.appStorage(.earnFreeTicketDate))
+      var earnFreeTicketDate = yesterday
 
       let store = TestStore(
         initialState: PaidContentFeature.State(),
@@ -108,15 +108,15 @@ struct TestPaidContentFeatureShowAlertBeforeAds {
     calendar.timeZone = TimeZone(secondsFromGMT: 0)!
     let dateComponents = DateComponents(year: 2026, month: 3, day: 25, hour: 0, minute: 0, second: 1)
     let now = calendar.date(from: dateComponents)!
-    let earnFreeTicket = calendar.date(byAdding: .second, value: -1, to: now)!
+    let earnFreeTicketDate = calendar.date(byAdding: .second, value: -1, to: now)!
 
     await withDependencies {
       $0.calendar = calendar
       $0.defaultAppStorage = .inMemory
       $0.date = .constant(now)
     } operation: {
-      @Shared(.appStorage(.earnFreeTicket))
-      var earnFreeTicket = earnFreeTicket
+      @Shared(.appStorage(.earnFreeTicketDate))
+      var earnFreeTicketDate = earnFreeTicketDate
 
       let store = TestStore(
         initialState: PaidContentFeature.State(),
