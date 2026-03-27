@@ -19,6 +19,7 @@ struct TestPlayFeatureInternalAction {
     let nowPlayingItem = StubMediaItem()
 
     await withDependencies {
+      $0.averageColor.make = { _ in UIColor.red }
       $0.mediaPlayer.nowPlayingItem = {
         AsyncStream {
           $0.yield(nowPlayingItem)
@@ -51,14 +52,16 @@ struct TestPlayFeatureInternalAction {
         $0.album = nowPlayingItem.albumTitle
       }
       await store.receive(\.internalAction.requestArtwork)
-      await store.receive(\.internalAction.applyArtwork, .init(systemSymbol: .photo)) {
+      await store.receive(\.internalAction.applyArtwork) {
         $0.artworkImage = .init(systemSymbol: .photo)
+        $0.backgroundColor = .red
       }
     }
   }
 
   @Test(
     .dependencies {
+      $0.averageColor.make = { _ in UIColor.red }
       $0.mediaPlayer.getNowPlayingArtwork = { _ in .init(systemSymbol: .photo) }
     }
   )
@@ -74,8 +77,9 @@ struct TestPlayFeatureInternalAction {
 
     let nowPlayingItem = StubMediaItem()
     await store.send(.internalAction(.requestArtwork(nowPlayingItem)))
-    await store.receive(\.internalAction.applyArtwork, .init(systemSymbol: .photo)) {
+    await store.receive(\.internalAction.applyArtwork) {
       $0.artworkImage = .init(systemSymbol: .photo)
+      $0.backgroundColor = .red
     }
   }
 

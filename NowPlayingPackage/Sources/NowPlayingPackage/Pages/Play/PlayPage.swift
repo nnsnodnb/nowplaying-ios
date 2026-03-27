@@ -28,6 +28,8 @@ public struct PlayFeature: Sendable {
     public var isPlaying = false
     @Init(default: nil)
     public var bannerAdUnitID: String?
+    @Init(default: UIColor.black.withAlphaComponent(0.7))
+    public var backgroundColor: UIColor
     @Init(default: nil)
     @Presents public var setting: SettingFeature.State?
     @Presents public var tweet: TweetFeature.State?
@@ -56,7 +58,7 @@ public struct PlayFeature: Sendable {
       case authorizationFailure(String)
       case applyNowPlayingItem(any MediaItemProtocol)
       case requestArtwork(any MediaItemProtocol)
-      case applyArtwork(UIImage)
+      case applyArtwork(UIImage, UIColor)
       case changedIsPlaying(Bool)
       case captureScreen(SocialService, [TwitterAccount], [BlueskyAccount])
       case emptyPostTicket
@@ -75,6 +77,8 @@ public struct PlayFeature: Sendable {
   // MARK: - Dependency
   @Dependency(\.adUnit)
   private var adUnit
+  @Dependency(\.averageColor)
+  private var averageColor
   @Dependency(\.mediaPlayer)
   private var mediaPlayer
   @Dependency(\.imageRenderer)
@@ -209,12 +213,14 @@ public struct PlayFeature: Sendable {
         return .run(
           operation: { send in
             if let image = try await mediaPlayer.getNowPlayingArtwork(mediaItem) {
-              await send(.internalAction(.applyArtwork(image)))
+              let averageColor = try averageColor.make(image)
+              await send(.internalAction(.applyArtwork(image, averageColor)))
             }
           },
         )
-      case let .internalAction(.applyArtwork(image)):
+      case let .internalAction(.applyArtwork(image, averageColor)):
         state.artworkImage = image
+        state.backgroundColor = averageColor
         return .none
       case let .internalAction(.changedIsPlaying(isPlaying)):
         state.isPlaying = isPlaying
@@ -347,6 +353,11 @@ public struct PlayPage: View {
         bottomBanner
       }
     }
+    .background {
+      Color(store.backgroundColor)
+        .ignoresSafeArea(.all)
+        .animation(.easeInOut, value: store.backgroundColor)
+    }
     .onAppear {
       store.send(.onAppear)
     }
@@ -374,6 +385,7 @@ public struct PlayPage: View {
         Image(systemSymbol: .musicQuarternote3)
           .resizable()
           .aspectRatio(contentMode: .fit)
+          .foregroundStyle(.white)
       }
     }
     .scaleEffect(x: store.isPlaying ? 1 : 0.8, y: store.isPlaying ? 1 : 0.8)
@@ -385,12 +397,12 @@ public struct PlayPage: View {
     VStack(alignment: .center, spacing: 8) {
       ScrollFlowText(
         text: store.songName ?? "曲名",
-        textColor: .label,
+        textColor: .white,
         font: .boldSystemFont(ofSize: 20)
       )
       ScrollFlowText(
         text: store.artistName ?? "アーティスト名",
-        textColor: .secondaryLabel,
+        textColor: .white.withAlphaComponent(0.7),
         font: .systemFont(ofSize: 17, weight: .semibold)
       )
     }
@@ -413,7 +425,7 @@ public struct PlayPage: View {
       label: {
         Image(systemSymbol: .backwardFill)
           .resizable()
-          .foregroundStyle(Color(UIColor.label))
+          .foregroundStyle(.white)
       }
     )
     .buttonStyle(.pressScale)
@@ -431,7 +443,7 @@ public struct PlayPage: View {
         Image(systemSymbol: store.isPlaying ? .pauseFill : .playFill)
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .foregroundStyle(Color(UIColor.label))
+          .foregroundStyle(.white)
       }
     )
     .buttonStyle(.pressScale)
@@ -446,7 +458,7 @@ public struct PlayPage: View {
       label: {
         Image(systemSymbol: .forwardFill)
           .resizable()
-          .foregroundStyle(Color(UIColor.label))
+          .foregroundStyle(.white)
       }
     )
     .buttonStyle(.pressScale)
