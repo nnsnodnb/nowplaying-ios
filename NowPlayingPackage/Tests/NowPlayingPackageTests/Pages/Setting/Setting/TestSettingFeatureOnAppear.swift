@@ -15,9 +15,10 @@ struct TestSettingFeatureOnAppear {
   @Test(
     .dependencies {
       $0.bundle.shortVersionString = { "1.0.0-test" }
+      $0.consentInformation.visiblePrivacyOptionsRequirements = { false }
     }
   )
-  func testIt() async throws {
+  func testConsentInformationVisiblePrivacyOptionsRequirementsIsFalse() async throws {
     let store = TestStore(
       initialState: SettingFeature.State(),
       reducer: {
@@ -27,6 +28,34 @@ struct TestSettingFeatureOnAppear {
 
     await store.send(.onAppear) {
       $0.version = "1.0.0-test"
+      $0.visiblePrivacyOptionsRequirements = false
+    }
+  }
+
+  @Test(
+    .dependencies {
+      $0.bundle.shortVersionString = { "1.0.0-test" }
+      $0.consentInformation.visiblePrivacyOptionsRequirements = { true }
+      $0.consentInformation.load = {}
+    }
+  )
+  func testConsentInformationVisiblePrivacyOptionsRequirementsIsTrue() async throws {
+    let store = TestStore(
+      initialState: SettingFeature.State(),
+      reducer: {
+        SettingFeature()
+      },
+    )
+
+    await store.send(.onAppear) {
+      $0.version = "1.0.0-test"
+      $0.visiblePrivacyOptionsRequirements = true
+    }
+    await store.receive(\.internalAction.loadConsentForm) {
+      $0.isLoadingConsentForm = true
+    }
+    await store.receive(\.internalAction.loadedConsentForm) {
+      $0.isLoadingConsentForm = false
     }
   }
 }

@@ -17,12 +17,15 @@ public struct RootFeature: Sendable {
   @MemberwiseInit(.public)
   public struct State: Equatable {
     @Init(default: nil)
+    public var consent: ConsentFeature.State?
+    @Init(default: nil)
     public var play: PlayFeature.State?
   }
 
   // MARK: - Action
   public enum Action {
     case onAppear
+    case consent(ConsentFeature.Action)
     case play(PlayFeature.Action)
     case internalAction(InternalAction)
 
@@ -42,20 +45,29 @@ public struct RootFeature: Sendable {
     Reduce { state, action in
       switch action {
       case .onAppear:
+        state.consent = .init()
+        return .none
+      case .consent(.delegate(.completedConsent)):
         return .run(
           operation: { send in
             let nonConsumables = try await secureKeyValueStore.getNonConsumables()
             await send(.internalAction(.showPlay(nonConsumables.contains(.hideAds))))
           },
         )
+      case .consent:
+        return .none
       case .play:
         return .none
       case let .internalAction(.showPlay(isPurchasedHideAds)):
+        state.consent = nil
         state.play = .init(
           isPurchasedHideAds: isPurchasedHideAds,
         )
         return .none
       }
+    }
+    .ifLet(\.consent, action: \.consent) {
+      ConsentFeature()
     }
     .ifLet(\.play, action: \.play) {
       PlayFeature()
@@ -71,7 +83,9 @@ public struct RootPage: View {
 
   // MARK: - Body
   public var body: some View {
-    if let store = store.scope(state: \.play, action: \.play) {
+    if let store = store.scope(state: \.consent, action: \.consent) {
+      ConsentPage(store: store)
+    } else if let store = store.scope(state: \.play, action: \.play) {
       PlayPage(store: store)
     } else {
       Text("")

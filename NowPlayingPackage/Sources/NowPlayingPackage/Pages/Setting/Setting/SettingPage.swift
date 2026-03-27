@@ -27,6 +27,8 @@ public struct SettingFeature: Sendable {
   public struct State: Equatable {
     // MARK: - Properties
     public var version = "v3.0.0"
+    public var visiblePrivacyOptionsRequirements = false
+    public var isLoadingConsentForm = false
     public var path: StackState<Path.State> = .init()
     public var safariURL: SafariURL?
 
@@ -71,21 +73,32 @@ public struct SettingFeature: Sendable {
     case pushTwitterSetting
     case pushBlueskySetting
     case pushPaidContent
+    case showConsentForm
     case pushLicenseList
     case path(StackActionOf<Path>)
     case openSafari(State.SafariURL?)
     case delegate(Delegate)
+    case internalAction(InternalAction)
 
     // MARK: - Delegate
     @CasePathable
     public enum Delegate {
       case hideAds
     }
+
+    // MARK: - InternalAction
+    @CasePathable
+    public enum InternalAction {
+      case loadConsentForm
+      case loadedConsentForm
+    }
   }
 
   // MARK: - Dependency
   @Dependency(\.bundle)
   private var bundle
+  @Dependency(\.consentInformation)
+  private var consentInformation
   @Dependency(\.dismiss)
   private var dismiss
 
@@ -95,7 +108,12 @@ public struct SettingFeature: Sendable {
       switch action {
       case .onAppear:
         state.version = bundle.shortVersionString()
-        return .none
+        state.visiblePrivacyOptionsRequirements = consentInformation.visiblePrivacyOptionsRequirements()
+        if state.visiblePrivacyOptionsRequirements {
+          return .send(.internalAction(.loadConsentForm))
+        } else {
+          return .none
+        }
       case .close:
         return .run { _ in
           await dismiss()
@@ -109,6 +127,17 @@ public struct SettingFeature: Sendable {
       case .pushPaidContent:
         state.path.append(.paidContent(.init()))
         return .none
+      case .showConsentForm:
+        guard state.visiblePrivacyOptionsRequirements && !state.isLoadingConsentForm else { return .none }
+        return .run(
+          operation: { send in
+            try await consentInformation.presentPrivacyOptions()
+            await send(.internalAction(.loadConsentForm))
+          },
+          catch: { _, send in
+            await send(.internalAction(.loadConsentForm))
+          },
+        )
       case .pushLicenseList:
         state.path.append(.licenseList(.init()))
         return .none
@@ -126,6 +155,20 @@ public struct SettingFeature: Sendable {
         state.safariURL = safariURL
         return .none
       case .delegate:
+        return .none
+      case .internalAction(.loadConsentForm):
+        guard state.visiblePrivacyOptionsRequirements else { return .none }
+        state.isLoadingConsentForm = true
+        return .run(
+          operation: { send in
+            try await consentInformation.load()
+            await send(.internalAction(.loadedConsentForm))
+          },
+        )
+      case .internalAction(.loadedConsentForm):
+        state.isLoadingConsentForm = false
+        return .none
+      case .internalAction:
         return .none
       }
     }
@@ -249,7 +292,25 @@ public struct SettingPage: View {
 
   private var thirdSection: some View {
     Section {
-      // TODO: UMPの同意変更表示
+      if store.visiblePrivacyOptionsRequirements {
+        buttonRow(
+          action: {
+            store.send(.showConsentForm)
+          },
+          title: "Privacy Settings",
+          icon: {
+            if store.isLoadingConsentForm {
+              ProgressView()
+                .progressViewStyle(.circular)
+            } else {
+              Image(systemSymbol: .handRaisedSquareFill)
+                .resizable()
+                .foregroundStyle(.white, .red.opacity(0.9))
+            }
+          },
+        )
+        .disabled(store.isLoadingConsentForm)
+      }
       ButtonRow(
         action: {
           store.send(.openSafari(.privacyPolicy))
