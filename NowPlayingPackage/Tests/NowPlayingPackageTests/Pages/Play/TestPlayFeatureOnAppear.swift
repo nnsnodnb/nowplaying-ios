@@ -19,6 +19,7 @@ struct TestPlayFeatureOnAppear {
     )
 
     await withDependencies {
+      $0.averageColor.make = { _ in UIColor.red }
       $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
       $0.mediaPlayer.requestAuthorization = {}
       $0.mediaPlayer.nowPlayingItem = {
@@ -56,8 +57,9 @@ struct TestPlayFeatureOnAppear {
         $0.album = nowPlayingItem.albumTitle
       }
       await store.receive(\.internalAction.requestArtwork)
-      await store.receive(\.internalAction.applyArtwork, .init(systemSymbol: .photo)) {
+      await store.receive(\.internalAction.applyArtwork) {
         $0.artworkImage = .init(systemSymbol: .photo)
+        $0.backgroundColor = .red
       }
     }
   }
