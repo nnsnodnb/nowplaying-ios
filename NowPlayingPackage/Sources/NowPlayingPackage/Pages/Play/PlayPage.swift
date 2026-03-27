@@ -59,6 +59,7 @@ public struct PlayFeature: Sendable {
       case applyArtwork(UIImage)
       case changedIsPlaying(Bool)
       case captureScreen(SocialService, [TwitterAccount], [BlueskyAccount])
+      case emptyPostTicket
       case emptySNSAccounts(SocialService)
       case showTweet([TwitterAccount], UIImage)
       case showPost([BlueskyAccount], UIImage)
@@ -67,6 +68,7 @@ public struct PlayFeature: Sendable {
     // MARK: - Alert
     @CasePathable
     public enum Alert: Equatable {
+      case close
     }
   }
 
@@ -129,6 +131,11 @@ public struct PlayFeature: Sendable {
         case .twitter:
           return .run(
             operation: { send in
+              let availablePostTicket = try await secureKeyValueStore.getAvailablePostTicket()
+              if availablePostTicket.remainingFreeCount + availablePostTicket.remainingPurchasedCount == 0 {
+                await send(.internalAction(.emptyPostTicket))
+                return
+              }
               let twitterAccounts = try await secureKeyValueStore.getTwitterAccounts()
               guard !twitterAccounts.isEmpty else {
                 await send(.internalAction(.emptySNSAccounts(.twitter)))
@@ -226,6 +233,24 @@ public struct PlayFeature: Sendable {
             }
           },
         )
+      case .internalAction(.emptyPostTicket):
+        state.alert = AlertState(
+          title: {
+            TextState("投稿チケットがありません")
+          },
+          actions: {
+            ButtonState(
+              action: .close,
+              label: {
+                TextState("閉じる")
+              },
+            )
+          },
+          message: {
+            TextState("左下の設定ボタンから「有料コンテンツ」を選択し広告を視聴するか投稿チケットを購入してください")
+          },
+        )
+        return .none
       case let .internalAction(.emptySNSAccounts(socialService)):
         let name = socialService.rawValue
         state.alert = AlertState(

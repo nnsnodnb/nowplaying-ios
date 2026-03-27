@@ -438,44 +438,20 @@ public struct PostPage: View {
 private extension View {
   func toolbar(
     disablePostButton: Bool,
-    cancelAction: @escaping () -> Void,
-    postAction: @escaping () -> Void,
+    cancelAction: @escaping @MainActor () -> Void,
+    postAction: @escaping @MainActor () -> Void,
   ) -> some View {
     toolbar {
       ToolbarItem(placement: .cancellationAction) {
-        if #available(iOS 26.0, *) {
-          Button(
-            role: .close,
-            action: cancelAction,
-          )
-        } else {
-          Button(
-            action: cancelAction,
-            label: {
-              Image(systemSymbol: .xmark)
-            },
-          )
-        }
+        CancellationButton(
+          action: cancelAction,
+        )
       }
       ToolbarItem(placement: .confirmationAction) {
-        Group {
-          if #available(iOS 26.0, *) {
-            Button(
-              role: .confirm,
-              action: postAction,
-              label: {
-                Text("ポスト")
-              },
-            )
-          } else {
-            Button(
-              action: postAction,
-              label: {
-                Text("ポスト")
-              },
-            )
-          }
-        }
+        ConfirmationButton(
+          action: postAction,
+          title: "ポスト",
+        )
         .disabled(disablePostButton)
       }
     }

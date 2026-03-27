@@ -24,6 +24,10 @@ public struct TweetFeature: Sendable {
     public let capturedImage: UIImage
     public var attachmentImage: UIImage?
     public var postableTwitterAccount: TwitterAccount?
+    public var availablePostTicket: AvailablePostTicket = .initial
+    public var usePostTicketCount = 0
+    public var totalPostTicketCount = 0
+    public var overUsablePostTicket = false
     public var text = ""
     public var temporaryMedia: TwitterMedia?
     public var isEditing = false
@@ -59,6 +63,7 @@ public struct TweetFeature: Sendable {
     // MARK: - InternalAction
     @CasePathable
     public enum InternalAction {
+      case setAvailablePostTicket(AvailablePostTicket)
       case uploadImageData(TwitterOAuthToken.AccessToken, Data)
       case post(TwitterOAuthToken.AccessToken, TwitterMedia?)
       case posted
@@ -97,14 +102,22 @@ public struct TweetFeature: Sendable {
           .replacingOccurrences(of: "__songtitle__", with: state.title)
           .replacingOccurrences(of: "__artist__", with: state.artist)
           .replacingOccurrences(of: "__album__", with: state.album ?? "不明なアルバム")
-        guard state.isAttachImage else { return .none }
-        switch state.attachImageType {
-        case .onlyArtwork:
-          state.attachmentImage = state.artwork
-        case .screenShot:
-          state.attachmentImage = state.capturedImage
+        state.usePostTicketCount = 1
+        if state.isAttachImage {
+          state.usePostTicketCount = 2
+          switch state.attachImageType {
+          case .onlyArtwork:
+            state.attachmentImage = state.artwork
+          case .screenShot:
+            state.attachmentImage = state.capturedImage
+          }
         }
-        return .none
+        return .run(
+          operation: { send in
+            let availablePostTicket = try await secureKeyValueStore.getAvailablePostTicket()
+            await send(.internalAction(.setAvailablePostTicket(availablePostTicket)))
+          },
+        )
       case .close:
         if state.isEditing {
           state.alert = AlertState(
@@ -136,6 +149,7 @@ public struct TweetFeature: Sendable {
         )
       case .preparePost:
         guard !state.isDisablePostButton,
+              !state.overUsablePostTicket,
               let twitterAccount = state.postableTwitterAccount else { return .none }
         state.isLoading = true
         return .run(
@@ -174,14 +188,20 @@ public struct TweetFeature: Sendable {
       case .addArtwork:
         guard let artwork = state.artwork else { return .none }
         state.attachmentImage = artwork
+        state.usePostTicketCount = 2
+        state.overUsablePostTicket = state.usePostTicketCount > state.totalPostTicketCount
         state.isEditing = true
         return .none
       case .addCapturedImage:
         state.attachmentImage = state.capturedImage
+        state.usePostTicketCount = 2
+        state.overUsablePostTicket = state.usePostTicketCount > state.totalPostTicketCount
         state.isEditing = true
         return .none
       case .removeAttachmentImage:
         state.attachmentImage = nil
+        state.usePostTicketCount = 1
+        state.overUsablePostTicket = state.usePostTicketCount > state.totalPostTicketCount
         state.temporaryMedia = nil
         state.isEditing = true
         return .none
@@ -195,19 +215,46 @@ public struct TweetFeature: Sendable {
         return .none
       case let .internalAction(.uploadImageData(accessToken, imageData)):
         return .run(
-          operation: { send in
+          operation: { [availablePostTicket = state.availablePostTicket] send in
             let media = try await twitterAPI.uploadMedia(accessToken, imageData)
+            var availablePostTicket = availablePostTicket
+            // 無料チケットから優先して使用する
+            if availablePostTicket.remainingFreeCount > 0 {
+              availablePostTicket.decreaseFreeCount(amount: 1)
+            } else {
+              availablePostTicket.decreasePurchasedCount(amount: 1)
+            }
+            try await secureKeyValueStore.setAvailablePostTicket(availablePostTicket)
             await send(.internalAction(.post(accessToken, media)))
+            await send(.internalAction(.setAvailablePostTicket(availablePostTicket)))
           },
           catch: { _, send in
             await send(.internalAction(.postFailure("画像のアップロードに失敗しました")))
           },
         )
+      case let .internalAction(.setAvailablePostTicket(availablePostTicket)):
+        state.availablePostTicket = availablePostTicket
+        state.totalPostTicketCount = availablePostTicket.remainingFreeCount + availablePostTicket.remainingPurchasedCount
+        if state.temporaryMedia != nil {
+          // 投稿済みメディアがあるので使用するチケットを1枚にする
+          state.usePostTicketCount = 1
+        }
+        state.overUsablePostTicket = state.usePostTicketCount > state.totalPostTicketCount
+        return .none
       case let .internalAction(.post(accessToken, media)):
         state.temporaryMedia = media
+        state.isEditing = true
         return .run(
-          operation: { [text = state.text] send in
+          operation: { [text = state.text, availablePostTicket = state.availablePostTicket] send in
             try await twitterAPI.post(accessToken, media?.id, text)
+            var availablePostTicket = availablePostTicket
+            // 無料チケットから優先して使用する
+            if availablePostTicket.remainingFreeCount > 0 {
+              availablePostTicket.decreaseFreeCount(amount: 1)
+            } else {
+              availablePostTicket.decreasePurchasedCount(amount: 1)
+            }
+            try await secureKeyValueStore.setAvailablePostTicket(availablePostTicket)
             await send(.internalAction(.posted))
           },
           catch: { _, send in
@@ -292,16 +339,7 @@ public struct TweetPage: View {
         form
           .navigationTitle("Xへポスト")
           .navigationBarTitleDisplayMode(.inline)
-          .toolbar(
-            disablePostButton: store.isDisablePostButton,
-            cancelAction: {
-              store.send(.close)
-            },
-            postAction: {
-              store.send(.preparePost)
-              isFocused = false
-            },
-          )
+          .toolbar(store: store)
           .onAppear {
             store.send(.onAppear)
             isFocused = true
@@ -318,6 +356,9 @@ public struct TweetPage: View {
             if oldValue && !newValue {
               isFocused = true
             }
+          }
+          .onChange(of: store.isLoading, initial: false) { _, newValue in
+            isFocused = !newValue
           }
           .progress(store.isLoading)
           .onChange(of: store.showSuccess, initial: false) { _, newValue in
@@ -486,47 +527,29 @@ public struct TweetPage: View {
 }
 
 private extension View {
-  func toolbar(
-    disablePostButton: Bool,
-    cancelAction: @escaping () -> Void,
-    postAction: @escaping () -> Void,
-  ) -> some View {
+  func toolbar(store: StoreOf<TweetFeature>) -> some View {
     toolbar {
       ToolbarItem(placement: .cancellationAction) {
-        if #available(iOS 26.0, *) {
-          Button(
-            role: .close,
-            action: cancelAction,
-          )
-        } else {
-          Button(
-            action: cancelAction,
-            label: {
-              Image(systemSymbol: .xmark)
-            },
-          )
-        }
+        CancellationButton(
+          action: {
+            store.send(.close)
+          },
+        )
+      }
+      ToolbarItem(placement: .topBarTrailing) {
+        Text("\(store.usePostTicketCount)/\(store.totalPostTicketCount)枚")
+          .font(.system(size: 14, weight: store.overUsablePostTicket ? .bold : .regular))
+          .foregroundStyle(store.overUsablePostTicket ? .red : .primary)
+          .padding(.horizontal, 8)
       }
       ToolbarItem(placement: .confirmationAction) {
-        Group {
-          if #available(iOS 26.0, *) {
-            Button(
-              role: .confirm,
-              action: postAction,
-              label: {
-                Text("ポスト")
-              },
-            )
-          } else {
-            Button(
-              action: postAction,
-              label: {
-                Text("ポスト")
-              },
-            )
-          }
-        }
-        .disabled(disablePostButton)
+        ConfirmationButton(
+          action: {
+            store.send(.preparePost)
+          },
+          title: "ポスト",
+        )
+        .disabled(store.isDisablePostButton || store.overUsablePostTicket)
       }
     }
   }
