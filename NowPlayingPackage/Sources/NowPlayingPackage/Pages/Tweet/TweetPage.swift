@@ -27,6 +27,7 @@ public struct TweetFeature: Sendable {
     public var availablePostTicket: AvailablePostTicket = .initial
     public var usePostTicketCount = 0
     public var totalPostTicketCount = 0
+    public var overUsablePostTicket = false
     public var text = ""
     public var temporaryMedia: TwitterMedia?
     public var isEditing = false
@@ -42,8 +43,6 @@ public struct TweetFeature: Sendable {
     public var postFormat = ""
     @Presents public var selectTwitterAccount: SelectTwitterAccountFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?
-
-    public var overUsablePostTicket: Bool { usePostTicketCount > totalPostTicketCount }
   }
 
   // MARK: - Action
@@ -222,7 +221,8 @@ public struct TweetFeature: Sendable {
         )
       case let .internalAction(.setAvailablePostTicket(availablePostTicket)):
         state.availablePostTicket = availablePostTicket
-        state.totalPostTicketCount = availablePostTicket.totalFreeCount + availablePostTicket.totalPurchasedCount
+        state.totalPostTicketCount = availablePostTicket.remainingFreeCount + availablePostTicket.remainingPurchasedCount
+        state.overUsablePostTicket = state.usePostTicketCount > state.totalPostTicketCount
         return .none
       case let .internalAction(.post(accessToken, media)):
         state.temporaryMedia = media

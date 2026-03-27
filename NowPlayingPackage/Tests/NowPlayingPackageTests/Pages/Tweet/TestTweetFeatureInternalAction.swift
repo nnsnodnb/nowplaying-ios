@@ -17,6 +17,65 @@ import Testing
 )
 struct TestTweetFeatureInternalAction {
   @Test
+  func testSetAvailablePostTicketOverUsablePostTicket() async throws {
+    let store = TestStore(
+      initialState: TweetFeature.State(
+        twitterAccounts: [],
+        title: "曲名",
+        artist: "アーティスト名",
+        album: nil,
+        artwork: nil,
+        capturedImage: .init(systemSymbol: .photo),
+        attachmentImage: .init(systemSymbol: .photo),
+        usePostTicketCount: 2
+      ),
+      reducer: {
+        TweetFeature()
+      },
+    )
+
+    let availablePostTicket = try Stub.make(AvailablePostTicket.self) {
+      $0.set(\.remainingFreeCount, value: 0)
+      $0.set(\.remainingPurchasedCount, value: 1)
+    }
+
+    await store.send(.internalAction(.setAvailablePostTicket(availablePostTicket))) {
+      $0.availablePostTicket = availablePostTicket
+      $0.totalPostTicketCount = 1
+      $0.overUsablePostTicket = true
+    }
+  }
+
+  @Test
+  func testSetAvailablePostTicketNotOverUsablePostTicket() async throws {
+    let store = TestStore(
+      initialState: TweetFeature.State(
+        twitterAccounts: [],
+        title: "曲名",
+        artist: "アーティスト名",
+        album: nil,
+        artwork: nil,
+        capturedImage: .init(systemSymbol: .photo),
+        attachmentImage: .init(systemSymbol: .photo),
+        usePostTicketCount: 2
+      ),
+      reducer: {
+        TweetFeature()
+      },
+    )
+
+    let availablePostTicket = try Stub.make(AvailablePostTicket.self) {
+      $0.set(\.remainingFreeCount, value: 1)
+      $0.set(\.remainingPurchasedCount, value: 1)
+    }
+
+    await store.send(.internalAction(.setAvailablePostTicket(availablePostTicket))) {
+      $0.availablePostTicket = availablePostTicket
+      $0.totalPostTicketCount = 2
+    }
+  }
+
+  @Test
   func testUploadImageDataSuccess() async throws {
     let mainQueue = DispatchQueue.test
     let twitterAccount = try Stub.make(TwitterAccount.self)

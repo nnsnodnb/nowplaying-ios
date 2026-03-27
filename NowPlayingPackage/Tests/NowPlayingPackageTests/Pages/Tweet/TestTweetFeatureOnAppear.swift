@@ -68,7 +68,7 @@ struct TestTweetFeatureOnAppear {
         }
         await store.receive(\.internalAction.setAvailablePostTicket, availablePostTicket) {
           $0.availablePostTicket = availablePostTicket
-          $0.totalPostTicketCount = 33
+          $0.totalPostTicketCount = 12
         }
       }
     }
@@ -116,7 +116,7 @@ struct TestTweetFeatureOnAppear {
       }
       await store.receive(\.internalAction.setAvailablePostTicket, availablePostTicket) {
         $0.availablePostTicket = availablePostTicket
-        $0.totalPostTicketCount = 33
+        $0.totalPostTicketCount = 12
       }
     }
   }
