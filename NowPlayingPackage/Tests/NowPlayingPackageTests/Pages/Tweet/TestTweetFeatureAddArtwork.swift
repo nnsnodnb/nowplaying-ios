@@ -11,8 +11,8 @@ import Testing
 
 @MainActor
 struct TestTweetFeatureAddArtwork {
-  @Test
-  func testIt() async throws {
+  @Test(arguments: [1, 2])
+  func testIt(totalPostTicketCount: Int) async throws {
     let store = TestStore(
       initialState: TweetFeature.State(
         twitterAccounts: [],
@@ -21,6 +21,7 @@ struct TestTweetFeatureAddArtwork {
         album: nil,
         artwork: .init(systemSymbol: .photoFill),
         capturedImage: .init(systemSymbol: .photo),
+        totalPostTicketCount: totalPostTicketCount,
       ),
       reducer: {
         TweetFeature()
@@ -30,6 +31,11 @@ struct TestTweetFeatureAddArtwork {
     await store.send(.addArtwork) {
       $0.attachmentImage = .init(systemSymbol: .photoFill)
       $0.usePostTicketCount = 2
+      if totalPostTicketCount == 1 {
+        $0.overUsablePostTicket = true
+      } else {
+        $0.overUsablePostTicket = false
+      }
       $0.isEditing = true
     }
   }
