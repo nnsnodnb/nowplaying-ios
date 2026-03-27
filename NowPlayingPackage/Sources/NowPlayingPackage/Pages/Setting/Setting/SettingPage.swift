@@ -128,6 +128,7 @@ public struct SettingFeature: Sendable {
         state.path.append(.paidContent(.init()))
         return .none
       case .showConsentForm:
+        guard state.visiblePrivacyOptionsRequirements && !state.isLoadingConsentForm else { return .none }
         return .run(
           operation: { send in
             try await consentInformation.presentPrivacyOptions()
