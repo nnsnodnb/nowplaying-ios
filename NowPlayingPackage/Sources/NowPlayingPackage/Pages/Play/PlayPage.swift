@@ -356,6 +356,7 @@ public struct PlayPage: View {
     .background {
       Color(store.backgroundColor)
         .ignoresSafeArea(.all)
+        .animation(.easeInOut, value: store.backgroundColor)
     }
     .onAppear {
       store.send(.onAppear)
