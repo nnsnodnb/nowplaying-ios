@@ -38,6 +38,7 @@ struct TestTweetFeatureRemoveAttachmentImage {
 
     await store.send(.removeAttachmentImage) {
       $0.attachmentImage = nil
+      $0.usePostTicketCount = 1
       $0.temporaryMedia = nil
       $0.isEditing = true
     }

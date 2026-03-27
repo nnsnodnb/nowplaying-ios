@@ -235,39 +235,16 @@ private extension View {
   ) -> some View {
     toolbar {
       ToolbarItem(placement: .cancellationAction) {
-        if #available(iOS 26.0, *) {
-          Button(
-            role: .close,
-            action: closeAction,
-          )
-        } else {
-          Button(
-            action: closeAction,
-            label: {
-              Image(systemSymbol: .xmark)
-            },
-          )
-        }
+        CancellationButton(
+          action: closeAction,
+        )
       }
       ToolbarItem(placement: .confirmationAction) {
-        if #available(iOS 26.0, *) {
-          Button(
-            role: .confirm,
-            action: loginAction,
-            label: {
-              Text("ログイン")
-            },
-          )
-          .disabled(loginButtonDisabled)
-        } else {
-          Button(
-            action: loginAction,
-            label: {
-              Text("ログイン")
-            },
-          )
-          .disabled(loginButtonDisabled)
-        }
+        ConfirmationButton(
+          action: loginAction,
+          title: "ログイン",
+        )
+        .disabled(loginButtonDisabled)
       }
     }
   }

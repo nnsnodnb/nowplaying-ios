@@ -109,16 +109,9 @@ private extension View {
   func toolbar(closeAction: @escaping @MainActor () -> Void) -> some View {
     toolbar {
       ToolbarItem(placement: .cancellationAction) {
-        if #available(iOS 26.0, *) {
-          Button(role: .close, action: closeAction)
-        } else {
-          Button(
-            action: closeAction,
-            label: {
-              Image(systemSymbol: .xmark)
-            },
-          )
-        }
+        CancellationButton(
+          action: closeAction,
+        )
       }
     }
   }

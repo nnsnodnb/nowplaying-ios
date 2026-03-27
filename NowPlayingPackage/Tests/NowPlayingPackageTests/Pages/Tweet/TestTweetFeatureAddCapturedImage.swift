@@ -29,6 +29,7 @@ struct TestTweetFeatureAddCapturedImage {
 
     await store.send(.addCapturedImage) {
       $0.attachmentImage = .init(systemSymbol: .photoFill)
+      $0.usePostTicketCount = 2
       $0.isEditing = true
     }
   }
