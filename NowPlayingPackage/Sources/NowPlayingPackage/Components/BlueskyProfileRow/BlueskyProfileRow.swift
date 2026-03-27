@@ -39,21 +39,30 @@ public struct BlueskyProfileRow: View {
   }
 
   private var image: some View {
-    LazyImage(url: blueskyAccount.avatarImageURL) { state in
-      if state.isLoading {
-        ProgressView()
-          .progressViewStyle(.circular)
-      } else if let image = state.image {
-        image
-          .resizable()
-          .scaledToFill()
-          .clipShape(Circle())
+    Group {
+      if let avatarImageURL = blueskyAccount.avatarImageURL {
+        LazyImage(url: avatarImageURL) { state in
+          if state.isLoading {
+            ProgressView()
+              .progressViewStyle(.circular)
+          } else if let image = state.image {
+            image
+              .resizable()
+              .scaledToFill()
+              .clipShape(Circle())
+          } else {
+            Image(systemSymbol: .photoBadgeExclamationmark)
+              .resizable()
+              .scaledToFit()
+              .foregroundStyle(.red)
+              .padding(4)
+          }
+        }
       } else {
-        Image(systemSymbol: .photoBadgeExclamationmark)
+        Image(systemSymbol: .personCircleFill)
           .resizable()
-          .scaledToFit()
-          .foregroundStyle(.red)
-          .padding(4)
+          .aspectRatio(contentMode: .fit)
+          .foregroundStyle(Color.accentColor)
       }
     }
     .frame(width: 48, height: 48)
