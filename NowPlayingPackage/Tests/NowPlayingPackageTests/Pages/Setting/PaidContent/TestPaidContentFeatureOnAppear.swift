@@ -11,6 +11,9 @@ import StubKit
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestPaidContentFeatureOnAppear {
   @Test
   func testIt() async throws {

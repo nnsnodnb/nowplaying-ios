@@ -10,6 +10,9 @@ import ComposableArchitecture
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestSocialServiceSettingFeatureChangedIsAttachImage {
   @Test
   func testTwitterDefaultToIsAttachImage() async throws {
