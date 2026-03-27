@@ -385,6 +385,7 @@ public struct PlayPage: View {
         Image(systemSymbol: .musicQuarternote3)
           .resizable()
           .aspectRatio(contentMode: .fit)
+          .foregroundStyle(.white)
       }
     }
     .scaleEffect(x: store.isPlaying ? 1 : 0.8, y: store.isPlaying ? 1 : 0.8)
