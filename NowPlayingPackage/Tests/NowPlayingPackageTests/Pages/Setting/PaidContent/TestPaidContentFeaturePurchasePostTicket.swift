@@ -12,6 +12,9 @@ import StubKit
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestPaidContentFeaturePurchasePostTicket {
   @Test
   func testIt() async throws {
