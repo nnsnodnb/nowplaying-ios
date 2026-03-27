@@ -18,6 +18,31 @@ struct AdHocApp: App {
           reducer: {
             RootFeature()
           },
+          withDependencies: {
+            if UserDefaults.standard.bool(forKey: "key_mock_twitter_api") {
+              $0.twitterAPI.getUserMe = { _ in
+                // swiftlint:disable line_length
+                TwitterProfile(
+                  id: .init("1137201750"),
+                  name: "小泉ひやかし🌻",
+                  username: "nnsnodnb",
+                  profileImageURL: URL(string: "https://pbs.twimg.com/profile_images/1593438620769488897/3kV4Mtvq_normal.jpg")!,
+                )
+                // swiftlint:enable line_length
+              }
+              $0.twitterAPI.uploadMedia = { _, _ in
+                try await Task.sleep(for: .milliseconds(500))
+                return TwitterMedia(
+                  id: .init("2034250625912016896"),
+                  expiresAfterSecs: 86_400,
+                  expiresAt: Date.now.addingTimeInterval(86_400),
+                )
+              }
+              $0.twitterAPI.post = { _, _, _ in
+                try await Task.sleep(for: .milliseconds(200))
+              }
+            }
+          }
         ),
       )
     }
