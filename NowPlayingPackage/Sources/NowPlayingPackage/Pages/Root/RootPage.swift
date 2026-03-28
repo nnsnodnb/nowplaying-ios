@@ -15,11 +15,13 @@ public struct RootFeature: Sendable {
   // MARK: - State
   @ObservableState
   @MemberwiseInit(.public)
-  public struct State: Equatable {
+  public struct State: Equatable, Sendable {
     @Init(default: nil)
     public var consent: ConsentFeature.State?
     @Init(default: nil)
     public var play: PlayFeature.State?
+    @Shared(.appStorage(.isLaunchAtFirst))
+    public var isLaunchAtFirst = true
   }
 
   // MARK: - Action
@@ -32,6 +34,7 @@ public struct RootFeature: Sendable {
     // MARK: - InternalAction
     @CasePathable
     public enum InternalAction {
+      case resetedSecureAllData
       case showPlay(Bool)
     }
   }
@@ -46,7 +49,16 @@ public struct RootFeature: Sendable {
       switch action {
       case .onAppear:
         state.consent = .init()
-        return .none
+        guard state.isLaunchAtFirst else {
+          return .none
+        }
+        // 初回起動時にKeychainのデータをすべて削除する
+        return .run(
+          operation: { send in
+            try await secureKeyValueStore.resetAllData()
+            await send(.internalAction(.resetedSecureAllData))
+          },
+        )
       case .consent(.delegate(.completedConsent)):
         return .run(
           operation: { send in
@@ -57,6 +69,9 @@ public struct RootFeature: Sendable {
       case .consent:
         return .none
       case .play:
+        return .none
+      case .internalAction(.resetedSecureAllData):
+        state.$isLaunchAtFirst.withLock { $0 = false }
         return .none
       case let .internalAction(.showPlay(isPurchasedHideAds)):
         state.consent = nil

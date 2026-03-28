@@ -12,7 +12,7 @@ import SwiftUI
 public struct ConsentFeature: Sendable {
   // MARK: - State
   @ObservableState
-  public struct State: Equatable {
+  public struct State: Equatable, Sendable {
   }
 
   // MARK: - Action

@@ -36,6 +36,8 @@ public struct SecureKeyValueStoreClient: Sendable {
   // AvailablePostTicket
   public var getAvailablePostTicket: @Sendable () async throws -> AvailablePostTicket
   public var setAvailablePostTicket: @Sendable (AvailablePostTicket) async throws -> Void
+  // Misc
+  public var resetAllData: @Sendable () async throws -> Void
 }
 
 // MARK: - DependencyKey
@@ -95,6 +97,9 @@ extension SecureKeyValueStoreClient: DependencyKey {
     setAvailablePostTicket: { availablePostTicket in
       await Implementation.shared.setAvailablePostTicket(availablePostTicket)
     },
+    resetAllData: {
+      try await Implementation.shared.resetAllData()
+    },
   )
 }
 
@@ -147,6 +152,7 @@ private extension SecureKeyValueStoreClient {
     func removeTwitterAccount(_ account: TwitterAccount) {
       var accounts = getTwitterAccounts()
         .filter { $0.profile.id != account.profile.id }
+      try? keychain.remove(.twitterOAuthToken(account.profile.id))
       // 削除するアカウントがデフォルト設定されていて、残ったアカウントがあればデフォルトにする
       if account.isDefault, var account = accounts.first {
         account.setDefault()
@@ -208,6 +214,7 @@ private extension SecureKeyValueStoreClient {
     func removeBlueskyAccount(account: BlueskyAccount) {
       var accounts = getBlueskyAccounts()
         .filter { $0.handle != account.handle }
+      try? keychain.remove(.blueskyAccountPassword(account.id))
       // 削除するアカウントがデフォルト設定されていて、残ったアカウントがあればデフォルトにする
       if account.isDefault, var account = accounts.first {
         account.setDefault()
@@ -244,6 +251,25 @@ private extension SecureKeyValueStoreClient {
 
     func setAvailablePostTicket(_ availablePostTicket: AvailablePostTicket) {
       keychain.set(availablePostTicket, key: .availablePostTicket)
+    }
+
+    func resetAllData() throws {
+      // TwitterAccount & TwitterOAuthToken
+      let twitterAccounts = getTwitterAccounts()
+      for twitterAccount in twitterAccounts {
+        try? keychain.remove(.twitterOAuthToken(twitterAccount.profile.id))
+      }
+      try? keychain.remove(.twitterAccounts)
+      // BlueskyAccount & BlueskyAccountPassword
+      let blueskyAccounts = getBlueskyAccounts()
+      for blueskyAccount in blueskyAccounts {
+        try? keychain.remove(.blueskyAccountPassword(blueskyAccount.id))
+      }
+      try? keychain.remove(.blueskyAccounts)
+      // NonConsumables
+      try? keychain.remove(.purchasedNonConsumables)
+      // AvailablePostTicket
+      try? keychain.remove(.availablePostTicket)
     }
   }
 }

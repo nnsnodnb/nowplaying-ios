@@ -14,14 +14,14 @@ import SwiftUI
 public struct BlueskyAccountManageFeature: Sendable {
   // MARK: - State
   @ObservableState
-  public struct State: Equatable {
+  public struct State: Equatable, Sendable {
     public var blueskyAccounts: [BlueskyAccount] = []
     public var safari: Safari?
     @Presents public var blueskyLogin: BlueskyLoginFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?
 
     // MARK: - Safari
-    public enum Safari: Equatable, Identifiable {
+    public enum Safari: Equatable, Identifiable, Sendable {
       case howToAddBlueskyAccount
 
       // MARK: - Identifiable
@@ -58,7 +58,7 @@ public struct BlueskyAccountManageFeature: Sendable {
 
     // MARK: - Alert
     @CasePathable
-    public enum Alert: Equatable {
+    public enum Alert: Equatable, Sendable {
       case close
     }
   }

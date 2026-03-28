@@ -12,7 +12,7 @@ import SwiftUI
 public struct LicenseListFeature: Sendable {
   // MARK: - State
   @ObservableState
-  public struct State: Equatable {
+  public struct State: Equatable, Sendable {
     public let licenses: [LicensesPlugin.License] = LicensesPlugin.licenses
   }
 

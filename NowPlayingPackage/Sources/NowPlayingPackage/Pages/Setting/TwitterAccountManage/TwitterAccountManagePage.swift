@@ -16,7 +16,7 @@ import SwiftUI
 public struct TwitterAccountManageFeature: Sendable {
   // MARK: - State
   @ObservableState
-  public struct State: Equatable {
+  public struct State: Equatable, Sendable {
     // MARK: - Properties
     public var callbackURLScheme = ""
     public var clientID = ""
@@ -53,7 +53,7 @@ public struct TwitterAccountManageFeature: Sendable {
 
     // MARK: - Alert
     @CasePathable
-    public enum Alert: Equatable {
+    public enum Alert: Equatable, Sendable {
       case openRewardedAd
     }
   }

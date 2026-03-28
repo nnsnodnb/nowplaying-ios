@@ -24,7 +24,7 @@ public struct SettingFeature: Sendable {
 
   // MARK: - State
   @ObservableState
-  public struct State: Equatable {
+  public struct State: Equatable, Sendable {
     // MARK: - Properties
     public var version = "v3.0.0"
     public var visiblePrivacyOptionsRequirements = false
@@ -178,6 +178,9 @@ public struct SettingFeature: Sendable {
 
 // MARK: - SettingFeature.Path.State Equatable
 extension SettingFeature.Path.State: Equatable {}
+
+// MARK: - SettingFeature.Path.State Sendable
+extension SettingFeature.Path.State: Sendable {}
 
 public struct SettingPage: View {
   // MARK: - Properties

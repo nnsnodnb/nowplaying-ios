@@ -15,7 +15,7 @@ public struct PlayFeature: Sendable {
   // MARK: - State
   @ObservableState
   @MemberwiseInit(.public)
-  public struct State: Equatable {
+  public struct State: Equatable, Sendable {
     public var isPurchasedHideAds: Bool
     @Init(default: nil)
     public var artworkImage: UIImage?
@@ -69,7 +69,7 @@ public struct PlayFeature: Sendable {
 
     // MARK: - Alert
     @CasePathable
-    public enum Alert: Equatable {
+    public enum Alert: Equatable, Sendable {
       case close
     }
   }
