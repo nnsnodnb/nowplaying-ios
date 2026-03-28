@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2026/03/04.
 //
 
+import FirebaseAnalytics
 import SVProgressHUD
 import SwiftUI
 
@@ -23,3 +24,12 @@ extension View {
     }
   }
 }
+
+//extension View {
+//  func analyticsScreen(
+//    screenName: AnalyticsClient.ScreenName,
+//    extraParameters: [String: Any],
+//  ) -> some View {
+//    analyticsScreen(screenName: <#T##String#>, extraParameters: <#T##[String : Any]#>)
+//  }
+//}
