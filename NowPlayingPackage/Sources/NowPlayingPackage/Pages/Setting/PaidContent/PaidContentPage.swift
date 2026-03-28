@@ -72,6 +72,8 @@ public struct PaidContentFeature: Sendable {
   // MARK: - Dependency
   @Dependency(\.adUnit)
   private var adUnit
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.apiClient)
   private var apiClient
   @Dependency(\.calendar)
@@ -108,9 +110,12 @@ public struct PaidContentFeature: Sendable {
             switch nonConsumable {
             case .hideAds:
               try await revenueCat.purchaseHideAds()
+              await analytics.logEvent(.purchasedNonConsumableContent("hide_banner_ads"))
+              await analytics.setUserProperty(.hideBannerAds)
               await send(.delegate(.hideAds))
             case .autoTweet:
               try await revenueCat.purchaseAutoTweet()
+              await analytics.logEvent(.purchasedNonConsumableContent("auto_tweet"))
             }
             try await secureKeyValueStore.addNonConsumable(nonConsumable)
             await send(.internalAction(.paidNonConsumable(nonConsumable.description)))
@@ -134,9 +139,11 @@ public struct PaidContentFeature: Sendable {
               try await secureKeyValueStore.addNonConsumable(nonConsumable)
               if nonConsumable == .hideAds {
                 await send(.delegate(.hideAds))
+                await analytics.setUserProperty(.hideBannerAds)
               }
             }
             await send(.internalAction(.restored(Array(nonConsumables))))
+            await analytics.logEvent(.restoredPaidContent)
           },
           catch: { _, send in
             await send(.internalAction(.failedPay("購入に失敗しました", nil)))
@@ -188,9 +195,10 @@ public struct PaidContentFeature: Sendable {
       case let .purchasePostTicket(postTicket):
         state.isLoading = true
         return .run(
-          operation: { send in
+          operation: { [availablePostTicket = state.availablePostTicket] send in
             try await revenueCat.purchasePostTicket(postTicket)
             await send(.internalAction(.paidPostTicket(postTicket)))
+            await analytics.logEvent(.purchasedPostTicket(postTicket.ticketCount, availablePostTicket))
             var availablePostTicket = try await secureKeyValueStore.getAvailablePostTicket()
             availablePostTicket.increasePurchasedCount(amount: postTicket.ticketCount)
             try await secureKeyValueStore.setAvailablePostTicket(availablePostTicket)
@@ -210,6 +218,8 @@ public struct PaidContentFeature: Sendable {
           operation: { send in
             try await revenueCat.buyMeACoffee()
             await send(.internalAction(.paidCheer("コーヒー")))
+            await analytics.logEvent(.purchasedBuyMeACoffee)
+            await analytics.setUserProperty(.kindUser(true))
           },
           catch: { error, send in
             guard let error = error as? RevenueCatClient.Error,
@@ -218,6 +228,7 @@ public struct PaidContentFeature: Sendable {
               return
             }
             await send(.internalAction(.failedPay("購入に失敗しました", "お気持ち感謝いたします")))
+            await analytics.setUserProperty(.kindUser(false))
           },
         )
       case .delegate:
@@ -265,6 +276,7 @@ public struct PaidContentFeature: Sendable {
         return .run(
           operation: { send in
             var availablePostTicket = try await secureKeyValueStore.getAvailablePostTicket()
+            await analytics.logEvent(.getFreePostTicket(availablePostTicket))
             availablePostTicket.increaseFreeCount(amount: 1)
             try await secureKeyValueStore.setAvailablePostTicket(availablePostTicket)
             await send(.internalAction(.updateAvailablePostTicket(availablePostTicket)))
@@ -382,6 +394,7 @@ public struct PaidContentFeature: Sendable {
         state.$earnFreeTicketDate.withLock { $0 = date.now }
         return .run(
           operation: { [state] send in
+            await analytics.logEvent(.showGettingFreePostTicketAds(state.availablePostTicket))
             try await rewardedAd.load(state.freeTicketAdUnitID)
             let result = try await rewardedAd.show(state.freeTicketAdUnitID)
             guard result > 0 else { return }

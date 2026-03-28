@@ -81,6 +81,9 @@ public struct TweetFeature: Sendable {
     }
   }
 
+  // MARK: - Dependency
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.dismiss)
   private var dismiss
   @Dependency(\.mainQueue)
@@ -256,6 +259,8 @@ public struct TweetFeature: Sendable {
             }
             try await secureKeyValueStore.setAvailablePostTicket(availablePostTicket)
             await send(.internalAction(.posted))
+            await analytics.logEvent(.twitterPosted(media != nil))
+            await analytics.setUserProperty(.postTwitter)
           },
           catch: { _, send in
             await send(.internalAction(.postFailure("ポストに失敗しました")))

@@ -59,6 +59,9 @@ public struct BlueskyLoginFeature: Sendable {
     }
   }
 
+  // MARK: - Dependency
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.blueskyAPI)
   private var blueskyAPI
   @Dependency(\.dismiss)
@@ -127,7 +130,8 @@ public struct BlueskyLoginFeature: Sendable {
       case let .internalAction(.loggedIn(blueskyAccount)):
         state.isLoading = false
         return .run(
-          operation: { send in
+          operation: { [handle = state.handle] send in
+            await analytics.logEvent(.blueskyLogin(true, handle))
             await send(.delegate(.loggedIn(blueskyAccount)))
             await send(.close)
           },
@@ -150,7 +154,11 @@ public struct BlueskyLoginFeature: Sendable {
             TextState(message)
           }
         )
-        return .none
+        return .run(
+          operation: { [handle = state.handle] _ in
+            await analytics.logEvent(.blueskyLogin(false, handle))
+          },
+        )
       case .internalAction:
         return .none
       case .alert:

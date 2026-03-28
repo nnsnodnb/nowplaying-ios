@@ -64,6 +64,8 @@ public struct BlueskyAccountManageFeature: Sendable {
   }
 
   // MARK: - Dependency
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.secureKeyValueStore)
   private var secureKeyValueStore
 
@@ -123,7 +125,11 @@ public struct BlueskyAccountManageFeature: Sendable {
         return .none
       case let .internalAction(.fetchedBlueskyAccounts(blueskyAccounts)):
         state.blueskyAccounts = blueskyAccounts
-        return .none
+        return .run(
+          operation: { _ in
+            await analytics.setUserProperty(.blueskyAccountsCount(blueskyAccounts.count + 1))
+          },
+        )
       case .internalAction:
         return .none
       case .alert:
