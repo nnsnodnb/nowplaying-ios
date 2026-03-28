@@ -12,7 +12,7 @@ import SwiftUI
 public struct SocialServiceSettingFeature: Sendable {
   // MARK: - State
   @ObservableState
-  public struct State: Equatable {
+  public struct State: Equatable, Sendable {
     // MARK: - Properties
     fileprivate static let defaultPostFormat = "__songtitle__ / __artist__ #NowPlaying"
 

@@ -61,7 +61,7 @@ public extension Keychain {
 
   func set<E: Encodable>(_ object: E?, key: Keys) {
     guard let object else {
-      try? remove(key.rawValue)
+      try? remove(key)
       return
     }
     let encoder = JSONEncoder()
@@ -69,5 +69,9 @@ public extension Keychain {
       let data = try encoder.encode(object)
       try set(data, key: key.rawValue)
     } catch {}
+  }
+
+  func remove(_ key: Keys) throws {
+    try remove(key.rawValue)
   }
 }

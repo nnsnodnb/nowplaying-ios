@@ -17,4 +17,5 @@ public enum NowPlayingSharedKey: String {
   case purchasedHideAds = "key_purchased_hide_ads"
   case purchasedAutoTweet = "key_purchased_auto_tweet"
   case earnFreeTicketDate = "key_earn_free_ticket_date"
+  case isLaunchAtFirst = "key_is_launch_at_first"
 }
