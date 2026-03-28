@@ -371,6 +371,7 @@ public struct PlayPage: View {
       PostPage(store: store)
     }
     .alert($store.scope(state: \.alert, action: \.alert))
+    .analyticsScreen(screenName: .play)
   }
 
   private var artworkImage: some View {

@@ -279,6 +279,12 @@ public struct PostPage: View {
           }
       },
     )
+    .analyticsScreen(
+      screenName: .post,
+      extraParameters: [
+        "account_count": store.blueskyAccounts.count,
+      ],
+    )
   }
 
   private var form: some View {

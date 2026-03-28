@@ -370,6 +370,12 @@ public struct TweetPage: View {
           }
       },
     )
+    .analyticsScreen(
+      screenName: .tweet,
+      extraParameters: [
+        "account_count": store.twitterAccounts.count,
+      ],
+    )
   }
 
   private var form: some View {

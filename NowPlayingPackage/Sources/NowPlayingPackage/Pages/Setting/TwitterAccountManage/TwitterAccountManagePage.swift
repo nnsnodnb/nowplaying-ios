@@ -257,6 +257,7 @@ public struct TwitterAccountManagePage: View {
       )
       .alert($store.scope(state: \.alert, action: \.alert))
       .progress(store.isLoading)
+      .analyticsScreen(screenName: .twitterAccountManage)
   }
 
   @ViewBuilder private var list: some View {

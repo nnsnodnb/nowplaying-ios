@@ -77,6 +77,7 @@ public struct SelectBlueskyAccountPage: View {
           )
       },
     )
+    .analyticsScreen(screenName: .selectBlueskyAccount)
   }
 
   private var list: some View {

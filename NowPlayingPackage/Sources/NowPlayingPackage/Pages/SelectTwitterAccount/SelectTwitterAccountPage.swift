@@ -77,6 +77,7 @@ public struct SelectTwitterAccountPage: View {
           )
       },
     )
+    .analyticsScreen(screenName: .selectTwitterAccount)
   }
 
   private var list: some View {

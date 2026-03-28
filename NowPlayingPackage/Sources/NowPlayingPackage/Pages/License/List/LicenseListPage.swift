@@ -35,6 +35,7 @@ public struct LicenseListPage: View {
     list
       .navigationTitle("ライセンス")
       .interactiveDismissDisabled(true)
+      .analyticsScreen(screenName: .license)
   }
 
   private var list: some View {

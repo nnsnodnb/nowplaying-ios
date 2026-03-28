@@ -188,6 +188,7 @@ public struct BlueskyLoginPage: View {
           .alert($store.scope(state: \.alert, action: \.alert))
       },
     )
+    .analyticsScreen(screenName: .blueskyLogin)
   }
 
   private var form: some View {

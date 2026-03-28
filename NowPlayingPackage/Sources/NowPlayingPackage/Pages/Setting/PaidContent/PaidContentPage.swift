@@ -410,6 +410,7 @@ public struct PaidContentPage: View {
       }
       .alert($store.scope(state: \.alert, action: \.alert))
       .progress(store.isLoading)
+      .analyticsScreen(screenName: .paidContent)
   }
 
   private var list: some View {

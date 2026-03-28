@@ -167,6 +167,7 @@ public struct BlueskyAccountManagePage: View {
         },
       )
       .alert($store.scope(state: \.alert, action: \.alert))
+      .analyticsScreen(screenName: .blueskyAccountManage)
   }
 
   @ViewBuilder private var list: some View {

@@ -126,6 +126,14 @@ public struct SocialServiceSettingPage: View {
           isFocused = false
         },
       )
+      .modifier {
+        switch store.socialService {
+        case .twitter:
+          $0.analyticsScreen(screenName: .twitterSetting)
+        case .bluesky:
+          $0.analyticsScreen(screenName: .blueskySetting)
+        }
+      }
   }
 
   private var form: some View {

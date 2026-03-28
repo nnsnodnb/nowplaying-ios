@@ -29,7 +29,7 @@ extension AnalyticsClient: DependencyKey {
 
 // MARK: - ScreenName
 public extension AnalyticsClient {
-  enum ScreenName {
+  enum ScreenName: String {
     case root
     case consent
     case play
@@ -38,10 +38,13 @@ public extension AnalyticsClient {
     case twitterAccountManage
     case blueskySetting
     case blueskyAccountManage
+    case blueskyLogin
     case paidContent
     case license
     case tweet
     case post
+    case selectTwitterAccount
+    case selectBlueskyAccount
   }
 }
 
@@ -51,8 +54,11 @@ public extension AnalyticsClient {
     case launch
 
     // MARK: - Properties
-    var event: String {
-      switch self
+    var eventName: String {
+      switch self {
+      case .launch:
+        return "launch"
+      }
     }
   }
 }

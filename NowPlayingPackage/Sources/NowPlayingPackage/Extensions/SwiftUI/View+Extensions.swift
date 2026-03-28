@@ -25,11 +25,11 @@ extension View {
   }
 }
 
-//extension View {
-//  func analyticsScreen(
-//    screenName: AnalyticsClient.ScreenName,
-//    extraParameters: [String: Any],
-//  ) -> some View {
-//    analyticsScreen(screenName: <#T##String#>, extraParameters: <#T##[String : Any]#>)
-//  }
-//}
+extension View {
+  func analyticsScreen(
+    screenName: AnalyticsClient.ScreenName,
+    extraParameters: [String: Any] = [:],
+  ) -> some View {
+    analyticsScreen(name: screenName.rawValue, extraParameters: extraParameters)
+  }
+}
