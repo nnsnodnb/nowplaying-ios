@@ -18,8 +18,8 @@ public struct AppInfo: Decodable, Sendable {
 }
 
 // MARK: - AppVersion
-extension AppInfo {
-  public struct AppVersion: Decodable, Sendable {
+public extension AppInfo {
+  struct AppVersion: Decodable, Sendable {
     // MARK: - Properties
     public let require: String
     public let latest: String
