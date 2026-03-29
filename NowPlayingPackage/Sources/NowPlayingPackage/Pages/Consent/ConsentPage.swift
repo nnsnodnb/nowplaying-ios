@@ -67,6 +67,7 @@ public struct ConsentPage: View {
       .onAppear {
         store.send(.showConsent)
       }
+      .analyticsScreen(screenName: .consent)
   }
 }
 

@@ -31,6 +31,8 @@ public struct SelectTwitterAccountFeature: Sendable {
   }
 
   // MARK: - Dependency
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.dismiss)
   private var dismiss
 
@@ -45,7 +47,12 @@ public struct SelectTwitterAccountFeature: Sendable {
           },
         )
       case let .select(twitterAccount):
-        return .send(.delegate(.select(twitterAccount)))
+        return .run(
+          operation: { send in
+            await analytics.logEvent(.changedPostableTwitterAccount(twitterAccount.isDefault))
+            await send(.delegate(.select(twitterAccount)))
+          },
+        )
       case .delegate(.select):
         return .run(
           operation: { _ in
@@ -77,6 +84,7 @@ public struct SelectTwitterAccountPage: View {
           )
       },
     )
+    .analyticsScreen(screenName: .selectTwitterAccount)
   }
 
   private var list: some View {

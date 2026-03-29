@@ -61,6 +61,8 @@ public struct TwitterAccountManageFeature: Sendable {
   // MARK: - Dependency
   @Dependency(\.adUnit.addTwitterAccountRewardAdUnitID)
   private var adUnitID
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.rewardedAd)
   private var rewardedAd
   @Dependency(\.secureKeyValueStore)
@@ -142,7 +144,12 @@ public struct TwitterAccountManageFeature: Sendable {
       case let .authenticateSuccess(url):
         guard let codeVerifier = state.codeVerifier else { return .none }
         guard let code = try? twitterOAuth.validateCallbackURL(url, codeVerifier) else {
-          return .send(.internalAction(.oauthFailure("無効な操作が行われました")))
+          return .run(
+            operation: { send in
+              await analytics.logEvent(.twitterLogin(false))
+              await send(.internalAction(.oauthFailure("無効な操作が行われました")))
+            },
+          )
         }
         state.isLoading = true
         state.codeVerifier = nil
@@ -151,9 +158,11 @@ public struct TwitterAccountManageFeature: Sendable {
           operation: { send in
             let oauthToken = try await twitterOAuth.requestAccessToken(codeVerifier, code)
             await send(.internalAction(.requestGetUserMe(oauthToken)))
+            await analytics.logEvent(.twitterLogin(true))
           },
           catch: { _, send in
             await send(.internalAction(.oauthFailure("認証情報の取得に失敗しました")))
+            await analytics.logEvent(.twitterLogin(false))
           },
         )
       case let .authenticateFailure(error):
@@ -161,13 +170,22 @@ public struct TwitterAccountManageFeature: Sendable {
               errorCode != .canceledLogin else {
           return .none
         }
-        return .send(.internalAction(.oauthFailure("不明なエラーが発生しました")))
+        return .run(
+          operation: { send in
+            await send(.internalAction(.oauthFailure("不明なエラーが発生しました")))
+            await analytics.logEvent(.twitterLogin(false))
+          },
+        )
       case let .changedOAuthURL(oauthURL):
         state.oauthURL = oauthURL
         return .none
       case let .internalAction(.fetchedTwitterAccounts(twitterAccounts)):
         state.twitterAccounts = twitterAccounts
-        return .none
+        return .run(
+          operation: { _ in
+            await analytics.setUserProperty(.twitterAccountsCount(twitterAccounts.count))
+          },
+        )
       case let .internalAction(.requestGetUserMe(oauthToken)):
         return .run(
           priority: .high,
@@ -257,6 +275,7 @@ public struct TwitterAccountManagePage: View {
       )
       .alert($store.scope(state: \.alert, action: \.alert))
       .progress(store.isLoading)
+      .analyticsScreen(screenName: .twitterAccountManage)
   }
 
   @ViewBuilder private var list: some View {

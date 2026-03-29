@@ -107,6 +107,12 @@ public struct RootPage: View {
         .onAppear {
           store.send(.onAppear)
         }
+        .analyticsScreen(
+          screenName: .root,
+          extraParameters: [
+            "is_launch_at_first": "\(store.isLaunchAtFirst)",
+          ],
+        )
     }
   }
 }

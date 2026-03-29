@@ -77,6 +77,8 @@ public struct PlayFeature: Sendable {
   // MARK: - Dependency
   @Dependency(\.adUnit)
   private var adUnit
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.averageColor)
   private var averageColor
   @Dependency(\.mediaPlayer)
@@ -98,12 +100,15 @@ public struct PlayFeature: Sendable {
           operation: { send in
             try await mediaPlayer.requestAuthorization()
             await send(.internalAction(.authorizationSuccess))
+            await analytics.setUserProperty(.musicLibraryAccess(true))
           },
           catch: { error, send in
             guard let error = error as? MediaPlayerClient.Error else { return }
+            await analytics.setUserProperty(.musicLibraryAccess(false))
             switch error {
             case .denied:
               await send(.internalAction(.authorizationFailure("ミュージックライブラリへのアクセスが拒否されました")))
+              await analytics.logEvent(.deniedMusicLibrary)
             case .restricted:
               await send(.internalAction(.authorizationFailure("ミュージックライブラリへのアクセスが制限されています")))
             }
@@ -256,7 +261,11 @@ public struct PlayFeature: Sendable {
             TextState("左下の設定ボタンから「有料コンテンツ」を選択し広告を視聴するか投稿チケットを購入してください")
           },
         )
-        return .none
+        return .run(
+          operation: { _ in
+            await analytics.logEvent(.emptyPostTicket)
+          },
+        )
       case let .internalAction(.emptySNSAccounts(socialService)):
         let name = socialService.rawValue
         state.alert = AlertState(
@@ -267,7 +276,11 @@ public struct PlayFeature: Sendable {
             TextState("左下の設定ボタンから「\(name)設定」→「アカウント管理」→左上のボタンから認証を行ってください")
           },
         )
-        return .none
+        return .run(
+          operation: { _ in
+            await analytics.logEvent(.emptySocialServiceAccount(socialService))
+          },
+        )
       case let .internalAction(.showTweet(twitterAccounts, capturedImage)):
         guard let songName = state.songName,
               songName != "読み込み中...",
@@ -371,6 +384,7 @@ public struct PlayPage: View {
       PostPage(store: store)
     }
     .alert($store.scope(state: \.alert, action: \.alert))
+    .analyticsScreen(screenName: .play)
   }
 
   private var artworkImage: some View {

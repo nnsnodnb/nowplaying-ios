@@ -71,6 +71,8 @@ public struct PostFeature: Sendable {
   }
 
   // MARK: - Dependency
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.dismiss)
   private var dismiss
   @Dependency(\.blueskyAPI)
@@ -134,6 +136,8 @@ public struct PostFeature: Sendable {
             let imageData = state.attachmentImage?.jpegData(compressionQuality: 0.3)
             try await blueskyAPI.createPostRecord(blueskyAccount, state.text, imageData)
             await send(.internalAction(.posted))
+            await analytics.logEvent(.blueskyPosted(imageData != nil))
+            await analytics.setUserProperty(.postBluesky)
           },
           catch: { _, send in
             await send(.internalAction(.postFailure("ポストに失敗しました")))
@@ -278,6 +282,12 @@ public struct PostPage: View {
             }
           }
       },
+    )
+    .analyticsScreen(
+      screenName: .post,
+      extraParameters: [
+        "account_count": store.blueskyAccounts.count,
+      ],
     )
   }
 

@@ -31,6 +31,8 @@ public struct SelectBlueskyAccountFeature: Sendable {
   }
 
   // MARK: - Dependency
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.dismiss)
   private var dismiss
 
@@ -45,7 +47,12 @@ public struct SelectBlueskyAccountFeature: Sendable {
           },
         )
       case let .select(blueskyAccount):
-        return .send(.delegate(.select(blueskyAccount)))
+        return .run(
+          operation: { send in
+            await analytics.logEvent(.changedPostableBlueskyAccount(blueskyAccount.isDefault))
+            await send(.delegate(.select(blueskyAccount)))
+          },
+        )
       case .delegate(.select):
         return .run(
           operation: { _ in
@@ -77,6 +84,7 @@ public struct SelectBlueskyAccountPage: View {
           )
       },
     )
+    .analyticsScreen(screenName: .selectBlueskyAccount)
   }
 
   private var list: some View {

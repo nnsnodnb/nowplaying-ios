@@ -226,6 +226,7 @@ public struct SettingPage: View {
         }
       },
     )
+    .analyticsScreen(screenName: .setting)
   }
 
   private var form: some View {
