@@ -3,7 +3,7 @@ name: AppStore
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "*.*.*"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
