@@ -29,7 +29,7 @@ struct TestRootFeatureOnAppear {
       store.state.$isLaunchAtFirst.withLock { $0 = true }
 
       await store.send(.onAppear) {
-        $0.consent = .init()
+        $0.appInfo = .init()
       }
       await store.receive(\.internalAction.resetedSecureAllData) {
         $0.$isLaunchAtFirst.withLock { $0 = false }
@@ -52,7 +52,7 @@ struct TestRootFeatureOnAppear {
       store.state.$isLaunchAtFirst.withLock { $0 = false }
 
       await store.send(.onAppear) {
-        $0.consent = .init()
+        $0.appInfo = .init()
       }
     }
   }

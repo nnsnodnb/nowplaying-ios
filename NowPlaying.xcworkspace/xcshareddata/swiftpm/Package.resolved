@@ -1,5 +1,5 @@
 {
-  "originHash" : "1aad50cb4123963992257cdcaa54a24e32494bafe9cb58983cd8593a1d0e6129",
+  "originHash" : "3e48f7a7aee518ad2e1917397747d6c40ca8585c5eba013b208c0a3937284c15",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -395,6 +395,15 @@
       "state" : {
         "revision" : "ccab89ad1cedb04f25dd4df1776dd8c8583b914a",
         "version" : "2.2.5"
+      }
+    },
+    {
+      "identity" : "version",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mxcl/Version.git",
+      "state" : {
+        "revision" : "67ce582bb9de70e1eb2ee41fd71aad3b5f86d97b",
+        "version" : "2.2.0"
       }
     },
     {
