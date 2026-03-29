@@ -17,6 +17,8 @@ public struct RootFeature: Sendable {
   @MemberwiseInit(.public)
   public struct State: Equatable, Sendable {
     @Init(default: nil)
+    public var appInfo: AppInfoFeature.State?
+    @Init(default: nil)
     public var consent: ConsentFeature.State?
     @Init(default: nil)
     public var play: PlayFeature.State?
@@ -27,6 +29,7 @@ public struct RootFeature: Sendable {
   // MARK: - Action
   public enum Action {
     case onAppear
+    case appInfo(AppInfoFeature.Action)
     case consent(ConsentFeature.Action)
     case play(PlayFeature.Action)
     case internalAction(InternalAction)
@@ -48,7 +51,7 @@ public struct RootFeature: Sendable {
     Reduce { state, action in
       switch action {
       case .onAppear:
-        state.consent = .init()
+        state.appInfo = .init()
         guard state.isLaunchAtFirst else {
           return .none
         }
@@ -59,6 +62,12 @@ public struct RootFeature: Sendable {
             await send(.internalAction(.resetedSecureAllData))
           },
         )
+      case .appInfo(.delegate(.completed)):
+        state.appInfo = nil
+        state.consent = .init()
+        return .none
+      case .appInfo:
+        return .none
       case .consent(.delegate(.completedConsent)):
         return .run(
           operation: { send in
@@ -81,6 +90,9 @@ public struct RootFeature: Sendable {
         return .none
       }
     }
+    .ifLet(\.appInfo, action: \.appInfo) {
+      AppInfoFeature()
+    }
     .ifLet(\.consent, action: \.consent) {
       ConsentFeature()
     }
@@ -98,7 +110,9 @@ public struct RootPage: View {
 
   // MARK: - Body
   public var body: some View {
-    if let store = store.scope(state: \.consent, action: \.consent) {
+    if let store = store.scope(state: \.appInfo, action: \.appInfo) {
+      AppInfoPage(store: store)
+    } else if let store = store.scope(state: \.consent, action: \.consent) {
       ConsentPage(store: store)
     } else if let store = store.scope(state: \.play, action: \.play) {
       PlayPage(store: store)

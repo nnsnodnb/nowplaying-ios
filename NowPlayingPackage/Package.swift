@@ -34,6 +34,7 @@ let package = Package(
     .package(url: "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git", .upToNextMajor(from: "3.1.0")),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", .upToNextMajor(from: "0.10.0")),
     .package(url: "https://github.com/Jake-Short/swiftui-image-viewer.git", .upToNextMajor(from: "2.3.1")),
+    .package(url: "https://github.com/mxcl/Version.git", .upToNextMajor(from: "2.2.0")),
   ],
   targets: [
     .target(
@@ -54,6 +55,7 @@ let package = Package(
         .sfSafeSymbols,
         .svProgressHUD,
         .tagged,
+        .version,
       ],
       plugins: [
         .licensesPlugin,
@@ -197,6 +199,13 @@ extension Target.Dependency {
     .product(
       name: "Tagged",
       package: "swift-tagged",
+    )
+  }
+
+  static var version: Self {
+    .product(
+      name: "Version",
+      package: "Version",
     )
   }
 }

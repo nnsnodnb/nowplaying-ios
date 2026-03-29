@@ -16,12 +16,24 @@ public struct APIClient: Sendable {
     case internalError
   }
 
+  public var getAppInfo: @Sendable () async throws -> AppInfo
   public var getPostTickets: @Sendable () async throws -> [PostTicket]
 }
 
 // MARK: - DependencyKey
 extension APIClient: DependencyKey {
   public static let liveValue: Self = .init(
+    getAppInfo: {
+      let url = URL(string: "https://nowplaying.nnsnodnb.moe/app_info.json")!
+      var urlRequest = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
+      let (data, response) = try await URLSession(configuration: .ephemeral).data(for: urlRequest)
+      guard let urlResponse = response as? HTTPURLResponse,
+            urlResponse.statusCode == 200 else { throw Error.internalError }
+      let decoder = JSONDecoder()
+      let object = try decoder.decode(AppInfo.self, from: data)
+
+      return object
+    },
     getPostTickets: {
       let url = URL(string: "https://nowplaying.nnsnodnb.moe/post_ticket.json")!
       let (data, response) = try await URLSession(configuration: .ephemeral).data(from: url)
