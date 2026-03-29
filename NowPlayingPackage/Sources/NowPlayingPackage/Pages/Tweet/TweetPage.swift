@@ -248,9 +248,12 @@ public struct TweetFeature: Sendable {
         state.temporaryMedia = media
         state.isEditing = true
         return .run(
-          operation: { [text = state.text, availablePostTicket = state.availablePostTicket] send in
-            try await twitterAPI.post(accessToken, media?.id, text)
-            var availablePostTicket = availablePostTicket
+          operation: { [state] send in
+            try await twitterAPI.post(accessToken, media?.id, state.text)
+            await analytics.logEvent(
+              .twitterPosted(media != nil, state.postableTwitterAccount!.profile.id, state.availablePostTicket)
+            )
+            var availablePostTicket = state.availablePostTicket
             // 無料チケットから優先して使用する
             if availablePostTicket.remainingFreeCount > 0 {
               availablePostTicket.decreaseFreeCount(amount: 1)
@@ -259,7 +262,6 @@ public struct TweetFeature: Sendable {
             }
             try await secureKeyValueStore.setAvailablePostTicket(availablePostTicket)
             await send(.internalAction(.posted))
-            await analytics.logEvent(.twitterPosted(media != nil))
             await analytics.setUserProperty(.postTwitter)
           },
           catch: { _, send in

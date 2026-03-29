@@ -140,14 +140,16 @@ public struct PlayFeature: Sendable {
         case .twitter:
           return .run(
             operation: { send in
-              let availablePostTicket = try await secureKeyValueStore.getAvailablePostTicket()
-              if availablePostTicket.remainingFreeCount + availablePostTicket.remainingPurchasedCount == 0 {
-                await send(.internalAction(.emptyPostTicket))
-                return
-              }
+              // アカウント数確認
               let twitterAccounts = try await secureKeyValueStore.getTwitterAccounts()
               guard !twitterAccounts.isEmpty else {
                 await send(.internalAction(.emptySNSAccounts(.twitter)))
+                return
+              }
+              // 投稿チケット数確認
+              let availablePostTicket = try await secureKeyValueStore.getAvailablePostTicket()
+              if availablePostTicket.remainingFreeCount + availablePostTicket.remainingPurchasedCount == 0 {
+                await send(.internalAction(.emptyPostTicket))
                 return
               }
               await send(.internalAction(.captureScreen(socialService, twitterAccounts, [])))
@@ -156,6 +158,7 @@ public struct PlayFeature: Sendable {
         case .bluesky:
           return .run(
             operation: { send in
+              // アカウント数確認
               let blueskyAccounts = try await secureKeyValueStore.getBlueskyAccounts()
               guard !blueskyAccounts.isEmpty else {
                 await send(.internalAction(.emptySNSAccounts(.bluesky)))
