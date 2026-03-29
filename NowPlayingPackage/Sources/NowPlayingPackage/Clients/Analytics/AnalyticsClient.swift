@@ -63,7 +63,7 @@ public extension AnalyticsClient {
     case emptyPostTicket
     case emptySocialServiceAccount(SocialService)
     case twitterLogin(Bool)
-    case twitterPosted(Bool)
+    case twitterPosted(Bool, TwitterProfile.ID, AvailablePostTicket)
     case changedPostableTwitterAccount(Bool)
     case blueskyLogin(Bool, String)
     case blueskyPosted(Bool)
@@ -123,9 +123,14 @@ public extension AnalyticsClient {
         [
           "is_success": success ? "true" : "false"
         ]
-      case let .twitterPosted(withMedia):
+      case let .twitterPosted(withMedia, twitterProfileID, availablePostTicket):
         [
           "with_media": withMedia ? "true" : "false",
+          "twitter_profile_id": twitterProfileID.rawValue,
+          "before_remain_free_post_ticket": "\(availablePostTicket.remainingFreeCount)",
+          "total_free_post_ticket": "\(availablePostTicket.totalFreeCount)",
+          "before_remain_purchased_post_ticket": "\(availablePostTicket.remainingPurchasedCount)",
+          "total_purchased_post_ticket": "\(availablePostTicket.totalPurchasedCount)",
         ]
       case let .changedPostableTwitterAccount(isDefault):
         [
