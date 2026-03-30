@@ -261,8 +261,8 @@ public struct PostPage: View {
             isFocused = true
           }
           .interactiveDismissDisabled(store.isEditing)
-          .alert($store.scope(state: \.alert, action: \.alert))
-          .sheet(item: $store.scope(state: \.selectBlueskyAccount, action: \.selectBlueskyAccount)) { store in
+          .alert($store.scope(state: \.$alert, action: \.alert))
+          .sheet(item: $store.scope(state: \.$selectBlueskyAccount, action: \.selectBlueskyAccount)) { store in
             selectBlueskyAccountPage(store: store)
           }
           .fullScreenCover(isPresented: $store.isShowPreview.sending(\.showPreview)) {

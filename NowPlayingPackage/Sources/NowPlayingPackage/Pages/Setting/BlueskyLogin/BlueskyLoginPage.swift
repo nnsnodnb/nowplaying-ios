@@ -193,7 +193,7 @@ public struct BlueskyLoginPage: View {
             },
           )
           .progress(store.isLoading)
-          .alert($store.scope(state: \.alert, action: \.alert))
+          .alert($store.scope(state: \.$alert, action: \.alert))
       },
     )
     .analyticsScreen(screenName: .blueskyLogin)

@@ -421,7 +421,7 @@ public struct PaidContentPage: View {
       .onAppear {
         store.send(.onAppear)
       }
-      .alert($store.scope(state: \.alert, action: \.alert))
+      .alert($store.scope(state: \.$alert, action: \.alert))
       .progress(store.isLoading)
       .analyticsScreen(screenName: .paidContent)
   }

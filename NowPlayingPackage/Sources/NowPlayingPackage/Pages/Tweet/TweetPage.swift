@@ -352,8 +352,8 @@ public struct TweetPage: View {
             isFocused = true
           }
           .interactiveDismissDisabled(store.isEditing)
-          .alert($store.scope(state: \.alert, action: \.alert))
-          .sheet(item: $store.scope(state: \.selectTwitterAccount, action: \.selectTwitterAccount)) { store in
+          .alert($store.scope(state: \.$alert, action: \.alert))
+          .sheet(item: $store.scope(state: \.$selectTwitterAccount, action: \.selectTwitterAccount)) { store in
             selectTwitterAccountPage(store: store)
           }
           .fullScreenCover(isPresented: $store.isShowPreview.sending(\.showPreview)) {

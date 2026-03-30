@@ -149,7 +149,7 @@ public struct AppInfoPage: View {
         .onAppear {
           store.send(.fetchAppInfo)
         }
-        .alert($store.scope(state: \.alert, action: \.alert))
+        .alert($store.scope(state: \.$alert, action: \.alert))
     case .updateRequire:
       updateRequire
     case .updateAvailable:

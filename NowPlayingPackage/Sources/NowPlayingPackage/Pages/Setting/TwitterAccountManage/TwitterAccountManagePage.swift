@@ -273,7 +273,7 @@ public struct TwitterAccountManagePage: View {
           webAuthenticationSession(url: url)
         },
       )
-      .alert($store.scope(state: \.alert, action: \.alert))
+      .alert($store.scope(state: \.$alert, action: \.alert))
       .progress(store.isLoading)
       .analyticsScreen(screenName: .twitterAccountManage)
   }

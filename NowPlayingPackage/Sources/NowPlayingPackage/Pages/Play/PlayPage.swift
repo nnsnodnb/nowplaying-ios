@@ -377,16 +377,16 @@ public struct PlayPage: View {
     .onAppear {
       store.send(.onAppear)
     }
-    .sheet(item: $store.scope(state: \.setting, action: \.setting)) { store in
+    .sheet(item: $store.scope(state: \.$setting, action: \.setting)) { store in
       SettingPage(store: store)
     }
-    .sheet(item: $store.scope(state: \.tweet, action: \.tweet)) { store in
+    .sheet(item: $store.scope(state: \.$tweet, action: \.tweet)) { store in
       TweetPage(store: store)
     }
-    .sheet(item: $store.scope(state: \.post, action: \.post)) { store in
+    .sheet(item: $store.scope(state: \.$post, action: \.post)) { store in
       PostPage(store: store)
     }
-    .alert($store.scope(state: \.alert, action: \.alert))
+    .alert($store.scope(state: \.$alert, action: \.alert))
     .analyticsScreen(screenName: .play)
   }
 

@@ -167,12 +167,12 @@ public struct BlueskyAccountManagePage: View {
           .dismissButtonStyle(.close)
       }
       .sheet(
-        item: $store.scope(state: \.blueskyLogin, action: \.blueskyLogin),
+        item: $store.scope(state: \.$blueskyLogin, action: \.blueskyLogin),
         content: { store in
           BlueskyLoginPage(store: store)
         },
       )
-      .alert($store.scope(state: \.alert, action: \.alert))
+      .alert($store.scope(state: \.$alert, action: \.alert))
       .analyticsScreen(screenName: .blueskyAccountManage)
   }
 
