@@ -146,10 +146,10 @@ public struct AppInfoPage: View {
     case .initial:
       Color(UIColor.systemBackground.withAlphaComponent(0.000001))
         .ignoresSafeArea(.all)
-        .onAppear {
+        .task {
           store.send(.fetchAppInfo)
         }
-        .alert($store.scope(state: \.alert, action: \.alert))
+        .alert($store.scope(state: \.$alert, action: \.alert))
     case .updateRequire:
       updateRequire
     case .updateAvailable:

@@ -263,7 +263,7 @@ public struct TwitterAccountManagePage: View {
           store.send(.showAlertForWatchingAds)
         },
       )
-      .onAppear {
+      .task {
         store.send(.preloadRewardedAds)
         store.send(.onAppear)
       }
@@ -273,7 +273,7 @@ public struct TwitterAccountManagePage: View {
           webAuthenticationSession(url: url)
         },
       )
-      .alert($store.scope(state: \.alert, action: \.alert))
+      .alert($store.scope(state: \.$alert, action: \.alert))
       .progress(store.isLoading)
       .analyticsScreen(screenName: .twitterAccountManage)
   }
