@@ -418,7 +418,7 @@ public struct PaidContentPage: View {
     list
       .navigationTitle("有料コンテンツ")
       .interactiveDismissDisabled(true)
-      .onAppear {
+      .task {
         store.send(.onAppear)
       }
       .alert($store.scope(state: \.$alert, action: \.alert))

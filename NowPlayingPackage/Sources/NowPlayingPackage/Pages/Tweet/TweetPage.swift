@@ -347,7 +347,7 @@ public struct TweetPage: View {
           .navigationTitle("Xへポスト")
           .navigationBarTitleDisplayMode(.inline)
           .toolbar(store: store)
-          .onAppear {
+          .task {
             store.send(.onAppear)
             isFocused = true
           }

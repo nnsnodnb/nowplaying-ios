@@ -64,7 +64,7 @@ public struct ConsentPage: View {
   public var body: some View {
     Color(UIColor.systemBackground.withAlphaComponent(0.000001))
       .ignoresSafeArea(.all)
-      .onAppear {
+      .task {
         store.send(.showConsent)
       }
       .analyticsScreen(screenName: .consent)

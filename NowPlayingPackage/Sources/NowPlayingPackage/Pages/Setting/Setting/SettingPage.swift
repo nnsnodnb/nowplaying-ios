@@ -198,7 +198,7 @@ public struct SettingPage: View {
               store.send(.close)
             },
           )
-          .onAppear {
+          .task {
             store.send(.onAppear)
           }
           .safariView(

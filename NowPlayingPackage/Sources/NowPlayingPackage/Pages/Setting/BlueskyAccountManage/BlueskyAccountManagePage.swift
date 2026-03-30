@@ -159,7 +159,7 @@ public struct BlueskyAccountManagePage: View {
           store.send(.addAccount)
         },
       )
-      .onAppear {
+      .task {
         store.send(.fetchBlueskyAccounts)
       }
       .safariView(item: $store.safari.sending(\.changedSafari)) { safari in

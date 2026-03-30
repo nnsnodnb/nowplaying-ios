@@ -118,7 +118,7 @@ public struct RootPage: View {
       PlayPage(store: store)
     } else {
       Text("")
-        .onAppear {
+        .task {
           store.send(.onAppear)
         }
         .analyticsScreen(

@@ -374,7 +374,7 @@ public struct PlayPage: View {
         .ignoresSafeArea(.all)
         .animation(.easeInOut, value: store.backgroundColor)
     }
-    .onAppear {
+    .task {
       store.send(.onAppear)
     }
     .sheet(item: $store.scope(state: \.$setting, action: \.setting)) { store in

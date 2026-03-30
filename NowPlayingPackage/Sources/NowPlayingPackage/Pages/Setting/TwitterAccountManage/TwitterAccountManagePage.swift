@@ -263,7 +263,7 @@ public struct TwitterAccountManagePage: View {
           store.send(.showAlertForWatchingAds)
         },
       )
-      .onAppear {
+      .task {
         store.send(.preloadRewardedAds)
         store.send(.onAppear)
       }

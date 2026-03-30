@@ -256,7 +256,7 @@ public struct PostPage: View {
               isFocused = false
             },
           )
-          .onAppear {
+          .task {
             store.send(.onAppear)
             isFocused = true
           }
