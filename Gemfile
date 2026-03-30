@@ -6,4 +6,4 @@ gem "fastlane", "~> 2.232.0"
 gem "fastlane-plugin-firebase_app_distribution", "~> 0.10.0"
 gem "fastlane-plugin-update_xcodeproj", "~> 1.0.1"
 
-gem "faraday", "~> 1.10.5"
+gem "faraday", "~> 2.14.0"
