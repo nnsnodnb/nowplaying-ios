@@ -794,6 +794,12 @@
     "post" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
