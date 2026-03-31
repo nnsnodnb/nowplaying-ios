@@ -289,7 +289,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 86;
+				CURRENT_PROJECT_VERSION = 87;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 99649YXF6E;
 				ENABLE_PREVIEWS = YES;
@@ -297,7 +297,7 @@
 				INFOPLIST_FILE = AdHoc/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NowPlaying;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "$(NSAppleMusicUsageDescription)";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = NSAppleMusicUsageDescription;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -331,7 +331,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 86;
+				CURRENT_PROJECT_VERSION = 87;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 99649YXF6E;
 				ENABLE_PREVIEWS = YES;
@@ -339,7 +339,7 @@
 				INFOPLIST_FILE = AdHoc/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NowPlaying;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "$(NSAppleMusicUsageDescription)";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = NSAppleMusicUsageDescription;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
