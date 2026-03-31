@@ -60,7 +60,7 @@ struct TestTweetFeatureOnAppear {
 
         await store.send(.onAppear) {
           $0.postableTwitterAccount = twitterAccountB
-          $0.text = "曲名 / アーティスト名 (不明なアルバム) #NowPlaying"
+          $0.text = "曲名 / アーティスト名 (\(String(localized: .unknownAlbum))) #NowPlaying"
           switch attachImageType {
           case .onlyArtwork:
             $0.attachmentImage = .init(systemSymbol: .photoFill)
@@ -114,7 +114,7 @@ struct TestTweetFeatureOnAppear {
 
       await store.send(.onAppear) {
         $0.postableTwitterAccount = twitterAccountB
-        $0.text = "曲名 / アーティスト名 (不明なアルバム) #NowPlaying"
+        $0.text = "曲名 / アーティスト名 (\(String(localized: .unknownAlbum))) #NowPlaying"
         $0.usePostTicketCount = 1
       }
       await store.receive(\.internalAction.setAvailablePostTicket, availablePostTicket) {

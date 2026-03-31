@@ -31,22 +31,22 @@ struct TestPaidContentFeatureBuyMeACoffee {
     await store.send(.buyMeACoffee) {
       $0.isLoading = true
     }
-    await store.receive(\.internalAction.paidCheer, "コーヒー") {
+    await store.receive(\.internalAction.paidCheer, String(localized: .coffee)) {
       $0.isLoading = false
       $0.alert = AlertState(
         title: {
-          TextState("応援ありがとうございます！")
+          TextState(.thankYouForYourSupport)
         },
         actions: {
           ButtonState(
             action: .close,
             label: {
-              TextState("がんばれよ！")
+              TextState(.keepItUp)
             },
           )
         },
         message: {
-          TextState("開発者にコーヒーをプレゼントしました！")
+          TextState(.sentToTheDeveloper(String(localized: .coffee)))
         },
       )
     }
@@ -94,18 +94,18 @@ struct TestPaidContentFeatureBuyMeACoffee {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("購入に失敗しました")
+            TextState(.purchaseFailed)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
           message: {
-            TextState("お気持ち感謝いたします")
+            TextState(.thankYouForYourSupport)
           },
         )
       }

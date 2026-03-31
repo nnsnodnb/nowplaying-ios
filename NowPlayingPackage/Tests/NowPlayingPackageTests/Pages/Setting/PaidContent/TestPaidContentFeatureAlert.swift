@@ -38,7 +38,7 @@ struct TestPaidContentFeatureAlert {
               ButtonState(
                 action: .watchAds,
                 label: {
-                  TextState("視聴する")
+                  TextState(.watch)
                 },
               )
             },
@@ -58,13 +58,13 @@ struct TestPaidContentFeatureAlert {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("無料チケットを獲得しました")
+            TextState(.freeTicketsAcquired)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },

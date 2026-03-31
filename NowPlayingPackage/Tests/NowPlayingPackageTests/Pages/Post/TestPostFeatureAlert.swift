@@ -37,7 +37,7 @@ struct TestPostFeatureAlert {
               ButtonState(
                 action: .close,
                 label: {
-                  TextState("閉じる")
+                  TextState(.close)
                 },
               )
             },

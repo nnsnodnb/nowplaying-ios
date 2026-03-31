@@ -33,7 +33,7 @@ public struct LicenseListPage: View {
   // MARK: - Body
   public var body: some View {
     list
-      .navigationTitle("ライセンス")
+      .navigationTitle(.licenses)
       .interactiveDismissDisabled(true)
       .analyticsScreen(screenName: .license)
   }

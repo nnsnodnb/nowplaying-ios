@@ -34,13 +34,13 @@ struct TestPaidContentFeatureRestorePurchases {
       $0.isLoading = false
       $0.alert = AlertState(
         title: {
-          TextState("復元する購入が何もありません")
+          TextState(.thereAreNoPurchasesToRestore)
         },
         actions: {
           ButtonState(
             action: .close,
             label: {
-              TextState("閉じる")
+              TextState(.close)
             },
           )
         },
@@ -70,13 +70,13 @@ struct TestPaidContentFeatureRestorePurchases {
       $0.isLoading = false
       $0.alert = AlertState(
         title: {
-          TextState("購入の復元が完了しました")
+          TextState(.purchaseRestorationHasBeenCompleted)
         },
         actions: {
           ButtonState(
             action: .close,
             label: {
-              TextState("閉じる")
+              TextState(.close)
             },
           )
         },

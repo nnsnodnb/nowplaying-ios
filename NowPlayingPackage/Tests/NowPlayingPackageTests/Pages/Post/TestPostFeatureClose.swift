@@ -37,20 +37,20 @@ struct TestPostFeatureClose {
     await store.send(.close) {
       $0.alert = AlertState(
         title: {
-          TextState("ポストを削除します")
+          TextState(.deletePost)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState("キャンセル")
+              TextState(.cancel)
             },
           )
           ButtonState(
             role: .destructive,
             action: .delete,
             label: {
-              TextState("削除")
+              TextState(.delete)
             },
           )
         },

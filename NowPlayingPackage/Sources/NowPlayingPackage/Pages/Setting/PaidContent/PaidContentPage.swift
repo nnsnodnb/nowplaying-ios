@@ -127,7 +127,7 @@ public struct PaidContentFeature: Sendable {
               await send(.internalAction(.userCancelled))
               return
             }
-            await send(.internalAction(.failedPay("購入に失敗しました", nil)))
+            await send(.internalAction(.failedPay(String(localized: .purchaseFailed), nil)))
           },
         )
       case .restorePurchases:
@@ -146,7 +146,7 @@ public struct PaidContentFeature: Sendable {
             await analytics.logEvent(.restoredPaidContent)
           },
           catch: { _, send in
-            await send(.internalAction(.failedPay("購入に失敗しました", nil)))
+            await send(.internalAction(.failedPay(String(localized: .purchaseFailed), nil)))
           },
         )
       case .showAlertBeforeAds:
@@ -156,11 +156,11 @@ public struct PaidContentFeature: Sendable {
 
         if let earnFreeTicketDate = state.earnFreeTicketDate,
            calendar.isDate(earnFreeTicketDate, inSameDayAs: date.now) {
-          title = "今日の無料チケットはすでに獲得済みです"
+          title = String(localized: .todaysFreeTicketHasAlreadyBeenClaimed)
           message = nil
         } else {
-          title = "広告を見て無料チケットを獲得しますか？"
-          message = { TextState("視聴できるのは1日1回までです") }
+          title = String(localized: .wouldYouLikeToWatchAnAdToGetAFreeTicket)
+          message = { TextState(.youCanWatchOncePerDay) }
         }
         state.alert = AlertState(
           title: {
@@ -171,20 +171,20 @@ public struct PaidContentFeature: Sendable {
               ButtonState(
                 role: .cancel,
                 label: {
-                  TextState("キャンセル")
+                  TextState(.cancel)
                 },
               )
               ButtonState(
                 action: .watchAds,
                 label: {
-                  TextState("視聴する")
+                  TextState(.watch)
                 },
               )
             } else {
               ButtonState(
                 action: .close,
                 label: {
-                  TextState("閉じる")
+                  TextState(.close)
                 },
               )
             }
@@ -209,7 +209,7 @@ public struct PaidContentFeature: Sendable {
               await send(.internalAction(.userCancelled))
               return
             }
-            await send(.internalAction(.failedPay("購入に失敗しました", nil)))
+            await send(.internalAction(.failedPay(String(localized: .purchaseFailed), nil)))
           },
         )
       case .buyMeACoffee:
@@ -217,7 +217,7 @@ public struct PaidContentFeature: Sendable {
         return .run(
           operation: { send in
             try await revenueCat.buyMeACoffee()
-            await send(.internalAction(.paidCheer("コーヒー")))
+            await send(.internalAction(.paidCheer(String(localized: .coffee))))
             await analytics.logEvent(.purchasedBuyMeACoffee)
             await analytics.setUserProperty(.kindUser(true))
           },
@@ -227,7 +227,9 @@ public struct PaidContentFeature: Sendable {
               await send(.internalAction(.userCancelled))
               return
             }
-            await send(.internalAction(.failedPay("購入に失敗しました", "お気持ち感謝いたします")))
+            await send(.internalAction(
+              .failedPay(String(localized: .purchaseFailed), String(localized: .thankYouForYourSupport))
+            ))
             await analytics.setUserProperty(.kindUser(false))
           },
         )
@@ -262,13 +264,13 @@ public struct PaidContentFeature: Sendable {
         state.isLoading = false
         state.alert = AlertState(
           title: {
-            TextState("無料チケットを獲得しました")
+            TextState(.freeTicketsAcquired)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
@@ -286,18 +288,18 @@ public struct PaidContentFeature: Sendable {
         state.isLoading = false
         state.alert = AlertState(
           title: {
-            TextState("ご購入ありがとうございます！")
+            TextState(.thankYouForYourPurchase)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
           message: {
-            TextState("【\(title)】を購入しました")
+            TextState(.purchased(title))
           },
         )
         return .none
@@ -305,18 +307,18 @@ public struct PaidContentFeature: Sendable {
         state.isLoading = false
         state.alert = AlertState(
           title: {
-            TextState("投稿チケット\(postTicket.ticketCount)枚を購入しました")
+            TextState(.purchasedPostingTickets(postTicket.ticketCount))
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("了解")
+                TextState(.okay)
               },
             )
           },
           message: {
-            TextState("ご購入ありがとうございます！！")
+            TextState(.thankYouForYourPurchase)
           }
         )
         return .none
@@ -324,18 +326,18 @@ public struct PaidContentFeature: Sendable {
         state.isLoading = false
         state.alert = AlertState(
           title: {
-            TextState("応援ありがとうございます！")
+            TextState(.thankYouForYourSupport)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("がんばれよ！")
+                TextState(.keepItUp)
               },
             )
           },
           message: {
-            TextState("開発者に\(title)をプレゼントしました！")
+            TextState(.sentToTheDeveloper(title))
           },
         )
         return .none
@@ -355,7 +357,7 @@ public struct PaidContentFeature: Sendable {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
@@ -365,9 +367,9 @@ public struct PaidContentFeature: Sendable {
       case let .internalAction(.restored(nonConsumables)):
         let title: String
         if nonConsumables.isEmpty {
-          title = "復元する購入が何もありません"
+          title = String(localized: .thereAreNoPurchasesToRestore)
         } else {
-          title = "購入の復元が完了しました"
+          title = String(localized: .purchaseRestorationHasBeenCompleted)
         }
         state.isLoading = false
         state.alert = AlertState(
@@ -378,7 +380,7 @@ public struct PaidContentFeature: Sendable {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
@@ -416,7 +418,7 @@ public struct PaidContentPage: View {
   // MARK: - Body
   public var body: some View {
     list
-      .navigationTitle("有料コンテンツ")
+      .navigationTitle(.paidContent)
       .interactiveDismissDisabled(true)
       .task {
         store.send(.onAppear)
@@ -444,7 +446,7 @@ public struct PaidContentPage: View {
           restoreRow
         },
         header: {
-          Text("非消費コンテンツ")
+          Text(.nonConsumableContent)
         },
       )
     }
@@ -453,9 +455,9 @@ public struct PaidContentPage: View {
   private var consumableSection: some View {
     Section(
       content: {
-        Text("無料チケット: \(store.availablePostTicket.remainingFreeCount)枚")
+        Text(.freeTickets(store.availablePostTicket.remainingFreeCount))
         earnFreeTicketButtonRow
-        Text("有料チケット: \(store.availablePostTicket.remainingPurchasedCount)枚")
+        Text(.paidTickets(store.availablePostTicket.remainingPurchasedCount))
         if store.isLoadingPostTicket {
           ProgressView()
             .frame(maxWidth: .infinity)
@@ -472,17 +474,17 @@ public struct PaidContentPage: View {
         }
       },
       header: {
-        Text("消費コンテンツ")
+        Text(.consumableContent)
       },
       footer: {
         VStack(alignment: .leading, spacing: 2) {
-          Text("投稿チケットの消費について以下のルールに従います。")
-          Text("1. 無料チケットから優先して消費されます。")
-          Text("2. 投稿チケットはXへのポスト時のみ消費されます。")
-          Text("3. 画像アップロードおよびテキスト投稿は、それぞれ独立した処理として扱われ、成功時に1枚ずつ消費されます。")
-          Text("4. 画像アップロード成功後にテキスト投稿が失敗した場合、画像分の1枚のみ消費されます。")
-          Text("5. 画像・テキストの両方が成功した場合は合計2枚消費されます。")
-          Text("6. 各処理は「成功したもののみ」チケットが消費されます。")
+          Text(.theFollowingRulesApplyToTheConsumptionOfPostingTickets)
+          Text(._1FreeTicketsWillBeUsedFirst)
+          Text(._2PostingTicketsAreOnlyConsumedWhenPostingToX)
+          Text(._3ImageUploadsAndTextPostsAreTreatedAsSeparateProcessesAndOneTicketIsConsumedForEachUponSuccess)
+          Text(._4IfTheImageUploadSucceedsButTheTextPostFailsOnlyOneTicketForTheImageIsConsumed)
+          Text(._5IfBothTheImageAndTextSucceedATotalOfTwoTicketsAreConsumed)
+          Text(._6TicketsAreOnlyConsumedForProcessesThatSucceed)
         }
       },
     )
@@ -494,7 +496,7 @@ public struct PaidContentPage: View {
         buyMeACoffeeRow
       },
       header: {
-        Text("応援用コンテンツ")
+        Text(.supportContent)
       },
     )
   }
@@ -505,7 +507,7 @@ public struct PaidContentPage: View {
         action: {
           store.send(.purchaseNonConsumable(.hideAds))
         },
-        title: "バナー広告削除",
+        title: String(localized: .removeBannerAds),
         icon: {
           Image(systemSymbol: .nosignAppFill)
             .resizable()
@@ -523,7 +525,7 @@ public struct PaidContentPage: View {
         action: {
           store.send(.purchaseNonConsumable(.autoTweet))
         },
-        title: "自動ツイート",
+        title: String(localized: .removeBannerAds),
         icon: {
           Image(systemSymbol: .paperplaneCircleFill)
             .resizable()
@@ -540,7 +542,7 @@ public struct PaidContentPage: View {
       action: {
         store.send(.restorePurchases)
       },
-      title: "購入を復元する",
+      title: String(localized: .restorePurchases),
       icon: {
         Image(systemSymbol: .purchasedCircleFill)
           .resizable()
@@ -555,7 +557,7 @@ public struct PaidContentPage: View {
       action: {
         store.send(.showAlertBeforeAds)
       },
-      title: "無料チケットを獲得する",
+      title: String(localized: .getFreeTickets),
       icon: {
         Image(systemSymbol: .ticketFill)
           .resizable()
@@ -588,7 +590,7 @@ public struct PaidContentPage: View {
       action: {
         store.send(.buyMeACoffee)
       },
-      title: "コーヒーを買ってあげる",
+      title: String(localized: .buyMeACoffee),
       icon: {
         Image(systemSymbol: .cupAndHeatWavesFill)
           .resizable()
@@ -630,7 +632,7 @@ public struct PaidContentPage: View {
           )
           Spacer()
           if let price {
-            Text("\(price)円")
+            Text(.yen(price))
               .foregroundStyle(Color.secondary)
           }
         }

@@ -40,7 +40,7 @@ struct TestTwitterAccountManageFeatureInternalAction {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("ログインしました！")
+            TextState(.loggedIn)
           },
           message: {
             TextState("\(twitterAccount.profile.name) (@\(twitterAccount.profile.username))")
@@ -76,7 +76,7 @@ struct TestTwitterAccountManageFeatureInternalAction {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("ログインしました！")
+            TextState(.loggedIn)
           },
           message: {
             TextState("\(twitterAccount.profile.name) (@\(twitterAccount.profile.username))")

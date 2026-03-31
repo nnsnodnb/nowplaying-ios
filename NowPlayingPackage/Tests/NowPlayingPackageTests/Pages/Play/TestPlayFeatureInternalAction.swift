@@ -43,7 +43,7 @@ struct TestPlayFeatureInternalAction {
       )
 
       await store.send(.internalAction(.authorizationSuccess)) {
-        $0.songName = "読み込み中..."
+        $0.songName = String(localized: .loading)
         $0.artistName = ""
       }
       await store.receive(\.internalAction.applyNowPlayingItem) {
@@ -101,10 +101,10 @@ struct TestPlayFeatureInternalAction {
     await store.send(.internalAction(.showTweet([twitterAccount], .init(systemSymbol: .photo)))) {
       $0.alert = AlertState(
         title: {
-          TextState("投稿に必要な情報が取得できません")
+          TextState(.failedToRetrieveTheInformationRequiredForPosting)
         },
         message: {
-          TextState("曲名とアーティスト名が取得できていません")
+          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
         },
       )
     }
@@ -115,7 +115,7 @@ struct TestPlayFeatureInternalAction {
     let store = TestStore(
       initialState: PlayFeature.State(
         isPurchasedHideAds: false,
-        songName: "読み込み中...",
+        songName: String(localized: .loading),
         artistName: "",
       ),
       reducer: {
@@ -128,10 +128,10 @@ struct TestPlayFeatureInternalAction {
     await store.send(.internalAction(.showTweet([twitterAccount], .init(systemSymbol: .photo)))) {
       $0.alert = AlertState(
         title: {
-          TextState("投稿に必要な情報が取得できません")
+          TextState(.failedToRetrieveTheInformationRequiredForPosting)
         },
         message: {
-          TextState("曲名とアーティスト名が取得できていません")
+          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
         },
       )
     }
@@ -155,10 +155,10 @@ struct TestPlayFeatureInternalAction {
     await store.send(.internalAction(.showTweet([twitterAccount], .init(systemSymbol: .photo)))) {
       $0.alert = AlertState(
         title: {
-          TextState("投稿に必要な情報が取得できません")
+          TextState(.failedToRetrieveTheInformationRequiredForPosting)
         },
         message: {
-          TextState("曲名とアーティスト名が取得できていません")
+          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
         },
       )
     }
@@ -182,10 +182,10 @@ struct TestPlayFeatureInternalAction {
     await store.send(.internalAction(.showPost([blueskyAccount], .init(systemSymbol: .photo)))) {
       $0.alert = AlertState(
         title: {
-          TextState("投稿に必要な情報が取得できません")
+          TextState(.failedToRetrieveTheInformationRequiredForPosting)
         },
         message: {
-          TextState("曲名とアーティスト名が取得できていません")
+          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
         },
       )
     }
@@ -196,7 +196,7 @@ struct TestPlayFeatureInternalAction {
     let store = TestStore(
       initialState: PlayFeature.State(
         isPurchasedHideAds: false,
-        songName: "読み込み中...",
+        songName: String(localized: .loading),
         artistName: "",
       ),
       reducer: {
@@ -209,10 +209,10 @@ struct TestPlayFeatureInternalAction {
     await store.send(.internalAction(.showPost([blueskyAccount], .init(systemSymbol: .photo)))) {
       $0.alert = AlertState(
         title: {
-          TextState("投稿に必要な情報が取得できません")
+          TextState(.failedToRetrieveTheInformationRequiredForPosting)
         },
         message: {
-          TextState("曲名とアーティスト名が取得できていません")
+          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
         },
       )
     }
@@ -236,10 +236,10 @@ struct TestPlayFeatureInternalAction {
     await store.send(.internalAction(.showPost([blueskyAccount], .init(systemSymbol: .photo)))) {
       $0.alert = AlertState(
         title: {
-          TextState("投稿に必要な情報が取得できません")
+          TextState(.failedToRetrieveTheInformationRequiredForPosting)
         },
         message: {
-          TextState("曲名とアーティスト名が取得できていません")
+          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
         },
       )
     }

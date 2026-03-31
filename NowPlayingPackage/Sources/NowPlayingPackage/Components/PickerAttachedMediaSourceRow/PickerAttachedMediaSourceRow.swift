@@ -20,7 +20,7 @@ public struct PickerAttachedMediaSourceRow<SelectionValue: Hashable, Content: Vi
       label: {
         Label(
           title: {
-            Text("投稿時画像")
+            Text(.imageAttachedToPost)
           },
           icon: {
             Image(systemSymbol: .musicNote)

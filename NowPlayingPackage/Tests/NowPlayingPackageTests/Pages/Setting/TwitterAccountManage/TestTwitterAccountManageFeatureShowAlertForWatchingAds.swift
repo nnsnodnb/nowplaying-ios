@@ -23,24 +23,24 @@ struct TestTwitterAccountManageFeatureShowAlertForWatchingAds {
     await store.send(.showAlertForWatchingAds) {
       $0.alert = AlertState(
         title: {
-          TextState("アカウントを追加するには広告の視聴が必要です。")
+          TextState(.watchingAnAdIsRequiredToAddAnAccount)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState("キャンセル")
+              TextState(.cancel)
             },
           )
           ButtonState(
             action: .openRewardedAd,
             label: {
-              TextState("視聴する")
+              TextState(.watch)
             },
           )
         },
         message: {
-          TextState("ユーザー情報を取得するためにコストが発生するためご協力お願いします。")
+          TextState(.pleaseCooperateAsRetrievingUserInformationIncursCosts)
         },
       )
     }

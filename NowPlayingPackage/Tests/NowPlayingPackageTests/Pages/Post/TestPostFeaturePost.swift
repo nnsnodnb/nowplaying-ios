@@ -128,17 +128,17 @@ struct TestPostFeaturePost {
       await store.send(.post) {
         $0.isLoading = true
       }
-      await store.receive(\.internalAction.postFailure, "ポストに失敗しました") {
+      await store.receive(\.internalAction.postFailure, String(localized: .failedToPost)) {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("ポストに失敗しました")
+            TextState(.failedToPost)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },

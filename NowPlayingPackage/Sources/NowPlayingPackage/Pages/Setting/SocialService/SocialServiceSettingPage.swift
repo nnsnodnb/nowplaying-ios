@@ -114,9 +114,9 @@ public struct SocialServiceSettingPage: View {
       .modifier {
         switch store.socialService {
         case .twitter:
-          $0.navigationTitle("X設定")
+          $0.navigationTitle(.xSetting)
         case .bluesky:
-          $0.navigationTitle("Bluesky設定")
+          $0.navigationTitle(.blueskySetting)
         }
       }
       .interactiveDismissDisabled(true)
@@ -149,7 +149,7 @@ public struct SocialServiceSettingPage: View {
         action: {
           store.send(.pushSocialServiceAccountManage)
         },
-        title: "アカウント管理",
+        title: String(localized: .accountManagement),
         icon: {
           Image(systemSymbol: .at)
             .resizable()
@@ -192,7 +192,7 @@ public struct SocialServiceSettingPage: View {
         resetFormatButton
       },
       header: {
-        Text("投稿フォーマット")
+        Text(.postFormat)
       },
       footer: {
         copyFormatFooter
@@ -204,7 +204,7 @@ public struct SocialServiceSettingPage: View {
   private func toggleRow(isOn: Binding<Bool>) -> some View {
     ToggleRow(
       isOn: isOn,
-      title: "画像を添付",
+      title: String(localized: .attachImage),
       icon: {
         Image(systemSymbol: .photo)
           .resizable()
@@ -238,7 +238,7 @@ public struct SocialServiceSettingPage: View {
         store.send(.resetFormat)
       },
       label: {
-        Text("リセットする")
+        Text(.reset)
           .frame(maxWidth: .infinity, alignment: .center)
       },
     )
@@ -263,7 +263,7 @@ public struct SocialServiceSettingPage: View {
       }
       VStack(alignment: .leading, spacing: 8) {
         ForEach(CopyFormatType.allCases, id: \.self) { copyFormatType in
-          Text(verbatim: copyFormatType.description)
+          Text(copyFormatType.description)
             .font(.system(size: 16))
         }
       }
@@ -277,7 +277,7 @@ private extension View {
       ToolbarItemGroup(placement: .keyboard) {
         Spacer()
         Button(action: keyboardClose) {
-          Text("閉じる")
+          Text(.close)
             .bold()
         }
       }

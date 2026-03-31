@@ -93,21 +93,23 @@ public struct BlueskyLoginFeature: Sendable {
           },
           catch: { error, send in
             guard let error = error as? BlueskyAPIClient.Error else {
-              await send(.internalAction(.loginFailure("不明なエラーが発生しました")))
+              await send(.internalAction(.loginFailure(String(localized: .anUnknownErrorHasOccurred))))
               return
             }
             switch error {
             case .invalidHandleOrPassword:
-              await send(.internalAction(.loginFailure("ハンドルもしくはパスワードが間違っていませんか？")))
+              await send(.internalAction(.loginFailure(String(localized: .isYourHandleOrPasswordIncorrect))))
             case .enabledTwoFactorAuthentication:
-              await send(.internalAction(.loginFailure("2要素認証が有効になっています。アプリパスワードを入力してください")))
+              await send(
+                .internalAction(.loginFailure(String(localized: .twoFactorAuthenticationIsEnabledPleaseEnterYourAppPassword)))
+              )
             case .invalidHandle:
-              await send(.internalAction(.loginFailure("ハンドルが間違っていませんか？")))
+              await send(.internalAction(.loginFailure(String(localized: .isYourHandleIncorrect))))
             case .requiredLogin:
               // MEMO: 普通は絶対にでない
-              await send(.internalAction(.loginFailure("先にログインをしてください")))
+              await send(.internalAction(.loginFailure(String(localized: .pleaseLogInFirst))))
             case .unknown:
-              await send(.internalAction(.loginFailure("不明なエラーが発生しました")))
+              await send(.internalAction(.loginFailure(String(localized: .anUnknownErrorHasOccurred))))
             }
           },
         )
@@ -140,13 +142,13 @@ public struct BlueskyLoginFeature: Sendable {
         state.isLoading = false
         state.alert = AlertState(
           title: {
-            TextState("エラーが発生しました")
+            TextState(.anErrorHasOccurred)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
@@ -180,7 +182,7 @@ public struct BlueskyLoginPage: View {
     NavigationStack(
       root: {
         form
-          .navigationTitle("ログイン情報")
+          .navigationTitle(.loginInformation)
           .navigationBarTitleDisplayMode(.inline)
           .toolbar(
             closeAction: {
@@ -217,7 +219,7 @@ public struct BlueskyLoginPage: View {
     TextField(
       text: $store.handle.sending(\.changedHandle),
       label: {
-        Text("ハンドル")
+        Text(.handle)
       },
     )
     .keyboardType(.twitter)
@@ -228,7 +230,7 @@ public struct BlueskyLoginPage: View {
     SecureField(
       text: $store.password.sending(\.changedPassword),
       label: {
-        Text("パスワード・アプリパスワード")
+        Text(.passwordAppPassword)
       },
     )
     .keyboardType(.alphabet)
@@ -251,7 +253,7 @@ private extension View {
       ToolbarItem(placement: .confirmationAction) {
         ConfirmationButton(
           action: loginAction,
-          title: "ログイン",
+          title: String(localized: .logIn),
         )
         .disabled(loginButtonDisabled)
       }

@@ -46,21 +46,25 @@ public struct SettingFeature: Sendable {
       public var id: String { url.absoluteString }
 
       public var url: URL {
+        @Dependency(\.locale)
+        var locale
+
         switch self {
         case .privacyPolicy:
-          URL(string: "https://github.com/nnsnodnb/nowplaying-ios/wiki/Privacy-Policy")!
+          return URL(string: "https://github.com/nnsnodnb/nowplaying-ios/wiki/Privacy-Policy")!
         case .termsOfUse:
-          URL(string: "https://github.com/nnsnodnb/nowplaying-ios/wiki/Terms-of-use")!
+          let flag = locale.identifier.lowercased().starts(with: "ja") ? "" : "#english-version"
+          return URL(string: "https://github.com/nnsnodnb/nowplaying-ios/wiki/Terms-of-use\(flag)")!
         case .userdataExternalTransmission:
-          URL(string: "https://nnsnodnb.moe/userdata-external-transmission/?app=moe.nnsnodnb.NowPlaying")!
+          return URL(string: "https://nnsnodnb.moe/userdata-external-transmission/?app=moe.nnsnodnb.NowPlaying")!
         case .contactDeveloper:
-          URL(string: "https://x.com/nnsnodnb")!
+          return URL(string: "https://x.com/nnsnodnb")!
         case .gitHub:
-          URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!
+          return URL(string: "https://github.com/nnsnodnb/nowplaying-ios")!
         case .googleForm:
-          URL(string: "https://forms.gle/ieuzQgWQE7fD2gYK9")!
+          return URL(string: "https://forms.gle/ieuzQgWQE7fD2gYK9")!
         case .reviewAppStore:
-          URL(string: "https://itunes.apple.com/jp/app/id1289764391?mt=8&action=write-review")!
+          return URL(string: "https://itunes.apple.com/jp/app/id1289764391?mt=8&action=write-review")!
         }
       }
     }
@@ -192,7 +196,7 @@ public struct SettingPage: View {
       path: $store.scope(state: \.path, action: \.path),
       root: {
         form
-          .navigationTitle("設定")
+          .navigationTitle(.settings)
           .toolbar(
             closeAction: {
               store.send(.close)
@@ -244,7 +248,7 @@ public struct SettingPage: View {
         action: {
           store.send(.pushTwitterSetting)
         },
-        title: "X設定",
+        title: .xSetting,
         icon: {
           Image(.icXTwitterPadding)
             .resizable()
@@ -255,7 +259,7 @@ public struct SettingPage: View {
         action: {
           store.send(.pushBlueskySetting)
         },
-        title: "Bluesky設定",
+        title: .blueskySetting,
         icon: {
           Image(.icBlueskyPadding)
             .resizable()
@@ -271,7 +275,7 @@ public struct SettingPage: View {
         action: {
           store.send(.pushPaidContent)
         },
-        title: "有料コンテンツ",
+        title: .paidContent,
         icon: {
           Image(systemSymbol: .crownFill)
             .resizable()
@@ -283,7 +287,7 @@ public struct SettingPage: View {
         action: {
           store.send(.openSafari(.termsOfUse))
         },
-        title: "利用規約",
+        title: .termsOfUse,
         icon: {
           Image(systemSymbol: .textDocumentFill)
             .resizable()
@@ -301,7 +305,7 @@ public struct SettingPage: View {
           action: {
             store.send(.showConsentForm)
           },
-          title: "Privacy Settings",
+          title: .privacySettings,
           icon: {
             if store.isLoadingConsentForm {
               ProgressView()
@@ -319,7 +323,7 @@ public struct SettingPage: View {
         action: {
           store.send(.openSafari(.privacyPolicy))
         },
-        title: "プライバシーポリシー",
+        title: String(localized: .privacyPolicy),
         icon: {
           Image(systemSymbol: .handRaisedFill)
             .resizable()
@@ -331,7 +335,7 @@ public struct SettingPage: View {
         action: {
           store.send(.openSafari(.userdataExternalTransmission))
         },
-        title: "データの外部送信について",
+        title: String(localized: .aboutUserdataExternalTransmission),
         icon: {
           Image(systemSymbol: .network)
             .resizable()
@@ -348,7 +352,7 @@ public struct SettingPage: View {
         action: {
           store.send(.openSafari(.contactDeveloper))
         },
-        title: "開発者",
+        title: String(localized: .developer),
         icon: {
           Image(.icXTwitterPadding)
             .resizable()
@@ -359,7 +363,7 @@ public struct SettingPage: View {
         action: {
           store.send(.openSafari(.gitHub))
         },
-        title: "ソースコード",
+        title: String(localized: .sourceCode),
         icon: {
           Image(.icGithub)
             .resizable()
@@ -370,7 +374,7 @@ public struct SettingPage: View {
         action: {
           store.send(.pushLicenseList)
         },
-        title: "ライセンス",
+        title: String(localized: .licenses),
         icon: {
           Image(systemSymbol: .listBulletRectangleFill)
             .resizable()
@@ -382,7 +386,7 @@ public struct SettingPage: View {
         action: {
           store.send(.openSafari(.googleForm))
         },
-        title: "機能要望・バグ報告",
+        title: String(localized: .featureRequestsBugReports),
         icon: {
           Image(systemSymbol: .exclamationmarkBubbleFill)
             .resizable()
@@ -394,7 +398,7 @@ public struct SettingPage: View {
         action: {
           store.send(.openSafari(.reviewAppStore))
         },
-        title: "レビューする",
+        title: String(localized: .writeAReview),
         icon: {
           Image(systemSymbol: .starBubble)
             .resizable()
@@ -410,7 +414,7 @@ public struct SettingPage: View {
     HStack(alignment: .center, spacing: 0) {
       Label(
         title: {
-          Text("バージョン")
+          Text(.version)
             .foregroundStyle(Color.primary)
         },
         icon: {
@@ -428,7 +432,7 @@ public struct SettingPage: View {
 
   private func buttonRow(
     action: @escaping @MainActor () -> Void,
-    title: String,
+    title: LocalizedStringResource,
     @ViewBuilder icon: () -> some View,
   ) -> some View {
     Button(
