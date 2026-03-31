@@ -46,7 +46,7 @@ struct TestTwitterAccountManageFeatureAuthenticateSuccess {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("ログインしました！")
+            TextState(.loggedIn)
           },
           message: {
             TextState("\(twitterAccount.profile.name) (@\(twitterAccount.profile.username))")
@@ -81,17 +81,17 @@ struct TestTwitterAccountManageFeatureAuthenticateSuccess {
         $0.isLoading = true
         $0.codeVerifier = nil
       }
-      await store.receive(\.internalAction.oauthFailure, "認証情報の取得に失敗しました") {
+      await store.receive(\.internalAction.oauthFailure, String(localized: .failedToRetrieveAuthenticationInformation)) {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("認証情報の取得に失敗しました")
+            TextState(.failedToRetrieveAuthenticationInformation)
           },
           actions: {
             ButtonState(
               role: .cancel,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
@@ -130,16 +130,16 @@ struct TestTwitterAccountManageFeatureAuthenticateSuccess {
     )
 
     await store.send(.authenticateSuccess(URL(string: "https://testserver/oauth")!))
-    await store.receive(\.internalAction.oauthFailure, "無効な操作が行われました") {
+    await store.receive(\.internalAction.oauthFailure, String(localized: .anInvalidOperationWasPerformed)) {
       $0.alert = AlertState(
         title: {
-          TextState("無効な操作が行われました")
+          TextState(.anInvalidOperationWasPerformed)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState("閉じる")
+              TextState(.close)
             },
           )
         },

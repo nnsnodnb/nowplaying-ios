@@ -33,7 +33,7 @@ struct TestTwitterAccountManageFeatureAlert {
               ButtonState(
                 action: .openRewardedAd,
                 label: {
-                  TextState("視聴する")
+                  TextState(.watch)
                 },
               )
             },
@@ -67,7 +67,7 @@ struct TestTwitterAccountManageFeatureAlert {
             ButtonState(
               role: .cancel,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },

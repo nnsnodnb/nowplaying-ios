@@ -48,18 +48,18 @@ struct TestPaidContentFeaturePurchasePostTicket {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("投稿チケット30枚を購入しました")
+            TextState(.purchasedPostingTickets(30))
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("了解")
+                TextState(.okay)
               },
             )
           },
           message: {
-            TextState("ご購入ありがとうございます！！")
+            TextState(.thankYouForYourPurchase)
           }
         )
       }
@@ -112,13 +112,13 @@ struct TestPaidContentFeaturePurchasePostTicket {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("購入に失敗しました")
+            TextState(.purchaseFailed)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },

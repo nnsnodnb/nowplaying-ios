@@ -96,24 +96,24 @@ public struct TwitterAccountManageFeature: Sendable {
       case .showAlertForWatchingAds:
         state.alert = AlertState(
           title: {
-            TextState("アカウントを追加するには広告の視聴が必要です。")
+            TextState(.watchingAnAdIsRequiredToAddAnAccount)
           },
           actions: {
             ButtonState(
               role: .cancel,
               label: {
-                TextState("キャンセル")
+                TextState(.cancel)
               },
             )
             ButtonState(
               action: .openRewardedAd,
               label: {
-                TextState("視聴する")
+                TextState(.watch)
               },
             )
           },
           message: {
-            TextState("ユーザー情報を取得するためにコストが発生するためご協力お願いします。")
+            TextState(.pleaseCooperateAsRetrievingUserInformationIncursCosts)
           },
         )
         return .none
@@ -147,7 +147,7 @@ public struct TwitterAccountManageFeature: Sendable {
           return .run(
             operation: { send in
               await analytics.logEvent(.twitterLogin(false))
-              await send(.internalAction(.oauthFailure("無効な操作が行われました")))
+              await send(.internalAction(.oauthFailure(String(localized: .anInvalidOperationWasPerformed))))
             },
           )
         }
@@ -161,7 +161,7 @@ public struct TwitterAccountManageFeature: Sendable {
             await analytics.logEvent(.twitterLogin(true))
           },
           catch: { _, send in
-            await send(.internalAction(.oauthFailure("認証情報の取得に失敗しました")))
+            await send(.internalAction(.oauthFailure(String(localized: .failedToRetrieveAuthenticationInformation))))
             await analytics.logEvent(.twitterLogin(false))
           },
         )
@@ -172,7 +172,7 @@ public struct TwitterAccountManageFeature: Sendable {
         }
         return .run(
           operation: { send in
-            await send(.internalAction(.oauthFailure("不明なエラーが発生しました")))
+            await send(.internalAction(.oauthFailure(String(localized: .anUnknownErrorHasOccurred))))
             await analytics.logEvent(.twitterLogin(false))
           },
         )
@@ -198,14 +198,14 @@ public struct TwitterAccountManageFeature: Sendable {
             await send(.internalAction(.savedTwitterAccount(twitterAccount.profile)))
           },
           catch: { _, send in
-            await send(.internalAction(.oauthFailure("ユーザー情報の取得に失敗しました")))
+            await send(.internalAction(.oauthFailure(String(localized: .failedToRetrieveUserInformation))))
           },
         )
       case let .internalAction(.savedTwitterAccount(profile)):
         state.isLoading = false
         state.alert = AlertState(
           title: {
-            TextState("ログインしました！")
+            TextState(.loggedIn)
           },
           message: {
             TextState("\(profile.name) (@\(profile.username))")
@@ -222,7 +222,7 @@ public struct TwitterAccountManageFeature: Sendable {
             ButtonState(
               role: .cancel,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
@@ -257,7 +257,7 @@ public struct TwitterAccountManagePage: View {
   // MARK: - Body
   public var body: some View {
     list
-      .navigationTitle("Xアカウント管理")
+      .navigationTitle(.accountManagement)
       .toolbar(
         addAction: {
           store.send(.showAlertForWatchingAds)
@@ -303,7 +303,7 @@ public struct TwitterAccountManagePage: View {
             .resizable()
             .scaledToFit()
             .frame(width: 50, height: 50)
-          Text("アカウントがありません")
+          Text(.noAccountAvailable)
         }
         .foregroundStyle(.secondary)
       }

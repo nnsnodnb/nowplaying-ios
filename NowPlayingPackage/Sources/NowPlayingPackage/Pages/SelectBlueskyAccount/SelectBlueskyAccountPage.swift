@@ -75,7 +75,7 @@ public struct SelectBlueskyAccountPage: View {
     NavigationStack(
       root: {
         list
-          .navigationTitle("アカウントを選択")
+          .navigationTitle(.selectAnAccount)
           .navigationBarTitleDisplayMode(.inline)
           .toolbar(
             closeAction: {

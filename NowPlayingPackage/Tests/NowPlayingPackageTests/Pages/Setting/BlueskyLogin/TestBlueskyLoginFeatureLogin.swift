@@ -68,14 +68,14 @@ struct TestBlueskyLoginFeatureLogin {
         BlueskyAPIClient.Error.unknown,
       ],
       [
-        "ハンドルもしくはパスワードが間違っていませんか？",
-        "ハンドルが間違っていませんか？",
-        "2要素認証が有効になっています。アプリパスワードを入力してください",
-        "不明なエラーが発生しました",
+        LocalizedStringResource.isYourHandleOrPasswordIncorrect,
+        LocalizedStringResource.isYourHandleIncorrect,
+        LocalizedStringResource.twoFactorAuthenticationIsEnabledPleaseEnterYourAppPassword,
+        LocalizedStringResource.anUnknownErrorHasOccurred,
       ],
     )
   )
-  func testErrorInvalidHandleOrPassword(error: BlueskyAPIClient.Error, message: String) async throws {
+  func testErrorInvalidHandleOrPassword(error: BlueskyAPIClient.Error, message: LocalizedStringResource) async throws {
     await withDependencies {
       $0.blueskyAPI.login = { _, _ in throw error }
     } operation: {
@@ -94,17 +94,17 @@ struct TestBlueskyLoginFeatureLogin {
         $0.focusedField = nil
         $0.isLoading = true
       }
-      await store.receive(\.internalAction.loginFailure, message) {
+      await store.receive(\.internalAction.loginFailure, String(localized: message)) {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("エラーが発生しました")
+            TextState(.anErrorHasOccurred)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },

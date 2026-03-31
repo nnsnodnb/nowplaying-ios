@@ -32,7 +32,7 @@ struct TestTweetFeatureAlert {
             ButtonState(
               action: .delete,
               label: {
-                TextState("削除")
+                TextState(.delete)
               },
             )
           },

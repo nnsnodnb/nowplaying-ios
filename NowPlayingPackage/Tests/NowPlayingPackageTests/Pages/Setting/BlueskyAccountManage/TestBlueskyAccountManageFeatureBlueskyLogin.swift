@@ -31,7 +31,7 @@ struct TestBlueskyAccountManageFeatureBlueskyLogin {
       await store.send(.blueskyLogin(.presented(.delegate(.loggedIn(blueskyAccount))))) {
         $0.alert = AlertState(
           title: {
-            TextState("ログインしました！")
+            TextState(.loggedIn)
           },
           message: {
             TextState("\(blueskyAccount.displayName ?? "") (@\(blueskyAccount.handle))")

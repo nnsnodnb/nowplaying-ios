@@ -33,22 +33,22 @@ struct TestPaidContentFeaturePurchaseNonConsumable {
       $0.isLoading = true
     }
     await store.receive(\.delegate.hideAds)
-    await store.receive(\.internalAction.paidNonConsumable, "バナー広告削除") {
+    await store.receive(\.internalAction.paidNonConsumable, String(localized: .removeBannerAds)) {
       $0.isLoading = false
       $0.alert = AlertState(
         title: {
-          TextState("ご購入ありがとうございます！")
+          TextState(.thankYouForYourPurchase)
         },
         actions: {
           ButtonState(
             action: .close,
             label: {
-              TextState("閉じる")
+              TextState(.close)
             },
           )
         },
         message: {
-          TextState("【バナー広告削除】を購入しました")
+          TextState(.purchased(String(localized: .removeBannerAds)))
         },
       )
     }
@@ -74,22 +74,22 @@ struct TestPaidContentFeaturePurchaseNonConsumable {
     await store.send(.purchaseNonConsumable(.autoTweet)) {
       $0.isLoading = true
     }
-    await store.receive(\.internalAction.paidNonConsumable, "自動ツイート") {
+    await store.receive(\.internalAction.paidNonConsumable, String(localized: .automaticPostingForX)) {
       $0.isLoading = false
       $0.alert = AlertState(
         title: {
-          TextState("ご購入ありがとうございます！")
+          TextState(.thankYouForYourPurchase)
         },
         actions: {
           ButtonState(
             action: .close,
             label: {
-              TextState("閉じる")
+              TextState(.close)
             },
           )
         },
         message: {
-          TextState("【自動ツイート】を購入しました")
+          TextState(.purchased(String(localized: .automaticPostingForX)))
         },
       )
     }
@@ -153,13 +153,13 @@ struct TestPaidContentFeaturePurchaseNonConsumable {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("購入に失敗しました")
+            TextState(.purchaseFailed)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },

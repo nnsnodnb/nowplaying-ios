@@ -83,10 +83,10 @@ struct TestPlayFeatureShowPost {
       await store.receive(\.internalAction.emptySNSAccounts) {
         $0.alert = AlertState(
           title: {
-            TextState("Xアカウントが設定されていません")
+            TextState(.noAccountIsConfigured("X"))
           },
           message: {
-            TextState("左下の設定ボタンから「X設定」→「アカウント管理」→左上のボタンから認証を行ってください")
+            TextState(.fromTheBottomLeftSettingsButtonGoToSettingsAccountManagementAuthenticateUsingTheTopLeftButton("X"))
           },
         )
       }
@@ -109,8 +109,8 @@ struct TestPlayFeatureShowPost {
         initialState: PlayFeature.State(
           isPurchasedHideAds: false,
           artworkImage: .init(systemSymbol: .photoFill),
-          songName: "曲名",
-          artistName: "アーティスト名",
+          songName: String(localized: .songTitle),
+          artistName: String(localized: .artistName),
         ),
         reducer: {
           PlayFeature()
@@ -121,18 +121,18 @@ struct TestPlayFeatureShowPost {
       await store.receive(\.internalAction.emptyPostTicket) {
         $0.alert = AlertState(
           title: {
-            TextState("投稿チケットがありません")
+            TextState(.noPostingTicketsAvailable)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
           message: {
-            TextState("左下の設定ボタンから「有料コンテンツ」を選択し広告を視聴するか投稿チケットを購入してください")
+            TextState(.fromTheBottomLeftSettingsButtonSelectPaidContentAndEitherWatchAnAdOrPurchasePostingTickets)
           },
         )
       }
@@ -153,8 +153,8 @@ struct TestPlayFeatureShowPost {
         initialState: PlayFeature.State(
           isPurchasedHideAds: false,
           artworkImage: .init(systemSymbol: .photoFill),
-          songName: "曲名",
-          artistName: "アーティスト名",
+          songName: String(localized: .songTitle),
+          artistName: String(localized: .artistName),
         ),
         reducer: {
           PlayFeature()
@@ -167,8 +167,8 @@ struct TestPlayFeatureShowPost {
       await store.receive(\.internalAction.showPost) {
         $0.post = .init(
           blueskyAccounts: [blueskyAccount],
-          title: "曲名",
-          artist: "アーティスト名",
+          title: String(localized: .songTitle),
+          artist: String(localized: .artistName),
           album: nil,
           artwork: .init(systemSymbol: .photoFill),
           capturedImage: .init(systemSymbol: .photo),
@@ -187,8 +187,8 @@ struct TestPlayFeatureShowPost {
       initialState: PlayFeature.State(
         isPurchasedHideAds: false,
         artworkImage: .init(systemSymbol: .photoFill),
-        songName: "曲名",
-        artistName: "アーティスト名",
+        songName: String(localized: .songTitle),
+        artistName: String(localized: .artistName),
       ),
       reducer: {
         PlayFeature()
@@ -199,10 +199,10 @@ struct TestPlayFeatureShowPost {
     await store.receive(\.internalAction.emptySNSAccounts) {
       $0.alert = AlertState(
         title: {
-          TextState("Blueskyアカウントが設定されていません")
+          TextState(.noAccountIsConfigured("Bluesky"))
         },
         message: {
-          TextState("左下の設定ボタンから「Bluesky設定」→「アカウント管理」→左上のボタンから認証を行ってください")
+          TextState(.fromTheBottomLeftSettingsButtonGoToSettingsAccountManagementAuthenticateUsingTheTopLeftButton("Bluesky"))
         },
       )
     }

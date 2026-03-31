@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "NowPlayingPackage",
+  defaultLocalization: "en",
   platforms: [
     .iOS(.v18),
   ],
@@ -64,9 +65,12 @@ let package = Package(
         .tagged,
         .version,
       ],
+      resources: [
+        .process("Resources"),
+      ],
       plugins: [
         .licensesPlugin,
-      ],
+      ]
     ),
     .testTarget(
       name: "NowPlayingPackageTests",

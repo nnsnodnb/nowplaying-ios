@@ -31,24 +31,24 @@ struct TestPaidContentFeatureShowAlertBeforeAds {
       await store.send(.showAlertBeforeAds) {
         $0.alert = AlertState(
           title: {
-            TextState("広告を見て無料チケットを獲得しますか？")
+            TextState(.wouldYouLikeToWatchAnAdToGetAFreeTicket)
           },
           actions: {
             ButtonState(
               role: .cancel,
               label: {
-                TextState("キャンセル")
+                TextState(.cancel)
               },
             )
             ButtonState(
               action: .watchAds,
               label: {
-                TextState("視聴する")
+                TextState(.watch)
               },
             )
           },
           message: {
-            TextState("視聴できるのは1日1回までです")
+            TextState(.youCanWatchOncePerDay)
           }
         )
       }
@@ -81,24 +81,24 @@ struct TestPaidContentFeatureShowAlertBeforeAds {
       await store.send(.showAlertBeforeAds) {
         $0.alert = AlertState(
           title: {
-            TextState("広告を見て無料チケットを獲得しますか？")
+            TextState(.wouldYouLikeToWatchAnAdToGetAFreeTicket)
           },
           actions: {
             ButtonState(
               role: .cancel,
               label: {
-                TextState("キャンセル")
+                TextState(.cancel)
               },
             )
             ButtonState(
               action: .watchAds,
               label: {
-                TextState("視聴する")
+                TextState(.watch)
               },
             )
           },
           message: {
-            TextState("視聴できるのは1日1回までです")
+            TextState(.youCanWatchOncePerDay)
           }
         )
       }
@@ -131,13 +131,13 @@ struct TestPaidContentFeatureShowAlertBeforeAds {
       await store.send(.showAlertBeforeAds) {
         $0.alert = AlertState(
           title: {
-            TextState("今日の無料チケットはすでに獲得済みです")
+            TextState(.todaysFreeTicketHasAlreadyBeenClaimed)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },

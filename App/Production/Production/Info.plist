@@ -209,12 +209,10 @@
 	</array>
 	<key>UILaunchScreen</key>
 	<dict>
-		<key>UIImageName</key>
-		<string>Logo</string>
 		<key>UIColorName</key>
 		<string>AccentColor</string>
+		<key>UIImageName</key>
+		<string>Logo</string>
 	</dict>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>再生中音楽取得のためミュージックライブラリにアクセスします</string>
 </dict>
 </plist>

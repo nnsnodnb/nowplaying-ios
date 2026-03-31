@@ -306,13 +306,13 @@ struct TestTweetFeatureInternalAction {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("画像のアップロードに失敗しました")
+            TextState(.failedToUploadTheImage)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
@@ -413,13 +413,13 @@ struct TestTweetFeatureInternalAction {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("ポストに失敗しました")
+            TextState(.failedToPost)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
@@ -506,7 +506,7 @@ struct TestTweetFeatureInternalAction {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
