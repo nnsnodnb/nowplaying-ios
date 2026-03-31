@@ -4,12 +4,20 @@
       "id": "moe.nnsnodnb.NowPlaying.postTicket30",
       "ticket_count": 30,
       "price": 100,
+      "localized_price": {
+        "ja": "100円",
+        "en": "$0.69"
+      },
       "package_id": "$rc_post_ticket_30"
     },
     {
       "id": "moe.nnsnodnb.NowPlaying.postTicket160",
       "ticket_count": 160,
       "price": 500,
+      "localized_price": {
+        "ja": "500円",
+        "en": "$3.19"
+      },
       "package_id": "$rc_post_ticket_160",
       "discount": "6.2%"
     },
@@ -17,6 +25,10 @@
       "id": "moe.nnsnodnb.NowPlaying.postTicket350",
       "ticket_count": 350,
       "price": 1000,
+      "localized_price": {
+        "ja": "1,000円",
+        "en": "$6.29"
+      },
       "package_id": "$rc_post_ticket_350",
       "discount": "14.2%"
     },
@@ -24,6 +36,10 @@
       "id": "moe.nnsnodnb.NowPlaying.postTicket1200",
       "ticket_count": 1200,
       "price": 3000,
+      "localized_price": {
+        "ja": "3,000円",
+        "en": "$18.90"
+      },
       "package_id": "$rc_post_ticket_1200",
       "discount": "25.0%"
     },
@@ -31,6 +47,10 @@
       "id": "moe.nnsnodnb.NowPlaying.postTicket4200",
       "ticket_count": 4200,
       "price": 10000,
+      "localized_price": {
+        "ja": "10,000円",
+        "en": "$62.90"
+      },
       "package_id": "$rc_post_ticket_4200",
       "discount": "28.5%"
     }
