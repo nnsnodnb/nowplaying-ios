@@ -48,13 +48,13 @@ struct TestTwitterAccountManageFeatureAuthenticateFailure {
     await store.receive(\.internalAction.oauthFailure) {
       $0.alert = AlertState(
         title: {
-          TextState("不明なエラーが発生しました")
+          TextState(.anUnknownErrorHasOccurred)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState("閉じる")
+              TextState(.close)
             },
           )
         },

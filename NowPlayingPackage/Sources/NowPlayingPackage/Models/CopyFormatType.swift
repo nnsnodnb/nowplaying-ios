@@ -18,11 +18,11 @@ public enum CopyFormatType: String, CaseIterable, CustomStringConvertible, Senda
   public var description: String {
     switch self {
     case .songTitle:
-      "曲名"
+      String(localized: .songTitle)
     case .artist:
-      "歌手名"
+      String(localized: .artistName)
     case .album:
-      "アルバム名"
+      String(localized: .albumName)
     }
   }
 }

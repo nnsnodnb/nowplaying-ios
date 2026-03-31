@@ -75,7 +75,7 @@ public struct SelectTwitterAccountPage: View {
     NavigationStack(
       root: {
         list
-          .navigationTitle("アカウントを選択")
+          .navigationTitle(.selectAnAccount)
           .navigationBarTitleDisplayMode(.inline)
           .toolbar(
             closeAction: {

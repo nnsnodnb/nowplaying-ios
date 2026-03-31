@@ -48,7 +48,7 @@ struct TestPlayFeatureOnAppear {
         $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
       }
       await store.receive(\.internalAction.authorizationSuccess) {
-        $0.songName = "読み込み中..."
+        $0.songName = String(localized: .loading)
         $0.artistName = ""
       }
       await store.receive(\.internalAction.applyNowPlayingItem) {
@@ -83,16 +83,16 @@ struct TestPlayFeatureOnAppear {
     await store.send(.onAppear) {
       $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
     }
-    await store.receive(\.internalAction.authorizationFailure, "ミュージックライブラリへのアクセスが拒否されました") {
+    await store.receive(\.internalAction.authorizationFailure, String(localized: .accessToTheMusicLibraryWasDenied)) {
       $0.alert = AlertState(
         title: {
-          TextState("ミュージックライブラリへのアクセスが拒否されました")
+          TextState(.accessToTheMusicLibraryWasDenied)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState("閉じる")
+              TextState(.close)
             },
           )
         },
@@ -119,16 +119,16 @@ struct TestPlayFeatureOnAppear {
     await store.send(.onAppear) {
       $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
     }
-    await store.receive(\.internalAction.authorizationFailure, "ミュージックライブラリへのアクセスが制限されています") {
+    await store.receive(\.internalAction.authorizationFailure, String(localized: .accessToTheMusicLibraryIsRestricted)) {
       $0.alert = AlertState(
         title: {
-          TextState("ミュージックライブラリへのアクセスが制限されています")
+          TextState(.accessToTheMusicLibraryIsRestricted)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState("閉じる")
+              TextState(.close)
             },
           )
         },

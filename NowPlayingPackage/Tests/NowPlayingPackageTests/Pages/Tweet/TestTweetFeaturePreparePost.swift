@@ -104,13 +104,13 @@ struct TestTweetFeaturePreparePost {
         $0.isLoading = false
         $0.alert = AlertState(
           title: {
-            TextState("認証情報の取得に失敗しました")
+            TextState(.failedToRetrieveAuthenticationInformation)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },

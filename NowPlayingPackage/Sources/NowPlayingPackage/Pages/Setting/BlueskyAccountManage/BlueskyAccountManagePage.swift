@@ -31,9 +31,18 @@ public struct BlueskyAccountManageFeature: Sendable {
 
       // MARK: - Properties
       public var url: URL {
+        @Dependency(\.locale)
+        var locale
+
         switch self {
         case .howToAddBlueskyAccount:
-          URL(string: "https://github.com/nnsnodnb/nowplaying-ios/wiki/Add-Bluesky-Account#nowplayingアプリでのログイン")!
+          let flag: String
+          if locale.identifier.lowercased().starts(with: "ja") {
+            flag = "#nowplayingアプリでのログイン"
+          } else {
+            flag = "#how-to-add-a-bluesky-account"
+          }
+          return URL(string: "https://github.com/nnsnodnb/nowplaying-ios/wiki/Add-Bluesky-Account\(flag)")!
         }
       }
     }
@@ -114,7 +123,7 @@ public struct BlueskyAccountManageFeature: Sendable {
         }
         state.alert = AlertState(
           title: {
-            TextState("ログインしました！")
+            TextState(.loggedIn)
           },
           message: {
             TextState(message)
@@ -150,7 +159,7 @@ public struct BlueskyAccountManagePage: View {
   // MARK: - Body
   public var body: some View {
     list
-      .navigationTitle("Blueskyアカウント管理")
+      .navigationTitle(.accountManagement)
       .toolbar(
         helpAction: {
           store.send(.changedSafari(.howToAddBlueskyAccount))
@@ -201,7 +210,7 @@ public struct BlueskyAccountManagePage: View {
             .resizable()
             .scaledToFit()
             .frame(width: 50, height: 50)
-          Text("アカウントがありません")
+          Text(.noAccountAvailable)
         }
         .foregroundStyle(.secondary)
       }

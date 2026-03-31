@@ -107,7 +107,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2620;
-				LastUpgradeCheck = 2620;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					CF91ABA42F57E453001EC12D = {
 						CreatedOnToolsVersion = 26.2;
@@ -115,11 +115,12 @@
 				};
 			};
 			buildConfigurationList = CF91ABA02F57E453001EC12D /* Build configuration list for PBXProject "Production" */;
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = CF91AB9C2F57E453001EC12D;
 			minimizedProjectReferenceProxies = 1;
@@ -159,6 +160,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -212,6 +214,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
@@ -223,6 +226,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -269,6 +273,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				VALIDATE_PRODUCT = YES;
@@ -290,9 +295,9 @@
 				INFOPLIST_FILE = Production/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NowPlaying;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "$(NSAppleMusicUsageDescription)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -332,9 +337,9 @@
 				INFOPLIST_FILE = Production/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NowPlaying;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "$(NSAppleMusicUsageDescription)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

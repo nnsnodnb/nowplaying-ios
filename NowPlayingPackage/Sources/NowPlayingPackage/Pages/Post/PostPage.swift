@@ -89,7 +89,7 @@ public struct PostFeature: Sendable {
         state.text = state.postFormat
           .replacingOccurrences(of: "__songtitle__", with: state.title)
           .replacingOccurrences(of: "__artist__", with: state.artist)
-          .replacingOccurrences(of: "__album__", with: state.album ?? "不明なアルバム")
+          .replacingOccurrences(of: "__album__", with: state.album ?? String(localized: .unknownAlbum))
         guard state.isAttachImage else { return .none }
         switch state.attachImageType {
         case .onlyArtwork:
@@ -102,20 +102,20 @@ public struct PostFeature: Sendable {
         if state.isEditing {
           state.alert = AlertState(
             title: {
-              TextState("ポストを削除します")
+              TextState(.deletePost)
             },
             actions: {
               ButtonState(
                 role: .cancel,
                 label: {
-                  TextState("キャンセル")
+                  TextState(.cancel)
                 },
               )
               ButtonState(
                 role: .destructive,
                 action: .delete,
                 label: {
-                  TextState("削除")
+                  TextState(.delete)
                 },
               )
             },
@@ -140,7 +140,7 @@ public struct PostFeature: Sendable {
             await analytics.setUserProperty(.postBluesky)
           },
           catch: { _, send in
-            await send(.internalAction(.postFailure("ポストに失敗しました")))
+            await send(.internalAction(.postFailure(String(localized: .failedToPost))))
           },
         )
       case let .changedText(text):
@@ -198,7 +198,7 @@ public struct PostFeature: Sendable {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
@@ -244,7 +244,7 @@ public struct PostPage: View {
     NavigationStack(
       root: {
         form
-          .navigationTitle("Blueskyへポスト")
+          .navigationTitle(.postToBluesky)
           .navigationBarTitleDisplayMode(.inline)
           .toolbar(
             disablePostButton: false,
@@ -276,7 +276,7 @@ public struct PostPage: View {
           .progress(store.isLoading)
           .onChange(of: store.showSuccess, initial: false) { _, newValue in
             if newValue {
-              SVProgressHUD.showSuccess(withStatus: "ポストしました")
+              SVProgressHUD.showSuccess(withStatus: String(localized: .posted))
             } else {
               SVProgressHUD.dismiss()
             }
@@ -369,7 +369,7 @@ public struct PostPage: View {
             store.send(.showPreview(true))
           },
           label: {
-            Text("プレビュー")
+            Text(.preview)
           },
         )
         Button(
@@ -377,7 +377,7 @@ public struct PostPage: View {
             store.send(.removeAttachmentImage)
           },
           label: {
-            Text("添付画像を削除")
+            Text(.removeAttachedImage)
           },
         )
       },
@@ -400,7 +400,7 @@ public struct PostPage: View {
               store.send(.addArtwork)
             },
             label: {
-              Text("アートワークのみ")
+              Text(.artworkOnly)
             },
           )
         }
@@ -409,7 +409,7 @@ public struct PostPage: View {
             store.send(.addCapturedImage)
           },
           label: {
-            Text("再生画面のスクリーンショット")
+            Text(.screenshotOfThePlaybackScreen)
           },
         )
       },
@@ -460,7 +460,7 @@ private extension View {
       ToolbarItem(placement: .confirmationAction) {
         ConfirmationButton(
           action: postAction,
-          title: "ポスト",
+          title: String(localized: .post),
         )
         .disabled(disablePostButton)
       }

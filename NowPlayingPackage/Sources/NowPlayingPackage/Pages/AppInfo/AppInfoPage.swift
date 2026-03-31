@@ -106,13 +106,13 @@ public struct AppInfoFeature: Sendable {
       case .internalAction(.fetchFailed):
         state.alert = AlertState(
           title: {
-            TextState("アプリの情報の取得に失敗しました")
+            TextState(.failedToRetrieveAppInformation)
           },
           actions: {
             ButtonState(
               action: .retry,
               label: {
-                TextState("リトライ")
+                TextState(.retry)
               },
             )
           },
@@ -165,14 +165,14 @@ public struct AppInfoPage: View {
           .aspectRatio(contentMode: .fit)
           .frame(width: 64, height: 64)
           .clipShape(RoundedRectangle(cornerRadius: 12))
-        Text("アップデートが必要です")
+        Text(.updateRequired)
           .font(.system(size: 20, weight: .bold))
         Button(
           action: {
             store.send(.openAppStore)
           },
           label: {
-            Text("App Storeを開く")
+            Text(.openAppStore)
               .padding(8)
           },
         )
@@ -189,7 +189,7 @@ public struct AppInfoPage: View {
           .aspectRatio(contentMode: .fit)
           .frame(width: 64, height: 64)
           .clipShape(RoundedRectangle(cornerRadius: 12))
-        Text("アップデートが必要です")
+        Text(.updateRequired)
           .font(.system(size: 20, weight: .bold))
       }
       VStack(alignment: .center, spacing: 12) {
@@ -198,7 +198,7 @@ public struct AppInfoPage: View {
             store.send(.openAppStore)
           },
           label: {
-            Text("App Storeを開く")
+            Text(.openAppStore)
               .padding(8)
           },
         )
@@ -208,7 +208,7 @@ public struct AppInfoPage: View {
             store.send(.updateLater)
           },
           label: {
-            Text("あとで")
+            Text(.later)
               .padding(8)
           },
         )

@@ -104,7 +104,7 @@ public struct TweetFeature: Sendable {
         state.text = state.postFormat
           .replacingOccurrences(of: "__songtitle__", with: state.title)
           .replacingOccurrences(of: "__artist__", with: state.artist)
-          .replacingOccurrences(of: "__album__", with: state.album ?? "不明なアルバム")
+          .replacingOccurrences(of: "__album__", with: state.album ?? String(localized: .unknownAlbum))
         state.usePostTicketCount = 1
         if state.isAttachImage {
           state.usePostTicketCount = 2
@@ -125,20 +125,20 @@ public struct TweetFeature: Sendable {
         if state.isEditing {
           state.alert = AlertState(
             title: {
-              TextState("ポストを削除します")
+              TextState(.deletePost)
             },
             actions: {
               ButtonState(
                 role: .cancel,
                 label: {
-                  TextState("キャンセル")
+                  TextState(.cancel)
                 },
               )
               ButtonState(
                 role: .destructive,
                 action: .delete,
                 label: {
-                  TextState("削除")
+                  TextState(.delete)
                 },
               )
             },
@@ -170,7 +170,7 @@ public struct TweetFeature: Sendable {
             }
           },
           catch: { _, send in
-            await send(.internalAction(.postFailure("認証情報の取得に失敗しました")))
+            await send(.internalAction(.postFailure(String(localized: .failedToRetrieveAuthenticationInformation))))
           },
         )
       case let .changedText(text):
@@ -232,7 +232,7 @@ public struct TweetFeature: Sendable {
             await send(.internalAction(.setAvailablePostTicket(availablePostTicket)))
           },
           catch: { _, send in
-            await send(.internalAction(.postFailure("画像のアップロードに失敗しました")))
+            await send(.internalAction(.postFailure(String(localized: .failedToUploadTheImage))))
           },
         )
       case let .internalAction(.setAvailablePostTicket(availablePostTicket)):
@@ -265,7 +265,7 @@ public struct TweetFeature: Sendable {
             await analytics.setUserProperty(.postTwitter)
           },
           catch: { _, send in
-            await send(.internalAction(.postFailure("ポストに失敗しました")))
+            await send(.internalAction(.postFailure(String(localized: .failedToPost))))
           },
         )
       case .internalAction(.posted):
@@ -287,7 +287,7 @@ public struct TweetFeature: Sendable {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
@@ -344,7 +344,7 @@ public struct TweetPage: View {
     NavigationStack(
       root: {
         form
-          .navigationTitle("Xへポスト")
+          .navigationTitle(.postToX)
           .navigationBarTitleDisplayMode(.inline)
           .toolbar(store: store)
           .task {
@@ -370,7 +370,7 @@ public struct TweetPage: View {
           .progress(store.isLoading)
           .onChange(of: store.showSuccess, initial: false) { _, newValue in
             if newValue {
-              SVProgressHUD.showSuccess(withStatus: "ポストしました")
+              SVProgressHUD.showSuccess(withStatus: String(localized: .posted))
             } else {
               SVProgressHUD.dismiss()
             }
@@ -463,7 +463,7 @@ public struct TweetPage: View {
             store.send(.showPreview(true))
           },
           label: {
-            Text("プレビュー")
+            Text(.preview)
           },
         )
         Button(
@@ -471,7 +471,7 @@ public struct TweetPage: View {
             store.send(.removeAttachmentImage)
           },
           label: {
-            Text("添付画像を削除")
+            Text(.removeAttachedImage)
           },
         )
       },
@@ -494,7 +494,7 @@ public struct TweetPage: View {
               store.send(.addArtwork)
             },
             label: {
-              Text("アートワークのみ")
+              Text(.artworkOnly)
             },
           )
         }
@@ -503,7 +503,7 @@ public struct TweetPage: View {
             store.send(.addCapturedImage)
           },
           label: {
-            Text("再生画面のスクリーンショット")
+            Text(.screenshotOfThePlaybackScreen)
           },
         )
       },
@@ -550,7 +550,7 @@ private extension View {
         )
       }
       ToolbarItem(placement: .topBarTrailing) {
-        Text("\(store.usePostTicketCount)/\(store.totalPostTicketCount)枚")
+        Text(.tickets(store.usePostTicketCount, store.totalPostTicketCount))
           .font(.system(size: 14, weight: store.overUsablePostTicket ? .bold : .regular))
           .foregroundStyle(store.overUsablePostTicket ? .red : .primary)
           .padding(.horizontal, 8)
@@ -560,7 +560,7 @@ private extension View {
           action: {
             store.send(.preparePost)
           },
-          title: "ポスト",
+          title: String(localized: .post),
         )
         .disabled(store.isDisablePostButton || store.overUsablePostTicket)
       }

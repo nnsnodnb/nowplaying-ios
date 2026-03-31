@@ -18,6 +18,7 @@ public struct PostTicket: Decodable, Equatable, Identifiable, Sendable {
     case id
     case ticketCount = "ticket_count"
     case price
+    case localizedPrice = "localized_price"
     case packageID = "package_id"
     case discount
   }
@@ -26,6 +27,32 @@ public struct PostTicket: Decodable, Equatable, Identifiable, Sendable {
   public let id: ID
   public let ticketCount: Int
   public let price: Int
+  public let localizedPrice: LocalizedPrice
   public let packageID: PackageID
   public let discount: String?
+}
+
+// MARK: - Properties
+public extension PostTicket {
+  struct LocalizedPrice: Decodable, Equatable, Sendable {
+    // MARK: - CodingKeys
+    private enum CodingKeys: String, CodingKey {
+      case japanese = "ja"
+      case english = "en"
+    }
+
+    public let japanese: String
+    public let english: String
+
+    public func getLocalePrice() -> String {
+      @Dependency(\.locale)
+      var locale
+
+      if locale.identifier.lowercased().starts(with: "ja") {
+        return japanese
+      } else {
+        return english
+      }
+    }
+  }
 }

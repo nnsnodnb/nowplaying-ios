@@ -15,9 +15,9 @@ public enum NonConsumable: String, Codable, CustomStringConvertible, Sendable {
   public var description: String {
     switch self {
     case .hideAds:
-      "バナー広告削除"
+      String(localized: .removeBannerAds)
     case .autoTweet:
-      "自動ツイート"
+      String(localized: .automaticPostingForX)
     }
   }
 }

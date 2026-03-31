@@ -107,10 +107,10 @@ public struct PlayFeature: Sendable {
             await analytics.setUserProperty(.musicLibraryAccess(false))
             switch error {
             case .denied:
-              await send(.internalAction(.authorizationFailure("ミュージックライブラリへのアクセスが拒否されました")))
+              await send(.internalAction(.authorizationFailure(String(localized: .accessToTheMusicLibraryWasDenied))))
               await analytics.logEvent(.deniedMusicLibrary)
             case .restricted:
-              await send(.internalAction(.authorizationFailure("ミュージックライブラリへのアクセスが制限されています")))
+              await send(.internalAction(.authorizationFailure(String(localized: .accessToTheMusicLibraryIsRestricted))))
             }
           },
         )
@@ -178,7 +178,7 @@ public struct PlayFeature: Sendable {
       case .post:
         return .none
       case .internalAction(.authorizationSuccess):
-        state.songName = "読み込み中..."
+        state.songName = String(localized: .loading)
         state.artistName = ""
         return .merge(
           .run(
@@ -206,7 +206,7 @@ public struct PlayFeature: Sendable {
             ButtonState(
               role: .cancel,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
@@ -250,18 +250,18 @@ public struct PlayFeature: Sendable {
       case .internalAction(.emptyPostTicket):
         state.alert = AlertState(
           title: {
-            TextState("投稿チケットがありません")
+            TextState(.noPostingTicketsAvailable)
           },
           actions: {
             ButtonState(
               action: .close,
               label: {
-                TextState("閉じる")
+                TextState(.close)
               },
             )
           },
           message: {
-            TextState("左下の設定ボタンから「有料コンテンツ」を選択し広告を視聴するか投稿チケットを購入してください")
+            TextState(.fromTheBottomLeftSettingsButtonSelectPaidContentAndEitherWatchAnAdOrPurchasePostingTickets)
           },
         )
         return .run(
@@ -273,10 +273,10 @@ public struct PlayFeature: Sendable {
         let name = socialService.rawValue
         state.alert = AlertState(
           title: {
-            TextState("\(name)アカウントが設定されていません")
+            TextState(.noAccountIsConfigured(name))
           },
           message: {
-            TextState("左下の設定ボタンから「\(name)設定」→「アカウント管理」→左上のボタンから認証を行ってください")
+            TextState(.fromTheBottomLeftSettingsButtonGoToSettingsAccountManagementAuthenticateUsingTheTopLeftButton(name))
           },
         )
         return .run(
@@ -286,14 +286,14 @@ public struct PlayFeature: Sendable {
         )
       case let .internalAction(.showTweet(twitterAccounts, capturedImage)):
         guard let songName = state.songName,
-              songName != "読み込み中...",
+              songName != String(localized: .loading),
               let artistName = state.artistName else {
           state.alert = AlertState(
             title: {
-              TextState("投稿に必要な情報が取得できません")
+              TextState(.failedToRetrieveTheInformationRequiredForPosting)
             },
             message: {
-              TextState("曲名とアーティスト名が取得できていません")
+              TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
             },
           )
           return .none
@@ -309,14 +309,14 @@ public struct PlayFeature: Sendable {
         return .none
       case let .internalAction(.showPost(blueskyAccounts, capturedImage)):
         guard let songName = state.songName,
-              songName != "読み込み中...",
+              songName != String(localized: .loading),
               let artistName = state.artistName else {
           state.alert = AlertState(
             title: {
-              TextState("投稿に必要な情報が取得できません")
+              TextState(.failedToRetrieveTheInformationRequiredForPosting)
             },
             message: {
-              TextState("曲名とアーティスト名が取得できていません")
+              TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
             },
           )
           return .none
@@ -413,12 +413,12 @@ public struct PlayPage: View {
   private var songInfo: some View {
     VStack(alignment: .center, spacing: 8) {
       ScrollFlowText(
-        text: store.songName ?? "曲名",
+        text: store.songName ?? String(localized: .songTitle),
         textColor: .white,
         font: .boldSystemFont(ofSize: 20)
       )
       ScrollFlowText(
-        text: store.artistName ?? "アーティスト名",
+        text: store.artistName ?? String(localized: .artistName),
         textColor: .white.withAlphaComponent(0.7),
         font: .systemFont(ofSize: 17, weight: .semibold)
       )

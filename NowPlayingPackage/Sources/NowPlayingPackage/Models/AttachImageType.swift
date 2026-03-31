@@ -15,9 +15,9 @@ public enum AttachImageType: String, CaseIterable, Sendable {
   public var displayName: String {
     switch self {
     case .onlyArtwork:
-      "アートワークのみ"
+      String(localized: .artworkOnly)
     case .screenShot:
-      "再生画面のスクリーンショット"
+      String(localized: .screenshotOfThePlaybackScreen)
     }
   }
 }

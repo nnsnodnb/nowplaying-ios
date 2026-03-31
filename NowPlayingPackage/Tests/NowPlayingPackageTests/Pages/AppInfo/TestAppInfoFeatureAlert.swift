@@ -35,7 +35,7 @@ struct TestAppInfoFeatureAlert {
               ButtonState(
                 action: .retry,
                 label: {
-                  TextState("リトライ")
+                  TextState(.retry)
                 },
               )
             },
