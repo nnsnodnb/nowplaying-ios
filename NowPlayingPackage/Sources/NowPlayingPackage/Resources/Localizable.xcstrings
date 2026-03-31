@@ -819,6 +819,23 @@
         }
       }
     },
+    "Post ticket %lld tickets" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post ticket (%lld tickets)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "投稿チケット (%lld枚)"
+          }
+        }
+      }
+    },
     "Post to Bluesky" : {
       "extractionState" : "manual",
       "localizations" : {

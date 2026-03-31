@@ -514,7 +514,7 @@ public struct PaidContentPage: View {
             .aspectRatio(contentMode: .fit)
             .foregroundStyle(.red)
         },
-        price: 320,
+        price: String(localized: .yen(320)),
       )
     }
   }
@@ -532,7 +532,7 @@ public struct PaidContentPage: View {
             .aspectRatio(contentMode: .fit)
             .foregroundStyle(Color(UIColor.systemCyan))
         },
-        price: 0,
+        price: "0",
       )
     }
   }
@@ -573,14 +573,14 @@ public struct PaidContentPage: View {
   ) -> some View {
     priceRow(
       action: action,
-      title: "投稿チケット (\(postTicket.ticketCount)枚)",
+      title: String(localized: .postTicketTickets(postTicket.ticketCount)),
       icon: {
         Image(systemSymbol: .ticketFill)
           .resizable()
           .aspectRatio(contentMode: .fit)
           .foregroundStyle(.orange)
       },
-      price: postTicket.price,
+      price: postTicket.localizedPrice.getLocalePrice(),
       discount: postTicket.discount,
     )
   }
@@ -597,7 +597,7 @@ public struct PaidContentPage: View {
           .aspectRatio(contentMode: .fit)
           .foregroundStyle(.brown)
       },
-      price: 300,
+      price: String(localized: .yen(300))
     )
   }
 
@@ -605,7 +605,7 @@ public struct PaidContentPage: View {
     action: @escaping @MainActor () -> Void,
     title: String,
     @ViewBuilder icon: @escaping @MainActor () -> some View,
-    price: Int? = nil,
+    price: String? = nil,
     discount: String? = nil,
   ) -> some View {
     Button(
@@ -632,7 +632,7 @@ public struct PaidContentPage: View {
           )
           Spacer()
           if let price {
-            Text(.yen(price))
+            Text(price)
               .foregroundStyle(Color.secondary)
           }
         }

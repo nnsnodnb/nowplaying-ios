@@ -43,5 +43,16 @@ public extension PostTicket {
 
     public let japanese: String
     public let english: String
+
+    public func getLocalePrice() -> String {
+      @Dependency(\.locale)
+      var locale
+
+      if locale.identifier.lowercased().starts(with: "ja") {
+        return japanese
+      } else {
+        return english
+      }
+    }
   }
 }
