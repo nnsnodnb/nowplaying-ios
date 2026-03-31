@@ -114,9 +114,9 @@ public struct SocialServiceSettingPage: View {
       .modifier {
         switch store.socialService {
         case .twitter:
-          $0.navigationTitle(.xSetting)
+          $0.navigationTitle(.xSettings)
         case .bluesky:
-          $0.navigationTitle(.blueskySetting)
+          $0.navigationTitle(.blueskySettings)
         }
       }
       .interactiveDismissDisabled(true)

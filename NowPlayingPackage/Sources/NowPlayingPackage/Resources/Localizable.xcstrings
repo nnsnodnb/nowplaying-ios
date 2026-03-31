@@ -306,7 +306,7 @@
       },
       "shouldTranslate" : false
     },
-    "Bluesky Setting" : {
+    "Bluesky Settings" : {
       "extractionState" : "manual",
       "localizations" : {
         "ja" : {
@@ -1247,7 +1247,7 @@
     "X" : {
       "shouldTranslate" : false
     },
-    "X Setting" : {
+    "X Settings" : {
       "extractionState" : "manual",
       "localizations" : {
         "ja" : {

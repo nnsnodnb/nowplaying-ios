@@ -248,7 +248,7 @@ public struct SettingPage: View {
         action: {
           store.send(.pushTwitterSetting)
         },
-        title: .xSetting,
+        title: .xSettings,
         icon: {
           Image(.icXTwitterPadding)
             .resizable()
@@ -259,7 +259,7 @@ public struct SettingPage: View {
         action: {
           store.send(.pushBlueskySetting)
         },
-        title: .blueskySetting,
+        title: .blueskySettings,
         icon: {
           Image(.icBlueskyPadding)
             .resizable()
