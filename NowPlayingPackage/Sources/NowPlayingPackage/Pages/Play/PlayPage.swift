@@ -364,7 +364,7 @@ public struct PlayPage: View {
       }
       controlButtons
       Spacer()
-      VStack(alignment: .center, spacing: 8) {
+      VStack(alignment: .center, spacing: 32) {
         bottomTools
         bottomBanner
       }
@@ -528,7 +528,14 @@ public struct PlayPage: View {
 
   @ViewBuilder private var bottomBanner: some View {
     if !store.isPurchasedHideAds, let adUnitID = store.bannerAdUnitID {
-      PlayerBottomAdBanner(adUnitID: adUnitID)
+      VStack(alignment: .center, spacing: 8) {
+        Divider()
+        Text(.advertisement)
+          .font(.caption)
+          .fontWeight(.thin)
+        PlayerBottomAdBanner(adUnitID: adUnitID)
+      }
+      .background(Color(.systemGray6))
     }
   }
 }

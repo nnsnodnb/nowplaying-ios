@@ -201,6 +201,17 @@
         }
       }
     },
+    "Advertisement" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "広告"
+          }
+        }
+      }
+    },
     "Album name" : {
       "extractionState" : "manual",
       "localizations" : {
