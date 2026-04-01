@@ -74,7 +74,8 @@ public struct AppInfoFeature: Sendable {
         return .run(
           operation: { send in
             let appInfo = try await apiClient.getAppInfo()
-            let currentVersion = Version(bundle.shortVersionString())!
+            let shortVersionString = bundle.shortVersionString()
+            let currentVersion = Version(shortVersionString.split(separator: "-", maxSplits: 1)[safe: 0] ?? "")!
             if currentVersion < Version(appInfo.appVersion.require)! {
               await send(.internalAction(.updateRequired))
             } else if currentVersion < Version(appInfo.appVersion.latest)! {

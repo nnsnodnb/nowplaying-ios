@@ -38,6 +38,31 @@ struct TestAppInfoFetchAppInfo {
   }
 
   @Test
+  func testAdHoc() async throws {
+    let appVersion = try Stub.make(AppInfo.AppVersion.self) {
+      $0.set(\.require, value: "1.0.0")
+      $0.set(\.latest, value: "1.0.0")
+    }
+    let appInfo = AppInfo(appVersion: appVersion)
+
+    await withDependencies {
+      $0.apiClient.getAppInfo = { appInfo }
+      $0.bundle.shortVersionString = { "1.0.0-revision" }
+    } operation: {
+      let store = TestStore(
+        initialState: AppInfoFeature.State(),
+        reducer: {
+          AppInfoFeature()
+        },
+      )
+
+      await store.send(.fetchAppInfo)
+      await store.receive(\.internalAction.completed)
+      await store.receive(\.delegate.completed)
+    }
+  }
+
+  @Test
   func testToUpdateRequired() async throws {
     let appVersion = try Stub.make(AppInfo.AppVersion.self) {
       $0.set(\.require, value: "1.0.1")
