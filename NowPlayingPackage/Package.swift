@@ -29,12 +29,12 @@ let package = Package(
     .package(url: "https://github.com/SVProgressHUD/SVProgressHUD.git", from: "2.3.1"),
     .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", from: "0.63.2"),
     .package(
-       url: "https://github.com/pointfreeco/swift-composable-architecture.git",
-       from: "1.25.4",
-       traits: [
-         "ComposableArchitecture2Deprecations",
-         // "ComposableArchitecture2DeprecationOverloads",
-       ],
+      url: "https://github.com/pointfreeco/swift-composable-architecture.git",
+      from: "1.25.4",
+      traits: [
+        "ComposableArchitecture2Deprecations",
+        // "ComposableArchitecture2DeprecationOverloads",
+      ],
     ),
     .package(url: "https://github.com/pointfreeco/swift-dependencies.git", from: "1.12.0"),
     .package(url: "https://github.com/gohanlon/swift-memberwise-init-macro.git", from: "0.6.0"),
