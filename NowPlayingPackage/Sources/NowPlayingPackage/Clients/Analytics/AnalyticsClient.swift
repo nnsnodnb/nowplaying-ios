@@ -71,6 +71,7 @@ public extension AnalyticsClient {
     case purchasedNonConsumableContent(String)
     case restoredPaidContent
     case showGettingFreePostTicketAds(AvailablePostTicket)
+    case failedShowGettingFreePostTicketAds(String)
     case purchasedPostTicket(Int, AvailablePostTicket)
     case purchasedBuyMeACoffee
     case getFreePostTicket(AvailablePostTicket)
@@ -102,6 +103,8 @@ public extension AnalyticsClient {
         "restored_paid_content"
       case .showGettingFreePostTicketAds:
         "show_getting_free_post_ticket_ads"
+      case .failedShowGettingFreePostTicketAds:
+        "failed_show_getting_free_post_ticket_ads"
       case .purchasedPostTicket:
         "purchased_post_ticket"
       case .purchasedBuyMeACoffee:
@@ -159,6 +162,10 @@ public extension AnalyticsClient {
           "total_free_post_ticket": "\(availablePostTicket.totalFreeCount)",
           "remain_purchased_post_ticket": "\(availablePostTicket.remainingPurchasedCount)",
           "total_purchased_post_ticket": "\(availablePostTicket.totalPurchasedCount)",
+        ]
+      case let .failedShowGettingFreePostTicketAds(errorDescription):
+        [
+          "error_detail": errorDescription.prefix(100),
         ]
       case let .purchasedPostTicket(count, availablePostTicket):
         [

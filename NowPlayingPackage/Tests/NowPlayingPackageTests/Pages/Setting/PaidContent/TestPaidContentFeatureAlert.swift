@@ -51,11 +51,11 @@ struct TestPaidContentFeatureAlert {
 
       await store.send(.alert(.presented(.watchAds))) {
         $0.isLoading = true
-        $0.$earnFreeTicketDate.withLock { $0 = now }
         $0.alert = nil
       }
       await store.receive(\.internalAction.earnFreeTicket) {
         $0.isLoading = false
+        $0.$earnFreeTicketDate.withLock { $0 = now }
         $0.alert = AlertState(
           title: {
             TextState(.freeTicketsAcquired)
