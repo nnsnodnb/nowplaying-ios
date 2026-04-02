@@ -299,7 +299,7 @@
 				INFOPLIST_FILE = Develop/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NowPlaying;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "$(NSAppleMusicUsageDescription)";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = AppleMusicUsageDescription;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -341,7 +341,7 @@
 				INFOPLIST_FILE = Develop/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NowPlaying;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
-				INFOPLIST_KEY_NSAppleMusicUsageDescription = "$(NSAppleMusicUsageDescription)";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = AppleMusicUsageDescription;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
