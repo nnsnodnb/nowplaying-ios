@@ -17,8 +17,8 @@ public struct RewardedAdClient: Sendable {
 
   // MARK: - Error
   public enum Error: Swift.Error {
-    case notReady
     case interruption
+    case loadError(String)
   }
 }
 
@@ -42,7 +42,7 @@ private extension RewardedAdClient {
       case idle
       case loading
       case ready(any RewardedAdProtocol)
-      case failed
+      case failed(String)
     }
 
     // MARK: - Properties
@@ -85,14 +85,15 @@ private extension RewardedAdClient {
             return
           } catch {
             retryCount += 1
-            state.setValue(.failed)
+            state.setValue(.failed(error.localizedDescription))
             try? await continuousClock.sleep(for: .milliseconds(500))
             state.setValue(.idle)
           }
         case .loading, .ready:
           return
-        case .failed:
+        case let .failed(errorDescription):
           state.setValue(.idle)
+          throw Error.loadError(errorDescription)
         }
       }
     }

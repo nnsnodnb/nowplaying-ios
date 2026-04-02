@@ -58,6 +58,7 @@ public struct PaidContentFeature: Sendable {
       case paidCheer(String)
       case failedPay(String, String?)
       case userCancelled
+      case failedShowAds(String)
       case restored([NonConsumable])
     }
 
@@ -262,6 +263,7 @@ public struct PaidContentFeature: Sendable {
         return .none
       case .internalAction(.earnFreeTicket):
         state.isLoading = false
+        state.$earnFreeTicketDate.withLock { $0 = date.now }
         state.alert = AlertState(
           title: {
             TextState(.freeTicketsAcquired)
@@ -364,12 +366,35 @@ public struct PaidContentFeature: Sendable {
           message: alertMessage,
         )
         return .none
+      case .internalAction(.userCancelled):
+        state.isLoading = false
+        return .none
+      case let .internalAction(.failedShowAds(errorDescription)):
+        state.isLoading = false
+        state.alert = AlertState(
+          title: {
+            TextState(.failedToDisplayTheAd)
+          },
+          actions: {
+            ButtonState(
+              action: .close,
+              label: {
+                TextState(.close)
+              },
+            )
+          },
+        )
+        return .run(
+          operation: { _ in
+            await analytics.logEvent(.failedShowGettingFreePostTicketAds(errorDescription))
+          },
+        )
       case let .internalAction(.restored(nonConsumables)):
-        let title: String
+        let title: LocalizedStringResource
         if nonConsumables.isEmpty {
-          title = String(localized: .thereAreNoPurchasesToRestore)
+          title = .thereAreNoPurchasesToRestore
         } else {
-          title = String(localized: .purchaseRestorationHasBeenCompleted)
+          title = .purchaseRestorationHasBeenCompleted
         }
         state.isLoading = false
         state.alert = AlertState(
@@ -386,14 +411,10 @@ public struct PaidContentFeature: Sendable {
           },
         )
         return nonConsumables.isEmpty ? .none : .send(.internalAction(.setNonConsumable(nonConsumables)))
-      case .internalAction(.userCancelled):
-        state.isLoading = false
-        return .none
       case .internalAction:
         return .none
       case .alert(.presented(.watchAds)):
         state.isLoading = true
-        state.$earnFreeTicketDate.withLock { $0 = date.now }
         return .run(
           operation: { [state] send in
             await analytics.logEvent(.showGettingFreePostTicketAds(state.availablePostTicket))
@@ -401,6 +422,14 @@ public struct PaidContentFeature: Sendable {
             let result = try await rewardedAd.show(state.freeTicketAdUnitID)
             guard result > 0 else { return }
             await send(.internalAction(.earnFreeTicket))
+          },
+          catch: { error, send in
+            guard let error = error as? RewardedAdClient.Error else {
+              await send(.internalAction(.failedShowAds(error.localizedDescription)))
+              return
+            }
+            guard case let .loadError(errorDescription) = error else { return }
+            await send(.internalAction(.failedShowAds(errorDescription)))
           },
         )
       case .alert:

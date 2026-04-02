@@ -416,6 +416,17 @@
         }
       }
     },
+    "Failed to display the ad." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "広告の表示に失敗しました"
+          }
+        }
+      }
+    },
     "Failed to post" : {
       "extractionState" : "manual",
       "localizations" : {
