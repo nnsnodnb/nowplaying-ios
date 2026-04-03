@@ -15,6 +15,9 @@ public struct AppInfoFeature: Sendable {
   @ObservableState
   public struct State: Equatable, Sendable {
     public var viewState: ViewState = .initial
+    public var updateAvailableVersion: Version?
+    @Shared(.appStorage(.skippedUpdateVersion))
+    public var skippedUpdateVersion: Version?
     @Presents public var alert: AlertState<Action.Alert>?
 
     // MARK: - ViewState
@@ -44,7 +47,7 @@ public struct AppInfoFeature: Sendable {
     @CasePathable
     public enum InternalAction {
       case updateRequired
-      case updateAvailable
+      case updateAvailable(Version)
       case fetchFailed
       case completed
     }
@@ -76,10 +79,11 @@ public struct AppInfoFeature: Sendable {
             let appInfo = try await apiClient.getAppInfo()
             let shortVersionString = bundle.shortVersionString()
             let currentVersion = Version(shortVersionString.split(separator: "-", maxSplits: 1)[safe: 0] ?? "")!
+            let updateAvailableVersion = Version(appInfo.appVersion.latest)!
             if currentVersion < Version(appInfo.appVersion.require)! {
               await send(.internalAction(.updateRequired))
-            } else if currentVersion < Version(appInfo.appVersion.latest)! {
-              await send(.internalAction(.updateAvailable))
+            } else if currentVersion < updateAvailableVersion {
+              await send(.internalAction(.updateAvailable(updateAvailableVersion)))
             } else {
               await send(.internalAction(.completed))
             }
@@ -95,13 +99,20 @@ public struct AppInfoFeature: Sendable {
           },
         )
       case .updateLater:
+        state.$skippedUpdateVersion.withLock { $0 = state.updateAvailableVersion }
         return .send(.delegate(.completed))
       case .delegate:
         return .none
       case .internalAction(.updateRequired):
         state.viewState = .updateRequire
         return .none
-      case .internalAction(.updateAvailable):
+      case let .internalAction(.updateAvailable(updateAvailableVersion)):
+        state.updateAvailableVersion = updateAvailableVersion
+        if let skippedUpdateVersion = state.skippedUpdateVersion,
+           updateAvailableVersion <= skippedUpdateVersion {
+          // すでにスキップバージョンなので終了
+          return .send(.delegate(.completed))
+        }
         state.viewState = .updateAvailable
         return .none
       case .internalAction(.fetchFailed):
