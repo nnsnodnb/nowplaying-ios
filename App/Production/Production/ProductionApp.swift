@@ -35,6 +35,7 @@ struct ProductionApp: App {
       _ = await MobileAds.shared.start()
     }
     Purchases.configure(withAPIKey: "appl_bFpdFCHLAyHiwuozSKJgbMNPZkD")
+    Analytics.setUserID(Purchases.shared.appUserID)
     SVProgressHUD.setDefaultMaskType(.black)
   }
 }

@@ -6,6 +6,7 @@
 //
 
 @_exported import ComposableArchitecture
+@_exported import FirebaseAnalytics
 @_exported import FirebaseCore
 @_exported import GoogleMobileAds
 @_exported import RevenueCat
