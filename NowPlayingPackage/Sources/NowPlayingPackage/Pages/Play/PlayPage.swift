@@ -95,7 +95,9 @@ public struct PlayFeature: Sendable {
     Reduce { state, action in
       switch action {
       case .onAppear:
-        state.bannerAdUnitID = adUnit.playerBottomBannerAdUnitID()
+        if !state.isPurchasedHideAds {
+          state.bannerAdUnitID = adUnit.playerBottomBannerAdUnitID()
+        }
         return .run(
           operation: { send in
             try await mediaPlayer.requestAuthorization()
@@ -170,6 +172,7 @@ public struct PlayFeature: Sendable {
         }
       case .setting(.presented(.delegate(.hideAds))):
         state.isPurchasedHideAds = true
+        state.bannerAdUnitID = nil
         return .none
       case .setting:
         return .none
