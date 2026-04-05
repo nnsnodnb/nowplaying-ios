@@ -16,6 +16,7 @@ public struct MastodonLoginFeature: Sendable {
   // MARK: - State
   @ObservableState
   public struct State: Equatable, Sendable {
+    public var callbackURLScheme = ""
     public var isCheckButtonDisabled = true
     public var domain = ""
     public var mastodonInstance: MastodonInstance?
@@ -28,6 +29,7 @@ public struct MastodonLoginFeature: Sendable {
 
   // MARK: - Action
   public enum Action: BindableAction {
+    case onAppear
     case close
     case check
     case changedDomain(String)
@@ -75,6 +77,9 @@ public struct MastodonLoginFeature: Sendable {
     BindingReducer()
     Reduce { state, action in
       switch action {
+      case .onAppear:
+        state.callbackURLScheme = mastodonOAuth.getCallbackURLScheme()
+        return .none
       case .close:
         return .run(
           operation: { _ in
@@ -232,6 +237,9 @@ public struct MastodonLoginPage: View {
               store.send(.check)
             },
           )
+          .task {
+            store.send(.onAppear)
+          }
           .interactiveDismissDisabled(store.mastodonInstance != nil)
           .webAuthenticationSession(
             item: $store.oauthURL.sending(\.changedOAuthURL),
@@ -316,7 +324,7 @@ public struct MastodonLoginPage: View {
   private func webAuthenticationSession(url: URL) -> WebAuthenticationSession {
     WebAuthenticationSession(
       url: url,
-      callbackURLScheme: "nowplaying-ss5dnc-el0eskszufn3qactsets",
+      callbackURLScheme: store.callbackURLScheme,
       onCompletion: { result in
         switch result {
         case let .success(url):

@@ -22,6 +22,7 @@ public struct MastodonOAuthClient: Sendable {
     case internalError
   }
 
+  public var getCallbackURLScheme: @Sendable () -> String = { "" }
   public var getAuthenticateURL: @Sendable (MastodonClientApplication) throws -> URL
   public var validateCallbackURL: @Sendable (URL) throws -> AuthorizationCode
   public var requestAccessToken: @Sendable (MastodonClientApplication, AuthorizationCode) async throws -> LoginSettings
@@ -33,6 +34,9 @@ public struct MastodonOAuthClient: Sendable {
 // MARK: - DependencyKey
 extension MastodonOAuthClient: DependencyKey {
   public static let liveValue: Self = .init(
+    getCallbackURLScheme: {
+      Self._callbackURLScheme
+    },
     getAuthenticateURL: { clientApplication in
       var urlComponents = URLComponents(url: clientApplication.domainURL, resolvingAgainstBaseURL: false)!
       urlComponents.path = "/oauth/authorize"
