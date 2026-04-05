@@ -612,6 +612,17 @@
         }
       }
     },
+    "Is the instance domain incorrect?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "インスタンスのドメインが間違っていませんか？"
+          }
+        }
+      }
+    },
     "Is your handle incorrect?" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1208,17 +1219,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "投稿チケットの消費について以下のルールに従います。"
-          }
-        }
-      }
-    },
-    "The instance domain may be incorrect." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "インスタンスのドメインが間違っている場合があります"
           }
         }
       }

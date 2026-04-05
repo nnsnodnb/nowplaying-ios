@@ -100,7 +100,7 @@ public struct MastodonLoginFeature: Sendable {
             }
             switch error {
             case .invalidURL:
-              await send(.internalAction(.getMastodonInstanceFailure(.theInstanceDomainMayBeIncorrect)))
+              await send(.internalAction(.getMastodonInstanceFailure(.isTheInstanceDomainIncorrect)))
             case .internalError:
               await send(.internalAction(.getMastodonInstanceFailure(.anUnknownErrorHasOccurred)))
             }
