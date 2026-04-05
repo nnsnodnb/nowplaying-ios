@@ -21,6 +21,7 @@ let package = Package(
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "12.11.0"),
     .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
     .package(url: "https://github.com/maiyama18/LicensesPlugin.git", from: "0.2.0"),
+    .package(url: "https://github.com/MastodonKit/MastodonKit.git", from: "2.0.0"),
     .package(url: "https://github.com/kean/Nuke.git", from: "13.0.1"),
     .package(url: "https://github.com/RevenueCat/purchases-ios-spm.git", from: "5.67.0"),
     .package(url: "https://github.com/nnsnodnb/ScrollFlowLabel.git", from: "1.0.4"),
@@ -56,6 +57,7 @@ let package = Package(
         .googleUserMessagingPlatform,
         .imageViewer,
         .keychainAccess,
+        .mastodonKit,
         .memberwiseInit,
         .nukeUI,
         .revenueCat,
@@ -154,6 +156,13 @@ extension Target.Dependency {
     .product(
       name: "KeychainAccess",
       package: "KeychainAccess",
+    )
+  }
+
+  static var mastodonKit: Self {
+    .product(
+      name: "MastodonKit",
+      package: "MastodonKit",
     )
   }
 
