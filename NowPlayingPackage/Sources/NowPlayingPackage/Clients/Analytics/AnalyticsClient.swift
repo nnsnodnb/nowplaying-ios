@@ -46,9 +46,10 @@ public extension AnalyticsClient {
     case twitterAccountManage = "twitter_account_manage"
     case blueskySetting = "bluesky_setting"
     case blueskyAccountManage = "bluesky_account_manage"
+    case blueskyLogin = "bluesky_login"
     case mastodonSetting = "mastodon_setting"
     case mastodonAccountManage = "mastodon_account_manage"
-    case blueskyLogin = "bluesky_login"
+    case mastodonLogin = "mastodon_login"
     case paidContent = "paid_content"
     case license
     case tweet

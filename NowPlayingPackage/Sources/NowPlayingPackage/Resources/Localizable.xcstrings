@@ -350,6 +350,17 @@
         }
       }
     },
+    "Check" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "確認"
+          }
+        }
+      }
+    },
     "Close" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -412,6 +423,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開発者"
+          }
+        }
+      }
+    },
+    "Do you want to log in to %@?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@にログインしますか？"
           }
         }
       }
@@ -570,6 +592,9 @@
         }
       }
     },
+    "https://" : {
+      "shouldTranslate" : false
+    },
     "Image Attached To Post" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -696,6 +721,9 @@
           }
         }
       }
+    },
+    "mastodon.social" : {
+      "shouldTranslate" : false
     },
     "No %@ account is configured" : {
       "extractionState" : "manual",
@@ -1180,6 +1208,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "投稿チケットの消費について以下のルールに従います。"
+          }
+        }
+      }
+    },
+    "The instance domain may be incorrect." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "インスタンスのドメインが間違っている場合があります"
           }
         }
       }
