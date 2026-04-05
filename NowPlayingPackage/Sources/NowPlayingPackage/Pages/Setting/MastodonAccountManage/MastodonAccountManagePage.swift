@@ -14,28 +14,53 @@ public struct MastodonAccountManageFeature: Sendable {
   @ObservableState
   public struct State: Equatable, Sendable {
     @Presents public var mastodonLogin: MastodonLoginFeature.State?
+    @Presents public var alert: AlertState<Action.Alert>?
   }
 
   // MARK: - Action
   public enum Action {
+    case fetchMastodonAccount
     case addAccount
     case mastodonLogin(PresentationAction<MastodonLoginFeature.Action>)
+    case alert(PresentationAction<Alert>)
+
+    // MARK: - Alert
+    @CasePathable
+    public enum Alert: Equatable, Sendable {
+      case close
+    }
   }
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
+      case .fetchMastodonAccount:
+        return .none
       case .addAccount:
         state.mastodonLogin = .init()
         return .none
+      case let .mastodonLogin(.presented(.delegate(.loggedIn(mastodonAccount)))):
+        state.alert = AlertState(
+          title: {
+            TextState(.loggedIn)
+          },
+          message: {
+            TextState("\(mastodonAccount.displayName) (@\(mastodonAccount.username))")
+          },
+        )
+        // TODO: fetchMastodonAccounts
+        return .none
       case .mastodonLogin:
+        return .none
+      case .alert:
         return .none
       }
     }
     .ifLet(\.$mastodonLogin, action: \.mastodonLogin) {
       MastodonLoginFeature()
     }
+    .ifLet(\.$alert, action: \.alert)
   }
 }
 
@@ -57,6 +82,7 @@ public struct MastodonAccountManagePage: View {
           MastodonLoginPage(store: store)
         },
       )
+      .alert($store.scope(state: \.$alert, action: \.alert))
   }
 }
 

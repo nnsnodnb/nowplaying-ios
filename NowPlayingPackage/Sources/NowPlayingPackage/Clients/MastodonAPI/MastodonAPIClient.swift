@@ -8,16 +8,18 @@
 import Dependencies
 import DependenciesMacros
 import Foundation
+import MastodonKit
 
 @DependencyClient
 public struct MastodonAPIClient: Sendable {
-  public var getInstanceDetail: @Sendable (URL) async throws -> MastodonInstance
-
   // MARK: - Error
   public enum Error: Swift.Error {
     case invalidURL
     case internalError
   }
+
+  public var getInstanceDetail: @Sendable (URL) async throws -> MastodonInstance
+  public var registerApplication: @Sendable (String) async throws -> MastodonClientApplication
 }
 
 // MARK: - DependencyKey
@@ -36,6 +38,26 @@ extension MastodonAPIClient: DependencyKey {
       let object = try decoder.decode(MastodonInstance.self, from: data)
 
       return object
+    },
+    registerApplication: { domain in
+      var domainURL = URL(string: "https://\(domain)")!
+      let client = Client(baseURL: domainURL.absoluteString)
+      let request = Clients.register(
+        clientName: "NowPlayingiOS",
+        redirectURI: "nowplaying-ss5dnc-el0eskszufn3qactsets://callback/oauth",
+        scopes: [.read, .write],
+        website: "https://nowplaying.nnsnodnb.moe",
+      )
+      let response = try await client.response(for: request)
+      let clientApplication = MastodonClientApplication(
+        id: .init(response.id),
+        domainURL: domainURL,
+        redirectURI: response.redirectURI,
+        clientID: .init(response.clientID),
+        clientSecret: .init(response.clientSecret),
+      )
+
+      return clientApplication
     },
   )
 }

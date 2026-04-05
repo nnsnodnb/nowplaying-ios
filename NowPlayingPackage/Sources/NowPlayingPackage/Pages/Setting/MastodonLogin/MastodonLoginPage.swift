@@ -5,7 +5,9 @@
 //  Created by Yuya Oka on 2026/04/05.
 //
 
+import BetterSafariView
 import ComposableArchitecture
+import MastodonKit
 import NukeUI
 import SwiftUI
 
@@ -17,6 +19,8 @@ public struct MastodonLoginFeature: Sendable {
     public var isCheckButtonDisabled = true
     public var domain = ""
     public var mastodonInstance: MastodonInstance?
+    public var oauthURL: URL?
+    public var clientApplication: MastodonClientApplication?
     public var isFocused = true
     public var isLoading = false
     @Presents public var alert: AlertState<Action.Alert>?
@@ -28,6 +32,9 @@ public struct MastodonLoginFeature: Sendable {
     case check
     case changedDomain(String)
     case login
+    case changedOAuthURL(URL?)
+    case authenticateSuccess(URL)
+    case authenticateFailure(any Error)
     case binding(BindingAction<State>)
     case alert(PresentationAction<Alert>)
     case internalAction(InternalAction)
@@ -44,11 +51,14 @@ public struct MastodonLoginFeature: Sendable {
     public enum InternalAction {
       case getMastodonInstanceSuccess(MastodonInstance)
       case getMastodonInstanceFailure(LocalizedStringResource)
+      case startOAuth(URL, MastodonClientApplication)
+      case savedMastodonAccount(MastodonAccount)
     }
 
     // MARK: - Delegate
     @CasePathable
     public enum Delegate {
+      case loggedIn(MastodonAccount)
     }
   }
 
@@ -57,6 +67,8 @@ public struct MastodonLoginFeature: Sendable {
   private var dismiss
   @Dependency(\.mastodonAPI)
   private var mastodonAPI
+  @Dependency(\.mastodonOAuth)
+  private var mastodonOAuth
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
@@ -104,7 +116,51 @@ public struct MastodonLoginFeature: Sendable {
         }
         return .none
       case .login:
-        // TODO: アプリ追加など
+        state.isLoading = true
+        state.isFocused = false // フォーカスをユーザーが再度当てている可能性があるので強制的に閉じておく
+        return .run(
+          operation: { [state] send in
+            let clientApplication = try await mastodonAPI.registerApplication(state.domain)
+            let oauthURL = try mastodonOAuth.getAuthenticateURL(clientApplication)
+            await send(.internalAction(.startOAuth(oauthURL, clientApplication)))
+          },
+          catch: { error, send in
+            // TODO: エラーハンドリング
+          },
+        )
+      case let .changedOAuthURL(url):
+        state.oauthURL = url
+        return .none
+      case let .authenticateSuccess(url):
+        guard let clientApplication = state.clientApplication else { return .none }
+        return .run(
+          operation: { send in
+            let authorizationCode = try mastodonOAuth.validateCallbackURL(url)
+            let loginSettings = try await mastodonOAuth.requestAccessToken(clientApplication, authorizationCode)
+            let mastodonAccount = try await mastodonOAuth.verifyAccessToken(clientApplication, loginSettings)
+            // TODO: LoginSettingsとMastodonProfile保存
+            await send(.internalAction(.savedMastodonAccount(mastodonAccount)))
+          },
+          catch: { error, send in
+            guard let error = error as? MastodonOAuthClient.Error else { return }
+            switch error {
+            case .invalidCallbackURL:
+              // TODO: エラーハンドリング
+              return
+            case .internalError:
+              // TODO: エラーハンドリング
+              return
+            }
+          },
+        )
+      case let .authenticateFailure(error):
+        guard let errorCode = WebAuthenticationSessionError.Code(rawValue: (error as NSError).code),
+              errorCode != .canceledLogin else {
+          state.isLoading = false
+          return .none
+        }
+        // TODO: エラーハンドリング
+        state.isLoading = false
         return .none
       case .binding:
         return .none
@@ -131,6 +187,18 @@ public struct MastodonLoginFeature: Sendable {
           },
         )
         return .none
+      case let .internalAction(.startOAuth(oauthURL, clientApplication)):
+        state.oauthURL = oauthURL
+        state.clientApplication = clientApplication
+        return .none
+      case let .internalAction(.savedMastodonAccount(mastodonAccount)):
+        state.isLoading = false
+        return .run(
+          operation: { send in
+            await send(.delegate(.loggedIn(mastodonAccount)))
+            await send(.close)
+          },
+        )
       case .internalAction:
         return .none
       case .delegate:
@@ -164,6 +232,12 @@ public struct MastodonLoginPage: View {
             },
           )
           .interactiveDismissDisabled(store.mastodonInstance != nil)
+          .webAuthenticationSession(
+            item: $store.oauthURL.sending(\.changedOAuthURL),
+            content: { content in
+              webAuthenticationSession(url: content)
+            },
+          )
           .progress(store.isLoading)
           .alert($store.scope(state: \.$alert, action: \.alert))
       },
@@ -236,6 +310,22 @@ public struct MastodonLoginPage: View {
       .keyboardType(.URL)
       .focused($isFocused)
     }
+  }
+
+  private func webAuthenticationSession(url: URL) -> WebAuthenticationSession {
+    WebAuthenticationSession(
+      url: url,
+      callbackURLScheme: "nowplaying-ss5dnc-el0eskszufn3qactsets",
+      onCompletion: { result in
+        switch result {
+        case let .success(url):
+          store.send(.authenticateSuccess(url))
+        case let .failure(error):
+          store.send(.authenticateFailure(error))
+        }
+      },
+    )
+    .prefersEphemeralWebBrowserSession(true)
   }
 }
 
