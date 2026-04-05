@@ -12,8 +12,10 @@ import Testing
 
 @MainActor
 struct TestPlayFeatureOnAppear {
-  @Test
-  func testMediaLibraryAuthorized() async throws {
+  @Test(
+    arguments: [true, false]
+  )
+  func testMediaLibraryAuthorized(isPurchasedHideAds: Bool) async throws {
     let nowPlayingItem = StubMediaItem(
       artworkImage: .init(systemSymbol: .photo),
     )
@@ -37,15 +39,19 @@ struct TestPlayFeatureOnAppear {
     } operation: {
       let store = TestStore(
         initialState: PlayFeature.State(
-          isPurchasedHideAds: false,
+          isPurchasedHideAds: isPurchasedHideAds,
         ),
         reducer: {
           PlayFeature()
         },
       )
 
-      await store.send(.onAppear) {
-        $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
+      if isPurchasedHideAds {
+        await store.send(.onAppear)
+      } else {
+        await store.send(.onAppear) {
+          $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
+        }
       }
       await store.receive(\.internalAction.authorizationSuccess) {
         $0.songName = String(localized: .loading)
@@ -65,74 +71,86 @@ struct TestPlayFeatureOnAppear {
   }
 
   @Test(
-    .dependencies {
+    arguments: [true, false]
+  )
+  func testMediaLibraryDenied(isPurchasedHideAds: Bool) async throws {
+    await withDependencies {
       $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
       $0.mediaPlayer.requestAuthorization = { throw MediaPlayerClient.Error.denied }
-    }
-  )
-  func testMediaLibraryDenied() async throws {
-    let store = TestStore(
-      initialState: PlayFeature.State(
-        isPurchasedHideAds: false,
-      ),
-      reducer: {
-        PlayFeature()
-      },
-    )
-
-    await store.send(.onAppear) {
-      $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
-    }
-    await store.receive(\.internalAction.authorizationFailure, String(localized: .accessToTheMusicLibraryWasDenied)) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.accessToTheMusicLibraryWasDenied)
-        },
-        actions: {
-          ButtonState(
-            role: .cancel,
-            label: {
-              TextState(.close)
-            },
-          )
+    } operation: {
+      let store = TestStore(
+        initialState: PlayFeature.State(
+          isPurchasedHideAds: isPurchasedHideAds,
+        ),
+        reducer: {
+          PlayFeature()
         },
       )
+
+      if isPurchasedHideAds {
+        await store.send(.onAppear)
+      } else {
+        await store.send(.onAppear) {
+          $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
+        }
+      }
+      await store.receive(\.internalAction.authorizationFailure, String(localized: .accessToTheMusicLibraryWasDenied)) {
+        $0.alert = AlertState(
+          title: {
+            TextState(.accessToTheMusicLibraryWasDenied)
+          },
+          actions: {
+            ButtonState(
+              role: .cancel,
+              label: {
+                TextState(.close)
+              },
+            )
+          },
+        )
+      }
     }
   }
 
   @Test(
-    .dependencies {
+    arguments: [true, false]
+  )
+  func testMediaLibraryRestricted(isPurchasedHideAds: Bool) async throws {
+    await withDependencies {
       $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
       $0.mediaPlayer.requestAuthorization = { throw MediaPlayerClient.Error.restricted }
-    }
-  )
-  func testMediaLibraryRestricted() async throws {
-    let store = TestStore(
-      initialState: PlayFeature.State(
-        isPurchasedHideAds: false,
-      ),
-      reducer: {
-        PlayFeature()
-      },
-    )
-
-    await store.send(.onAppear) {
-      $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
-    }
-    await store.receive(\.internalAction.authorizationFailure, String(localized: .accessToTheMusicLibraryIsRestricted)) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.accessToTheMusicLibraryIsRestricted)
-        },
-        actions: {
-          ButtonState(
-            role: .cancel,
-            label: {
-              TextState(.close)
-            },
-          )
+    } operation: {
+      let store = TestStore(
+        initialState: PlayFeature.State(
+          isPurchasedHideAds: isPurchasedHideAds,
+        ),
+        reducer: {
+          PlayFeature()
         },
       )
+
+      if isPurchasedHideAds {
+        await store.send(.onAppear)
+      } else {
+        await store.send(.onAppear) {
+          $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
+        }
+      }
+      await store.receive(\.internalAction.authorizationFailure, String(localized: .accessToTheMusicLibraryIsRestricted)) {
+        $0.alert = AlertState(
+          title: {
+            TextState(.accessToTheMusicLibraryIsRestricted)
+          },
+          actions: {
+            ButtonState(
+              role: .cancel,
+              label: {
+                TextState(.close)
+              },
+            )
+          },
+        )
+      }
     }
   }
 }
