@@ -57,4 +57,26 @@ struct TestSocialServiceSettingFeatureCopyFormat {
       await store.send(.copyFormat(copyFormatType))
     }
   }
+
+  @Test(
+    arguments: [CopyFormatType.songTitle, CopyFormatType.artist, CopyFormatType.album]
+  )
+  func testMastodon(copyFormatType: CopyFormatType) async throws {
+    await withDependencies {
+      $0.pasteboard.setString = {
+        #expect($0 == copyFormatType.rawValue)
+      }
+    } operation: {
+      let store = TestStore(
+        initialState: SocialServiceSettingFeature.State(
+          socialService: .mastodon,
+        ),
+        reducer: {
+          SocialServiceSettingFeature()
+        },
+      )
+
+      await store.send(.copyFormat(copyFormatType))
+    }
+  }
 }

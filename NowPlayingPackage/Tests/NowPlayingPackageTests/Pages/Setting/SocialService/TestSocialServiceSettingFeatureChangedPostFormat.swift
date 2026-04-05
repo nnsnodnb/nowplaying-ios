@@ -45,4 +45,20 @@ struct TestSocialServiceSettingFeatureChangedPostFormat {
       $0.$blueskyPostFormat.withLock { $0 = "__songtitle__ by __artist__ #NowPlaying" }
     }
   }
+
+  @Test
+  func testMastodon() async throws {
+    let store = TestStore(
+      initialState: SocialServiceSettingFeature.State(
+        socialService: .mastodon,
+      ),
+      reducer: {
+        SocialServiceSettingFeature()
+      },
+    )
+
+    await store.send(.changedPostFormat("__songtitle__ by __artist__ #NowPlaying")) {
+      $0.$mastodonPostFormat.withLock { $0 = "__songtitle__ by __artist__ #NowPlaying" }
+    }
+  }
 }

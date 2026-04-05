@@ -18,6 +18,8 @@ public struct SettingFeature: Sendable {
     case twitterAccountManage(TwitterAccountManageFeature)
     case blueskySetting(SocialServiceSettingFeature)
     case blueskyAccountManage(BlueskyAccountManageFeature)
+    case mastodonSetting(SocialServiceSettingFeature)
+    case mastodonAccountManage(MastodonAccountManageFeature)
     case paidContent(PaidContentFeature)
     case licenseList(LicenseListFeature)
   }
@@ -76,6 +78,7 @@ public struct SettingFeature: Sendable {
     case close
     case pushTwitterSetting
     case pushBlueskySetting
+    case pushMastodonSetting
     case pushPaidContent
     case showConsentForm
     case pushLicenseList
@@ -128,6 +131,9 @@ public struct SettingFeature: Sendable {
       case .pushBlueskySetting:
         state.path.append(.blueskySetting(.init(socialService: .bluesky)))
         return .none
+      case .pushMastodonSetting:
+        state.path.append(.mastodonSetting(.init(socialService: .mastodon)))
+        return .none
       case .pushPaidContent:
         state.path.append(.paidContent(.init()))
         return .none
@@ -150,6 +156,9 @@ public struct SettingFeature: Sendable {
         return .none
       case .path(.element(id: _, action: .blueskySetting(.delegate(.pushBlueskyAccountManage)))):
         state.path.append(.blueskyAccountManage(.init()))
+        return .none
+      case .path(.element(id: _, action: .mastodonSetting(.delegate(.pushMastodonAccountManage)))):
+        state.path.append(.mastodonAccountManage(.init()))
         return .none
       case .path(.element(id: _, action: .paidContent(.delegate(.hideAds)))):
         return .send(.delegate(.hideAds))
@@ -223,6 +232,10 @@ public struct SettingPage: View {
           SocialServiceSettingPage(store: store)
         case let .blueskyAccountManage(store):
           BlueskyAccountManagePage(store: store)
+        case let .mastodonSetting(store):
+          SocialServiceSettingPage(store: store)
+        case let .mastodonAccountManage(store):
+          MastodonAccountManagePage(store: store)
         case let .paidContent(store):
           PaidContentPage(store: store)
         case let .licenseList(store):
@@ -262,6 +275,17 @@ public struct SettingPage: View {
         title: .blueskySettings,
         icon: {
           Image(.icBlueskyPadding)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+        },
+      )
+      buttonRow(
+        action: {
+          store.send(.pushMastodonSetting)
+        },
+        title: .mastodonSetitngs,
+        icon: {
+          Image(.icMastodon)
             .resizable()
             .aspectRatio(contentMode: .fit)
         },

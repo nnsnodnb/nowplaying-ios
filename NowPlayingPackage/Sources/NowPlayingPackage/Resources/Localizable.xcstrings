@@ -686,6 +686,17 @@
         }
       }
     },
+    "Mastodon Setitngs" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mastodon設定"
+          }
+        }
+      }
+    },
     "No %@ account is configured" : {
       "extractionState" : "manual",
       "localizations" : {

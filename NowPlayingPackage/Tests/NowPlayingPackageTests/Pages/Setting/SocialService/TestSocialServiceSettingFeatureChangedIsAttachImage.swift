@@ -43,6 +43,20 @@ struct TestSocialServiceSettingFeatureChangedIsAttachImage {
   }
 
   @Test
+  func testMastodonDefaultToIsAttachImage() async throws {
+    let store = TestStore(
+      initialState: SocialServiceSettingFeature.State(
+        socialService: .mastodon,
+      ),
+      reducer: {
+        SocialServiceSettingFeature()
+      },
+    )
+
+    await store.send(.changedIsAttachImage(true))
+  }
+
+  @Test
   func testTwitterToIsAttachImage() async throws {
     let store = TestStore(
       initialState: SocialServiceSettingFeature.State(
@@ -77,6 +91,23 @@ struct TestSocialServiceSettingFeatureChangedIsAttachImage {
   }
 
   @Test
+  func testMastodonToIsAttachImage() async throws {
+    let store = TestStore(
+      initialState: SocialServiceSettingFeature.State(
+        socialService: .mastodon,
+        isBlueskyAttachImage: false,
+      ),
+      reducer: {
+        SocialServiceSettingFeature()
+      },
+    )
+
+    await store.send(.changedIsAttachImage(true)) {
+      $0.$isMastodonAttachImage.withLock { $0 = true }
+    }
+  }
+
+  @Test
   func testTwitterToIsNotAttachImage() async throws {
     let store = TestStore(
       initialState: SocialServiceSettingFeature.State(
@@ -107,6 +138,23 @@ struct TestSocialServiceSettingFeatureChangedIsAttachImage {
 
     await store.send(.changedIsAttachImage(false)) {
       $0.$isBlueskyAttachImage.withLock { $0 = false }
+    }
+  }
+
+  @Test
+  func testMastodonToIsNotAttachImage() async throws {
+    let store = TestStore(
+      initialState: SocialServiceSettingFeature.State(
+        socialService: .mastodon,
+        isTwitterAttachImage: true,
+      ),
+      reducer: {
+        SocialServiceSettingFeature()
+      },
+    )
+
+    await store.send(.changedIsAttachImage(false)) {
+      $0.$isMastodonAttachImage.withLock { $0 = false }
     }
   }
 }

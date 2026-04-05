@@ -10,4 +10,5 @@ import Foundation
 public enum SocialService: String, Sendable {
   case twitter = "X"
   case bluesky = "Bluesky"
+  case mastodon = "Mastodon"
 }
