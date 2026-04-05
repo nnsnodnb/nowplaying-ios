@@ -8,21 +8,19 @@
 import Foundation
 import Tagged
 
-public struct MastodonAccount: Codable, Equatable, Sendable {
+public struct MastodonAccount: Codable, Hashable, Sendable {
   // MARK: - Tagged
   public typealias ID = Tagged<Self, String>
 
-  // MARK: - CodingKeys
-  private enum CodingKeys: String, CodingKey {
-    case id
-    case displayName = "display_name"
-    case username
-    case avatarStatic = "avatar_static"
-  }
-
   // MARK: - Properties
   public let id: ID
+  public let domainURL: URL
   public let displayName: String
   public let username: String
-  public let avatarStatic: URL
+  public let avatarURL: URL
+  public private(set) var isDefault = false
+
+  public mutating func setDefault(_ isDefault: Bool = true) {
+    self.isDefault = isDefault
+  }
 }

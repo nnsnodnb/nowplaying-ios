@@ -84,9 +84,16 @@ extension MastodonOAuthClient: DependencyKey {
       guard let urlResponse = response as? HTTPURLResponse,
             urlResponse.statusCode == 200 else { throw Error.internalError }
       let decoder = JSONDecoder()
-      let object = try decoder.decode(MastodonAccount.self, from: data)
+      let object = try decoder.decode(MastodonCredentialAccount.self, from: data)
+      let mastodonAccount = MastodonAccount(
+        id: .init(object.id),
+        domainURL: clientApplication.domainURL,
+        displayName: object.displayName,
+        username: object.username,
+        avatarURL: object.avatarStatic,
+      )
 
-      return object
+      return mastodonAccount
     },
   )
 }

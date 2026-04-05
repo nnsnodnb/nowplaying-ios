@@ -13,16 +13,26 @@ public struct MastodonAccountManageFeature: Sendable {
   // MARK: - State
   @ObservableState
   public struct State: Equatable, Sendable {
+    public var mastodonAccounts: [MastodonAccount] = []
     @Presents public var mastodonLogin: MastodonLoginFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?
   }
 
   // MARK: - Action
   public enum Action {
-    case fetchMastodonAccount
+    case fetchMastodonAccounts
     case addAccount
+    case changeDefaultAccount(MastodonAccount)
+    case deleteMastodonAccount(IndexSet)
     case mastodonLogin(PresentationAction<MastodonLoginFeature.Action>)
+    case internalAction(InternalAction)
     case alert(PresentationAction<Alert>)
+
+    // MARK: - InternalAction
+    @CasePathable
+    public enum InternalAction {
+      case fetchedMastodonAccounts([MastodonAccount])
+    }
 
     // MARK: - Alert
     @CasePathable
@@ -31,15 +41,34 @@ public struct MastodonAccountManageFeature: Sendable {
     }
   }
 
+  // MARK: - Dependency
+  @Dependency(\.secureKeyValueStore)
+  private var secureKeyValueStore
+
   // MARK: - Body
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
-      case .fetchMastodonAccount:
-        return .none
+      case .fetchMastodonAccounts:
+        return .run(
+          operation: { send in
+            let mastodonAccounts = try await secureKeyValueStore.getMastodonAccounts()
+            await send(.internalAction(.fetchedMastodonAccounts(mastodonAccounts)))
+          },
+        )
       case .addAccount:
         state.mastodonLogin = .init()
         return .none
+      case let .changeDefaultAccount(mastodonAccount):
+        guard !mastodonAccount.isDefault else { return .none }
+        return .run(
+          operation: { send in
+            var mastodonAccount = mastodonAccount
+            mastodonAccount.setDefault()
+            try await secureKeyValueStore.updateDefaultMastodonAccount(mastodonAccount)
+            await send(.fetchMastodonAccounts)
+          },
+        )
       case let .mastodonLogin(.presented(.delegate(.loggedIn(mastodonAccount)))):
         state.alert = AlertState(
           title: {
@@ -49,9 +78,20 @@ public struct MastodonAccountManageFeature: Sendable {
             TextState("\(mastodonAccount.displayName) (@\(mastodonAccount.username))")
           },
         )
-        // TODO: fetchMastodonAccounts
-        return .none
+        return .send(.fetchMastodonAccounts)
+      case let .deleteMastodonAccount(indexSet):
+        return .run(
+          operation: { [mastodonAccounts = state.mastodonAccounts] send in
+            for mastodonAccount in indexSet.compactMap({ mastodonAccounts[safe: $0] }) {
+              try await secureKeyValueStore.removeMastodonAccount(mastodonAccount)
+            }
+            await send(.fetchMastodonAccounts)
+          },
+        )
       case .mastodonLogin:
+        return .none
+      case let .internalAction(.fetchedMastodonAccounts(mastodonAccounts)):
+        state.mastodonAccounts = mastodonAccounts
         return .none
       case .alert:
         return .none
@@ -70,12 +110,16 @@ public struct MastodonAccountManagePage: View {
 
   // MARK: - Body
   public var body: some View {
-    Text("")
+    list
+      .navigationTitle(.accountManagement)
       .toolbar(
         addAction: {
           store.send(.addAccount)
         },
       )
+      .task {
+        store.send(.fetchMastodonAccounts)
+      }
       .sheet(
         item: $store.scope(state: \.$mastodonLogin, action: \.mastodonLogin),
         content: { store in
@@ -83,6 +127,57 @@ public struct MastodonAccountManagePage: View {
         },
       )
       .alert($store.scope(state: \.$alert, action: \.alert))
+  }
+
+  @ViewBuilder private var list: some View {
+    if store.mastodonAccounts.isEmpty {
+      empty
+    } else {
+      List {
+        ForEach(store.mastodonAccounts, id: \.self) { mastodonAccount in
+          mastodonAccountRow(mastodonAccount)
+        }
+        .onDelete(
+          perform: { indexSet in
+            store.send(.deleteMastodonAccount(indexSet))
+          },
+        )
+      }
+    }
+  }
+
+  private var empty: some View {
+    ContentUnavailableView(
+      label: {
+        VStack(alignment: .center, spacing: 24) {
+          Image(systemSymbol: .at)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 50, height: 50)
+          Text(.noAccountAvailable)
+        }
+        .foregroundStyle(.secondary)
+      }
+    )
+    .background {
+      Color(UIColor.systemGroupedBackground)
+    }
+    .ignoresSafeArea(.all)
+  }
+
+  private func mastodonAccountRow(_ mastodonAccount: MastodonAccount) -> some View {
+    Button(
+      action: {
+        store.send(.changeDefaultAccount(mastodonAccount))
+      },
+      label: {
+        MastodonProfileRow(
+          mastodonAccount: mastodonAccount,
+          showDefaultStar: true,
+        )
+        .foregroundStyle(Color.primary)
+      },
+    )
   }
 }
 

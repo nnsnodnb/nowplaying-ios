@@ -9,6 +9,7 @@ import Dependencies
 import DependenciesMacros
 import Foundation
 import KeychainAccess
+import MastodonKit
 
 @DependencyClient
 public struct SecureKeyValueStoreClient: Sendable {
@@ -30,6 +31,15 @@ public struct SecureKeyValueStoreClient: Sendable {
   // BlueskyAccount.Password
   public var getBlueskyAccountPassword: @Sendable (BlueskyAccount) async throws -> BlueskyAccount.Password?
   public var setBlueskyAccountPassword: @Sendable (BlueskyAccount, BlueskyAccount.Password) async throws -> Void
+  // MastodonAccount
+  public var getMastodonAccounts: @Sendable () async throws -> [MastodonAccount]
+  public var addMastodonAccount: @Sendable (MastodonAccount) async throws -> Void
+  public var updateDefaultMastodonAccount: @Sendable (MastodonAccount) async throws -> Void
+  public var removeMastodonAccount: @Sendable (MastodonAccount) async throws -> Void
+  public var setMastodonAccounts: @Sendable ([MastodonAccount]) async throws -> Void
+  // MastodonKit.LoginSettings
+  public var getMastodonLoginSettings: @Sendable (MastodonAccount) async throws -> MastodonKit.LoginSettings?
+  public var setMastodonLoginSettings: @Sendable (MastodonAccount, MastodonKit.LoginSettings) async throws -> Void
   // In-App Purchases
   public var getNonConsumables: @Sendable () async throws -> [NonConsumable]
   public var addNonConsumable: @Sendable (NonConsumable) async throws -> Void
@@ -84,6 +94,27 @@ extension SecureKeyValueStoreClient: DependencyKey {
     },
     setBlueskyAccountPassword: { account, password in
       await Implementation.shared.setBlueskyAccountPassword(for: account, password: password)
+    },
+    getMastodonAccounts: {
+      await Implementation.shared.getMastodonAccounts()
+    },
+    addMastodonAccount: { account in
+      await Implementation.shared.addMastodonAccount(account: account)
+    },
+    updateDefaultMastodonAccount: { account in
+      await Implementation.shared.updateDefaultMastodonAccount(account: account)
+    },
+    removeMastodonAccount: { account in
+      await Implementation.shared.removeMastodonAccount(account: account)
+    },
+    setMastodonAccounts: { accounts in
+      await Implementation.shared.setMastodonAccounts(accounts)
+    },
+    getMastodonLoginSettings: { account in
+      await Implementation.shared.getMastodonLoginSettings(for: account)
+    },
+    setMastodonLoginSettings: { account, loginSettings in
+      await Implementation.shared.setMastodonLoginSettings(for: account, loginSettings: loginSettings)
     },
     getNonConsumables: {
       await Implementation.shared.getNonConsumables()
@@ -233,6 +264,68 @@ private extension SecureKeyValueStoreClient {
 
     func setBlueskyAccountPassword(for account: BlueskyAccount, password: BlueskyAccount.Password) {
       keychain.set(password, key: .blueskyAccountPassword(account.id))
+    }
+
+    func getMastodonAccounts() -> [MastodonAccount] {
+      keychain.object(forKey: .mastodonAccounts) ?? []
+    }
+
+    func addMastodonAccount(account: MastodonAccount) {
+      var accounts = getMastodonAccounts()
+      let addingAccount: MastodonAccount
+      // 保存されているアカウントがなければデフォルトにする
+      if accounts.isEmpty {
+        var account = account
+        account.setDefault()
+        addingAccount = account
+      } else {
+        addingAccount = account
+      }
+      // すでに登録されている場合は追加しない
+      guard !accounts.contains(where: { $0.id == addingAccount.id }) else {
+        return
+      }
+      accounts.append(addingAccount)
+      keychain.set(accounts, key: .mastodonAccounts)
+    }
+
+    func updateDefaultMastodonAccount(account: MastodonAccount) {
+      let accounts = getMastodonAccounts()
+        .map { mastodonAccount in
+          // 同じアカウントですでにデフォルトであればそのまま
+          if mastodonAccount.id == account.id && !account.isDefault {
+            return account
+          }
+          var mastodonAccount = mastodonAccount
+          let isDefault = mastodonAccount.id == account.id
+          mastodonAccount.setDefault(isDefault)
+          return mastodonAccount
+        }
+      setMastodonAccounts(accounts)
+    }
+
+    func removeMastodonAccount(account: MastodonAccount) {
+      var accounts = getMastodonAccounts()
+        .filter { $0.id != account.id }
+      try? keychain.remove(.mastodonOAuthToken(account.id))
+      // 削除するアカウントがデフォルト設定されていて、残ったアカウントがあればデフォルトにする
+      if account.isDefault, var account = accounts.first {
+        account.setDefault()
+        accounts[0] = account
+      }
+      setMastodonAccounts(accounts)
+    }
+
+    func setMastodonAccounts(_ accounts: [MastodonAccount]) {
+      keychain.set(accounts, key: .mastodonAccounts)
+    }
+
+    func getMastodonLoginSettings(for account: MastodonAccount) -> MastodonKit.LoginSettings? {
+      keychain.object(forKey: .mastodonOAuthToken(account.id))
+    }
+
+    func setMastodonLoginSettings(for account: MastodonAccount, loginSettings: MastodonKit.LoginSettings) {
+      keychain.set(loginSettings, key: .mastodonOAuthToken(account.id))
     }
 
     func getNonConsumables() -> [NonConsumable] {

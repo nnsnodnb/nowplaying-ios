@@ -15,6 +15,8 @@ public extension Keychain {
     case twitterOAuthToken(TwitterProfile.ID)
     case blueskyAccounts
     case blueskyAccountPassword(BlueskyAccount.DID)
+    case mastodonAccounts
+    case mastodonOAuthToken(MastodonAccount.ID)
     case purchasedNonConsumables
     case availablePostTicket
 
@@ -29,6 +31,10 @@ public extension Keychain {
         "bluesky_accounts"
       case let .blueskyAccountPassword(did):
         "bluesky_account_password_\(did.rawValue)"
+      case .mastodonAccounts:
+        "mastodon_accounts"
+      case let .mastodonOAuthToken(id):
+        "mastodon_oauth_token_\(id.rawValue)"
       case .purchasedNonConsumables:
         "purchased_non_nonsumables"
       case .availablePostTicket:

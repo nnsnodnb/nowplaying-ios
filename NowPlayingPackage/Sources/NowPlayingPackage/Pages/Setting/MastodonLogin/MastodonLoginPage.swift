@@ -71,6 +71,8 @@ public struct MastodonLoginFeature: Sendable {
   private var mastodonAPI
   @Dependency(\.mastodonOAuth)
   private var mastodonOAuth
+  @Dependency(\.secureKeyValueStore)
+  private var secureKeyValueStore
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
@@ -144,7 +146,8 @@ public struct MastodonLoginFeature: Sendable {
             let authorizationCode = try mastodonOAuth.validateCallbackURL(url)
             let loginSettings = try await mastodonOAuth.requestAccessToken(clientApplication, authorizationCode)
             let mastodonAccount = try await mastodonOAuth.verifyAccessToken(clientApplication, loginSettings)
-            // TODO: LoginSettingsとMastodonProfile保存
+            try await secureKeyValueStore.addMastodonAccount(mastodonAccount)
+            try await secureKeyValueStore.setMastodonLoginSettings(mastodonAccount, loginSettings)
             await send(.internalAction(.savedMastodonAccount(mastodonAccount)))
           },
           catch: { error, send in
