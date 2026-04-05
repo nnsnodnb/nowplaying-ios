@@ -172,6 +172,7 @@ public struct PlayFeature: Sendable {
         }
       case .setting(.presented(.delegate(.hideAds))):
         state.isPurchasedHideAds = true
+        state.bannerAdUnitID = nil
         return .none
       case .setting:
         return .none
