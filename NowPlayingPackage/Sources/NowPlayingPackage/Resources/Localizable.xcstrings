@@ -733,6 +733,9 @@
         }
       }
     },
+    "Mastodon" : {
+      "shouldTranslate" : false
+    },
     "Mastodon Setitngs" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1252,6 +1255,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "今日の無料チケットはすでに獲得済みです"
+          }
+        }
+      }
+    },
+    "Toot" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toot"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トゥート"
           }
         }
       }

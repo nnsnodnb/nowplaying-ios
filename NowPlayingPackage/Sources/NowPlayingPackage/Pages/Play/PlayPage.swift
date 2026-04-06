@@ -34,6 +34,7 @@ public struct PlayFeature: Sendable {
     @Presents public var setting: SettingFeature.State?
     @Presents public var tweet: TweetFeature.State?
     @Presents public var post: PostFeature.State?
+    @Presents public var toot: TootFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?
   }
 
@@ -48,6 +49,7 @@ public struct PlayFeature: Sendable {
     case setting(PresentationAction<SettingFeature.Action>)
     case tweet(PresentationAction<TweetFeature.Action>)
     case post(PresentationAction<PostFeature.Action>)
+    case toot(PresentationAction<TootFeature.Action>)
     case internalAction(InternalAction)
     case alert(PresentationAction<Alert>)
 
@@ -60,11 +62,12 @@ public struct PlayFeature: Sendable {
       case requestArtwork(any MediaItemProtocol)
       case applyArtwork(UIImage, UIColor)
       case changedIsPlaying(Bool)
-      case captureScreen(SocialService, [TwitterAccount], [BlueskyAccount])
+      case captureScreen(SocialService, [TwitterAccount], [BlueskyAccount], [MastodonAccount])
       case emptyPostTicket
       case emptySNSAccounts(SocialService)
       case showTweet([TwitterAccount], UIImage)
       case showPost([BlueskyAccount], UIImage)
+      case showToot([MastodonAccount], UIImage)
     }
 
     // MARK: - Alert
@@ -154,7 +157,7 @@ public struct PlayFeature: Sendable {
                 await send(.internalAction(.emptyPostTicket))
                 return
               }
-              await send(.internalAction(.captureScreen(socialService, twitterAccounts, [])))
+              await send(.internalAction(.captureScreen(socialService, twitterAccounts, [], [])))
             },
           )
         case .bluesky:
@@ -166,12 +169,21 @@ public struct PlayFeature: Sendable {
                 await send(.internalAction(.emptySNSAccounts(.bluesky)))
                 return
               }
-              await send(.internalAction(.captureScreen(socialService, [], blueskyAccounts)))
+              await send(.internalAction(.captureScreen(socialService, [], blueskyAccounts, [])))
             },
           )
         case .mastodon:
-          // TODO: アカウント取得して移動
-          return .none
+          return .run(
+            operation: { send in
+              // アカウント数確認
+              let mastodonAccounts = try await secureKeyValueStore.getMastodonAccounts()
+              guard !mastodonAccounts.isEmpty else {
+                await send(.internalAction(.emptySNSAccounts(.mastodon)))
+                return
+              }
+              await send(.internalAction(.captureScreen(socialService, [], [], mastodonAccounts)))
+            },
+          )
         }
       case .setting(.presented(.delegate(.hideAds))):
         state.isPurchasedHideAds = true
@@ -182,6 +194,8 @@ public struct PlayFeature: Sendable {
       case .tweet:
         return .none
       case .post:
+        return .none
+      case .toot:
         return .none
       case .internalAction(.authorizationSuccess):
         state.songName = String(localized: .loading)
@@ -239,7 +253,7 @@ public struct PlayFeature: Sendable {
       case let .internalAction(.changedIsPlaying(isPlaying)):
         state.isPlaying = isPlaying
         return .none
-      case let .internalAction(.captureScreen(socialService, twitterAccounts, blueskyAccounts)):
+      case let .internalAction(.captureScreen(socialService, twitterAccounts, blueskyAccounts, mastodonAccounts)):
         return .run(
           operation: { send in
             // Menuを閉じるためメインスレッドで待機する
@@ -251,8 +265,7 @@ public struct PlayFeature: Sendable {
             case .bluesky:
               await send(.internalAction(.showPost(blueskyAccounts, capturedImage)))
             case .mastodon:
-              // TODO: トゥート作成画面
-              return
+              await send(.internalAction(.showToot(mastodonAccounts, capturedImage)))
             }
           },
         )
@@ -339,6 +352,31 @@ public struct PlayFeature: Sendable {
           capturedImage: capturedImage,
         )
         return .none
+      case let .internalAction(.showToot(mastodonAccounts, capturedImage)):
+        guard let songName = state.songName,
+              songName != String(localized: .loading),
+              let artistName = state.artistName else {
+          state.alert = AlertState(
+            title: {
+              TextState(.failedToRetrieveTheInformationRequiredForPosting)
+            },
+            message: {
+              TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+            },
+          )
+          return .none
+        }
+        state.toot = .init(
+          mastodonAccounts: mastodonAccounts,
+          title: songName,
+          artist: artistName,
+          album: state.album,
+          artwork: state.artworkImage,
+          capturedImage: capturedImage,
+        )
+        return .none
+      case .internalAction:
+        return .none
       case .alert:
         return .none
       }
@@ -351,6 +389,9 @@ public struct PlayFeature: Sendable {
     }
     .ifLet(\.$post, action: \.post) {
       PostFeature()
+    }
+    .ifLet(\.$toot, action: \.toot) {
+      TootFeature()
     }
     .ifLet(\.$alert, action: \.alert)
   }
@@ -394,6 +435,9 @@ public struct PlayPage: View {
     }
     .sheet(item: $store.scope(state: \.$post, action: \.post)) { store in
       PostPage(store: store)
+    }
+    .sheet(item: $store.scope(state: \.$toot, action: \.toot)) { store in
+      TootPage(store: store)
     }
     .alert($store.scope(state: \.$alert, action: \.alert))
     .analyticsScreen(screenName: .play)
@@ -531,6 +575,9 @@ public struct PlayPage: View {
       },
       blueskyAction: {
         store.send(.showPost(.bluesky))
+      },
+      mastodonAction: {
+        store.send(.showPost(.mastodon))
       },
     )
   }

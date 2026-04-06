@@ -207,4 +207,73 @@ struct TestPlayFeatureShowPost {
       )
     }
   }
+
+  @Test
+  func testMastodon() async throws {
+    let mastodonAccount = try Stub.make(MastodonAccount.self)
+    let mainQueue = DispatchQueue.test
+
+    await withDependencies {
+      $0.imageRenderer.image = { .init(systemSymbol: .photo) }
+      $0.mainQueue = mainQueue.eraseToAnyScheduler()
+      $0.secureKeyValueStore.getMastodonAccounts = { [mastodonAccount] }
+    } operation: {
+      let store = TestStore(
+        initialState: PlayFeature.State(
+          isPurchasedHideAds: false,
+          artworkImage: .init(systemSymbol: .photoFill),
+          songName: String(localized: .songTitle),
+          artistName: String(localized: .artistName),
+        ),
+        reducer: {
+          PlayFeature()
+        },
+      )
+
+      await store.send(.showPost(.mastodon))
+      await store.receive(\.internalAction.captureScreen)
+      await mainQueue.advance(by: .milliseconds(300))
+      await store.receive(\.internalAction.showToot) {
+        $0.toot = .init(
+          mastodonAccounts: [mastodonAccount],
+          title: String(localized: .songTitle),
+          artist: String(localized: .artistName),
+          album: nil,
+          artwork: .init(systemSymbol: .photoFill),
+          capturedImage: .init(systemSymbol: .photo),
+        )
+      }
+    }
+  }
+
+  @Test(
+    .dependencies {
+      $0.secureKeyValueStore.getMastodonAccounts = { [] }
+    }
+  )
+  func testMastodonAccountIsEmpty() async throws {
+    let store = TestStore(
+      initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
+        artworkImage: .init(systemSymbol: .photoFill),
+        songName: String(localized: .songTitle),
+        artistName: String(localized: .artistName),
+      ),
+      reducer: {
+        PlayFeature()
+      },
+    )
+
+    await store.send(.showPost(.mastodon))
+    await store.receive(\.internalAction.emptySNSAccounts) {
+      $0.alert = AlertState(
+        title: {
+          TextState(.noAccountIsConfigured("Mastodon"))
+        },
+        message: {
+          TextState(.fromTheBottomLeftSettingsButtonGoToSettingsAccountManagementAuthenticateUsingTheTopLeftButton("Mastodon"))
+        },
+      )
+    }
+  }
 }
