@@ -33,6 +33,8 @@ public struct SocialServiceSettingFeature: Sendable {
     public var isMastodonAttachImage = true
     @Shared(.appStorage(.mastodonWithImageType))
     public var mastodonAttachImageType: AttachImageType = .onlyArtwork
+    @Shared(.appStorage(.mastodonTootVisibility))
+    public var mastodonTootVisibility: TootVisibilityType = .`public`
     @Shared(.appStorage(.mastodonPostFormat))
     public var mastodonPostFormat = Self.defaultPostFormat
   }
@@ -42,6 +44,7 @@ public struct SocialServiceSettingFeature: Sendable {
     case pushSocialServiceAccountManage
     case changedIsAttachImage(Bool)
     case changedAttachImageType(AttachImageType)
+    case changedTootVisibility(TootVisibilityType)
     case changedPostFormat(String)
     case resetFormat
     case copyFormat(CopyFormatType)
@@ -91,6 +94,10 @@ public struct SocialServiceSettingFeature: Sendable {
         case .mastodon:
           state.$mastodonAttachImageType.withLock { $0 = attachImageType }
         }
+        return .none
+      case let .changedTootVisibility(tootVisibilityType):
+        guard state.socialService == .mastodon else { return .none }
+        state.$mastodonTootVisibility.withLock { $0 = tootVisibilityType }
         return .none
       case let .changedPostFormat(postFormat):
         switch state.socialService {
@@ -199,6 +206,9 @@ public struct SocialServiceSettingPage: View {
           pickerAttachedMediaSourceRow(
             selection: $store.mastodonAttachImageType.sending(\.changedAttachImageType),
           )
+          pickerTootVisibilityRow(
+            selection: $store.mastodonTootVisibility.sending(\.changedTootVisibility),
+          )
         }
       },
       footer: {
@@ -258,6 +268,18 @@ public struct SocialServiceSettingPage: View {
         ForEach(AttachImageType.allCases, id: \.self) { attachImageType in
           Text(attachImageType.displayName)
             .tag(attachImageType)
+        }
+      },
+    )
+  }
+
+  private func pickerTootVisibilityRow(selection: Binding<TootVisibilityType>) -> some View {
+    PickerTootVisibilityRow(
+      selection: selection,
+      content: {
+        ForEach(TootVisibilityType.allCases, id: \.self) { tootVisibilityType in
+          Text(tootVisibilityType.displayName)
+            .tag(tootVisibilityType)
         }
       },
     )
