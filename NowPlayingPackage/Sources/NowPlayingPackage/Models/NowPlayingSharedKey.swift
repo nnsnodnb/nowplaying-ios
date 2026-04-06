@@ -16,6 +16,7 @@ public enum NowPlayingSharedKey: String {
   case blueskyPostFormat = "key_bluesky_post_format"
   case mastodonIsAttachImage = "key_mastodon_is_attach_image"
   case mastodonWithImageType = "key_mastodon_with_image_type"
+  case mastodonTootVisibility = "key_mastodon_toot_visibility"
   case mastodonPostFormat = "key_mastodon_post_format"
   case purchasedHideAds = "key_purchased_hide_ads"
   case purchasedAutoTweet = "key_purchased_auto_tweet"
