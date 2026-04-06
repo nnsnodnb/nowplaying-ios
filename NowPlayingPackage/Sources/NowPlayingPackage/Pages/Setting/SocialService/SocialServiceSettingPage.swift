@@ -163,43 +163,50 @@ public struct SocialServiceSettingPage: View {
   }
 
   private var firstSection: some View {
-    Section {
-      ButtonRow(
-        action: {
-          store.send(.pushSocialServiceAccountManage)
-        },
-        title: String(localized: .accountManagement),
-        icon: {
-          Image(systemSymbol: .at)
-            .resizable()
-            .scaledToFit()
-            .foregroundStyle(.gray.opacity(0.6))
-        },
-      )
-      switch store.socialService {
-      case .twitter:
-        toggleRow(
-          isOn: $store.isTwitterAttachImage.sending(\.changedIsAttachImage),
+    Section(
+      content: {
+        ButtonRow(
+          action: {
+            store.send(.pushSocialServiceAccountManage)
+          },
+          title: String(localized: .accountManagement),
+          icon: {
+            Image(systemSymbol: .at)
+              .resizable()
+              .scaledToFit()
+              .foregroundStyle(.gray.opacity(0.6))
+          },
         )
-        pickerAttachedMediaSourceRow(
-          selection: $store.twitterAttachImageType.sending(\.changedAttachImageType),
-        )
-      case .bluesky:
-        toggleRow(
-          isOn: $store.isBlueskyAttachImage.sending(\.changedIsAttachImage),
-        )
-        pickerAttachedMediaSourceRow(
-          selection: $store.blueskyAttachImageType.sending(\.changedAttachImageType),
-        )
-      case .mastodon:
-        toggleRow(
-          isOn: $store.isMastodonAttachImage.sending(\.changedIsAttachImage),
-        )
-        pickerAttachedMediaSourceRow(
-          selection: $store.mastodonAttachImageType.sending(\.changedAttachImageType),
-        )
-      }
-    }
+        switch store.socialService {
+        case .twitter:
+          toggleRow(
+            isOn: $store.isTwitterAttachImage.sending(\.changedIsAttachImage),
+          )
+          pickerAttachedMediaSourceRow(
+            selection: $store.twitterAttachImageType.sending(\.changedAttachImageType),
+          )
+        case .bluesky:
+          toggleRow(
+            isOn: $store.isBlueskyAttachImage.sending(\.changedIsAttachImage),
+          )
+          pickerAttachedMediaSourceRow(
+            selection: $store.blueskyAttachImageType.sending(\.changedAttachImageType),
+          )
+        case .mastodon:
+          toggleRow(
+            isOn: $store.isMastodonAttachImage.sending(\.changedIsAttachImage),
+          )
+          pickerAttachedMediaSourceRow(
+            selection: $store.mastodonAttachImageType.sending(\.changedAttachImageType),
+          )
+        }
+      },
+      footer: {
+        if store.socialService == .twitter {
+          Text(.costsAreIncurredEachTimeTheXApiIsCalledSoPleaseBeMindfulOfYourUsage)
+        }
+      },
+    )
   }
 
   private var secondSection: some View {

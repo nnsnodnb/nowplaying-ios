@@ -394,6 +394,17 @@
         }
       }
     },
+    "Costs are incurred each time the X API is called, so please be mindful of your usage." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X APIを呼び出すたびにコストが発生するため、ご利用状況にご注意ください。"
+          }
+        }
+      }
+    },
     "Delete" : {
       "extractionState" : "manual",
       "localizations" : {
