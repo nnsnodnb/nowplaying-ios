@@ -11,10 +11,24 @@ public struct PostPlusButton: View {
   // MARK: - Properties
   public let twitterAction: () -> Void
   public let blueskyAction: () -> Void
+  public let mastodonAction: () -> Void
 
   public var body: some View {
     Menu(
       content: {
+        Button(
+          action: mastodonAction,
+          label: {
+            Label(
+              title: {
+                Text("Mastodon")
+              },
+              icon: {
+                Image(.icMastodon)
+              },
+            )
+          },
+        )
         Button(
           action: blueskyAction,
           label: {
@@ -64,6 +78,7 @@ public struct PostPlusButton: View {
 #Preview {
   PostPlusButton(
     twitterAction: {},
-    blueskyAction: {}
+    blueskyAction: {},
+    mastodonAction: {},
   )
 }

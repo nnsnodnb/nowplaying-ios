@@ -244,4 +244,85 @@ struct TestPlayFeatureInternalAction {
       )
     }
   }
+
+  @Test
+  func testShowTootSongNameIsNil() async throws {
+    let store = TestStore(
+      initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
+        songName: nil,
+        artistName: "アーティスト名",
+      ),
+      reducer: {
+        PlayFeature()
+      },
+    )
+
+    let mastodonAccount = try Stub.make(MastodonAccount.self)
+
+    await store.send(.internalAction(.showToot([mastodonAccount], .init(systemSymbol: .photo)))) {
+      $0.alert = AlertState(
+        title: {
+          TextState(.failedToRetrieveTheInformationRequiredForPosting)
+        },
+        message: {
+          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+        },
+      )
+    }
+  }
+
+  @Test
+  func testShowTootSongNameIsLoading() async throws {
+    let store = TestStore(
+      initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
+        songName: String(localized: .loading),
+        artistName: "",
+      ),
+      reducer: {
+        PlayFeature()
+      },
+    )
+
+    let mastodonAccount = try Stub.make(MastodonAccount.self)
+
+    await store.send(.internalAction(.showToot([mastodonAccount], .init(systemSymbol: .photo)))) {
+      $0.alert = AlertState(
+        title: {
+          TextState(.failedToRetrieveTheInformationRequiredForPosting)
+        },
+        message: {
+          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+        },
+      )
+    }
+  }
+
+  @Test
+  func testShowTootArtistNameIsNil() async throws {
+    let store = TestStore(
+      initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
+        songName: "曲名",
+        artistName: nil,
+      ),
+      reducer: {
+        PlayFeature()
+      },
+    )
+
+    let mastodonAccount = try Stub.make(MastodonAccount.self)
+
+    await store.send(.internalAction(.showToot([mastodonAccount], .init(systemSymbol: .photo)))) {
+      $0.alert = AlertState(
+        title: {
+          TextState(.failedToRetrieveTheInformationRequiredForPosting)
+        },
+        message: {
+          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+        },
+      )
+    }
+  }
 }
