@@ -9,7 +9,6 @@ import Dependencies
 import DependenciesMacros
 import Foundation
 import KeychainAccess
-import MastodonKit
 
 @DependencyClient
 public struct SecureKeyValueStoreClient: Sendable {
@@ -37,9 +36,9 @@ public struct SecureKeyValueStoreClient: Sendable {
   public var updateDefaultMastodonAccount: @Sendable (MastodonAccount) async throws -> Void
   public var removeMastodonAccount: @Sendable (MastodonAccount) async throws -> Void
   public var setMastodonAccounts: @Sendable ([MastodonAccount]) async throws -> Void
-  // MastodonKit.LoginSettings
-  public var getMastodonLoginSettings: @Sendable (MastodonAccount) async throws -> MastodonKit.LoginSettings?
-  public var setMastodonLoginSettings: @Sendable (MastodonAccount, MastodonKit.LoginSettings) async throws -> Void
+  // MastodonOAuthToken
+  public var getMastodonOAuthToken: @Sendable (MastodonAccount) async throws -> MastodonOAuthToken?
+  public var setMastodonOAuthToken: @Sendable (MastodonAccount, MastodonOAuthToken) async throws -> Void
   // In-App Purchases
   public var getNonConsumables: @Sendable () async throws -> [NonConsumable]
   public var addNonConsumable: @Sendable (NonConsumable) async throws -> Void
@@ -110,11 +109,11 @@ extension SecureKeyValueStoreClient: DependencyKey {
     setMastodonAccounts: { accounts in
       await Implementation.shared.setMastodonAccounts(accounts)
     },
-    getMastodonLoginSettings: { account in
-      await Implementation.shared.getMastodonLoginSettings(for: account)
+    getMastodonOAuthToken: { account in
+      await Implementation.shared.getMastodonOAuthToken(for: account)
     },
-    setMastodonLoginSettings: { account, loginSettings in
-      await Implementation.shared.setMastodonLoginSettings(for: account, loginSettings: loginSettings)
+    setMastodonOAuthToken: { account, oauthToken in
+      await Implementation.shared.setMastodonOAuthToken(for: account, oauthToken: oauthToken)
     },
     getNonConsumables: {
       await Implementation.shared.getNonConsumables()
@@ -320,12 +319,12 @@ private extension SecureKeyValueStoreClient {
       keychain.set(accounts, key: .mastodonAccounts)
     }
 
-    func getMastodonLoginSettings(for account: MastodonAccount) -> MastodonKit.LoginSettings? {
+    func getMastodonOAuthToken(for account: MastodonAccount) -> MastodonOAuthToken? {
       keychain.object(forKey: .mastodonOAuthToken(account.id))
     }
 
-    func setMastodonLoginSettings(for account: MastodonAccount, loginSettings: MastodonKit.LoginSettings) {
-      keychain.set(loginSettings, key: .mastodonOAuthToken(account.id))
+    func setMastodonOAuthToken(for account: MastodonAccount, oauthToken: MastodonOAuthToken) {
+      keychain.set(oauthToken, key: .mastodonOAuthToken(account.id))
     }
 
     func getNonConsumables() -> [NonConsumable] {

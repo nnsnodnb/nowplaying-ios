@@ -8,7 +8,6 @@
 import Dependencies
 import DependenciesMacros
 import Foundation
-import MastodonKit
 
 @DependencyClient
 public struct MastodonAPIClient: Sendable {
@@ -40,21 +39,31 @@ extension MastodonAPIClient: DependencyKey {
       return object
     },
     registerApplication: { domain in
-      var domainURL = URL(string: "https://\(domain)")!
-      let client = Client(baseURL: domainURL.absoluteString)
-      let request = Clients.register(
-        clientName: "NowPlayingiOS",
-        redirectURI: "nowplaying-ss5dnc-el0eskszufn3qactsets://callback/oauth",
-        scopes: [.read, .write],
-        website: "https://nowplaying.nnsnodnb.moe",
-      )
-      let response = try await client.response(for: request)
+      let domainURL = URL(string: "https://\(domain)")!
+      let requestURL = URL(string: "https://\(domain)/api/v1/apps")!
+      var urlRequest = URLRequest(url: requestURL)
+      urlRequest.httpMethod = "POST"
+      urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+      let jsonObject: [String: Any] = [
+        "client_name": "NowPlayingiOS",
+        "redirect_uris": "nowplaying-ss5dnc-el0eskszufn3qactsets://callback/oauth",
+        "scopes": "read:accounts write:media write:statuses",
+        "website": "https://nowplaying.nnsnodnb.moe",
+      ]
+      urlRequest.httpBody = try JSONSerialization.data(withJSONObject: jsonObject, options: .init())
+      let (data, response) = try await URLSession(configuration: .ephemeral).data(for: urlRequest)
+      guard let urlResponse = response as? HTTPURLResponse,
+            urlResponse.statusCode == 200 else {
+        throw Error.internalError
+      }
+      let decoder = JSONDecoder()
+      let object = try decoder.decode(MastodonCredentialApplication.self, from: data)
       let clientApplication = MastodonClientApplication(
-        id: .init(response.id),
+        id: object.id,
         domainURL: domainURL,
-        redirectURI: response.redirectURI,
-        clientID: .init(response.clientID),
-        clientSecret: .init(response.clientSecret),
+        redirectURI: object.redirectURI,
+        clientID: object.clientID,
+        clientSecret: object.clientSecret,
       )
 
       return clientApplication

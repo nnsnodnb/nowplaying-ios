@@ -280,7 +280,7 @@ public struct TwitterAccountManagePage: View {
 
   @ViewBuilder private var list: some View {
     if store.twitterAccounts.isEmpty {
-      empty
+      AccountEmptyView()
     } else {
       List {
         ForEach(store.twitterAccounts, id: \.profile.id) { twitterAccount in
@@ -293,25 +293,6 @@ public struct TwitterAccountManagePage: View {
         )
       }
     }
-  }
-
-  private var empty: some View {
-    ContentUnavailableView(
-      label: {
-        VStack(alignment: .center, spacing: 24) {
-          Image(systemSymbol: .at)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 50, height: 50)
-          Text(.noAccountAvailable)
-        }
-        .foregroundStyle(.secondary)
-      }
-    )
-    .background {
-      Color(UIColor.systemGroupedBackground)
-    }
-    .ignoresSafeArea(.all)
   }
 
   private func twitterAccountRow(_ twitterAccount: TwitterAccount) -> some View {

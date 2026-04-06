@@ -7,7 +7,6 @@
 
 import BetterSafariView
 import ComposableArchitecture
-import MastodonKit
 import NukeUI
 import SwiftUI
 
@@ -21,6 +20,7 @@ public struct MastodonLoginFeature: Sendable {
     public var domain = ""
     public var mastodonInstance: MastodonInstance?
     public var oauthURL: URL?
+    public var codeVerifier: MastodonOAuthClient.CodeVerifier?
     public var clientApplication: MastodonClientApplication?
     public var isFocused = true
     public var isLoading = false
@@ -53,7 +53,8 @@ public struct MastodonLoginFeature: Sendable {
     public enum InternalAction {
       case getMastodonInstanceSuccess(MastodonInstance)
       case getMastodonInstanceFailure(LocalizedStringResource)
-      case startOAuth(URL, MastodonClientApplication)
+      case startOAuth(URL, MastodonOAuthClient.CodeVerifier, MastodonClientApplication)
+      case oauthFailure(LocalizedStringResource)
       case savedMastodonAccount(MastodonAccount)
     }
 
@@ -129,35 +130,39 @@ public struct MastodonLoginFeature: Sendable {
         return .run(
           operation: { [state] send in
             let clientApplication = try await mastodonAPI.registerApplication(state.domain)
-            let oauthURL = try mastodonOAuth.getAuthenticateURL(clientApplication)
-            await send(.internalAction(.startOAuth(oauthURL, clientApplication)))
+            let (oauthURL, codeVerifier) = try mastodonOAuth.getAuthenticateURL(clientApplication)
+            await send(.internalAction(.startOAuth(oauthURL, codeVerifier, clientApplication)))
           },
-          catch: { error, send in
-            // TODO: エラーハンドリング
+          catch: { _, send in
+            await send(.internalAction(.oauthFailure(.anUnknownErrorHasOccurred)))
           },
         )
       case let .changedOAuthURL(url):
         state.oauthURL = url
         return .none
       case let .authenticateSuccess(url):
-        guard let clientApplication = state.clientApplication else { return .none }
+        guard let codeVerifier = state.codeVerifier,
+              let clientApplication = state.clientApplication else { return .none }
         return .run(
           operation: { send in
-            let authorizationCode = try mastodonOAuth.validateCallbackURL(url)
-            let loginSettings = try await mastodonOAuth.requestAccessToken(clientApplication, authorizationCode)
-            let mastodonAccount = try await mastodonOAuth.verifyAccessToken(clientApplication, loginSettings)
+            let authorizationCode = try mastodonOAuth.validateCallbackURL(url, codeVerifier)
+            let mastodonOAuthToken = try await mastodonOAuth.requestAccessToken(
+              clientApplication, authorizationCode, codeVerifier
+            )
+            let mastodonAccount = try await mastodonOAuth.verifyAccessToken(clientApplication, mastodonOAuthToken)
             try await secureKeyValueStore.addMastodonAccount(mastodonAccount)
-            try await secureKeyValueStore.setMastodonLoginSettings(mastodonAccount, loginSettings)
+            try await secureKeyValueStore.setMastodonOAuthToken(mastodonAccount, mastodonOAuthToken)
             await send(.internalAction(.savedMastodonAccount(mastodonAccount)))
           },
           catch: { error, send in
             guard let error = error as? MastodonOAuthClient.Error else { return }
             switch error {
             case .invalidCallbackURL:
-              // TODO: エラーハンドリング
-              return
+              await send(.internalAction(.oauthFailure(.anInvalidOperationWasPerformed)))
             case .internalError:
-              // TODO: エラーハンドリング
+              await send(.internalAction(.oauthFailure(.anUnknownErrorHasOccurred)))
+            case .requireOAuth:
+              // ここには来ないので無視する
               return
             }
           },
@@ -168,9 +173,7 @@ public struct MastodonLoginFeature: Sendable {
           state.isLoading = false
           return .none
         }
-        // TODO: エラーハンドリング
-        state.isLoading = false
-        return .none
+        return .send(.internalAction(.oauthFailure(.anUnknownErrorHasOccurred)))
       case .binding:
         return .none
       case .alert:
@@ -196,9 +199,26 @@ public struct MastodonLoginFeature: Sendable {
           },
         )
         return .none
-      case let .internalAction(.startOAuth(oauthURL, clientApplication)):
+      case let .internalAction(.startOAuth(oauthURL, codeVerifier, clientApplication)):
         state.oauthURL = oauthURL
+        state.codeVerifier = codeVerifier
         state.clientApplication = clientApplication
+        return .none
+      case let .internalAction(.oauthFailure(title)):
+        state.isLoading = false
+        state.alert = AlertState(
+          title: {
+            TextState(title)
+          },
+          actions: {
+            ButtonState(
+              role: .cancel,
+              label: {
+                TextState(.close)
+              },
+            )
+          },
+        )
         return .none
       case let .internalAction(.savedMastodonAccount(mastodonAccount)):
         state.isLoading = false

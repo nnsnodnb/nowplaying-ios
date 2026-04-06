@@ -1,5 +1,5 @@
 {
-  "originHash" : "1da5207251e378202d952478ab604d24593bf5971583ea1a742eaae5f4059f6c",
+  "originHash" : "e5d35163a97d7caebd8bf44f88f108734f9872a44ca5c59f1524b0b5ac91e284",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -143,15 +143,6 @@
       "state" : {
         "revision" : "3061787a7eca7ba801d7a3abccfc077053e79d73",
         "version" : "0.2.0"
-      }
-    },
-    {
-      "identity" : "mastodonkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MastodonKit/MastodonKit.git",
-      "state" : {
-        "revision" : "6df5dba74344a3abe4b793c15ebf141a4d516e2d",
-        "version" : "2.0.0"
       }
     },
     {

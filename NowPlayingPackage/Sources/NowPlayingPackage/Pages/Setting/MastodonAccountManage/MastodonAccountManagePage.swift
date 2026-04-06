@@ -127,11 +127,12 @@ public struct MastodonAccountManagePage: View {
         },
       )
       .alert($store.scope(state: \.$alert, action: \.alert))
+      .analyticsScreen(screenName: .mastodonAccountManage)
   }
 
   @ViewBuilder private var list: some View {
     if store.mastodonAccounts.isEmpty {
-      empty
+      AccountEmptyView()
     } else {
       List {
         ForEach(store.mastodonAccounts, id: \.self) { mastodonAccount in
@@ -144,25 +145,6 @@ public struct MastodonAccountManagePage: View {
         )
       }
     }
-  }
-
-  private var empty: some View {
-    ContentUnavailableView(
-      label: {
-        VStack(alignment: .center, spacing: 24) {
-          Image(systemSymbol: .at)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 50, height: 50)
-          Text(.noAccountAvailable)
-        }
-        .foregroundStyle(.secondary)
-      }
-    )
-    .background {
-      Color(UIColor.systemGroupedBackground)
-    }
-    .ignoresSafeArea(.all)
   }
 
   private func mastodonAccountRow(_ mastodonAccount: MastodonAccount) -> some View {
