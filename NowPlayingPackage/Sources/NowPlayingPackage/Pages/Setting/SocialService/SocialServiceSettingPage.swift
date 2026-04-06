@@ -29,6 +29,12 @@ public struct SocialServiceSettingFeature: Sendable {
     public var blueskyAttachImageType: AttachImageType = .onlyArtwork
     @Shared(.appStorage(.blueskyPostFormat))
     public var blueskyPostFormat = Self.defaultPostFormat
+    @Shared(.appStorage(.mastodonIsAttachImage))
+    public var isMastodonAttachImage = true
+    @Shared(.appStorage(.mastodonWithImageType))
+    public var mastodonAttachImageType: AttachImageType = .onlyArtwork
+    @Shared(.appStorage(.mastodonPostFormat))
+    public var mastodonPostFormat = Self.defaultPostFormat
   }
 
   // MARK: - Action
@@ -46,6 +52,7 @@ public struct SocialServiceSettingFeature: Sendable {
     public enum Delegate {
       case pushTwitterAccountManage
       case pushBlueskyAccountManage
+      case pushMastodonAccountManage
     }
   }
 
@@ -62,6 +69,8 @@ public struct SocialServiceSettingFeature: Sendable {
           return .send(.delegate(.pushTwitterAccountManage))
         case .bluesky:
           return .send(.delegate(.pushBlueskyAccountManage))
+        case .mastodon:
+          return .send(.delegate(.pushMastodonAccountManage))
         }
       case let .changedIsAttachImage(isAttachImage):
         switch state.socialService {
@@ -69,6 +78,8 @@ public struct SocialServiceSettingFeature: Sendable {
           state.$isTwitterAttachImage.withLock { $0 = isAttachImage }
         case .bluesky:
           state.$isBlueskyAttachImage.withLock { $0 = isAttachImage }
+        case .mastodon:
+          state.$isMastodonAttachImage.withLock { $0 = isAttachImage }
         }
         return .none
       case let .changedAttachImageType(attachImageType):
@@ -77,6 +88,8 @@ public struct SocialServiceSettingFeature: Sendable {
           state.$twitterAttachImageType.withLock { $0 = attachImageType }
         case .bluesky:
           state.$blueskyAttachImageType.withLock { $0 = attachImageType }
+        case .mastodon:
+          state.$mastodonAttachImageType.withLock { $0 = attachImageType }
         }
         return .none
       case let .changedPostFormat(postFormat):
@@ -85,6 +98,8 @@ public struct SocialServiceSettingFeature: Sendable {
           state.$twitterPostFormat.withLock { $0 = postFormat }
         case .bluesky:
           state.$blueskyPostFormat.withLock { $0 = postFormat }
+        case .mastodon:
+          state.$mastodonPostFormat.withLock { $0 = postFormat }
         }
         return .none
       case .resetFormat:
@@ -117,6 +132,8 @@ public struct SocialServiceSettingPage: View {
           $0.navigationTitle(.xSettings)
         case .bluesky:
           $0.navigationTitle(.blueskySettings)
+        case .mastodon:
+          $0.navigationTitle(.mastodonSetitngs)
         }
       }
       .interactiveDismissDisabled(true)
@@ -132,6 +149,8 @@ public struct SocialServiceSettingPage: View {
           $0.analyticsScreen(screenName: .twitterSetting)
         case .bluesky:
           $0.analyticsScreen(screenName: .blueskySetting)
+        case .mastodon:
+          $0.analyticsScreen(screenName: .mastodonSetting)
         }
       }
   }
@@ -172,6 +191,13 @@ public struct SocialServiceSettingPage: View {
         pickerAttachedMediaSourceRow(
           selection: $store.blueskyAttachImageType.sending(\.changedAttachImageType),
         )
+      case .mastodon:
+        toggleRow(
+          isOn: $store.isMastodonAttachImage.sending(\.changedIsAttachImage),
+        )
+        pickerAttachedMediaSourceRow(
+          selection: $store.mastodonAttachImageType.sending(\.changedAttachImageType),
+        )
       }
     }
   }
@@ -187,6 +213,10 @@ public struct SocialServiceSettingPage: View {
         case .bluesky:
           textEditor(
             text: $store.blueskyPostFormat.sending(\.changedPostFormat),
+          )
+        case .mastodon:
+          textEditor(
+            text: $store.mastodonPostFormat.sending(\.changedPostFormat),
           )
         }
         resetFormatButton

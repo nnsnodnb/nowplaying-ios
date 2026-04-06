@@ -43,4 +43,19 @@ struct TestSocialServiceSettingFeaturePushSocialServiceAccountManage {
     await store.send(.pushSocialServiceAccountManage)
     await store.receive(\.delegate.pushBlueskyAccountManage)
   }
+
+  @Test
+  func testMastodon() async throws {
+    let store = TestStore(
+      initialState: SocialServiceSettingFeature.State(
+        socialService: .mastodon,
+      ),
+      reducer: {
+        SocialServiceSettingFeature()
+      },
+    )
+
+    await store.send(.pushSocialServiceAccountManage)
+    await store.receive(\.delegate.pushMastodonAccountManage)
+  }
 }

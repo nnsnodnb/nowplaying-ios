@@ -350,6 +350,17 @@
         }
       }
     },
+    "Check" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "確認"
+          }
+        }
+      }
+    },
     "Close" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -412,6 +423,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開発者"
+          }
+        }
+      }
+    },
+    "Do you want to log in to %@?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@にログインしますか？"
           }
         }
       }
@@ -570,6 +592,9 @@
         }
       }
     },
+    "https://" : {
+      "shouldTranslate" : false
+    },
     "Image Attached To Post" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -583,6 +608,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "投稿自画像"
+          }
+        }
+      }
+    },
+    "Is the instance domain incorrect?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "インスタンスのドメインが間違っていませんか？"
           }
         }
       }
@@ -685,6 +721,20 @@
           }
         }
       }
+    },
+    "Mastodon Setitngs" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mastodon設定"
+          }
+        }
+      }
+    },
+    "mastodon.social" : {
+      "shouldTranslate" : false
     },
     "No %@ account is configured" : {
       "extractionState" : "manual",

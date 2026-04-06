@@ -169,6 +169,9 @@ public struct PlayFeature: Sendable {
               await send(.internalAction(.captureScreen(socialService, [], blueskyAccounts)))
             },
           )
+        case .mastodon:
+          // TODO: アカウント取得して移動
+          return .none
         }
       case .setting(.presented(.delegate(.hideAds))):
         state.isPurchasedHideAds = true
@@ -247,6 +250,9 @@ public struct PlayFeature: Sendable {
               await send(.internalAction(.showTweet(twitterAccounts, capturedImage)))
             case .bluesky:
               await send(.internalAction(.showPost(blueskyAccounts, capturedImage)))
+            case .mastodon:
+              // TODO: トゥート作成画面
+              return
             }
           },
         )
