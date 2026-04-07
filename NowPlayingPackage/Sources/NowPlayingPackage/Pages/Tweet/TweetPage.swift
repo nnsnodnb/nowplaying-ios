@@ -292,7 +292,12 @@ public struct TweetFeature: Sendable {
             )
           },
         )
-        return .send(.internalAction(.fetchTwitterAccounts))
+        return .run(
+          operation: { send in
+            await send(.internalAction(.fetchTwitterAccounts))
+            await analytics.logEvent(.twitterPostedFailure)
+          },
+        )
       case .internalAction(.fetchTwitterAccounts):
         guard let postableTwitterAccount = state.postableTwitterAccount else { return .none }
         return .run(

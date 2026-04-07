@@ -203,7 +203,11 @@ public struct PostFeature: Sendable {
             )
           },
         )
-        return .none
+        return .run(
+          operation: { _ in
+            await analytics.logEvent(.blueskyPostedFailure)
+          },
+        )
       case .internalAction(.dismiss):
         state.showSuccess = false
         return .run(
