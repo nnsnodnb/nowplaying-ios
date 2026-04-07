@@ -68,10 +68,16 @@ public extension AnalyticsClient {
     case emptySocialServiceAccount(SocialService)
     case twitterLogin(Bool)
     case twitterPosted(Bool, TwitterProfile.ID, AvailablePostTicket)
+    case twitterPostedFailure
     case changedPostableTwitterAccount(Bool)
     case blueskyLogin(Bool, String)
     case blueskyPosted(Bool)
+    case blueskyPostedFailure
     case changedPostableBlueskyAccount(Bool)
+    case mastodonLogin(Bool, String)
+    case mastodonPosted(Bool)
+    case mastodonPostedFailure
+    case changedPostableMastodonAccount(Bool)
     case purchasedNonConsumableContent(String)
     case restoredPaidContent
     case showGettingFreePostTicketAds(AvailablePostTicket)
@@ -93,14 +99,26 @@ public extension AnalyticsClient {
         "twitter_login"
       case .twitterPosted:
         "twitter_posted"
+      case .twitterPostedFailure:
+        "twitter_posted_failure"
       case .changedPostableTwitterAccount:
         "changed_postable_twitter_account"
       case .blueskyLogin:
         "bluesky_login"
       case .blueskyPosted:
         "bluesky_posted"
+      case .blueskyPostedFailure:
+        "bluesky_posted_failure"
       case .changedPostableBlueskyAccount:
         "changed_postable_bluesky_account"
+      case .mastodonLogin:
+        "mastodon_login"
+      case .mastodonPosted:
+        "mastodon_posted"
+      case .mastodonPostedFailure:
+        "mastodon_posted_failure"
+      case .changedPostableMastodonAccount:
+        "changed_postable_mastodon_account"
       case .purchasedNonConsumableContent:
         "purchased_non_consumable_content"
       case .restoredPaidContent:
@@ -123,6 +141,9 @@ public extension AnalyticsClient {
       case .deniedMusicLibrary,
            .emptyPostTicket,
            .emptySocialServiceAccount,
+           .twitterPostedFailure,
+           .blueskyPostedFailure,
+           .mastodonPostedFailure,
            .restoredPaidContent,
            .purchasedBuyMeACoffee:
         nil
@@ -155,6 +176,19 @@ public extension AnalyticsClient {
       case let .changedPostableBlueskyAccount(isDefault):
         [
           "is_default": isDefault ? "true" : "false",
+        ]
+      case let .mastodonLogin(success, domain):
+        [
+          "is_success": success ? "true" : "false",
+          "domain": domain,
+        ]
+      case let .mastodonPosted(withMedia):
+        [
+          "with_media": withMedia ? "true" : "false",
+        ]
+      case let .changedPostableMastodonAccount(isDefault):
+        [
+          "is_default": isDefault ? "true" : "false"
         ]
       case let .purchasedNonConsumableContent(content):
         [
@@ -200,6 +234,7 @@ public extension AnalyticsClient {
     case blueskyAccountsCount(Int)
     case postTwitter
     case postBluesky
+    case postMastodon
     case hideBannerAds
     case kindUser(Bool)
 
@@ -216,6 +251,8 @@ public extension AnalyticsClient {
         "post_twitter"
       case .postBluesky:
         "post_bluesky"
+      case .postMastodon:
+        "post_mastodon"
       case .hideBannerAds:
         "hide_banner_ads"
       case .kindUser:
@@ -234,6 +271,8 @@ public extension AnalyticsClient {
       case .postTwitter:
         "true"
       case .postBluesky:
+        "true"
+      case .postMastodon:
         "true"
       case .hideBannerAds:
         "true"

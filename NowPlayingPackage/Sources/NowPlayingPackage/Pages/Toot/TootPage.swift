@@ -73,6 +73,8 @@ public struct TootFeature: Sendable {
   }
 
   // MARK: - Dependency
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.dismiss)
   private var dismiss
   @Dependency(\.mainQueue)
@@ -145,6 +147,8 @@ public struct TootFeature: Sendable {
             }
             try await mastodonAPI.toot(mastodonAccount.domainURL, accessToken, mediaID, state.text, state.tootVisibility)
             await send(.internalAction(.tooted))
+            await analytics.logEvent(.mastodonPosted(mediaID != nil))
+            await analytics.setUserProperty(.postMastodon)
           },
           catch: { _, send in
             await send(.internalAction(.tootFailure(String(localized: .failedToToot))))
@@ -210,7 +214,11 @@ public struct TootFeature: Sendable {
             )
           },
         )
-        return .none
+        return .run(
+          operation: { _ in
+            await analytics.logEvent(.mastodonPostedFailure)
+          },
+        )
       case .internalAction(.dismiss):
         state.showSuccess = false
         return .run(

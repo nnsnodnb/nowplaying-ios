@@ -30,6 +30,9 @@ public struct SelectMastodonAccountFeature: Sendable {
     }
   }
 
+  // MARK: - Dependency
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.dismiss)
   private var dismiss
 
@@ -46,6 +49,7 @@ public struct SelectMastodonAccountFeature: Sendable {
       case let .select(mastodonAccount):
         return .run(
           operation: { send in
+            await analytics.logEvent(.changedPostableMastodonAccount(mastodonAccount.isDefault))
             await send(.delegate(.select(mastodonAccount)))
           },
         )

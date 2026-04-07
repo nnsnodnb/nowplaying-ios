@@ -66,6 +66,8 @@ public struct MastodonLoginFeature: Sendable {
   }
 
   // MARK: - Dependency
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.dismiss)
   private var dismiss
   @Dependency(\.mastodonAPI)
@@ -219,11 +221,16 @@ public struct MastodonLoginFeature: Sendable {
             )
           },
         )
-        return .none
+        return .run(
+          operation: { [domain = state.domain] _ in
+            await analytics.logEvent(.mastodonLogin(false, domain))
+          },
+        )
       case let .internalAction(.savedMastodonAccount(mastodonAccount)):
         state.isLoading = false
         return .run(
-          operation: { send in
+          operation: { [state] send in
+            await analytics.logEvent(.mastodonLogin(true, state.domain))
             await send(.delegate(.loggedIn(mastodonAccount)))
             await send(.close)
           },
