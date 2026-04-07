@@ -106,7 +106,7 @@ extension MastodonOAuthClient: DependencyKey {
       guard let urlResponse = response as? HTTPURLResponse,
             urlResponse.statusCode == 200 else { throw Error.internalError }
       let decoder = JSONDecoder()
-      let object = try decoder.decode(MastodonToken.self, from: data)
+      let object = try decoder.decode(Token.self, from: data)
       let oauthToken = MastodonOAuthToken(
         domainURL: clientApplication.domainURL,
         accessToken: .init(object.accessToken),
@@ -127,7 +127,7 @@ extension MastodonOAuthClient: DependencyKey {
       guard let urlResponse = response as? HTTPURLResponse,
             urlResponse.statusCode == 200 else { throw Error.internalError }
       let decoder = JSONDecoder()
-      let object = try decoder.decode(MastodonCredentialAccount.self, from: data)
+      let object = try decoder.decode(CredentialAccount.self, from: data)
       let mastodonAccount = MastodonAccount(
         id: .init(object.id),
         domainURL: clientApplication.domainURL,
@@ -148,6 +148,44 @@ extension MastodonOAuthClient: DependencyKey {
       return mastodonOAuthToken.accessToken
     },
   )
+}
+
+// MARK: - Token
+private extension MastodonOAuthClient {
+  struct Token: Decodable, Sendable {
+    // MARK: - CodingKeys
+    private enum CodingKeys: String, CodingKey {
+      case accessToken = "access_token"
+      case accessTokenType = "token_type"
+      case scope
+      case createdAt = "created_at"
+    }
+
+    // MARK: - Properties
+    let accessToken: String
+    let accessTokenType: String
+    let createdAt: TimeInterval
+    let scope: String
+  }
+}
+
+// MARK: - CredentialAccount
+private extension MastodonOAuthClient {
+  struct CredentialAccount: Decodable, Sendable {
+    // MARK: - CodingKeys
+    private enum CodingKeys: String, CodingKey {
+      case id
+      case displayName = "display_name"
+      case username
+      case avatarStatic = "avatar_static"
+    }
+
+    // MARK: - Properties
+    let id: String
+    let displayName: String
+    let username: String
+    let avatarStatic: URL
+  }
 }
 
 // MARK: - DependencyValues

@@ -247,7 +247,7 @@ public struct PostPage: View {
           .navigationTitle(.postToBluesky)
           .navigationBarTitleDisplayMode(.inline)
           .toolbar(
-            disablePostButton: false,
+            disablePostButton: store.isDisablePostButton,
             cancelAction: {
               store.send(.close)
             },
