@@ -22,6 +22,7 @@ struct TestPaidContentFeatureOnAppear {
     await withDependencies {
       $0.adUnit.getFreePostTicketRewardAdUnitID = { "ca-app-pub-3940256099942544/1712485313" }
       $0.apiClient.getPostTickets = { [postTicket] }
+      $0.secureKeyValueStore.gaveOutFreePostTicket = { false }
       $0.secureKeyValueStore.getAvailablePostTicket = { .initial }
       $0.secureKeyValueStore.getNonConsumables = { [] }
     } operation: {
@@ -38,6 +39,7 @@ struct TestPaidContentFeatureOnAppear {
       }
       await store.receive(\.internalAction.getNonConsumable)
       await store.receive(\.internalAction.setPostTickets) {
+        $0.wasGiveOutFreePostTicket = false
         $0.postTickets = [postTicket]
         $0.availablePostTicket = .initial
         $0.isLoadingPostTicket = false

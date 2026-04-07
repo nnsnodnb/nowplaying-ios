@@ -39,6 +39,9 @@ public struct SecureKeyValueStoreClient: Sendable {
   // MastodonOAuthToken
   public var getMastodonOAuthToken: @Sendable (MastodonAccount) async throws -> MastodonOAuthToken?
   public var setMastodonOAuthToken: @Sendable (MastodonAccount, MastodonOAuthToken) async throws -> Void
+  // GiveOutFreePostTicket
+  public var gaveOutFreePostTicket: @Sendable () async throws -> Bool
+  public var setGiveOutFreePostTicket: @Sendable (Bool) async throws -> Void
   // In-App Purchases
   public var getNonConsumables: @Sendable () async throws -> [NonConsumable]
   public var addNonConsumable: @Sendable (NonConsumable) async throws -> Void
@@ -114,6 +117,12 @@ extension SecureKeyValueStoreClient: DependencyKey {
     },
     setMastodonOAuthToken: { account, oauthToken in
       await Implementation.shared.setMastodonOAuthToken(for: account, oauthToken: oauthToken)
+    },
+    gaveOutFreePostTicket: {
+      await Implementation.shared.gaveOutFreePostTicket()
+    },
+    setGiveOutFreePostTicket: { value in
+      await Implementation.shared.setGiveOutFreePostTicket(value)
     },
     getNonConsumables: {
       await Implementation.shared.getNonConsumables()
@@ -327,6 +336,14 @@ private extension SecureKeyValueStoreClient {
       keychain.set(oauthToken, key: .mastodonOAuthToken(account.id))
     }
 
+    func gaveOutFreePostTicket() -> Bool {
+      keychain.bool(forKey: .gaveOutFreePostTicket)
+    }
+
+    func setGiveOutFreePostTicket(_ value: Bool) {
+      keychain.set(value, key: .gaveOutFreePostTicket)
+    }
+
     func getNonConsumables() -> [NonConsumable] {
       keychain.object(forKey: .purchasedNonConsumables) ?? []
     }
@@ -358,6 +375,12 @@ private extension SecureKeyValueStoreClient {
         try? keychain.remove(.blueskyAccountPassword(blueskyAccount.id))
       }
       try? keychain.remove(.blueskyAccounts)
+      // MastodonAccount & MastodonOAuthToken
+      let mastodonAccounts = getMastodonAccounts()
+      for mastodonAccount in mastodonAccounts {
+        try? keychain.remove(.mastodonOAuthToken(mastodonAccount.id))
+      }
+      try? keychain.remove(.mastodonAccounts)
       // NonConsumables
       try? keychain.remove(.purchasedNonConsumables)
       // AvailablePostTicket

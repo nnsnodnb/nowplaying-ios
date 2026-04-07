@@ -603,6 +603,17 @@
         }
       }
     },
+    "Get 10 tickets with just a tap (one-time only)." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タップするだけで10枚チケットを獲得（一度のみ）"
+          }
+        }
+      }
+    },
     "Get free tickets" : {
       "extractionState" : "manual",
       "localizations" : {
