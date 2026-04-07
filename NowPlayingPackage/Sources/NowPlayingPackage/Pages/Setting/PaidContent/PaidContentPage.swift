@@ -164,6 +164,7 @@ public struct PaidContentFeature: Sendable {
             try await secureKeyValueStore.setGiveOutFreePostTicket(true)
             await send(.internalAction(.updateAvailablePostTicket(availablePostTicket)))
             await send(.internalAction(.earnGiveOutPostFreeTicket))
+            await analytics.logEvent(.giveOutFreePostTicket)
           },
         )
       case .showAlertBeforeAds:

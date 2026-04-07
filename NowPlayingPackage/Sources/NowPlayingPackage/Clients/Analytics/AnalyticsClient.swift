@@ -84,6 +84,7 @@ public extension AnalyticsClient {
     case failedShowGettingFreePostTicketAds(String)
     case purchasedPostTicket(Int, AvailablePostTicket)
     case purchasedBuyMeACoffee
+    case giveOutFreePostTicket
     case getFreePostTicket(AvailablePostTicket)
 
     // MARK: - Properties
@@ -131,6 +132,8 @@ public extension AnalyticsClient {
         "purchased_post_ticket"
       case .purchasedBuyMeACoffee:
         "purchased_buy_me_a_coffee"
+      case .giveOutFreePostTicket:
+        "give_out_free_post_ticket"
       case .getFreePostTicket:
         "get_free_post_ticket"
       }
@@ -145,7 +148,8 @@ public extension AnalyticsClient {
            .blueskyPostedFailure,
            .mastodonPostedFailure,
            .restoredPaidContent,
-           .purchasedBuyMeACoffee:
+           .purchasedBuyMeACoffee,
+           .giveOutFreePostTicket:
         nil
       case let .twitterLogin(success):
         [
