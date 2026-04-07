@@ -19,7 +19,7 @@ public extension Keychain {
     case mastodonOAuthToken(MastodonAccount.ID)
     case purchasedNonConsumables
     case availablePostTicket
-    case gotOutFreePostTicket
+    case gaveOutFreePostTicket
 
     // MARK: - Properties
     public var rawValue: String {
@@ -40,8 +40,8 @@ public extension Keychain {
         "purchased_non_nonsumables"
       case .availablePostTicket:
         "available_post_ticket"
-      case .gotOutFreePostTicket:
-        "got_out_free_post_ticket"
+      case .gaveOutFreePostTicket:
+        "gave_out_free_post_ticket"
       }
     }
   }

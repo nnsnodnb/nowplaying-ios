@@ -19,7 +19,7 @@ public struct PaidContentFeature: Sendable {
     public var isLoading = false
     public var isPurchasedHideAds = false
     public var isPurchasedAutoTweet = false
-    public var wasGettingOutFreePostTicket = true
+    public var wasGiveOutFreePostTicket = true
     public var postTickets: [PostTicket] = []
     public var availablePostTicket: AvailablePostTicket = .initial
     public var isLoadingPostTicket = true
@@ -33,7 +33,7 @@ public struct PaidContentFeature: Sendable {
     case onAppear
     case purchaseNonConsumable(NonConsumable)
     case restorePurchases
-    case getOutFreePostTicket
+    case giveOutFreePostTicket
     case showAlertBeforeAds
     case purchasePostTicket(PostTicket)
     case buyMeACoffee
@@ -54,7 +54,7 @@ public struct PaidContentFeature: Sendable {
       case setNonConsumable([NonConsumable])
       case setPostTickets(Bool, [PostTicket], AvailablePostTicket)
       case updateAvailablePostTicket(AvailablePostTicket)
-      case earnGotOutPostFreeTicket
+      case earnGiveOutPostFreeTicket
       case earnFreeTicket
       case paidNonConsumable(String)
       case paidPostTicket(PostTicket)
@@ -102,10 +102,10 @@ public struct PaidContentFeature: Sendable {
         return .run(
           operation: { send in
             await send(.internalAction(.getNonConsumable))
-            let gotOutFreePostTicket = try await secureKeyValueStore.gotOutFreePostTicket()
+            let gaveOutFreePostTicket = try await secureKeyValueStore.gaveOutFreePostTicket()
             let postTickets = try await apiClient.getPostTickets()
             let availablePostTicket = try await secureKeyValueStore.getAvailablePostTicket()
-            await send(.internalAction(.setPostTickets(gotOutFreePostTicket, postTickets, availablePostTicket)))
+            await send(.internalAction(.setPostTickets(gaveOutFreePostTicket, postTickets, availablePostTicket)))
           },
         )
       case let .purchaseNonConsumable(nonConsumable):
@@ -154,16 +154,16 @@ public struct PaidContentFeature: Sendable {
             await send(.internalAction(.failedPay(String(localized: .purchaseFailed), nil)))
           },
         )
-      case .getOutFreePostTicket:
-        guard !state.wasGettingOutFreePostTicket else { return .none }
+      case .giveOutFreePostTicket:
+        guard !state.wasGiveOutFreePostTicket else { return .none }
         return .run(
           operation: { send in
             var availablePostTicket = try await secureKeyValueStore.getAvailablePostTicket()
             availablePostTicket.increaseFreeCount(amount: 10)
             try await secureKeyValueStore.setAvailablePostTicket(availablePostTicket)
-            try await secureKeyValueStore.setGotOutFreePostTicket(true)
+            try await secureKeyValueStore.setGiveOutFreePostTicket(true)
             await send(.internalAction(.updateAvailablePostTicket(availablePostTicket)))
-            await send(.internalAction(.earnGotOutPostFreeTicket))
+            await send(.internalAction(.earnGiveOutPostFreeTicket))
           },
         )
       case .showAlertBeforeAds:
@@ -269,8 +269,8 @@ public struct PaidContentFeature: Sendable {
           }
         }
         return .none
-      case let .internalAction(.setPostTickets(gotOutFreePostTicket, postTickets, availablePostTicket)):
-        state.wasGettingOutFreePostTicket = gotOutFreePostTicket
+      case let .internalAction(.setPostTickets(wasGiveOutFreePostTicket, postTickets, availablePostTicket)):
+        state.wasGiveOutFreePostTicket = wasGiveOutFreePostTicket
         state.postTickets = postTickets
         state.availablePostTicket = availablePostTicket
         state.isLoadingPostTicket = false
@@ -278,8 +278,8 @@ public struct PaidContentFeature: Sendable {
       case let .internalAction(.updateAvailablePostTicket(availablePostTicket)):
         state.availablePostTicket = availablePostTicket
         return .none
-      case .internalAction(.earnGotOutPostFreeTicket):
-        state.wasGettingOutFreePostTicket = true
+      case .internalAction(.earnGiveOutPostFreeTicket):
+        state.wasGiveOutFreePostTicket = true
         state.alert = AlertState(
           title: {
             TextState(.freeTicketsAcquired)
@@ -518,10 +518,10 @@ public struct PaidContentPage: View {
     Section(
       content: {
         Text(.freeTickets(store.availablePostTicket.remainingFreeCount))
-        if !store.wasGettingOutFreePostTicket {
+        if !store.wasGiveOutFreePostTicket {
           ButtonRow(
             action: {
-              store.send(.getOutFreePostTicket)
+              store.send(.giveOutFreePostTicket)
             },
             title: String(localized: .get10TicketsWithJustATapOneTimeOnly),
             icon: {

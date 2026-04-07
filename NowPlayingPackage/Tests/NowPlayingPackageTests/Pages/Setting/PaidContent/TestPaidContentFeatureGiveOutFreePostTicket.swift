@@ -1,5 +1,5 @@
 //
-//  TestPaidContentFeatureGetOutFreePostTicket.swift
+//  TestPaidContentFeatureGiveOutFreePostTicket.swift
 //  NowPlayingPackage
 //
 //  Created by Yuya Oka on 2026/04/07.
@@ -11,7 +11,7 @@ import StubKit
 import Testing
 
 @MainActor
-struct TestPaidContentFeatureGetOutFreePostTicket {
+struct TestPaidContentFeatureGiveOutFreePostTicket {
   @Test
   func testWasNotGetOutFreePostTicket() async throws {
     let availablePostTicket = try Stub.make(AvailablePostTicket.self) {
@@ -30,23 +30,23 @@ struct TestPaidContentFeatureGetOutFreePostTicket {
     await withDependencies {
       $0.secureKeyValueStore.getAvailablePostTicket = { availablePostTicket }
       $0.secureKeyValueStore.setAvailablePostTicket = { _ in }
-      $0.secureKeyValueStore.setGotOutFreePostTicket = { _ in }
+      $0.secureKeyValueStore.setGiveOutFreePostTicket = { _ in }
     } operation: {
       let store = TestStore(
         initialState: PaidContentFeature.State(
-          wasGettingOutFreePostTicket: false,
+          wasGiveOutFreePostTicket: false,
         ),
         reducer: {
           PaidContentFeature()
         },
       )
 
-      await store.send(.getOutFreePostTicket)
+      await store.send(.giveOutFreePostTicket)
       await store.receive(\.internalAction.updateAvailablePostTicket) {
         $0.availablePostTicket = updatedAvailablePostTicket
       }
-      await store.receive(\.internalAction.earnGotOutPostFreeTicket) {
-        $0.wasGettingOutFreePostTicket = true
+      await store.receive(\.internalAction.earnGiveOutPostFreeTicket) {
+        $0.wasGiveOutFreePostTicket = true
         $0.alert = AlertState(
           title: {
             TextState(.freeTicketsAcquired)
@@ -68,13 +68,13 @@ struct TestPaidContentFeatureGetOutFreePostTicket {
   func testWasGetOutFreePostTicket() async throws {
     let store = TestStore(
       initialState: PaidContentFeature.State(
-        wasGettingOutFreePostTicket: true,
+        wasGiveOutFreePostTicket: true,
       ),
       reducer: {
         PaidContentFeature()
       },
     )
 
-    await store.send(.getOutFreePostTicket)
+    await store.send(.giveOutFreePostTicket)
   }
 }

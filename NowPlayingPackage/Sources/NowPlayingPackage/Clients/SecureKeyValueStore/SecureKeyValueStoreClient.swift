@@ -39,9 +39,9 @@ public struct SecureKeyValueStoreClient: Sendable {
   // MastodonOAuthToken
   public var getMastodonOAuthToken: @Sendable (MastodonAccount) async throws -> MastodonOAuthToken?
   public var setMastodonOAuthToken: @Sendable (MastodonAccount, MastodonOAuthToken) async throws -> Void
-  // GetOutFreePostTicket
-  public var gotOutFreePostTicket: @Sendable () async throws -> Bool
-  public var setGotOutFreePostTicket: @Sendable (Bool) async throws -> Void
+  // GiveOutFreePostTicket
+  public var gaveOutFreePostTicket: @Sendable () async throws -> Bool
+  public var setGiveOutFreePostTicket: @Sendable (Bool) async throws -> Void
   // In-App Purchases
   public var getNonConsumables: @Sendable () async throws -> [NonConsumable]
   public var addNonConsumable: @Sendable (NonConsumable) async throws -> Void
@@ -118,11 +118,11 @@ extension SecureKeyValueStoreClient: DependencyKey {
     setMastodonOAuthToken: { account, oauthToken in
       await Implementation.shared.setMastodonOAuthToken(for: account, oauthToken: oauthToken)
     },
-    gotOutFreePostTicket: {
-      await Implementation.shared.gotOutFreePostTicket()
+    gaveOutFreePostTicket: {
+      await Implementation.shared.gaveOutFreePostTicket()
     },
-    setGotOutFreePostTicket: { value in
-      await Implementation.shared.setGotOutFreePostTicket(value)
+    setGiveOutFreePostTicket: { value in
+      await Implementation.shared.setGiveOutFreePostTicket(value)
     },
     getNonConsumables: {
       await Implementation.shared.getNonConsumables()
@@ -336,12 +336,12 @@ private extension SecureKeyValueStoreClient {
       keychain.set(oauthToken, key: .mastodonOAuthToken(account.id))
     }
 
-    func gotOutFreePostTicket() -> Bool {
-      keychain.bool(forKey: .gotOutFreePostTicket)
+    func gaveOutFreePostTicket() -> Bool {
+      keychain.bool(forKey: .gaveOutFreePostTicket)
     }
 
-    func setGotOutFreePostTicket(_ value: Bool) {
-      keychain.set(value, key: .gotOutFreePostTicket)
+    func setGiveOutFreePostTicket(_ value: Bool) {
+      keychain.set(value, key: .gaveOutFreePostTicket)
     }
 
     func getNonConsumables() -> [NonConsumable] {
