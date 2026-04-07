@@ -358,6 +358,12 @@ private extension SecureKeyValueStoreClient {
         try? keychain.remove(.blueskyAccountPassword(blueskyAccount.id))
       }
       try? keychain.remove(.blueskyAccounts)
+      // MastodonAccount & MastodonOAuthToken
+      let mastodonAccounts = getMastodonAccounts()
+      for mastodonAccount in mastodonAccounts {
+        try? keychain.remove(.mastodonOAuthToken(mastodonAccount.id))
+      }
+      try? keychain.remove(.mastodonAccounts)
       // NonConsumables
       try? keychain.remove(.purchasedNonConsumables)
       // AvailablePostTicket
