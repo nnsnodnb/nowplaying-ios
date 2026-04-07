@@ -427,6 +427,17 @@
         }
       }
     },
+    "Delete toot" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トゥートを削除します"
+          }
+        }
+      }
+    },
     "Developer" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -511,6 +522,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ユーザー情報の取得に失敗しました"
+          }
+        }
+      }
+    },
+    "Failed to toot" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トゥートに失敗しました"
           }
         }
       }
@@ -1334,6 +1356,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "可視性"
+          }
+        }
+      }
+    },
+    "Tooted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トゥートしました"
           }
         }
       }

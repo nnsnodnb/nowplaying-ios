@@ -56,6 +56,7 @@ public extension AnalyticsClient {
     case post
     case selectTwitterAccount = "select_twitter_account"
     case selectBlueskyAccount = "select_bluesky_account"
+    case selectMastodonAccount = "select_mastodon_account"
   }
 }
 
