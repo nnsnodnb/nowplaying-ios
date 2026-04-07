@@ -8,7 +8,7 @@
 import Foundation
 import Tagged
 
-public struct MastodonMediaAttachment: Decodable {
+public struct MastodonMediaAttachment: Decodable, Sendable {
   // MARK: - Tagged
   public typealias ID = Tagged<Self, String>
 
