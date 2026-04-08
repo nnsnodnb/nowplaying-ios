@@ -14,7 +14,7 @@ Build version 17C529
 
 ```command
 $ ruby -v
-ruby 3.4.8 (2025-12-17 revision 995b59f666) +PRISM [arm64-darwin25]
+ruby 4.0.2 (2026-03-17 revision d3da9fec82) +PRISM [arm64-darwin25]
 ```
 
 ## Setup
