@@ -561,9 +561,11 @@ public struct PlayPage: View {
       },
     )
     .shadow(color: .black.opacity(0.4), radius: 0.8)
-    .modifier {
+    .modifier { view in
       if #available(iOS 26.0, *) {
-        $0.glassEffect(.regular.interactive())
+        view.glassEffect(.regular.interactive())
+      } else {
+        view
       }
     }
   }
