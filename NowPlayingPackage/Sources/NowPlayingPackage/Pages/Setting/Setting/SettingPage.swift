@@ -266,6 +266,7 @@ public struct SettingPage: View {
           Image(.icXTwitterPadding)
             .resizable()
             .aspectRatio(contentMode: .fit)
+            .frame(width: 24, height: 24)
         },
       )
       buttonRow(
@@ -277,6 +278,7 @@ public struct SettingPage: View {
           Image(.icBlueskyPadding)
             .resizable()
             .aspectRatio(contentMode: .fit)
+            .frame(width: 24, height: 24)
         },
       )
       buttonRow(
@@ -288,6 +290,7 @@ public struct SettingPage: View {
           Image(.icMastodon)
             .resizable()
             .aspectRatio(contentMode: .fit)
+            .frame(width: 24, height: 24)
         },
       )
     }
@@ -305,6 +308,7 @@ public struct SettingPage: View {
             .resizable()
             .foregroundStyle(.yellow)
             .aspectRatio(contentMode: .fit)
+            .frame(width: 24, height: 24)
         },
       )
       buttonRow(
@@ -317,6 +321,7 @@ public struct SettingPage: View {
             .resizable()
             .scaledToFit()
             .foregroundStyle(Color.gray.opacity(0.5))
+            .frame(width: 24, height: 24)
         },
       )
     }
@@ -338,6 +343,7 @@ public struct SettingPage: View {
               Image(systemSymbol: .handRaisedSquareFill)
                 .resizable()
                 .foregroundStyle(.white, .red.opacity(0.9))
+                .frame(width: 24, height: 24)
             }
           },
         )
@@ -353,6 +359,7 @@ public struct SettingPage: View {
             .resizable()
             .scaledToFit()
             .foregroundStyle(.blue)
+            .frame(width: 24, height: 24)
         },
       )
       ButtonRow(
@@ -365,6 +372,7 @@ public struct SettingPage: View {
             .resizable()
             .scaledToFit()
             .foregroundStyle(.cyan)
+            .frame(width: 24, height: 24)
         }
       )
     }
@@ -381,6 +389,7 @@ public struct SettingPage: View {
           Image(.icXTwitterPadding)
             .resizable()
             .aspectRatio(contentMode: .fit)
+            .frame(width: 24, height: 24)
         },
       )
       ButtonRow(
@@ -392,6 +401,7 @@ public struct SettingPage: View {
           Image(.icGithub)
             .resizable()
             .aspectRatio(contentMode: .fit)
+            .frame(width: 24, height: 24)
         },
       )
       ButtonRow(
@@ -404,6 +414,7 @@ public struct SettingPage: View {
             .resizable()
             .foregroundStyle(.green)
             .aspectRatio(contentMode: .fit)
+            .frame(width: 24, height: 24)
         },
       )
       ButtonRow(
@@ -416,6 +427,7 @@ public struct SettingPage: View {
             .resizable()
             .foregroundStyle(.indigo)
             .aspectRatio(contentMode: .fit)
+            .frame(width: 24, height: 24)
         },
       )
       ButtonRow(
@@ -428,6 +440,7 @@ public struct SettingPage: View {
             .resizable()
             .foregroundStyle(.purple)
             .aspectRatio(contentMode: .fit)
+            .frame(width: 24, height: 24)
         },
       )
       versionRow
@@ -446,6 +459,7 @@ public struct SettingPage: View {
             .resizable()
             .foregroundStyle(.yellow)
             .aspectRatio(contentMode: .fit)
+            .frame(width: 24, height: 24)
         }
       )
       Spacer()

@@ -323,11 +323,11 @@ public struct MastodonLoginPage: View {
               Text(.logIn)
             },
           )
-          .modifier {
+          .modifier { view in
             if #available(iOS 26.0, *) {
-              $0.buttonStyle(.glassProminent)
+              view.buttonStyle(.glassProminent)
             } else {
-              $0.buttonStyle(.borderedProminent)
+              view.buttonStyle(.borderedProminent)
             }
           }
         }

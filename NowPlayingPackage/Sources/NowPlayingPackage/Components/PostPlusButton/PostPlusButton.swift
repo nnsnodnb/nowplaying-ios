@@ -70,6 +70,8 @@ public struct PostPlusButton: View {
     .modifier { view in
       if #available(iOS 26.0, *) {
         view.glassEffect(.regular.interactive())
+      } else {
+        view
       }
     }
   }
