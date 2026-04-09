@@ -25,8 +25,11 @@ public struct PickerTootVisibilityRow<Content: View>: View {
             Text(.tootVisibility)
           },
           icon: {
-            iconImage
+            iconImage?
+              .resizable()
+              .aspectRatio(contentMode: .fit)
               .foregroundStyle(Color(.mastodonBrand))
+              .frame(width: 24, height: 24)
           },
         )
       },

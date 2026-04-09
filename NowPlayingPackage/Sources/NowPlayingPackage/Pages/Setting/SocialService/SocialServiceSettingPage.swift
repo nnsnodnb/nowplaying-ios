@@ -182,6 +182,7 @@ public struct SocialServiceSettingPage: View {
               .resizable()
               .scaledToFit()
               .foregroundStyle(.gray.opacity(0.6))
+              .frame(width: 24, height: 24)
           },
         )
         switch store.socialService {
@@ -257,6 +258,7 @@ public struct SocialServiceSettingPage: View {
           .resizable()
           .scaledToFit()
           .foregroundStyle(.blue)
+          .frame(width: 24, height: 24)
       },
     )
   }

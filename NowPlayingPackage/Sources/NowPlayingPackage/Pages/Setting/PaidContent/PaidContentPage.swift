@@ -530,6 +530,7 @@ public struct PaidContentPage: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .foregroundStyle(.green)
+                .frame(width: 24, height: 24)
             },
           )
         }
@@ -590,6 +591,7 @@ public struct PaidContentPage: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .foregroundStyle(.red)
+            .frame(width: 24, height: 24)
         },
         price: String(localized: .yen(320)),
       )
@@ -608,6 +610,7 @@ public struct PaidContentPage: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .foregroundStyle(Color(UIColor.systemCyan))
+            .frame(width: 24, height: 24)
         },
         price: "0",
       )
@@ -625,6 +628,7 @@ public struct PaidContentPage: View {
           .resizable()
           .aspectRatio(contentMode: .fit)
           .foregroundStyle(.yellow)
+          .frame(width: 24, height: 24)
       },
     )
   }
@@ -640,6 +644,7 @@ public struct PaidContentPage: View {
           .resizable()
           .aspectRatio(contentMode: .fit)
           .foregroundStyle(.green)
+          .frame(width: 24, height: 24)
       },
     )
   }
@@ -656,6 +661,7 @@ public struct PaidContentPage: View {
           .resizable()
           .aspectRatio(contentMode: .fit)
           .foregroundStyle(.orange)
+          .frame(width: 24, height: 24)
       },
       price: postTicket.localizedPrice.getLocalePrice(),
       discount: postTicket.discount,
@@ -673,6 +679,7 @@ public struct PaidContentPage: View {
           .resizable()
           .aspectRatio(contentMode: .fit)
           .foregroundStyle(.brown)
+          .frame(width: 24, height: 24)
       },
       price: String(localized: .yen(300))
     )
