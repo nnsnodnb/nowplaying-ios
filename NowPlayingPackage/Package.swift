@@ -52,6 +52,7 @@ let package = Package(
         .betterSafariView,
         .composableArchitecture,
         .firebaseAnalytics,
+        .firebaseCrashlytics,
         .googleMobileAds,
         .googleUserMessagingPlatform,
         .imageViewer,
@@ -125,6 +126,13 @@ extension Target.Dependency {
   static var firebaseAnalytics: Self {
     .product(
       name: "FirebaseAnalytics",
+      package: "firebase-ios-sdk",
+    )
+  }
+
+  static var firebaseCrashlytics: Self {
+    .product(
+      name: "FirebaseCrashlytics",
       package: "firebase-ios-sdk",
     )
   }

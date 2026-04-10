@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2026/03/05.
 //
 
+import FirebaseCrashlytics
 import GoogleMobileAds
 import SwiftUI
 
@@ -35,9 +36,18 @@ extension AdBannerWrapper {
     // MARK: - Properties
     private let parent: AdBannerWrapper
 
+    // MARK: - Dependency
+    @Dependency(\.crashlytics)
+    private var crashlytics
+
     // MARK: - Initialize
     init(parent: AdBannerWrapper) {
       self.parent = parent
+    }
+
+    // MARK: - BannerViewDelegate
+    func bannerView(_ bannerView: BannerView, didFailToReceiveAdWithError error: any Error) {
+      try? crashlytics.recordAdBannerLoadError(bannerView.responseInfo, error)
     }
   }
 }
