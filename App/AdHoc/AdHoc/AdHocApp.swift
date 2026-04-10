@@ -63,6 +63,9 @@ struct AdHocApp: App {
       _ = try await Purchases.shared.logIn("$RCAnonymousID:9d6c93f9b9c0446c8c07fdc0a281b476")
     }
     Analytics.setUserID(Purchases.shared.appUserID)
+    if let appInstanceID = Analytics.appInstanceID() {
+      Purchases.shared.attribution.setFirebaseAppInstanceID(appInstanceID)
+    }
     SVProgressHUD.setDefaultMaskType(.black)
   }
 }
