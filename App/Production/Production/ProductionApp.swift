@@ -36,6 +36,9 @@ struct ProductionApp: App {
     }
     Purchases.configure(withAPIKey: "appl_bFpdFCHLAyHiwuozSKJgbMNPZkD")
     Analytics.setUserID(Purchases.shared.appUserID)
+    if let appInstanceID = Analytics.appInstanceID() {
+      Purchases.shared.attribution.setFirebaseAppInstanceID(appInstanceID)
+    }
     SVProgressHUD.setDefaultMaskType(.black)
   }
 }
