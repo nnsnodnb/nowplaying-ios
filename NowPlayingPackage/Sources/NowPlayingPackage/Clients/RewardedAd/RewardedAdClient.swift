@@ -52,8 +52,11 @@ private extension RewardedAdClient {
     private let state: LockIsolated<State> = .init(.idle)
     private let earnedReward: LockIsolated<Bool> = .init(false)
 
+    // MARK: - Dependency
     @Dependency(\.continuousClock)
     private var continuousClock
+    @Dependency(\.crashlytics)
+    private var crashlytics
 
     // MARK: - Delegate
     final class Delegate: NSObject, FullScreenContentDelegate, Sendable {
@@ -86,6 +89,7 @@ private extension RewardedAdClient {
           } catch {
             retryCount += 1
             state.setValue(.failed(error.localizedDescription))
+            try? crashlytics.recordRewardedAdLoadError(error)
             try? await continuousClock.sleep(for: .milliseconds(500))
             state.setValue(.idle)
           }
