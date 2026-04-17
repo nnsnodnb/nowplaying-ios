@@ -39,6 +39,6 @@ struct ProductionApp: App {
     if let appInstanceID = Analytics.appInstanceID() {
       Purchases.shared.attribution.setFirebaseAppInstanceID(appInstanceID)
     }
-    KRProgressHUD.set(maskType: .black)
+    SVProgressHUD.setDefaultMaskType(.black)
   }
 }
