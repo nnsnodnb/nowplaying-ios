@@ -38,7 +38,7 @@ let package = Package(
     ),
     .package(url: "https://github.com/pointfreeco/swift-dependencies.git", from: "1.12.0"),
     .package(url: "https://github.com/gohanlon/swift-memberwise-init-macro.git", from: "0.6.0"),
-    .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", from: "13.2.0"),
+    .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", from: "13.1.0"),
     .package(url: "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git", from: "3.1.0"),
     .package(url: "https://github.com/pointfreeco/swift-tagged.git", from: "0.10.0"),
     .package(url: "https://github.com/Jake-Short/swiftui-image-viewer.git", from: "2.3.1"),
