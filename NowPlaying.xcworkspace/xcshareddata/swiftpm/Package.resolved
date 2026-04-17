@@ -1,5 +1,5 @@
 {
-  "originHash" : "7008b75046d5024e66227ae2d9f8d30ef994a356c8cfbac225a13d850bd86c8e",
+  "originHash" : "dfe9e3f0dfb00cc7b53c55fdd55c81ba0eb14b6ebc38b477c3fda98d0c97e36e",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -128,6 +128,24 @@
       }
     },
     {
+      "identity" : "kractivityindicatorview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krimpedance/KRActivityIndicatorView.git",
+      "state" : {
+        "revision" : "925de8a9c15d9d7c2ca746dbe198549241b8b2b2",
+        "version" : "3.0.8"
+      }
+    },
+    {
+      "identity" : "krprogresshud",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krimpedance/KRProgressHUD.git",
+      "state" : {
+        "revision" : "2d6b0246682fce2c8e226235c9cd6065d0b95e00",
+        "version" : "3.4.8"
+      }
+    },
+    {
       "identity" : "leveldb",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/leveldb.git",
@@ -206,15 +224,6 @@
       "state" : {
         "revision" : "6d3c5d8dec873b8b0c4e4ae5832cb91218b8f858",
         "version" : "0.1.7"
-      }
-    },
-    {
-      "identity" : "svprogresshud",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SVProgressHUD/SVProgressHUD.git",
-      "state" : {
-        "revision" : "c33f7c775ba7feea6047a1fc3257f2e5863b44f7",
-        "version" : "2.3.1"
       }
     },
     {

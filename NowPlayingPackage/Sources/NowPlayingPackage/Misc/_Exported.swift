@@ -10,7 +10,7 @@
 @_exported import FirebaseCore
 @_exported import GoogleMobileAds
 @_exported import RevenueCat
-@_exported import SVProgressHUD
+@_exported import KRProgressHUD
 @_exported import SwiftUI
 @_exported import Tagged
 @_exported import XCTestDynamicOverlay
