@@ -20,13 +20,13 @@ let package = Package(
     .package(url: "https://github.com/stleamist/BetterSafariView.git", from: "2.4.2"),
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "12.12.1"),
     .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
+    .package(url: "https://github.com/krimpedance/KRProgressHUD.git", from: "3.4.4"),
     .package(url: "https://github.com/maiyama18/LicensesPlugin.git", from: "0.2.0"),
     .package(url: "https://github.com/kean/Nuke.git", from: "13.0.1"),
     .package(url: "https://github.com/RevenueCat/purchases-ios-spm.git", from: "5.67.0"),
     .package(url: "https://github.com/nnsnodnb/ScrollFlowLabel.git", from: "1.0.4"),
     .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", from: "7.0.0"),
     .package(url: "https://github.com/kateinoigakukun/StubKit.git", from: "0.1.7"),
-    .package(url: "https://github.com/SVProgressHUD/SVProgressHUD.git", from: "2.3.1"),
     .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", from: "0.63.2"),
     .package(
       url: "https://github.com/pointfreeco/swift-composable-architecture.git",
@@ -57,12 +57,12 @@ let package = Package(
         .googleUserMessagingPlatform,
         .imageViewer,
         .keychainAccess,
+        .krProgressHUD,
         .memberwiseInit,
         .nukeUI,
         .revenueCat,
         .scrollFlowLabel,
         .sfSafeSymbols,
-        .svProgressHUD,
         .tagged,
         .version,
       ],
@@ -165,6 +165,13 @@ extension Target.Dependency {
     )
   }
 
+  static var krProgressHUD: Self {
+    .product(
+      name: "KRProgressHUD",
+      package: "KRProgressHUD",
+    )
+  }
+
   static var memberwiseInit: Self {
     .product(
       name: "MemberwiseInit",
@@ -204,13 +211,6 @@ extension Target.Dependency {
     .product(
       name: "StubKit",
       package: "StubKit",
-    )
-  }
-
-  static var svProgressHUD: Self {
-    .product(
-      name: "SVProgressHUD",
-      package: "SVProgressHUD"
     )
   }
 

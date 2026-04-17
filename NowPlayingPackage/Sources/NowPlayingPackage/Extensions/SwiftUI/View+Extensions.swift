@@ -6,7 +6,7 @@
 //
 
 import FirebaseAnalytics
-import SVProgressHUD
+import KRProgressHUD
 import SwiftUI
 
 extension View {
@@ -17,9 +17,9 @@ extension View {
   func progress(_ enabled: Bool) -> some View {
     onChange(of: enabled, initial: false) { _, newValue in
       if newValue {
-        SVProgressHUD.show()
+        KRProgressHUD.show()
       } else {
-        SVProgressHUD.dismiss()
+        KRProgressHUD.dismiss()
       }
     }
   }

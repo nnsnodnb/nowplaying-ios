@@ -66,6 +66,6 @@ struct AdHocApp: App {
     if let appInstanceID = Analytics.appInstanceID() {
       Purchases.shared.attribution.setFirebaseAppInstanceID(appInstanceID)
     }
-    SVProgressHUD.setDefaultMaskType(.black)
+    KRProgressHUD.set(maskType: .black)
   }
 }

@@ -280,9 +280,9 @@ public struct PostPage: View {
           .progress(store.isLoading)
           .onChange(of: store.showSuccess, initial: false) { _, newValue in
             if newValue {
-              SVProgressHUD.showSuccess(withStatus: String(localized: .posted))
+              KRProgressHUD.showSuccess(withMessage: String(localized: .posted))
             } else {
-              SVProgressHUD.dismiss()
+              KRProgressHUD.dismiss()
             }
           }
       },

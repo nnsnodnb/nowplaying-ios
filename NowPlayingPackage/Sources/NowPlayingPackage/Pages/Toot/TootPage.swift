@@ -291,9 +291,9 @@ public struct TootPage: View {
           .progress(store.isLoading)
           .onChange(of: store.showSuccess, initial: false) { _, newValue in
             if newValue {
-              SVProgressHUD.showSuccess(withStatus: String(localized: .tooted))
+              KRProgressHUD.showSuccess(withMessage: String(localized: .tooted))
             } else {
-              SVProgressHUD.dismiss()
+              KRProgressHUD.dismiss()
             }
           }
       },

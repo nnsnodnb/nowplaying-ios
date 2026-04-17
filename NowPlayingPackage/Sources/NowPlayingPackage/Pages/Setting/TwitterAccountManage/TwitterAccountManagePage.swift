@@ -9,7 +9,6 @@ import BetterSafariView
 import ComposableArchitecture
 import Dependencies
 import SFSafeSymbols
-import SVProgressHUD
 import SwiftUI
 
 @Reducer
