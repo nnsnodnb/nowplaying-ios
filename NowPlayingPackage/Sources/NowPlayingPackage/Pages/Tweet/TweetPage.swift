@@ -375,9 +375,9 @@ public struct TweetPage: View {
           .progress(store.isLoading)
           .onChange(of: store.showSuccess, initial: false) { _, newValue in
             if newValue {
-              KRProgressHUD.showSuccess(withMessage: String(localized: .posted))
+              SVProgressHUD.showSuccess(withStatus: String(localized: .posted))
             } else {
-              KRProgressHUD.dismiss()
+              SVProgressHUD.dismiss()
             }
           }
       },
