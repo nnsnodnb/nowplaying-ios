@@ -1,5 +1,12 @@
 {
   "dependencies": {
     "firebase-tools": "^13.35.1"
+  },
+  "scripts": {
+    "start": "firebase --project dev emulators:start --import data --export-on-exit data",
+    "deploy_firestore_dev": "firebase deploy --project dev firestore:rules",
+    "deploy_firestore_prod": "firebase deploy --project prod firestore:rules",
+    "deploy_functions_dev": "firebase deploy --project dev functions",
+    "deploy_functions_prod": "firebase deploy --project prod functions"
   }
 }
