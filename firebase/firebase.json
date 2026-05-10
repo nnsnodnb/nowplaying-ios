@@ -9,11 +9,32 @@
         "firebase-debug.log",
         "firebase-debug.*.log",
         "*.local"
-      ]
+      ],
+      "runtime": "python314"
     }
   ],
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "auth": {
+      "host": "0.0.0.0",
+      "port": 9091
+    },
+    "firestore": {
+      "host": "0.0.0.0",
+      "port": 9092
+    },
+    "functions": {
+      "host": "0.0.0.0",
+      "port": 9095
+    },
+    "ui": {
+      "host": "0.0.0.0",
+      "enabled": true,
+      "port": 9090
+    },
+    "singleProjectMode": true
   }
 }
