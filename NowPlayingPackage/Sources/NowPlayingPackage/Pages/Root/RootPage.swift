@@ -43,6 +43,8 @@ public struct RootFeature: Sendable {
   }
 
   // MARK: - Dependency
+  @Dependency(\.auth)
+  private var auth
   @Dependency(\.secureKeyValueStore)
   private var secureKeyValueStore
 
@@ -55,9 +57,10 @@ public struct RootFeature: Sendable {
         guard state.isLaunchAtFirst else {
           return .none
         }
-        // 初回起動時にKeychainのデータをすべて削除する
+        // 初回起動時にFirebaseAuthのセッションとKeychainのデータをすべて削除する
         return .run(
           operation: { send in
+            try? auth.signOut()
             try await secureKeyValueStore.resetAllData()
             await send(.internalAction(.resetedSecureAllData))
           },

@@ -23,4 +23,5 @@ public enum NowPlayingSharedKey: String {
   case earnFreeTicketDate = "key_earn_free_ticket_date"
   case isLaunchAtFirst = "key_is_launch_at_first"
   case skippedUpdateVersion = "key_skipped_update_version"
+  case migratedV320 = "key_migrated_v3_2_0"
 }
