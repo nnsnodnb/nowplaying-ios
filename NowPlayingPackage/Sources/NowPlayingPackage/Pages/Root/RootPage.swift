@@ -21,6 +21,8 @@ public struct RootFeature: Sendable {
     @Init(default: nil)
     public var consent: ConsentFeature.State?
     @Init(default: nil)
+    public var signInAnonymously: SignInAnonymouslyFeature.State?
+    @Init(default: nil)
     public var play: PlayFeature.State?
     @Shared(.appStorage(.isLaunchAtFirst))
     public var isLaunchAtFirst = true
@@ -31,6 +33,7 @@ public struct RootFeature: Sendable {
     case onAppear
     case appInfo(AppInfoFeature.Action)
     case consent(ConsentFeature.Action)
+    case signInAnonymously(SignInAnonymouslyFeature.Action)
     case play(PlayFeature.Action)
     case internalAction(InternalAction)
 
@@ -43,6 +46,8 @@ public struct RootFeature: Sendable {
   }
 
   // MARK: - Dependency
+  @Dependency(\.auth)
+  private var auth
   @Dependency(\.secureKeyValueStore)
   private var secureKeyValueStore
 
@@ -55,9 +60,10 @@ public struct RootFeature: Sendable {
         guard state.isLaunchAtFirst else {
           return .none
         }
-        // 初回起動時にKeychainのデータをすべて削除する
+        // 初回起動時にFirebaseAuthのセッションとKeychainのデータをすべて削除する
         return .run(
           operation: { send in
+            try? auth.signOut()
             try await secureKeyValueStore.resetAllData()
             await send(.internalAction(.resetedSecureAllData))
           },
@@ -69,13 +75,20 @@ public struct RootFeature: Sendable {
       case .appInfo:
         return .none
       case .consent(.delegate(.completedConsent)):
+        state.consent = nil
+        state.signInAnonymously = .init()
+        return .none
+      case .consent:
+        return .none
+      case .signInAnonymously(.delegate(.completed)):
+        state.signInAnonymously = nil
         return .run(
           operation: { send in
             let nonConsumables = try await secureKeyValueStore.getNonConsumables()
             await send(.internalAction(.showPlay(nonConsumables.contains(.hideAds))))
           },
         )
-      case .consent:
+      case .signInAnonymously:
         return .none
       case .play:
         return .none
@@ -83,7 +96,6 @@ public struct RootFeature: Sendable {
         state.$isLaunchAtFirst.withLock { $0 = false }
         return .none
       case let .internalAction(.showPlay(isPurchasedHideAds)):
-        state.consent = nil
         state.play = .init(
           isPurchasedHideAds: isPurchasedHideAds,
         )
@@ -95,6 +107,9 @@ public struct RootFeature: Sendable {
     }
     .ifLet(\.consent, action: \.consent) {
       ConsentFeature()
+    }
+    .ifLet(\.signInAnonymously, action: \.signInAnonymously) {
+      SignInAnonymouslyFeature()
     }
     .ifLet(\.play, action: \.play) {
       PlayFeature()
@@ -114,6 +129,8 @@ public struct RootPage: View {
       AppInfoPage(store: store)
     } else if let store = store.scope(state: \.consent, action: \.consent) {
       ConsentPage(store: store)
+    } else if let store = store.scope(state: \.signInAnonymously, action: \.signInAnonymously) {
+      SignInAnonymouslyPage(store: store)
     } else if let store = store.scope(state: \.play, action: \.play) {
       PlayPage(store: store)
     } else {

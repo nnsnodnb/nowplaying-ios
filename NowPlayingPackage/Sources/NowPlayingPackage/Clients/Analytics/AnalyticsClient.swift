@@ -40,6 +40,7 @@ public extension AnalyticsClient {
   enum ScreenName: String {
     case root
     case consent
+    case signInAnonymously = "sign_in_anonymously"
     case play
     case setting
     case twitterSetting = "twitter_setting"
