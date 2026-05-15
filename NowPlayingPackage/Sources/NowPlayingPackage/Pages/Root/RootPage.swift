@@ -96,7 +96,6 @@ public struct RootFeature: Sendable {
         state.$isLaunchAtFirst.withLock { $0 = false }
         return .none
       case let .internalAction(.showPlay(isPurchasedHideAds)):
-        state.consent = nil
         state.play = .init(
           isPurchasedHideAds: isPurchasedHideAds,
         )
