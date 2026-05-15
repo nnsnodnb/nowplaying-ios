@@ -56,7 +56,18 @@ struct DevelopApp: App {
 
   // MARK: - Initialize
   init() {
+    #if DEBUG
+    let providerFactory = AppCheckDebugProviderFactory()
+    AppCheck.setAppCheckProviderFactory(providerFactory)
+    #endif
+
     FirebaseApp.configure()
+    #if DEBUG
+    let host = "127.0.0.1"
+    Auth.auth().useEmulator(withHost: host, port: 9091)
+    // Functions.functions().useEmulator(withHost: host, port: 9095)
+    #endif
+
     Task {
       _ = await MobileAds.shared.start()
       MobileAds.shared.requestConfiguration.testDeviceIdentifiers = [
