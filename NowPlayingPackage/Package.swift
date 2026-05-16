@@ -55,6 +55,7 @@ let package = Package(
         .firebaseAppCheck,
         .firebaseAuth,
         .firebaseCrashlytics,
+        .firebaseFunctions,
         .googleMobileAds,
         .googleUserMessagingPlatform,
         .imageViewer,
@@ -149,6 +150,13 @@ extension Target.Dependency {
   static var firebaseCrashlytics: Self {
     .product(
       name: "FirebaseCrashlytics",
+      package: "firebase-ios-sdk",
+    )
+  }
+
+  static var firebaseFunctions: Self {
+    .product(
+      name: "FirebaseFunctions",
       package: "firebase-ios-sdk",
     )
   }

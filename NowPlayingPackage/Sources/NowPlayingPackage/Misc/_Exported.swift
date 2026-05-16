@@ -10,6 +10,7 @@
 @_exported import FirebaseAppCheck
 @_exported import FirebaseAuth
 @_exported import FirebaseCore
+@_exported import FirebaseFunctions
 @_exported import GoogleMobileAds
 @_exported import RevenueCat
 @_exported import SVProgressHUD

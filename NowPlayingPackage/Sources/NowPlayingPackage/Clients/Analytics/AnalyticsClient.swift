@@ -41,6 +41,7 @@ public extension AnalyticsClient {
     case root
     case consent
     case signInAnonymously = "sign_in_anonymously"
+    case migrateV320 = "migrate_v3_2_0"
     case play
     case setting
     case twitterSetting = "twitter_setting"

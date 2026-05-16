@@ -26,6 +26,8 @@ public struct RootFeature: Sendable {
     public var play: PlayFeature.State?
     @Shared(.appStorage(.isLaunchAtFirst))
     public var isLaunchAtFirst = true
+    @Shared(.appStorage(.migratedV320))
+    public var migratedV320 = false
   }
 
   // MARK: - Action
