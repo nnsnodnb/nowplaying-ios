@@ -6,16 +6,23 @@
 //
 
 import ComposableArchitecture
+import DependenciesTestSupport
 @testable import NowPlayingPackage
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestRootFeatureSigninAnonymously {
   @Test
-  func testSigninAnonymouslyDelegateCompletedConsentIsEmptyNonConsumables() async throws {
+  func testSigninAnonymouslyDelegateCompletedConsentIsEmptyNonConsumablesAndMigratedV320() async throws {
     await withDependencies {
       $0.secureKeyValueStore.getNonConsumables = { [] }
     } operation: {
+      @Shared(.appStorage(.migratedV320))
+      var migratedV320 = true
+
       let store = TestStore(
         initialState: RootFeature.State(
           signInAnonymously: .init(),
@@ -37,10 +44,33 @@ struct TestRootFeatureSigninAnonymously {
   }
 
   @Test
-  func testSigninAnonymouslyDelegateCompletedHasAutoTweet() async throws {
+  func testSigninAnonymouslyDelegateCompletedConsentIsEmptyNonConsumablesAndNotMigratedV320() async throws {
+    @Shared(.appStorage(.migratedV320))
+    var migratedV320 = false
+
+    let store = TestStore(
+      initialState: RootFeature.State(
+        signInAnonymously: .init(),
+      ),
+      reducer: {
+        RootFeature()
+      },
+    )
+
+    await store.send(.signInAnonymously(.delegate(.completed))) {
+      $0.signInAnonymously = nil
+      $0.migrateV320 = .init()
+    }
+  }
+
+  @Test
+  func testSigninAnonymouslyDelegateCompletedHasAutoTweetAndMigratedV320() async throws {
     await withDependencies {
       $0.secureKeyValueStore.getNonConsumables = { [.autoTweet] }
     } operation: {
+      @Shared(.appStorage(.migratedV320))
+      var migratedV320 = true
+
       let store = TestStore(
         initialState: RootFeature.State(
           signInAnonymously: .init(),
@@ -62,10 +92,33 @@ struct TestRootFeatureSigninAnonymously {
   }
 
   @Test
-  func testSigninAnonymouslyDelegateCompletedHasHideAds() async throws {
+  func testSigninAnonymouslyDelegateCompletedHasAutoTweetAndNotMigratedV320() async throws {
+    @Shared(.appStorage(.migratedV320))
+    var migratedV320 = false
+
+    let store = TestStore(
+      initialState: RootFeature.State(
+        signInAnonymously: .init(),
+      ),
+      reducer: {
+        RootFeature()
+      },
+    )
+
+    await store.send(.signInAnonymously(.delegate(.completed))) {
+      $0.signInAnonymously = nil
+      $0.migrateV320 = .init()
+    }
+  }
+
+  @Test
+  func testSigninAnonymouslyDelegateCompletedHasHideAdsAndMigratedV320() async throws {
     await withDependencies {
       $0.secureKeyValueStore.getNonConsumables = { [.hideAds] }
     } operation: {
+      @Shared(.appStorage(.migratedV320))
+      var migratedV320 = true
+
       let store = TestStore(
         initialState: RootFeature.State(
           signInAnonymously: .init(),
@@ -87,10 +140,33 @@ struct TestRootFeatureSigninAnonymously {
   }
 
   @Test
-  func testSigninAnonymouslyDelegateCompletedHasAllNonConsumables() async throws {
+  func testSigninAnonymouslyDelegateCompletedHasHideAdsAndNotMigratedV320() async throws {
+    @Shared(.appStorage(.migratedV320))
+    var migratedV320 = false
+
+    let store = TestStore(
+      initialState: RootFeature.State(
+        signInAnonymously: .init(),
+      ),
+      reducer: {
+        RootFeature()
+      },
+    )
+
+    await store.send(.signInAnonymously(.delegate(.completed))) {
+      $0.signInAnonymously = nil
+      $0.migrateV320 = .init()
+    }
+  }
+
+  @Test
+  func testSigninAnonymouslyDelegateCompletedHasAllNonConsumablesAndMigratedV320() async throws {
     await withDependencies {
       $0.secureKeyValueStore.getNonConsumables = { [.hideAds, .autoTweet] }
     } operation: {
+      @Shared(.appStorage(.migratedV320))
+      var migratedV320 = true
+
       let store = TestStore(
         initialState: RootFeature.State(
           signInAnonymously: .init(),
@@ -108,6 +184,26 @@ struct TestRootFeatureSigninAnonymously {
           isPurchasedHideAds: true,
         )
       }
+    }
+  }
+
+  @Test
+  func testSigninAnonymouslyDelegateCompletedHasAllNonConsumablesAndNotMigratedV320() async throws {
+    @Shared(.appStorage(.migratedV320))
+    var migratedV320 = false
+
+    let store = TestStore(
+      initialState: RootFeature.State(
+        signInAnonymously: .init(),
+      ),
+      reducer: {
+        RootFeature()
+      },
+    )
+
+    await store.send(.signInAnonymously(.delegate(.completed))) {
+      $0.signInAnonymously = nil
+      $0.migrateV320 = .init()
     }
   }
 }
