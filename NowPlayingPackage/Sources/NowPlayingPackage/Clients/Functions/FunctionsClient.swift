@@ -28,7 +28,7 @@ extension FunctionsClient: DependencyKey {
       )
       let request = MigrateTwitterUserProfilesRequest(
         migrations: migrations.map {
-            .init(userProfile: $0.twitterAccount.profile, refreshToken: $0.refreshToken)
+          .init(userProfile: $0.twitterAccount.profile, refreshToken: $0.refreshToken)
         },
       )
       _ = try await callable.call(request)
