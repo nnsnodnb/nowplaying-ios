@@ -14,10 +14,14 @@ extension View {
     closure(self)
   }
 
-  func progress(_ enabled: Bool) -> some View {
+  func progress(_ enabled: Bool, status: String? = nil) -> some View {
     onChange(of: enabled, initial: false) { _, newValue in
       if newValue {
-        SVProgressHUD.show()
+        if let status {
+          SVProgressHUD.show(withStatus: status)
+        } else {
+          SVProgressHUD.show()
+        }
       } else {
         SVProgressHUD.dismiss()
       }

@@ -10,6 +10,9 @@ import ComposableArchitecture
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestRootFeatureConsent {
   @Test
   func testIt() async throws {

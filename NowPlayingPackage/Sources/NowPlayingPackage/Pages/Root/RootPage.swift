@@ -23,9 +23,13 @@ public struct RootFeature: Sendable {
     @Init(default: nil)
     public var signInAnonymously: SignInAnonymouslyFeature.State?
     @Init(default: nil)
+    public var migrateV320: MigrateV320Feature.State?
+    @Init(default: nil)
     public var play: PlayFeature.State?
     @Shared(.appStorage(.isLaunchAtFirst))
     public var isLaunchAtFirst = true
+    @Shared(.appStorage(.migratedV320))
+    public var migratedV320 = false
   }
 
   // MARK: - Action
@@ -34,6 +38,7 @@ public struct RootFeature: Sendable {
     case appInfo(AppInfoFeature.Action)
     case consent(ConsentFeature.Action)
     case signInAnonymously(SignInAnonymouslyFeature.Action)
+    case migrateV320(MigrateV320Feature.Action)
     case play(PlayFeature.Action)
     case internalAction(InternalAction)
 
@@ -82,13 +87,28 @@ public struct RootFeature: Sendable {
         return .none
       case .signInAnonymously(.delegate(.completed)):
         state.signInAnonymously = nil
+        if state.migratedV320 {
+          return .run(
+            operation: { send in
+              let nonConsumables = try await secureKeyValueStore.getNonConsumables()
+              await send(.internalAction(.showPlay(nonConsumables.contains(.hideAds))))
+            },
+          )
+        } else {
+          state.migrateV320 = .init()
+          return .none
+        }
+      case .signInAnonymously:
+        return .none
+      case .migrateV320(.delegate(.completed)):
+        state.migrateV320 = nil
         return .run(
           operation: { send in
             let nonConsumables = try await secureKeyValueStore.getNonConsumables()
             await send(.internalAction(.showPlay(nonConsumables.contains(.hideAds))))
           },
         )
-      case .signInAnonymously:
+      case .migrateV320:
         return .none
       case .play:
         return .none
@@ -111,6 +131,9 @@ public struct RootFeature: Sendable {
     .ifLet(\.signInAnonymously, action: \.signInAnonymously) {
       SignInAnonymouslyFeature()
     }
+    .ifLet(\.migrateV320, action: \.migrateV320) {
+      MigrateV320Feature()
+    }
     .ifLet(\.play, action: \.play) {
       PlayFeature()
     }
@@ -131,6 +154,8 @@ public struct RootPage: View {
       ConsentPage(store: store)
     } else if let store = store.scope(state: \.signInAnonymously, action: \.signInAnonymously) {
       SignInAnonymouslyPage(store: store)
+    } else if let store = store.scope(state: \.migrateV320, action: \.migrateV320) {
+      MigrateV320Page(store: store)
     } else if let store = store.scope(state: \.play, action: \.play) {
       PlayPage(store: store)
     } else {
