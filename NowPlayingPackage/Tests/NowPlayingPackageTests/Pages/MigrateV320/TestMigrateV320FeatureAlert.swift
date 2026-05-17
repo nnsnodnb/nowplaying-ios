@@ -61,6 +61,7 @@ struct TestMigrateV320FeatureAlert {
       await store.receive(\.internalAction.migrated) {
         $0.isLoading = false
       }
+      await mainQueue.advance(by: .milliseconds(200))
       await store.receive(\.delegate.completed)
     }
   }

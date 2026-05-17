@@ -18,6 +18,7 @@ import Testing
 struct TestMigrateV320FeatureMigrate {
   @Test
   func testIt() async throws {
+    let mainQueue = DispatchQueue.test
     let twitterAccount = try Stub.make(TwitterAccount.self)
     let oauthToken = try Stub.make(TwitterOAuthToken.self)
 
@@ -27,6 +28,7 @@ struct TestMigrateV320FeatureMigrate {
         #expect(migrations[0].twitterAccount == twitterAccount)
         #expect(migrations[0].refreshToken == oauthToken.refreshToken)
       }
+      $0.mainQueue = mainQueue.eraseToAnyScheduler()
       $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
       $0.secureKeyValueStore.getTwitterOAuthToken = { _ in oauthToken }
       $0.secureKeyValueStore.removeTwitterOAuthToken = { _ in }
@@ -45,13 +47,17 @@ struct TestMigrateV320FeatureMigrate {
         $0.$migratedV320.withLock { $0 = true }
         $0.isLoading = false
       }
+      await mainQueue.advance(by: .milliseconds(200))
       await store.receive(\.delegate.completed)
     }
   }
 
   @Test
   func testTwitterAccountIsEmpty() async throws {
+    let mainQueue = DispatchQueue.test
+
     await withDependencies {
+      $0.mainQueue = mainQueue.eraseToAnyScheduler()
       $0.secureKeyValueStore.getTwitterAccounts = { [] }
     } operation: {
       let store = TestStore(
@@ -68,15 +74,18 @@ struct TestMigrateV320FeatureMigrate {
         $0.$migratedV320.withLock { $0 = true }
         $0.isLoading = false
       }
+      await mainQueue.advance(by: .milliseconds(200))
       await store.receive(\.delegate.completed)
     }
   }
 
   @Test
   func testTwitterOAuthTokenIsNil() async throws {
+    let mainQueue = DispatchQueue.test
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
     await withDependencies {
+      $0.mainQueue = mainQueue.eraseToAnyScheduler()
       $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
       $0.secureKeyValueStore.getTwitterOAuthToken = { _ in nil }
     } operation: {
@@ -94,25 +103,33 @@ struct TestMigrateV320FeatureMigrate {
         $0.$migratedV320.withLock { $0 = true }
         $0.isLoading = false
       }
+      await mainQueue.advance(by: .milliseconds(200))
       await store.receive(\.delegate.completed)
     }
   }
 
   @Test
   func testIsAlreadyMigratedV320() async throws {
-    @Shared(.appStorage(.migratedV320))
-    var migratedV320 = true
+    let mainQueue = DispatchQueue.test
 
-    let store = TestStore(
-      initialState: MigrateV320Feature.State(),
-      reducer: {
-        MigrateV320Feature()
-      },
-    )
+    await withDependencies {
+      $0.mainQueue = mainQueue.eraseToAnyScheduler()
+    } operation: {
+      @Shared(.appStorage(.migratedV320))
+      var migratedV320 = true
 
-    await store.send(.migrate)
-    await store.receive(\.internalAction.migrated)
-    await store.receive(\.delegate.completed)
+      let store = TestStore(
+        initialState: MigrateV320Feature.State(),
+        reducer: {
+          MigrateV320Feature()
+        },
+      )
+
+      await store.send(.migrate)
+      await store.receive(\.internalAction.migrated)
+      await mainQueue.advance(by: .milliseconds(200))
+      await store.receive(\.delegate.completed)
+    }
   }
 
   @Test

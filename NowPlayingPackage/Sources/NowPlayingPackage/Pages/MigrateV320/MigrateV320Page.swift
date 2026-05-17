@@ -95,7 +95,12 @@ public struct MigrateV320Feature: Sendable {
       case .internalAction(.migrated):
         state.$migratedV320.withLock { $0 = true }
         state.isLoading = false
-        return .send(.delegate(.completed))
+        return .run(
+          operation: { send in
+            try await mainQueue.sleep(for: .milliseconds(200))
+            await send(.delegate(.completed))
+          },
+        )
       case .internalAction(.failedMigrate):
         state.isLoading = false
         state.alert = AlertState(

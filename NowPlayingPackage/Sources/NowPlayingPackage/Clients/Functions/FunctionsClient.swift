@@ -13,13 +13,15 @@ import Foundation
 @DependencyClient
 public struct FunctionsClient: Sendable {
   public var migrateTwitterUserProfiles: @Sendable ([Migration.V320]) async throws -> Void
+
+  fileprivate static let functions = Functions.functions(region: "asia-northeast1")
 }
 
 // MARK: - DependencyKey
 extension FunctionsClient: DependencyKey {
   public static let liveValue: Self = .init(
     migrateTwitterUserProfiles: { migrations in
-      let callable = Functions.functions().httpsCallable(
+      let callable = Self.functions.httpsCallable(
         "migrate_twitter_user_profiles",
         requestAs: MigrateTwitterUserProfilesRequest.self,
         responseAs: MigrateTwitterUserProfilesResponse.self,
