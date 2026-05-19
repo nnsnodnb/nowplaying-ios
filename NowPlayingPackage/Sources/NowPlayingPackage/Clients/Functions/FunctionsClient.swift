@@ -40,7 +40,7 @@ extension FunctionsClient: DependencyKey {
         requestAs: GetTwitterUserProfileRequest.self,
         responseAs: TwitterProfile.self,
       )
-      let request = GetTwitterUserProfileRequest(userId: twitterProfileID)
+      let request = GetTwitterUserProfileRequest(userID: twitterProfileID)
       let twitterProfile = try await callable.call(request)
       return twitterProfile
     },
@@ -81,11 +81,11 @@ private extension FunctionsClient {
   struct GetTwitterUserProfileRequest: Encodable {
     // MARK: - CodingKeys
     private enum CodingKeys: String, CodingKey {
-      case userId = "user_id"
+      case userID = "user_id"
     }
 
     // MARK: - Properties
-    let userId: TwitterProfile.ID
+    let userID: TwitterProfile.ID
   }
 }
 
