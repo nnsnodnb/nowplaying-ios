@@ -9,13 +9,9 @@ import CryptoKit
 import Dependencies
 import DependenciesMacros
 import Foundation
-import Tagged
 
 @DependencyClient
 public struct TwitterOAuthClient: Sendable {
-  // MARK: - Tagged
-  public typealias AuthorizationCode = Tagged<(Self, authorizationCode: ()), String>
-
   // MARK: - Error
   public enum Error: Swift.Error {
     case invalidCallbackURL
