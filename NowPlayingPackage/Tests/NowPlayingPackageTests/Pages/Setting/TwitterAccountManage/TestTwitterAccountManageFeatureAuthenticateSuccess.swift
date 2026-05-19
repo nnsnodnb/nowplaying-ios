@@ -18,20 +18,15 @@ struct TestTwitterAccountManageFeatureAuthenticateSuccess {
   )
   func testSuccess() async throws {
     let twitterAccount = try Stub.make(TwitterAccount.self)
-    let twitterOAuthToken = try Stub.make(TwitterOAuthToken.self)
 
     await withDependencies {
-      $0.twitterOAuth.validateCallbackURL = { _, _ in .init("stub_authorization_code") }
-      $0.twitterOAuth.requestAccessToken = { _, _ in twitterOAuthToken }
+      $0.twitterOAuth.validateCallbackURL = { _ in .init("stub_user_id") }
       $0.twitterAPI.getUserMe = { _ in twitterAccount.profile }
       $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
       $0.secureKeyValueStore.addTwitterAccount = { _ in }
-      $0.secureKeyValueStore.setTwitterOAuthToken = { _, _ in }
     } operation: {
       let store = TestStore(
-        initialState: TwitterAccountManageFeature.State(
-          codeVerifier: .init("stub_code_verifier"),
-        ),
+        initialState: TwitterAccountManageFeature.State(),
         reducer: {
           TwitterAccountManageFeature()
         },
@@ -39,9 +34,8 @@ struct TestTwitterAccountManageFeatureAuthenticateSuccess {
 
       await store.send(.authenticateSuccess(URL(string: "https://testserver/oauth")!)) {
         $0.isLoading = true
-        $0.codeVerifier = nil
       }
-      await store.receive(\.internalAction.requestGetUserMe, twitterOAuthToken)
+      await store.receive(\.internalAction.requestGetUserMe, .init("stub_user_id"))
       await store.receive(\.internalAction.savedTwitterAccount, twitterAccount.profile) {
         $0.isLoading = false
         $0.alert = AlertState(
@@ -61,69 +55,13 @@ struct TestTwitterAccountManageFeatureAuthenticateSuccess {
   }
 
   @Test(
-    .dependency(\.date, .constant(.now))
-  )
-  func testFailureRequestAccessToken() async throws {
-    await withDependencies {
-      $0.twitterOAuth.validateCallbackURL = { _, _ in .init("stub_authorization_code") }
-      $0.twitterOAuth.requestAccessToken = { _, _ in throw TwitterOAuthClient.Error.internalError }
-    } operation: {
-      let store = TestStore(
-        initialState: TwitterAccountManageFeature.State(
-          codeVerifier: .init("stub_code_verifier"),
-        ),
-        reducer: {
-          TwitterAccountManageFeature()
-        },
-      )
-
-      await store.send(.authenticateSuccess(URL(string: "https://testserver/oauth")!)) {
-        $0.isLoading = true
-        $0.codeVerifier = nil
-      }
-      await store.receive(\.internalAction.oauthFailure, String(localized: .failedToRetrieveAuthenticationInformation)) {
-        $0.isLoading = false
-        $0.alert = AlertState(
-          title: {
-            TextState(.failedToRetrieveAuthenticationInformation)
-          },
-          actions: {
-            ButtonState(
-              role: .cancel,
-              label: {
-                TextState(.close)
-              },
-            )
-          },
-        )
-      }
-    }
-  }
-
-  @Test
-  func testCodeVerifierIsNil() async throws {
-    let store = TestStore(
-      initialState: TwitterAccountManageFeature.State(
-        codeVerifier: nil,
-      ),
-      reducer: {
-        TwitterAccountManageFeature()
-      },
-    )
-
-    await store.send(.authenticateSuccess(URL(string: "https://testserver/oauth")!))
-  }
-
-  @Test(
     .dependencies {
-      $0.twitterOAuth.validateCallbackURL = { _, _ in throw TwitterOAuthClient.Error.invalidCallbackURL }
+      $0.twitterOAuth.validateCallbackURL = { _ in throw TwitterOAuthClient.Error.invalidCallbackURL }
     }
   )
   func testInvalidCallbackURL() async throws {
     let store = TestStore(
-      initialState: TwitterAccountManageFeature.State(
-        codeVerifier: .init("stub_code_verifier"),
-      ),
+      initialState: TwitterAccountManageFeature.State(),
       reducer: {
         TwitterAccountManageFeature()
       },
