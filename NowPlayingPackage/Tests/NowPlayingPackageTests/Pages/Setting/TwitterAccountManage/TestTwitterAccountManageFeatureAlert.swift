@@ -15,13 +15,12 @@ struct TestTwitterAccountManageFeatureAlert {
   @Test
   func testAlertPresentedOpenRewardedAd() async throws {
     let oauthURL = URL(string: "https://testserver/oauth")!
-    let codeVerifier = TwitterOAuthClient.CodeVerifier("stub_code_verifier")
 
     await withDependencies {
       $0.adUnit.addTwitterAccountRewardAdUnitID = { "ca-app-pub-3940256099942544/1712485313" }
       $0.rewardedAd.load = { _ in }
       $0.rewardedAd.show = { _ in 1 }
-      $0.twitterOAuth.getAuthenticateURL = { (oauthURL, codeVerifier) }
+      $0.twitterOAuth.getAuthenticateURL = { oauthURL }
     } operation: {
       let store = TestStore(
         initialState: TwitterAccountManageFeature.State(
@@ -49,7 +48,6 @@ struct TestTwitterAccountManageFeatureAlert {
       }
       await store.receive(\.oauth) {
         $0.oauthURL = oauthURL
-        $0.codeVerifier = codeVerifier
       }
       await store.receive(\.preloadRewardedAds)
     }

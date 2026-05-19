@@ -13,6 +13,7 @@ import Foundation
 @DependencyClient
 public struct FunctionsClient: Sendable {
   public var migrateTwitterUserProfiles: @Sendable ([Migration.V320]) async throws -> Void
+  public var getTwitterUserProfile: @Sendable (TwitterProfile.ID) async throws -> TwitterProfile
 
   fileprivate static let functions = Functions.functions(region: "asia-northeast1")
 }
@@ -32,6 +33,16 @@ extension FunctionsClient: DependencyKey {
         },
       )
       _ = try await callable.call(request)
+    },
+    getTwitterUserProfile: { twitterProfileID in
+      let callable = Self.functions.httpsCallable(
+        "get_twitter_user_profile",
+        requestAs: GetTwitterUserProfileRequest.self,
+        responseAs: TwitterProfile.self,
+      )
+      let request = GetTwitterUserProfileRequest(userID: twitterProfileID)
+      let twitterProfile = try await callable.call(request)
+      return twitterProfile
     },
   )
 }
@@ -62,6 +73,19 @@ private extension FunctionsClient {
   struct MigrateTwitterUserProfilesResponse: Decodable {
     // MARK: - Properties
     let status: String
+  }
+}
+
+// MARK: - GetTwitterUserProfileRequest
+private extension FunctionsClient {
+  struct GetTwitterUserProfileRequest: Encodable {
+    // MARK: - CodingKeys
+    private enum CodingKeys: String, CodingKey {
+      case userID = "user_id"
+    }
+
+    // MARK: - Properties
+    let userID: TwitterProfile.ID
   }
 }
 
