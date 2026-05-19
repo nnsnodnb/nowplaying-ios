@@ -20,6 +20,7 @@ public struct SecureKeyValueStoreClient: Sendable {
   public var setTwitterAccounts: @Sendable ([TwitterAccount]) async throws -> Void
   // TwitterOAuthToken
   public var getTwitterOAuthToken: @Sendable (TwitterAccount) async throws -> TwitterOAuthToken?
+  // TODO: 削除
   public var setTwitterOAuthToken: @Sendable (TwitterAccount, TwitterOAuthToken) async throws -> Void
   public var removeTwitterOAuthToken: @Sendable (TwitterAccount) async throws -> Void
   // BlueskyAccount
