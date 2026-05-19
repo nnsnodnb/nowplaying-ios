@@ -27,6 +27,7 @@ struct DevelopApp: App {
                 guard let uid = auth.currentUserID() else {
                   fatalError("Should logged in")
                 }
+                // swiftlint:disable:next line_length
                 return URL(string: "http://127.0.0.1:9095/nowplaying-dev/asia-northeast1/twitter_oauth_init?uid=\(uid)")!
               }
               // MEMO: 普段はこれを有効にしておく
