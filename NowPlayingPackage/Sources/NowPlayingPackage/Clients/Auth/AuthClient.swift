@@ -13,6 +13,7 @@ import Foundation
 @DependencyClient
 public struct AuthClient: Sendable {
   public var isSignedIn: @Sendable () -> Bool = { false }
+  public var currentUserID: @Sendable () -> String?
   public var isAnonymous: @Sendable () -> Bool = { false }
   public var signInAnonymously: @Sendable () async throws -> Void
   public var signOut: @Sendable () throws -> Void
@@ -23,6 +24,9 @@ extension AuthClient: DependencyKey {
   public static let liveValue: Self = .init(
     isSignedIn: {
       Auth.auth().currentUser != nil
+    },
+    currentUserID: {
+      Auth.auth().currentUser?.uid
     },
     isAnonymous: {
       Auth.auth().currentUser?.isAnonymous == true

@@ -21,7 +21,6 @@ public struct TwitterAccountManageFeature: Sendable {
     public var clientID = ""
     public var twitterAccounts: [TwitterAccount] = []
     public var oauthURL: URL?
-    public var codeVerifier: TwitterOAuthClient.CodeVerifier?
     public var isLoading = false
     @Presents public var alert: AlertState<Action.Alert>?
   }
@@ -45,7 +44,7 @@ public struct TwitterAccountManageFeature: Sendable {
     @CasePathable
     public enum InternalAction {
       case fetchedTwitterAccounts([TwitterAccount])
-      case requestGetUserMe(TwitterOAuthToken)
+      case requestGetUserMe(TwitterProfile.ID)
       case savedTwitterAccount(TwitterProfile)
       case oauthFailure(String)
     }
@@ -117,9 +116,8 @@ public struct TwitterAccountManageFeature: Sendable {
         )
         return .none
       case .oauth:
-        guard let (oauthURL, codeVerifier) = try? twitterOAuth.getAuthenticateURL() else { return .none }
+        guard let oauthURL = try? twitterOAuth.getAuthenticateURL() else { return .none }
         state.oauthURL = oauthURL
-        state.codeVerifier = codeVerifier
         return .none
       case let .changeDefaultAccount(twitterAccount):
         guard !twitterAccount.isDefault else { return .none }
@@ -141,8 +139,7 @@ public struct TwitterAccountManageFeature: Sendable {
           },
         )
       case let .authenticateSuccess(url):
-        guard let codeVerifier = state.codeVerifier else { return .none }
-        guard let code = try? twitterOAuth.validateCallbackURL(url, codeVerifier) else {
+        guard let twitterProfileID = try? twitterOAuth.validateCallbackURL(url) else {
           return .run(
             operation: { send in
               await analytics.logEvent(.twitterLogin(false))
@@ -151,12 +148,10 @@ public struct TwitterAccountManageFeature: Sendable {
           )
         }
         state.isLoading = true
-        state.codeVerifier = nil
         return .run(
           priority: .high,
           operation: { send in
-            let oauthToken = try await twitterOAuth.requestAccessToken(codeVerifier, code)
-            await send(.internalAction(.requestGetUserMe(oauthToken)))
+            await send(.internalAction(.requestGetUserMe(twitterProfileID)))
             await analytics.logEvent(.twitterLogin(true))
           },
           catch: { _, send in
@@ -185,15 +180,13 @@ public struct TwitterAccountManageFeature: Sendable {
             await analytics.setUserProperty(.twitterAccountsCount(twitterAccounts.count))
           },
         )
-      case let .internalAction(.requestGetUserMe(oauthToken)):
+      case let .internalAction(.requestGetUserMe(twitterProfileID)):
         return .run(
           priority: .high,
           operation: { send in
-            // ここではoauthToken.accessTokenは取得した直後で有効の想定なので直接アクセスする
-            let profile = try await twitterAPI.getUserMe(oauthToken.accessToken)
+            let profile = try await twitterAPI.getUserMe(twitterProfileID)
             let twitterAccount = TwitterAccount(profile: profile)
             try await secureKeyValueStore.addTwitterAccount(twitterAccount)
-            try await secureKeyValueStore.setTwitterOAuthToken(twitterAccount, oauthToken)
             await send(.internalAction(.savedTwitterAccount(twitterAccount.profile)))
           },
           catch: { _, send in

@@ -7,11 +7,12 @@
 
 import Dependencies
 import DependenciesMacros
+import FirebaseFunctions
 import Foundation
 
 @DependencyClient
 public struct TwitterAPIClient: Sendable {
-  public var getUserMe: @Sendable (TwitterOAuthToken.AccessToken) async throws -> TwitterProfile
+  public var getUserMe: @Sendable (TwitterProfile.ID) async throws -> TwitterProfile
   public var uploadMedia: @Sendable (TwitterOAuthToken.AccessToken, Data) async throws -> TwitterMedia
   public var post: @Sendable (TwitterOAuthToken.AccessToken, TwitterMedia.ID?, String) async throws -> Void
 
@@ -24,27 +25,15 @@ public struct TwitterAPIClient: Sendable {
 // MARK: - DependencyKey
 extension TwitterAPIClient: DependencyKey {
   public static let liveValue: Self = .init(
-    getUserMe: { accessToken in
-      var urlComponents = URLComponents(string: "https://api.x.com")!
-      urlComponents.path = "/2/users/me"
-      urlComponents.queryItems = [
-        .init(name: "user.fields", value: "id,profile_image_url,username,name"),
-      ]
-      guard let url = urlComponents.url else {
-        throw Error.internalError
-      }
-      var urlRequest = URLRequest(url: url)
-      urlRequest.addValue("Bearer \(accessToken.rawValue)", forHTTPHeaderField: "Authorization")
-      let (data, response) = try await URLSession(configuration: .ephemeral).data(for: urlRequest)
-      guard let urlResponse = response as? HTTPURLResponse, urlResponse.statusCode == 200 else {
-        throw Error.internalError
-      }
-      let jsonDecoder = JSONDecoder()
-      let object = try jsonDecoder.decode(TwitterAPIResponse<TwitterProfile>.self, from: data)
+    getUserMe: { twitterProfileID in
+      @Dependency(\.functions)
+      var functions
 
-      return object.data
+      let twitterProfile = try await functions.getTwitterUserProfile(twitterProfileID)
+      return twitterProfile
     },
     uploadMedia: { accessToken, imageData in
+      // TODO: Functionsの実装に変更する
       let url = URL(string: "https://api.x.com/2/media/upload")!
       var urlRequest = URLRequest(url: url)
       urlRequest.httpMethod = "POST"
@@ -83,6 +72,7 @@ extension TwitterAPIClient: DependencyKey {
       return object.data
     },
     post: { accessToken, mediaID, text in
+      // TODO: Functionsの実装に変更する
       let url = URL(string: "https://api.x.com/2/tweets")!
       var urlRequest = URLRequest(url: url)
       urlRequest.httpMethod = "POST"

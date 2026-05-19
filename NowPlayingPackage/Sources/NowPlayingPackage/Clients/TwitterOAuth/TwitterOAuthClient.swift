@@ -14,7 +14,6 @@ import Tagged
 @DependencyClient
 public struct TwitterOAuthClient: Sendable {
   // MARK: - Tagged
-  public typealias CodeVerifier = Tagged<(Self, codeVerifier: ()), String>
   public typealias AuthorizationCode = Tagged<(Self, authorizationCode: ()), String>
 
   // MARK: - Error
@@ -25,9 +24,9 @@ public struct TwitterOAuthClient: Sendable {
   }
 
   public var getCallbackURLScheme: @Sendable () -> String = { "" }
-  public var getAuthenticateURL: @Sendable () throws -> (URL, CodeVerifier)
-  public var validateCallbackURL: @Sendable (URL, CodeVerifier) throws -> AuthorizationCode
-  public var requestAccessToken: @Sendable (CodeVerifier, AuthorizationCode) async throws -> TwitterOAuthToken
+  public var getAuthenticateURL: @Sendable () throws -> URL
+  public var validateCallbackURL: @Sendable (URL) throws -> TwitterProfile.ID
+  // TODO: 削除
   public var getAccessToken: @Sendable (TwitterAccount) async throws -> TwitterOAuthToken.AccessToken
 
   fileprivate static let _callbackURLScheme = "nowplaying-ss5dnc-el0eskszufn3qactsets"
@@ -41,73 +40,25 @@ extension TwitterOAuthClient: DependencyKey {
       Self._callbackURLScheme
     },
     getAuthenticateURL: {
-      let codeVerifier: CodeVerifier = {
-        var data = Data(count: 48)
-        let result = data.withUnsafeMutableBytes { bytes in
-          SecRandomCopyBytes(kSecRandomDefault, 48, bytes.baseAddress!)
-        }
-        precondition(result == errSecSuccess)
-        let base64Encoded = data.base64URLSafeEncodedString()
-        return .init(base64Encoded)
-      }()
-      let codeChallenge: String = {
-        let digest = SHA256.hash(data: Data(codeVerifier.utf8))
-        let data = Data(digest)
-        let base64Encoded = data.base64URLSafeEncodedString()
-        return base64Encoded
-      }()
+      @Dependency(\.auth)
+      var auth
 
-      var urlComponents = URLComponents(string: "https://x.com")!
-      urlComponents.path = "/i/oauth2/authorize"
-      urlComponents.queryItems = [
-        .init(name: "response_type", value: "code"),
-        .init(name: "client_id", value: Self._clientID),
-        .init(name: "redirect_uri", value: "\(Self._callbackURLScheme)://callback/oauth"),
-        .init(name: "scope", value: "users.read tweet.read tweet.write media.write offline.access"),
-        .init(name: "state", value: codeVerifier.rawValue),
-        .init(name: "code_challenge", value: codeChallenge),
-        .init(name: "code_challenge_method", value: "S256"),
-      ]
-      return (urlComponents.url!, codeVerifier)
+      guard let uid = auth.currentUserID() else { throw Error.internalError }
+      return URL(string: "https://asia-northeast1-nowplayingios.cloudfunctions.net/twitter_oauth_init?uid=\(uid)")!
     },
-    validateCallbackURL: { url, codeVerifier in
+    validateCallbackURL: { url in
       guard url.scheme == Self._callbackURLScheme,
             url.host == "callback",
-            url.path == "/oauth",
+            url.path() == "/oauth",
             let query = url.query(percentEncoded: false) else {
         throw Error.invalidCallbackURL
       }
       let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
       guard let queryItems = urlComponents?.queryItems,
-            queryItems.first(where: { $0.name == "state" })?.value == codeVerifier.rawValue,
-            let code = queryItems.first(where: { $0.name == "code" })?.value else {
+            let userID = queryItems.first(where: { $0.name == "user_id" })?.value else {
         throw Error.invalidCallbackURL
       }
-      return .init(code)
-    },
-    requestAccessToken: { codeVerifier, code in
-      let url = URL(string: "https://api.x.com/2/oauth2/token")!
-      var urlRequest = URLRequest(url: url)
-      urlRequest.httpMethod = "POST"
-      urlRequest.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-      let params: [String: String] = [
-        "code": code.rawValue,
-        "grant_type": "authorization_code",
-        "client_id": Self._clientID,
-        "redirect_uri": "\(Self._callbackURLScheme)://callback/oauth",
-        "code_verifier": codeVerifier.rawValue,
-      ]
-      var paramURLComponents = URLComponents()
-      paramURLComponents.queryItems = params.map { .init(name: $0, value: $1) }
-      urlRequest.httpBody = paramURLComponents.percentEncodedQuery?.data(using: .utf8)
-      let (data, response) = try await URLSession.shared.data(for: urlRequest)
-      guard let urlResponse = response as? HTTPURLResponse, urlResponse.statusCode == 200 else {
-        throw Error.internalError
-      }
-      let jsonDecoder = JSONDecoder()
-      let oauthToken = try jsonDecoder.decode(TwitterOAuthToken.self, from: data)
-
-      return oauthToken
+      return .init(userID)
     },
     getAccessToken: { account in
       @Dependency(\.secureKeyValueStore)
@@ -126,6 +77,7 @@ extension TwitterOAuthClient: DependencyKey {
     },
   )
 
+  // TODO: 削除
   private static func refreshAccessToken(
     for account: TwitterAccount,
     refreshToken: TwitterOAuthToken.RefreshToken,
