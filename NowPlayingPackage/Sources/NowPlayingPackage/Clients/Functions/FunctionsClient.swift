@@ -12,15 +12,21 @@ import Foundation
 
 @DependencyClient
 public struct FunctionsClient: Sendable {
+  public var endpointURLString: @Sendable () -> String = { "" }
   public var migrateTwitterUserProfiles: @Sendable ([Migration.V320]) async throws -> Void
   public var getTwitterUserProfile: @Sendable (TwitterProfile.ID) async throws -> TwitterProfile
+  public var twitterPostTweet: @Sendable (TwitterProfile.ID, String, TwitterMedia.ID?) async throws -> Void
 
   fileprivate static let functions = Functions.functions(region: "asia-northeast1")
+  fileprivate static let _endpointURLString = "https://asia-northeast1-nowplayingios.cloudfunctions.net"
 }
 
 // MARK: - DependencyKey
 extension FunctionsClient: DependencyKey {
   public static let liveValue: Self = .init(
+    endpointURLString: {
+      Self._endpointURLString
+    },
     migrateTwitterUserProfiles: { migrations in
       let callable = Self.functions.httpsCallable(
         "migrate_twitter_user_profiles",
@@ -44,7 +50,24 @@ extension FunctionsClient: DependencyKey {
       let twitterProfile = try await callable.call(request)
       return twitterProfile
     },
+    twitterPostTweet: { twitterProfileID, text, mediaID in
+      let options = HTTPSCallableOptions(requireLimitedUseAppCheckTokens: true)
+      let callable = Self.functions.httpsCallable(
+        "twitter_post_tweet",
+        options: options,
+        requestAs: TwitterPostTweetRequest.self,
+        responseAs: VoidResponse.self,
+      )
+      let request = TwitterPostTweetRequest(text: text, userID: twitterProfileID, mediaID: mediaID)
+      _ = try await callable.call(request)
+    },
   )
+}
+
+// MARK: - VoidResponse
+private extension FunctionsClient {
+  struct VoidResponse: Decodable {
+  }
 }
 
 // MARK: - MigrateTwitterUserProfilesRequest
@@ -86,6 +109,23 @@ private extension FunctionsClient {
 
     // MARK: - Properties
     let userID: TwitterProfile.ID
+  }
+}
+
+// MARK: - TwitterPostTweetRequest
+private extension FunctionsClient {
+  struct TwitterPostTweetRequest: Encodable {
+    // MARK: - CodingKeys
+    private enum CodingKeys: String, CodingKey {
+      case text
+      case userID = "user_id"
+      case mediaID = "media_id"
+    }
+
+    // MARK: - Properties
+    let text: String
+    let userID: TwitterProfile.ID
+    let mediaID: TwitterMedia.ID?
   }
 }
 

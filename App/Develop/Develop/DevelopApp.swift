@@ -20,15 +20,8 @@ struct DevelopApp: App {
               RootFeature()
             },
             withDependencies: {
-              $0.twitterOAuth.getAuthenticateURL = {
-                @Dependency(\.auth)
-                var auth
-
-                guard let uid = auth.currentUserID() else {
-                  fatalError("Should logged in")
-                }
-                // swiftlint:disable:next line_length
-                return URL(string: "http://127.0.0.1:9095/nowplaying-dev/asia-northeast1/twitter_oauth_init?uid=\(uid)")!
+              $0.functions.endpointURLString = {
+                "http://127.0.0.1:9095/nowplaying-dev/asia-northeast1"
               }
               // MEMO: 普段はこれを有効にしておく
               $0.twitterAPI.uploadMedia = { _, _ in

@@ -9,5 +9,5 @@ import Foundation
 
 public struct TwitterAPIResponse<T: Decodable & Equatable>: Decodable, Equatable {
   // MARK: - Properties
-  public let data: T
+  public let result: T
 }

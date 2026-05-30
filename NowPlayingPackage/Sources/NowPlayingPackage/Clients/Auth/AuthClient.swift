@@ -12,11 +12,17 @@ import Foundation
 
 @DependencyClient
 public struct AuthClient: Sendable {
+  // MARK: - Error
+  public enum Error: Swift.Error {
+    case internalError
+  }
+
   public var isSignedIn: @Sendable () -> Bool = { false }
   public var currentUserID: @Sendable () -> String?
   public var isAnonymous: @Sendable () -> Bool = { false }
   public var signInAnonymously: @Sendable () async throws -> Void
   public var signOut: @Sendable () throws -> Void
+  public var getIDToken: @Sendable () async throws -> String
 }
 
 // MARK: - DependencyKey
@@ -36,6 +42,12 @@ extension AuthClient: DependencyKey {
     },
     signOut: {
       try Auth.auth().signOut()
+    },
+    getIDToken: {
+      guard let currentUser = Auth.auth().currentUser else {
+        throw Error.internalError
+      }
+      return try await currentUser.getIDToken()
     },
   )
 }

@@ -17,7 +17,7 @@ struct TestTwitterAPIResponseDecode {
       $0.date = .constant(now)
     } operation: {
       let jsonObject = [
-        "data": [
+        "result": [
           "media_key": "3_2034250625912016896",
           "id": "2034250625912016896",
           "size": 37523,
@@ -34,9 +34,9 @@ struct TestTwitterAPIResponseDecode {
       let jsonDecoder = JSONDecoder()
       let response = try jsonDecoder.decode(TwitterAPIResponse<TwitterMedia>.self, from: data)
 
-      #expect(response.data.id == .init("2034250625912016896"))
-      #expect(response.data.expiresAfterSecs == 86_400)
-      #expect(response.data.isExpired == false)
+      #expect(response.result.id == .init("2034250625912016896"))
+      #expect(response.result.expiresAfterSecs == 86_400)
+      #expect(response.result.isExpired == false)
     }
   }
 }

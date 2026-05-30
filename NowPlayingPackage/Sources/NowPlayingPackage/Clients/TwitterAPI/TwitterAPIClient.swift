@@ -11,14 +11,14 @@ import Foundation
 
 @DependencyClient
 public struct TwitterAPIClient: Sendable {
-  public var getUserMe: @Sendable (TwitterProfile.ID) async throws -> TwitterProfile
-  public var uploadMedia: @Sendable (TwitterOAuthToken.AccessToken, Data) async throws -> TwitterMedia
-  public var post: @Sendable (TwitterOAuthToken.AccessToken, TwitterMedia.ID?, String) async throws -> Void
-
   // MARK: - Error
   public enum Error: Swift.Error {
     case internalError
   }
+
+  public var getUserMe: @Sendable (TwitterProfile.ID) async throws -> TwitterProfile
+  public var uploadMedia: @Sendable (TwitterProfile.ID, Data) async throws -> TwitterMedia
+  public var post: @Sendable (TwitterProfile.ID, TwitterMedia.ID?, String) async throws -> Void
 }
 
 // MARK: - DependencyKey
@@ -31,31 +31,37 @@ extension TwitterAPIClient: DependencyKey {
       let twitterProfile = try await functions.getTwitterUserProfile(twitterProfileID)
       return twitterProfile
     },
-    uploadMedia: { accessToken, imageData in
-      // TODO: Functionsの実装に変更する
-      let url = URL(string: "https://api.x.com/2/media/upload")!
-      var urlRequest = URLRequest(url: url)
-      urlRequest.httpMethod = "POST"
-      urlRequest.addValue("Bearer \(accessToken.rawValue)", forHTTPHeaderField: "Authorization")
+    uploadMedia: { twitterProfileID, imageData in
+      @Dependency(\.appCheck)
+      var appCheck
+      @Dependency(\.auth)
+      var auth
+      @Dependency(\.functions)
+      var functions
       @Dependency(\.uuid)
       var uuid
+
+      let url = URL(string: "\(functions.endpointURLString())/twitter_upload_image")!
+      var urlRequest = URLRequest(url: url)
+      urlRequest.httpMethod = "POST"
+      let idToken = try await auth.getIDToken()
+      urlRequest.addValue("bearer \(idToken)", forHTTPHeaderField: "Authorization")
+      let appCheckToken = try await appCheck.token()
+      urlRequest.addValue(appCheckToken, forHTTPHeaderField: "X-Firebase-AppCheck")
+
       let boundary = "Boundary-\(uuid.callAsFunction().uuidString)"
       urlRequest.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
 
       var httpBody = Data()
       httpBody.append("--\(boundary)\r\n")
-      httpBody.append("Content-Disposition: form-data; name=\"media\"; filename=\"image.jpg\"\r\n")
+      httpBody.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n")
       httpBody.append("Content-Type: image/jpeg\r\n\r\n")
       httpBody.append(imageData)
       httpBody.append("\r\n")
 
       httpBody.append("--\(boundary)\r\n")
-      httpBody.append("Content-Disposition: form-data; name=\"media_category\"\r\n\r\n")
-      httpBody.append("tweet_image\r\n")
-
-      httpBody.append("--\(boundary)\r\n")
-      httpBody.append("Content-Disposition: form-data; name=\"media_type\"\r\n\r\n")
-      httpBody.append("image/jpeg\r\n")
+      httpBody.append("Content-Disposition: form-data; name=\"user_id\"\r\n\r\n")
+      httpBody.append("\(twitterProfileID.rawValue)\r\n")
 
       httpBody.append("--\(boundary)--\r\n")
 
@@ -68,31 +74,13 @@ extension TwitterAPIClient: DependencyKey {
       let jsonDecoder = JSONDecoder()
       let object = try jsonDecoder.decode(TwitterAPIResponse<TwitterMedia>.self, from: data)
 
-      return object.data
+      return object.result
     },
-    post: { accessToken, mediaID, text in
-      // TODO: Functionsの実装に変更する
-      let url = URL(string: "https://api.x.com/2/tweets")!
-      var urlRequest = URLRequest(url: url)
-      urlRequest.httpMethod = "POST"
-      urlRequest.addValue("Bearer \(accessToken.rawValue)", forHTTPHeaderField: "Authorization")
-      urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-      var jsonObject: [String: Any] = [
-        "text": text,
-      ]
-      if let mediaID {
-        jsonObject["media"] = [
-          "media_ids": [mediaID.rawValue],
-        ]
-      }
-      let httpBody = try JSONSerialization.data(withJSONObject: jsonObject, options: .init())
+    post: { twitterProfileID, mediaID, text in
+      @Dependency(\.functions)
+      var functions
 
-      urlRequest.httpBody = httpBody
-
-      let (_, response) = try await URLSession(configuration: .ephemeral).data(for: urlRequest)
-      guard let urlResponse = response as? HTTPURLResponse, urlResponse.statusCode == 201 else {
-        throw Error.internalError
-      }
+      try await functions.twitterPostTweet(twitterProfileID, text, mediaID)
     },
   )
 }

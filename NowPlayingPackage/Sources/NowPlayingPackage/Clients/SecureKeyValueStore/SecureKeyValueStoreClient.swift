@@ -20,8 +20,6 @@ public struct SecureKeyValueStoreClient: Sendable {
   public var setTwitterAccounts: @Sendable ([TwitterAccount]) async throws -> Void
   // TwitterOAuthToken
   public var getTwitterOAuthToken: @Sendable (TwitterAccount) async throws -> TwitterOAuthToken?
-  // TODO: 削除
-  public var setTwitterOAuthToken: @Sendable (TwitterAccount, TwitterOAuthToken) async throws -> Void
   public var removeTwitterOAuthToken: @Sendable (TwitterAccount) async throws -> Void
   // BlueskyAccount
   public var getBlueskyAccounts: @Sendable () async throws -> [BlueskyAccount]
@@ -74,9 +72,6 @@ extension SecureKeyValueStoreClient: DependencyKey {
     },
     getTwitterOAuthToken: { account in
       await Implementation.shared.getTwitterOAuthToken(for: account)
-    },
-    setTwitterOAuthToken: { account, oauthToken in
-      await Implementation.shared.setTwitterOAuthToken(for: account, oauthToken: oauthToken)
     },
     removeTwitterOAuthToken: { account in
       await Implementation.shared.removeTwitterOAuthToken(for: account)
@@ -211,10 +206,6 @@ private extension SecureKeyValueStoreClient {
 
     func getTwitterOAuthToken(for account: TwitterAccount) -> TwitterOAuthToken? {
       keychain.object(forKey: .twitterOAuthToken(account.profile.id))
-    }
-
-    func setTwitterOAuthToken(for account: TwitterAccount, oauthToken: TwitterOAuthToken) {
-      keychain.set(oauthToken, key: .twitterOAuthToken(account.profile.id))
     }
 
     func removeTwitterOAuthToken(for account: TwitterAccount) {
