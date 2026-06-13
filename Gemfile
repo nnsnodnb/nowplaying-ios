@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "fastlane", "~> 2.234.0"
+gem "fastlane", "~> 2.236.0"
 gem "fastlane-plugin-firebase_app_distribution", "~> 1.0.0"
 gem "fastlane-plugin-update_xcodeproj", "~> 1.0.1"
 
