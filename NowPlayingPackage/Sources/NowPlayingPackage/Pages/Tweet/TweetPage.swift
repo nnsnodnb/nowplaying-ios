@@ -64,8 +64,8 @@ public struct TweetFeature: Sendable {
     @CasePathable
     public enum InternalAction {
       case setAvailablePostTicket(AvailablePostTicket)
-      case uploadImageData(TwitterOAuthToken.AccessToken, Data)
-      case post(TwitterOAuthToken.AccessToken, TwitterMedia?)
+      case uploadImageData(TwitterProfile.ID, Data)
+      case post(TwitterProfile.ID, TwitterMedia?)
       case posted
       case postFailure(String)
       case fetchTwitterAccounts
@@ -157,16 +157,15 @@ public struct TweetFeature: Sendable {
         state.isLoading = true
         return .run(
           operation: { [state] send in
-            let accessToken = try await twitterOAuth.getAccessToken(twitterAccount)
             // 有効期限内のメディアであればそのまま使用する
             if let media = state.temporaryMedia,
                !media.isExpired {
-              await send(.internalAction(.post(accessToken, media)))
+              await send(.internalAction(.post(twitterAccount.profile.id, media)))
             } else if let attachmentImage = state.attachmentImage,
                       let imageData = attachmentImage.jpegData(compressionQuality: 0.3) {
-              await send(.internalAction(.uploadImageData(accessToken, imageData)))
+              await send(.internalAction(.uploadImageData(twitterAccount.profile.id, imageData)))
             } else {
-              await send(.internalAction(.post(accessToken, nil)))
+              await send(.internalAction(.post(twitterAccount.profile.id, nil)))
             }
           },
           catch: { _, send in
@@ -216,10 +215,10 @@ public struct TweetFeature: Sendable {
         return .none
       case .selectTwitterAccount:
         return .none
-      case let .internalAction(.uploadImageData(accessToken, imageData)):
+      case let .internalAction(.uploadImageData(twitterProfileID, imageData)):
         return .run(
           operation: { [availablePostTicket = state.availablePostTicket] send in
-            let media = try await twitterAPI.uploadMedia(accessToken, imageData)
+            let media = try await twitterAPI.uploadMedia(twitterProfileID, imageData)
             var availablePostTicket = availablePostTicket
             // 無料チケットから優先して使用する
             if availablePostTicket.remainingFreeCount > 0 {
@@ -228,7 +227,7 @@ public struct TweetFeature: Sendable {
               availablePostTicket.decreasePurchasedCount(amount: 1)
             }
             try await secureKeyValueStore.setAvailablePostTicket(availablePostTicket)
-            await send(.internalAction(.post(accessToken, media)))
+            await send(.internalAction(.post(twitterProfileID, media)))
             await send(.internalAction(.setAvailablePostTicket(availablePostTicket)))
           },
           catch: { _, send in
