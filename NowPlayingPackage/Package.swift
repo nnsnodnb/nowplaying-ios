@@ -14,6 +14,14 @@ let package = Package(
       name: "NowPlayingPackage",
       targets: ["NowPlayingPackage"],
     ),
+    .library(
+      name: "DependenciesInterfaces",
+      targets: ["DependenciesInterfaces", "CommonModule"],
+    ),
+    .library(
+      name: "DependenciesLive",
+      targets: ["DependenciesLive"],
+    ),
   ],
   dependencies: [
     .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.32.5"),
@@ -48,21 +56,13 @@ let package = Package(
     .target(
       name: "NowPlayingPackage",
       dependencies: [
-        .atProtoKit,
         .betterSafariView,
+        .commonModule,
         .composableArchitecture,
-        .firebaseAnalytics,
-        .firebaseAppCheck,
-        .firebaseAuth,
-        .firebaseCrashlytics,
-        .firebaseFunctions,
-        .googleMobileAds,
-        .googleUserMessagingPlatform,
+        .dependenciesInterfaces,
         .imageViewer,
-        .keychainAccess,
         .memberwiseInit,
         .nukeUI,
-        .revenueCat,
         .scrollFlowLabel,
         .sfSafeSymbols,
         .svProgressHUD,
@@ -74,7 +74,44 @@ let package = Package(
       ],
       plugins: [
         .licensesPlugin,
-      ]
+      ],
+    ),
+    .target(
+      name: "CommonModule",
+      dependencies: [
+        .composableArchitecture,
+        .dependencies,
+        .memberwiseInit,
+        .tagged,
+      ],
+      resources: [
+        .process("Resources"),
+      ],
+    ),
+    .target(
+      name: "DependenciesInterfaces",
+      dependencies: [
+        .commonModule,
+        .dependencies,
+        .dependenciesMacros,
+      ],
+    ),
+    .target(
+      name: "DependenciesLive",
+      dependencies: [
+        .atProtoKit,
+        .commonModule,
+        .dependenciesInterfaces,
+        .firebaseAnalytics,
+        .firebaseAppCheck,
+        .firebaseAuth,
+        .firebaseCrashlytics,
+        .firebaseFunctions,
+        .googleMobileAds,
+        .googleUserMessagingPlatform,
+        .keychainAccess,
+        .revenueCat,
+      ],
     ),
     .testTarget(
       name: "NowPlayingPackageTests",
@@ -105,6 +142,10 @@ extension Target.Dependency {
     )
   }
 
+  static var commonModule: Self {
+    .target(name: "CommonModule")
+  }
+
   static var composableArchitecture: Self {
     .product(
       name: "ComposableArchitecture",
@@ -115,6 +156,21 @@ extension Target.Dependency {
   static var dependencies: Self {
     .product(
       name: "Dependencies",
+      package: "swift-dependencies",
+    )
+  }
+
+  static var dependenciesInterfaces: Self {
+    .target(name: "DependenciesInterfaces")
+  }
+
+  static var dependenciesLive: Self {
+    .target(name: "DependenciesLive")
+  }
+
+  static var dependenciesMacros: Self {
+    .product(
+      name: "DependenciesMacros",
       package: "swift-dependencies",
     )
   }

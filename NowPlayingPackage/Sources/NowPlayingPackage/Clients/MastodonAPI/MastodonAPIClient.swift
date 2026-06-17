@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2026/04/05.
 //
 
+import CommonModule
 import Dependencies
 import DependenciesMacros
 import Foundation

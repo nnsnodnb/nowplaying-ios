@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2026/03/20.
 //
 
+import CommonModule
 import NukeUI
 import SwiftUI
 

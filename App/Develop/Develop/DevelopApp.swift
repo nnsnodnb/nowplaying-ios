@@ -5,7 +5,17 @@
 //  Created by Yuya Oka on 2026/03/04.
 //
 
+import CommonModule
+import DependenciesInterfaces
+import DependenciesLive
+import FirebaseAnalytics
+import FirebaseAppCheck
+import FirebaseAuth
+import FirebaseCore
+import FirebaseFunctions
+import GoogleMobileAds
 import NowPlayingPackage
+import RevenueCat
 
 @main
 struct DevelopApp: App {
@@ -20,9 +30,24 @@ struct DevelopApp: App {
               RootFeature()
             },
             withDependencies: {
-              $0.functions.endpointURLString = {
-                "http://127.0.0.1:9095/nowplaying-dev/asia-northeast1"
-              }
+              $0.adClient = .google
+              $0.analytics = .firebase
+              $0.appCheck = .firebase
+              $0.auth = .firebase
+              $0.blueskyAPI = .atProtoKit
+              $0.consentInformation = .google
+              $0.crashlytics = .firebase
+              $0.functions = .init(
+                endpointURLString: {
+                  "http://127.0.0.1:9095/nowplaying-dev/asia-northeast1"
+                },
+                migrateTwitterUserProfiles: FunctionsClient.firebase.migrateTwitterUserProfiles,
+                getTwitterUserProfile: FunctionsClient.firebase.getTwitterUserProfile,
+                twitterPostTweet: FunctionsClient.firebase.twitterPostTweet,
+              )
+              $0.revenueCat = .revenueCat
+              $0.rewardedAd = .google
+              $0.secureKeyValueStore = .keychainAccess
               // MEMO: 普段はこれを有効にしておく
               $0.twitterAPI.uploadMedia = { _, _ in
                 TwitterMedia(

@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2026/03/20.
 //
 
+import CommonModule
 import ComposableArchitecture
 import ImageViewer
 import NukeUI
@@ -290,7 +291,7 @@ public struct PostPage: View {
     .analyticsScreen(
       screenName: .post,
       extraParameters: [
-        "account_count": store.blueskyAccounts.count,
+        "account_count": AnyHashableSendable(integerLiteral: store.blueskyAccounts.count),
       ],
     )
   }

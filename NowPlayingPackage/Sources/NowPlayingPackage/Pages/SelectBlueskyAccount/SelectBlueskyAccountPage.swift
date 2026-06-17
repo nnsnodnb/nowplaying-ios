@@ -5,7 +5,9 @@
 //  Created by Yuya Oka on 2026/03/21.
 //
 
+import CommonModule
 import ComposableArchitecture
+import DependenciesInterfaces
 import SwiftUI
 
 @Reducer

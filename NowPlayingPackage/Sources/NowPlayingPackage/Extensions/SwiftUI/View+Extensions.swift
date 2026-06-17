@@ -5,7 +5,8 @@
 //  Created by Yuya Oka on 2026/03/04.
 //
 
-import FirebaseAnalytics
+import ComposableArchitecture
+import DependenciesInterfaces
 import SVProgressHUD
 import SwiftUI
 
@@ -32,8 +33,8 @@ extension View {
 extension View {
   func analyticsScreen(
     screenName: AnalyticsClient.ScreenName,
-    extraParameters: [String: Any] = [:],
+    extraParameters: [String: AnyHashableSendable] = [:],
   ) -> some View {
-    analyticsScreen(name: screenName.rawValue, extraParameters: extraParameters)
+    analyticsScreen(screenName: screenName, parameters: extraParameters)
   }
 }

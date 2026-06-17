@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CFB98D9C2FE28C88006CFAF7 /* DependenciesInterfaces in Frameworks */ = {isa = PBXBuildFile; productRef = CFB98D9B2FE28C88006CFAF7 /* DependenciesInterfaces */; };
+		CFB98D9E2FE28C88006CFAF7 /* DependenciesLive in Frameworks */ = {isa = PBXBuildFile; productRef = CFB98D9D2FE28C88006CFAF7 /* DependenciesLive */; };
 		CFE154BF2F57E51B00B6BFB3 /* NowPlayingPackage in Frameworks */ = {isa = PBXBuildFile; productRef = CFE154BE2F57E51B00B6BFB3 /* NowPlayingPackage */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFB98D9E2FE28C88006CFAF7 /* DependenciesLive in Frameworks */,
 				CFE154BF2F57E51B00B6BFB3 /* NowPlayingPackage in Frameworks */,
+				CFB98D9C2FE28C88006CFAF7 /* DependenciesInterfaces in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +98,8 @@
 			name = AdHoc;
 			packageProductDependencies = (
 				CFE154BE2F57E51B00B6BFB3 /* NowPlayingPackage */,
+				CFB98D9B2FE28C88006CFAF7 /* DependenciesInterfaces */,
+				CFB98D9D2FE28C88006CFAF7 /* DependenciesLive */,
 			);
 			productName = AdHoc;
 			productReference = CF91AB8E2F57E442001EC12D /* AdHoc.app */;
@@ -390,6 +396,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CFB98D9B2FE28C88006CFAF7 /* DependenciesInterfaces */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DependenciesInterfaces;
+		};
+		CFB98D9D2FE28C88006CFAF7 /* DependenciesLive */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DependenciesLive;
+		};
 		CFE154BE2F57E51B00B6BFB3 /* NowPlayingPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NowPlayingPackage;

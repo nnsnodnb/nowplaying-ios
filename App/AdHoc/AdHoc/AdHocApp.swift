@@ -5,6 +5,13 @@
 //  Created by Yuya Oka on 2026/03/04.
 //
 
+import CommonModule
+import DependenciesInterfaces
+import DependenciesLive
+import FirebaseAnalytics
+import FirebaseCore
+import GoogleMobileAds
+import RevenueCat
 import NowPlayingPackage
 
 @main
@@ -19,17 +26,20 @@ struct AdHocApp: App {
             RootFeature()
           },
           withDependencies: {
+            $0.adClient = .google
+            $0.analytics = .firebase
+            $0.appCheck = .firebase
+            $0.auth = .firebase
+            $0.blueskyAPI = .atProtoKit
+            $0.consentInformation = .google
+            $0.crashlytics = .firebase
+            // MEMO: AdHoc環境にはデプロイしていないので使用はできない
+            $0.functions = .firebase
+            $0.revenueCat = .revenueCat
+            $0.rewardedAd = .google
+            $0.secureKeyValueStore = .keychainAccess
             if UserDefaults.standard.bool(forKey: "key_mock_twitter_api") {
-              $0.twitterAPI.getUserMe = { _ in
-                // swiftlint:disable line_length
-                TwitterProfile(
-                  id: .init("1137201750"),
-                  name: "小泉ひやかし🌻",
-                  username: "nnsnodnb",
-                  profileImageURL: URL(string: "https://pbs.twimg.com/profile_images/1593438620769488897/3kV4Mtvq_normal.jpg")!,
-                )
-                // swiftlint:enable line_length
-              }
+              $0.twitterAPI.getUserMe = { _ in .nnsnodnb }
               $0.twitterAPI.uploadMedia = { _, _ in
                 try await Task.sleep(for: .milliseconds(500))
                 return TwitterMedia(

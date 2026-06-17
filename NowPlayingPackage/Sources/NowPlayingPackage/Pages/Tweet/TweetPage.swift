@@ -5,8 +5,10 @@
 //  Created by Yuya Oka on 2026/03/12.
 //
 
+import CommonModule
 import ComposableArchitecture
 import Dependencies
+import DependenciesInterfaces
 import ImageViewer
 import NukeUI
 import SwiftUI
@@ -384,7 +386,7 @@ public struct TweetPage: View {
     .analyticsScreen(
       screenName: .tweet,
       extraParameters: [
-        "account_count": store.twitterAccounts.count,
+        "account_count": AnyHashableSendable(integerLiteral: store.twitterAccounts.count),
       ],
     )
   }

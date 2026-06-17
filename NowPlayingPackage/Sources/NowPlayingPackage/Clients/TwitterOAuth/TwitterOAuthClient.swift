@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2026/03/09.
 //
 
+import CommonModule
 import CryptoKit
 import Dependencies
 import DependenciesMacros
