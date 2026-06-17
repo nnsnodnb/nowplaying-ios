@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import DependenciesInterfaces
 import DependenciesTestSupport
 @testable import NowPlayingPackage
 import Testing

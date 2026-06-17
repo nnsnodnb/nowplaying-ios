@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import MemberwiseInit
 
+@MemberwiseInit(.public)
 public struct AppInfo: Decodable, Sendable {
   // MARK: - CodingKeys
   private enum CodingKeys: String, CodingKey {

@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2026/05/16.
 //
 
+import CommonModule
 import ComposableArchitecture
 import DependenciesTestSupport
 @testable import NowPlayingPackage
