@@ -33,8 +33,7 @@ struct AdHocApp: App {
             $0.blueskyAPI = .atProtoKit
             $0.consentInformation = .google
             $0.crashlytics = .firebase
-            // MEMO: AdHoc環境にはデプロイしていないので使用はできない
-            $0.functions = .firebase
+            $0.functions = .firebase(endpointURLString: "https://asia-northeast1-nowplaying-dev.cloudfunctions.net")
             $0.revenueCat = .revenueCat
             $0.rewardedAd = .google
             $0.secureKeyValueStore = .keychainAccess

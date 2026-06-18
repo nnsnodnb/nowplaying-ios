@@ -37,14 +37,7 @@ struct DevelopApp: App {
               $0.blueskyAPI = .atProtoKit
               $0.consentInformation = .google
               $0.crashlytics = .firebase
-              $0.functions = .init(
-                endpointURLString: {
-                  "http://127.0.0.1:9095/nowplaying-dev/asia-northeast1"
-                },
-                migrateTwitterUserProfiles: FunctionsClient.firebase.migrateTwitterUserProfiles,
-                getTwitterUserProfile: FunctionsClient.firebase.getTwitterUserProfile,
-                twitterPostTweet: FunctionsClient.firebase.twitterPostTweet,
-              )
+              $0.functions = .firebase(endpointURLString: "http://127.0.0.1:9095/nowplaying-dev/asia-northeast1")
               $0.revenueCat = .revenueCat
               $0.rewardedAd = .google
               $0.secureKeyValueStore = .keychainAccess
