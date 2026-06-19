@@ -163,6 +163,7 @@ struct TestMigrateV320FeatureMigrate {
       }
       await store.receive(\.internalAction.failedMigrate) {
         $0.isLoading = false
+        $0.failedCount = 1
         $0.alert = AlertState(
           title: {
             TextState(.failedMigrateData)
