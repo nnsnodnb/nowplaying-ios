@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2026/03/17.
 //
 
+import CommonModule
 import Foundation
 @testable import NowPlayingPackage
 import Testing

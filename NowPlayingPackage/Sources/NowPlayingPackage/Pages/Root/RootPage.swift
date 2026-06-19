@@ -166,7 +166,7 @@ public struct RootPage: View {
         .analyticsScreen(
           screenName: .root,
           extraParameters: [
-            "is_launch_at_first": "\(store.isLaunchAtFirst)",
+            "is_launch_at_first": AnyHashableSendable(stringLiteral: "\(store.isLaunchAtFirst)"),
           ],
         )
     }

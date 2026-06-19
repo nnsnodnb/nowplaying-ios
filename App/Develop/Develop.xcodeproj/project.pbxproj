@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CFB98D982FE2705B006CFAF7 /* DependenciesInterfaces in Frameworks */ = {isa = PBXBuildFile; productRef = CFB98D972FE2705B006CFAF7 /* DependenciesInterfaces */; };
+		CFB98D9A2FE2705B006CFAF7 /* DependenciesLive in Frameworks */ = {isa = PBXBuildFile; productRef = CFB98D992FE2705B006CFAF7 /* DependenciesLive */; };
 		CFE154C22F57E52A00B6BFB3 /* NowPlayingPackage in Frameworks */ = {isa = PBXBuildFile; productRef = CFE154C12F57E52A00B6BFB3 /* NowPlayingPackage */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFB98D9A2FE2705B006CFAF7 /* DependenciesLive in Frameworks */,
 				CFE154C22F57E52A00B6BFB3 /* NowPlayingPackage in Frameworks */,
+				CFB98D982FE2705B006CFAF7 /* DependenciesInterfaces in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +98,8 @@
 			name = Develop;
 			packageProductDependencies = (
 				CFE154C12F57E52A00B6BFB3 /* NowPlayingPackage */,
+				CFB98D972FE2705B006CFAF7 /* DependenciesInterfaces */,
+				CFB98D992FE2705B006CFAF7 /* DependenciesLive */,
 			);
 			productName = Develop;
 			productReference = CF91AB772F57E42C001EC12D /* Develop.app */;
@@ -392,6 +398,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CFB98D972FE2705B006CFAF7 /* DependenciesInterfaces */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DependenciesInterfaces;
+		};
+		CFB98D992FE2705B006CFAF7 /* DependenciesLive */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DependenciesLive;
+		};
 		CFE154C12F57E52A00B6BFB3 /* NowPlayingPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NowPlayingPackage;

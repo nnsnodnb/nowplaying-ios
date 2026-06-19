@@ -5,8 +5,8 @@
 //  Created by Yuya Oka on 2026/03/19.
 //
 
-import ATProtoKit
 import BetterSafariView
+import CommonModule
 import ComposableArchitecture
 import SwiftUI
 

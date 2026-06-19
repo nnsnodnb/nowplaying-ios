@@ -66,6 +66,37 @@ extension MediaPlayerClient: DependencyKey {
       return image
     },
   )
+  public static let previewValue: Self = .init(
+    requestAuthorization: {
+    },
+    backward: {
+    },
+    playback: {
+    },
+    forward: {
+    },
+    nowPlayingItem: {
+      await Implementation.shared.nowPlayingItem()
+    },
+    playbackState: {
+      await Implementation.shared.playbackState()
+    },
+    getNowPlayingArtwork: { mediaItem in
+      if !mediaItem.isCloudItem && !mediaItem.hasProtectedAsset {
+        return mediaItem.artworkImage
+      }
+      var request = MusicCatalogSearchRequest(
+        term: "\(mediaItem.title ?? "") \(mediaItem.artist ?? "")",
+        types: [Song.self],
+      )
+      request.limit = 1
+      guard let song = try await request.response().songs.first,
+            let artwork = song.artwork else { return nil }
+      guard let url = artwork.url(width: 600, height: 600) else { return nil }
+      let image = try await ImagePipeline.shared.image(for: url)
+      return image
+    },
+  )
 }
 
 // MARK: - Implementation

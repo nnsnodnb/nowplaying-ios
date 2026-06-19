@@ -5,18 +5,23 @@
 //  Created by Yuya Oka on 2026/03/05.
 //
 
+import Dependencies
+import DependenciesInterfaces
 import SwiftUI
 
 public struct PlayerBottomAdBanner: View {
   // MARK: - Properties
   let adUnitID: String
 
+  @Dependency(\.adClient)
+  private var adClient
+
   // MARK: - Body
   public var body: some View {
     GeometryReader { proxy in
-      AdBannerWrapper(
-        adSize: AdSizeBanner,
+      adClient.make(
         adUnitID: adUnitID,
+        size: .banner,
       )
       .frame(width: proxy.size.width, height: 60)
     }
