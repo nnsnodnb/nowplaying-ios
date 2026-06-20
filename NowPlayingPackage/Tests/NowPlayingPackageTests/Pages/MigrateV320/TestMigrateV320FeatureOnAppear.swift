@@ -36,6 +36,7 @@ struct TestMigrateV320FeatureOnAppear {
 
       await store.send(.onAppear)
       await store.receive(\.internalAction.fetchedTwitterAccounts) {
+        $0.initialized = true
         $0.twitterAccounts = [twitterAccount]
       }
     }

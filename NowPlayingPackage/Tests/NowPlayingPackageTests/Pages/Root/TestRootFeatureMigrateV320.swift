@@ -29,10 +29,9 @@ struct TestRootFeatureMigrateV320 {
         },
       )
 
-      await store.send(.migrateV320(.delegate(.completed))) {
-        $0.migrateV320 = nil
-      }
+      await store.send(.migrateV320(.delegate(.completed)))
       await store.receive(\.internalAction.showPlay, false) {
+        $0.migrateV320 = nil
         $0.play = .init(
           isPurchasedHideAds: false,
         )

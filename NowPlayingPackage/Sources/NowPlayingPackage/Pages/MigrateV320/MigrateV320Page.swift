@@ -15,7 +15,8 @@ public struct MigrateV320Feature: Sendable {
   // MARK: - State
   @ObservableState
   public struct State: Equatable, Sendable {
-    public var isLoading = false
+    public var initialized = false
+    public var isMigrating = false
     public var failedCount = 0
     public var twitterAccounts: [TwitterAccount] = []
     @Shared(.appStorage(.migratedV320))
@@ -89,7 +90,7 @@ public struct MigrateV320Feature: Sendable {
           state.$freeTwitterLoginCount.withLock { $0 = 0 }
           return .send(.internalAction(.migrated))
         }
-        state.isLoading = true
+        state.isMigrating = true
         return .run(
           operation: { send in
             let twitterAccounts = try await secureKeyValueStore.getTwitterAccounts()
@@ -130,12 +131,13 @@ public struct MigrateV320Feature: Sendable {
       case .delegate:
         return .none
       case let .internalAction(.fetchedTwitterAccounts(twitterAccounts)):
+        state.initialized = true
         state.twitterAccounts = twitterAccounts
         return .none
       case .internalAction(.migrated):
         state.$migratedV320.withLock { $0 = true }
         state.$freeTwitterLoginCount.withLock { $0 = 0 }
-        state.isLoading = false
+        state.isMigrating = false
         return .run(
           operation: { send in
             try await mainQueue.sleep(for: .milliseconds(200))
@@ -143,7 +145,7 @@ public struct MigrateV320Feature: Sendable {
           },
         )
       case .internalAction(.failedMigrate):
-        state.isLoading = false
+        state.isMigrating = false
         state.failedCount += 1
         let title: (() -> TextState)
         let message: (() -> TextState)?
@@ -212,31 +214,46 @@ public struct MigrateV320Page: View {
 
   // MARK: - Body
   public var body: some View {
-    NavigationStack(
-      root: {
-        VStack(alignment: .center, spacing: 8) {
-          list
-          migrateButton
-          openAppButton
-        }
-        .background(Color(UIColor.secondarySystemBackground))
-        .navigationTitle(.dataMigrate)
-        .toolbarTitleDisplayMode(.inlineLarge)
+    if store.initialized {
+      NavigationStack(
+        root: {
+          root
+            .navigationTitle(.dataMigrate)
+            .toolbarTitleDisplayMode(.inlineLarge)
+        },
+      )
+      .progress(store.isMigrating, status: String(localized: .migratingData))
+      .alert($store.scope(state: \.$alert, action: \.alert))
+    } else {
+      Color(UIColor.systemBackground)
+        .ignoresSafeArea(.all)
         .task {
           store.send(.onAppear)
         }
-      },
-    )
-    .progress(store.isLoading, status: String(localized: .migratingData))
-    .alert($store.scope(state: \.$alert, action: \.alert))
-    .analyticsScreen(screenName: .migrateV320)
+        .analyticsScreen(screenName: .migrateV320)
+    }
+  }
+
+  private var root: some View {
+    VStack(alignment: .center, spacing: 8) {
+      list
+      migrateButton
+      openAppButton
+    }
+    .background(Color(UIColor.secondarySystemBackground))
   }
 
   private var list: some View {
     List {
       Text(.migrationMessage)
-      ForEach(store.twitterAccounts, id: \.profile.id) { twitterAccount in
-        row(twitterAccount: twitterAccount)
+      if store.twitterAccounts.isEmpty {
+        ProgressView()
+          .progressViewStyle(.circular)
+          .frame(maxWidth: .infinity)
+      } else {
+        ForEach(store.twitterAccounts, id: \.profile.id) { twitterAccount in
+          row(twitterAccount: twitterAccount)
+        }
       }
     }
     .listStyle(.insetGrouped)
@@ -296,7 +313,7 @@ public struct MigrateV320Page: View {
       },
     )
     .padding(.horizontal, 12)
-    .disabled(store.isLoading)
+    .disabled(store.isMigrating)
   }
 }
 

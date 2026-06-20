@@ -42,11 +42,11 @@ struct TestMigrateV320FeatureMigrate {
       )
 
       await store.send(.migrate) {
-        $0.isLoading = true
+        $0.isMigrating = true
       }
       await store.receive(\.internalAction.migrated) {
         $0.$migratedV320.withLock { $0 = true }
-        $0.isLoading = false
+        $0.isMigrating = false
       }
       await mainQueue.advance(by: .milliseconds(200))
       await store.receive(\.delegate.completed)
@@ -69,11 +69,11 @@ struct TestMigrateV320FeatureMigrate {
       )
 
       await store.send(.migrate) {
-        $0.isLoading = true
+        $0.isMigrating = true
       }
       await store.receive(\.internalAction.migrated) {
         $0.$migratedV320.withLock { $0 = true }
-        $0.isLoading = false
+        $0.isMigrating = false
       }
       await mainQueue.advance(by: .milliseconds(200))
       await store.receive(\.delegate.completed)
@@ -98,11 +98,11 @@ struct TestMigrateV320FeatureMigrate {
       )
 
       await store.send(.migrate) {
-        $0.isLoading = true
+        $0.isMigrating = true
       }
       await store.receive(\.internalAction.migrated) {
         $0.$migratedV320.withLock { $0 = true }
-        $0.isLoading = false
+        $0.isMigrating = false
       }
       await mainQueue.advance(by: .milliseconds(200))
       await store.receive(\.delegate.completed)
@@ -159,10 +159,10 @@ struct TestMigrateV320FeatureMigrate {
       )
 
       await store.send(.migrate) {
-        $0.isLoading = true
+        $0.isMigrating = true
       }
       await store.receive(\.internalAction.failedMigrate) {
-        $0.isLoading = false
+        $0.isMigrating = false
         $0.failedCount = 1
         $0.alert = AlertState(
           title: {
@@ -209,10 +209,10 @@ struct TestMigrateV320FeatureMigrate {
       )
 
       await store.send(.migrate) {
-        $0.isLoading = true
+        $0.isMigrating = true
       }
       await store.receive(\.internalAction.failedMigrate) {
-        $0.isLoading = false
+        $0.isMigrating = false
         $0.failedCount = 2
         $0.alert = AlertState(
           title: {

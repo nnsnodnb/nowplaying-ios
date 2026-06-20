@@ -56,11 +56,11 @@ struct TestMigrateV320FeatureAlert {
       }
       await mainQueue.advance(by: .milliseconds(400))
       await store.receive(\.migrate) {
-        $0.isLoading = true
+        $0.isMigrating = true
         $0.$migratedV320.withLock { $0 = true }
       }
       await store.receive(\.internalAction.migrated) {
-        $0.isLoading = false
+        $0.isMigrating = false
       }
       await mainQueue.advance(by: .milliseconds(200))
       await store.receive(\.delegate.completed)

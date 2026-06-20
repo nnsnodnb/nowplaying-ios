@@ -32,10 +32,9 @@ struct TestRootFeatureSigninAnonymously {
         },
       )
 
-      await store.send(.signInAnonymously(.delegate(.completed))) {
-        $0.signInAnonymously = nil
-      }
+      await store.send(.signInAnonymously(.delegate(.completed)))
       await store.receive(\.internalAction.showPlay, false) {
+        $0.signInAnonymously = nil
         $0.play = .init(
           isPurchasedHideAds: false,
         )
@@ -80,10 +79,9 @@ struct TestRootFeatureSigninAnonymously {
         },
       )
 
-      await store.send(.signInAnonymously(.delegate(.completed))) {
-        $0.signInAnonymously = nil
-      }
+      await store.send(.signInAnonymously(.delegate(.completed)))
       await store.receive(\.internalAction.showPlay, false) {
+        $0.signInAnonymously = nil
         $0.play = .init(
           isPurchasedHideAds: false,
         )
@@ -128,10 +126,9 @@ struct TestRootFeatureSigninAnonymously {
         },
       )
 
-      await store.send(.signInAnonymously(.delegate(.completed))) {
-        $0.signInAnonymously = nil
-      }
+      await store.send(.signInAnonymously(.delegate(.completed)))
       await store.receive(\.internalAction.showPlay, true) {
+        $0.signInAnonymously = nil
         $0.play = .init(
           isPurchasedHideAds: true,
         )
@@ -176,10 +173,9 @@ struct TestRootFeatureSigninAnonymously {
         },
       )
 
-      await store.send(.signInAnonymously(.delegate(.completed))) {
-        $0.signInAnonymously = nil
-      }
+      await store.send(.signInAnonymously(.delegate(.completed)))
       await store.receive(\.internalAction.showPlay, true) {
+        $0.signInAnonymously = nil
         $0.play = .init(
           isPurchasedHideAds: true,
         )

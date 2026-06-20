@@ -86,7 +86,6 @@ public struct RootFeature: Sendable {
       case .consent:
         return .none
       case .signInAnonymously(.delegate(.completed)):
-        state.signInAnonymously = nil
         if state.migratedV320 {
           return .run(
             operation: { send in
@@ -95,13 +94,13 @@ public struct RootFeature: Sendable {
             },
           )
         } else {
+          state.signInAnonymously = nil
           state.migrateV320 = .init()
           return .none
         }
       case .signInAnonymously:
         return .none
       case .migrateV320(.delegate(.completed)):
-        state.migrateV320 = nil
         return .run(
           operation: { send in
             let nonConsumables = try await secureKeyValueStore.getNonConsumables()
@@ -116,6 +115,9 @@ public struct RootFeature: Sendable {
         state.$isLaunchAtFirst.withLock { $0 = false }
         return .none
       case let .internalAction(.showPlay(isPurchasedHideAds)):
+        // 非同期処理が入りこのアクションに来るのが遅くなってonAppearが再度呼ばれてしまうため画面を待機させておく
+        state.signInAnonymously = nil
+        state.migrateV320 = nil
         state.play = .init(
           isPurchasedHideAds: isPurchasedHideAds,
         )
