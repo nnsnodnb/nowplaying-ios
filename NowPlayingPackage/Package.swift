@@ -112,6 +112,9 @@ let package = Package(
         .keychainAccess,
         .revenueCat,
       ],
+      linkerSettings: [
+        .unsafeFlags(["-ObjC"]),
+      ],
     ),
     .testTarget(
       name: "NowPlayingPackageTests",
