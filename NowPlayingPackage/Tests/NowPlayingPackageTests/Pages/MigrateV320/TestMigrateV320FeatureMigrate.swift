@@ -134,7 +134,7 @@ struct TestMigrateV320FeatureMigrate {
   }
 
   @Test
-  func testFailedMigrate() async throws {
+  func testFailedMigrateFirstTime() async throws {
     let twitterAccount = try Stub.make(TwitterAccount.self)
     let oauthToken = try Stub.make(TwitterOAuthToken.self)
 
@@ -175,6 +175,65 @@ struct TestMigrateV320FeatureMigrate {
                 TextState(.retry)
               },
             )
+          },
+        )
+      }
+    }
+  }
+
+  @Test
+  func testFailedMigrateTwoTimes() async throws {
+    let twitterAccount = try Stub.make(TwitterAccount.self)
+    let oauthToken = try Stub.make(TwitterOAuthToken.self)
+
+    struct Error: Swift.Error {
+    }
+
+    await withDependencies {
+      $0.functions.migrateTwitterUserProfiles = { migrations in
+        #expect(migrations.count == 1)
+        #expect(migrations[0].twitterAccount == twitterAccount)
+        #expect(migrations[0].refreshToken == oauthToken.refreshToken)
+        throw Error()
+      }
+      $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
+      $0.secureKeyValueStore.getTwitterOAuthToken = { _ in oauthToken }
+    } operation: {
+      let store = TestStore(
+        initialState: MigrateV320Feature.State(
+          failedCount: 1,
+        ),
+        reducer: {
+          MigrateV320Feature()
+        },
+      )
+
+      await store.send(.migrate) {
+        $0.isLoading = true
+      }
+      await store.receive(\.internalAction.failedMigrate) {
+        $0.isLoading = false
+        $0.failedCount = 2
+        $0.alert = AlertState(
+          title: {
+            TextState(.dataMigrationHasFailedTimes(2))
+          },
+          actions: {
+            ButtonState(
+              action: .retry,
+              label: {
+                TextState(.retry)
+              },
+            )
+            ButtonState(
+              action: .forceContinue,
+              label: {
+                TextState(.continue)
+              },
+            )
+          },
+          message: {
+            TextState(.youWillNeedToLogInAgainWithYourXAccountButYouCanContinueUsingTheAppAsIs)
           },
         )
       }

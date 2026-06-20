@@ -46,6 +46,7 @@ public struct MigrateV320Feature: Sendable {
       case fetchedTwitterAccounts([TwitterAccount])
       case migrated
       case failedMigrate
+      case deletedTwitterAccounts
     }
 
     // MARK: - Action
@@ -104,12 +105,7 @@ public struct MigrateV320Feature: Sendable {
               migrations.append(.init(twitterAccount: twitterAccount, refreshToken: oauthToken.refreshToken))
             }
             if !migrations.isEmpty {
-              do {
-                try await functions.migrateTwitterUserProfiles(migrations)
-              } catch {
-                await send(.internalAction(.failedMigrate))
-                return
-              }
+              try await functions.migrateTwitterUserProfiles(migrations)
               // マイグレーションに成功したのでTwitterOAuthTokenは削除しておく
               for migration in migrations {
                 try await secureKeyValueStore.removeTwitterOAuthToken(migration.twitterAccount)
@@ -123,17 +119,12 @@ public struct MigrateV320Feature: Sendable {
         )
       case .forceContinueTheApp:
         return .run(
-          operation: { [state] send in
+          operation: { [twitterAccounts = state.twitterAccounts] send in
             // keychainからTwitterAccountを削除する
-            for twitterAccount in state.twitterAccounts {
+            for twitterAccount in twitterAccounts {
               try await secureKeyValueStore.removeTwitterAccount(twitterAccount)
             }
-            // マイグレーション済みフラグ
-            state.$migratedV320.withLock { $0 = true }
-            // 広告なしログイン可能数を確保
-            state.$freeTwitterLoginCount.withLock { $0 = state.twitterAccounts.count }
-            try await mainQueue.sleep(for: .milliseconds(200))
-            await send(.delegate(.completed))
+            await send(.internalAction(.deletedTwitterAccounts))
           },
         )
       case .delegate:
@@ -190,6 +181,12 @@ public struct MigrateV320Feature: Sendable {
           message: message,
         )
         return .none
+      case .internalAction(.deletedTwitterAccounts):
+        // マイグレーション済みフラグ
+        state.$migratedV320.withLock { $0 = true }
+        // 広告なしログイン可能数を確保
+        state.$freeTwitterLoginCount.withLock { $0 = state.twitterAccounts.count }
+        return .send(.delegate(.completed))
       case .internalAction:
         return .none
       case .alert(.presented(.retry)):
