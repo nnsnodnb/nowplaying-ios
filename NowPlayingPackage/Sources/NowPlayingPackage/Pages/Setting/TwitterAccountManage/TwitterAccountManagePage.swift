@@ -23,6 +23,8 @@ public struct TwitterAccountManageFeature: Sendable {
     public var twitterAccounts: [TwitterAccount] = []
     public var oauthURL: URL?
     public var isLoading = false
+    @Shared(.appStorage(.freeTwitterLoginCount))
+    public var freeTwitterLoginCount = 0
     @Presents public var alert: AlertState<Action.Alert>?
   }
 

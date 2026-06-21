@@ -11,6 +11,9 @@ import ComposableArchitecture
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestTwitterAccountManageFeatureAuthenticateFailure {
   @Test
   func testErrorCodeCanceledLogin() async throws {
