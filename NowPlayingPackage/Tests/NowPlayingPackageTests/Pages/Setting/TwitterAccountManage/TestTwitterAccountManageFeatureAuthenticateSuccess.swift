@@ -13,14 +13,19 @@ import StubKit
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestTwitterAccountManageFeatureAuthenticateSuccess {
   @Test(
     .dependency(\.date, .constant(.now))
   )
   func testSuccess() async throws {
+    let mainQueue = DispatchQueue.test
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
     await withDependencies {
+      $0.mainQueue = mainQueue.eraseToAnyScheduler()
       $0.twitterOAuth.validateCallbackURL = { _ in .init("stub_user_id") }
       $0.twitterAPI.getUserMe = { _ in twitterAccount.profile }
       $0.secureKeyValueStore.getTwitterAccounts = { [twitterAccount] }
@@ -39,6 +44,9 @@ struct TestTwitterAccountManageFeatureAuthenticateSuccess {
       await store.receive(\.internalAction.requestGetUserMe, .init("stub_user_id"))
       await store.receive(\.internalAction.savedTwitterAccount, twitterAccount.profile) {
         $0.isLoading = false
+      }
+      await mainQueue.advance(by: .milliseconds(200))
+      await store.receive(\.internalAction.showSuccessAlert) {
         $0.alert = AlertState(
           title: {
             TextState(.loggedIn)

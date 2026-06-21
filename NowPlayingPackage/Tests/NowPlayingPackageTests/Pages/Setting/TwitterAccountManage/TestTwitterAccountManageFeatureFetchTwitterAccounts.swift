@@ -12,6 +12,9 @@ import StubKit
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestTwitterAccountManageFeatureFetchTwitterAccounts {
   @Test(
     .dependency(\.date, .constant(.now))

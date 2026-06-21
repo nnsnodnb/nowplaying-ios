@@ -212,17 +212,6 @@
         }
       }
     },
-    "Album name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アルバム名"
-          }
-        }
-      }
-    },
     "An error has occurred" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -394,6 +383,28 @@
         }
       }
     },
+    "Continue" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "続ける"
+          }
+        }
+      }
+    },
+    "Continue to the app" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリを続ける"
+          }
+        }
+      }
+    },
     "Costs are incurred each time the X API is called, so please be mindful of your usage." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -401,6 +412,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "X APIを呼び出すたびにコストが発生するため、ご利用状況にご注意ください。"
+          }
+        }
+      }
+    },
+    "Data migrate" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "データ移行"
+          }
+        }
+      }
+    },
+    "Data migration has failed %ld times" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "データ移行の失敗が%ld回になりました"
           }
         }
       }
@@ -818,6 +851,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "データを移行しています"
+          }
+        }
+      }
+    },
+    "migration message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For improved security, we will migrate your X account data.\nDepending on internal processing, the migration may not complete successfully. If that happens, you will need to log in again from the Settings screen.\nYou can log in to the same number of accounts that were previously signed in without watching additional ads."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セキュリティ向上のためXアカウントのデータ移行を行います。\n内部処理によっては正しく処理を行えない場合があります。\nその場合は、再度設定画面にてログイン処理を行っていただく必要があります。\nログインしていたアカウントの数は広告なしでログインが可能です。"
           }
         }
       }
@@ -1348,57 +1398,6 @@
         }
       }
     },
-    "Toot Private" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Private"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "フォロワーのみ"
-          }
-        }
-      }
-    },
-    "Toot Public" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Public"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "公開"
-          }
-        }
-      }
-    },
-    "Toot Unlisted" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlisted"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "未収載"
-          }
-        }
-      }
-    },
     "Toot Visibility" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1530,6 +1529,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "視聴できるのは1日1回までです"
+          }
+        }
+      }
+    },
+    "You will need to log in again with your X account, but you can continue using the app as is" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xアカウントで再度ログインする必要がありますがこのままアプリを起動することができます。"
           }
         }
       }

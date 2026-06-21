@@ -18,7 +18,7 @@ import Testing
 )
 struct TestMigrateV320FeatureAlert {
   @Test
-  func testIt() async throws {
+  func testAlertPresentedRetry() async throws {
     let mainQueue = DispatchQueue.test
     let twitterAccount = try Stub.make(TwitterAccount.self)
     let oauthToken = try Stub.make(TwitterOAuthToken.self)
@@ -56,13 +56,57 @@ struct TestMigrateV320FeatureAlert {
       }
       await mainQueue.advance(by: .milliseconds(400))
       await store.receive(\.migrate) {
-        $0.isLoading = true
+        $0.isMigrating = true
         $0.$migratedV320.withLock { $0 = true }
       }
       await store.receive(\.internalAction.migrated) {
-        $0.isLoading = false
+        $0.isMigrating = false
       }
       await mainQueue.advance(by: .milliseconds(200))
+      await store.receive(\.delegate.completed)
+    }
+  }
+
+  @Test
+  func testAlertPresentedForceContinue() async throws {
+    let twitterAccount = try Stub.make(TwitterAccount.self)
+
+    @Shared(.appStorage(.migratedV320))
+    var migratedV320 = false
+
+    await withDependencies {
+      $0.secureKeyValueStore.removeTwitterAccount = { _ in }
+    } operation: {
+      let store = TestStore(
+        initialState: MigrateV320Feature.State(
+          twitterAccounts: [twitterAccount],
+          alert: .init(
+            title: {
+              TextState(.failedMigrateData)
+            },
+            actions: {
+              ButtonState(
+                action: .forceContinue,
+                label: {
+                  TextState(.continueToTheApp)
+                },
+              )
+            },
+          ),
+        ),
+        reducer: {
+          MigrateV320Feature()
+        },
+      )
+
+      await store.send(.alert(.presented(.forceContinue))) {
+        $0.alert = nil
+      }
+      await store.receive(\.forceContinueTheApp) {
+        $0.$migratedV320.withLock { $0 = true }
+        $0.$freeTwitterLoginCount.withLock { $0 = 1 }
+      }
+      await store.receive(\.internalAction.deletedTwitterAccounts)
       await store.receive(\.delegate.completed)
     }
   }

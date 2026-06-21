@@ -14,7 +14,10 @@ import Testing
 
 @MainActor
 @Suite(
-  .dependency(\.date, .constant(.now))
+  .dependencies {
+    $0.date = .constant(.now)
+    $0.defaultAppStorage = .inMemory
+  }
 )
 struct TestTwitterAccountManageFeatureChangeDefaultAccount {
   @Test

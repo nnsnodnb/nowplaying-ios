@@ -24,4 +24,5 @@ public enum NowPlayingSharedKey: String {
   case isLaunchAtFirst = "key_is_launch_at_first"
   case skippedUpdateVersion = "key_skipped_update_version"
   case migratedV320 = "key_migrated_v3_2_0"
+  case freeTwitterLoginCount = "key_free_twitter_login_count"
 }

@@ -13,6 +13,9 @@ import StubKit
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestTwitterAccountManageFeatureDeleteTwitterAccount {
   @Test(
     .dependency(\.date, .constant(.now))
