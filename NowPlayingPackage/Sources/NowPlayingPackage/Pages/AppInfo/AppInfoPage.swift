@@ -145,6 +145,7 @@ public struct AppInfoFeature: Sendable {
         return .none
       }
     }
+    .ifLet(\.alert, action: \.alert)
   }
 }
 
@@ -161,7 +162,7 @@ public struct AppInfoPage: View {
         .task {
           store.send(.fetchAppInfo)
         }
-        .alert($store.scope(state: \.$alert, action: \.alert))
+        .alert($store.scope(\.alert, action: \.alert))
     case .updateRequire:
       updateRequire
     case .updateAvailable:
@@ -236,6 +237,9 @@ public struct AppInfoPage: View {
       initialState: AppInfoFeature.State(),
       reducer: {
         AppInfoFeature()
+      },
+      withDependencies: {
+        $0.apiClient.getAppInfo = { throw APIClient.Error.internalError }
       },
     ),
   )

@@ -242,7 +242,7 @@ public struct TootFeature: Sendable {
     .ifLet(\.$selectMastodonAccount, action: \.selectMastodonAccount) {
       SelectMastodonAccountFeature()
     }
-    .ifLet(\.$alert, action: \.alert)
+    .ifLet(\.alert, action: \.alert)
   }
 }
 
@@ -277,8 +277,8 @@ public struct TootPage: View {
             isFocused = true
           }
           .interactiveDismissDisabled(store.isEditing)
-          .alert($store.scope(state: \.$alert, action: \.alert))
-          .sheet(item: $store.scope(state: \.$selectMastodonAccount, action: \.selectMastodonAccount)) { store in
+          .alert($store.scope(\.alert, action: \.alert))
+          .sheet(item: $store.scope(\.selectMastodonAccount, action: \.selectMastodonAccount)) { store in
             selectMastodonAccountPage(store: store)
           }
           .fullScreenCover(isPresented: $store.isShowPreview.sending(\.showPreview)) {

@@ -332,7 +332,7 @@ public struct TweetFeature: Sendable {
     .ifLet(\.$selectTwitterAccount, action: \.selectTwitterAccount) {
       SelectTwitterAccountFeature()
     }
-    .ifLet(\.$alert, action: \.alert)
+    .ifLet(\.alert, action: \.alert)
   }
 }
 
@@ -358,8 +358,8 @@ public struct TweetPage: View {
             isFocused = true
           }
           .interactiveDismissDisabled(store.isEditing)
-          .alert($store.scope(state: \.$alert, action: \.alert))
-          .sheet(item: $store.scope(state: \.$selectTwitterAccount, action: \.selectTwitterAccount)) { store in
+          .alert($store.scope(\.alert, action: \.alert))
+          .sheet(item: $store.scope(\.selectTwitterAccount, action: \.selectTwitterAccount)) { store in
             selectTwitterAccountPage(store: store)
           }
           .fullScreenCover(isPresented: $store.isShowPreview.sending(\.showPreview)) {

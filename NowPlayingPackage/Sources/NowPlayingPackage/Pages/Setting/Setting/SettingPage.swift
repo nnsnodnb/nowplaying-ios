@@ -202,7 +202,7 @@ public struct SettingPage: View {
   // MARK: - Body
   public var body: some View {
     NavigationStack(
-      path: $store.scope(state: \.path, action: \.path),
+      path: $store.scope(\.path, action: \.path),
       root: {
         form
           .navigationTitle(.settings)

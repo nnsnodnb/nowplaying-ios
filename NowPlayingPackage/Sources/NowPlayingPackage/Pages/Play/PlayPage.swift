@@ -395,7 +395,7 @@ public struct PlayFeature: Sendable {
     .ifLet(\.$toot, action: \.toot) {
       TootFeature()
     }
-    .ifLet(\.$alert, action: \.alert)
+    .ifLet(\.alert, action: \.alert)
   }
 }
 
@@ -429,19 +429,19 @@ public struct PlayPage: View {
     .task {
       store.send(.onAppear)
     }
-    .sheet(item: $store.scope(state: \.$setting, action: \.setting)) { store in
+    .sheet(item: $store.scope(\.setting, action: \.setting)) { store in
       SettingPage(store: store)
     }
-    .sheet(item: $store.scope(state: \.$tweet, action: \.tweet)) { store in
+    .sheet(item: $store.scope(\.tweet, action: \.tweet)) { store in
       TweetPage(store: store)
     }
-    .sheet(item: $store.scope(state: \.$post, action: \.post)) { store in
+    .sheet(item: $store.scope(\.post, action: \.post)) { store in
       PostPage(store: store)
     }
-    .sheet(item: $store.scope(state: \.$toot, action: \.toot)) { store in
+    .sheet(item: $store.scope(\.toot, action: \.toot)) { store in
       TootPage(store: store)
     }
-    .alert($store.scope(state: \.$alert, action: \.alert))
+    .alert($store.scope(\.alert, action: \.alert))
     .analyticsScreen(screenName: .play)
   }
 

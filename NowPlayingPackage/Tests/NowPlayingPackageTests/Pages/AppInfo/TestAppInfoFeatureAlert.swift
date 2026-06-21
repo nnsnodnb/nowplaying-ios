@@ -47,7 +47,9 @@ struct TestAppInfoFeatureAlert {
         },
       )
 
-      await store.send(.alert(.presented(.retry)))
+      await store.send(.alert(.presented(.retry))) {
+        $0.alert = nil
+      }
       await store.receive(\.fetchAppInfo)
       await store.receive(\.internalAction.completed)
       await store.receive(\.delegate.completed)

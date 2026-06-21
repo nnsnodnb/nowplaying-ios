@@ -259,7 +259,7 @@ public struct TwitterAccountManageFeature: Sendable {
         return .none
       }
     }
-    .ifLet(\.$alert, action: \.alert)
+    .ifLet(\.alert, action: \.alert)
   }
 }
 
@@ -286,7 +286,7 @@ public struct TwitterAccountManagePage: View {
           webAuthenticationSession(url: url)
         },
       )
-      .alert($store.scope(state: \.$alert, action: \.alert))
+      .alert($store.scope(\.alert, action: \.alert))
       .progress(store.isLoading)
       .analyticsScreen(screenName: .twitterAccountManage)
   }
