@@ -23,38 +23,39 @@ struct DevelopApp: App {
   var body: some Scene {
     WindowGroup {
       if !isTesting {
-        RootPage(
-          store: .init(
-            initialState: RootFeature.State(),
-            reducer: {
-              RootFeature()
-            },
-            withDependencies: {
-              $0.adClient = .google
-              $0.analytics = .firebase
-              $0.appCheck = .firebase
-              $0.auth = .firebase
-              $0.blueskyAPI = .atProtoKit
-              $0.consentInformation = .google
-              $0.crashlytics = .firebase
-              $0.functions = .firebase(endpointURLString: "http://127.0.0.1:9095/nowplaying-dev/asia-northeast1")
-              $0.revenueCat = .revenueCat
-              $0.rewardedAd = .google
-              $0.secureKeyValueStore = .keychainAccess
-              // MEMO: 普段はこれを有効にしておく
-              $0.twitterAPI.uploadMedia = { _, _ in
-                TwitterMedia(
-                  id: .init("2034250625912016896"),
-                  expiresAfterSecs: 86_400,
-                  expiresAt: Date.now.addingTimeInterval(86_400),
-                )
-              }
-              $0.twitterAPI.post = { _, _, _ in
-                try await Task.sleep(for: .milliseconds(500))
-              }
-            }
-          ),
-        )
+        prepareDependencies {
+          $0.adClient = .google
+          $0.analytics = .firebase
+          $0.appCheck = .firebase
+          $0.auth = .firebase
+          $0.blueskyAPI = .atProtoKit
+          $0.consentInformation = .google
+          $0.crashlytics = .firebase
+          $0.functions = .firebase(endpointURLString: "http://127.0.0.1:9095/nowplaying-dev/asia-northeast1")
+          $0.revenueCat = .revenueCat
+          $0.rewardedAd = .google
+          $0.secureKeyValueStore = .keychainAccess
+          // MEMO: 普段はこれを有効にしておく
+          $0.twitterAPI.uploadMedia = { _, _ in
+            TwitterMedia(
+              id: .init("2034250625912016896"),
+              expiresAfterSecs: 86_400,
+              expiresAt: Date.now.addingTimeInterval(86_400),
+            )
+          }
+          $0.twitterAPI.post = { _, _, _ in
+            try await Task.sleep(for: .milliseconds(500))
+          }
+
+          return RootPage(
+            store: .init(
+              initialState: RootFeature.State(),
+              reducer: {
+                RootFeature()
+              },
+            ),
+          )
+        }
       }
     }
   }
