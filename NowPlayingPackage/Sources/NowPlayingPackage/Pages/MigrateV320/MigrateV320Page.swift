@@ -237,8 +237,12 @@ public struct MigrateV320Page: View {
   private var root: some View {
     VStack(alignment: .center, spacing: 8) {
       list
-      migrateButton
-      openAppButton
+        .safeAreaInset(edge: .bottom) {
+          VStack(alignment: .center, spacing: 8) {
+            migrateButton
+            openAppButton
+          }
+        }
     }
     .background(Color(UIColor.secondarySystemBackground))
   }
