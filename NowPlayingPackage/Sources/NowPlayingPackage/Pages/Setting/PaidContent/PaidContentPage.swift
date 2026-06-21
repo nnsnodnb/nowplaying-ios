@@ -472,7 +472,7 @@ public struct PaidContentFeature: Sendable {
         return .none
       }
     }
-    .ifLet(\.$alert, action: \.alert)
+    .ifLet(\.alert, action: \.alert)
   }
 }
 
@@ -488,7 +488,7 @@ public struct PaidContentPage: View {
       .task {
         store.send(.onAppear)
       }
-      .alert($store.scope(state: \.$alert, action: \.alert))
+      .alert($store.scope(\.alert, action: \.alert))
       .progress(store.isLoading)
       .analyticsScreen(screenName: .paidContent)
   }

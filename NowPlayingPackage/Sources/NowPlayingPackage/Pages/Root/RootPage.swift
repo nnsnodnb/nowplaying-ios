@@ -150,15 +150,15 @@ public struct RootPage: View {
 
   // MARK: - Body
   public var body: some View {
-    if let store = store.scope(state: \.appInfo, action: \.appInfo) {
+    if let store = store.scope(\.appInfo, action: \.appInfo) {
       AppInfoPage(store: store)
-    } else if let store = store.scope(state: \.consent, action: \.consent) {
+    } else if let store = store.scope(\.consent, action: \.consent) {
       ConsentPage(store: store)
-    } else if let store = store.scope(state: \.signInAnonymously, action: \.signInAnonymously) {
+    } else if let store = store.scope(\.signInAnonymously, action: \.signInAnonymously) {
       SignInAnonymouslyPage(store: store)
-    } else if let store = store.scope(state: \.migrateV320, action: \.migrateV320) {
+    } else if let store = store.scope(\.migrateV320, action: \.migrateV320) {
       MigrateV320Page(store: store)
-    } else if let store = store.scope(state: \.play, action: \.play) {
+    } else if let store = store.scope(\.play, action: \.play) {
       PlayPage(store: store)
     } else {
       Text("")

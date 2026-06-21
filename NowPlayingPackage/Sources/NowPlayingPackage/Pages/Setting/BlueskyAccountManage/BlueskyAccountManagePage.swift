@@ -148,7 +148,7 @@ public struct BlueskyAccountManageFeature: Sendable {
     .ifLet(\.$blueskyLogin, action: \.blueskyLogin) {
       BlueskyLoginFeature()
     }
-    .ifLet(\.$alert, action: \.alert)
+    .ifLet(\.alert, action: \.alert)
   }
 }
 
@@ -176,12 +176,12 @@ public struct BlueskyAccountManagePage: View {
           .dismissButtonStyle(.close)
       }
       .sheet(
-        item: $store.scope(state: \.$blueskyLogin, action: \.blueskyLogin),
+        item: $store.scope(\.blueskyLogin, action: \.blueskyLogin),
         content: { store in
           BlueskyLoginPage(store: store)
         },
       )
-      .alert($store.scope(state: \.$alert, action: \.alert))
+      .alert($store.scope(\.alert, action: \.alert))
       .analyticsScreen(screenName: .blueskyAccountManage)
   }
 

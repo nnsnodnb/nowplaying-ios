@@ -242,7 +242,7 @@ public struct MastodonLoginFeature: Sendable {
         return .none
       }
     }
-    .ifLet(\.$alert, action: \.alert)
+    .ifLet(\.alert, action: \.alert)
   }
 }
 
@@ -279,7 +279,7 @@ public struct MastodonLoginPage: View {
             },
           )
           .progress(store.isLoading)
-          .alert($store.scope(state: \.$alert, action: \.alert))
+          .alert($store.scope(\.alert, action: \.alert))
       },
     )
     .analyticsScreen(screenName: .mastodonLogin)

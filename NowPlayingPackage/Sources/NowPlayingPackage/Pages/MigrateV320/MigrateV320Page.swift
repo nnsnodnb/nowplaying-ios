@@ -204,7 +204,7 @@ public struct MigrateV320Feature: Sendable {
         return .none
       }
     }
-    .ifLet(\.$alert, action: \.alert)
+    .ifLet(\.alert, action: \.alert)
   }
 }
 
@@ -223,7 +223,7 @@ public struct MigrateV320Page: View {
         },
       )
       .progress(store.isMigrating, status: String(localized: .migratingData))
-      .alert($store.scope(state: \.$alert, action: \.alert))
+      .alert($store.scope(\.alert, action: \.alert))
     } else {
       Color(UIColor.systemBackground)
         .ignoresSafeArea(.all)

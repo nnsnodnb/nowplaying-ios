@@ -231,7 +231,7 @@ public struct PostFeature: Sendable {
     .ifLet(\.$selectBlueskyAccount, action: \.selectBlueskyAccount) {
       SelectBlueskyAccountFeature()
     }
-    .ifLet(\.$alert, action: \.alert)
+    .ifLet(\.alert, action: \.alert)
   }
 }
 
@@ -266,8 +266,8 @@ public struct PostPage: View {
             isFocused = true
           }
           .interactiveDismissDisabled(store.isEditing)
-          .alert($store.scope(state: \.$alert, action: \.alert))
-          .sheet(item: $store.scope(state: \.$selectBlueskyAccount, action: \.selectBlueskyAccount)) { store in
+          .alert($store.scope(\.alert, action: \.alert))
+          .sheet(item: $store.scope(\.selectBlueskyAccount, action: \.selectBlueskyAccount)) { store in
             selectBlueskyAccountPage(store: store)
           }
           .fullScreenCover(isPresented: $store.isShowPreview.sending(\.showPreview)) {

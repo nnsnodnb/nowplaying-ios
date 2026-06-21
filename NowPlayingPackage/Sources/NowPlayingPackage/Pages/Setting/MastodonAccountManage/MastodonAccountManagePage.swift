@@ -101,7 +101,7 @@ public struct MastodonAccountManageFeature: Sendable {
     .ifLet(\.$mastodonLogin, action: \.mastodonLogin) {
       MastodonLoginFeature()
     }
-    .ifLet(\.$alert, action: \.alert)
+    .ifLet(\.alert, action: \.alert)
   }
 }
 
@@ -122,12 +122,12 @@ public struct MastodonAccountManagePage: View {
         store.send(.fetchMastodonAccounts)
       }
       .sheet(
-        item: $store.scope(state: \.$mastodonLogin, action: \.mastodonLogin),
+        item: $store.scope(\.mastodonLogin, action: \.mastodonLogin),
         content: { store in
           MastodonLoginPage(store: store)
         },
       )
-      .alert($store.scope(state: \.$alert, action: \.alert))
+      .alert($store.scope(\.alert, action: \.alert))
       .analyticsScreen(screenName: .mastodonAccountManage)
   }
 

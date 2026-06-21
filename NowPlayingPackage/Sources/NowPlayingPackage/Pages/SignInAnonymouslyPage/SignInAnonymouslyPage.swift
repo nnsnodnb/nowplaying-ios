@@ -101,7 +101,7 @@ public struct SignInAnonymouslyFeature: Sendable {
         return .none
       }
     }
-    .ifLet(\.$alert, action: \.alert)
+    .ifLet(\.alert, action: \.alert)
   }
 }
 
@@ -116,7 +116,7 @@ public struct SignInAnonymouslyPage: View {
       .task {
         store.send(.signInIfNeeded)
       }
-      .alert($store.scope(state: \.$alert, action: \.alert))
+      .alert($store.scope(\.alert, action: \.alert))
       .analyticsScreen(screenName: .signInAnonymously)
   }
 }
