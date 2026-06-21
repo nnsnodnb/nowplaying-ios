@@ -33,7 +33,7 @@ public struct TwitterAccountManageFeature: Sendable {
     case onAppear
     case preloadRewardedAds
     case fetchTwitterAccounts
-    case showAlertForWatchingAds
+    case prepareLogin
     case oauth
     case changeDefaultAccount(TwitterAccount)
     case deleteTwitterAccount(IndexSet)
@@ -49,6 +49,7 @@ public struct TwitterAccountManageFeature: Sendable {
       case fetchedTwitterAccounts([TwitterAccount])
       case requestGetUserMe(TwitterProfile.ID)
       case savedTwitterAccount(TwitterProfile)
+      case showSuccessAlert(String)
       case oauthFailure(String)
     }
 
@@ -64,6 +65,8 @@ public struct TwitterAccountManageFeature: Sendable {
   private var adUnitID
   @Dependency(\.analytics)
   private var analytics
+  @Dependency(\.mainQueue)
+  private var mainQueue
   @Dependency(\.rewardedAd)
   private var rewardedAd
   @Dependency(\.secureKeyValueStore)
@@ -94,30 +97,34 @@ public struct TwitterAccountManageFeature: Sendable {
             await send(.internalAction(.fetchedTwitterAccounts(accounts)))
           },
         )
-      case .showAlertForWatchingAds:
-        state.alert = AlertState(
-          title: {
-            TextState(.watchingAnAdIsRequiredToAddAnAccount)
-          },
-          actions: {
-            ButtonState(
-              role: .cancel,
-              label: {
-                TextState(.cancel)
-              },
-            )
-            ButtonState(
-              action: .openRewardedAd,
-              label: {
-                TextState(.watch)
-              },
-            )
-          },
-          message: {
-            TextState(.pleaseCooperateAsRetrievingUserInformationIncursCosts)
-          },
-        )
-        return .none
+      case .prepareLogin:
+        if state.freeTwitterLoginCount > 0 {
+          return .send(.oauth)
+        } else {
+          state.alert = AlertState(
+            title: {
+              TextState(.watchingAnAdIsRequiredToAddAnAccount)
+            },
+            actions: {
+              ButtonState(
+                role: .cancel,
+                label: {
+                  TextState(.cancel)
+                },
+              )
+              ButtonState(
+                action: .openRewardedAd,
+                label: {
+                  TextState(.watch)
+                },
+              )
+            },
+            message: {
+              TextState(.pleaseCooperateAsRetrievingUserInformationIncursCosts)
+            },
+          )
+          return .none
+        }
       case .oauth:
         guard let oauthURL = try? twitterOAuth.getAuthenticateURL() else { return .none }
         state.oauthURL = oauthURL
@@ -197,13 +204,22 @@ public struct TwitterAccountManageFeature: Sendable {
           },
         )
       case let .internalAction(.savedTwitterAccount(profile)):
+        // 広告なしログインカウントをデクリメント
+        state.$freeTwitterLoginCount.withLock { $0 = max(0, $0 - 1) }
         state.isLoading = false
+        return .run(
+          operation: { send in
+            try await mainQueue.sleep(for: .milliseconds(200))
+            await send(.internalAction(.showSuccessAlert("\(profile.name) (@\(profile.username))")))
+          },
+        )
+      case let .internalAction(.showSuccessAlert(profile)):
         state.alert = AlertState(
           title: {
             TextState(.loggedIn)
           },
           message: {
-            TextState("\(profile.name) (@\(profile.username))")
+            TextState(profile)
           },
         )
         return .send(.fetchTwitterAccounts)
@@ -222,6 +238,8 @@ public struct TwitterAccountManageFeature: Sendable {
             )
           },
         )
+        return .none
+      case .internalAction:
         return .none
       case .alert(.presented(.openRewardedAd)):
         state.alert = nil
@@ -255,7 +273,7 @@ public struct TwitterAccountManagePage: View {
       .navigationTitle(.accountManagement)
       .toolbar(
         addAction: {
-          store.send(.showAlertForWatchingAds)
+          store.send(.prepareLogin)
         },
       )
       .task {
