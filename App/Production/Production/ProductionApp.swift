@@ -18,30 +18,31 @@ struct ProductionApp: App {
   // MARK: - Body
   var body: some Scene {
     WindowGroup {
-      RootPage(
-        store: .init(
-          initialState: RootFeature.State(),
-          reducer: {
-            RootFeature()
-          },
-          withDependencies: {
-            $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3417597686353524/5779812351" }
-            $0.adUnit.addTwitterAccountRewardAdUnitID = { "ca-app-pub-3417597686353524/2100996522" }
-            $0.adUnit.getFreePostTicketRewardAdUnitID = { "ca-app-pub-3417597686353524/7896895487" }
-            $0.adClient = .google
-            $0.analytics = .firebase
-            $0.appCheck = .firebase
-            $0.auth = .firebase
-            $0.blueskyAPI = .atProtoKit
-            $0.consentInformation = .google
-            $0.crashlytics = .firebase
-            $0.functions = .firebase()
-            $0.revenueCat = .revenueCat
-            $0.rewardedAd = .google
-            $0.secureKeyValueStore = .keychainAccess
-          },
-        ),
-      )
+      prepareDependencies {
+        $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3417597686353524/5779812351" }
+        $0.adUnit.addTwitterAccountRewardAdUnitID = { "ca-app-pub-3417597686353524/2100996522" }
+        $0.adUnit.getFreePostTicketRewardAdUnitID = { "ca-app-pub-3417597686353524/7896895487" }
+        $0.adClient = .google
+        $0.analytics = .firebase
+        $0.appCheck = .firebase
+        $0.auth = .firebase
+        $0.blueskyAPI = .atProtoKit
+        $0.consentInformation = .google
+        $0.crashlytics = .firebase
+        $0.functions = .firebase()
+        $0.revenueCat = .revenueCat
+        $0.rewardedAd = .google
+        $0.secureKeyValueStore = .keychainAccess
+
+        return RootPage(
+          store: .init(
+            initialState: RootFeature.State(),
+            reducer: {
+              RootFeature()
+            },
+          ),
+        )
+      }
     }
   }
 
