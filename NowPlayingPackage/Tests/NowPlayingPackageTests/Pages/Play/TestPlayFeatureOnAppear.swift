@@ -95,18 +95,20 @@ struct TestPlayFeatureOnAppear {
         }
       }
       await store.receive(\.internalAction.authorizationFailure, String(localized: .accessToTheMusicLibraryWasDenied)) {
-        $0.alert = AlertState(
-          title: {
-            TextState(.accessToTheMusicLibraryWasDenied)
-          },
-          actions: {
-            ButtonState(
-              role: .cancel,
-              label: {
-                TextState(.close)
-              },
-            )
-          },
+        $0.destination = .alert(
+          AlertState(
+            title: {
+              TextState(.accessToTheMusicLibraryWasDenied)
+            },
+            actions: {
+              ButtonState(
+                role: .cancel,
+                label: {
+                  TextState(.close)
+                },
+              )
+            },
+          )
         )
       }
     }
@@ -137,18 +139,20 @@ struct TestPlayFeatureOnAppear {
         }
       }
       await store.receive(\.internalAction.authorizationFailure, String(localized: .accessToTheMusicLibraryIsRestricted)) {
-        $0.alert = AlertState(
-          title: {
-            TextState(.accessToTheMusicLibraryIsRestricted)
-          },
-          actions: {
-            ButtonState(
-              role: .cancel,
-              label: {
-                TextState(.close)
-              },
-            )
-          },
+        $0.destination = .alert(
+          AlertState(
+            title: {
+              TextState(.accessToTheMusicLibraryIsRestricted)
+            },
+            actions: {
+              ButtonState(
+                role: .cancel,
+                label: {
+                  TextState(.close)
+                },
+              )
+            },
+          )
         )
       }
     }

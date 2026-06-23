@@ -1,5 +1,5 @@
 //
-//  TestPlayFeatureSetting.swift
+//  TestPlayFeatureDestination.swift
 //  NowPlayingPackage
 //
 //  Created by Yuya Oka on 2026/03/24.
@@ -10,20 +10,20 @@ import ComposableArchitecture
 import Testing
 
 @MainActor
-struct TestPlayFeatureSetting {
+struct TestPlayFeatureDestination {
   @Test
-  func testSettingPresentedDelegateHideAds() async throws {
+  func testDestinationPresentedSettingDelegateHideAds() async throws {
     let store = TestStore(
       initialState: PlayFeature.State(
         isPurchasedHideAds: false,
-        setting: .init(),
+        destination: .setting(.init()),
       ),
       reducer: {
         PlayFeature()
       },
     )
 
-    await store.send(.setting(.presented(.delegate(.hideAds)))) {
+    await store.send(.destination(.presented(.setting(.delegate(.hideAds))))) {
       $0.isPurchasedHideAds = true
     }
   }

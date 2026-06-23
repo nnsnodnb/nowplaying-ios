@@ -23,7 +23,7 @@ struct TestPlayFeatureShowSetting {
     )
 
     await store.send(.showSetting) {
-      $0.setting = .init()
+      $0.destination = .setting(.init())
     }
   }
 }

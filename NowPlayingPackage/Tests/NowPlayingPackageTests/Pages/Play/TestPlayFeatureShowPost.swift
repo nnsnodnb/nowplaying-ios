@@ -45,13 +45,15 @@ struct TestPlayFeatureShowPost {
       await store.receive(\.internalAction.captureScreen)
       await mainQueue.advance(by: .milliseconds(300))
       await store.receive(\.internalAction.showTweet) {
-        $0.tweet = .init(
-          twitterAccounts: [twitterAccount],
-          title: "曲名",
-          artist: "アーティスト名",
-          album: nil,
-          artwork: .init(systemSymbol: .photoFill),
-          capturedImage: .init(systemSymbol: .photo),
+        $0.destination = .tweet(
+          .init(
+            twitterAccounts: [twitterAccount],
+            title: "曲名",
+            artist: "アーティスト名",
+            album: nil,
+            artwork: .init(systemSymbol: .photoFill),
+            capturedImage: .init(systemSymbol: .photo),
+          )
         )
       }
     }
@@ -82,13 +84,15 @@ struct TestPlayFeatureShowPost {
 
       await store.send(.showPost(.twitter))
       await store.receive(\.internalAction.emptySNSAccounts) {
-        $0.alert = AlertState(
-          title: {
-            TextState(.noAccountIsConfigured("X"))
-          },
-          message: {
-            TextState(.fromTheBottomLeftSettingsButtonGoToSettingsAccountManagementAuthenticateUsingTheTopLeftButton("X"))
-          },
+        $0.destination = .alert(
+          AlertState(
+            title: {
+              TextState(.noAccountIsConfigured("X"))
+            },
+            message: {
+              TextState(.fromTheBottomLeftSettingsButtonGoToSettingsAccountManagementAuthenticateUsingTheTopLeftButton("X"))
+            },
+          )
         )
       }
     }
@@ -120,21 +124,23 @@ struct TestPlayFeatureShowPost {
 
       await store.send(.showPost(.twitter))
       await store.receive(\.internalAction.emptyPostTicket) {
-        $0.alert = AlertState(
-          title: {
-            TextState(.noPostingTicketsAvailable)
-          },
-          actions: {
-            ButtonState(
-              action: .close,
-              label: {
-                TextState(.close)
-              },
-            )
-          },
-          message: {
-            TextState(.fromTheBottomLeftSettingsButtonSelectPaidContentAndEitherWatchAnAdOrPurchasePostingTickets)
-          },
+        $0.destination = .alert(
+          AlertState(
+            title: {
+              TextState(.noPostingTicketsAvailable)
+            },
+            actions: {
+              ButtonState(
+                action: .close,
+                label: {
+                  TextState(.close)
+                },
+              )
+            },
+            message: {
+              TextState(.fromTheBottomLeftSettingsButtonSelectPaidContentAndEitherWatchAnAdOrPurchasePostingTickets)
+            },
+          )
         )
       }
     }
@@ -166,13 +172,15 @@ struct TestPlayFeatureShowPost {
       await store.receive(\.internalAction.captureScreen)
       await mainQueue.advance(by: .milliseconds(300))
       await store.receive(\.internalAction.showPost) {
-        $0.post = .init(
-          blueskyAccounts: [blueskyAccount],
-          title: String(localized: .songTitle),
-          artist: String(localized: .artistName),
-          album: nil,
-          artwork: .init(systemSymbol: .photoFill),
-          capturedImage: .init(systemSymbol: .photo),
+        $0.destination = .post(
+          .init(
+            blueskyAccounts: [blueskyAccount],
+            title: String(localized: .songTitle),
+            artist: String(localized: .artistName),
+            album: nil,
+            artwork: .init(systemSymbol: .photoFill),
+            capturedImage: .init(systemSymbol: .photo),
+          )
         )
       }
     }
@@ -198,13 +206,15 @@ struct TestPlayFeatureShowPost {
 
     await store.send(.showPost(.bluesky))
     await store.receive(\.internalAction.emptySNSAccounts) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.noAccountIsConfigured("Bluesky"))
-        },
-        message: {
-          TextState(.fromTheBottomLeftSettingsButtonGoToSettingsAccountManagementAuthenticateUsingTheTopLeftButton("Bluesky"))
-        },
+      $0.destination = .alert(
+        AlertState(
+          title: {
+            TextState(.noAccountIsConfigured("Bluesky"))
+          },
+          message: {
+            TextState(.fromTheBottomLeftSettingsButtonGoToSettingsAccountManagementAuthenticateUsingTheTopLeftButton("Bluesky"))
+          },
+        )
       )
     }
   }
@@ -235,13 +245,15 @@ struct TestPlayFeatureShowPost {
       await store.receive(\.internalAction.captureScreen)
       await mainQueue.advance(by: .milliseconds(300))
       await store.receive(\.internalAction.showToot) {
-        $0.toot = .init(
-          mastodonAccounts: [mastodonAccount],
-          title: String(localized: .songTitle),
-          artist: String(localized: .artistName),
-          album: nil,
-          artwork: .init(systemSymbol: .photoFill),
-          capturedImage: .init(systemSymbol: .photo),
+        $0.destination = .toot(
+          .init(
+            mastodonAccounts: [mastodonAccount],
+            title: String(localized: .songTitle),
+            artist: String(localized: .artistName),
+            album: nil,
+            artwork: .init(systemSymbol: .photoFill),
+            capturedImage: .init(systemSymbol: .photo),
+          )
         )
       }
     }
@@ -267,13 +279,15 @@ struct TestPlayFeatureShowPost {
 
     await store.send(.showPost(.mastodon))
     await store.receive(\.internalAction.emptySNSAccounts) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.noAccountIsConfigured("Mastodon"))
-        },
-        message: {
-          TextState(.fromTheBottomLeftSettingsButtonGoToSettingsAccountManagementAuthenticateUsingTheTopLeftButton("Mastodon"))
-        },
+      $0.destination = .alert(
+        AlertState(
+          title: {
+            TextState(.noAccountIsConfigured("Mastodon"))
+          },
+          message: {
+            TextState(.fromTheBottomLeftSettingsButtonGoToSettingsAccountManagementAuthenticateUsingTheTopLeftButton("Mastodon"))
+          },
+        )
       )
     }
   }
