@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   adhoc:
-    runs-on: macos-15
+    runs-on: macos-26
 
     environment:
       name: Firebase App Distribution
@@ -21,7 +21,7 @@ jobs:
 
     env:
       FASTLANE_SKIP_UPDATE_CHECK: 1
-      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_26.5.app/Contents/Developer
 
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
