@@ -14,6 +14,22 @@ import SwiftUI
 
 @Reducer
 public struct PlayFeature: Sendable {
+  // MARK: - Path
+  @Reducer
+  public enum Destination {
+    case setting(SettingFeature)
+    case tweet(TweetFeature)
+    case post(PostFeature)
+    case toot(TootFeature)
+    case alert(AlertState<Alert>)
+
+    // MARK: - Alert
+    @CasePathable
+    public enum Alert: Equatable, Sendable {
+      case close
+    }
+  }
+
   // MARK: - State
   @ObservableState
   @MemberwiseInit(.public)
@@ -33,11 +49,7 @@ public struct PlayFeature: Sendable {
     @Init(default: UIColor.black.withAlphaComponent(0.7))
     public var backgroundColor: UIColor
     @Init(default: nil)
-    @Presents public var setting: SettingFeature.State?
-    @Presents public var tweet: TweetFeature.State?
-    @Presents public var post: PostFeature.State?
-    @Presents public var toot: TootFeature.State?
-    @Presents public var alert: AlertState<Action.Alert>?
+    @Presents public var destination: Destination.State?
   }
 
   // MARK: - Action
@@ -48,12 +60,8 @@ public struct PlayFeature: Sendable {
     case forward
     case showSetting
     case showPost(SocialService)
-    case setting(PresentationAction<SettingFeature.Action>)
-    case tweet(PresentationAction<TweetFeature.Action>)
-    case post(PresentationAction<PostFeature.Action>)
-    case toot(PresentationAction<TootFeature.Action>)
+    case destination(PresentationAction<Destination.Action>)
     case internalAction(InternalAction)
-    case alert(PresentationAction<Alert>)
 
     // MARK: - InternalAction
     @CasePathable
@@ -70,12 +78,6 @@ public struct PlayFeature: Sendable {
       case showTweet([TwitterAccount], UIImage)
       case showPost([BlueskyAccount], UIImage)
       case showToot([MastodonAccount], UIImage)
-    }
-
-    // MARK: - Alert
-    @CasePathable
-    public enum Alert: Equatable, Sendable {
-      case close
     }
   }
 
@@ -140,7 +142,7 @@ public struct PlayFeature: Sendable {
           },
         )
       case .showSetting:
-        state.setting = .init()
+        state.destination = .setting(.init())
         return .none
       case let .showPost(socialService):
         switch socialService {
@@ -187,17 +189,11 @@ public struct PlayFeature: Sendable {
             },
           )
         }
-      case .setting(.presented(.delegate(.hideAds))):
+      case .destination(.presented(.setting(.delegate(.hideAds)))):
         state.isPurchasedHideAds = true
         state.bannerAdUnitID = nil
         return .none
-      case .setting:
-        return .none
-      case .tweet:
-        return .none
-      case .post:
-        return .none
-      case .toot:
+      case .destination:
         return .none
       case .internalAction(.authorizationSuccess):
         state.songName = String(localized: .loading)
@@ -220,18 +216,20 @@ public struct PlayFeature: Sendable {
           )
         )
       case let .internalAction(.authorizationFailure(title)):
-        state.alert = AlertState(
-          title: {
-            TextState(title)
-          },
-          actions: {
-            ButtonState(
-              role: .cancel,
-              label: {
-                TextState(.close)
-              },
-            )
-          },
+        state.destination = .alert(
+          AlertState(
+            title: {
+              TextState(title)
+            },
+            actions: {
+              ButtonState(
+                role: .cancel,
+                label: {
+                  TextState(.close)
+                },
+              )
+            },
+          )
         )
         return .none
       case let .internalAction(.applyNowPlayingItem(mediaItem)):
@@ -272,21 +270,23 @@ public struct PlayFeature: Sendable {
           },
         )
       case .internalAction(.emptyPostTicket):
-        state.alert = AlertState(
-          title: {
-            TextState(.noPostingTicketsAvailable)
-          },
-          actions: {
-            ButtonState(
-              action: .close,
-              label: {
-                TextState(.close)
-              },
-            )
-          },
-          message: {
-            TextState(.fromTheBottomLeftSettingsButtonSelectPaidContentAndEitherWatchAnAdOrPurchasePostingTickets)
-          },
+        state.destination = .alert(
+          AlertState(
+            title: {
+              TextState(.noPostingTicketsAvailable)
+            },
+            actions: {
+              ButtonState(
+                action: .close,
+                label: {
+                  TextState(.close)
+                },
+              )
+            },
+            message: {
+              TextState(.fromTheBottomLeftSettingsButtonSelectPaidContentAndEitherWatchAnAdOrPurchasePostingTickets)
+            },
+          )
         )
         return .run(
           operation: { _ in
@@ -295,13 +295,15 @@ public struct PlayFeature: Sendable {
         )
       case let .internalAction(.emptySNSAccounts(socialService)):
         let name = socialService.rawValue
-        state.alert = AlertState(
-          title: {
-            TextState(.noAccountIsConfigured(name))
-          },
-          message: {
-            TextState(.fromTheBottomLeftSettingsButtonGoToSettingsAccountManagementAuthenticateUsingTheTopLeftButton(name))
-          },
+        state.destination = .alert(
+          AlertState(
+            title: {
+              TextState(.noAccountIsConfigured(name))
+            },
+            message: {
+              TextState(.fromTheBottomLeftSettingsButtonGoToSettingsAccountManagementAuthenticateUsingTheTopLeftButton(name))
+            },
+          )
         )
         return .run(
           operation: { _ in
@@ -312,92 +314,96 @@ public struct PlayFeature: Sendable {
         guard let songName = state.songName,
               songName != String(localized: .loading),
               let artistName = state.artistName else {
-          state.alert = AlertState(
-            title: {
-              TextState(.failedToRetrieveTheInformationRequiredForPosting)
-            },
-            message: {
-              TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
-            },
+          state.destination = .alert(
+            AlertState(
+              title: {
+                TextState(.failedToRetrieveTheInformationRequiredForPosting)
+              },
+              message: {
+                TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+              },
+            )
           )
           return .none
         }
-        state.tweet = .init(
-          twitterAccounts: twitterAccounts,
-          title: songName,
-          artist: artistName,
-          album: state.album,
-          artwork: state.artworkImage,
-          capturedImage: capturedImage,
+        state.destination = .tweet(
+          .init(
+            twitterAccounts: twitterAccounts,
+            title: songName,
+            artist: artistName,
+            album: state.album,
+            artwork: state.artworkImage,
+            capturedImage: capturedImage,
+          )
         )
         return .none
       case let .internalAction(.showPost(blueskyAccounts, capturedImage)):
         guard let songName = state.songName,
               songName != String(localized: .loading),
               let artistName = state.artistName else {
-          state.alert = AlertState(
-            title: {
-              TextState(.failedToRetrieveTheInformationRequiredForPosting)
-            },
-            message: {
-              TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
-            },
+          state.destination = .alert(
+            AlertState(
+              title: {
+                TextState(.failedToRetrieveTheInformationRequiredForPosting)
+              },
+              message: {
+                TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+              },
+            )
           )
           return .none
         }
-        state.post = .init(
-          blueskyAccounts: blueskyAccounts,
-          title: songName,
-          artist: artistName,
-          album: state.album,
-          artwork: state.artworkImage,
-          capturedImage: capturedImage,
+        state.destination = .post(
+          .init(
+            blueskyAccounts: blueskyAccounts,
+            title: songName,
+            artist: artistName,
+            album: state.album,
+            artwork: state.artworkImage,
+            capturedImage: capturedImage,
+          )
         )
         return .none
       case let .internalAction(.showToot(mastodonAccounts, capturedImage)):
         guard let songName = state.songName,
               songName != String(localized: .loading),
               let artistName = state.artistName else {
-          state.alert = AlertState(
-            title: {
-              TextState(.failedToRetrieveTheInformationRequiredForPosting)
-            },
-            message: {
-              TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
-            },
+          state.destination = .alert(
+            AlertState(
+              title: {
+                TextState(.failedToRetrieveTheInformationRequiredForPosting)
+              },
+              message: {
+                TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+              },
+            )
           )
           return .none
         }
-        state.toot = .init(
-          mastodonAccounts: mastodonAccounts,
-          title: songName,
-          artist: artistName,
-          album: state.album,
-          artwork: state.artworkImage,
-          capturedImage: capturedImage,
+        state.destination = .toot(
+          .init(
+            mastodonAccounts: mastodonAccounts,
+            title: songName,
+            artist: artistName,
+            album: state.album,
+            artwork: state.artworkImage,
+            capturedImage: capturedImage,
+          )
         )
         return .none
       case .internalAction:
         return .none
-      case .alert:
-        return .none
       }
     }
-    .ifLet(\.$setting, action: \.setting) {
-      SettingFeature()
-    }
-    .ifLet(\.$tweet, action: \.tweet) {
-      TweetFeature()
-    }
-    .ifLet(\.$post, action: \.post) {
-      PostFeature()
-    }
-    .ifLet(\.$toot, action: \.toot) {
-      TootFeature()
-    }
-    .ifLet(\.alert, action: \.alert)
+    .ifLet(\.$destination, action: \.destination)
   }
 }
+
+// MARK: - PlayFeature.Destination.State Equatable
+extension PlayFeature.Destination.State: Equatable {}
+
+// MARK: - PlayFeature.Destination.State Sendable
+extension PlayFeature.Destination.State: Sendable {}
 
 public struct PlayPage: View {
   // MARK: - Properties
@@ -429,19 +435,19 @@ public struct PlayPage: View {
     .task {
       store.send(.onAppear)
     }
-    .sheet(item: $store.scope(\.setting, action: \.setting)) { store in
+    .sheet(item: $store.scope(\.destination, action: \.destination).setting) { store in
       SettingPage(store: store)
     }
-    .sheet(item: $store.scope(\.tweet, action: \.tweet)) { store in
+    .sheet(item: $store.scope(\.destination, action: \.destination).tweet) { store in
       TweetPage(store: store)
     }
-    .sheet(item: $store.scope(\.post, action: \.post)) { store in
+    .sheet(item: $store.scope(\.destination, action: \.destination).post) { store in
       PostPage(store: store)
     }
-    .sheet(item: $store.scope(\.toot, action: \.toot)) { store in
+    .sheet(item: $store.scope(\.destination, action: \.destination).toot) { store in
       TootPage(store: store)
     }
-    .alert($store.scope(\.alert, action: \.alert))
+    .alert($store.scope(\.destination, action: \.destination).alert)
     .analyticsScreen(screenName: .play)
   }
 

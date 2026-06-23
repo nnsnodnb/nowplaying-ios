@@ -100,13 +100,15 @@ struct TestPlayFeatureInternalAction {
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
     await store.send(.internalAction(.showTweet([twitterAccount], .init(systemSymbol: .photo)))) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.failedToRetrieveTheInformationRequiredForPosting)
-        },
-        message: {
-          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
-        },
+      $0.destination = .alert(
+        AlertState(
+          title: {
+            TextState(.failedToRetrieveTheInformationRequiredForPosting)
+          },
+          message: {
+            TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+          },
+        )
       )
     }
   }
@@ -127,13 +129,15 @@ struct TestPlayFeatureInternalAction {
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
     await store.send(.internalAction(.showTweet([twitterAccount], .init(systemSymbol: .photo)))) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.failedToRetrieveTheInformationRequiredForPosting)
-        },
-        message: {
-          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
-        },
+      $0.destination = .alert(
+        AlertState(
+          title: {
+            TextState(.failedToRetrieveTheInformationRequiredForPosting)
+          },
+          message: {
+            TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+          },
+        )
       )
     }
   }
@@ -154,13 +158,15 @@ struct TestPlayFeatureInternalAction {
     let twitterAccount = try Stub.make(TwitterAccount.self)
 
     await store.send(.internalAction(.showTweet([twitterAccount], .init(systemSymbol: .photo)))) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.failedToRetrieveTheInformationRequiredForPosting)
-        },
-        message: {
-          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
-        },
+      $0.destination = .alert(
+        AlertState(
+          title: {
+            TextState(.failedToRetrieveTheInformationRequiredForPosting)
+          },
+          message: {
+            TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+          },
+        )
       )
     }
   }
@@ -181,13 +187,15 @@ struct TestPlayFeatureInternalAction {
     let blueskyAccount = try Stub.make(BlueskyAccount.self)
 
     await store.send(.internalAction(.showPost([blueskyAccount], .init(systemSymbol: .photo)))) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.failedToRetrieveTheInformationRequiredForPosting)
-        },
-        message: {
-          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
-        },
+      $0.destination = .alert(
+        AlertState(
+          title: {
+            TextState(.failedToRetrieveTheInformationRequiredForPosting)
+          },
+          message: {
+            TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+          },
+        )
       )
     }
   }
@@ -208,13 +216,15 @@ struct TestPlayFeatureInternalAction {
     let blueskyAccount = try Stub.make(BlueskyAccount.self)
 
     await store.send(.internalAction(.showPost([blueskyAccount], .init(systemSymbol: .photo)))) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.failedToRetrieveTheInformationRequiredForPosting)
-        },
-        message: {
-          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
-        },
+      $0.destination = .alert(
+        AlertState(
+          title: {
+            TextState(.failedToRetrieveTheInformationRequiredForPosting)
+          },
+          message: {
+            TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+          },
+        )
       )
     }
   }
@@ -235,13 +245,15 @@ struct TestPlayFeatureInternalAction {
     let blueskyAccount = try Stub.make(BlueskyAccount.self)
 
     await store.send(.internalAction(.showPost([blueskyAccount], .init(systemSymbol: .photo)))) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.failedToRetrieveTheInformationRequiredForPosting)
-        },
-        message: {
-          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
-        },
+      $0.destination = .alert(
+        AlertState(
+          title: {
+            TextState(.failedToRetrieveTheInformationRequiredForPosting)
+          },
+          message: {
+            TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+          },
+        )
       )
     }
   }
@@ -262,13 +274,15 @@ struct TestPlayFeatureInternalAction {
     let mastodonAccount = try Stub.make(MastodonAccount.self)
 
     await store.send(.internalAction(.showToot([mastodonAccount], .init(systemSymbol: .photo)))) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.failedToRetrieveTheInformationRequiredForPosting)
-        },
-        message: {
-          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
-        },
+      $0.destination = .alert(
+        AlertState(
+          title: {
+            TextState(.failedToRetrieveTheInformationRequiredForPosting)
+          },
+          message: {
+            TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+          },
+        )
       )
     }
   }
@@ -289,13 +303,15 @@ struct TestPlayFeatureInternalAction {
     let mastodonAccount = try Stub.make(MastodonAccount.self)
 
     await store.send(.internalAction(.showToot([mastodonAccount], .init(systemSymbol: .photo)))) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.failedToRetrieveTheInformationRequiredForPosting)
-        },
-        message: {
-          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
-        },
+      $0.destination = .alert(
+        AlertState(
+          title: {
+            TextState(.failedToRetrieveTheInformationRequiredForPosting)
+          },
+          message: {
+            TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+          },
+        )
       )
     }
   }
@@ -316,13 +332,15 @@ struct TestPlayFeatureInternalAction {
     let mastodonAccount = try Stub.make(MastodonAccount.self)
 
     await store.send(.internalAction(.showToot([mastodonAccount], .init(systemSymbol: .photo)))) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.failedToRetrieveTheInformationRequiredForPosting)
-        },
-        message: {
-          TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
-        },
+      $0.destination = .alert(
+        AlertState(
+          title: {
+            TextState(.failedToRetrieveTheInformationRequiredForPosting)
+          },
+          message: {
+            TextState(.songTitleAndArtistNameCouldNotBeRetrieved)
+          },
+        )
       )
     }
   }
