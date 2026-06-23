@@ -6,15 +6,15 @@
 
 ```command
 $ xcodebuild -version
-Xcode 26.3
-Build version 17C529
+Xcode 26.5
+Build version 17F42
 ```
 
 ### Ruby
 
 ```command
 $ ruby -v
-ruby 4.0.2 (2026-03-17 revision d3da9fec82) +PRISM [arm64-darwin25]
+ruby 4.0.5 (2026-05-20 revision 64336ffd0e) +PRISM [arm64-darwin25]
 ```
 
 ## Setup
