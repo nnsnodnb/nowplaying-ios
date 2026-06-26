@@ -16,15 +16,15 @@ struct TestAppInfoFeatureAlert {
   @Test
   func testPresentedRetry() async throws {
     let appVersion = try Stub.make(AppInfo.AppVersion.self) {
-      $0.set(\.require, value: "1.0.0")
-      $0.set(\.latest, value: "1.0.0")
+      $0.set(\.require, value: 1)
+      $0.set(\.latest, value: 1)
     }
     let appInfo = AppInfo(appVersion: appVersion)
 
     await withDependencies {
       $0.apiClient.getAppInfo = { appInfo }
       $0.continuousClock = .immediate
-      $0.bundle.shortVersionString = { "1.0.0" }
+      $0.bundle.buildVersion = { 1 }
     } operation: {
       let store = TestStore(
         initialState: AppInfoFeature.State(
