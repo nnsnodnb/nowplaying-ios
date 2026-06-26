@@ -7,7 +7,6 @@
 
 import ComposableArchitecture
 import SwiftUI
-import Version
 
 @Reducer
 public struct AppInfoFeature: Sendable {
@@ -15,9 +14,9 @@ public struct AppInfoFeature: Sendable {
   @ObservableState
   public struct State: Equatable, Sendable {
     public var viewState: ViewState = .initial
-    public var updateAvailableVersion: Version?
-    @Shared(.appStorage(.skippedUpdateVersion))
-    public var skippedUpdateVersion: Version?
+    public var updateAvailableBuild: Int?
+    @Shared(.appStorage(.skippedUpdateBuild))
+    public var skippedUpdateBuild: Int?
     @Presents public var alert: AlertState<Action.Alert>?
 
     // MARK: - ViewState
@@ -47,7 +46,7 @@ public struct AppInfoFeature: Sendable {
     @CasePathable
     public enum InternalAction {
       case updateRequired
-      case updateAvailable(Version)
+      case updateAvailable(Int)
       case fetchFailed
       case completed
     }
@@ -77,13 +76,11 @@ public struct AppInfoFeature: Sendable {
         return .run(
           operation: { send in
             let appInfo = try await apiClient.getAppInfo()
-            let shortVersionString = bundle.shortVersionString()
-            let currentVersion = Version(shortVersionString.split(separator: "-", maxSplits: 1)[safe: 0] ?? "")!
-            let updateAvailableVersion = Version(appInfo.appVersion.latest)!
-            if currentVersion < Version(appInfo.appVersion.require)! {
+            let currentBuildVersion = bundle.buildVersion()
+            if currentBuildVersion < appInfo.appVersion.require {
               await send(.internalAction(.updateRequired))
-            } else if currentVersion < updateAvailableVersion {
-              await send(.internalAction(.updateAvailable(updateAvailableVersion)))
+            } else if currentBuildVersion < appInfo.appVersion.latest {
+              await send(.internalAction(.updateAvailable(appInfo.appVersion.latest)))
             } else {
               await send(.internalAction(.completed))
             }
@@ -99,17 +96,17 @@ public struct AppInfoFeature: Sendable {
           },
         )
       case .updateLater:
-        state.$skippedUpdateVersion.withLock { $0 = state.updateAvailableVersion }
+        state.$skippedUpdateBuild.withLock { $0 = state.updateAvailableBuild }
         return .send(.delegate(.completed))
       case .delegate:
         return .none
       case .internalAction(.updateRequired):
         state.viewState = .updateRequire
         return .none
-      case let .internalAction(.updateAvailable(updateAvailableVersion)):
-        state.updateAvailableVersion = updateAvailableVersion
-        if let skippedUpdateVersion = state.skippedUpdateVersion,
-           updateAvailableVersion <= skippedUpdateVersion {
+      case let .internalAction(.updateAvailable(updateAvailableBuild)):
+        state.updateAvailableBuild = updateAvailableBuild
+        if let skippedUpdateBuild = state.skippedUpdateBuild,
+           updateAvailableBuild <= skippedUpdateBuild {
           // すでにスキップバージョンなので終了
           return .send(.delegate(.completed))
         }

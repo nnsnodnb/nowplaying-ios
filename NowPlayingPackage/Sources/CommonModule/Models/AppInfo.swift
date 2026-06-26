@@ -23,7 +23,13 @@ public struct AppInfo: Decodable, Sendable {
 public extension AppInfo {
   struct AppVersion: Decodable, Sendable {
     // MARK: - Properties
-    public let require: String
-    public let latest: String
+    public let require: Int
+    public let latest: Int
+
+    // MARK: - CodingKeys
+    private enum CodingKeys: String, CodingKey {
+      case require = "require_build"
+      case latest = "latest_build"
+    }
   }
 }
