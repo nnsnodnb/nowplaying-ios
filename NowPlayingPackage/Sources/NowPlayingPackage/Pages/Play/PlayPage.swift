@@ -14,7 +14,7 @@ import SwiftUI
 
 @Reducer
 public struct PlayFeature: Sendable {
-  // MARK: - Path
+  // MARK: - Destination
   @Reducer
   public enum Destination {
     case setting(SettingFeature)
