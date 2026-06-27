@@ -12,20 +12,22 @@ import SwiftUI
 @Reducer
 @MemberwiseInit(.public)
 public struct RootFeature: Sendable {
+  // MARK: - Destination
+  @Reducer
+  public enum Destination {
+    case appInfo(AppInfoFeature)
+    case consent(ConsentFeature)
+    case signInAnonymously(SignInAnonymouslyFeature)
+    case migrateV320(MigrateV320Feature)
+    case play(PlayFeature)
+  }
+
   // MARK: - State
   @ObservableState
   @MemberwiseInit(.public)
   public struct State: Equatable, Sendable {
     @Init(default: nil)
-    public var appInfo: AppInfoFeature.State?
-    @Init(default: nil)
-    public var consent: ConsentFeature.State?
-    @Init(default: nil)
-    public var signInAnonymously: SignInAnonymouslyFeature.State?
-    @Init(default: nil)
-    public var migrateV320: MigrateV320Feature.State?
-    @Init(default: nil)
-    public var play: PlayFeature.State?
+    public var destination: Destination.State?
     @Shared(.appStorage(.isLaunchAtFirst))
     public var isLaunchAtFirst = true
     @Shared(.appStorage(.migratedV320))
@@ -35,11 +37,7 @@ public struct RootFeature: Sendable {
   // MARK: - Action
   public enum Action {
     case onAppear
-    case appInfo(AppInfoFeature.Action)
-    case consent(ConsentFeature.Action)
-    case signInAnonymously(SignInAnonymouslyFeature.Action)
-    case migrateV320(MigrateV320Feature.Action)
-    case play(PlayFeature.Action)
+    case destination(Destination.Action)
     case internalAction(InternalAction)
 
     // MARK: - InternalAction
@@ -61,7 +59,7 @@ public struct RootFeature: Sendable {
     Reduce { state, action in
       switch action {
       case .onAppear:
-        state.appInfo = .init()
+        state.destination = .appInfo(.init())
         guard state.isLaunchAtFirst else {
           return .none
         }
@@ -73,19 +71,13 @@ public struct RootFeature: Sendable {
             await send(.internalAction(.resetedSecureAllData))
           },
         )
-      case .appInfo(.delegate(.completed)):
-        state.appInfo = nil
-        state.consent = .init()
+      case .destination(.appInfo(.delegate(.completed))):
+        state.destination = .consent(.init())
         return .none
-      case .appInfo:
+      case .destination(.consent(.delegate(.completedConsent))):
+        state.destination = .signInAnonymously(.init())
         return .none
-      case .consent(.delegate(.completedConsent)):
-        state.consent = nil
-        state.signInAnonymously = .init()
-        return .none
-      case .consent:
-        return .none
-      case .signInAnonymously(.delegate(.completed)):
+      case .destination(.signInAnonymously(.delegate(.completed))):
         if state.migratedV320 {
           return .run(
             operation: { send in
@@ -94,53 +86,42 @@ public struct RootFeature: Sendable {
             },
           )
         } else {
-          state.signInAnonymously = nil
-          state.migrateV320 = .init()
+          state.destination = .migrateV320(.init())
           return .none
         }
-      case .signInAnonymously:
-        return .none
-      case .migrateV320(.delegate(.completed)):
+      case .destination(.migrateV320(.delegate(.completed))):
         return .run(
           operation: { send in
             let nonConsumables = try await secureKeyValueStore.getNonConsumables()
             await send(.internalAction(.showPlay(nonConsumables.contains(.hideAds))))
           },
         )
-      case .migrateV320:
-        return .none
-      case .play:
+      case .destination:
         return .none
       case .internalAction(.resetedSecureAllData):
         state.$isLaunchAtFirst.withLock { $0 = false }
         return .none
       case let .internalAction(.showPlay(isPurchasedHideAds)):
         // 非同期処理が入りこのアクションに来るのが遅くなってonAppearが再度呼ばれてしまうため画面を待機させておく
-        state.signInAnonymously = nil
-        state.migrateV320 = nil
-        state.play = .init(
-          isPurchasedHideAds: isPurchasedHideAds,
+        state.destination = .play(
+          .init(
+            isPurchasedHideAds: isPurchasedHideAds,
+          )
         )
         return .none
       }
     }
-    .ifLet(\.appInfo, action: \.appInfo) {
-      AppInfoFeature()
-    }
-    .ifLet(\.consent, action: \.consent) {
-      ConsentFeature()
-    }
-    .ifLet(\.signInAnonymously, action: \.signInAnonymously) {
-      SignInAnonymouslyFeature()
-    }
-    .ifLet(\.migrateV320, action: \.migrateV320) {
-      MigrateV320Feature()
-    }
-    .ifLet(\.play, action: \.play) {
-      PlayFeature()
+    .ifLet(\.destination, action: \.destination) {
+      Destination.body
     }
   }
 }
+
+// MARK: - RootFeature.Destination.State Equatable
+extension RootFeature.Destination.State: Equatable {}
+
+// MARK: - RootFeature.Destination.State Sendable
+extension RootFeature.Destination.State: Sendable {}
 
 @MemberwiseInit(.public)
 public struct RootPage: View {
@@ -150,16 +131,19 @@ public struct RootPage: View {
 
   // MARK: - Body
   public var body: some View {
-    if let store = store.scope(\.appInfo, action: \.appInfo) {
-      AppInfoPage(store: store)
-    } else if let store = store.scope(\.consent, action: \.consent) {
-      ConsentPage(store: store)
-    } else if let store = store.scope(\.signInAnonymously, action: \.signInAnonymously) {
-      SignInAnonymouslyPage(store: store)
-    } else if let store = store.scope(\.migrateV320, action: \.migrateV320) {
-      MigrateV320Page(store: store)
-    } else if let store = store.scope(\.play, action: \.play) {
-      PlayPage(store: store)
+    if let destination = store.scope(\.destination, action: \.destination) {
+      switch destination.case {
+      case let .appInfo(store):
+        AppInfoPage(store: store)
+      case let .consent(store):
+        ConsentPage(store: store)
+      case let .signInAnonymously(store):
+        SignInAnonymouslyPage(store: store)
+      case let .migrateV320(store):
+        MigrateV320Page(store: store)
+      case let .play(store):
+        PlayPage(store: store)
+      }
     } else {
       Text("")
         .task {
