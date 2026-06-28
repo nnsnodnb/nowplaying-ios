@@ -6,8 +6,8 @@
 
 ```command
 $ xcodebuild -version
-Xcode 26.5
-Build version 17F42
+Xcode 26.6
+Build version 17F113
 ```
 
 ### Ruby
