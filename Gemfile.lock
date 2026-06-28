@@ -43,7 +43,7 @@ GEM
     dotenv (2.8.1)
     emoji_regex (3.2.3)
     excon (0.112.0)
-    faraday (1.10.5)
+    faraday (1.10.6)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -244,7 +244,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  faraday (~> 1.10.5)
+  faraday (~> 1.10.6)
   fastlane (~> 2.236.0)
   fastlane-plugin-firebase_app_distribution (~> 1.0.0)
   fastlane-plugin-update_xcodeproj (~> 1.0.1)
