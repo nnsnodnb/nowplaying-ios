@@ -35,7 +35,7 @@ let package = Package(
     .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", from: "7.0.0"),
     .package(url: "https://github.com/kateinoigakukun/StubKit.git", from: "0.1.7"),
     .package(url: "https://github.com/SVProgressHUD/SVProgressHUD.git", from: "2.3.1"),
-    .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", from: "0.64.1"),
+    .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", from: "0.65.0"),
     .package(
       url: "https://github.com/pointfreeco/swift-composable-architecture.git",
       from: "1.26.0",
