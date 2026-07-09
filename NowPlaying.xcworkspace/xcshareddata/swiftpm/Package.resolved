@@ -1,5 +1,5 @@
 {
-  "originHash" : "630c623072c03d8f729e7449b451fd59db24992a55e95e7e71bd38f60cd4499a",
+  "originHash" : "85578a943016d76ea0708bbfb02a88841370c6dcb0f30282ccb00ded42269a30",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MasterJ93/ATProtoKit.git",
       "state" : {
-        "revision" : "48ba6ba9f48f714274e0f8d2f5b11d0083554edb",
-        "version" : "0.32.6"
+        "revision" : "57e57cf63d0adc52895098ef29ff948e36e1d6ef",
+        "version" : "0.33.3"
       }
     },
     {
