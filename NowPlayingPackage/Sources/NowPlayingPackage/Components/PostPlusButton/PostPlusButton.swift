@@ -59,7 +59,7 @@ public struct PostPlusButton: View {
       label: {
         Image(systemSymbol: .plus)
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .scaledToFit()
           .padding(12)
           .foregroundStyle(.white)
           .shadow(color: .black.opacity(0.4), radius: 0.8)
