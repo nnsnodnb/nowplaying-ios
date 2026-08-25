@@ -530,7 +530,7 @@ public struct PaidContentPage: View {
             icon: {
               Image(systemSymbol: .ticketFill)
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .scaledToFit()
                 .foregroundStyle(.green)
                 .frame(width: 24, height: 24)
             },
@@ -591,7 +591,7 @@ public struct PaidContentPage: View {
         icon: {
           Image(systemSymbol: .nosignAppFill)
             .resizable()
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
             .foregroundStyle(.red)
             .frame(width: 24, height: 24)
         },
@@ -610,7 +610,7 @@ public struct PaidContentPage: View {
         icon: {
           Image(systemSymbol: .paperplaneCircleFill)
             .resizable()
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
             .foregroundStyle(Color(UIColor.systemCyan))
             .frame(width: 24, height: 24)
         },
@@ -628,7 +628,7 @@ public struct PaidContentPage: View {
       icon: {
         Image(systemSymbol: .purchasedCircleFill)
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .scaledToFit()
           .foregroundStyle(.yellow)
           .frame(width: 24, height: 24)
       },
@@ -644,7 +644,7 @@ public struct PaidContentPage: View {
       icon: {
         Image(systemSymbol: .ticketFill)
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .scaledToFit()
           .foregroundStyle(.green)
           .frame(width: 24, height: 24)
       },
@@ -661,7 +661,7 @@ public struct PaidContentPage: View {
       icon: {
         Image(systemSymbol: .ticketFill)
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .scaledToFit()
           .foregroundStyle(.orange)
           .frame(width: 24, height: 24)
       },
@@ -679,7 +679,7 @@ public struct PaidContentPage: View {
       icon: {
         Image(systemSymbol: .cupAndHeatWavesFill)
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .scaledToFit()
           .foregroundStyle(.brown)
           .frame(width: 24, height: 24)
       },

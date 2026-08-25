@@ -25,7 +25,7 @@ public struct PickerAttachedMediaSourceRow<SelectionValue: Hashable, Content: Vi
           icon: {
             Image(systemSymbol: .musicNote)
               .resizable()
-              .aspectRatio(contentMode: .fit)
+              .scaledToFit()
               .frame(width: 24, height: 24)
           },
         )

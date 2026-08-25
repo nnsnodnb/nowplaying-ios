@@ -265,7 +265,7 @@ public struct SettingPage: View {
         icon: {
           Image(.icXTwitterPadding)
             .resizable()
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
             .frame(width: 24, height: 24)
         },
       )
@@ -277,7 +277,7 @@ public struct SettingPage: View {
         icon: {
           Image(.icBlueskyPadding)
             .resizable()
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
             .frame(width: 24, height: 24)
         },
       )
@@ -289,7 +289,7 @@ public struct SettingPage: View {
         icon: {
           Image(.icMastodon)
             .resizable()
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
             .frame(width: 24, height: 24)
         },
       )
@@ -307,7 +307,7 @@ public struct SettingPage: View {
           Image(systemSymbol: .crownFill)
             .resizable()
             .foregroundStyle(.yellow)
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
             .frame(width: 24, height: 24)
         },
       )
@@ -388,7 +388,7 @@ public struct SettingPage: View {
         icon: {
           Image(.icXTwitterPadding)
             .resizable()
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
             .frame(width: 24, height: 24)
         },
       )
@@ -400,7 +400,7 @@ public struct SettingPage: View {
         icon: {
           Image(.icGithub)
             .resizable()
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
             .frame(width: 24, height: 24)
         },
       )
@@ -413,7 +413,7 @@ public struct SettingPage: View {
           Image(systemSymbol: .listBulletRectangleFill)
             .resizable()
             .foregroundStyle(.green)
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
             .frame(width: 24, height: 24)
         },
       )
@@ -426,7 +426,7 @@ public struct SettingPage: View {
           Image(systemSymbol: .exclamationmarkBubbleFill)
             .resizable()
             .foregroundStyle(.indigo)
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
             .frame(width: 24, height: 24)
         },
       )
@@ -439,7 +439,7 @@ public struct SettingPage: View {
           Image(systemSymbol: .starBubble)
             .resizable()
             .foregroundStyle(.purple)
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
             .frame(width: 24, height: 24)
         },
       )
@@ -458,7 +458,7 @@ public struct SettingPage: View {
           Image(systemSymbol: .tagFill)
             .resizable()
             .foregroundStyle(.yellow)
-            .aspectRatio(contentMode: .fit)
+            .scaledToFit()
             .frame(width: 24, height: 24)
         }
       )

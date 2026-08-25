@@ -172,7 +172,7 @@ public struct AppInfoPage: View {
       VStack(alignment: .center, spacing: 12) {
         Image(.icAppicon)
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .scaledToFit()
           .frame(width: 64, height: 64)
           .clipShape(RoundedRectangle(cornerRadius: 12))
         Text(.updateRequired)
@@ -196,7 +196,7 @@ public struct AppInfoPage: View {
       VStack(alignment: .center, spacing: 12) {
         Image(.icAppicon)
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .scaledToFit()
           .frame(width: 64, height: 64)
           .clipShape(RoundedRectangle(cornerRadius: 12))
         Text(.updateRequired)

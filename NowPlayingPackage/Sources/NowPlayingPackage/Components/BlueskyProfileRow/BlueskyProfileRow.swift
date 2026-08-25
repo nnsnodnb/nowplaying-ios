@@ -62,7 +62,7 @@ public struct BlueskyProfileRow: View {
       } else {
         Image(systemSymbol: .personCircleFill)
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .scaledToFit()
           .foregroundStyle(Color.accentColor)
       }
     }

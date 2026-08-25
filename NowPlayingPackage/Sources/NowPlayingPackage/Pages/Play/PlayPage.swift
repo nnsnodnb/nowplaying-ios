@@ -456,13 +456,13 @@ public struct PlayPage: View {
       if let artworkImage = store.artworkImage {
         Image(uiImage: artworkImage)
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .scaledToFit()
           .clipShape(RoundedRectangle(cornerRadius: 12))
           .shadow(color: colorScheme == .dark ? .white.opacity(0.7) : .black.opacity(0.4), radius: 8)
       } else {
         Image(systemSymbol: .musicQuarternote3)
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .scaledToFit()
           .foregroundStyle(.white)
       }
     }
@@ -520,7 +520,7 @@ public struct PlayPage: View {
       label: {
         Image(systemSymbol: store.isPlaying ? .pauseFill : .playFill)
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .scaledToFit()
           .foregroundStyle(.white)
       }
     )
@@ -563,7 +563,7 @@ public struct PlayPage: View {
       label: {
         Image(systemSymbol: .gear)
           .resizable()
-          .aspectRatio(contentMode: .fit)
+          .scaledToFit()
           .padding(8)
           .foregroundStyle(.gray)
       },

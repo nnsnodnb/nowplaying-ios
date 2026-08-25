@@ -307,7 +307,7 @@ public struct MastodonLoginPage: View {
             if let image = state.image {
               image
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             } else if state.isLoading {
               ProgressView()
