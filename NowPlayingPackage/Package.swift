@@ -24,7 +24,7 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.33.3"),
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.34.1"),
     .package(url: "https://github.com/stleamist/BetterSafariView.git", from: "2.4.2"),
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "12.18.0"),
     .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
