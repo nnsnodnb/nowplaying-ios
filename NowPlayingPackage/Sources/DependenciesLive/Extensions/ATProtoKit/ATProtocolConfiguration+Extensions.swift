@@ -55,9 +55,9 @@ public extension ATProtocolConfiguration {
         pdsURL: self.pdsURL
       )
 
-      try await keychainProtocol.saveAccessToken(response.accessToken)
-      try await keychainProtocol.saveRefreshToken(response.refreshToken)
-      try await keychainProtocol.savePassword(password)
+      await cacheAccessToken(response.accessToken)
+      try await saveRefreshTokenCredential(response.refreshToken)
+      try await savePasswordCredential(password)
 
       await UserSessionRegistry.shared.register(instanceUUID, session: userSession)
     } catch let error as ATAPIError {
@@ -93,5 +93,24 @@ public extension ATProtocolConfiguration {
     } catch {
       throw error
     }
+  }
+
+  private func saveRefreshTokenCredential(_ refreshToken: String) async throws {
+    try await saveCredential(refreshToken, suffix: "refreshToken")
+  }
+
+  private func savePasswordCredential(_ password: String) async throws {
+    try await saveCredential(password, suffix: "password")
+  }
+
+  private func saveCredential(_ value: String, suffix: String) async throws {
+    try await credentialStore.saveValue(
+      Data(value.utf8),
+      forKey: credentialKey(suffix: suffix)
+    )
+  }
+
+  private func credentialKey(suffix: String) -> String {
+    return "\(instanceUUID.uuidString).\(suffix)"
   }
 }
