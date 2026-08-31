@@ -38,7 +38,7 @@ let package = Package(
     .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", from: "0.65.1"),
     .package(
       url: "https://github.com/pointfreeco/swift-composable-architecture.git",
-      from: "1.26.1",
+      from: "1.26.2",
       traits: [
         "ComposableArchitecture2Deprecations",
         // "ComposableArchitecture2DeprecationOverloads",
