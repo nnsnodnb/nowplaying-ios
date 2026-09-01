@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - .github/workflows/build.yml
+      - NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved
+      - NowPlayingPackage/Package.swift
       - NowPlayingPackage/Sources/DependenciesInterfaces/**
       - NowPlayingPackage/Sources/DependenciesLive/**
 
