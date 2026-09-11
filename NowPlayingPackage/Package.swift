@@ -26,7 +26,7 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.34.1"),
     .package(url: "https://github.com/stleamist/BetterSafariView.git", from: "2.4.2"),
-    .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "12.18.0"),
+    .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "12.19.1"),
     .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
     .package(url: "https://github.com/maiyama18/LicensesPlugin.git", from: "0.2.0"),
     .package(url: "https://github.com/kean/Nuke.git", from: "13.2.0"),
