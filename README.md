@@ -14,7 +14,7 @@ Build version 17F113
 
 ```command
 $ ruby -v
-ruby 4.0.6 (2026-07-14 revision 03b6d3f889) +PRISM [arm64-darwin25]
+ruby 4.0.7 (2026-09-15 revision 229531a6cf) +PRISM [arm64-darwin25]
 ```
 
 ## Setup
