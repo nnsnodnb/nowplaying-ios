@@ -1,6 +1,15 @@
 default_platform(:ios)
 
 platform :ios do
+  # Scan
+  desc "Run tests for NowPlayingPackage scheme in SwiftPackage"
+  lane :tests do
+    scan(
+      scheme: "NowPlayingPackage",
+      devices: ["iPhone 17 Pro (26.5)"],
+    )
+  end
+
   # Match
   desc "Fetch Provisioning Profile & Apple Development Certificate"
   lane :setup_development_certificates do

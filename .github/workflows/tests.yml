@@ -19,11 +19,17 @@ jobs:
     runs-on: macos-26
 
     env:
+      FASTLANE_SKIP_UPDATE_CHECK: 1
       DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
-      TEST_DESTINATION: "platform=iOS Simulator,name=iPhone 17 Pro"
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@984c0c890880bbf811283d6f09c4607c62d210a4 # v1.323.0
+        with:
+          ruby-version: "4.0.7"
+          bundler-cache: true
 
       - name: Get SwiftPM originHash
         id: get-swiftpm-origin-hash
@@ -47,25 +53,13 @@ jobs:
       - name: Write IDESkipMacroFingerprintValidation
         run: defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
 
-      - name: Make test-result folder
-        id: test-result-dir
-        run: |
-          echo "TEST_RESULTS_DIR=$(mktemp -d)" >> "${GITHUB_OUTPUT}"
-
-      - name: Xcode test for NowPlayingPackageTests
-        run: |
-          set -o pipefail && \
-            xcodebuild test \
-              -scheme NowPlayingPackageTests \
-              -workspace NowPlaying.xcworkspace \
-              -parallel-testing-enabled=YES \
-              -destination "${TEST_DESTINATION}" \
-              -resultBundlePath "${{ steps.test-result-dir.outputs.TEST_RESULTS_DIR }}/Test-NowPlayingPackageTests.xcresult" \
-              -clonedSourcePackagesDirPath .swiftpm \
-              -disableAutomaticPackageResolution | xcbeautify
+      - name: Fastlane tests
+        env:
+          FASTLANE_XCODEBUILD_SETTINGS_RETRIES: 20
+        run: bundle exec fastlane ios tests
 
       - name: Upload artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: test-results
-          path: ${{ steps.test-result-dir.outputs.TEST_RESULTS_DIR }}
+          path: ./DerivedData
