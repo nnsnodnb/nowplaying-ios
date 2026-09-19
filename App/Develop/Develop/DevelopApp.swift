@@ -14,6 +14,7 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseFunctions
 import GoogleMobileAds
+import IssueReporting
 import NowPlayingPackage
 import RevenueCat
 
