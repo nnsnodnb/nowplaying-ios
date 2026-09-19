@@ -7,6 +7,7 @@
 
 import CommonModule
 import ComposableArchitecture
+import DependenciesInterfaces
 import ImageViewer
 import NukeUI
 import SwiftUI

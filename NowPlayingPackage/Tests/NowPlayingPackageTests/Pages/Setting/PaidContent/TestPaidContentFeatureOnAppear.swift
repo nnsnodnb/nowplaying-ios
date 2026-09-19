@@ -39,13 +39,13 @@ struct TestPaidContentFeatureOnAppear {
         $0.freeTicketAdUnitID = "ca-app-pub-3940256099942544/1712485313"
       }
       await store.receive(\.internalAction.getNonConsumable)
+      await store.receive(\.internalAction.setNonConsumable, [])
       await store.receive(\.internalAction.setPostTickets) {
         $0.wasGiveOutFreePostTicket = false
         $0.postTickets = [postTicket]
         $0.availablePostTicket = .initial
         $0.isLoadingPostTicket = false
       }
-      await store.receive(\.internalAction.setNonConsumable, [])
     }
   }
 
