@@ -1,7 +1,7 @@
 {
     "app_version": {
         "require": "3.1.0",
-        "latest": "3.1.2",
+        "latest": "3.2.0",
         "require_build": 91,
         "latest_build": 92
     }
