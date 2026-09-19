@@ -272,6 +272,7 @@ public struct TwitterAccountManagePage: View {
   public var body: some View {
     list
       .navigationTitle(.accountManagement)
+      .navigationScrollEdgeEffectSoft()
       .toolbar(
         addAction: {
           store.send(.prepareLogin)
@@ -357,12 +358,16 @@ private extension View {
 }
 
 #Preview {
-  TwitterAccountManagePage(
-    store: .init(
-      initialState: TwitterAccountManageFeature.State(),
-      reducer: {
-        TwitterAccountManageFeature()
-      },
-    ),
+  NavigationStack(
+    root: {
+      TwitterAccountManagePage(
+        store: .init(
+          initialState: TwitterAccountManageFeature.State(),
+          reducer: {
+            TwitterAccountManageFeature()
+          },
+        ),
+      )
+    },
   )
 }

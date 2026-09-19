@@ -161,6 +161,7 @@ public struct BlueskyAccountManagePage: View {
   public var body: some View {
     list
       .navigationTitle(.accountManagement)
+      .navigationScrollEdgeEffectSoft()
       .toolbar(
         helpAction: {
           store.send(.changedSafari(.howToAddBlueskyAccount))
@@ -245,12 +246,16 @@ private extension View {
 }
 
 #Preview {
-  BlueskyAccountManagePage(
-    store: .init(
-      initialState: BlueskyAccountManageFeature.State(),
-      reducer: {
-        BlueskyAccountManageFeature()
-      },
-    ),
+  NavigationStack(
+    root: {
+      BlueskyAccountManagePage(
+        store: .init(
+          initialState: BlueskyAccountManageFeature.State(),
+          reducer: {
+            BlueskyAccountManageFeature()
+          },
+        ),
+      )
+    },
   )
 }

@@ -15,6 +15,7 @@ public struct LicenseDetailPage: View {
   public var body: some View {
     form
       .navigationTitle(license.name)
+      .navigationScrollEdgeEffectSoft()
   }
 
   private var form: some View {
@@ -34,11 +35,15 @@ public struct LicenseDetailPage: View {
 }
 
 #Preview {
-  LicenseDetailPage(
-    license: .init(
-      id: "dummy",
-      name: "Dummy",
-      licenseText: "Dummy license text",
-    ),
+  NavigationStack(
+    root: {
+      LicenseDetailPage(
+        license: .init(
+          id: "dummy",
+          name: "Dummy",
+          licenseText: "Dummy license text",
+        ),
+      )
+    },
   )
 }

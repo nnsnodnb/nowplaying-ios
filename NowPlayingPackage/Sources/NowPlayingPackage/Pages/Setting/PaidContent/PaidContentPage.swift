@@ -484,6 +484,7 @@ public struct PaidContentPage: View {
   public var body: some View {
     list
       .navigationTitle(.paidContent)
+      .navigationScrollEdgeEffectSoft()
       .interactiveDismissDisabled(true)
       .task {
         store.send(.onAppear)
@@ -728,12 +729,16 @@ public struct PaidContentPage: View {
 }
 
 #Preview {
-  PaidContentPage(
-    store: .init(
-      initialState: PaidContentFeature.State(),
-      reducer: {
-        PaidContentFeature()
-      },
-    ),
+  NavigationStack(
+    root: {
+      PaidContentPage(
+        store: .init(
+          initialState: PaidContentFeature.State(),
+          reducer: {
+            PaidContentFeature()
+          },
+        ),
+      )
+    },
   )
 }
