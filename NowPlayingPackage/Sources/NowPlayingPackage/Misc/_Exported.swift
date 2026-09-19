@@ -9,4 +9,3 @@
 @_exported import SVProgressHUD
 @_exported import SwiftUI
 @_exported import Tagged
-@_exported import XCTestDynamicOverlay
