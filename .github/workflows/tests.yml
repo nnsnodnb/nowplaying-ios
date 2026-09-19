@@ -23,6 +23,9 @@ jobs:
       TEST_DESTINATION: "platform=iOS Simulator,OS=27.0,name=iPhone 18 Pro"
 
     steps:
+      - name: Print xcodebuild version
+        run: xcodebuild -version
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Get SwiftPM originHash
