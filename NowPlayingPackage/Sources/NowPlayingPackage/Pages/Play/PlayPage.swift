@@ -447,7 +447,14 @@ public struct PlayPage: View {
     .sheet(item: $store.scope(\.destination, action: \.destination).toot) { store in
       TootPage(store: store)
     }
-    .alert($store.scope(\.destination, action: \.destination).alert)
+    .alert(
+      $store.scope(\.destination, action: \.destination).alert,
+      action: { action in
+        if let action {
+          store.send(.destination(.presented(.alert(action))))
+        }
+      },
+    )
     .analyticsScreen(screenName: .play)
   }
 
