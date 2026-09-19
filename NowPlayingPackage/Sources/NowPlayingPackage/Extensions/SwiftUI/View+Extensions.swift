@@ -28,6 +28,17 @@ extension View {
       }
     }
   }
+
+  func navigationScrollEdgeEffectSoft() -> some View {
+    modifier {
+      if #available(iOS 26.0, *) {
+        $0
+          .scrollEdgeEffectStyle(.soft, for: .top)
+      } else {
+        $0
+      }
+    }
+  }
 }
 
 extension View {

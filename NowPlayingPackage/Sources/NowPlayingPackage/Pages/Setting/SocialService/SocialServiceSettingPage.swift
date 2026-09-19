@@ -145,6 +145,7 @@ public struct SocialServiceSettingPage: View {
         }
       }
       .interactiveDismissDisabled(true)
+      .navigationScrollEdgeEffectSoft()
       .scrollDismissesKeyboard(.immediately)
       .toolbar(
         keyboardClose: {
@@ -348,14 +349,18 @@ private extension View {
 }
 
 #Preview {
-  SocialServiceSettingPage(
-    store: .init(
-      initialState: SocialServiceSettingFeature.State(
-        socialService: .bluesky,
-      ),
-      reducer: {
-        SocialServiceSettingFeature()
-      },
-    )
+  NavigationStack(
+    root: {
+      SocialServiceSettingPage(
+        store: .init(
+          initialState: SocialServiceSettingFeature.State(
+            socialService: .bluesky,
+          ),
+          reducer: {
+            SocialServiceSettingFeature()
+          },
+        )
+      )
+    },
   )
 }

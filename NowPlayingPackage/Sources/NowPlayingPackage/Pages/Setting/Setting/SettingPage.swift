@@ -207,6 +207,7 @@ public struct SettingPage: View {
       root: {
         form
           .navigationTitle(.settings)
+          .navigationScrollEdgeEffectSoft()
           .toolbar(
             closeAction: {
               store.send(.close)

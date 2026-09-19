@@ -260,6 +260,7 @@ public struct MastodonLoginPage: View {
         form
           .navigationTitle(.loginInformation)
           .navigationBarTitleDisplayMode(.inline)
+          .navigationScrollEdgeEffectSoft()
           .toolbar(
             closeAction: {
               store.send(.close)

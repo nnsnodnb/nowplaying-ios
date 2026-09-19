@@ -34,6 +34,7 @@ public struct LicenseListPage: View {
   public var body: some View {
     list
       .navigationTitle(.licenses)
+      .navigationScrollEdgeEffectSoft()
       .interactiveDismissDisabled(true)
       .analyticsScreen(screenName: .license)
   }
@@ -57,12 +58,16 @@ public struct LicenseListPage: View {
 }
 
 #Preview {
-  LicenseListPage(
-    store: .init(
-      initialState: LicenseListFeature.State(),
-      reducer: {
-        LicenseListFeature()
-      },
-    ),
+  NavigationStack(
+    root: {
+      LicenseListPage(
+        store: .init(
+          initialState: LicenseListFeature.State(),
+          reducer: {
+            LicenseListFeature()
+          },
+        ),
+      )
+    },
   )
 }

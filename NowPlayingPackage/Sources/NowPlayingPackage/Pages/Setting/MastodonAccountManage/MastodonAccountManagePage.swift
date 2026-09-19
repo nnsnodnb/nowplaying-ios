@@ -114,6 +114,7 @@ public struct MastodonAccountManagePage: View {
   public var body: some View {
     list
       .navigationTitle(.accountManagement)
+      .navigationScrollEdgeEffectSoft()
       .toolbar(
         addAction: {
           store.send(.addAccount)
@@ -181,12 +182,16 @@ private extension View {
 }
 
 #Preview {
-  MastodonAccountManagePage(
-    store: .init(
-      initialState: MastodonAccountManageFeature.State(),
-      reducer: {
-        MastodonAccountManageFeature()
-      },
-    ),
+  NavigationStack(
+    root: {
+      MastodonAccountManagePage(
+        store: .init(
+          initialState: MastodonAccountManageFeature.State(),
+          reducer: {
+            MastodonAccountManageFeature()
+          },
+        ),
+      )
+    },
   )
 }
