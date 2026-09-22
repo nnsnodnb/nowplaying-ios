@@ -5,6 +5,8 @@ on:
     branches:
       - main
     paths-ignore:
+      - .github/workflows/actionlint.yml
+      - .github/workflows/jekyll-gh-pages.yml
       - docs/**
 
 concurrency:
