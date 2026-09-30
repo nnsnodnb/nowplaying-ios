@@ -414,15 +414,19 @@ public struct PlayPage: View {
 
   // MARK: - Body
   public var body: some View {
-    VStack(alignment: .center, spacing: 40) {
+    VStack(alignment: .center, spacing: 0) {
       Spacer()
-      VStack(alignment: .center, spacing: 24) {
+        .frame(minHeight: 12, maxHeight: 36)
+      VStack(alignment: .center, spacing: 16) {
         artworkImage
         songInfo
       }
       controlButtons
       Spacer()
-      VStack(alignment: .center, spacing: 32) {
+    }
+    .frame(maxHeight: .infinity)
+    .safeAreaInset(edge: .bottom, alignment: .center, spacing: 0) {
+      VStack(alignment: .center, spacing: 12) {
         bottomTools
         bottomBanner
       }
@@ -617,11 +621,25 @@ struct PlayPage_Previews: PreviewProvider {
   static var previews: some View {
     PlayPage(
       store: .init(
-        initialState: PlayFeature.State(isPurchasedHideAds: false),
+        initialState: PlayFeature.State(
+          isPurchasedHideAds: false,
+        ),
         reducer: {
           PlayFeature()
         },
       ),
     )
+    .previewDisplayName("Show AdBanner")
+    PlayPage(
+      store: .init(
+        initialState: PlayFeature.State(
+          isPurchasedHideAds: true,
+        ),
+        reducer: {
+          PlayFeature()
+        },
+      ),
+    )
+    .previewDisplayName("Hide AdBanner")
   }
 }
