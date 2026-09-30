@@ -76,25 +76,27 @@ extension MediaPlayerClient: DependencyKey {
     forward: {
     },
     nowPlayingItem: {
-      await Implementation.shared.nowPlayingItem()
+      struct PreviewMediaItem: MediaItemProtocol {
+        let title: String? = "float time"
+        let artist: String? = "nonoc"
+        let albumTitle: String? = "float time - Single"
+        let artworkImage: UIImage? = nil
+        let isCloudItem = false
+        let hasProtectedAsset = true
+      }
+
+      return AsyncStream { continuation in
+        continuation.yield(PreviewMediaItem())
+        continuation.finish()
+      }
     },
     playbackState: {
       await Implementation.shared.playbackState()
     },
-    getNowPlayingArtwork: { mediaItem in
-      if !mediaItem.isCloudItem && !mediaItem.hasProtectedAsset {
-        return mediaItem.artworkImage
-      }
-      var request = MusicCatalogSearchRequest(
-        term: "\(mediaItem.title ?? "") \(mediaItem.artist ?? "")",
-        types: [Song.self],
-      )
-      request.limit = 1
-      guard let song = try await request.response().songs.first,
-            let artwork = song.artwork else { return nil }
-      guard let url = artwork.url(width: 600, height: 600) else { return nil }
-      let image = try await ImagePipeline.shared.image(for: url)
-      return image
+    getNowPlayingArtwork: { _ in
+      // swifltint:disable:next line_length
+      let url = URL(string: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b9/27/24/b9272497-44eb-8344-d350-0beaf566e99c/4571374924774_cover.jpg/600x600bb.jpg")!
+      return try await ImagePipeline.shared.image(for: url)
     },
   )
 }
