@@ -66,6 +66,40 @@ extension MediaPlayerClient: DependencyKey {
       return image
     },
   )
+  #if targetEnvironment(simulator) && DEBUG
+  public static let simulator: Self = .init(
+    requestAuthorization: {
+      try await Implementation.shared.requestAuthorization()
+    },
+    backward: {
+    },
+    playback: {
+    },
+    forward: {
+    },
+    nowPlayingItem: {
+      struct MediaItem: MediaItemProtocol {
+        let title: String? = "float time"
+        let artist: String? = "nonoc"
+        let albumTitle: String? = "float time - Single"
+        var artworkImage: UIImage?
+        var isCloudItem = true
+        var hasProtectedAsset = false
+      }
+      return AsyncStream {
+        $0.yield(MediaItem())
+      }
+    },
+    playbackState: {
+      await Implementation.shared.playbackState()
+    },
+    getNowPlayingArtwork: { _ in
+      // swiftlint:disable:next line_length
+      let url = URL(string: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b9/27/24/b9272497-44eb-8344-d350-0beaf566e99c/4571374924774_cover.jpg/600x600bb.jpg")!
+      return try await ImagePipeline.shared.image(for: url)
+    }
+  )
+  #endif
   public static let previewValue: Self = .init(
     requestAuthorization: {
     },

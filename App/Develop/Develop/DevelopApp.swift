@@ -33,6 +33,9 @@ struct DevelopApp: App {
           $0.consentInformation = .google
           $0.crashlytics = .firebase
           $0.functions = .firebase(endpointURLString: "http://127.0.0.1:9095/nowplaying-dev/asia-northeast1")
+          #if targetEnvironment(simulator) && DEBUG
+          $0.mediaPlayer = .simulator
+          #endif
           $0.revenueCat = .revenueCat
           $0.rewardedAd = .google
           $0.secureKeyValueStore = .keychainAccess
