@@ -94,7 +94,7 @@ extension MediaPlayerClient: DependencyKey {
       await Implementation.shared.playbackState()
     },
     getNowPlayingArtwork: { _ in
-      // swifltint:disable:next line_length
+      // swiftlint:disable:next line_length
       let url = URL(string: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b9/27/24/b9272497-44eb-8344-d350-0beaf566e99c/4571374924774_cover.jpg/600x600bb.jpg")!
       return try await ImagePipeline.shared.image(for: url)
     },
