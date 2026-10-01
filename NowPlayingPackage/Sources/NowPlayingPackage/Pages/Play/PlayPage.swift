@@ -421,6 +421,8 @@ public struct PlayPage: View {
         artworkImage
         songInfo
       }
+      Spacer()
+        .frame(minHeight: 12, maxHeight: 36)
       controlButtons
       Spacer()
     }
