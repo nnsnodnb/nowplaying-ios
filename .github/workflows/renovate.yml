@@ -1,0 +1,17 @@
+name: Renovate
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/renovate.yml
+      - renovate.json
+
+jobs:
+  renovate-json-validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - uses: suzuki-shunsuke/github-action-renovate-config-validator@b850926b611b1f3d3fe3729776339c217834bf2c  # v2.2.0
+        with:
+          validator_version: 44.126.0
