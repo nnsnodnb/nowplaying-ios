@@ -37,6 +37,7 @@ public struct SettingFeature: Sendable {
     case twitterAccountManage(TwitterAccountManageFeature)
     case blueskyAccountManage(BlueskyAccountManageFeature)
     case mastodonAccountManage(MastodonAccountManageFeature)
+    case licenseDetail(LicenseDetailFeature)
   }
 
   // MARK: - State
@@ -155,6 +156,7 @@ public struct SettingFeature: Sendable {
         case .none:
           state.destination = nil
         }
+        state.path = .init()
         return .none
       case .showConsentForm:
         guard state.visiblePrivacyOptionsRequirements && !state.isLoadingConsentForm else { return .none }
@@ -183,6 +185,9 @@ public struct SettingFeature: Sendable {
         return .none
       case .destination(.presented(.paidContent(.delegate(.hideAds)))):
         return .send(.delegate(.hideAds))
+      case let .destination(.presented(.licenseList(.delegate(.pushLicenseDetail(license))))):
+        state.path.append(.licenseDetail(.init(license: license)))
+        return .none
       case .destination:
         return .none
       case .delegate:
@@ -267,6 +272,8 @@ public struct SettingPage: View {
                 BlueskyAccountManagePage(store: store)
               case let .mastodonAccountManage(store):
                 MastodonAccountManagePage(store: store)
+              case let .licenseDetail(store):
+                LicenseDetailPage(store: store)
               }
             },
           )

@@ -27,6 +27,27 @@ struct TestSettingFeatureShowDestinationDetail {
   }
 
   @Test
+  func testTwitterSettingExistPath() async throws {
+    var path: StackState<SettingFeature.Path.State> = .init()
+    path.append(.twitterAccountManage(.init()))
+
+    let store = TestStore(
+      initialState: SettingFeature.State(
+        path: path,
+        destinationDetail: .twitterSetting,
+        destination: .twitterSetting(.init(socialService: .twitter)),
+      ),
+      reducer: {
+        SettingFeature()
+      },
+    )
+
+    await store.send(.showDestinationDetail(.twitterSetting)) {
+      $0.path = .init()
+    }
+  }
+
+  @Test
   func testBleuskySetting() async throws {
     let store = TestStore(
       initialState: SettingFeature.State(),

@@ -77,4 +77,21 @@ struct TestSettingFeatureDestination {
     await store.send(.destination(.presented(.paidContent(.delegate(.hideAds)))))
     await store.receive(\.delegate.hideAds)
   }
+
+  @Test
+  func testPresentedLicenseListDelegatePushLicenseDetail() async throws {
+    let store = TestStore(
+      initialState: SettingFeature.State(
+        destinationDetail: .licenseList,
+        destination: .licenseList(.init()),
+      ),
+      reducer: {
+        SettingFeature()
+      },
+    )
+
+    await store.send(.destination(.presented(.licenseList(.delegate(.pushLicenseDetail(LicensesPlugin.licenses[0])))))) {
+      $0.path[id: 0] = .licenseDetail(.init(license: LicensesPlugin.licenses[0]))
+    }
+  }
 }
