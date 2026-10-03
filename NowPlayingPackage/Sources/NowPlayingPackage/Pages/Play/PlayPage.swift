@@ -33,7 +33,7 @@ public struct PlayFeature: Sendable {
   // MARK: - State
   @ObservableState
   @MemberwiseInit(.public)
-  public struct State: Equatable, Sendable {
+  public struct State: Equatable {
     public var isPurchasedHideAds: Bool
     @Init(default: nil)
     public var artworkImage: UIImage?
@@ -402,9 +402,6 @@ public struct PlayFeature: Sendable {
 // MARK: - PlayFeature.Destination.State Equatable
 extension PlayFeature.Destination.State: Equatable {}
 
-// MARK: - PlayFeature.Destination.State Sendable
-extension PlayFeature.Destination.State: Sendable {}
-
 public struct PlayPage: View {
   // MARK: - Properties
   @Bindable public var store: StoreOf<PlayFeature>
@@ -414,35 +411,41 @@ public struct PlayPage: View {
 
   // MARK: - Body
   public var body: some View {
-    VStack(alignment: .center, spacing: 0) {
-      Spacer()
-        .frame(minHeight: 12, maxHeight: 36)
-      VStack(alignment: .center, spacing: 16) {
-        artworkImage
-        songInfo
-      }
-      Spacer()
-        .frame(minHeight: 12, maxHeight: 36)
-      controlButtons
-      Spacer()
-    }
-    .frame(maxHeight: .infinity)
-    .safeAreaInset(edge: .bottom, alignment: .center, spacing: 0) {
-      VStack(alignment: .center, spacing: 12) {
-        bottomTools
-        bottomBanner
-      }
-    }
-    .background {
-      Color(store.backgroundColor)
-        .ignoresSafeArea(.all)
-        .animation(.easeInOut, value: store.backgroundColor)
-    }
+    SheetOrFullScreenCoverWrap(
+      content: {
+        VStack(alignment: .center, spacing: 0) {
+          Spacer()
+            .frame(minHeight: 12, maxHeight: 36)
+          VStack(alignment: .center, spacing: 16) {
+            artworkImage
+            songInfo
+          }
+          Spacer()
+            .frame(minHeight: 12, maxHeight: 36)
+          controlButtons
+          Spacer()
+        }
+        .frame(maxHeight: .infinity)
+        .safeAreaInset(edge: .bottom, alignment: .center, spacing: 0) {
+          VStack(alignment: .center, spacing: 12) {
+            bottomTools
+            bottomBanner
+          }
+        }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .background {
+          Color(store.backgroundColor)
+            .ignoresSafeArea(.all)
+            .animation(.easeInOut, value: store.backgroundColor)
+        }
+      },
+      item: $store.scope(\.destination, action: \.destination).setting,
+      sheet: { store in
+        SettingPage(store: store)
+      },
+    )
     .task {
       store.send(.onAppear)
-    }
-    .sheet(item: $store.scope(\.destination, action: \.destination).setting) { store in
-      SettingPage(store: store)
     }
     .sheet(item: $store.scope(\.destination, action: \.destination).tweet) { store in
       TweetPage(store: store)

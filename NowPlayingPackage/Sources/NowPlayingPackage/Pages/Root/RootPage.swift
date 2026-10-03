@@ -26,7 +26,7 @@ public struct RootFeature: Sendable {
   // MARK: - State
   @ObservableState
   @MemberwiseInit(.public)
-  public struct State: Equatable, Sendable {
+  public struct State: Equatable {
     @Init(default: nil)
     public var destination: Destination.State?
     @Shared(.appStorage(.isLaunchAtFirst))
@@ -120,9 +120,6 @@ public struct RootFeature: Sendable {
 
 // MARK: - RootFeature.Destination.State Equatable
 extension RootFeature.Destination.State: Equatable {}
-
-// MARK: - RootFeature.Destination.State Sendable
-extension RootFeature.Destination.State: Sendable {}
 
 @MemberwiseInit(.public)
 public struct RootPage: View {
