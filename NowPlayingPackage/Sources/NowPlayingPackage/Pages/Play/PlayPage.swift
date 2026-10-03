@@ -432,6 +432,7 @@ public struct PlayPage: View {
             bottomBanner
           }
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .background {
           Color(store.backgroundColor)
             .ignoresSafeArea(.all)
