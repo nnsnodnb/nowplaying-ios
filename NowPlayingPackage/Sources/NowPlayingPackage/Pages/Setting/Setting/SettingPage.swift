@@ -45,6 +45,8 @@ public struct SettingFeature: Sendable {
   public struct State: Equatable {
     // MARK: - Properties
     public var version = "v3.0.0"
+    public var columnVisibility: NavigationSplitViewVisibility = .all
+    public var isPortrait = false
     public var visiblePrivacyOptionsRequirements = false
     public var isLoadingConsentForm = false
     public var path: StackState<Path.State> = .init()
@@ -96,6 +98,8 @@ public struct SettingFeature: Sendable {
     case close
     case showDestinationDetail(Destination.Detail?)
     case showConsentForm
+    case changedColumnVisibility(NavigationSplitViewVisibility)
+    case changedIsPortrait(Bool)
     case path(StackActionOf<Path>)
     case openSafari(State.SafariURL?)
     case destination(PresentationAction<Destination.Action>)
@@ -142,6 +146,9 @@ public struct SettingFeature: Sendable {
         }
       case let .showDestinationDetail(destinationDetail):
         state.destinationDetail = destinationDetail
+        if destinationDetail != nil && state.isPortrait {
+          state.columnVisibility = .detailOnly
+        }
         switch destinationDetail {
         case .twitterSetting:
           state.destination = .twitterSetting(.init(socialService: .twitter))
@@ -169,6 +176,12 @@ public struct SettingFeature: Sendable {
             await send(.internalAction(.loadConsentForm))
           },
         )
+      case let .changedColumnVisibility(columnVisibility):
+        state.columnVisibility = columnVisibility
+        return .none
+      case let .changedIsPortrait(isPortrait):
+        state.isPortrait = isPortrait
+        return .none
       case .path:
         return .none
       case let .openSafari(safariURL):
@@ -223,9 +236,17 @@ public struct SettingPage: View {
   // MARK: - Properties
   @Bindable public var store: StoreOf<SettingFeature>
 
+  @Environment(\.horizontalSizeClass)
+  private var horizontalSizeClass
+  @Environment(\.verticalSizeClass)
+  private var verticalSizeClass
+  @Dependency(\.mainQueue)
+  private var mainQueue
+
   // MARK: - Body
   public var body: some View {
     NavigationSplitView(
+      columnVisibility: $store.columnVisibility.sending(\.changedColumnVisibility),
       sidebar: {
         list
           .navigationTitle(.settings)
@@ -277,6 +298,31 @@ public struct SettingPage: View {
               }
             },
           )
+        } else {
+          DetailNilView()
+        }
+      },
+    )
+    .onGeometryChange(
+      for: Bool.self,
+      of: { proxy in
+        proxy.size.width < proxy.size.height
+      },
+      action: { isPortrait in
+        store.send(.changedIsPortrait(isPortrait))
+        // 開いた状態
+        guard horizontalSizeClass == .regular && verticalSizeClass == .regular else {
+          return
+        }
+        if isPortrait && store.destination == nil {
+          // 縦持ちで遷移先がない場合は全カラム
+          Task {
+            try? await mainQueue.sleep(for: .milliseconds(1))
+            store.send(.changedColumnVisibility(.all))
+          }
+        } else if !isPortrait {
+          // 横持ちであれば強制的に全カラム
+          store.send(.changedColumnVisibility(.all))
         }
       },
     )
