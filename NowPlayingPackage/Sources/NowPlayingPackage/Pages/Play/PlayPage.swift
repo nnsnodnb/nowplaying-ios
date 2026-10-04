@@ -8,7 +8,6 @@
 import CommonModule
 import ComposableArchitecture
 import DependenciesInterfaces
-import MemberwiseInit
 import SFSafeSymbols
 import SwiftUI
 
@@ -25,30 +24,22 @@ public struct PlayFeature: Sendable {
 
     // MARK: - Alert
     @CasePathable
-    public enum Alert: Equatable, Sendable {
+    public enum Alert: Equatable {
       case close
     }
   }
 
   // MARK: - State
   @ObservableState
-  @MemberwiseInit(.public)
   public struct State: Equatable {
     public var isPurchasedHideAds: Bool
-    @Init(default: nil)
     public var artworkImage: UIImage?
-    @Init(default: nil)
     public var songName: String?
-    @Init(default: nil)
     public var artistName: String?
-    @Init(default: nil)
     public var album: String?
     public var isPlaying = false
-    @Init(default: nil)
     public var bannerAdUnitID: String?
-    @Init(default: UIColor.black.withAlphaComponent(0.7))
-    public var backgroundColor: UIColor
-    @Init(default: nil)
+    public var backgroundColor: UIColor = .black.withAlphaComponent(0.7)
     @Presents public var destination: Destination.State?
   }
 
@@ -622,29 +613,28 @@ public struct PlayPage: View {
   }
 }
 
-struct PlayPage_Previews: PreviewProvider {
-  static var previews: some View {
-    PlayPage(
-      store: .init(
-        initialState: PlayFeature.State(
-          isPurchasedHideAds: false,
-        ),
-        reducer: {
-          PlayFeature()
-        },
+#Preview("Show AdBanner") {
+  PlayPage(
+    store: .init(
+      initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
       ),
-    )
-    .previewDisplayName("Show AdBanner")
-    PlayPage(
-      store: .init(
-        initialState: PlayFeature.State(
-          isPurchasedHideAds: true,
-        ),
-        reducer: {
-          PlayFeature()
-        },
+      reducer: {
+        PlayFeature()
+      },
+    ),
+  )
+}
+
+#Preview("Hide AdBanner") {
+  PlayPage(
+    store: .init(
+      initialState: PlayFeature.State(
+        isPurchasedHideAds: true,
       ),
-    )
-    .previewDisplayName("Hide AdBanner")
-  }
+      reducer: {
+        PlayFeature()
+      },
+    ),
+  )
 }
