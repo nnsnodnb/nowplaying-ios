@@ -404,31 +404,13 @@ public struct PlayPage: View {
   public var body: some View {
     SheetOrFullScreenCoverWrap(
       content: {
-        VStack(alignment: .center, spacing: 0) {
-          Spacer()
-            .frame(minHeight: 12, maxHeight: 36)
-          VStack(alignment: .center, spacing: 16) {
-            artworkImage
-            songInfo
+        content
+          .ignoresSafeArea(.keyboard, edges: .bottom)
+          .background {
+            Color(store.backgroundColor)
+              .ignoresSafeArea(.all)
+              .animation(.easeInOut, value: store.backgroundColor)
           }
-          Spacer()
-            .frame(minHeight: 12, maxHeight: 36)
-          controlButtons
-          Spacer()
-        }
-        .frame(maxHeight: .infinity)
-        .safeAreaInset(edge: .bottom, alignment: .center, spacing: 0) {
-          VStack(alignment: .center, spacing: 12) {
-            bottomTools
-            bottomBanner
-          }
-        }
-        .ignoresSafeArea(.keyboard, edges: .bottom)
-        .background {
-          Color(store.backgroundColor)
-            .ignoresSafeArea(.all)
-            .animation(.easeInOut, value: store.backgroundColor)
-        }
       },
       item: $store.scope(\.destination, action: \.destination).setting,
       sheet: { store in
@@ -456,6 +438,28 @@ public struct PlayPage: View {
       },
     )
     .analyticsScreen(screenName: .play)
+  }
+
+  private var content: some View {
+    VStack(alignment: .center, spacing: 0) {
+      Spacer()
+        .frame(minHeight: 12, maxHeight: 36)
+      VStack(alignment: .center, spacing: 16) {
+        artworkImage
+        songInfo
+      }
+      Spacer()
+        .frame(minHeight: 12, maxHeight: 36)
+      controlButtons
+      Spacer()
+    }
+    .frame(maxHeight: .infinity)
+    .safeAreaInset(edge: .bottom, alignment: .center, spacing: 0) {
+      VStack(alignment: .center, spacing: 12) {
+        bottomTools
+        bottomBanner
+      }
+    }
   }
 
   private var artworkImage: some View {
