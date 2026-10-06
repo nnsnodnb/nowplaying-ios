@@ -23,6 +23,7 @@ struct TestPlayFeatureOnAppear {
     await withDependencies {
       $0.averageColor.make = { _ in UIColor.red }
       $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
+      $0.device.currentOrientation = { .portrait }
       $0.mediaPlayer.requestAuthorization = {}
       $0.mediaPlayer.nowPlayingItem = {
         AsyncStream {
@@ -53,6 +54,7 @@ struct TestPlayFeatureOnAppear {
           $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
         }
       }
+      await store.receive(\.changedIsPortrait, false)
       await store.receive(\.internalAction.authorizationSuccess) {
         $0.songName = String(localized: .loading)
         $0.artistName = ""
@@ -76,6 +78,7 @@ struct TestPlayFeatureOnAppear {
   func testMediaLibraryDenied(isPurchasedHideAds: Bool) async throws {
     await withDependencies {
       $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
+      $0.device.currentOrientation = { .portrait }
       $0.mediaPlayer.requestAuthorization = { throw MediaPlayerClient.Error.denied }
     } operation: {
       let store = TestStore(
@@ -94,6 +97,7 @@ struct TestPlayFeatureOnAppear {
           $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
         }
       }
+      await store.receive(\.changedIsPortrait, false)
       await store.receive(\.internalAction.authorizationFailure, String(localized: .accessToTheMusicLibraryWasDenied)) {
         $0.destination = .alert(
           AlertState(
@@ -120,6 +124,7 @@ struct TestPlayFeatureOnAppear {
   func testMediaLibraryRestricted(isPurchasedHideAds: Bool) async throws {
     await withDependencies {
       $0.adUnit.playerBottomBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
+      $0.device.currentOrientation = { .portrait }
       $0.mediaPlayer.requestAuthorization = { throw MediaPlayerClient.Error.restricted }
     } operation: {
       let store = TestStore(
@@ -138,6 +143,7 @@ struct TestPlayFeatureOnAppear {
           $0.bannerAdUnitID = "ca-app-pub-3940256099942544/2435281174"
         }
       }
+      await store.receive(\.changedIsPortrait, false)
       await store.receive(\.internalAction.authorizationFailure, String(localized: .accessToTheMusicLibraryIsRestricted)) {
         $0.destination = .alert(
           AlertState(

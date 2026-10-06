@@ -40,6 +40,7 @@ public struct PlayFeature: Sendable {
     public var isPlaying = false
     public var bannerAdUnitID: String?
     public var backgroundColor: UIColor = .black.withAlphaComponent(0.7)
+    public var isPortrait = false // 開くときは縦持ち状態が基本だと想定される
     @Presents public var destination: Destination.State?
   }
 
@@ -50,6 +51,7 @@ public struct PlayFeature: Sendable {
     case togglePlayback
     case forward
     case showSetting
+    case changedIsPortrait(Bool)
     case showPost(SocialService)
     case destination(PresentationAction<Destination.Action>)
     case internalAction(InternalAction)
@@ -79,6 +81,8 @@ public struct PlayFeature: Sendable {
   private var analytics
   @Dependency(\.averageColor)
   private var averageColor
+  @Dependency(\.device)
+  private var device
   @Dependency(\.mediaPlayer)
   private var mediaPlayer
   @Dependency(\.imageRenderer)
@@ -98,6 +102,12 @@ public struct PlayFeature: Sendable {
         }
         return .run(
           operation: { send in
+            let orientation = try await device.currentOrientation()
+            // Portraitのみの対応としているので外画面は対応しなくてよい
+            // 内部ディスプレイのときは横持ちが縦持ちと判断される
+            let isPortrait = orientation.isLandscape
+            await send(.changedIsPortrait(isPortrait))
+
             try await mediaPlayer.requestAuthorization()
             await send(.internalAction(.authorizationSuccess))
             await analytics.setUserProperty(.musicLibraryAccess(true))
@@ -134,6 +144,9 @@ public struct PlayFeature: Sendable {
         )
       case .showSetting:
         state.destination = .setting(.init())
+        return .none
+      case let .changedIsPortrait(isPortrait):
+        state.isPortrait = isPortrait
         return .none
       case let .showPost(socialService):
         switch socialService {
@@ -397,8 +410,15 @@ public struct PlayPage: View {
   // MARK: - Properties
   @Bindable public var store: StoreOf<PlayFeature>
 
+  @Dependency(\.notificationCenter)
+  private var notificationCenter
+
   @Environment(\.colorScheme)
   private var colorScheme
+  @Environment(\.horizontalSizeClass)
+  private var horizontalSizeClass
+  @Environment(\.verticalSizeClass)
+  private var verticalSizeClass
 
   // MARK: - Body
   public var body: some View {
@@ -437,28 +457,85 @@ public struct PlayPage: View {
         }
       },
     )
+    .onReceive(
+      notificationCenter.publisher(
+        for: UIDevice.orientationDidChangeNotification,
+      ),
+      perform: { _ in
+        // Portraitのみの対応としているので外画面は対応しなくてよい
+        // 内部ディスプレイのときは横持ちが縦持ちと判断される
+        let isPortrait = UIDevice.current.orientation.isLandscape
+        store.send(.changedIsPortrait(isPortrait))
+      },
+    )
     .analyticsScreen(screenName: .play)
   }
 
-  private var content: some View {
-    VStack(alignment: .center, spacing: 0) {
-      Spacer()
-        .frame(minHeight: 12, maxHeight: 36)
-      VStack(alignment: .center, spacing: 16) {
-        artworkImage
-        songInfo
+  @ViewBuilder private var content: some View {
+    if #available(iOS 27.1, *),
+       horizontalSizeClass == .regular && verticalSizeClass == .regular {
+      arrangementContent
+    } else {
+      VStack(alignment: .center, spacing: 0) {
+        Spacer()
+          .frame(minHeight: 12, maxHeight: 36)
+        VStack(alignment: .center, spacing: 16) {
+          artworkImage
+          songInfo
+        }
+        Spacer()
+          .frame(minHeight: 12, maxHeight: 36)
+        controlButtons
+        Spacer()
       }
-      Spacer()
-        .frame(minHeight: 12, maxHeight: 36)
-      controlButtons
-      Spacer()
+      .frame(maxHeight: .infinity)
+      .safeAreaInset(edge: .bottom, alignment: .center, spacing: 0) {
+        VStack(alignment: .center, spacing: 12) {
+          bottomTools
+          bottomBanner
+        }
+      }
     }
-    .frame(maxHeight: .infinity)
-    .safeAreaInset(edge: .bottom, alignment: .center, spacing: 0) {
-      VStack(alignment: .center, spacing: 12) {
-        bottomTools
-        bottomBanner
-      }
+  }
+
+  @available(iOS 27.1, *)
+  @ViewBuilder private var arrangementContent: some View {
+    if store.isPortrait {
+      PlayVerticalArrangementView(
+        artwork: {
+          artworkImage
+        },
+        songInfo: {
+          songInfo
+        },
+        controlButtons: {
+          controlButtons
+        },
+        bottomTools: {
+          VStack(alignment: .center, spacing: 12) {
+            bottomTools
+            bottomBanner
+          }
+        },
+      )
+    } else {
+      PlayHorizontalArrangementView(
+        artwork: {
+          artworkImage
+        },
+        songInfo: {
+          songInfo
+        },
+        controlButtons: {
+          controlButtons
+        },
+        bottomTools: {
+          VStack(alignment: .center, spacing: 12) {
+            bottomTools
+            bottomBanner
+          }
+        },
+      )
     }
   }
 
