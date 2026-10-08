@@ -12,28 +12,47 @@ import SwiftUI
 
 @Reducer
 public struct SettingFeature: Sendable {
+  // MARK: - Destination
+  @Reducer
+  public enum Destination {
+    case twitterSetting(SocialServiceSettingFeature)
+    case blueskySetting(SocialServiceSettingFeature)
+    case mastodonSetting(SocialServiceSettingFeature)
+    case paidContent(PaidContentFeature)
+    case licenseList(LicenseListFeature)
+
+    // MARK: - Detail
+    public enum Detail {
+      case twitterSetting
+      case blueskySetting
+      case mastodonSetting
+      case paidContent
+      case licenseList
+    }
+  }
+
   // MARK: - Path
   @Reducer
   public enum Path {
-    case twitterSetting(SocialServiceSettingFeature)
     case twitterAccountManage(TwitterAccountManageFeature)
-    case blueskySetting(SocialServiceSettingFeature)
     case blueskyAccountManage(BlueskyAccountManageFeature)
-    case mastodonSetting(SocialServiceSettingFeature)
     case mastodonAccountManage(MastodonAccountManageFeature)
-    case paidContent(PaidContentFeature)
-    case licenseList(LicenseListFeature)
+    case licenseDetail(LicenseDetailFeature)
   }
 
   // MARK: - State
   @ObservableState
-  public struct State: Equatable, Sendable {
+  public struct State: Equatable {
     // MARK: - Properties
     public var version = "v3.0.0"
+    public var columnVisibility: NavigationSplitViewVisibility = .all
+    public var isPortrait = false
     public var visiblePrivacyOptionsRequirements = false
     public var isLoadingConsentForm = false
     public var path: StackState<Path.State> = .init()
     public var safariURL: SafariURL?
+    public var destinationDetail: Destination.Detail?
+    @Presents public var destination: Destination.State?
 
     // MARK: - Safari
     public enum SafariURL: Identifiable, Sendable {
@@ -77,14 +96,13 @@ public struct SettingFeature: Sendable {
   public enum Action {
     case onAppear
     case close
-    case pushTwitterSetting
-    case pushBlueskySetting
-    case pushMastodonSetting
-    case pushPaidContent
+    case showDestinationDetail(Destination.Detail?)
     case showConsentForm
-    case pushLicenseList
+    case changedColumnVisibility(NavigationSplitViewVisibility)
+    case changedIsPortrait(Bool)
     case path(StackActionOf<Path>)
     case openSafari(State.SafariURL?)
+    case destination(PresentationAction<Destination.Action>)
     case delegate(Delegate)
     case internalAction(InternalAction)
 
@@ -126,17 +144,26 @@ public struct SettingFeature: Sendable {
         return .run { _ in
           await dismiss()
         }
-      case .pushTwitterSetting:
-        state.path.append(.twitterSetting(.init(socialService: .twitter)))
-        return .none
-      case .pushBlueskySetting:
-        state.path.append(.blueskySetting(.init(socialService: .bluesky)))
-        return .none
-      case .pushMastodonSetting:
-        state.path.append(.mastodonSetting(.init(socialService: .mastodon)))
-        return .none
-      case .pushPaidContent:
-        state.path.append(.paidContent(.init()))
+      case let .showDestinationDetail(destinationDetail):
+        state.destinationDetail = destinationDetail
+        if destinationDetail != nil && state.isPortrait {
+          state.columnVisibility = .detailOnly
+        }
+        switch destinationDetail {
+        case .twitterSetting:
+          state.destination = .twitterSetting(.init(socialService: .twitter))
+        case .blueskySetting:
+          state.destination = .blueskySetting(.init(socialService: .bluesky))
+        case .mastodonSetting:
+          state.destination = .mastodonSetting(.init(socialService: .mastodon))
+        case .paidContent:
+          state.destination = .paidContent(.init())
+        case .licenseList:
+          state.destination = .licenseList(.init())
+        case .none:
+          state.destination = nil
+        }
+        state.path = .init()
         return .none
       case .showConsentForm:
         guard state.visiblePrivacyOptionsRequirements && !state.isLoadingConsentForm else { return .none }
@@ -149,24 +176,32 @@ public struct SettingFeature: Sendable {
             await send(.internalAction(.loadConsentForm))
           },
         )
-      case .pushLicenseList:
-        state.path.append(.licenseList(.init()))
+      case let .changedColumnVisibility(columnVisibility):
+        state.columnVisibility = columnVisibility
         return .none
-      case .path(.element(id: _, action: .twitterSetting(.delegate(.pushTwitterAccountManage)))):
-        state.path.append(.twitterAccountManage(.init()))
+      case let .changedIsPortrait(isPortrait):
+        state.isPortrait = isPortrait
         return .none
-      case .path(.element(id: _, action: .blueskySetting(.delegate(.pushBlueskyAccountManage)))):
-        state.path.append(.blueskyAccountManage(.init()))
-        return .none
-      case .path(.element(id: _, action: .mastodonSetting(.delegate(.pushMastodonAccountManage)))):
-        state.path.append(.mastodonAccountManage(.init()))
-        return .none
-      case .path(.element(id: _, action: .paidContent(.delegate(.hideAds)))):
-        return .send(.delegate(.hideAds))
       case .path:
         return .none
       case let .openSafari(safariURL):
         state.safariURL = safariURL
+        return .none
+      case .destination(.presented(.twitterSetting(.delegate(.pushTwitterAccountManage)))):
+        state.path.append(.twitterAccountManage(.init()))
+        return .none
+      case .destination(.presented(.blueskySetting(.delegate(.pushBlueskyAccountManage)))):
+        state.path.append(.blueskyAccountManage(.init()))
+        return .none
+      case .destination(.presented(.mastodonSetting(.delegate(.pushMastodonAccountManage)))):
+        state.path.append(.mastodonAccountManage(.init()))
+        return .none
+      case .destination(.presented(.paidContent(.delegate(.hideAds)))):
+        return .send(.delegate(.hideAds))
+      case let .destination(.presented(.licenseList(.delegate(.pushLicenseDetail(license))))):
+        state.path.append(.licenseDetail(.init(license: license)))
+        return .none
+      case .destination:
         return .none
       case .delegate:
         return .none
@@ -187,25 +222,33 @@ public struct SettingFeature: Sendable {
       }
     }
     .forEach(\.path, action: \.path)
+    .ifLet(\.$destination, action: \.destination)
   }
 }
 
+// MARK: - SettingFeature.Destination.State Equatable
+extension SettingFeature.Destination.State: Equatable {}
+
 // MARK: - SettingFeature.Path.State Equatable
 extension SettingFeature.Path.State: Equatable {}
-
-// MARK: - SettingFeature.Path.State Sendable
-extension SettingFeature.Path.State: Sendable {}
 
 public struct SettingPage: View {
   // MARK: - Properties
   @Bindable public var store: StoreOf<SettingFeature>
 
+  @Environment(\.horizontalSizeClass)
+  private var horizontalSizeClass
+  @Environment(\.verticalSizeClass)
+  private var verticalSizeClass
+  @Dependency(\.mainQueue)
+  private var mainQueue
+
   // MARK: - Body
   public var body: some View {
-    NavigationStack(
-      path: $store.scope(\.path, action: \.path),
-      root: {
-        form
+    NavigationSplitView(
+      columnVisibility: $store.columnVisibility.sending(\.changedColumnVisibility),
+      sidebar: {
+        list
           .navigationTitle(.settings)
           .navigationScrollEdgeEffectSoft()
           .toolbar(
@@ -224,44 +267,85 @@ public struct SettingPage: View {
             },
           )
       },
-      destination: { store in
-        switch store.case {
-        case let .twitterSetting(store):
-          SocialServiceSettingPage(store: store)
-        case let .twitterAccountManage(store):
-          TwitterAccountManagePage(store: store)
-        case let .blueskySetting(store):
-          SocialServiceSettingPage(store: store)
-        case let .blueskyAccountManage(store):
-          BlueskyAccountManagePage(store: store)
-        case let .mastodonSetting(store):
-          SocialServiceSettingPage(store: store)
-        case let .mastodonAccountManage(store):
-          MastodonAccountManagePage(store: store)
-        case let .paidContent(store):
-          PaidContentPage(store: store)
-        case let .licenseList(store):
-          LicenseListPage(store: store)
+      detail: {
+        if let destination = store.scope(\.destination, action: \.destination.presented) {
+          NavigationStack(
+            path: $store.scope(\.path, action: \.path),
+            root: {
+              switch destination.case {
+              case let .twitterSetting(store):
+                SocialServiceSettingPage(store: store)
+              case let .blueskySetting(store):
+                SocialServiceSettingPage(store: store)
+              case let .mastodonSetting(store):
+                SocialServiceSettingPage(store: store)
+              case let .paidContent(store):
+                PaidContentPage(store: store)
+              case let .licenseList(store):
+                LicenseListPage(store: store)
+              }
+            },
+            destination: { store in
+              switch store.case {
+              case let .twitterAccountManage(store):
+                TwitterAccountManagePage(store: store)
+              case let .blueskyAccountManage(store):
+                BlueskyAccountManagePage(store: store)
+              case let .mastodonAccountManage(store):
+                MastodonAccountManagePage(store: store)
+              case let .licenseDetail(store):
+                LicenseDetailPage(store: store)
+              }
+            },
+          )
+        } else {
+          DetailNilView()
+        }
+      },
+    )
+    .onGeometryChange(
+      for: Bool.self,
+      of: { proxy in
+        proxy.size.width < proxy.size.height
+      },
+      action: { isPortrait in
+        store.send(.changedIsPortrait(isPortrait))
+        // 開いた状態
+        guard horizontalSizeClass == .regular && verticalSizeClass == .regular else {
+          return
+        }
+        if isPortrait && store.destination == nil {
+          // 縦持ちで遷移先がない場合は全カラム
+          Task {
+            try? await mainQueue.sleep(for: .milliseconds(1))
+            store.send(.changedColumnVisibility(.all))
+          }
+        } else if !isPortrait {
+          // 横持ちであれば強制的に全カラム
+          store.send(.changedColumnVisibility(.all))
         }
       },
     )
     .analyticsScreen(screenName: .setting)
   }
 
-  private var form: some View {
-    Form {
-      firstSection
-      secondSection
-      thirdSection
-      fourthSection
-    }
+  private var list: some View {
+    List(
+      selection: $store.destinationDetail.sending(\.showDestinationDetail),
+      content: {
+        firstSection
+        secondSection
+        thirdSection
+        fourthSection
+      },
+    )
   }
 
   private var firstSection: some View {
     Section {
       buttonRow(
         action: {
-          store.send(.pushTwitterSetting)
+          store.send(.showDestinationDetail(.twitterSetting))
         },
         title: .xSettings,
         icon: {
@@ -273,7 +357,7 @@ public struct SettingPage: View {
       )
       buttonRow(
         action: {
-          store.send(.pushBlueskySetting)
+          store.send(.showDestinationDetail(.blueskySetting))
         },
         title: .blueskySettings,
         icon: {
@@ -285,7 +369,7 @@ public struct SettingPage: View {
       )
       buttonRow(
         action: {
-          store.send(.pushMastodonSetting)
+          store.send(.showDestinationDetail(.mastodonSetting))
         },
         title: .mastodonSetitngs,
         icon: {
@@ -302,7 +386,7 @@ public struct SettingPage: View {
     Section {
       buttonRow(
         action: {
-          store.send(.pushPaidContent)
+          store.send(.showDestinationDetail(.paidContent))
         },
         title: .paidContent,
         icon: {
@@ -408,7 +492,7 @@ public struct SettingPage: View {
       )
       ButtonRow(
         action: {
-          store.send(.pushLicenseList)
+          store.send(.showDestinationDetail(.licenseList))
         },
         title: String(localized: .licenses),
         icon: {

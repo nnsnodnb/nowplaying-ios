@@ -32,6 +32,7 @@ struct DevelopApp: App {
           $0.blueskyAPI = .atProtoKit
           $0.consentInformation = .google
           $0.crashlytics = .firebase
+          $0.device = .uiKit
           $0.functions = .firebase(endpointURLString: "http://127.0.0.1:9095/nowplaying-dev/asia-northeast1")
           #if targetEnvironment(simulator) && DEBUG
           $0.mediaPlayer = .simulator

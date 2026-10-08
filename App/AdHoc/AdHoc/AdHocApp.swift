@@ -27,6 +27,7 @@ struct AdHocApp: App {
         $0.blueskyAPI = .atProtoKit
         $0.consentInformation = .google
         $0.crashlytics = .firebase
+        $0.device = .uiKit
         $0.functions = .firebase(endpointURLString: "https://asia-northeast1-nowplaying-dev.cloudfunctions.net")
         $0.revenueCat = .revenueCat
         $0.rewardedAd = .google

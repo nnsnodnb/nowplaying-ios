@@ -18,17 +18,32 @@ public struct LicenseListFeature: Sendable {
 
   // MARK: - Action
   public enum Action {
+    case pushLicenseDetail(LicensesPlugin.License)
+    case delegate(Delegate)
+
+    // MARK: - Delegate
+    @CasePathable
+    public enum Delegate {
+      case pushLicenseDetail(LicensesPlugin.License)
+    }
   }
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
-    EmptyReducer()
+    Reduce { _, action in
+      switch action {
+      case let .pushLicenseDetail(license):
+        return .send(.delegate(.pushLicenseDetail(license)))
+      case .delegate:
+        return .none
+      }
+    }
   }
 }
 
 public struct LicenseListPage: View {
   // MARK: - Properties
-  public let store: StoreOf<LicenseListFeature>
+  @Bindable public var store: StoreOf<LicenseListFeature>
 
   // MARK: - Body
   public var body: some View {
@@ -42,15 +57,15 @@ public struct LicenseListPage: View {
   private var list: some View {
     List {
       ForEach(store.licenses) { license in
-        NavigationLink(
-          destination: {
-             LicenseDetailPage(license: license)
+        Button(
+          action: {
+            store.send(.pushLicenseDetail(license))
           },
           label: {
             Text(license.name)
               .foregroundStyle(Color.primary)
               .frame(maxWidth: .infinity, alignment: .leading)
-          }
+          },
         )
       }
     }

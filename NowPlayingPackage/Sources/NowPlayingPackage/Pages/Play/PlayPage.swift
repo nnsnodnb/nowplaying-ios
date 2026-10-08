@@ -8,7 +8,6 @@
 import CommonModule
 import ComposableArchitecture
 import DependenciesInterfaces
-import MemberwiseInit
 import SFSafeSymbols
 import SwiftUI
 
@@ -25,30 +24,23 @@ public struct PlayFeature: Sendable {
 
     // MARK: - Alert
     @CasePathable
-    public enum Alert: Equatable, Sendable {
+    public enum Alert: Equatable {
       case close
     }
   }
 
   // MARK: - State
   @ObservableState
-  @MemberwiseInit(.public)
-  public struct State: Equatable, Sendable {
+  public struct State: Equatable {
     public var isPurchasedHideAds: Bool
-    @Init(default: nil)
     public var artworkImage: UIImage?
-    @Init(default: nil)
     public var songName: String?
-    @Init(default: nil)
     public var artistName: String?
-    @Init(default: nil)
     public var album: String?
     public var isPlaying = false
-    @Init(default: nil)
     public var bannerAdUnitID: String?
-    @Init(default: UIColor.black.withAlphaComponent(0.7))
-    public var backgroundColor: UIColor
-    @Init(default: nil)
+    public var backgroundColor: UIColor = .black.withAlphaComponent(0.7)
+    public var isPortrait = false // 開くときは縦持ち状態が基本だと想定される
     @Presents public var destination: Destination.State?
   }
 
@@ -59,6 +51,7 @@ public struct PlayFeature: Sendable {
     case togglePlayback
     case forward
     case showSetting
+    case changedIsPortrait(Bool)
     case showPost(SocialService)
     case destination(PresentationAction<Destination.Action>)
     case internalAction(InternalAction)
@@ -88,6 +81,8 @@ public struct PlayFeature: Sendable {
   private var analytics
   @Dependency(\.averageColor)
   private var averageColor
+  @Dependency(\.device)
+  private var device
   @Dependency(\.mediaPlayer)
   private var mediaPlayer
   @Dependency(\.imageRenderer)
@@ -105,23 +100,36 @@ public struct PlayFeature: Sendable {
         if !state.isPurchasedHideAds {
           state.bannerAdUnitID = adUnit.playerBottomBannerAdUnitID()
         }
-        return .run(
-          operation: { send in
-            try await mediaPlayer.requestAuthorization()
-            await send(.internalAction(.authorizationSuccess))
-            await analytics.setUserProperty(.musicLibraryAccess(true))
-          },
-          catch: { error, send in
-            guard let error = error as? MediaPlayerClient.Error else { return }
-            await analytics.setUserProperty(.musicLibraryAccess(false))
-            switch error {
-            case .denied:
-              await send(.internalAction(.authorizationFailure(String(localized: .accessToTheMusicLibraryWasDenied))))
-              await analytics.logEvent(.deniedMusicLibrary)
-            case .restricted:
-              await send(.internalAction(.authorizationFailure(String(localized: .accessToTheMusicLibraryIsRestricted))))
-            }
-          },
+        return .merge(
+          // MediaPlayer
+          .run(
+            operation: { send in
+              try await mediaPlayer.requestAuthorization()
+              await send(.internalAction(.authorizationSuccess))
+              await analytics.setUserProperty(.musicLibraryAccess(true))
+            },
+            catch: { error, send in
+              guard let error = error as? MediaPlayerClient.Error else { return }
+              await analytics.setUserProperty(.musicLibraryAccess(false))
+              switch error {
+              case .denied:
+                await send(.internalAction(.authorizationFailure(String(localized: .accessToTheMusicLibraryWasDenied))))
+                await analytics.logEvent(.deniedMusicLibrary)
+              case .restricted:
+                await send(.internalAction(.authorizationFailure(String(localized: .accessToTheMusicLibraryIsRestricted))))
+              }
+            },
+          ),
+          .run(
+            operation: { send in
+              for await orientation in try await device.streamOrientation() {
+                // Portraitのみの対応としているので外画面は対応しなくてよい
+                // 内部ディスプレイのときは横持ちが縦持ちと判断される
+                let isPortrait = orientation.isLandscape
+                await send(.changedIsPortrait(isPortrait))
+              }
+            },
+          ),
         )
       case .backward:
         return .run(
@@ -143,6 +151,9 @@ public struct PlayFeature: Sendable {
         )
       case .showSetting:
         state.destination = .setting(.init())
+        return .none
+      case let .changedIsPortrait(isPortrait):
+        state.isPortrait = isPortrait
         return .none
       case let .showPost(socialService):
         switch socialService {
@@ -402,47 +413,36 @@ public struct PlayFeature: Sendable {
 // MARK: - PlayFeature.Destination.State Equatable
 extension PlayFeature.Destination.State: Equatable {}
 
-// MARK: - PlayFeature.Destination.State Sendable
-extension PlayFeature.Destination.State: Sendable {}
-
 public struct PlayPage: View {
   // MARK: - Properties
   @Bindable public var store: StoreOf<PlayFeature>
 
   @Environment(\.colorScheme)
   private var colorScheme
+  @Environment(\.horizontalSizeClass)
+  private var horizontalSizeClass
+  @Environment(\.verticalSizeClass)
+  private var verticalSizeClass
 
   // MARK: - Body
   public var body: some View {
-    VStack(alignment: .center, spacing: 0) {
-      Spacer()
-        .frame(minHeight: 12, maxHeight: 36)
-      VStack(alignment: .center, spacing: 16) {
-        artworkImage
-        songInfo
-      }
-      Spacer()
-        .frame(minHeight: 12, maxHeight: 36)
-      controlButtons
-      Spacer()
-    }
-    .frame(maxHeight: .infinity)
-    .safeAreaInset(edge: .bottom, alignment: .center, spacing: 0) {
-      VStack(alignment: .center, spacing: 12) {
-        bottomTools
-        bottomBanner
-      }
-    }
-    .background {
-      Color(store.backgroundColor)
-        .ignoresSafeArea(.all)
-        .animation(.easeInOut, value: store.backgroundColor)
-    }
+    SheetOrFullScreenCoverWrap(
+      content: {
+        content
+          .ignoresSafeArea(.keyboard, edges: .bottom)
+          .background {
+            Color(store.backgroundColor)
+              .ignoresSafeArea(.all)
+              .animation(.easeInOut, value: store.backgroundColor)
+          }
+      },
+      item: $store.scope(\.destination, action: \.destination).setting,
+      sheet: { store in
+        SettingPage(store: store)
+      },
+    )
     .task {
       store.send(.onAppear)
-    }
-    .sheet(item: $store.scope(\.destination, action: \.destination).setting) { store in
-      SettingPage(store: store)
     }
     .sheet(item: $store.scope(\.destination, action: \.destination).tweet) { store in
       TweetPage(store: store)
@@ -462,6 +462,74 @@ public struct PlayPage: View {
       },
     )
     .analyticsScreen(screenName: .play)
+  }
+
+  @ViewBuilder private var content: some View {
+    if #available(iOS 27.1, *),
+       horizontalSizeClass == .regular && verticalSizeClass == .regular {
+      arrangementContent
+    } else {
+      VStack(alignment: .center, spacing: 0) {
+        Spacer()
+          .frame(minHeight: 12, maxHeight: 36)
+        VStack(alignment: .center, spacing: 16) {
+          artworkImage
+          songInfo
+        }
+        Spacer()
+          .frame(minHeight: 12, maxHeight: 36)
+        controlButtons
+        Spacer()
+      }
+      .frame(maxHeight: .infinity)
+      .safeAreaInset(edge: .bottom, alignment: .center, spacing: 0) {
+        VStack(alignment: .center, spacing: 12) {
+          bottomTools
+          bottomBanner
+        }
+      }
+    }
+  }
+
+  @available(iOS 27.1, *)
+  @ViewBuilder private var arrangementContent: some View {
+    if store.isPortrait {
+      PlayVerticalArrangementView(
+        artwork: {
+          artworkImage
+        },
+        songInfo: {
+          songInfo
+        },
+        controlButtons: {
+          controlButtons
+        },
+        bottomTools: {
+          VStack(alignment: .center, spacing: 12) {
+            bottomTools
+            bottomBanner
+          }
+        },
+      )
+    } else {
+      PlayHorizontalArrangementView(
+        artwork: {
+          artworkImage
+        },
+        songInfo: {
+          songInfo
+        },
+        controlButtons: {
+          controlButtons
+        },
+        bottomTools: {
+          VStack(alignment: .center, spacing: 12) {
+            bottomTools
+            bottomBanner
+          }
+        },
+      )
+    }
   }
 
   private var artworkImage: some View {
@@ -619,29 +687,28 @@ public struct PlayPage: View {
   }
 }
 
-struct PlayPage_Previews: PreviewProvider {
-  static var previews: some View {
-    PlayPage(
-      store: .init(
-        initialState: PlayFeature.State(
-          isPurchasedHideAds: false,
-        ),
-        reducer: {
-          PlayFeature()
-        },
+#Preview("Show AdBanner") {
+  PlayPage(
+    store: .init(
+      initialState: PlayFeature.State(
+        isPurchasedHideAds: false,
       ),
-    )
-    .previewDisplayName("Show AdBanner")
-    PlayPage(
-      store: .init(
-        initialState: PlayFeature.State(
-          isPurchasedHideAds: true,
-        ),
-        reducer: {
-          PlayFeature()
-        },
+      reducer: {
+        PlayFeature()
+      },
+    ),
+  )
+}
+
+#Preview("Hide AdBanner") {
+  PlayPage(
+    store: .init(
+      initialState: PlayFeature.State(
+        isPurchasedHideAds: true,
       ),
-    )
-    .previewDisplayName("Hide AdBanner")
-  }
+      reducer: {
+        PlayFeature()
+      },
+    ),
+  )
 }

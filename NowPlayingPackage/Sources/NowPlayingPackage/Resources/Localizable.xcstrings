@@ -999,6 +999,17 @@
         }
       }
     },
+    "Please select an item from sidebar." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サイドバーから項目を選択してください"
+          }
+        }
+      }
+    },
     "post" : {
       "extractionState" : "manual",
       "localizations" : {

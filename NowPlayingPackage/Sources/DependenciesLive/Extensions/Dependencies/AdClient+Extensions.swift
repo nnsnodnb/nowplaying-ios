@@ -10,9 +10,9 @@ import SwiftUI
 
 public extension AdClient {
   static let google: Self = .init(
-    make: { adUnitID, size in
+    make: { adUnitID, height in
       AnyView(
-        GoogleBannerView(adUnitID: adUnitID, size: size)
+        GoogleBannerView(adUnitID: adUnitID, height: height)
       )
     },
   )
