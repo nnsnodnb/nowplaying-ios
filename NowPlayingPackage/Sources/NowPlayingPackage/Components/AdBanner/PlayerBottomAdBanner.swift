@@ -18,14 +18,8 @@ public struct PlayerBottomAdBanner: View {
 
   // MARK: - Body
   public var body: some View {
-    GeometryReader { proxy in
-      adClient.make(
-        adUnitID: adUnitID,
-        size: .banner,
-      )
-      .frame(width: proxy.size.width, height: 60)
-    }
-    .frame(height: 60)
+    adClient.make(adUnitID: adUnitID, height: 60)
+      .frame(height: 60)
   }
 }
 
