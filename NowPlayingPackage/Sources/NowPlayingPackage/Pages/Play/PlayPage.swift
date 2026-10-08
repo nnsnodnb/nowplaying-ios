@@ -100,29 +100,36 @@ public struct PlayFeature: Sendable {
         if !state.isPurchasedHideAds {
           state.bannerAdUnitID = adUnit.playerBottomBannerAdUnitID()
         }
-        return .run(
-          operation: { send in
-            let orientation = try await device.currentOrientation()
-            // Portraitのみの対応としているので外画面は対応しなくてよい
-            // 内部ディスプレイのときは横持ちが縦持ちと判断される
-            let isPortrait = orientation.isLandscape
-            await send(.changedIsPortrait(isPortrait))
-
-            try await mediaPlayer.requestAuthorization()
-            await send(.internalAction(.authorizationSuccess))
-            await analytics.setUserProperty(.musicLibraryAccess(true))
-          },
-          catch: { error, send in
-            guard let error = error as? MediaPlayerClient.Error else { return }
-            await analytics.setUserProperty(.musicLibraryAccess(false))
-            switch error {
-            case .denied:
-              await send(.internalAction(.authorizationFailure(String(localized: .accessToTheMusicLibraryWasDenied))))
-              await analytics.logEvent(.deniedMusicLibrary)
-            case .restricted:
-              await send(.internalAction(.authorizationFailure(String(localized: .accessToTheMusicLibraryIsRestricted))))
-            }
-          },
+        return .merge(
+          // MediaPlayer
+          .run(
+            operation: { send in
+              try await mediaPlayer.requestAuthorization()
+              await send(.internalAction(.authorizationSuccess))
+              await analytics.setUserProperty(.musicLibraryAccess(true))
+            },
+            catch: { error, send in
+              guard let error = error as? MediaPlayerClient.Error else { return }
+              await analytics.setUserProperty(.musicLibraryAccess(false))
+              switch error {
+              case .denied:
+                await send(.internalAction(.authorizationFailure(String(localized: .accessToTheMusicLibraryWasDenied))))
+                await analytics.logEvent(.deniedMusicLibrary)
+              case .restricted:
+                await send(.internalAction(.authorizationFailure(String(localized: .accessToTheMusicLibraryIsRestricted))))
+              }
+            },
+          ),
+          .run(
+            operation: { send in
+              for await orientation in try await device.streamOrientation() {
+                // Portraitのみの対応としているので外画面は対応しなくてよい
+                // 内部ディスプレイのときは横持ちが縦持ちと判断される
+                let isPortrait = orientation.isLandscape
+                await send(.changedIsPortrait(isPortrait))
+              }
+            },
+          ),
         )
       case .backward:
         return .run(
@@ -410,9 +417,6 @@ public struct PlayPage: View {
   // MARK: - Properties
   @Bindable public var store: StoreOf<PlayFeature>
 
-  @Dependency(\.notificationCenter)
-  private var notificationCenter
-
   @Environment(\.colorScheme)
   private var colorScheme
   @Environment(\.horizontalSizeClass)
@@ -455,17 +459,6 @@ public struct PlayPage: View {
         if let action {
           store.send(.destination(.presented(.alert(action))))
         }
-      },
-    )
-    .onReceive(
-      notificationCenter.publisher(
-        for: UIDevice.orientationDidChangeNotification,
-      ),
-      perform: { _ in
-        // Portraitのみの対応としているので外画面は対応しなくてよい
-        // 内部ディスプレイのときは横持ちが縦持ちと判断される
-        let isPortrait = UIDevice.current.orientation.isLandscape
-        store.send(.changedIsPortrait(isPortrait))
       },
     )
     .analyticsScreen(screenName: .play)

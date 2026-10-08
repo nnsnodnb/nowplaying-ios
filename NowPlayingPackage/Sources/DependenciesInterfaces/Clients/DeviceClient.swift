@@ -11,13 +11,18 @@ import UIKit
 
 @DependencyClient
 public struct DeviceClient: Sendable {
-  public var currentOrientation: @MainActor @Sendable () throws -> UIDeviceOrientation
+  public var streamOrientation: @Sendable () async throws -> AsyncStream<UIDeviceOrientation>
 }
 
 // MARK: - DependencyKey
 extension DeviceClient: DependencyKey {
   public static let liveValue: Self = .init(
-    currentOrientation: { .portrait },
+    streamOrientation: {
+      AsyncStream {
+        $0.yield(.portrait)
+        $0.finish()
+      }
+    },
   )
 }
 
