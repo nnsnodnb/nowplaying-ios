@@ -1,5 +1,5 @@
 {
-  "originHash" : "9fc494510b57d7bc5068799229cc4f702028bb0e121fe2ca65d1b3e25bc562ae",
+  "originHash" : "5d03dce48c0ee107151cc69389d8179dc34e5473318d6df45e530aa330a3eefe",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -177,8 +177,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/RevenueCat/purchases-ios-spm.git",
       "state" : {
-        "revision" : "e45bb84b726885492ce4e7ee94ddb252d171a205",
-        "version" : "5.92.0"
+        "revision" : "e6e49ad362d79da59c0cc66e5960917d6999036f",
+        "version" : "5.93.0"
       }
     },
     {
