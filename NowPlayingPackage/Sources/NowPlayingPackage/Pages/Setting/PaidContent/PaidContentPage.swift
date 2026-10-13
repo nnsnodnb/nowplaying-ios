@@ -558,14 +558,17 @@ public struct PaidContentPage: View {
         Text(.consumableContent)
       },
       footer: {
-        VStack(alignment: .leading, spacing: 2) {
-          Text(.theFollowingRulesApplyToTheConsumptionOfPostingTickets)
-          Text(._1FreeTicketsWillBeUsedFirst)
-          Text(._2PostingTicketsAreOnlyConsumedWhenPostingToX)
-          Text(._3ImageUploadsAndTextPostsAreTreatedAsSeparateProcessesAndOneTicketIsConsumedForEachUponSuccess)
-          Text(._4IfTheImageUploadSucceedsButTheTextPostFailsOnlyOneTicketForTheImageIsConsumed)
-          Text(._5IfBothTheImageAndTextSucceedATotalOfTwoTicketsAreConsumed)
-          Text(._6TicketsAreOnlyConsumedForProcessesThatSucceed)
+        VStack(alignment: .leading, spacing: 8) {
+          Text(.postTicketsPriceChanges)
+          VStack(alignment: .leading, spacing: 2) {
+            Text(.theFollowingRulesApplyToTheConsumptionOfPostingTickets)
+            Text(._1FreeTicketsWillBeUsedFirst)
+            Text(._2PostingTicketsAreOnlyConsumedWhenPostingToX)
+            Text(._3ImageUploadsAndTextPostsAreTreatedAsSeparateProcessesAndOneTicketIsConsumedForEachUponSuccess)
+            Text(._4IfTheImageUploadSucceedsButTheTextPostFailsOnlyOneTicketForTheImageIsConsumed)
+            Text(._5IfBothTheImageAndTextSucceedATotalOfTwoTicketsAreConsumed)
+            Text(._6TicketsAreOnlyConsumedForProcessesThatSucceed)
+          }
         }
       },
     )

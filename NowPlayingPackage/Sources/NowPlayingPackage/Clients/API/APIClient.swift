@@ -41,17 +41,27 @@ extension APIClient: DependencyKey {
       guard let urlResponse = response as? HTTPURLResponse,
             urlResponse.statusCode == 200 else { throw Error.internalError }
       let decoder = JSONDecoder()
-      let object = try decoder.decode(Response<PostTicket>.self, from: data)
+      let object = try decoder.decode(PostTicketResponse<PostTicket>.self, from: data)
 
-      return object.results
+      return object.versions.v2.results
     },
   )
 }
 
-// MARK: - Response
+// MARK: - PostTicketResponse
 private extension APIClient {
-  struct Response<T: Decodable>: Decodable {
-    let results: [T]
+  struct PostTicketResponse<T: Decodable>: Decodable {
+    // MARK: - Versions
+    struct Versions: Decodable {
+      // MARK: - V2
+      struct V2: Decodable {
+        let results: [T]
+      }
+
+      let v2: V2 // swiftlint:disable:this identifier_name
+    }
+
+    let versions: Versions
   }
 }
 

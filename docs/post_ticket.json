@@ -117,7 +117,7 @@
           "ticket_count": 4200,
           "price": 15000,
           "localized_price": {
-            "ja": "10,000円",
+            "ja": "15,000円",
             "en": "$70.00"
           },
           "package_id": "$rc_post_ticket_4200",

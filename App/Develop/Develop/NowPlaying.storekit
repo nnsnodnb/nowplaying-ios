@@ -60,7 +60,7 @@
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "100",
+      "displayPrice" : "150",
       "familyShareable" : false,
       "internalID" : "973DC88A",
       "localizations" : [
@@ -75,7 +75,7 @@
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "500",
+      "displayPrice" : "750",
       "familyShareable" : false,
       "internalID" : "51F7C38C",
       "localizations" : [
@@ -90,7 +90,7 @@
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "1000",
+      "displayPrice" : "1500",
       "familyShareable" : false,
       "internalID" : "37C19E86",
       "localizations" : [
@@ -105,7 +105,7 @@
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "3000",
+      "displayPrice" : "4500",
       "familyShareable" : false,
       "internalID" : "39177B7F",
       "localizations" : [
@@ -120,7 +120,7 @@
       "type" : "Consumable"
     },
     {
-      "displayPrice" : "10000",
+      "displayPrice" : "15000",
       "familyShareable" : false,
       "internalID" : "B10DFB12",
       "localizations" : [
@@ -132,6 +132,21 @@
       ],
       "productID" : "moe.nnsnodnb.NowPlaying.postTicket4200",
       "referenceName" : "投稿チケット (4,200枚)",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "310",
+      "familyShareable" : false,
+      "internalID" : "5C1D822C",
+      "localizations" : [
+        {
+          "description" : "メディア・テキストでそれぞれ1枚消費します",
+          "displayName" : "投稿チケット (65枚)",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "moe.nnsnodnb.NowPlaying.postTicket65",
+      "referenceName" : "投稿チケット (65枚)",
       "type" : "Consumable"
     }
   ],
@@ -149,11 +164,17 @@
     ],
     "_timeRate" : 0
   },
+  "subscriptionBundleGroups" : [
+
+  ],
   "subscriptionGroups" : [
 
   ],
+  "subscriptionSuiteGroups" : [
+
+  ],
   "version" : {
-    "major" : 4,
-    "minor" : 0
+    "major" : 6,
+    "minor" : 3
   }
 }
