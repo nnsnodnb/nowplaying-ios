@@ -133,6 +133,21 @@
       "productID" : "moe.nnsnodnb.NowPlaying.postTicket4200",
       "referenceName" : "投稿チケット (4,200枚)",
       "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "310",
+      "familyShareable" : false,
+      "internalID" : "5C1D822C",
+      "localizations" : [
+        {
+          "description" : "メディア・テキストでそれぞれ1枚消費します",
+          "displayName" : "投稿チケット (65枚)",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "moe.nnsnodnb.NowPlaying.postTicket65",
+      "referenceName" : "投稿チケット (65枚)",
+      "type" : "Consumable"
     }
   ],
   "settings" : {
@@ -149,11 +164,17 @@
     ],
     "_timeRate" : 0
   },
+  "subscriptionBundleGroups" : [
+
+  ],
   "subscriptionGroups" : [
 
   ],
+  "subscriptionSuiteGroups" : [
+
+  ],
   "version" : {
-    "major" : 4,
-    "minor" : 0
+    "major" : 6,
+    "minor" : 3
   }
 }
