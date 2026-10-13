@@ -243,7 +243,6 @@ public struct TwitterAccountManageFeature: Sendable {
       case .internalAction:
         return .none
       case .alert(.presented(.openRewardedAd)):
-        state.alert = nil
         return .run(
           operation: { send in
             let result = try await rewardedAd.show(adUnitID())

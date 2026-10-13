@@ -17,7 +17,6 @@ struct TestRootFeatureOnAppear {
   @Test
   func testIsLaunchAtFirst() async throws {
     await withDependencies {
-      $0.auth.signOut = {}
       $0.secureKeyValueStore.resetAllData = { #expect(true) }
     } operation: {
       let store = TestStore(
