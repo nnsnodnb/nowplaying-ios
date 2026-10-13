@@ -92,16 +92,16 @@ jobs:
             "${ISSUER_ID}" \
             "./App/${SCHEME}/${SCHEME}/GoogleService-Info.plist"
 
-    - name: Upload ipa to Firebase AppDistribution
-      env:
-        APP_ID: ${{ secrets.APP_ID }}
-        APP_DISTRIBUTION_KEY_BASE64: ${{ secrets.APP_DISTRIBUTION_KEY_BASE64 }}
-        GOOGLE_APPLICATION_CREDENTIALS: /tmp/app-distribution-key.json
-      run: |
-        echo "${APP_DISTRIBUTION_KEY_BASE64}" | base64 -d > /tmp/app-distribution-key.json
-        ./ci_scripts/firebase_distribution.sh \
-          "${SCHEME}" \
-          "${APP_ID}"
+      - name: Upload ipa to Firebase AppDistribution
+        env:
+          APP_ID: ${{ secrets.APP_ID }}
+          APP_DISTRIBUTION_KEY_BASE64: ${{ secrets.APP_DISTRIBUTION_KEY_BASE64 }}
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/app-distribution-key.json
+        run: |
+          echo "${APP_DISTRIBUTION_KEY_BASE64}" | base64 -d > /tmp/app-distribution-key.json
+          ./ci_scripts/firebase_distribution.sh \
+            "${SCHEME}" \
+            "${APP_ID}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
