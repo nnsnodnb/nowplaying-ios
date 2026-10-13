@@ -54,5 +54,76 @@
       "package_id": "$rc_post_ticket_4200",
       "discount": "28.5%"
     }
-  ]
+  ],
+  "versions": {
+    "v2": {
+      "results": [
+        {
+          "id": "moe.nnsnodnb.NowPlaying.postTicket30",
+          "ticket_count": 30,
+          "price": 150,
+          "localized_price": {
+            "ja": "150円",
+            "en": "$1.00"
+          },
+          "package_id": "$rc_post_ticket_30"
+        },
+        {
+          "id": "moe.nnsnodnb.NowPlaying.postTicket65",
+          "ticket_count": 65,
+          "price": 310,
+          "localized_price": {
+            "ja": "310円",
+            "en": "$1.99"
+          },
+          "package_id": "$rc_post_ticket_65",
+          "discount": "4.6%"
+        },
+        {
+          "id": "moe.nnsnodnb.NowPlaying.postTicket160",
+          "ticket_count": 160,
+          "price": 750,
+          "localized_price": {
+            "ja": "750円",
+            "en": "$3.19"
+          },
+          "package_id": "$rc_post_ticket_160",
+          "discount": "6.2%"
+        },
+        {
+          "id": "moe.nnsnodnb.NowPlaying.postTicket350",
+          "ticket_count": 350,
+          "price": 1500,
+          "localized_price": {
+            "ja": "1,500円",
+            "en": "$9.39"
+          },
+          "package_id": "$rc_post_ticket_350",
+          "discount": "14.2%"
+        },
+        {
+          "id": "moe.nnsnodnb.NowPlaying.postTicket1200",
+          "ticket_count": 1200,
+          "price": 4500,
+          "localized_price": {
+            "ja": "4,500円",
+            "en": "$29.49"
+          },
+          "package_id": "$rc_post_ticket_1200",
+          "discount": "25.0%"
+        },
+        {
+          "id": "moe.nnsnodnb.NowPlaying.postTicket4200",
+          "ticket_count": 4200,
+          "price": 15000,
+          "localized_price": {
+            "ja": "10,000円",
+            "en": "$70.00"
+          },
+          "package_id": "$rc_post_ticket_4200",
+          "discount": "28.5%"
+        }
+      ]
+    }
+  }
 }
