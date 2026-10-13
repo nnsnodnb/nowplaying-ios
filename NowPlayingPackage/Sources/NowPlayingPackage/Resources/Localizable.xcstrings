@@ -1055,6 +1055,17 @@
         }
       }
     },
+    "Post tickets price changes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "X APIの利用料金改定や為替レート変動に伴い投稿チケットの価格が変動します。ご理解ご了承のほどよろしくお願いいたします。"
+          }
+        }
+      }
+    },
     "Post to Bluesky" : {
       "extractionState" : "manual",
       "localizations" : {
