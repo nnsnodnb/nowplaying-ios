@@ -26,7 +26,7 @@ struct DevelopApp: App {
       if !isTesting {
         prepareDependencies {
           $0.adClient = .google
-          $0.analytics = .firebase
+          $0.analytics = .blackhole
           $0.appCheck = .firebase
           $0.auth = .firebase
           $0.blueskyAPI = .atProtoKit

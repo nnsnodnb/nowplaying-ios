@@ -84,6 +84,7 @@ public extension AnalyticsClient {
     case purchasedBuyMeACoffee
     case giveOutFreePostTicket
     case getFreePostTicket(AvailablePostTicket)
+    case reinstalled
 
     // MARK: - Properties
     public var eventName: String {
@@ -134,6 +135,8 @@ public extension AnalyticsClient {
         "give_out_free_post_ticket"
       case .getFreePostTicket:
         "get_free_post_ticket"
+      case .reinstalled:
+        "reinstalled"
       }
     }
 
@@ -147,7 +150,8 @@ public extension AnalyticsClient {
           .mastodonPostedFailure,
           .restoredPaidContent,
           .purchasedBuyMeACoffee,
-          .giveOutFreePostTicket:
+          .giveOutFreePostTicket,
+          .reinstalled:
         nil
       case let .twitterLogin(success):
         [

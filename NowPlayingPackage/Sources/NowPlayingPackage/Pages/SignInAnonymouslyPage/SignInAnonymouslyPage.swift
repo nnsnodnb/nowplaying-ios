@@ -14,6 +14,8 @@ public struct SignInAnonymouslyFeature: Sendable {
   // MARK: - State
   @ObservableState
   public struct State: Equatable, Sendable {
+    @Shared(.appStorage(.migratedV320))
+    public var migratedV320 = false
     @Presents public var alert: AlertState<Action.Alert>?
   }
 
@@ -33,6 +35,8 @@ public struct SignInAnonymouslyFeature: Sendable {
     // MARK: - IntenralAction
     @CasePathable
     public enum InternalAction {
+      case deletePreviousAnonymouslyUser
+      case deleteFailure
       case signInAnonymously
       case signInFailure
     }
@@ -40,13 +44,18 @@ public struct SignInAnonymouslyFeature: Sendable {
     // MARK: - Alert
     @CasePathable
     public enum Alert: Equatable, Sendable {
-      case retry
+      case retryDeleteUser
+      case retrySignIn
     }
   }
 
   // MARK: - Dependency
+  @Dependency(\.analytics)
+  private var analytics
   @Dependency(\.auth)
   private var auth
+  @Dependency(\.functions)
+  private var functions
   @Dependency(\.mainQueue)
   private var mainQueue
 
@@ -57,12 +66,46 @@ public struct SignInAnonymouslyFeature: Sendable {
       case .signInIfNeeded:
         // すでにサインイン済み && 匿名ユーザー
         if auth.isSignedIn() && auth.isAnonymous() {
-          return .send(.delegate(.completed))
+          if state.migratedV320 {
+            // マイグレーションも完了しているので終了
+            return .send(.delegate(.completed))
+          } else {
+            // マイグレーションをしていない→再インストールのユーザーなので前の匿名ユーザーを削除する
+            return .send(.internalAction(.deletePreviousAnonymouslyUser))
+          }
         }
         // UIKit時代の名残でTwitterログインセッションが残っているかもしれないのでログアウトする
         try? auth.signOut()
         return .send(.internalAction(.signInAnonymously))
       case .delegate:
+        return .none
+      case .internalAction(.deletePreviousAnonymouslyUser):
+        return .run(
+          operation: { send in
+            try await functions.deleteAnonymouslyUser()
+            try? auth.signOut()
+            await analytics.logEvent(.reinstalled)
+            // 削除完了に匿名認証をする
+            await send(.internalAction(.signInAnonymously))
+          },
+          catch: { _, send in
+            await send(.internalAction(.deleteFailure))
+          },
+        )
+      case .internalAction(.deleteFailure):
+        state.alert = AlertState(
+          title: {
+            TextState(.failedLoad)
+          },
+          actions: {
+            ButtonState(
+              action: .retryDeleteUser,
+              label: {
+                TextState(.retry)
+              },
+            )
+          },
+        )
         return .none
       case .internalAction(.signInAnonymously):
         return .run(
@@ -81,7 +124,7 @@ public struct SignInAnonymouslyFeature: Sendable {
           },
           actions: {
             ButtonState(
-              action: .retry,
+              action: .retrySignIn,
               label: {
                 TextState(.retry)
               },
@@ -91,7 +134,14 @@ public struct SignInAnonymouslyFeature: Sendable {
         return .none
       case .internalAction:
         return .none
-      case .alert(.presented(.retry)):
+      case .alert(.presented(.retryDeleteUser)):
+        return .run(
+          operation: { send in
+            try await mainQueue.sleep(for: .milliseconds(400))
+            await send(.internalAction(.deletePreviousAnonymouslyUser))
+          },
+        )
+      case .alert(.presented(.retrySignIn)):
         return .run(
           operation: { send in
             try await mainQueue.sleep(for: .milliseconds(400))
@@ -112,10 +162,12 @@ public struct SignInAnonymouslyPage: View {
 
   // MARK: - Body
   public var body: some View {
-    Color(UIColor.systemBackground)
-      .ignoresSafeArea(.all)
+    ProgressView()
+      .progressViewStyle(.circular)
+      .frame(maxWidth: .infinity)
+      .controlSize(.extraLarge)
       .task {
-        store.send(.signInIfNeeded)
+        await store.send(.signInIfNeeded).finish()
       }
       .alert($store.scope(\.alert, action: \.alert))
       .analyticsScreen(screenName: .signInAnonymously)

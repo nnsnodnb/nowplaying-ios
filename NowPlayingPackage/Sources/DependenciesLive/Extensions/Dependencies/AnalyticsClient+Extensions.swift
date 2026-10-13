@@ -31,4 +31,9 @@ public extension AnalyticsClient {
       Analytics.setUserProperty(userProperty.value, forName: userProperty.name)
     },
   )
+  static let blackhole: Self = .init(
+    logEvent: { _ in },
+    analyticsScreen: { _, _ in },
+    setUserProperty: { _ in },
+  )
 }

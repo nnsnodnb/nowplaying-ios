@@ -50,6 +50,12 @@ public extension FunctionsClient {
         let request = TwitterPostTweetRequest(text: text, userID: twitterProfileID, mediaID: mediaID)
         _ = try await callable.call(request)
       },
+      deleteAnonymouslyUser: {
+        let callable = Self.functions.httpsCallable(
+          "delete_anonymously_user",
+        )
+        _ = try await callable.call()
+      },
     )
   }
 }

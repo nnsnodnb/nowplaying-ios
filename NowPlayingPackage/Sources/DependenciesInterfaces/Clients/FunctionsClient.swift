@@ -16,6 +16,7 @@ public struct FunctionsClient: Sendable {
   public var migrateTwitterUserProfiles: @Sendable ([Migration.V320]) async throws -> Void
   public var getTwitterUserProfile: @Sendable (TwitterProfile.ID) async throws -> TwitterProfile
   public var twitterPostTweet: @Sendable (TwitterProfile.ID, String, TwitterMedia.ID?) async throws -> Void
+  public var deleteAnonymouslyUser: @Sendable () async throws -> Void
 }
 
 // MARK: - DependencyKey
@@ -33,12 +34,14 @@ extension FunctionsClient: DependencyKey {
     twitterPostTweet: { _, _, _ in
       fatalError("Please set a value for `FunctionsClient.liveValue`.")
     },
+    deleteAnonymouslyUser: {},
   )
   public static let previewValue: Self = .init(
     endpointURLString: { "https://example.com" },
     migrateTwitterUserProfiles: { _ in },
     getTwitterUserProfile: { _ in .nnsnodnb },
-    twitterPostTweet: { _, _, _ in }
+    twitterPostTweet: { _, _, _ in },
+    deleteAnonymouslyUser: {},
   )
 }
 

@@ -37,11 +37,14 @@ struct TestSignInAnonymouslyFeatureSignInIfNeeded {
   }
 
   @Test
-  func testIsSignedInAndIsAnonymous() async throws {
+  func testIsSignedInAndIsAnonymousIsMigratedV320() async throws {
     await withDependencies {
       $0.auth.isSignedIn = { true }
       $0.auth.isAnonymous = { true }
     } operation: {
+      @Shared(.appStorage(.migratedV320))
+      var migratedV320 = true
+
       let store = TestStore(
         initialState: SignInAnonymouslyFeature.State(),
         reducer: {
@@ -50,6 +53,32 @@ struct TestSignInAnonymouslyFeatureSignInIfNeeded {
       )
 
       await store.send(.signInIfNeeded)
+      await store.receive(\.delegate.completed)
+    }
+  }
+
+  @Test
+  func testIsSignedInAndIsAnonymousReinstalled() async throws {
+    await withDependencies {
+      $0.auth.isSignedIn = { true }
+      $0.auth.isAnonymous = { true }
+      $0.auth.signInAnonymously = {}
+      $0.auth.signOut = {}
+      $0.functions.deleteAnonymouslyUser = {}
+    } operation: {
+      @Shared(.appStorage(.migratedV320))
+      var migratedV320 = false
+
+      let store = TestStore(
+        initialState: SignInAnonymouslyFeature.State(),
+        reducer: {
+          SignInAnonymouslyFeature()
+        },
+      )
+
+      await store.send(.signInIfNeeded)
+      await store.receive(\.internalAction.deletePreviousAnonymouslyUser)
+      await store.receive(\.internalAction.signInAnonymously)
       await store.receive(\.delegate.completed)
     }
   }
@@ -101,7 +130,7 @@ struct TestSignInAnonymouslyFeatureSignInIfNeeded {
           },
           actions: {
             ButtonState(
-              action: .retry,
+              action: .retrySignIn,
               label: {
                 TextState(.retry)
               },
