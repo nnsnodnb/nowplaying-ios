@@ -10,69 +10,6 @@ platform :ios do
     )
   end
 
-  desc "Fetch Provisioning Profile & Apple Distribution Certificate"
-  lane :setup_adhoc_certificates do
-    keychain
-    match(
-      type: "adhoc",
-    )
-  end
-
-  desc "Fetch Provisioning Profile & Apple Distribution Certificate"
-  lane :setup_appstore_certificates do
-    keychain
-    match(
-      type: "appstore",
-    )
-  end
-
-  # Gym
-  desc "Gym for AdHoc"
-  lane :adhoc do
-    setup_adhoc_certificates
-
-    gym(
-      export_method: "ad-hoc",
-      scheme: "AdHoc",
-      xcargs: "MARKETING_VERSION='#{generate_adhoc_marketing_version}'",
-    )
-
-    upload_symbols_to_crashlytics(
-      gsp_path: "App/AdHoc/AdHoc/GoogleService-Info.plist",
-      binary_path: ".swiftpm/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols",
-    )
-
-    if is_ci
-      firebase_app_distribution(
-        app: "1:731011151829:ios:daf43379c91de5c0",
-        ipa_path: "Products/AdHoc.ipa",
-        groups: "owner",
-      )
-    end
-  end
-
-  desc "Gym for AppStore"
-  lane :release do
-    setup_appstore_certificates
-
-    gym(
-      export_method: "app-store",
-      scheme: "Production",
-    )
-
-    upload_symbols_to_crashlytics(
-      gsp_path: "App/Production/Production/GoogleService-Info.plist",
-      binary_path: ".swiftpm/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols",
-    )
-
-    if is_ci
-      deliver(
-        ipa: "Products/Production.ipa",
-        precheck_default_rule_level: :error,
-      )
-    end
-  end
-
   # Utility
   desc "Update MARKETING_VERSION & CURRENT_PROJECT_VERSION"
   lane :update_app_version do
@@ -104,15 +41,5 @@ platform :ios do
         add_to_search_list: true,
       )
     end
-  end
-
-  desc "Generate MARKETING_VERSION for AdHoc"
-  private_lane :generate_adhoc_marketing_version do
-    version = get_version_number(
-      xcodeproj: "App/AdHoc/AdHoc.xcodeproj",
-      target: "AdHoc",
-    )
-    short_hash = last_git_commit[:abbreviated_commit_hash]
-    "#{version}-#{short_hash}"
   end
 end
