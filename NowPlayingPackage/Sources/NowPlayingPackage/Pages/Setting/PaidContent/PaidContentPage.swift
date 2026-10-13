@@ -33,12 +33,12 @@ public struct PaidContentFeature: Sendable {
   // MARK: - Action
   public enum Action {
     case onAppear
+    case buyMeACoffee
     case purchaseNonConsumable(NonConsumable)
     case restorePurchases
     case giveOutFreePostTicket
     case showAlertBeforeAds
     case purchasePostTicket(PostTicket)
-    case buyMeACoffee
     case delegate(Delegate)
     case internalAction(InternalAction)
     case alert(PresentationAction<Alert>)
@@ -108,6 +108,27 @@ public struct PaidContentFeature: Sendable {
             let postTickets = try await apiClient.getPostTickets()
             let availablePostTicket = try await secureKeyValueStore.getAvailablePostTicket()
             await send(.internalAction(.setPostTickets(gaveOutFreePostTicket, postTickets, availablePostTicket)))
+          },
+        )
+      case .buyMeACoffee:
+        state.isLoading = true
+        return .run(
+          operation: { send in
+            try await revenueCat.buyMeACoffee()
+            await send(.internalAction(.paidCheer(String(localized: .coffee))))
+            await analytics.logEvent(.purchasedBuyMeACoffee)
+            await analytics.setUserProperty(.kindUser(true))
+          },
+          catch: { error, send in
+            guard let error = error as? RevenueCatClient.Error,
+                  error != .userCancelled else {
+              await send(.internalAction(.userCancelled))
+              return
+            }
+            await send(.internalAction(
+              .failedPay(String(localized: .purchaseFailed), String(localized: .thankYouForYourSupport))
+            ))
+            await analytics.setUserProperty(.kindUser(false))
           },
         )
       case let .purchaseNonConsumable(nonConsumable):
@@ -230,27 +251,6 @@ public struct PaidContentFeature: Sendable {
               return
             }
             await send(.internalAction(.failedPay(String(localized: .purchaseFailed), nil)))
-          },
-        )
-      case .buyMeACoffee:
-        state.isLoading = true
-        return .run(
-          operation: { send in
-            try await revenueCat.buyMeACoffee()
-            await send(.internalAction(.paidCheer(String(localized: .coffee))))
-            await analytics.logEvent(.purchasedBuyMeACoffee)
-            await analytics.setUserProperty(.kindUser(true))
-          },
-          catch: { error, send in
-            guard let error = error as? RevenueCatClient.Error,
-                  error != .userCancelled else {
-              await send(.internalAction(.userCancelled))
-              return
-            }
-            await send(.internalAction(
-              .failedPay(String(localized: .purchaseFailed), String(localized: .thankYouForYourSupport))
-            ))
-            await analytics.setUserProperty(.kindUser(false))
           },
         )
       case .delegate:
@@ -496,10 +496,21 @@ public struct PaidContentPage: View {
 
   private var list: some View {
     List {
+      cheerSection
       nonConsumableSection
       consumableSection
-      cheerSection
     }
+  }
+
+  private var cheerSection: some View {
+    Section(
+      content: {
+        buyMeACoffeeRow
+      },
+      header: {
+        Text(.supportContent)
+      },
+    )
   }
 
   @ViewBuilder private var nonConsumableSection: some View {
@@ -570,17 +581,6 @@ public struct PaidContentPage: View {
             Text(._6TicketsAreOnlyConsumedForProcessesThatSucceed)
           }
         }
-      },
-    )
-  }
-
-  private var cheerSection: some View {
-    Section(
-      content: {
-        buyMeACoffeeRow
-      },
-      header: {
-        Text(.supportContent)
       },
     )
   }
