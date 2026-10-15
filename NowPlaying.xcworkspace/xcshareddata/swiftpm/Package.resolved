@@ -1,5 +1,5 @@
 {
-  "originHash" : "f4dc3f41435ab509ba3aa4226582ee10e2b9ff4886f79816f1a6b3b81edf0ea7",
+  "originHash" : "82b51e4017bd4f9a21e3f29753f8ff2a326b8742b4da207c0ef45543f71ae6f4",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -161,6 +161,15 @@
       "state" : {
         "revision" : "30f7a7e72e0607d304fbf69c799474bd5fb6d1ce",
         "version" : "13.2.0"
+      }
+    },
+    {
+      "identity" : "oauthenticator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ATProtoKit/OAuthenticator.git",
+      "state" : {
+        "revision" : "835bc01596dfba77de92acfecf82c6f65105cb2d",
+        "version" : "0.7.2"
       }
     },
     {
@@ -366,8 +375,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax",
       "state" : {
-        "revision" : "050f1a346fbbac0ca2cfb15a95274f7bd1cf0ccf",
-        "version" : "604.0.0"
+        "revision" : "79e4b74a295b6eb74a8b585e3a39d29e70c1dbd1",
+        "version" : "603.0.2"
       }
     },
     {

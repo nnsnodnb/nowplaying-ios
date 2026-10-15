@@ -29,6 +29,7 @@ let package = Package(
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "13.0.1"),
     .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
     .package(url: "https://github.com/maiyama18/LicensesPlugin.git", from: "0.2.0"),
+    .package(url: "https://github.com/ATProtoKit/OAuthenticator.git", from: "0.7.2"),
     .package(url: "https://github.com/kean/Nuke.git", from: "13.2.0"),
     .package(url: "https://github.com/RevenueCat/purchases-ios-spm.git", from: "5.95.0"),
     .package(url: "https://github.com/nnsnodnb/ScrollFlowLabel.git", from: "1.0.4"),
@@ -108,6 +109,7 @@ let package = Package(
         .googleMobileAds,
         .googleUserMessagingPlatform,
         .keychainAccess,
+        .oAuthenticator,
         .revenueCat,
       ],
       linkerSettings: [
@@ -257,6 +259,13 @@ extension Target.Dependency {
     .product(
       name: "NukeUI",
       package: "Nuke",
+    )
+  }
+
+  static var oAuthenticator: Self {
+    .product(
+      name: "OAuthenticator",
+      package: "OAuthenticator",
     )
   }
 
