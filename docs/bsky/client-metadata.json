@@ -1,0 +1,12 @@
+{
+    "client_id": "https://nowplaying.nnsnodnb.moe/bsky/client-metadata.json",
+    "application_type": "native",
+    "client_name": "NowPlaying",
+    "client_uri": "https://nowplaying.nnsnodnb.moe",
+    "dpop_bound_access_tokens": true,
+    "grant_types": ["authorization_code", "refresh_token"],
+    "redirect_uris": ["moe.nnsnodnb.nowplaying:/oauth/callback"],
+    "response_types": ["code"],
+    "scope": "atproto transition:generic",
+    "token_endpoint_auth_method": "none"
+}
