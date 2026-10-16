@@ -52,6 +52,8 @@ public struct RootFeature: Sendable {
   // MARK: - Dependency
   @Dependency(\.auth)
   private var auth
+  @Dependency(\.blueskyOAuth)
+  private var blueskyOAuth
   @Dependency(\.secureKeyValueStore)
   private var secureKeyValueStore
 

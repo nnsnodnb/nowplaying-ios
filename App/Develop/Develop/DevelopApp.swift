@@ -30,6 +30,7 @@ struct DevelopApp: App {
           $0.appCheck = .firebase
           $0.auth = .firebase
           $0.blueskyAPI = .atProtoKit
+          $0.blueskyOAuth = .oAuthenticator
           $0.consentInformation = .google
           $0.crashlytics = .firebase
           $0.device = .uiKit

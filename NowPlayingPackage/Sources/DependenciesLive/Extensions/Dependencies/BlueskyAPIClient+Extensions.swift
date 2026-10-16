@@ -10,6 +10,7 @@ import CommonModule
 import Dependencies
 import DependenciesInterfaces
 import Foundation
+import OAuthenticator
 
 public extension BlueskyAPIClient {
   static let atProtoKit: Self = .init(
@@ -55,6 +56,41 @@ public extension BlueskyAPIClient {
       } catch {
         throw Error.unknown
       }
+    },
+    getUserProfile: { handle, identity in
+      @Dependency(\.secureKeyValueStore)
+      var secureKeyValueStore
+      @Dependency(\.blueskyOAuth)
+      var blueskyOAuth
+
+      let key = try await secureKeyValueStore.getBlueskyAccountPrivateKey(identity.did)
+      let server: ServerMetadata = try await {
+        let url = URL(string: identity.serverMetadata.issuer)!.appending(path: "/.well-known/oauth-authorization-server")
+        var urlRequst = URLRequest(url: url)
+        urlRequst.setValue("application/json", forHTTPHeaderField: "Accept")
+        let (data, _) = try await URLSession.shared.data(for: urlRequst)
+        let serverMetadata = try JSONDecoder().decode(ServerMetadata.self, from: data)
+
+        return serverMetadata
+      }()
+      let authenticator = try await blueskyOAuth.makeAuthenticator(handle: handle, identity: identity, key: key)
+
+      let url = identity.pds.appending(path: "xrpc/app.bsky.actor.getProfile")
+      var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+      components.queryItems = [
+        .init(name: "actor", value: identity.did.rawValue),
+      ]
+
+      var urlRequest = URLRequest(url: components.url!)
+      urlRequest.httpMethod = "GET"
+
+      let (data, response) = try await authenticator.response(for: urlRequest)
+      guard let httpURLResponse = response as? HTTPURLResponse,
+            httpURLResponse.statusCode == 200 else {
+        throw Error.unknown
+      }
+      let blueskyAccount = try JSONDecoder().decode(BlueskyAccount.self, from: data)
+      return blueskyAccount
     },
     createPostRecord: { blueskyAccount, text, imageData in
       @Dependency(\.secureKeyValueStore)

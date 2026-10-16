@@ -24,6 +24,7 @@ let package = Package(
     ),
   ],
   dependencies: [
+    .package(url: "https://github.com/ATProtoKit/ATIdentityTools.git", from: "0.2.0"),
     .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.34.1"),
     .package(url: "https://github.com/stleamist/BetterSafariView.git", from: "2.4.2"),
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "13.0.1"),
@@ -93,11 +94,13 @@ let package = Package(
         .commonModule,
         .dependencies,
         .dependenciesMacros,
+        .oAuthenticator,
       ],
     ),
     .target(
       name: "DependenciesLive",
       dependencies: [
+        .atIdentityTools,
         .atProtoKit,
         .commonModule,
         .dependenciesInterfaces,
@@ -109,7 +112,6 @@ let package = Package(
         .googleMobileAds,
         .googleUserMessagingPlatform,
         .keychainAccess,
-        .oAuthenticator,
         .revenueCat,
       ],
       linkerSettings: [
@@ -131,6 +133,13 @@ let package = Package(
 
 // MARK: - Target.Dependency
 extension Target.Dependency {
+  static var atIdentityTools: Self {
+    .product(
+      name: "ATIdentityTools",
+      package: "ATIdentityTools",
+    )
+  }
+
   static var atProtoKit: Self {
     .product(
       name: "ATProtoKit",
