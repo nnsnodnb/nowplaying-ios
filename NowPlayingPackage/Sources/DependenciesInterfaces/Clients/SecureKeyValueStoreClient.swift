@@ -180,12 +180,8 @@ extension SecureKeyValueStoreClient: DependencyKey {
     updateDefaultBlueskyAccount: { _ in },
     removeBlueskyAccount: { _ in },
     setBlueskyAccounts: { _ in },
-    getBlueskyAccountPrivateKey: { _ in
-      Data()
-    },
-    getBlueskyAccountIdentity: { _ in
-      nil
-    },
+    getBlueskyAccountPrivateKey: { _ in Data() },
+    getBlueskyAccountIdentity: { _ in nil },
     setBlueskyAccountIdentity: { _ in },
     getBlueskyAccountLogin: { _ in nil },
     setBlueskyAccountLogin: { _, _ in },
