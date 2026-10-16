@@ -22,7 +22,7 @@ jobs:
       url: https://console.firebase.google.com/project/nowplayingios/appdistribution/app/ios:moe.nnsnodnb.NowPlaying/releases
 
     env:
-      DEVELOPER_DIR: /Applications/Xcode_27.1_beta.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_27.1.0.app/Contents/Developer
       APP_NAME: NowPlaying
       SCHEME: AdHoc
 
