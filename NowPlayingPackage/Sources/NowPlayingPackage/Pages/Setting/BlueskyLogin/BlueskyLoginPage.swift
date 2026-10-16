@@ -100,8 +100,8 @@ public struct BlueskyLoginFeature: Sendable {
             await send(.internalAction(.loggedIn(blueskyAccount)))
           },
           catch: { error, send in
+            // TODO: エラー修正
             guard let error = error as? BlueskyAPIClient.Error else {
-              print(error)
               await send(.internalAction(.loginFailure(String(localized: .anUnknownErrorHasOccurred))))
               return
             }
