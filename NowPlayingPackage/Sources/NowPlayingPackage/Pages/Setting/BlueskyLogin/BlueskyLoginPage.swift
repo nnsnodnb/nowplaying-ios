@@ -16,16 +16,14 @@ public struct BlueskyLoginFeature: Sendable {
   @ObservableState
   public struct State: Equatable, Sendable {
     public var handle = ""
-    public var password = ""
     public var focusedField: Field? = .handle
-    public var isDisabledLoginButton = true
+    public var isDisabledLoginButton = false
     public var isLoading = false
     @Presents public var alert: AlertState<Action.Alert>?
 
     // MARK: - Field
     public enum Field: Sendable {
       case handle
-      case password
     }
   }
 
@@ -34,7 +32,6 @@ public struct BlueskyLoginFeature: Sendable {
     case close
     case login
     case changedHandle(String)
-    case changedPassword(String)
     case binding(BindingAction<State>)
     case delegate(Delegate)
     case internalAction(InternalAction)
@@ -49,7 +46,6 @@ public struct BlueskyLoginFeature: Sendable {
     // MARK: - InternalAction
     @CasePathable
     public enum InternalAction {
-      case validate
       case loggedIn(BlueskyAccount)
       case loginFailure(String)
     }
@@ -66,6 +62,8 @@ public struct BlueskyLoginFeature: Sendable {
   private var analytics
   @Dependency(\.blueskyAPI)
   private var blueskyAPI
+  @Dependency(\.blueskyOAuth)
+  private var blueskyOAuth
   @Dependency(\.dismiss)
   private var dismiss
   @Dependency(\.secureKeyValueStore)
@@ -88,12 +86,21 @@ public struct BlueskyLoginFeature: Sendable {
         state.isLoading = true
         return .run(
           operation: { [state] send in
-            let blueskyAccount = try await blueskyAPI.login(state.handle, state.password)
+            let identity = try await blueskyOAuth.resolveIdentity(handle: state.handle)
+            let privateKey = try await secureKeyValueStore.getBlueskyAccountPrivateKey(identity.did)
+            let authenticator = try await blueskyOAuth.makeAuthenticator(
+              handle: state.handle,
+              identity: identity,
+              key: privateKey,
+            )
+            try await authenticator.authenticate()
+            let blueskyAccount = try await blueskyAPI.getUserProfile(state.handle, identity)
             try await secureKeyValueStore.addBlueskyAccount(blueskyAccount)
-            try await secureKeyValueStore.setBlueskyAccountPassword(blueskyAccount, .init(state.password))
+            try await secureKeyValueStore.setBlueskyAccountIdentity(identity)
             await send(.internalAction(.loggedIn(blueskyAccount)))
           },
           catch: { error, send in
+            // TODO: エラー修正
             guard let error = error as? BlueskyAPIClient.Error else {
               await send(.internalAction(.loginFailure(String(localized: .anUnknownErrorHasOccurred))))
               return
@@ -117,19 +124,11 @@ public struct BlueskyLoginFeature: Sendable {
         )
       case let .changedHandle(handle):
         state.handle = handle
-        return .send(.internalAction(.validate))
-      case let .changedPassword(password):
-        state.password = password
-        return .send(.internalAction(.validate))
+        state.isDisabledLoginButton = handle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        return .none
       case .binding:
         return .none
       case .delegate:
-        return .none
-      case .internalAction(.validate):
-        state.isDisabledLoginButton = (
-          state.handle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-          state.password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        )
         return .none
       case let .internalAction(.loggedIn(blueskyAccount)):
         state.isLoading = false
@@ -213,7 +212,6 @@ public struct BlueskyLoginPage: View {
   private var section: some View {
     Section {
       handleTextField
-      passwordTextField
     }
     .bind($store.focusedField, to: $focusedField)
   }
@@ -227,17 +225,6 @@ public struct BlueskyLoginPage: View {
     )
     .keyboardType(.twitter)
     .focused($focusedField, equals: .handle)
-  }
-
-  private var passwordTextField: some View {
-    SecureField(
-      text: $store.password.sending(\.changedPassword),
-      label: {
-        Text(.passwordAppPassword)
-      },
-    )
-    .keyboardType(.alphabet)
-    .focused($focusedField, equals: .password)
   }
 }
 

@@ -31,17 +31,20 @@ struct TestBlueskyLoginFeatureLogin {
 
   @Test
   func testIt() async throws {
+    let identity = try Stub.make(BlueskyAccount.Identity.self)
     let blueskyAccount = try Stub.make(BlueskyAccount.self)
 
     await withDependencies {
-      $0.blueskyAPI.login = { _, _ in blueskyAccount }
+      $0.blueskyOAuth.resolveIdentity = { _ in identity }
+      $0.blueskyOAuth.makeAuthenticator = { _, _, _ in StubAuthenticator() }
+      $0.blueskyAPI.getUserProfile = { _, _ in blueskyAccount }
       $0.secureKeyValueStore.addBlueskyAccount = { _ in }
-      $0.secureKeyValueStore.setBlueskyAccountPassword = { _, _ in }
+      $0.secureKeyValueStore.getBlueskyAccountPrivateKey = { _ in .init() }
+      $0.secureKeyValueStore.setBlueskyAccountIdentity = { _ in }
     } operation: {
       let store = TestStore(
         initialState: BlueskyLoginFeature.State(
           handle: "example.bsky.social",
-          password: "password",
           isDisabledLoginButton: false,
         ),
         reducer: {
@@ -58,63 +61,6 @@ struct TestBlueskyLoginFeatureLogin {
       }
       await store.receive(\.delegate.loggedIn, blueskyAccount)
       await store.receive(\.close)
-    }
-  }
-
-  @Test(
-    arguments: zip(
-      [
-        BlueskyAPIClient.Error.invalidHandleOrPassword,
-        BlueskyAPIClient.Error.invalidHandle,
-        BlueskyAPIClient.Error.enabledTwoFactorAuthentication,
-        BlueskyAPIClient.Error.unknown,
-      ],
-      [
-        LocalizedStringResource.isYourHandleOrPasswordIncorrect,
-        LocalizedStringResource.isYourHandleIncorrect,
-        LocalizedStringResource.twoFactorAuthenticationIsEnabledPleaseEnterYourAppPassword,
-        LocalizedStringResource.anUnknownErrorHasOccurred,
-      ],
-    )
-  )
-  func testErrorInvalidHandleOrPassword(error: BlueskyAPIClient.Error, message: LocalizedStringResource) async throws {
-    await withDependencies {
-      $0.blueskyAPI.login = { _, _ in throw error }
-    } operation: {
-      let store = TestStore(
-        initialState: BlueskyLoginFeature.State(
-          handle: "example.bsky.social",
-          password: "password",
-          isDisabledLoginButton: false,
-        ),
-        reducer: {
-          BlueskyLoginFeature()
-        },
-      )
-
-      await store.send(.login) {
-        $0.focusedField = nil
-        $0.isLoading = true
-      }
-      await store.receive(\.internalAction.loginFailure, String(localized: message)) {
-        $0.isLoading = false
-        $0.alert = AlertState(
-          title: {
-            TextState(.anErrorHasOccurred)
-          },
-          actions: {
-            ButtonState(
-              action: .close,
-              label: {
-                TextState(.close)
-              },
-            )
-          },
-          message: {
-            TextState(message)
-          }
-        )
-      }
     }
   }
 }
