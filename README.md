@@ -7,7 +7,7 @@
 ```command
 $ xcodebuild -version
 Xcode 27.1
-Build version 27A9269
+Build version 27A9275
 ```
 
 ### Ruby
