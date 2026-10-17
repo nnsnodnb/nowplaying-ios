@@ -7,6 +7,6 @@
     "grant_types": ["authorization_code", "refresh_token"],
     "redirect_uris": ["moe.nnsnodnb.nowplaying:/oauth/callback"],
     "response_types": ["code"],
-    "scope": "atproto transition:generic",
+    "scope": "atproto repo:app.bsky.feed.post?action=create blob:image/* rpc:app.bsky.actor.getProfile?aud=did:web:api.bsky.app#bsky_appview",
     "token_endpoint_auth_method": "none"
 }
