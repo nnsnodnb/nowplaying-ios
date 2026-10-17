@@ -922,6 +922,23 @@
         }
       }
     },
+    "Notice Bluesky Login" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Even when logging in to Bluesky succeeds, the login may still be reported as a failure due to the implementation of the external library.\nWe apologize for the inconvenience. Please try again a few times. Thank you for your patience."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blueskyへのログインが成功した場合でも外部ライブラリ実装の都合上、失敗となることが多々あります。\n複数回お試しいただけると幸いです。\nご迷惑おかけして申し訳ありません。"
+          }
+        }
+      }
+    },
     "Okay" : {
       "extractionState" : "manual",
       "localizations" : {

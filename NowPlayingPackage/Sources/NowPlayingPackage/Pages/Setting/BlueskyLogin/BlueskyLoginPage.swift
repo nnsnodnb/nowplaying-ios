@@ -210,9 +210,14 @@ public struct BlueskyLoginPage: View {
   }
 
   private var section: some View {
-    Section {
-      handleTextField
-    }
+    Section(
+      content: {
+        handleTextField
+      },
+      footer: {
+        Text(.noticeBlueskyLogin)
+      },
+    )
     .bind($store.focusedField, to: $focusedField)
   }
 

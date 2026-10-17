@@ -172,41 +172,9 @@ private extension BlueskyOAuthClient {
         tokenHandling: tokenHandling,
         userAuthenticator: ASWebAuthenticationSession.userAuthenticator,
       )
-      let authenticator = Authenticator(config: config, urlLoader: makeNonceRetryingLoader(key: key))
+      let authenticator = Authenticator(config: config)
 
       return authenticator
-    }
-
-    private func makeNonceRetryingLoader(key: Data) -> URLResponseProvider {
-      return { [weak self] request in
-        var current = request
-        var attempt = 0
-
-        while true {
-          let (data, response) = try await URLSession.shared.data(for: current)
-          guard let httpURLResponse = response as? HTTPURLResponse else {
-            return (data, response)
-          }
-
-          if attempt < 3,
-             httpURLResponse.statusCode == 400 || httpURLResponse.statusCode == 401,
-             Self.isUseDPoPNonce(data: data, httpURLResponse: httpURLResponse),
-             let nonce = httpURLResponse.value(forHTTPHeaderField: "DPoP-Nonce"),
-             let oldProof = current.value(forHTTPHeaderField: "DPoP"),
-             let newProof = try await self?.resign(proof: oldProof, nonce: nonce, key: key) {
-            current.setValue(newProof, forHTTPHeaderField: "DPoP")
-            attempt += 1
-            continue
-          }
-
-          if !(200..<300).contains(httpURLResponse.statusCode),
-             request.url?.path().hasSuffix("/oauth/token") == true {
-            throw Error.oauthError
-          }
-
-          return (data, response)
-        }
-      }
     }
 
     private static func isUseDPoPNonce(data: Data, httpURLResponse: HTTPURLResponse) -> Bool {
