@@ -136,7 +136,12 @@ public struct PostFeature: Sendable {
         return .run(
           operation: { [state] send in
             let imageData = state.attachmentImage?.jpegData(compressionQuality: 0.3)
-            try await blueskyAPI.createPostRecord(blueskyAccount, state.text, imageData)
+            let blobRef: BlueskyBlobRef? = if let imageData {
+              try await blueskyAPI.uploadBlob(blueskyAccount, imageData)
+            } else {
+              nil
+            }
+            try await blueskyAPI.createPostRecord(blueskyAccount, state.text, blobRef)
             await send(.internalAction(.posted))
             await analytics.logEvent(.blueskyPosted(imageData != nil))
             await analytics.setUserProperty(.postBluesky)

@@ -1,5 +1,5 @@
 {
-  "originHash" : "b4d51b3aa4ebe322682f2b4eabfbdda4702e5d09790f070294c28cbd21264ed6",
+  "originHash" : "d1814056f76315df9e4bebb8652003f9915a5beefc717fc26f9fc757d2fe9988",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -35,15 +35,6 @@
       "state" : {
         "revision" : "ee709b96bd7d6618efb434da9ee39d2c0894ba4b",
         "version" : "0.2.0"
-      }
-    },
-    {
-      "identity" : "atprotokit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MasterJ93/ATProtoKit.git",
-      "state" : {
-        "revision" : "263f093f211d4c68ee7c77f3dc5b4dab1530cc5c",
-        "version" : "0.34.1"
       }
     },
     {
@@ -359,15 +350,6 @@
       "state" : {
         "revision" : "71c7c9a761d1ca6ed4ccb6ced040fe1c1a39e8e7",
         "version" : "2.1.0"
-      }
-    },
-    {
-      "identity" : "swift-log",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-log.git",
-      "state" : {
-        "revision" : "9c6fb14227f55d8f711ce3847dc2f419fb0ecacb",
-        "version" : "1.15.1"
       }
     },
     {

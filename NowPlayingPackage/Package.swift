@@ -25,7 +25,6 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/ATProtoKit/ATIdentityTools.git", from: "0.2.0"),
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.34.1"),
     .package(url: "https://github.com/stleamist/BetterSafariView.git", from: "2.4.2"),
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "13.0.1"),
     .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.2.2"),
@@ -101,7 +100,6 @@ let package = Package(
       name: "DependenciesLive",
       dependencies: [
         .atIdentityTools,
-        .atProtoKit,
         .commonModule,
         .dependenciesInterfaces,
         .firebaseAnalytics,
@@ -137,13 +135,6 @@ extension Target.Dependency {
     .product(
       name: "ATIdentityTools",
       package: "ATIdentityTools",
-    )
-  }
-
-  static var atProtoKit: Self {
-    .product(
-      name: "ATProtoKit",
-      package: "ATProtoKit",
     )
   }
 

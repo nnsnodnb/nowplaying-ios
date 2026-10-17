@@ -14,16 +14,6 @@ import DependenciesInterfaces
 import Foundation
 import OAuthenticator
 
-// MARK: - Error
-public extension BlueskyOAuthClient {
-  enum Error: Swift::Error {
-    case noAuthServer
-    case invalidServerMetadata
-    case dPoPInvalidProof
-    case oauthError
-  }
-}
-
 public extension BlueskyOAuthClient {
   static let oAuthenticator: Self = .init(
     resolveIdentity: { handle in
@@ -161,7 +151,8 @@ private extension BlueskyOAuthClient {
         validator: { tokenResponse, issuer in
           (
             tokenResponse.sub == did.rawValue
-            && tokenResponse.scope == "atproto transition:generic"
+            // swiftlint:disable:next line_length
+            && tokenResponse.scope == "atproto repo:app.bsky.feed.post?action=create blob:image/* rpc:app.bsky.actor.getProfile?aud=did:web:api.bsky.app#bsky_appview"
             && server.issuer == issuer
           )
         },
@@ -175,35 +166,6 @@ private extension BlueskyOAuthClient {
       let authenticator = Authenticator(config: config)
 
       return authenticator
-    }
-
-    private static func isUseDPoPNonce(data: Data, httpURLResponse: HTTPURLResponse) -> Bool {
-      if let body = String(data: data, encoding: .utf8), body.contains("use_dpop_nonce") {
-        return true
-      }
-      let authenticate = httpURLResponse.value(forHTTPHeaderField: "WWW-Authenticate") ?? ""
-      return authenticate.contains("use_dpop_nonce")
-    }
-
-    private func resign(proof: String, nonce: String, key: Data) throws -> String {
-      let parts = proof.split(separator: ".").map(String.init)
-      guard parts.count == 3,
-            let payloadData = parts[1].base64URLDecodedString(),
-            var claims = try JSONSerialization.jsonObject(with: payloadData) as? [String: Any] else {
-        throw Error.dPoPInvalidProof
-      }
-
-      claims["nonce"] = nonce
-      claims["jti"] = uuid.callAsFunction().uuidString
-      claims["iat"] = Int(date.callAsFunction().timeIntervalSince1970)
-
-      let claimsLayer = try JSONSerialization.data(withJSONObject: claims).base64URLEncodedString()
-      let input = "\(parts[0]).\(claimsLayer)"
-      let signingKey = try P256.Signing.PrivateKey(rawRepresentation: key)
-      let signature = try signingKey.signature(for: Data(input.utf8))
-      let jwt = "\(input).\(signature.rawRepresentation.base64URLEncodedString())"
-
-      return jwt
     }
   }
 }

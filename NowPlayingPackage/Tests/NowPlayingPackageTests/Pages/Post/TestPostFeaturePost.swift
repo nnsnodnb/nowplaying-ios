@@ -61,10 +61,12 @@ struct TestPostFeaturePost {
   @Test
   func testPostSuccess() async throws {
     let blueskyAccount = try Stub.make(BlueskyAccount.self)
+    let blobRef = try Stub.make(BlueskyBlobRef.self)
     let mainQueue = DispatchQueue.test
     var calledDismiss = false
 
     await withDependencies {
+      $0.blueskyAPI.uploadBlob = { _, _ in blobRef }
       $0.blueskyAPI.createPostRecord = { _, _, _ in }
       $0.mainQueue = mainQueue.eraseToAnyScheduler()
       $0.dismiss = DismissEffect { calledDismiss = true }
@@ -104,9 +106,11 @@ struct TestPostFeaturePost {
   @Test
   func testPostFailed() async throws {
     let blueskyAccount = try Stub.make(BlueskyAccount.self)
+    let blobRef = try Stub.make(BlueskyBlobRef.self)
     var calledDismiss = false
 
     await withDependencies {
+      $0.blueskyAPI.uploadBlob = { _, _ in blobRef }
       $0.blueskyAPI.createPostRecord = { _, _, _ in throw BlueskyAPIClient.Error.unknown }
       $0.dismiss = DismissEffect { calledDismiss = true }
     } operation: {
