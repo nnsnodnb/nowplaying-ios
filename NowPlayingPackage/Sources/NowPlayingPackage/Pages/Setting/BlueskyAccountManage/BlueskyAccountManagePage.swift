@@ -5,7 +5,6 @@
 //  Created by Yuya Oka on 2026/03/19.
 //
 
-import BetterSafariView
 import CommonModule
 import ComposableArchitecture
 import DependenciesInterfaces
@@ -17,42 +16,13 @@ public struct BlueskyAccountManageFeature: Sendable {
   @ObservableState
   public struct State: Equatable, Sendable {
     public var blueskyAccounts: [BlueskyAccount] = []
-    public var safari: Safari?
     @Presents public var blueskyLogin: BlueskyLoginFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?
-
-    // MARK: - Safari
-    public enum Safari: Equatable, Identifiable, Sendable {
-      case howToAddBlueskyAccount
-
-      // MARK: - Identifiable
-      public var id: String {
-        url.absoluteString
-      }
-
-      // MARK: - Properties
-      public var url: URL {
-        @Dependency(\.locale)
-        var locale
-
-        switch self {
-        case .howToAddBlueskyAccount:
-          let flag: String
-          if locale.identifier.lowercased().starts(with: "ja") {
-            flag = "#nowplayingアプリでのログイン"
-          } else {
-            flag = "#how-to-add-a-bluesky-account"
-          }
-          return URL(string: "https://github.com/nnsnodnb/nowplaying-ios/wiki/Add-Bluesky-Account\(flag)")!
-        }
-      }
-    }
   }
 
   // MARK: - Action
   public enum Action {
     case fetchBlueskyAccounts
-    case changedSafari(State.Safari?)
     case addAccount
     case changeDefaultAccount(BlueskyAccount)
     case deleteBlueskyAccount(IndexSet)
@@ -90,9 +60,6 @@ public struct BlueskyAccountManageFeature: Sendable {
             await send(.internalAction(.fetchedBlueskyAccounts(blueskyAccounts)))
           },
         )
-      case let .changedSafari(safari):
-        state.safari = safari
-        return .none
       case .addAccount:
         state.blueskyLogin = .init()
         return .none
@@ -163,19 +130,12 @@ public struct BlueskyAccountManagePage: View {
       .navigationTitle(.accountManagement)
       .navigationScrollEdgeEffectSoft()
       .toolbar(
-        helpAction: {
-          store.send(.changedSafari(.howToAddBlueskyAccount))
-        },
         addAction: {
           store.send(.addAccount)
         },
       )
       .task {
         store.send(.fetchBlueskyAccounts)
-      }
-      .safariView(item: $store.safari.sending(\.changedSafari)) { safari in
-        SafariView(url: safari.url)
-          .dismissButtonStyle(.close)
       }
       .sheet(
         item: $store.scope(\.blueskyLogin, action: \.blueskyLogin),
@@ -221,19 +181,9 @@ public struct BlueskyAccountManagePage: View {
 }
 
 private extension View {
-  func toolbar(helpAction: @escaping @MainActor () -> Void, addAction: @escaping @MainActor () -> Void) -> some View {
+  func toolbar(addAction: @escaping @MainActor () -> Void) -> some View {
     toolbar {
       ToolbarItemGroup(placement: .primaryAction) {
-        Button(
-          action: helpAction,
-          label: {
-            if #available(iOS 26.0, *) {
-              Image(systemSymbol: .questionmark)
-            } else {
-              Image(systemSymbol: .questionmarkCircle)
-            }
-          },
-        )
         Button(
           action: addAction,
           label: {

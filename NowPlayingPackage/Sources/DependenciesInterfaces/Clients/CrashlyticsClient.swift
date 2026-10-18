@@ -13,6 +13,7 @@ import Foundation
 public struct CrashlyticsClient: Sendable {
   public var recordAdBannerLoadError: @Sendable (sending ResponseInfoProtocol?, any Error) throws -> Void
   public var recordRewardedAdLoadError: @Sendable (any Error) throws -> Void
+  public var recordUnhandableError: @Sendable (any Error) throws -> Void
 }
 
 // MARK: - DependencyKey
@@ -24,10 +25,14 @@ extension CrashlyticsClient: DependencyKey {
     recordRewardedAdLoadError: { _ in
       fatalError("Please set a value for `CrashlyticsClient.liveValue`.")
     },
+    recordUnhandableError: { _ in
+      fatalError("Please set a value for `CrashlyticsClient.liveValue`.")
+    },
   )
   public static let testValue: Self = .init(
     recordAdBannerLoadError: { _, _ in },
     recordRewardedAdLoadError: { _ in },
+    recordUnhandableError: { _ in },
   )
 }
 

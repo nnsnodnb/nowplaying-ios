@@ -14,21 +14,22 @@ import Foundation
 public struct BlueskyAPIClient: Sendable {
   // MARK: - Error
   public enum Error: Swift.Error {
-    case invalidHandleOrPassword
-    case enabledTwoFactorAuthentication
-    case invalidHandle
     case requiredLogin
     case unknown
   }
 
-  public var login: @Sendable (String, String) async throws -> BlueskyAccount
-  public var createPostRecord: @Sendable (BlueskyAccount, String, Data?) async throws -> Void
+  public var getUserProfile: @Sendable (String, BlueskyAccount.Identity) async throws -> BlueskyAccount
+  public var uploadBlob: @Sendable (BlueskyAccount, Data) async throws -> BlueskyBlobRef
+  public var createPostRecord: @Sendable (BlueskyAccount, String, BlueskyBlobRef?) async throws -> Void
 }
 
 // MARK: - DependencyKey
 extension BlueskyAPIClient: DependencyKey {
   public static let liveValue: Self = .init(
-    login: { _, _ in
+    getUserProfile: { _, _ in
+      fatalError("Please set a value for `BlueskyAPIClient.liveValue`.")
+    },
+    uploadBlob: { _, _ in
       fatalError("Please set a value for `BlueskyAPIClient.liveValue`.")
     },
     createPostRecord: { _, _, _ in

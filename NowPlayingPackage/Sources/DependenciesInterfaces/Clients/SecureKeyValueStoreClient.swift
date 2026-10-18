@@ -27,6 +27,14 @@ public struct SecureKeyValueStoreClient: Sendable {
   public var updateDefaultBlueskyAccount: @Sendable (BlueskyAccount) async throws -> Void
   public var removeBlueskyAccount: @Sendable (BlueskyAccount) async throws -> Void
   public var setBlueskyAccounts: @Sendable ([BlueskyAccount]) async throws -> Void
+  // BlueskyAccount PrivateKey
+  public var getBlueskyAccountPrivateKey: @Sendable (BlueskyAccount.DID) async throws -> Data
+  // BlueskyAccount.Identity
+  public var getBlueskyAccountIdentity: @Sendable (BlueskyAccount.DID) async throws -> BlueskyAccount.Identity?
+  public var setBlueskyAccountIdentity: @Sendable (BlueskyAccount.Identity) async throws -> Void
+  // BlueskyAccount.Login
+  public var getBlueskyAccountLogin: @Sendable (BlueskyAccount.DID) async throws -> BlueskyAccount.Login?
+  public var setBlueskyAccountLogin: @Sendable (BlueskyAccount.DID, BlueskyAccount.Login?) async throws -> Void
   // BlueskyAccount.Password
   public var getBlueskyAccountPassword: @Sendable (BlueskyAccount) async throws -> BlueskyAccount.Password?
   public var setBlueskyAccountPassword: @Sendable (BlueskyAccount, BlueskyAccount.Password) async throws -> Void
@@ -89,6 +97,21 @@ extension SecureKeyValueStoreClient: DependencyKey {
       fatalError("Please set a value for `SecureKeyValueStoreClient.liveValue`.")
     },
     setBlueskyAccounts: { _ in
+      fatalError("Please set a value for `SecureKeyValueStoreClient.liveValue`.")
+    },
+    getBlueskyAccountPrivateKey: { _ in
+      fatalError("Please set a value for `SecureKeyValueStoreClient.liveValue`.")
+    },
+    getBlueskyAccountIdentity: { _ in
+      fatalError("Please set a value for `SecureKeyValueStoreClient.liveValue`.")
+    },
+    setBlueskyAccountIdentity: { _ in
+      fatalError("Please set a value for `SecureKeyValueStoreClient.liveValue`.")
+    },
+    getBlueskyAccountLogin: { _ in
+      fatalError("Please set a value for `SecureKeyValueStoreClient.liveValue`.")
+    },
+    setBlueskyAccountLogin: { _, _ in
       fatalError("Please set a value for `SecureKeyValueStoreClient.liveValue`.")
     },
     getBlueskyAccountPassword: { _ in
@@ -157,6 +180,11 @@ extension SecureKeyValueStoreClient: DependencyKey {
     updateDefaultBlueskyAccount: { _ in },
     removeBlueskyAccount: { _ in },
     setBlueskyAccounts: { _ in },
+    getBlueskyAccountPrivateKey: { _ in Data() },
+    getBlueskyAccountIdentity: { _ in nil },
+    setBlueskyAccountIdentity: { _ in },
+    getBlueskyAccountLogin: { _ in nil },
+    setBlueskyAccountLogin: { _, _ in },
     getBlueskyAccountPassword: { _ in nil },
     setBlueskyAccountPassword: { _, _ in },
     getMastodonAccounts: {

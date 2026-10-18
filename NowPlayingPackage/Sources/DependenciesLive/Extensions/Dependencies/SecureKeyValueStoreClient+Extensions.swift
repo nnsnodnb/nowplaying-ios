@@ -6,6 +6,7 @@
 //
 
 import CommonModule
+import CryptoKit
 import DependenciesInterfaces
 import Foundation
 import KeychainAccess
@@ -47,6 +48,21 @@ public extension SecureKeyValueStoreClient {
     },
     setBlueskyAccounts: { accounts in
       await Implementation.shared.setBlueskyAccounts(accounts)
+    },
+    getBlueskyAccountPrivateKey: { did in
+      try await Implementation.shared.getBlueskyAccountPrivateKey(for: did)
+    },
+    getBlueskyAccountIdentity: { did in
+      await Implementation.shared.getBlueskyAccountIdentity(for: did)
+    },
+    setBlueskyAccountIdentity: { identity in
+      await Implementation.shared.setBlueskyAccountIdentity(for: identity.did, identity: identity)
+    },
+    getBlueskyAccountLogin: { did in
+      await Implementation.shared.getBlueskyAccountLogin(for: did)
+    },
+    setBlueskyAccountLogin: { did, login in
+      await Implementation.shared.setBlueskyAccountLogin(for: did, login: login)
     },
     getBlueskyAccountPassword: { account in
       await Implementation.shared.getBlueskyAccountPassword(for: account)
@@ -210,6 +226,9 @@ private extension SecureKeyValueStoreClient {
     func removeBlueskyAccount(account: BlueskyAccount) {
       var accounts = getBlueskyAccounts()
         .filter { $0.handle != account.handle }
+      try? keychain.remove(.blueskyAccountPrivateKey(account.id))
+      try? keychain.remove(.blueskyAccountIdentity(account.id))
+      try? keychain.remove(.blueskyAccountLogin(account.id))
       try? keychain.remove(.blueskyAccountPassword(account.id))
       // 削除するアカウントがデフォルト設定されていて、残ったアカウントがあればデフォルトにする
       if account.isDefault, var account = accounts.first {
@@ -221,6 +240,31 @@ private extension SecureKeyValueStoreClient {
 
     func setBlueskyAccounts(_ accounts: [BlueskyAccount]) {
       keychain.set(accounts, key: .blueskyAccounts)
+    }
+
+    func getBlueskyAccountPrivateKey(for did: BlueskyAccount.DID) throws -> Data {
+      if let rawRepresentation = keychain.data(forKey: .blueskyAccountPrivateKey(did)) {
+        return rawRepresentation
+      }
+      let privateKey = P256.Signing.PrivateKey()
+      keychain.set(privateKey.rawRepresentation, key: .blueskyAccountPrivateKey(did))
+      return privateKey.rawRepresentation
+    }
+
+    func getBlueskyAccountIdentity(for did: BlueskyAccount.DID) -> BlueskyAccount.Identity? {
+      keychain.object(forKey: .blueskyAccountIdentity(did))
+    }
+
+    func setBlueskyAccountIdentity(for did: BlueskyAccount.DID, identity: BlueskyAccount.Identity?) {
+      keychain.set(identity, key: .blueskyAccountIdentity(did))
+    }
+
+    func getBlueskyAccountLogin(for did: BlueskyAccount.DID) -> BlueskyAccount.Login? {
+      keychain.object(forKey: .blueskyAccountLogin(did))
+    }
+
+    func setBlueskyAccountLogin(for did: BlueskyAccount.DID, login: BlueskyAccount.Login?) {
+      keychain.set(login, key: .blueskyAccountLogin(did))
     }
 
     func getBlueskyAccountPassword(for account: BlueskyAccount) -> BlueskyAccount.Password? {
@@ -329,6 +373,9 @@ private extension SecureKeyValueStoreClient {
       // BlueskyAccount & BlueskyAccountPassword
       let blueskyAccounts = getBlueskyAccounts()
       for blueskyAccount in blueskyAccounts {
+        try? keychain.remove(.blueskyAccountPrivateKey(blueskyAccount.id))
+        try? keychain.remove(.blueskyAccountIdentity(blueskyAccount.id))
+        try? keychain.remove(.blueskyAccountLogin(blueskyAccount.id))
         try? keychain.remove(.blueskyAccountPassword(blueskyAccount.id))
       }
       try? keychain.remove(.blueskyAccounts)
