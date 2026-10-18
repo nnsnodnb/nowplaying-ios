@@ -81,6 +81,7 @@ let package = Package(
         .composableArchitecture,
         .dependencies,
         .memberwiseInit,
+        .oAuthenticator,
         .tagged,
       ],
       resources: [
