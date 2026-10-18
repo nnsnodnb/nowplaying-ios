@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - .github/workflows/**
+      - ci_scripts
       - App/**
       - NowPlaying.xcworkspace/**
       - NowPlayingPackage/**
