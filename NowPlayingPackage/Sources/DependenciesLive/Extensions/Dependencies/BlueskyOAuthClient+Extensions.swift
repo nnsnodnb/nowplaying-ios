@@ -17,14 +17,19 @@ import OAuthenticator
 public extension BlueskyOAuthClient {
   static let oAuthenticator: Self = .init(
     resolveIdentity: { handle in
-      let jsonDecoder = JSONDecoder()
-
       var resolver = IdentityResolver(
         handleOptions: .init(timeout: 10),
         didOptions: .init(timeout: 10, didCache: MemoryCache()),
       )
 
-      let resolvedIdentity = try await resolver.resolveVerifiedIdentity(handle: handle)
+      let resolvedIdentity: VerifiedIdentity
+      do {
+        resolvedIdentity = try await resolver.resolveVerifiedIdentity(handle: handle)
+      } catch {
+        throw Error.invalidHandle
+      }
+
+      let jsonDecoder = JSONDecoder()
       let resourceURL = resolvedIdentity.pds.appending(path: "/.well-known/oauth-protected-resource")
       let (data, _) = try await URLSession.shared.data(from: resourceURL)
       let resource = try jsonDecoder.decode(ResourceResponse.self, from: data)

@@ -64,6 +64,8 @@ public struct BlueskyLoginFeature: Sendable {
   private var blueskyAPI
   @Dependency(\.blueskyOAuth)
   private var blueskyOAuth
+  @Dependency(\.crashlytics)
+  private var crashlytics
   @Dependency(\.dismiss)
   private var dismiss
   @Dependency(\.secureKeyValueStore)
@@ -100,24 +102,16 @@ public struct BlueskyLoginFeature: Sendable {
             await send(.internalAction(.loggedIn(blueskyAccount)))
           },
           catch: { error, send in
-            // TODO: エラー修正
-            guard let error = error as? BlueskyAPIClient.Error else {
+            guard let error = error as? BlueskyOAuthClient.Error else {
               await send(.internalAction(.loginFailure(String(localized: .anUnknownErrorHasOccurred))))
+              // MEMO: エラーなのにOAuthenticatorが正しいレスポンスとしてデコードしようとするので検知をしておく
+              try? crashlytics.recordUnhandableError(error)
               return
             }
             switch error {
-            case .invalidHandleOrPassword:
-              await send(.internalAction(.loginFailure(String(localized: .isYourHandleOrPasswordIncorrect))))
-            case .enabledTwoFactorAuthentication:
-              await send(
-                .internalAction(.loginFailure(String(localized: .twoFactorAuthenticationIsEnabledPleaseEnterYourAppPassword)))
-              )
             case .invalidHandle:
               await send(.internalAction(.loginFailure(String(localized: .isYourHandleIncorrect))))
-            case .requiredLogin:
-              // MEMO: 普通は絶対にでない
-              await send(.internalAction(.loginFailure(String(localized: .pleaseLogInFirst))))
-            case .unknown:
+            case .noAuthServer:
               await send(.internalAction(.loginFailure(String(localized: .anUnknownErrorHasOccurred))))
             }
           },

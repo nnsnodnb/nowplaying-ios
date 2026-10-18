@@ -15,10 +15,8 @@ import OAuthenticator
 public struct BlueskyOAuthClient: Sendable {
   // MARK: - Error
   public enum Error: Swift::Error {
+    case invalidHandle
     case noAuthServer
-    case invalidServerMetadata
-    case dPoPInvalidProof
-    case oauthError
   }
 
   public var resolveIdentity: @Sendable (_ handle: String) async throws -> BlueskyAccount.Identity

@@ -32,5 +32,11 @@ public extension CrashlyticsClient {
       Crashlytics.crashlytics().setCustomValue(nsError.domain, forKey: "rewarded_ad_error_domain")
       Crashlytics.crashlytics().record(error: nsError)
     },
+    recordUnhandableError: { error in
+      let nsError = error as NSError
+      Crashlytics.crashlytics().setCustomValue(nsError.code, forKey: "error_code")
+      Crashlytics.crashlytics().setCustomValue(nsError.domain, forKey: "error_domain")
+      Crashlytics.crashlytics().record(error: nsError)
+    },
   )
 }

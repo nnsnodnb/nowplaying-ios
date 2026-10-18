@@ -99,7 +99,7 @@ public extension BlueskyAPIClient {
       let (_, response) = try await authenticator.response(for: urlRequest)
 
       if let httpURLResponse = response as? HTTPURLResponse, !(200..<300).contains(httpURLResponse.statusCode) {
-        throw BlueskyAPIClient.Error.unknown
+        throw Error.unknown
       }
     },
   )

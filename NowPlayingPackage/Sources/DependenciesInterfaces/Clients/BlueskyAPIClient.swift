@@ -14,9 +14,6 @@ import Foundation
 public struct BlueskyAPIClient: Sendable {
   // MARK: - Error
   public enum Error: Swift.Error {
-    case invalidHandleOrPassword
-    case enabledTwoFactorAuthentication
-    case invalidHandle
     case requiredLogin
     case unknown
   }

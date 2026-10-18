@@ -733,17 +733,6 @@
         }
       }
     },
-    "Is your handle or password incorrect?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ハンドルもしくはパスワードが間違っていませんか？"
-          }
-        }
-      }
-    },
     "Keep it up!" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1001,17 +990,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ユーザー情報を取得するためにコストが発生するためご協力お願いします。"
-          }
-        }
-      }
-    },
-    "Please log in first." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "先にログインをしてください"
           }
         }
       }
