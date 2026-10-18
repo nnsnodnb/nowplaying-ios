@@ -16,6 +16,7 @@ public struct MastodonAccountManageFeature: Sendable {
   @ObservableState
   public struct State: Equatable, Sendable {
     public var mastodonAccounts: [MastodonAccount] = []
+    public var isRefreshing = false
     @Presents public var mastodonLogin: MastodonLoginFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?
   }
@@ -23,6 +24,7 @@ public struct MastodonAccountManageFeature: Sendable {
   // MARK: - Action
   public enum Action {
     case fetchMastodonAccounts
+    case refreshAccounts
     case addAccount
     case changeDefaultAccount(MastodonAccount)
     case deleteMastodonAccount(IndexSet)
@@ -34,6 +36,8 @@ public struct MastodonAccountManageFeature: Sendable {
     @CasePathable
     public enum InternalAction {
       case fetchedMastodonAccounts([MastodonAccount])
+      case updatedMastodonAccounts
+      case failedUpdateMastodonAccount
     }
 
     // MARK: - Alert
@@ -44,6 +48,10 @@ public struct MastodonAccountManageFeature: Sendable {
   }
 
   // MARK: - Dependency
+  @Dependency(\.mastodonAPI)
+  private var mastodonAPI
+  @Dependency(\.mastodonOAuth)
+  private var mastodonOAuth
   @Dependency(\.secureKeyValueStore)
   private var secureKeyValueStore
 
@@ -56,6 +64,35 @@ public struct MastodonAccountManageFeature: Sendable {
           operation: { send in
             let mastodonAccounts = try await secureKeyValueStore.getMastodonAccounts()
             await send(.internalAction(.fetchedMastodonAccounts(mastodonAccounts)))
+          },
+        )
+      case .refreshAccounts:
+        guard !state.mastodonAccounts.isEmpty else { return .none }
+        state.isRefreshing = true
+        return .run(
+          operation: { [state] send in
+            let mastodonAccounts: [MastodonAccount] = try await withThrowingTaskGroup(of: (Int, MastodonAccount?).self) { group in
+              for (index, mastodonAccount) in state.mastodonAccounts.enumerated() {
+                group.addTask {
+                  let accessToken = try await mastodonOAuth.getAccessToken(mastodonAccount)
+                  var newMastodonAccount = try await mastodonAPI.getUserProfile(mastodonAccount.domainURL, accessToken)
+                  newMastodonAccount.setDefault(mastodonAccount.isDefault)
+
+                  return (index, newMastodonAccount)
+                }
+              }
+
+              var results: [MastodonAccount?] = .init(repeating: nil, count: state.mastodonAccounts.count)
+              for try await (index, mastodonAccount) in group {
+                results[index] = mastodonAccount
+              }
+              return results.compactMap { $0 }
+            }
+            try await secureKeyValueStore.setMastodonAccounts(mastodonAccounts)
+            await send(.internalAction(.updatedMastodonAccounts))
+          },
+          catch: { _, send in
+            await send(.internalAction(.failedUpdateMastodonAccount))
           },
         )
       case .addAccount:
@@ -95,6 +132,25 @@ public struct MastodonAccountManageFeature: Sendable {
       case let .internalAction(.fetchedMastodonAccounts(mastodonAccounts)):
         state.mastodonAccounts = mastodonAccounts
         return .none
+      case .internalAction(.updatedMastodonAccounts):
+        state.isRefreshing = false
+        return .send(.fetchMastodonAccounts)
+      case .internalAction(.failedUpdateMastodonAccount):
+        state.isRefreshing = false
+        state.alert = AlertState(
+          title: {
+            TextState(.failedToRetrieveUserInformation)
+          },
+          actions: {
+            ButtonState(
+              action: .close,
+              label: {
+                TextState(.close)
+              },
+            )
+          },
+        )
+        return .none
       case .alert:
         return .none
       }
@@ -116,6 +172,11 @@ public struct MastodonAccountManagePage: View {
       .navigationTitle(.accountManagement)
       .navigationScrollEdgeEffectSoft()
       .toolbar(
+        existAccounts: !store.mastodonAccounts.isEmpty,
+        isRefreshing: store.isRefreshing,
+        refreshable: {
+          store.send(.refreshAccounts)
+        },
         addAction: {
           store.send(.addAccount)
         },
@@ -167,9 +228,32 @@ public struct MastodonAccountManagePage: View {
 }
 
 private extension View {
-  func toolbar(addAction: @escaping @MainActor () -> Void) -> some View {
+  func toolbar(
+    existAccounts: Bool,
+    isRefreshing: Bool,
+    refreshable: @escaping @MainActor () -> Void,
+    addAction: @escaping @MainActor () -> Void,
+  ) -> some View {
     toolbar {
-      ToolbarItemGroup(placement: .primaryAction) {
+      if existAccounts {
+        ToolbarItem {
+          if isRefreshing {
+            Image(systemSymbol: .arrowTrianglehead2ClockwiseRotate90)
+              .symbolEffect(.rotate.clockwise.byLayer, options: .repeat(.continuous))
+          } else {
+            Button(
+              action: refreshable,
+              label: {
+                Image(systemSymbol: .arrowTrianglehead2ClockwiseRotate90)
+              },
+            )
+          }
+        }
+        if #available(iOS 26.0, *) {
+          ToolbarSpacer(.fixed)
+        }
+      }
+      ToolbarItem {
         Button(
           action: addAction,
           label: {

@@ -21,6 +21,7 @@ public struct MastodonAPIClient: Sendable {
 
   public var getInstanceDetail: @Sendable (URL) async throws -> MastodonInstance
   public var registerApplication: @Sendable (String) async throws -> MastodonClientApplication
+  public var getUserProfile: @Sendable (URL, MastodonOAuthToken.AccessToken) async throws -> MastodonAccount
   public var uploadMedia: @Sendable (URL, MastodonOAuthToken.AccessToken, Data) async throws -> MastodonMediaAttachment
   public var toot: @Sendable (
     URL, MastodonOAuthToken.AccessToken, MastodonMediaAttachment.ID?, String, TootVisibilityType
@@ -74,10 +75,31 @@ extension MastodonAPIClient: DependencyKey {
 
       return clientApplication
     },
+    getUserProfile: { domainURL, accessToken in
+      let url = domainURL.appending(path: "/api/v1/accounts/verify_credentials")
+      var urlRequest = URLRequest(url: url)
+      urlRequest.httpMethod = "GET"
+      urlRequest.addValue("Bearer \(accessToken.rawValue)", forHTTPHeaderField: "Authorization")
+
+      let (data, response) = try await URLSession(configuration: .ephemeral).data(for: urlRequest)
+      guard let urlResponse = response as? HTTPURLResponse, urlResponse.statusCode == 200 else {
+        throw Error.internalError
+      }
+      let jsonDecoder = JSONDecoder()
+      let object = try jsonDecoder.decode(UserProfile.self, from: data)
+
+      let mastodonAccount = MastodonAccount(
+        id: object.id,
+        domainURL: domainURL,
+        displayName: object.displayName,
+        username: object.username,
+        avatarURL: object.avatarURL,
+      )
+
+      return mastodonAccount
+    },
     uploadMedia: { domainURL, accessToken, imageData in
-      var urlComponents = URLComponents(url: domainURL, resolvingAgainstBaseURL: false)!
-      urlComponents.path = "/api/v2/media"
-      let url = urlComponents.url!
+      let url = domainURL.appending(path: "/api/v2/media")
       var urlRequest = URLRequest(url: url)
       urlRequest.httpMethod = "POST"
       urlRequest.addValue("Bearer \(accessToken.rawValue)", forHTTPHeaderField: "Authorization")
@@ -107,9 +129,7 @@ extension MastodonAPIClient: DependencyKey {
       return object
     },
     toot: { domainURL, accessToken, mediaID, text, visibilityType in
-      var urlComponents = URLComponents(url: domainURL, resolvingAgainstBaseURL: false)!
-      urlComponents.path = "/api/v1/statuses"
-      let url = urlComponents.url!
+      let url = domainURL.appending(path: "/api/v1/statuses")
       var urlRequest = URLRequest(url: url)
       urlRequest.httpMethod = "POST"
       urlRequest.addValue("Bearer \(accessToken.rawValue)", forHTTPHeaderField: "Authorization")
@@ -146,6 +166,25 @@ private extension MastodonAPIClient {
     let redirectURI: String
     let clientID: MastodonClientApplication.ClientID
     let clientSecret: MastodonClientApplication.ClientSecret
+  }
+}
+
+// MARK: - UserProfile
+private extension MastodonAPIClient {
+  struct UserProfile: Decodable {
+    // MARK: - CodingKeys
+    private enum CodingKeys: String, CodingKey {
+      case id
+      case displayName = "display_name"
+      case username
+      case avatarURL = "avatar_static"
+    }
+
+    // MARK: - Properties
+    let id: MastodonAccount.ID
+    let displayName: String
+    let username: String
+    let avatarURL: URL
   }
 }
 
