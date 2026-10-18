@@ -87,7 +87,8 @@ public extension BlueskyAPIClient {
       let record = CreateRecordBody.Record(
         text: text,
         createdAt: ISO8601DateFormatter().string(from: date.callAsFunction()),
-        embed: embed
+        embed: embed,
+        facets: BlueskyFacetBuilder.hashTag(in: text),
       )
       let body = CreateRecordBody(repo: blueskyAccount.id.rawValue, record: record)
 
@@ -161,13 +162,15 @@ private extension BlueskyAPIClient {
         case text
         case createdAt
         case embed
+        case facets
       }
 
       // MARK: - Properties
       let type = "app.bsky.feed.post"
       let text: String
       let createdAt: String
-      var embed: Embed?
+      let embed: Embed?
+      let facets: [BlueskyFacet]?
     }
 
     // MARK: - Properties
