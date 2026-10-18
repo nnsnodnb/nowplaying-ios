@@ -203,8 +203,9 @@ public struct BlueskyAccountManageFeature: Sendable {
         return .none
       case .alert(.presented(.reset)):
         return .run(
-          operation: { _ in
+          operation: { send in
             try await secureKeyValueStore.setBlueskyAccounts([])
+            await send(.fetchBlueskyAccounts)
           },
         )
       case .alert:
