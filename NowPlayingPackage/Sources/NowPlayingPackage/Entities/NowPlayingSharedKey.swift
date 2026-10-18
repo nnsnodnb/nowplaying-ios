@@ -14,6 +14,7 @@ public enum NowPlayingSharedKey: String {
   case blueskyIsAttachImage = "key_bluesky_is_attach_image"
   case blueskyWithImageType = "key_bluesky_with_image_type"
   case blueskyPostFormat = "key_bluesky_post_format"
+  case blueskyLegacyAccountsMissingAlert = "key_bluesky_legacy_accounts_missing_alert"
   case mastodonIsAttachImage = "key_mastodon_is_attach_image"
   case mastodonWithImageType = "key_mastodon_with_image_type"
   case mastodonTootVisibility = "key_mastodon_toot_visibility"

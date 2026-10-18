@@ -10,6 +10,9 @@ import ComposableArchitecture
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestBlueskyAccountManageFeatureAddAccount {
   @Test
   func testIt() async throws {

@@ -306,6 +306,40 @@
       },
       "shouldTranslate" : false
     },
+    "Bluesky accounts missing alert message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your account has been reset as we have switched to a more secure authentication method.\nWe apologize for any inconvenience this may cause."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "これからはより安全な方式による認証を扱うことにしたためアカウントはリセットされました。\nご不便をおかけして申し訳ありません。"
+          }
+        }
+      }
+    },
+    "Bluesky accounts missing alert title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For enhanced security, password-based and app password authentication have been discontinued."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セキュリティ強化のため、パスワード・アプリパスワード方式は廃止になりました"
+          }
+        }
+      }
+    },
     "Bluesky Settings" : {
       "extractionState" : "manual",
       "localizations" : {

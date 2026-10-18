@@ -27,6 +27,7 @@ public struct SecureKeyValueStoreClient: Sendable {
   public var updateDefaultBlueskyAccount: @Sendable (BlueskyAccount) async throws -> Void
   public var removeBlueskyAccount: @Sendable (BlueskyAccount) async throws -> Void
   public var setBlueskyAccounts: @Sendable ([BlueskyAccount]) async throws -> Void
+  public var hasLegacyBlueskyAccounts: @Sendable () async throws -> Bool
   // BlueskyAccount PrivateKey
   public var getBlueskyAccountPrivateKey: @Sendable (BlueskyAccount.DID) async throws -> Data
   // BlueskyAccount.Identity
@@ -97,6 +98,9 @@ extension SecureKeyValueStoreClient: DependencyKey {
       fatalError("Please set a value for `SecureKeyValueStoreClient.liveValue`.")
     },
     setBlueskyAccounts: { _ in
+      fatalError("Please set a value for `SecureKeyValueStoreClient.liveValue`.")
+    },
+    hasLegacyBlueskyAccounts: {
       fatalError("Please set a value for `SecureKeyValueStoreClient.liveValue`.")
     },
     getBlueskyAccountPrivateKey: { _ in
@@ -180,6 +184,7 @@ extension SecureKeyValueStoreClient: DependencyKey {
     updateDefaultBlueskyAccount: { _ in },
     removeBlueskyAccount: { _ in },
     setBlueskyAccounts: { _ in },
+    hasLegacyBlueskyAccounts: { false },
     getBlueskyAccountPrivateKey: { _ in Data() },
     getBlueskyAccountIdentity: { _ in nil },
     setBlueskyAccountIdentity: { _ in },

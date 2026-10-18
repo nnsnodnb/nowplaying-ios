@@ -49,6 +49,9 @@ public extension SecureKeyValueStoreClient {
     setBlueskyAccounts: { accounts in
       await Implementation.shared.setBlueskyAccounts(accounts)
     },
+    hasLegacyBlueskyAccounts: {
+      await Implementation.shared.hasLegacyBlueskyAccounts()
+    },
     getBlueskyAccountPrivateKey: { did in
       try await Implementation.shared.getBlueskyAccountPrivateKey(for: did)
     },
@@ -240,6 +243,12 @@ private extension SecureKeyValueStoreClient {
 
     func setBlueskyAccounts(_ accounts: [BlueskyAccount]) {
       keychain.set(accounts, key: .blueskyAccounts)
+    }
+
+    func hasLegacyBlueskyAccounts() -> Bool {
+      // [BlueskyAccount]はDecodableなのでDataがあるかどうかをチェックする
+      // データがあるがデコードできたアカウントはないという状態
+      return keychain.data(forKey: .blueskyAccounts) != nil && getBlueskyAccounts().isEmpty
     }
 
     func getBlueskyAccountPrivateKey(for did: BlueskyAccount.DID) throws -> Data {
