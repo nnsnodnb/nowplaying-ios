@@ -19,10 +19,13 @@ public struct BlueskyAccountManageFeature: Sendable {
     public var isRefreshing = false
     @Presents public var blueskyLogin: BlueskyLoginFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?
+    @Shared(.appStorage(.blueskyLegacyAccountsMissingAlert))
+    public var blueskyLegacyAccountsMissingAlert = false
   }
 
   // MARK: - Action
   public enum Action {
+    case onAppear
     case fetchBlueskyAccounts
     case refreshAccounts
     case addAccount
@@ -35,6 +38,7 @@ public struct BlueskyAccountManageFeature: Sendable {
     // MARK: - InternalAction
     @CasePathable
     public enum InternalAction {
+      case showSorryAlertForLegacyIfNeeded(Bool)
       case fetchedBlueskyAccounts([BlueskyAccount])
       case updatedBlueskyAccounts
       case failedUpdateBlueskyAccounts
@@ -43,6 +47,7 @@ public struct BlueskyAccountManageFeature: Sendable {
     // MARK: - Alert
     @CasePathable
     public enum Alert: Equatable, Sendable {
+      case reset
       case close
     }
   }
@@ -59,6 +64,16 @@ public struct BlueskyAccountManageFeature: Sendable {
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
+      case .onAppear:
+        // アラートを表示したことがなければチェックをする
+        guard !state.blueskyLegacyAccountsMissingAlert else { return .none }
+        return .run(
+          operation: { send in
+            // レガシーアカウントがなければ終了
+            let hasAccounts = try await secureKeyValueStore.hasLegacyBlueskyAccounts()
+            await send(.internalAction(.showSorryAlertForLegacyIfNeeded(hasAccounts)))
+          },
+        )
       case .fetchBlueskyAccounts:
         return .run(
           operation: { send in
@@ -136,6 +151,28 @@ public struct BlueskyAccountManageFeature: Sendable {
         return .send(.fetchBlueskyAccounts)
       case .blueskyLogin:
         return .none
+      case let .internalAction(.showSorryAlertForLegacyIfNeeded(hasAccounts)):
+        defer {
+          state.$blueskyLegacyAccountsMissingAlert.withLock { $0 = true }
+        }
+        guard hasAccounts else { return .none }
+        state.alert = AlertState(
+          title: {
+            TextState(.blueskyAccountsMissingAlertTitle)
+          },
+          actions: {
+            ButtonState(
+              action: .reset,
+              label: {
+                TextState(.okay)
+              },
+            )
+          },
+          message: {
+            TextState(.blueskyAccountsMissingAlertMessage)
+          },
+        )
+        return .none
       case let .internalAction(.fetchedBlueskyAccounts(blueskyAccounts)):
         state.blueskyAccounts = blueskyAccounts
         return .run(
@@ -164,6 +201,12 @@ public struct BlueskyAccountManageFeature: Sendable {
         return .none
       case .internalAction:
         return .none
+      case .alert(.presented(.reset)):
+        return .run(
+          operation: { _ in
+            try await secureKeyValueStore.setBlueskyAccounts([])
+          },
+        )
       case .alert:
         return .none
       }
@@ -195,6 +238,7 @@ public struct BlueskyAccountManagePage: View {
         },
       )
       .task {
+        store.send(.onAppear)
         store.send(.fetchBlueskyAccounts)
       }
       .sheet(

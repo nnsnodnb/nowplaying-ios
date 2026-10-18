@@ -12,6 +12,9 @@ import StubKit
 import Testing
 
 @MainActor
+@Suite(
+  .dependency(\.defaultAppStorage, .inMemory)
+)
 struct TestBlueskyAccountManageFeatureChangeDefaultAccount {
   @Test
   func testAlreadyDefault() async throws {
