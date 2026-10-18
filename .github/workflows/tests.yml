@@ -3,7 +3,7 @@ name: Test
 on:
   pull_request:
     paths:
-      #- .github/workflows/**
+      - .github/workflows/**
       - ci_scripts
       - App/**
       - NowPlaying.xcworkspace/**
