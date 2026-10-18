@@ -592,6 +592,17 @@
         }
       }
     },
+    "Failed to update profile information." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロフィール情報の更新に失敗しました"
+          }
+        }
+      }
+    },
     "Failed to upload the image." : {
       "extractionState" : "manual",
       "localizations" : {

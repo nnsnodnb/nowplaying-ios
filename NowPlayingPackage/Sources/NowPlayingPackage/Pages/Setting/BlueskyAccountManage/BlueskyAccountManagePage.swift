@@ -16,6 +16,7 @@ public struct BlueskyAccountManageFeature: Sendable {
   @ObservableState
   public struct State: Equatable, Sendable {
     public var blueskyAccounts: [BlueskyAccount] = []
+    public var isRefreshing = false
     @Presents public var blueskyLogin: BlueskyLoginFeature.State?
     @Presents public var alert: AlertState<Action.Alert>?
   }
@@ -23,6 +24,7 @@ public struct BlueskyAccountManageFeature: Sendable {
   // MARK: - Action
   public enum Action {
     case fetchBlueskyAccounts
+    case refreshAccounts
     case addAccount
     case changeDefaultAccount(BlueskyAccount)
     case deleteBlueskyAccount(IndexSet)
@@ -34,6 +36,8 @@ public struct BlueskyAccountManageFeature: Sendable {
     @CasePathable
     public enum InternalAction {
       case fetchedBlueskyAccounts([BlueskyAccount])
+      case updatedBlueskyAccounts
+      case failedUpdateBlueskyAccounts
     }
 
     // MARK: - Alert
@@ -46,6 +50,8 @@ public struct BlueskyAccountManageFeature: Sendable {
   // MARK: - Dependency
   @Dependency(\.analytics)
   private var analytics
+  @Dependency(\.blueskyAPI)
+  private var blueskyAPI
   @Dependency(\.secureKeyValueStore)
   private var secureKeyValueStore
 
@@ -58,6 +64,35 @@ public struct BlueskyAccountManageFeature: Sendable {
           operation: { send in
             let blueskyAccounts = try await secureKeyValueStore.getBlueskyAccounts()
             await send(.internalAction(.fetchedBlueskyAccounts(blueskyAccounts)))
+          },
+        )
+      case .refreshAccounts:
+        guard !state.blueskyAccounts.isEmpty else { return .none }
+        state.isRefreshing = true
+        return .run(
+          operation: { [state] send in
+            let blueskyAccounts: [BlueskyAccount] = try await withThrowingTaskGroup(of: (Int, BlueskyAccount?).self) { group in
+              for (index, blueskyAccount) in state.blueskyAccounts.enumerated() {
+                group.addTask {
+                  guard let identity = try await secureKeyValueStore.getBlueskyAccountIdentity(blueskyAccount.id) else {
+                    return (index, nil)
+                  }
+                  let newBlueskyAccount = try await blueskyAPI.getUserProfile(blueskyAccount.handle, identity)
+                  return (index, newBlueskyAccount)
+                }
+              }
+
+              var results: [BlueskyAccount?] = .init(repeating: nil, count: state.blueskyAccounts.count)
+              for try await (index, blueskyAccount) in group {
+                results[index] = blueskyAccount
+              }
+              return results.compactMap { $0 }
+            }
+            try await secureKeyValueStore.setBlueskyAccounts(blueskyAccounts)
+            await send(.internalAction(.updatedBlueskyAccounts))
+          },
+          catch: { _, send in
+            await send(.internalAction(.failedUpdateBlueskyAccounts))
           },
         )
       case .addAccount:
@@ -107,6 +142,25 @@ public struct BlueskyAccountManageFeature: Sendable {
             await analytics.setUserProperty(.blueskyAccountsCount(blueskyAccounts.count + 1))
           },
         )
+      case .internalAction(.updatedBlueskyAccounts):
+        state.isRefreshing = false
+        return .send(.fetchBlueskyAccounts)
+      case .internalAction(.failedUpdateBlueskyAccounts):
+        state.isRefreshing = false
+        state.alert = AlertState(
+          title: {
+            TextState(.failedToUpdateProfileInformation)
+          },
+          actions: {
+            ButtonState(
+              action: .close,
+              label: {
+                TextState(.close)
+              },
+            )
+          }
+        )
+        return .none
       case .internalAction:
         return .none
       case .alert:
@@ -130,6 +184,11 @@ public struct BlueskyAccountManagePage: View {
       .navigationTitle(.accountManagement)
       .navigationScrollEdgeEffectSoft()
       .toolbar(
+        existAccounts: !store.blueskyAccounts.isEmpty,
+        isRefreshing: store.isRefreshing,
+        refreshable: {
+          store.send(.refreshAccounts)
+        },
         addAction: {
           store.send(.addAccount)
         },
@@ -181,9 +240,32 @@ public struct BlueskyAccountManagePage: View {
 }
 
 private extension View {
-  func toolbar(addAction: @escaping @MainActor () -> Void) -> some View {
+  func toolbar(
+    existAccounts: Bool,
+    isRefreshing: Bool,
+    refreshable: @escaping @MainActor () -> Void,
+    addAction: @escaping @MainActor () -> Void,
+  ) -> some View {
     toolbar {
-      ToolbarItemGroup(placement: .primaryAction) {
+      if existAccounts {
+        ToolbarItem {
+          if isRefreshing {
+            Image(systemSymbol: .arrowTrianglehead2ClockwiseRotate90)
+              .symbolEffect(.rotate.clockwise.byLayer, options: .repeat(.continuous))
+          } else {
+            Button(
+              action: refreshable,
+              label: {
+                Image(systemSymbol: .arrowTrianglehead2ClockwiseRotate90)
+              },
+            )
+          }
+        }
+        if #available(iOS 26.0, *) {
+          ToolbarSpacer(.fixed)
+        }
+      }
+      ToolbarItem {
         Button(
           action: addAction,
           label: {
