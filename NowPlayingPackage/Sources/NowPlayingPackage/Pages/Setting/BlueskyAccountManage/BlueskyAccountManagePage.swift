@@ -77,7 +77,8 @@ public struct BlueskyAccountManageFeature: Sendable {
                   guard let identity = try await secureKeyValueStore.getBlueskyAccountIdentity(blueskyAccount.id) else {
                     return (index, nil)
                   }
-                  let newBlueskyAccount = try await blueskyAPI.getUserProfile(blueskyAccount.handle, identity)
+                  var newBlueskyAccount = try await blueskyAPI.getUserProfile(blueskyAccount.handle, identity)
+                  newBlueskyAccount.setDefault(blueskyAccount.isDefault)
                   return (index, newBlueskyAccount)
                 }
               }
