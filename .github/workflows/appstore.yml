@@ -112,5 +112,6 @@ jobs:
           files: |
             Products/Production.ipa
             Products/Production.app.dSYM.zip
+          name: "v${{ steps.show-build-settings.outputs.marketing_version }}"
           generate_release_notes: true
           draft: true
