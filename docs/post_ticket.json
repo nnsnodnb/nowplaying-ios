@@ -85,7 +85,7 @@
           "price": 750,
           "localized_price": {
             "ja": "750円",
-            "en": "$3.19"
+            "en": "$4.79"
           },
           "package_id": "$rc_post_ticket_160",
           "discount": "6.2%"
@@ -107,7 +107,7 @@
           "price": 4500,
           "localized_price": {
             "ja": "4,500円",
-            "en": "$29.49"
+            "en": "$28.49"
           },
           "package_id": "$rc_post_ticket_1200",
           "discount": "25.0%"
@@ -118,7 +118,7 @@
           "price": 15000,
           "localized_price": {
             "ja": "15,000円",
-            "en": "$70.00"
+            "en": "$94.90"
           },
           "package_id": "$rc_post_ticket_4200",
           "discount": "28.5%"
