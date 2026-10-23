@@ -12,6 +12,10 @@
       "automerge": true,
       "automergeType": "pr",
       "platformAutomerge": false
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "minimumReleaseAge": "1 day"
     }
   ]
 }
