@@ -27,7 +27,7 @@ jobs:
       - name: Print xcodebuild version
         run: xcodebuild -version
 
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@v7.0.1
 
       - name: Get SwiftPM originHash
         id: get-swiftpm-origin-hash
@@ -36,7 +36,7 @@ jobs:
           echo "ORIGIN_HASH=${ORIGIN_HASH}" >> "${GITHUB_OUTPUT}"
 
       - name: Cache Swift Packages
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        uses: actions/cache@v6.1.0
         id: cache-swiftpm
         timeout-minutes: 20
         with:
@@ -69,7 +69,7 @@ jobs:
               -disableAutomaticPackageResolution | xcbeautify
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: test-results
           path: ${{ steps.test-result-dir.outputs.TEST_RESULTS_DIR }}
