@@ -5,7 +5,7 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/actionlint.yml':
         - 'actions/checkout@v7.0.1'
-        - 'reviewdog/action-actionlint@v1.80.6'
+        - 'reviewdog/action-actionlint@v1.80.8'
     '.github/workflows/adhoc.yml':
         - 'actions/cache@v6.1.0'
         - 'actions/checkout@v7.0.1'
@@ -95,9 +95,9 @@ dependencies:
         commit: 'sha1-a353c9762a6c856eac886c6c4f0292e800d6dbb2'
         owner_id: 9856514
         repo_id: 1177750665
-    'reviewdog/action-actionlint@v1.80.6':
-        ref: 'v1.80.6'
-        commit: 'sha1-48e36f54d8da326b83ab061aee2cc5e01b5ca46f'
+    'reviewdog/action-actionlint@v1.80.8':
+        ref: 'v1.80.8'
+        commit: 'sha1-cfa6a621f27735ccc88d35af9d0608692fd9b9f7'
         owner_id: 48765237
         repo_id: 385059686
     'softprops/action-gh-release@v3.0.3':
