@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
 
-      - uses: reviewdog/action-actionlint@v1.80.8
+      - uses: reviewdog/action-actionlint@v1.81.0
         with:
           reporter: github-pr-review
           level: warning
