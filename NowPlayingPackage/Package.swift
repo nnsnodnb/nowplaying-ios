@@ -45,7 +45,7 @@ let package = Package(
         // "ComposableArchitecture2DeprecationOverloads",
       ],
     ),
-    .package(url: "https://github.com/pointfreeco/swift-dependencies.git", from: "1.17.1"),
+    .package(url: "https://github.com/pointfreeco/swift-dependencies.git", from: "1.17.2"),
     .package(url: "https://github.com/gohanlon/swift-memberwise-init-macro.git", from: "0.6.0"),
     .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", from: "13.11.0"),
     .package(url: "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git", from: "3.1.0"),
