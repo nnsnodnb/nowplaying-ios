@@ -21,7 +21,6 @@ jobs:
 
     env:
       DEVELOPER_DIR: /Applications/Xcode_27.2.0.app/Contents/Developer
-      TEST_DESTINATION: "platform=iOS Simulator,OS=27.0,name=iPhone 18 Pro"
 
     steps:
       - name: Print xcodebuild version
@@ -51,6 +50,12 @@ jobs:
       - name: Write IDESkipMacroFingerprintValidation
         run: defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
 
+      - name: Cofigure simslim
+        uses: MobAI-App/mobai-ci@v0.15.4
+        with:
+          boot-sim: true
+          sim-slim-only: widgets
+
       - name: Make test-result folder
         id: test-result-dir
         run: |
@@ -63,7 +68,7 @@ jobs:
               -scheme NowPlayingPackageTests \
               -workspace NowPlaying.xcworkspace \
               -parallel-testing-enabled=YES \
-              -destination "${TEST_DESTINATION}" \
+              -destination "${MOBAI_SIM_UDID}" \
               -resultBundlePath "${{ steps.test-result-dir.outputs.TEST_RESULTS_DIR }}/Test-NowPlayingPackageTests.xcresult" \
               -clonedSourcePackagesDirPath .swiftpm \
               -disableAutomaticPackageResolution | xcbeautify
