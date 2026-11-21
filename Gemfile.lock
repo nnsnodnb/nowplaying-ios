@@ -265,4 +265,4 @@ DEPENDENCIES
   fastlane-plugin-update_xcodeproj (~> 1.0.1)
 
 BUNDLED WITH
-  4.0.16
+  4.0.20
