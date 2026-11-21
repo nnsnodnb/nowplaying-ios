@@ -14,7 +14,7 @@ Build version 27B52
 
 ```command
 $ ruby -v
-ruby 4.0.9 (2026-10-23 revision 3e93b23afc) +PRISM [arm64-darwin23]
+ruby 4.0.10 (2026-11-19 revision a704b7cd95) +PRISM [arm64-darwin24]
 ```
 
 ## Setup
