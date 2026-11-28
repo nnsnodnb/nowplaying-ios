@@ -18,22 +18,38 @@ jobs:
       PACKAGE_RESOLVED: NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved
 
     permissions:
-      contents: write
+      contents: read
       pull-requests: read
 
     steps:
+      - uses: actions/create-github-app-token@v2.2.2
+        id: app-token
+        with:
+          client-id: ${{ secrets.AOI_CHAN_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.AOI_CHAN_BOT_PRIVATE_KEY }}
+          permission-contents: write
+
       - uses: actions/checkout@v7.0.1
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Check commit author
         id: commit
+        env:
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          AUTHOR_EMAIL=$(git log -n 1 --format='%ae')
+          BOT_USER_ID="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
+          BOT_EMAIL="${BOT_USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+          echo "bot_name=${APP_SLUG}[bot]" >> "$GITHUB_OUTPUT"
+          echo "bot_email=${BOT_EMAIL}" >> "$GITHUB_OUTPUT"
+
+          AUTHOR_EMAIL="$(git log -n 1 --format='%ae')"
           echo "Author: $AUTHOR_EMAIL"
 
-          if [[ "$AUTHOR_EMAIL" == "41898282+github-actions[bot]@users.noreply.github.com" ]]; then
+          if [[ "$AUTHOR_EMAIL" == "$BOT_EMAIL" ]]; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
@@ -74,13 +90,16 @@ jobs:
 
       - name: Git commit & push if needed
         if: ${{ steps.commit.outputs.skip != 'true' }}
+        env:
+          BOT_NAME: ${{ steps.commit.outputs.bot_name }}
+          BOT_EMAIL: ${{ steps.commit.outputs.bot_email }}
         run: |
           if [ -z "$(git status --porcelain "${PACKAGE_RESOLVED}")" ]; then
             echo "no change in ${PACKAGE_RESOLVED}; skipping commit/push"
             exit 0
           fi
           git add "${PACKAGE_RESOLVED}"
-          git config user.name "GitHub Actions"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "${BOT_NAME}"
+          git config user.email "${BOT_EMAIL}"
           git commit -m "chore: recompute Package.resolved originHash"
           git push origin "HEAD:refs/heads/${GITHUB_HEAD_REF}"
