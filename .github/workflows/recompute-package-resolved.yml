@@ -8,7 +8,7 @@ on:
 
 jobs:
   recompute:
-    if: ${{ github.event.pull_request.user.login == 'renovate[bot]' }}
+    if: ${{ github.actor == 'renovate[bot]' && github.event.pull_request.user.login == 'renovate[bot]' }}
     runs-on: xcode-27
 
     env:
@@ -35,29 +35,8 @@ jobs:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
 
-      - name: Check commit author
-        id: commit
-        env:
-          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
-          BOT_USER_ID="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
-          BOT_EMAIL="${BOT_USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
-          echo "bot_name=${APP_SLUG}[bot]" >> "$GITHUB_OUTPUT"
-          echo "bot_email=${BOT_EMAIL}" >> "$GITHUB_OUTPUT"
-
-          AUTHOR_EMAIL="$(git log -n 1 --format='%ae')"
-          echo "Author: $AUTHOR_EMAIL"
-
-          if [[ "$AUTHOR_EMAIL" == "$BOT_EMAIL" ]]; then
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Get SwiftPM originHash
         id: get-swiftpm-origin-hash
-        if: ${{ steps.commit.outputs.skip != 'true' }}
         run: |
           ORIGIN_HASH="$(jq -c -r '.originHash' "${PACKAGE_RESOLVED}")"
           echo "ORIGIN_HASH=${ORIGIN_HASH}" >> "${GITHUB_OUTPUT}"
@@ -65,20 +44,17 @@ jobs:
       - name: Cache Swift Packages
         uses: actions/cache@v6.1.0
         id: cache-swiftpm
-        if: ${{ steps.commit.outputs.skip != 'true' }}
         timeout-minutes: 20
         with:
           path: .swiftpm
           key: ${{ runner.os }}-swiftpm-${{ steps.get-swiftpm-origin-hash.outputs.ORIGIN_HASH }}
 
       - name: Restore Package.resolved to its base
-        if: ${{ steps.commit.outputs.skip != 'true' }}
         run: |
           git fetch --no-tags origin "${GITHUB_BASE_REF}"
           git checkout "FETCH_HEAD" -- "${PACKAGE_RESOLVED}"
 
       - name: Recompute Package.resolved
-        if: ${{ steps.commit.outputs.skip != 'true' }}
         env:
           SCHEME: "${{ env.SCHEME }}Package"
         run: |
@@ -89,17 +65,19 @@ jobs:
             -clonedSourcePackagesDirPath .swiftpm
 
       - name: Git commit & push if needed
-        if: ${{ steps.commit.outputs.skip != 'true' }}
         env:
-          BOT_NAME: ${{ steps.commit.outputs.bot_name }}
-          BOT_EMAIL: ${{ steps.commit.outputs.bot_email }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           if [ -z "$(git status --porcelain "${PACKAGE_RESOLVED}")" ]; then
             echo "no change in ${PACKAGE_RESOLVED}; skipping commit/push"
             exit 0
           fi
+
+          BOT_USER_ID="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "${BOT_USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
+
           git add "${PACKAGE_RESOLVED}"
-          git config user.name "${BOT_NAME}"
-          git config user.email "${BOT_EMAIL}"
           git commit -m "chore: recompute Package.resolved originHash"
           git push origin "HEAD:refs/heads/${GITHUB_HEAD_REF}"
