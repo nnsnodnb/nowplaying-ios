@@ -29,8 +29,10 @@ public struct RootFeature: Sendable {
   public struct State: Equatable {
     @Init(default: nil)
     public var destination: Destination.State?
+    @Init(.ignore)
     @Shared(.appStorage(.isLaunchAtFirst))
     public var isLaunchAtFirst = true
+    @Init(.ignore)
     @Shared(.appStorage(.migratedV320))
     public var migratedV320 = false
   }
@@ -50,8 +52,10 @@ public struct RootFeature: Sendable {
   }
 
   // MARK: - Dependency
+  @Init(.ignore)
   @Dependency(\.auth)
   private var auth
+  @Init(.ignore)
   @Dependency(\.secureKeyValueStore)
   private var secureKeyValueStore
 
