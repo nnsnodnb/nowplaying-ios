@@ -8,76 +8,16 @@ on:
 
 jobs:
   recompute:
-    if: ${{ github.actor == 'renovate[bot]' && github.event.pull_request.user.login == 'renovate[bot]' }}
-    runs-on: xcode-27
-
-    env:
-      DEVELOPER_DIR: /Applications/Xcode_27.2.0.app/Contents/Developer
-      SCHEME: NowPlaying
-      WORKSPACE: NowPlaying.xcworkspace
-      PACKAGE_RESOLVED: NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved
-
+    uses: nnsnodnb/.github/.github/workflows/recompute-package-resolved.yml@02e00e0430cbf7b7303ecef17debfbbe49e358ac
+    with:
+      runs-on: xcode-27
+      developer-dir: /Applications/Xcode_27.2.0.app/Contents/Developer
+      workspace: NowPlaying.xcworkspace
+      scheme: NowPlaying
+      package-resolved: NowPlaying.xcworkspace/xcshareddata/swiftpm/Package.resolved
+    secrets:
+      client-id: ${{ secrets.AOI_CHAN_BOT_CLIENT_ID }}
+      app-private-key: ${{ secrets.AOI_CHAN_BOT_PRIVATE_KEY }}
     permissions:
       contents: read
       pull-requests: read
-
-    steps:
-      - uses: actions/create-github-app-token@v3.4.0
-        id: app-token
-        with:
-          client-id: ${{ secrets.AOI_CHAN_BOT_CLIENT_ID }}
-          private-key: ${{ secrets.AOI_CHAN_BOT_PRIVATE_KEY }}
-          permission-contents: write
-
-      - uses: actions/checkout@v7.0.1
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
-          token: ${{ steps.app-token.outputs.token }}
-
-      - name: Get SwiftPM originHash
-        id: get-swiftpm-origin-hash
-        run: |
-          ORIGIN_HASH="$(jq -c -r '.originHash' "${PACKAGE_RESOLVED}")"
-          echo "ORIGIN_HASH=${ORIGIN_HASH}" >> "${GITHUB_OUTPUT}"
-
-      - name: Cache Swift Packages
-        uses: actions/cache@v6.1.0
-        id: cache-swiftpm
-        timeout-minutes: 20
-        with:
-          path: .swiftpm
-          key: ${{ runner.os }}-swiftpm-${{ steps.get-swiftpm-origin-hash.outputs.ORIGIN_HASH }}
-
-      - name: Restore Package.resolved to its base
-        run: |
-          git fetch --no-tags origin "${GITHUB_BASE_REF}"
-          git checkout "FETCH_HEAD" -- "${PACKAGE_RESOLVED}"
-
-      - name: Recompute Package.resolved
-        env:
-          SCHEME: "${{ env.SCHEME }}Package"
-        run: |
-          xcodebuild \
-            -resolvePackageDependencies \
-            -scheme "${SCHEME}" \
-            -workspace "${WORKSPACE}" \
-            -clonedSourcePackagesDirPath .swiftpm
-
-      - name: Git commit & push if needed
-        env:
-          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
-          if [ -z "$(git status --porcelain "${PACKAGE_RESOLVED}")" ]; then
-            echo "no change in ${PACKAGE_RESOLVED}; skipping commit/push"
-            exit 0
-          fi
-
-          BOT_USER_ID="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
-          git config user.name "${APP_SLUG}[bot]"
-          git config user.email "${BOT_USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
-
-          git add "${PACKAGE_RESOLVED}"
-          git commit -m "chore: recompute Package.resolved originHash"
-          git push origin "HEAD:refs/heads/${GITHUB_HEAD_REF}"
