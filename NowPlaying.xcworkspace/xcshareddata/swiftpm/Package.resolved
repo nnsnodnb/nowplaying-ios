@@ -357,8 +357,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/gohanlon/swift-memberwise-init-macro.git",
       "state" : {
-        "revision" : "d0fb82bb6638051524214fb54524bfcd876735a1",
-        "version" : "0.6.0"
+        "revision" : "523739c8231271f3e4dc4dce4b59225528c46597",
+        "version" : "1.0.0"
       }
     },
     {
